@@ -1,0 +1,1763 @@
+data_type,udt_name,column_name,tablename
+timestamp with time zone,timestamptz,created,user_aws
+integer,int4,created_by,user_aws
+USER-DEFINED,citext,customer_identifier,user_aws
+USER-DEFINED,citext,product_code,user_aws
+USER-DEFINED,citext,subscription_state,user_aws
+timestamp with time zone,timestamptz,updated,user_aws
+integer,int4,updated_by,user_aws
+integer,int4,user_id,user_aws
+USER-DEFINED,citext,uuid,user_aws
+integer,int4,id,user_aws
+character varying,varchar,accession_number,study_deleted
+character varying,varchar,callback_url,study_deleted
+bigint,int8,compressed_size,study_deleted
+timestamp with time zone,timestamptz,created,study_deleted
+integer,int4,created_by,study_deleted
+USER-DEFINED,hstore,customfields,study_deleted
+timestamp with time zone,timestamptz,deleted,study_deleted
+integer,int4,deleted_by,study_deleted
+character varying,varchar,destination_ae_title,study_deleted
+integer,int4,engine_id,study_deleted
+USER-DEFINED,citext,integration_key,study_deleted
+USER-DEFINED,citext,medical_record_locator,study_deleted
+USER-DEFINED,citext,modality,study_deleted
+integer,int4,node_id,study_deleted
+USER-DEFINED,citext,patient_additional_history,study_deleted
+USER-DEFINED,citext,patient_address,study_deleted
+USER-DEFINED,citext,patient_age,study_deleted
+USER-DEFINED,citext,patient_birth_date,study_deleted
+USER-DEFINED,citext,patient_birth_time,study_deleted
+USER-DEFINED,citext,patient_birthname,study_deleted
+USER-DEFINED,citext,patient_comments,study_deleted
+USER-DEFINED,citext,patient_current_location,study_deleted
+USER-DEFINED,citext,patient_ethnic_group,study_deleted
+USER-DEFINED,citext,patient_institution_residence,study_deleted
+USER-DEFINED,citext,patient_mother_birthname,study_deleted
+USER-DEFINED,citext,patient_name,study_deleted
+USER-DEFINED,citext,patient_name_other,study_deleted
+USER-DEFINED,citext,patient_occupation,study_deleted
+USER-DEFINED,citext,patient_phone,study_deleted
+USER-DEFINED,citext,patient_religious_preference,study_deleted
+USER-DEFINED,citext,patient_sex,study_deleted
+USER-DEFINED,citext,patient_size,study_deleted
+USER-DEFINED,citext,patient_weight,study_deleted
+USER-DEFINED,citext,patientid,study_deleted
+USER-DEFINED,citext,patientid_other,study_deleted
+integer,int4,phi_namespace,study_deleted
+USER-DEFINED,citext,referring_physician,study_deleted
+integer,int4,shared_from,study_deleted
+bigint,int8,size,study_deleted
+character varying,varchar,source,study_deleted
+character varying,varchar,source_ae_title,study_deleted
+integer,int4,storage_namespace,study_deleted
+"""char""",char,storage_state,study_deleted
+USER-DEFINED,citext,study_date,study_deleted
+USER-DEFINED,citext,study_description,study_deleted
+USER-DEFINED,citext,study_status,study_deleted
+USER-DEFINED,citext,study_time,study_deleted
+character varying,varchar,study_uid,study_deleted
+smallint,int2,thin,study_deleted
+timestamp with time zone,timestamptz,updated,study_deleted
+integer,int4,updated_by,study_deleted
+USER-DEFINED,citext,uuid,study_deleted
+integer,int4,id,study_deleted
+integer,int4,attachment_count,study_deleted
+integer,int4,image_count,study_deleted
+smallint,int2,must_approve,study_deleted
+smallint,int2,phantom,study_deleted
+integer,int4,account_id,terminology
+timestamp with time zone,timestamptz,created,terminology
+integer,int4,created_by,terminology
+character varying,varchar,language,terminology
+character varying,varchar,tag,terminology
+timestamp with time zone,timestamptz,updated,terminology
+integer,int4,updated_by,terminology
+USER-DEFINED,citext,uuid,terminology
+character varying,varchar,value,terminology
+USER-DEFINED,citext,vanity,terminology
+integer,int4,id,terminology
+integer,int4,account_id,cluster_account
+integer,int4,cluster_id,cluster_account
+timestamp with time zone,timestamptz,created,cluster_account
+integer,int4,created_by,cluster_account
+timestamp with time zone,timestamptz,updated,cluster_account
+integer,int4,updated_by,cluster_account
+USER-DEFINED,citext,uuid,cluster_account
+integer,int4,id,cluster_account
+integer,int4,account_id,role
+timestamp with time zone,timestamptz,created,role
+integer,int4,created_by,role
+character varying,varchar,description,role
+USER-DEFINED,citext,name,role
+text,text,permissions,role
+character varying,varchar,type,role
+timestamp with time zone,timestamptz,updated,role
+integer,int4,updated_by,role
+USER-DEFINED,citext,uuid,role
+integer,int4,id,role
+integer,int4,account_id,filter_share
+timestamp with time zone,timestamptz,created,filter_share
+integer,int4,created_by,filter_share
+integer,int4,filter_id,filter_share
+integer,int4,group_id,filter_share
+integer,int4,location_id,filter_share
+timestamp with time zone,timestamptz,updated,filter_share
+integer,int4,updated_by,filter_share
+integer,int4,user_id,filter_share
+integer,int4,id,filter_share
+smallint,int2,corrupt,storage_study
+timestamp with time zone,timestamptz,created,storage_study
+integer,int4,created_by,storage_study
+integer,int4,engine_id,storage_study
+smallint,int2,is_frozen,storage_study
+timestamp with time zone,timestamptz,last_update,storage_study
+integer,int4,rsync_id,storage_study
+integer,int4,storage_namespace,storage_study
+character varying,varchar,study_uid,storage_study
+timestamp with time zone,timestamptz,updated,storage_study
+integer,int4,id,storage_study
+integer,int4,updated_by,storage_study
+USER-DEFINED,citext,uuid,storage_study
+character varying,varchar,accession_number,study
+character varying,varchar,callback_url,study
+bigint,int8,compressed_size,study
+timestamp with time zone,timestamptz,created,study
+integer,int4,created_by,study
+USER-DEFINED,hstore,customfields,study
+character varying,varchar,destination_ae_title,study
+integer,int4,engine_id,study
+USER-DEFINED,citext,integration_key,study
+USER-DEFINED,citext,medical_record_locator,study
+USER-DEFINED,citext,modality,study
+integer,int4,node_id,study
+USER-DEFINED,citext,patient_additional_history,study
+USER-DEFINED,citext,patient_address,study
+USER-DEFINED,citext,patient_age,study
+USER-DEFINED,citext,patient_birth_date,study
+USER-DEFINED,citext,patient_birth_time,study
+USER-DEFINED,citext,patient_birthname,study
+USER-DEFINED,citext,patient_comments,study
+USER-DEFINED,citext,patient_current_location,study
+USER-DEFINED,citext,patient_ethnic_group,study
+USER-DEFINED,citext,patient_institution_residence,study
+USER-DEFINED,citext,patient_mother_birthname,study
+USER-DEFINED,citext,patient_name,study
+USER-DEFINED,citext,patient_name_other,study
+USER-DEFINED,citext,patient_occupation,study
+USER-DEFINED,citext,patient_phone,study
+USER-DEFINED,citext,patient_religious_preference,study
+USER-DEFINED,citext,patient_sex,study
+USER-DEFINED,citext,patient_size,study
+USER-DEFINED,citext,patient_weight,study
+USER-DEFINED,citext,patientid,study
+USER-DEFINED,citext,patientid_other,study
+integer,int4,phi_namespace,study
+USER-DEFINED,citext,referring_physician,study
+integer,int4,shared_from,study
+bigint,int8,size,study
+character varying,varchar,source,study
+character varying,varchar,source_ae_title,study
+integer,int4,storage_namespace,study
+"""char""",char,storage_state,study
+USER-DEFINED,citext,study_date,study
+USER-DEFINED,citext,study_description,study
+USER-DEFINED,citext,study_status,study
+USER-DEFINED,citext,study_time,study
+character varying,varchar,study_uid,study
+smallint,int2,thin,study
+timestamp with time zone,timestamptz,updated,study
+integer,int4,updated_by,study
+USER-DEFINED,citext,uuid,study
+integer,int4,id,study
+integer,int4,attachment_count,study
+integer,int4,image_count,study
+smallint,int2,must_approve,study
+smallint,int2,phantom,study
+integer,int4,account_id,dictionary
+timestamp with time zone,timestamptz,created,dictionary
+integer,int4,created_by,dictionary
+text,text,lookup,dictionary
+USER-DEFINED,citext,name,dictionary
+character varying,varchar,object,dictionary
+text,text,replace,dictionary
+timestamp with time zone,timestamptz,updated,dictionary
+integer,int4,updated_by,dictionary
+USER-DEFINED,citext,uuid,dictionary
+integer,int4,id,dictionary
+smallint,int2,case_sensitive,dictionary
+character varying,varchar,accession_number,study_fetch
+timestamp with time zone,timestamptz,created,study_fetch
+integer,int4,created_by,study_fetch
+integer,int4,destination_id,study_fetch
+integer,int4,node_id,study_fetch
+character varying,varchar,patientid,study_fetch
+timestamp with time zone,timestamptz,pickup,study_fetch
+"""char""",char,source,study_fetch
+"""char""",char,status,study_fetch
+integer,int4,study_id,study_fetch
+character varying,varchar,study_uid,study_fetch
+timestamp with time zone,timestamptz,updated,study_fetch
+integer,int4,updated_by,study_fetch
+USER-DEFINED,citext,uuid,study_fetch
+integer,int4,id,study_fetch
+timestamp with time zone,timestamptz,created,user_invite_share
+integer,int4,created_by,user_invite_share
+USER-DEFINED,citext,email,user_invite_share
+text,text,message,user_invite_share
+integer,int4,study_id,user_invite_share
+timestamp with time zone,timestamptz,updated,user_invite_share
+integer,int4,updated_by,user_invite_share
+integer,int4,user_id,user_invite_share
+USER-DEFINED,citext,uuid,user_invite_share
+integer,int4,id,user_invite_share
+integer,int4,account_id,accelerator
+USER-DEFINED,citext,address,accelerator
+timestamp with time zone,timestamptz,created,accelerator
+integer,int4,created_by,accelerator
+USER-DEFINED,citext,fqdn,accelerator
+USER-DEFINED,citext,name,accelerator
+USER-DEFINED,citext,serial_no,accelerator
+timestamp with time zone,timestamptz,updated,accelerator
+integer,int4,updated_by,accelerator
+USER-DEFINED,citext,uuid,accelerator
+character varying,varchar,version,accelerator
+integer,int4,id,accelerator
+smallint,int2,push_shared_studies,accelerator
+smallint,int2,upgrade,accelerator
+integer,int4,account_id,appointment
+timestamp with time zone,timestamptz,created,appointment
+integer,int4,created_by,appointment
+USER-DEFINED,hstore,customfields,appointment
+character varying,varchar,description,appointment
+timestamp with time zone,timestamptz,end_time,appointment
+integer,int4,patient_id,appointment
+timestamp with time zone,timestamptz,start_time,appointment
+timestamp with time zone,timestamptz,updated,appointment
+integer,int4,updated_by,appointment
+integer,int4,user_id,appointment
+integer,int4,id,appointment
+USER-DEFINED,citext,uuid,appointment
+integer,int4,copy_to,destination_search
+integer,int4,create_study,destination_search
+integer,int4,create_thin,destination_search
+timestamp with time zone,timestamptz,created,destination_search
+integer,int4,created_by,destination_search
+integer,int4,destination_id,destination_search
+text,text,extra,destination_search
+integer,int4,hl7_id,destination_search
+integer,int4,node_id,destination_search
+text,text,payload,destination_search
+timestamp with time zone,timestamptz,pickup,destination_search
+text,text,results,destination_search
+"""char""",char,status,destination_search
+integer,int4,study_id,destination_search
+timestamp with time zone,timestamptz,updated,destination_search
+integer,int4,updated_by,destination_search
+integer,int4,user_id,destination_search
+USER-DEFINED,citext,uuid,destination_search
+integer,int4,id,destination_search
+integer,int4,count,destination_search
+text,text,body,study_comment
+timestamp with time zone,timestamptz,created,study_comment
+integer,int4,created_by,study_comment
+integer,int4,study_id,study_comment
+timestamp with time zone,timestamptz,updated,study_comment
+integer,int4,updated_by,study_comment
+integer,int4,user_id,study_comment
+USER-DEFINED,citext,uuid,study_comment
+integer,int4,id,study_comment
+integer,int4,account_id,link_usage
+character varying,varchar,client_address,link_usage
+character varying,varchar,client_email,link_usage
+timestamp with time zone,timestamptz,created,link_usage
+integer,int4,created_by,link_usage
+text,text,extra,link_usage
+integer,int4,link_id,link_usage
+character varying,varchar,sid,link_usage
+timestamp with time zone,timestamptz,updated,link_usage
+integer,int4,updated_by,link_usage
+USER-DEFINED,citext,uuid,link_usage
+integer,int4,id,link_usage
+character varying,varchar,attachmentid,rsnaclr_doc
+jsonb,jsonb,author,rsnaclr_doc
+jsonb,jsonb,class_code,rsnaclr_doc
+text,text,comments,rsnaclr_doc
+character varying,varchar,communityid,rsnaclr_doc
+jsonb,jsonb,confidentiality_code,rsnaclr_doc
+timestamp with time zone,timestamptz,created,rsnaclr_doc
+integer,int4,created_by,rsnaclr_doc
+character varying,varchar,creation_time,rsnaclr_doc
+character varying,varchar,documentid,rsnaclr_doc
+jsonb,jsonb,event_code_list,rsnaclr_doc
+jsonb,jsonb,format_code,rsnaclr_doc
+jsonb,jsonb,healthcare_facility_type_code,rsnaclr_doc
+character varying,varchar,language_code,rsnaclr_doc
+character varying,varchar,legal_authenticator,rsnaclr_doc
+character varying,varchar,mime_type,rsnaclr_doc
+character varying,varchar,patientid,rsnaclr_doc
+jsonb,jsonb,practice_setting_code,rsnaclr_doc
+jsonb,jsonb,reference_id_list,rsnaclr_doc
+character varying,varchar,repositoryid,rsnaclr_doc
+character varying,varchar,rsna_status,rsnaclr_doc
+integer,int4,rsnaclr_subset_id,rsnaclr_doc
+character varying,varchar,service_start_time,rsnaclr_doc
+character varying,varchar,service_stop_time,rsnaclr_doc
+character varying,varchar,sha1,rsnaclr_doc
+bigint,int8,size,rsnaclr_doc
+character varying,varchar,source_patient_id,rsnaclr_doc
+jsonb,jsonb,source_patient_info,rsnaclr_doc
+character varying,varchar,title,rsnaclr_doc
+jsonb,jsonb,type_code,rsnaclr_doc
+character varying,varchar,uniqueid,rsnaclr_doc
+timestamp with time zone,timestamptz,updated,rsnaclr_doc
+integer,int4,updated_by,rsnaclr_doc
+USER-DEFINED,citext,uuid,rsnaclr_doc
+integer,int4,id,rsnaclr_doc
+smallint,int2,limited_metadata,rsnaclr_doc
+integer,int4,account_id,namespace_children
+integer,int4,child_id,namespace_children
+timestamp with time zone,timestamptz,created,namespace_children
+integer,int4,created_by,namespace_children
+text,text,fields,namespace_children
+integer,int4,namespace_id,namespace_children
+timestamp with time zone,timestamptz,updated,namespace_children
+integer,int4,updated_by,namespace_children
+USER-DEFINED,citext,uuid,namespace_children
+integer,int4,id,namespace_children
+timestamp with time zone,timestamptz,created,meeting
+integer,int4,created_by,meeting
+integer,int4,link_id,meeting
+character varying,varchar,name,meeting
+text,text,state,meeting
+integer,int4,study_id,meeting
+timestamp with time zone,timestamptz,updated,meeting
+integer,int4,updated_by,meeting
+integer,int4,user_id,meeting
+USER-DEFINED,citext,uuid,meeting
+integer,int4,id,meeting
+integer,int4,account_id,study_charge
+timestamp with time zone,timestamptz,created,study_charge
+integer,int4,created_by,study_charge
+text,text,detail,study_charge
+integer,int4,study_id,study_charge
+timestamp with time zone,timestamptz,updated,study_charge
+integer,int4,updated_by,study_charge
+USER-DEFINED,citext,uuid,study_charge
+integer,int4,id,study_charge
+timestamp with time zone,timestamptz,created,archive_vault
+integer,int4,created_by,archive_vault
+character varying,varchar,key,archive_vault
+character varying,varchar,region,archive_vault
+character varying,varchar,secret,archive_vault
+timestamp with time zone,timestamptz,updated,archive_vault
+integer,int4,updated_by,archive_vault
+USER-DEFINED,citext,uuid,archive_vault
+character varying,varchar,vault,archive_vault
+integer,int4,id,archive_vault
+smallint,int2,closed,archive_vault
+integer,int4,account_id,study_question
+character varying,varchar,answer,study_question
+timestamp with time zone,timestamptz,answered,study_question
+timestamp with time zone,timestamptz,created,study_question
+integer,int4,created_by,study_question
+text,text,detail,study_question
+bigint,int8,next_question,study_question
+timestamp with time zone,timestamptz,pickup,study_question
+character varying,varchar,question,study_question
+text,text,raw_answer,study_question
+integer,int4,study_id,study_question
+timestamp with time zone,timestamptz,updated,study_question
+integer,int4,updated_by,study_question
+USER-DEFINED,citext,uuid,study_question
+bigint,int8,id,study_question
+integer,int4,account_id,webhook
+text,text,auth,webhook
+timestamp with time zone,timestamptz,created,webhook
+integer,int4,created_by,webhook
+character varying,varchar,cron,webhook
+character varying,varchar,event,webhook
+character varying,varchar,filter_field,webhook
+text,text,filter_regexp,webhook
+character varying,varchar,last_error,webhook
+character varying,varchar,method,webhook
+USER-DEFINED,citext,name,webhook
+integer,int4,node_id,webhook
+text,text,parameters,webhook
+integer,int4,sid_user_id,webhook
+timestamp with time zone,timestamptz,updated,webhook
+integer,int4,updated_by,webhook
+character varying,varchar,url,webhook
+USER-DEFINED,citext,uuid,webhook
+integer,int4,id,webhook
+smallint,int2,by_accession_number,webhook
+smallint,int2,by_uid,webhook
+integer,int4,delay,webhook
+integer,int4,max_age,webhook
+smallint,int2,once,webhook
+smallint,int2,retry,webhook
+integer,int4,retry_count,webhook
+smallint,int2,suspended,webhook
+timestamp with time zone,timestamptz,created,study_star
+integer,int4,created_by,study_star
+integer,int4,study_id,study_star
+timestamp with time zone,timestamptz,updated,study_star
+integer,int4,updated_by,study_star
+integer,int4,user_id,study_star
+integer,int4,id,study_star
+smallint,int2,star,study_star
+text,text,action,route_round_robin
+timestamp with time zone,timestamptz,created,route_round_robin
+integer,int4,created_by,route_round_robin
+integer,int4,route_id,route_round_robin
+integer,int4,study_id,route_round_robin
+timestamp with time zone,timestamptz,updated,route_round_robin
+integer,int4,updated_by,route_round_robin
+integer,int4,id,route_round_robin
+timestamp with time zone,timestamptz,created,annotation
+integer,int4,created_by,annotation
+character varying,varchar,frame_number,annotation
+character varying,varchar,instance_uid,annotation
+text,text,json,annotation
+character varying,varchar,series_uid,annotation
+smallint,int2,stamp,annotation
+integer,int4,study_id,annotation
+timestamp with time zone,timestamptz,updated,annotation
+integer,int4,updated_by,annotation
+integer,int4,user_id,annotation
+USER-DEFINED,citext,uuid,annotation
+integer,int4,id,annotation
+timestamp with time zone,timestamptz,created,study_push_status
+integer,int4,created_by,study_push_status
+integer,int4,destination_id,study_push_status
+integer,int4,phi_namespace,study_push_status
+"""char""",char,status,study_push_status
+integer,int4,study_id,study_push_status
+integer,int4,study_push_id,study_push_status
+timestamp with time zone,timestamptz,updated,study_push_status
+integer,int4,updated_by,study_push_status
+USER-DEFINED,citext,uuid,study_push_status
+integer,int4,id,study_push_status
+integer,int4,account_id,grp
+timestamp with time zone,timestamptz,created,grp
+integer,int4,created_by,grp
+USER-DEFINED,hstore,customfields,grp
+USER-DEFINED,citext,name,grp
+integer,int4,namespace_id,grp
+integer,int4,role_id,grp
+timestamp with time zone,timestamptz,updated,grp
+integer,int4,updated_by,grp
+USER-DEFINED,citext,uuid,grp
+integer,int4,id,grp
+timestamp with time zone,timestamptz,created,tag_object
+integer,int4,created_by,tag_object
+character varying,varchar,object,tag_object
+integer,int4,object_id,tag_object
+USER-DEFINED,hstore,tags,tag_object
+timestamp with time zone,timestamptz,updated,tag_object
+integer,int4,updated_by,tag_object
+integer,int4,user_id,tag_object
+USER-DEFINED,citext,uuid,tag_object
+integer,int4,id,tag_object
+integer,int4,account_id,radreport_template
+text,text,body,radreport_template
+timestamp with time zone,timestamptz,created,radreport_template
+integer,int4,created_by,radreport_template
+character varying,varchar,name,radreport_template
+text,text,options,radreport_template
+text,text,preview,radreport_template
+USER-DEFINED,citext,type,radreport_template
+timestamp with time zone,timestamptz,updated,radreport_template
+integer,int4,updated_by,radreport_template
+USER-DEFINED,citext,uuid,radreport_template
+integer,int4,id,radreport_template
+smallint,int2,active,radreport_template
+integer,int4,account_id,destination
+character varying,varchar,address,destination
+USER-DEFINED,citext,aetitle,destination
+text,text,c_echo_schedule,destination
+text,text,cd_burn_info,destination
+USER-DEFINED,citext,cd_burn_name,destination
+timestamp with time zone,timestamptz,created,destination
+integer,int4,created_by,destination
+text,text,gateway_settings,destination
+character varying,varchar,hl7_address,destination
+text,text,hl7_fetch_filter,destination
+USER-DEFINED,citext,name,destination
+integer,int4,node_id,destination
+character varying,varchar,path,destination
+timestamp with time zone,timestamptz,updated,destination
+integer,int4,updated_by,destination
+USER-DEFINED,citext,uuid,destination
+integer,int4,id,destination
+integer,int4,c_echo_interval,destination
+smallint,int2,can_query_retrieve,destination
+smallint,int2,can_retrieve_thin,destination
+smallint,int2,can_search,destination
+smallint,int2,can_search_mwl,destination
+integer,int4,cd_burn_priority,destination
+character varying,varchar,default_query_retrieve_level,destination
+smallint,int2,fire_webhooks,destination
+integer,int4,hl7_port,destination
+integer,int4,port,destination
+smallint,int2,push_related_studies,destination
+integer,int4,sort_order,destination
+smallint,int2,sqlch_psh_if_img_unchg,destination
+smallint,int2,sqlch_psh_if_route_hl7,destination
+character varying,varchar,type,destination
+integer,int4,account_id,namespace
+text,text,anonymize,namespace
+character varying,varchar,charge_description,namespace
+text,text,coverpage,namespace
+timestamp with time zone,timestamptz,created,namespace
+integer,int4,created_by,namespace
+character varying,varchar,currency,namespace
+integer,int4,group_id,namespace
+text,text,hl7_template,namespace
+USER-DEFINED,citext,linkage_name,namespace
+integer,int4,location_id,namespace
+text,text,second_opinion_config,namespace
+USER-DEFINED,hstore,settings,namespace
+USER-DEFINED,citext,share_code,namespace
+character varying,varchar,share_description,namespace
+text,text,share_pricing,namespace
+text,text,share_settings,namespace
+text,text,study_defaults,namespace
+timestamp with time zone,timestamptz,updated,namespace
+integer,int4,updated_by,namespace
+integer,int4,user_id,namespace
+USER-DEFINED,citext,uuid,namespace
+integer,int4,id,namespace
+integer,int4,archive,namespace
+smallint,int2,cache,namespace
+smallint,int2,event_approve,namespace
+smallint,int2,event_harvest,namespace
+smallint,int2,event_link,namespace
+smallint,int2,event_link_mine,namespace
+smallint,int2,event_message,namespace
+smallint,int2,event_new_report,namespace
+smallint,int2,event_node,namespace
+smallint,int2,event_share,namespace
+smallint,int2,event_status_change,namespace
+smallint,int2,event_study_comment,namespace
+smallint,int2,event_thin_study_fail,namespace
+smallint,int2,event_thin_study_success,namespace
+smallint,int2,event_upload,namespace
+smallint,int2,event_upload_fail,namespace
+integer,int4,harvest_hold,namespace
+smallint,int2,must_approve,namespace
+smallint,int2,must_approve_upload,namespace
+smallint,int2,no_cluster_archive,namespace
+smallint,int2,no_share,namespace
+smallint,int2,prompt_for_anonymize,namespace
+integer,int4,search_threshold,namespace
+smallint,int2,second_opinion_share,namespace
+smallint,int2,share_via_gateway,namespace
+integer,int4,upload_hold,namespace
+integer,int4,account_id,purge
+timestamp with time zone,timestamptz,created,purge
+integer,int4,created_by,purge
+text,text,modalities,purge
+USER-DEFINED,citext,name,purge
+text,text,namespaces,purge
+character varying,varchar,study_status_tags,purge
+timestamp with time zone,timestamptz,updated,purge
+integer,int4,updated_by,purge
+USER-DEFINED,citext,uuid,purge
+integer,int4,id,purge
+smallint,int2,adults,purge
+smallint,int2,archive,purge
+integer,int4,days_old,purge
+"""char""",char,days_old_how,purge
+smallint,int2,global,purge
+integer,int4,max_deletes,purge
+smallint,int2,minors,purge
+smallint,int2,owned_phr,purge
+smallint,int2,shared_from_phr,purge
+smallint,int2,skinny,purge
+smallint,int2,suspended,purge
+smallint,int2,thin,purge
+timestamp with time zone,timestamptz,created,setting
+integer,int4,created_by,setting
+USER-DEFINED,citext,key,setting
+timestamp with time zone,timestamptz,updated,setting
+integer,int4,updated_by,setting
+integer,int4,user_id,setting
+USER-DEFINED,citext,uuid,setting
+text,text,value,setting
+integer,int4,id,setting
+integer,int4,account_id,user_invite
+timestamp with time zone,timestamptz,created,user_invite
+integer,int4,created_by,user_invite
+USER-DEFINED,citext,email,user_invite
+text,text,groups,user_invite
+text,text,locations,user_invite
+integer,int4,role_id,user_invite
+timestamp with time zone,timestamptz,updated,user_invite
+integer,int4,updated_by,user_invite
+integer,int4,user_id,user_invite
+USER-DEFINED,citext,uuid,user_invite
+integer,int4,id,user_invite
+integer,int4,account_id,drchrono
+timestamp with time zone,timestamptz,created,drchrono
+integer,int4,created_by,drchrono
+character varying,varchar,doctor,drchrono
+character varying,varchar,refresh_token,drchrono
+timestamp with time zone,timestamptz,updated,drchrono
+integer,int4,updated_by,drchrono
+integer,int4,user_id,drchrono
+USER-DEFINED,citext,uuid,drchrono
+integer,int4,id,drchrono
+integer,int4,account_id,location
+timestamp with time zone,timestamptz,created,location
+integer,int4,created_by,location
+USER-DEFINED,hstore,customfields,location
+USER-DEFINED,citext,name,location
+integer,int4,namespace_id,location
+integer,int4,role_id,location
+timestamp with time zone,timestamptz,updated,location
+integer,int4,updated_by,location
+USER-DEFINED,citext,uuid,location
+integer,int4,id,location
+timestamp with time zone,timestamptz,created,node_connect
+integer,int4,created_by,node_connect
+integer,int4,from_account_id,node_connect
+text,text,message,node_connect
+integer,int4,node_id,node_connect
+integer,int4,to_account_id,node_connect
+integer,int4,user_id,node_connect
+USER-DEFINED,citext,uuid,node_connect
+integer,int4,id,node_connect
+jsonb,jsonb,author,rsnaclr_subset
+text,text,comments,rsnaclr_subset
+character varying,varchar,communityid,rsnaclr_subset
+jsonb,jsonb,content_type_code,rsnaclr_subset
+timestamp with time zone,timestamptz,created,rsnaclr_subset
+integer,int4,created_by,rsnaclr_subset
+jsonb,jsonb,intended_recipient,rsnaclr_subset
+character varying,varchar,patientid,rsnaclr_subset
+character varying,varchar,rsna_status,rsnaclr_subset
+integer,int4,id,rsnaclr_subset
+character varying,varchar,sourceid,rsnaclr_subset
+integer,int4,study_id,rsnaclr_subset
+character varying,varchar,submission_time,rsnaclr_subset
+character varying,varchar,title,rsnaclr_subset
+character varying,varchar,uniqueid,rsnaclr_subset
+timestamp with time zone,timestamptz,updated,rsnaclr_subset
+integer,int4,updated_by,rsnaclr_subset
+USER-DEFINED,citext,uuid,rsnaclr_subset
+smallint,int2,limited_metadata,rsnaclr_subset
+USER-DEFINED,citext,account_alias,user_account
+USER-DEFINED,citext,account_email,user_account
+integer,int4,account_id,user_account
+USER-DEFINED,citext,account_login,user_account
+character varying,varchar,account_password,user_account
+timestamp with time zone,timestamptz,created,user_account
+integer,int4,created_by,user_account
+USER-DEFINED,hstore,customfields,user_account
+timestamp with time zone,timestamptz,last_reset,user_account
+integer,int4,role_id,user_account
+USER-DEFINED,hstore,settings,user_account
+timestamp with time zone,timestamptz,updated,user_account
+integer,int4,updated_by,user_account
+integer,int4,user_id,user_account
+USER-DEFINED,citext,uuid,user_account
+integer,int4,id,user_account
+smallint,int2,event_approve,user_account
+smallint,int2,event_harvest,user_account
+smallint,int2,event_join,user_account
+smallint,int2,event_link,user_account
+smallint,int2,event_link_mine,user_account
+smallint,int2,event_message,user_account
+smallint,int2,event_new_report,user_account
+smallint,int2,event_node,user_account
+smallint,int2,event_purge,user_account
+smallint,int2,event_share,user_account
+smallint,int2,event_status_change,user_account
+smallint,int2,event_study_comment,user_account
+smallint,int2,event_thin_study_fail,user_account
+smallint,int2,event_thin_study_success,user_account
+smallint,int2,event_upload,user_account
+smallint,int2,event_upload_fail,user_account
+smallint,int2,global,user_account
+integer,int4,max_sessions,user_account
+smallint,int2,password_reset,user_account
+integer,int4,session_expire,user_account
+integer,int4,account_id,hl7_template
+text,text,body,hl7_template
+timestamp with time zone,timestamptz,created,hl7_template
+integer,int4,created_by,hl7_template
+USER-DEFINED,citext,name,hl7_template
+character varying,varchar,type,hl7_template
+timestamp with time zone,timestamptz,updated,hl7_template
+integer,int4,updated_by,hl7_template
+USER-DEFINED,citext,uuid,hl7_template
+integer,int4,id,hl7_template
+integer,int4,archive_vault_id,archive_study
+timestamp with time zone,timestamptz,created,archive_study
+integer,int4,created_by,archive_study
+character varying,varchar,datum_signature,archive_study
+timestamp with time zone,timestamptz,delay_until,archive_study
+integer,int4,engine_id,archive_study
+character varying,varchar,job_id,archive_study
+character varying,varchar,last_error,archive_study
+character varying,varchar,phi_signature,archive_study
+timestamp with time zone,timestamptz,started_at,archive_study
+integer,int4,storage_namespace,archive_study
+character varying,varchar,study_uid,archive_study
+timestamp with time zone,timestamptz,updated,archive_study
+integer,int4,updated_by,archive_study
+USER-DEFINED,citext,uuid,archive_study
+integer,int4,id,archive_study
+smallint,int2,need_delete,archive_study
+smallint,int2,need_restore,archive_study
+smallint,int2,need_store,archive_study
+integer,int4,priority,archive_study
+timestamp with time zone,timestamptz,created,user_location
+integer,int4,created_by,user_location
+integer,int4,location_id,user_location
+integer,int4,role_id,user_location
+timestamp with time zone,timestamptz,updated,user_location
+integer,int4,updated_by,user_location
+integer,int4,user_id,user_location
+USER-DEFINED,citext,uuid,user_location
+integer,int4,id,user_location
+smallint,int2,event_approve,user_location
+smallint,int2,event_harvest,user_location
+smallint,int2,event_link,user_location
+smallint,int2,event_link_mine,user_location
+smallint,int2,event_message,user_location
+smallint,int2,event_new_report,user_location
+smallint,int2,event_node,user_location
+smallint,int2,event_share,user_location
+smallint,int2,event_status_change,user_location
+smallint,int2,event_study_comment,user_location
+smallint,int2,event_thin_study_fail,user_location
+smallint,int2,event_thin_study_success,user_location
+smallint,int2,event_upload,user_location
+smallint,int2,event_upload_fail,user_location
+smallint,int2,no_physician_alias_share,user_location
+integer,int4,account_id,study_analytics
+date,date,day,study_analytics
+integer,int4,namespace_id,study_analytics
+integer,int4,id,study_analytics
+integer,int4,login,study_analytics
+integer,int4,study_approve,study_analytics
+integer,int4,study_auto_approve,study_analytics
+integer,int4,study_create,study_analytics
+integer,int4,study_create_copy,study_analytics
+integer,int4,study_create_harvest,study_analytics
+integer,int4,study_create_share,study_analytics
+integer,int4,study_create_upload,study_analytics
+integer,int4,study_delete,study_analytics
+integer,int4,study_download,study_analytics
+integer,int4,study_push,study_analytics
+integer,int4,study_report_view,study_analytics
+integer,int4,study_share_in,study_analytics
+integer,int4,study_share_out,study_analytics
+integer,int4,study_view,study_analytics
+timestamp with time zone,timestamptz,created,dictionary_entry
+integer,int4,created_by,dictionary_entry
+integer,int4,dictionary_id,dictionary_entry
+text,text,lookup,dictionary_entry
+character varying,varchar,md5,dictionary_entry
+text,text,replace,dictionary_entry
+timestamp with time zone,timestamptz,updated,dictionary_entry
+integer,int4,updated_by,dictionary_entry
+USER-DEFINED,citext,uuid,dictionary_entry
+integer,int4,id,dictionary_entry
+smallint,int2,regexp,dictionary_entry
+character varying,varchar,batch_no,destination_burn
+timestamp with time zone,timestamptz,created,destination_burn
+integer,int4,created_by,destination_burn
+integer,int4,destination_id,destination_burn
+USER-DEFINED,hstore,metrics,destination_burn
+integer,int4,node_id,destination_burn
+USER-DEFINED,citext,patientid,destination_burn
+timestamp with time zone,timestamptz,pickup,destination_burn
+"""char""",char,status,destination_burn
+USER-DEFINED,hstore,study_h,destination_burn
+timestamp with time zone,timestamptz,updated,destination_burn
+integer,int4,updated_by,destination_burn
+USER-DEFINED,citext,uuid,destination_burn
+integer,int4,id,destination_burn
+timestamp with time zone,timestamptz,created,study_share_rsna
+integer,int4,created_by,study_share_rsna
+character varying,varchar,exam_id,study_share_rsna
+character varying,varchar,pin,study_share_rsna
+character varying,varchar,reason,study_share_rsna
+"""char""",char,status,study_share_rsna
+integer,int4,study_id,study_share_rsna
+timestamp with time zone,timestamptz,updated,study_share_rsna
+integer,int4,updated_by,study_share_rsna
+USER-DEFINED,citext,uuid,study_share_rsna
+integer,int4,id,study_share_rsna
+integer,int4,account_id,customfield
+timestamp with time zone,timestamptz,created,customfield
+integer,int4,created_by,customfield
+character varying,varchar,dicom_tag,customfield
+integer,int4,id,customfield
+character varying,varchar,hl7_segment,customfield
+character varying,varchar,load_from_sr,customfield
+character varying,varchar,load_hl7,customfield
+character varying,varchar,load_hl7_filter,customfield
+USER-DEFINED,citext,name,customfield
+character varying,varchar,object,customfield
+text,text,options,customfield
+text,text,other_dicom_tags,customfield
+character varying,varchar,type,customfield
+timestamp with time zone,timestamptz,updated,customfield
+integer,int4,updated_by,customfield
+USER-DEFINED,citext,uuid,customfield
+smallint,int2,capture_on_share_code,customfield
+smallint,int2,dicom_tag_ignore_empty,customfield
+integer,int4,display_order,customfield
+smallint,int2,has_macro,customfield
+integer,int4,hl7_component,customfield
+integer,int4,hl7_field,customfield
+smallint,int2,load_dicom_tag,customfield
+smallint,int2,required,customfield
+smallint,int2,wrapped_dicom_only,customfield
+character varying,varchar,accession_number,ord
+integer,int4,account_id,ord
+timestamp with time zone,timestamptz,created,ord
+integer,int4,created_by,ord
+USER-DEFINED,hstore,customfields,ord
+character varying,varchar,order_number,ord
+USER-DEFINED,citext,patient_birth_date,ord
+USER-DEFINED,citext,patient_name,ord
+USER-DEFINED,citext,patient_sex,ord
+USER-DEFINED,citext,patientid,ord
+USER-DEFINED,citext,referring_physician,ord
+USER-DEFINED,citext,sending_facility,ord
+character varying,varchar,study_uid,ord
+timestamp with time zone,timestamptz,updated,ord
+integer,int4,updated_by,ord
+USER-DEFINED,citext,uuid,ord
+integer,int4,id,ord
+timestamp with time zone,timestamptz,created,rsync
+integer,int4,created_by,rsync
+USER-DEFINED,citext,name,rsync
+timestamp with time zone,timestamptz,updated,rsync
+integer,int4,updated_by,rsync
+USER-DEFINED,citext,uuid,rsync
+integer,int4,id,rsync
+smallint,int2,is_full,rsync
+integer,int4,account_id,customcode
+text,text,code,customcode
+timestamp with time zone,timestamptz,created,customcode
+integer,int4,created_by,customcode
+USER-DEFINED,citext,language,customcode
+USER-DEFINED,citext,name,customcode
+jsonb,jsonb,settings,customcode
+USER-DEFINED,citext,type,customcode
+timestamp with time zone,timestamptz,updated,customcode
+integer,int4,updated_by,customcode
+USER-DEFINED,citext,uuid,customcode
+text,text,zip,customcode
+integer,int4,id,customcode
+smallint,int2,has_zip,customcode
+integer,int4,account_id,audit
+character varying,varchar,action,audit
+timestamp with time zone,timestamptz,created,audit
+text,text,data,audit
+integer,int4,parent_id,audit
+character varying,varchar,pid,audit
+integer,int4,proxy_id,audit
+character varying,varchar,type,audit
+integer,int4,user_id,audit
+USER-DEFINED,citext,uuid,audit
+bigint,int8,id,audit
+timestamp with time zone,timestamptz,created,webhook_node
+integer,int4,created_by,webhook_node
+character varying,varchar,method,webhook_node
+integer,int4,node_id,webhook_node
+text,text,parameters,webhook_node
+timestamp with time zone,timestamptz,pickup,webhook_node
+"""char""",char,status,webhook_node
+timestamp with time zone,timestamptz,updated,webhook_node
+integer,int4,updated_by,webhook_node
+character varying,varchar,url,webhook_node
+USER-DEFINED,citext,uuid,webhook_node
+integer,int4,webhook_id,webhook_node
+integer,int4,id,webhook_node
+integer,int4,account_id,study_share_ai
+timestamp with time zone,timestamptz,created,study_share_ai
+integer,int4,created_by,study_share_ai
+integer,int4,from_account_id,study_share_ai
+integer,int4,from_study_id,study_share_ai
+integer,int4,study_id,study_share_ai
+timestamp with time zone,timestamptz,updated,study_share_ai
+integer,int4,updated_by,study_share_ai
+USER-DEFINED,citext,uuid,study_share_ai
+integer,int4,id,study_share_ai
+timestamp with time zone,timestamptz,created,study_status_lock
+integer,int4,created_by,study_status_lock
+integer,int4,study_id,study_status_lock
+timestamp with time zone,timestamptz,updated,study_status_lock
+integer,int4,updated_by,study_status_lock
+integer,int4,user_id,study_status_lock
+USER-DEFINED,citext,uuid,study_status_lock
+integer,int4,id,study_status_lock
+timestamp with time zone,timestamptz,created,study_phi
+integer,int4,created_by,study_phi
+USER-DEFINED,hstore,customfields,study_phi
+text,text,extended,study_phi
+integer,int4,study_id,study_phi
+timestamp with time zone,timestamptz,updated,study_phi
+integer,int4,updated_by,study_phi
+USER-DEFINED,citext,uuid,study_phi
+integer,int4,id,study_phi
+timestamp with time zone,timestamptz,created,help
+integer,int4,created_by,help
+character varying,varchar,key,help
+text,text,text,help
+timestamp with time zone,timestamptz,updated,help
+integer,int4,updated_by,help
+USER-DEFINED,citext,uuid,help
+integer,int4,id,help
+integer,int4,account_id,link_charge
+integer,int4,charge_amount,link_charge
+timestamp with time zone,timestamptz,created,link_charge
+integer,int4,created_by,link_charge
+integer,int4,link_id,link_charge
+text,text,processor,link_charge
+timestamp with time zone,timestamptz,updated,link_charge
+integer,int4,updated_by,link_charge
+USER-DEFINED,citext,uuid,link_charge
+integer,int4,id,link_charge
+timestamp with time zone,timestamptz,created,keyimage
+integer,int4,created_by,keyimage
+character varying,varchar,frame_number,keyimage
+character varying,varchar,instance_uid,keyimage
+character varying,varchar,series_uid,keyimage
+integer,int4,study_id,keyimage
+timestamp with time zone,timestamptz,updated,keyimage
+integer,int4,updated_by,keyimage
+integer,int4,user_id,keyimage
+USER-DEFINED,citext,uuid,keyimage
+character varying,varchar,version,keyimage
+integer,int4,id,keyimage
+timestamp with time zone,timestamptz,created,npi_invite_share
+integer,int4,created_by,npi_invite_share
+text,text,message,npi_invite_share
+USER-DEFINED,citext,npi,npi_invite_share
+integer,int4,study_id,npi_invite_share
+timestamp with time zone,timestamptz,updated,npi_invite_share
+integer,int4,updated_by,npi_invite_share
+integer,int4,user_id,npi_invite_share
+USER-DEFINED,citext,uuid,npi_invite_share
+integer,int4,id,npi_invite_share
+smallint,int2,done,npi_invite_share
+integer,int4,account_id,account_md5_counter
+timestamp with time zone,timestamptz,created,account_md5_counter
+integer,int4,created_by,account_md5_counter
+character varying,varchar,md5,account_md5_counter
+integer,int4,id,account_md5_counter
+integer,int4,counter,account_md5_counter
+timestamp with time zone,timestamptz,created,study_timing
+integer,int4,created_by,study_timing
+character varying,varchar,event,study_timing
+integer,int4,node_id,study_timing
+bigint,int8,size,study_timing
+integer,int4,storage_namespace,study_timing
+character varying,varchar,study_uid,study_timing
+integer,int4,id,study_timing
+USER-DEFINED,citext,attachment_guid,study_attachment
+timestamp with time zone,timestamptz,created,study_attachment
+integer,int4,created_by,study_attachment
+integer,int4,storage_namespace,study_attachment
+character varying,varchar,study_uid,study_attachment
+timestamp with time zone,timestamptz,updated,study_attachment
+integer,int4,updated_by,study_attachment
+integer,int4,user_id,study_attachment
+USER-DEFINED,citext,uuid,study_attachment
+integer,int4,id,study_attachment
+USER-DEFINED,hstore,accession_number_h,hl7
+integer,int4,account_id,hl7
+timestamp with time zone,timestamptz,created,hl7
+integer,int4,created_by,hl7
+character varying,varchar,md5,hl7
+text,text,message,hl7
+integer,int4,node_id,hl7
+USER-DEFINED,citext,patient_name,hl7
+character varying,varchar,patientid,hl7
+character varying,varchar,type,hl7
+timestamp with time zone,timestamptz,updated,hl7
+integer,int4,updated_by,hl7
+USER-DEFINED,citext,uuid,hl7
+integer,int4,id,hl7
+integer,int4,account_id,account_saml_role
+timestamp with time zone,timestamptz,created,account_saml_role
+integer,int4,created_by,account_saml_role
+integer,int4,namespace_id,account_saml_role
+integer,int4,role_id,account_saml_role
+USER-DEFINED,citext,saml_role,account_saml_role
+timestamp with time zone,timestamptz,updated,account_saml_role
+integer,int4,updated_by,account_saml_role
+integer,int4,id,account_saml_role
+smallint,int2,event_approve,account_saml_role
+smallint,int2,event_harvest,account_saml_role
+smallint,int2,event_link,account_saml_role
+smallint,int2,event_link_mine,account_saml_role
+smallint,int2,event_message,account_saml_role
+smallint,int2,event_new_report,account_saml_role
+smallint,int2,event_node,account_saml_role
+smallint,int2,event_share,account_saml_role
+smallint,int2,event_status_change,account_saml_role
+smallint,int2,event_study_comment,account_saml_role
+smallint,int2,event_thin_study_fail,account_saml_role
+smallint,int2,event_thin_study_success,account_saml_role
+smallint,int2,event_upload,account_saml_role
+smallint,int2,event_upload_fail,account_saml_role
+integer,int4,sequence,account_saml_role
+timestamp with time zone,timestamptz,created,analytics
+integer,int4,created_by,analytics
+bigint,int8,last_id,analytics
+timestamp with time zone,timestamptz,updated,analytics
+integer,int4,updated_by,analytics
+integer,int4,id,analytics
+timestamp with time zone,timestamptz,created,activity
+integer,int4,created_by,activity
+text,text,message,activity
+integer,int4,namespace_id,activity
+integer,int4,study_id,activity
+character varying,varchar,type,activity
+timestamp with time zone,timestamptz,updated,activity
+integer,int4,updated_by,activity
+integer,int4,user_id,activity
+USER-DEFINED,citext,uuid,activity
+integer,int4,id,activity
+timestamp with time zone,timestamptz,created,user_group
+integer,int4,created_by,user_group
+integer,int4,group_id,user_group
+integer,int4,role_id,user_group
+timestamp with time zone,timestamptz,updated,user_group
+integer,int4,updated_by,user_group
+integer,int4,user_id,user_group
+USER-DEFINED,citext,uuid,user_group
+integer,int4,id,user_group
+smallint,int2,event_approve,user_group
+smallint,int2,event_harvest,user_group
+smallint,int2,event_link,user_group
+smallint,int2,event_link_mine,user_group
+smallint,int2,event_message,user_group
+smallint,int2,event_new_report,user_group
+smallint,int2,event_node,user_group
+smallint,int2,event_share,user_group
+smallint,int2,event_status_change,user_group
+smallint,int2,event_study_comment,user_group
+smallint,int2,event_thin_study_fail,user_group
+smallint,int2,event_thin_study_success,user_group
+smallint,int2,event_upload,user_group
+smallint,int2,event_upload_fail,user_group
+smallint,int2,no_physician_alias_share,user_group
+timestamp with time zone,timestamptz,created,webhook_once
+integer,int4,created_by,webhook_once
+integer,int4,study_id,webhook_once
+timestamp with time zone,timestamptz,updated,webhook_once
+integer,int4,updated_by,webhook_once
+USER-DEFINED,citext,uuid,webhook_once
+integer,int4,webhook_id,webhook_once
+integer,int4,id,webhook_once
+integer,int4,account_id,patient
+USER-DEFINED,citext,alt_email,patient
+USER-DEFINED,citext,alt_mobile_phone,patient
+USER-DEFINED,citext,birth_date,patient
+timestamp with time zone,timestamptz,created,patient
+integer,int4,created_by,patient
+USER-DEFINED,hstore,customfields,patient
+USER-DEFINED,citext,email,patient
+USER-DEFINED,citext,first,patient
+USER-DEFINED,citext,last,patient
+timestamp with time zone,timestamptz,last_event,patient
+USER-DEFINED,citext,mobile_phone,patient
+USER-DEFINED,citext,mrn,patient
+USER-DEFINED,citext,name,patient
+USER-DEFINED,citext,sex,patient
+timestamp with time zone,timestamptz,updated,patient
+integer,int4,updated_by,patient
+integer,int4,user_id,patient
+USER-DEFINED,citext,uuid,patient
+integer,int4,id,patient
+smallint,int2,event_share,patient
+character varying,varchar,accession_number,node_progress
+timestamp with time zone,timestamptz,created,node_progress
+integer,int4,created_by,node_progress
+integer,int4,destination_id,node_progress
+text,text,detail,node_progress
+integer,int4,node_id,node_progress
+USER-DEFINED,citext,patientid,node_progress
+character varying,varchar,queue,node_progress
+USER-DEFINED,citext,state,node_progress
+character varying,varchar,study_uid,node_progress
+USER-DEFINED,citext,uuid,node_progress
+integer,int4,id,node_progress
+timestamp with time zone,timestamptz,created,study_push
+integer,int4,created_by,study_push
+integer,int4,destination_id,study_push
+text,text,detail,study_push
+integer,int4,node_id,study_push
+timestamp with time zone,timestamptz,pickup,study_push
+"""char""",char,status,study_push
+integer,int4,study_id,study_push
+timestamp with time zone,timestamptz,updated,study_push
+integer,int4,updated_by,study_push
+USER-DEFINED,citext,uuid,study_push
+integer,int4,id,study_push
+integer,int4,image_count,study_push
+integer,int4,pending,study_push
+integer,int4,archive_study_id,archive_study_aws
+character varying,varchar,aws_archive,archive_study_aws
+character varying,varchar,aws_checksum,archive_study_aws
+bigint,int8,aws_size,archive_study_aws
+timestamp with time zone,timestamptz,created,archive_study_aws
+integer,int4,created_by,archive_study_aws
+character varying,varchar,datum_signature,archive_study_aws
+character varying,varchar,job_id,archive_study_aws
+character varying,varchar,phi_signature,archive_study_aws
+character varying,varchar,state,archive_study_aws
+character varying,varchar,type,archive_study_aws
+timestamp with time zone,timestamptz,updated,archive_study_aws
+integer,int4,updated_by,archive_study_aws
+USER-DEFINED,citext,uuid,archive_study_aws
+integer,int4,id,archive_study_aws
+character varying,varchar,ai_password,system
+character varying,varchar,ai_username,system
+USER-DEFINED,hstore,archive,system
+character varying,varchar,athena_pk,system
+character varying,varchar,athena_sk,system
+character varying,varchar,aws_pk,system
+character varying,varchar,aws_region,system
+character varying,varchar,aws_sk,system
+character varying,varchar,captcha_pk,system
+character varying,varchar,captcha_sk,system
+timestamp with time zone,timestamptz,created,system
+integer,int4,created_by,system
+character varying,varchar,drchrono_client_id,system
+character varying,varchar,drchrono_client_secret,system
+character varying,varchar,drchrono_redirect_uri,system
+character varying,varchar,email_from,system
+character varying,varchar,email_from_name,system
+character varying,varchar,google_client_id,system
+character varying,varchar,google_client_secret,system
+text,text,google_service_account,system
+text,text,indicator_html,system
+character varying,varchar,indicator_md5,system
+character varying,varchar,passwdqc,system
+character varying,varchar,passwdqc_description,system
+text,text,phr_permissions,system
+text,text,privacy_html,system
+character varying,varchar,privacy_md5,system
+character varying,varchar,rsna_xds,system
+character varying,varchar,stripe_ca,system
+character varying,varchar,stripe_pk,system
+character varying,varchar,stripe_sk,system
+character varying,varchar,stripe_uri,system
+text,text,terms_html,system
+character varying,varchar,terms_md5,system
+character varying,varchar,twilio_from,system
+character varying,varchar,twilio_pk,system
+character varying,varchar,twilio_sk,system
+timestamp with time zone,timestamptz,updated,system
+integer,int4,updated_by,system
+USER-DEFINED,hstore,user_settings,system
+character varying,varchar,watchdog_host,system
+character varying,varchar,websocket_domain,system
+integer,int4,id,system
+smallint,int2,cache,system
+integer,int4,database_version,system
+smallint,int2,email_validation,system
+smallint,int2,enhanced_security,system
+smallint,int2,global_purge,system
+smallint,int2,hide_help_tool,system
+integer,int4,log_days,system
+integer,int4,account_id,hl7_transform
+text,text,conditions,hl7_transform
+timestamp with time zone,timestamptz,created,hl7_transform
+integer,int4,created_by,hl7_transform
+USER-DEFINED,citext,name,hl7_transform
+text,text,replacements,hl7_transform
+timestamp with time zone,timestamptz,updated,hl7_transform
+integer,int4,updated_by,hl7_transform
+USER-DEFINED,citext,uuid,hl7_transform
+integer,int4,id,hl7_transform
+integer,int4,order_by,hl7_transform
+integer,int4,account_id,account_can_share
+integer,int4,by_account_id,account_can_share
+integer,int4,by_group_id,account_can_share
+integer,int4,by_location_id,account_can_share
+integer,int4,by_user_id,account_can_share
+timestamp with time zone,timestamptz,created,account_can_share
+integer,int4,created_by,account_can_share
+timestamp with time zone,timestamptz,updated,account_can_share
+integer,int4,updated_by,account_can_share
+integer,int4,with_account_id,account_can_share
+integer,int4,with_group_id,account_can_share
+integer,int4,with_location_id,account_can_share
+integer,int4,with_user_id,account_can_share
+integer,int4,id,account_can_share
+timestamp with time zone,timestamptz,created,node_event
+integer,int4,created_by,node_event
+integer,int4,destination_id,node_event
+character varying,varchar,event,node_event
+integer,int4,node_id,node_event
+timestamp with time zone,timestamptz,updated,node_event
+integer,int4,updated_by,node_event
+USER-DEFINED,citext,uuid,node_event
+integer,int4,id,node_event
+integer,int4,count,node_event
+timestamp with time zone,timestamptz,created,order_sps
+integer,int4,created_by,order_sps
+USER-DEFINED,citext,modality,order_sps
+character varying,varchar,mpps_status,order_sps
+character varying,varchar,mpps_uid,order_sps
+integer,int4,order_id,order_sps
+USER-DEFINED,citext,requested_procedure_description,order_sps
+USER-DEFINED,citext,requested_procedure_id,order_sps
+USER-DEFINED,citext,scheduled_procedure_step_description,order_sps
+USER-DEFINED,citext,scheduled_procedure_step_id,order_sps
+USER-DEFINED,citext,scheduled_procedure_step_start_date,order_sps
+USER-DEFINED,citext,scheduled_procedure_step_start_time,order_sps
+USER-DEFINED,citext,scheduled_station_aetitle,order_sps
+timestamp with time zone,timestamptz,updated,order_sps
+integer,int4,updated_by,order_sps
+USER-DEFINED,citext,uuid,order_sps
+integer,int4,id,order_sps
+timestamp with time zone,timestamptz,created,dicomdata
+integer,int4,created_by,dicomdata
+USER-DEFINED,hstore,customfields,dicomdata
+USER-DEFINED,hstore,dicom_tags,dicomdata
+character varying,varchar,instance_uid,dicomdata
+integer,int4,phi_namespace,dicomdata
+character varying,varchar,series_uid,dicomdata
+integer,int4,storage_namespace,dicomdata
+integer,int4,study_id,dicomdata
+character varying,varchar,study_uid,dicomdata
+timestamp with time zone,timestamptz,updated,dicomdata
+integer,int4,updated_by,dicomdata
+USER-DEFINED,citext,uuid,dicomdata
+integer,int4,id,dicomdata
+integer,int4,archive_cluster_id,cluster
+integer,int4,backup_cluster_id,cluster
+timestamp with time zone,timestamptz,created,cluster
+integer,int4,created_by,cluster
+USER-DEFINED,citext,name,cluster
+timestamp with time zone,timestamptz,updated,cluster
+integer,int4,updated_by,cluster
+USER-DEFINED,citext,uuid,cluster
+integer,int4,id,cluster
+smallint,int2,archive,cluster
+integer,int4,copies,cluster
+smallint,int2,is_default,cluster
+integer,int4,max_days,cluster
+smallint,int2,rsync,cluster
+timestamp with time zone,timestamptz,created,meeting_user
+integer,int4,created_by,meeting_user
+integer,int4,meeting_id,meeting_user
+timestamp with time zone,timestamptz,updated,meeting_user
+integer,int4,updated_by,meeting_user
+integer,int4,user_id,meeting_user
+USER-DEFINED,citext,uuid,meeting_user
+integer,int4,id,meeting_user
+integer,int4,account_id,mail_template
+character varying,varchar,bcc,mail_template
+character varying,varchar,cc,mail_template
+timestamp with time zone,timestamptz,created,mail_template
+integer,int4,created_by,mail_template
+character varying,varchar,filter_field,mail_template
+character varying,varchar,filter_regexp,mail_template
+character varying,varchar,from_email_address,mail_template
+character varying,varchar,from_email_name,mail_template
+text,text,html,mail_template
+integer,int4,namespace_id,mail_template
+character varying,varchar,reply_to_email_address,mail_template
+text,text,sms,mail_template
+text,text,txt,mail_template
+character varying,varchar,type,mail_template
+timestamp with time zone,timestamptz,updated,mail_template
+integer,int4,updated_by,mail_template
+USER-DEFINED,citext,uuid,mail_template
+character varying,varchar,vanity,mail_template
+integer,int4,id,mail_template
+integer,int4,delay,mail_template
+text,text,access_token,account
+USER-DEFINED,hstore,billing,account
+timestamp with time zone,timestamptz,created,account
+integer,int4,created_by,account
+text,text,css,account
+USER-DEFINED,hstore,customfields,account
+text,text,fair_warning,account
+USER-DEFINED,citext,name,account
+integer,int4,namespace_id,account
+integer,int4,role_id,account
+USER-DEFINED,hstore,saml,account
+USER-DEFINED,hstore,settings,account
+timestamp with time zone,timestamptz,updated,account
+integer,int4,updated_by,account
+USER-DEFINED,citext,uuid,account
+USER-DEFINED,hstore,vanity_h,account
+USER-DEFINED,citext,vendor,account
+integer,int4,id,account
+smallint,int2,can_request,account
+integer,int4,password_expire,account
+integer,int4,session_expire,account
+text,text,body,message
+timestamp with time zone,timestamptz,created,message
+integer,int4,created_by,message
+integer,int4,namespace_id,message
+USER-DEFINED,citext,subject,message
+timestamp with time zone,timestamptz,updated,message
+integer,int4,updated_by,message
+integer,int4,user_id,message
+USER-DEFINED,citext,uuid,message
+integer,int4,id,message
+integer,int4,account_id,training_account
+timestamp with time zone,timestamptz,created,training_account
+integer,int4,created_by,training_account
+text,text,form_description,training_account
+character varying,varchar,form_number,training_account
+text,text,group_description,training_account
+timestamp with time zone,timestamptz,updated,training_account
+integer,int4,updated_by,training_account
+USER-DEFINED,citext,uuid,training_account
+integer,int4,id,training_account
+integer,int4,group_number,training_account
+integer,int4,account_id,cases
+timestamp with time zone,timestamptz,assigned_admin_date,cases
+integer,int4,assigned_admin_id,cases
+timestamp with time zone,timestamptz,assigned_medical_date,cases
+integer,int4,assigned_medical_id,cases
+USER-DEFINED,citext,case_status,cases
+timestamp with time zone,timestamptz,case_status_date,cases
+timestamp with time zone,timestamptz,closed_date,cases
+timestamp with time zone,timestamptz,completed_date,cases
+timestamp with time zone,timestamptz,created,cases
+integer,int4,created_by,cases
+USER-DEFINED,hstore,customfields,cases
+USER-DEFINED,citext,name,cases
+integer,int4,namespace_id,cases
+timestamp with time zone,timestamptz,returned_date,cases
+text,text,returned_reason,cases
+integer,int4,study_charge_id,cases
+timestamp with time zone,timestamptz,submitted_date,cases
+timestamp with time zone,timestamptz,updated,cases
+integer,int4,updated_by,cases
+integer,int4,user_id,cases
+USER-DEFINED,citext,uuid,cases
+integer,int4,id,cases
+smallint,int2,closed,cases
+smallint,int2,completed,cases
+smallint,int2,submitted,cases
+integer,int4,account_id,customcode_deploy
+timestamp with time zone,timestamptz,created,customcode_deploy
+integer,int4,created_by,customcode_deploy
+integer,int4,customcode_id,customcode_deploy
+integer,int4,namespace_id,customcode_deploy
+timestamp with time zone,timestamptz,updated,customcode_deploy
+integer,int4,updated_by,customcode_deploy
+USER-DEFINED,citext,uuid,customcode_deploy
+integer,int4,id,customcode_deploy
+timestamp with time zone,timestamptz,created,training_user
+integer,int4,created_by,training_user
+character varying,varchar,form_number,training_user
+USER-DEFINED,hstore,results,training_user
+timestamp with time zone,timestamptz,updated,training_user
+integer,int4,updated_by,training_user
+integer,int4,user_id,training_user
+integer,int4,id,training_user
+USER-DEFINED,citext,uuid,training_user
+integer,int4,account_id,study_share
+timestamp with time zone,timestamptz,created,study_share
+integer,int4,created_by,study_share
+integer,int4,group_id,study_share
+integer,int4,location_id,study_share
+text,text,message,study_share
+integer,int4,new_study_id,study_share
+integer,int4,study_id,study_share
+timestamp with time zone,timestamptz,updated,study_share
+integer,int4,updated_by,study_share
+integer,int4,user_id,study_share
+integer,int4,id,study_share
+text,text,access_token,us
+smallint,int2,blocked,us
+timestamp with time zone,timestamptz,created,us
+integer,int4,created_by,us
+smallint,int2,disabled,us
+USER-DEFINED,citext,email,us
+USER-DEFINED,citext,first,us
+character varying,varchar,indicator_md5,us
+USER-DEFINED,citext,last,us
+timestamp with time zone,timestamptz,last_login,us
+character varying,varchar,mobile_phone,us
+integer,int4,namespace_id,us
+USER-DEFINED,citext,npi,us
+USER-DEFINED,citext,oauth,us
+character varying,varchar,password,us
+character varying,varchar,privacy_md5,us
+character varying,varchar,refresh_token,us
+text,text,signature,us
+character varying,varchar,terms_md5,us
+character varying,varchar,time_zone,us
+character varying,varchar,token,us
+timestamp with time zone,timestamptz,updated,us
+integer,int4,updated_by,us
+USER-DEFINED,citext,uuid,us
+integer,int4,id,us
+smallint,int2,billing,us
+smallint,int2,email_validation,us
+smallint,int2,event_approve,us
+smallint,int2,event_harvest,us
+smallint,int2,event_link,us
+smallint,int2,event_link_mine,us
+smallint,int2,event_message,us
+smallint,int2,event_new_report,us
+smallint,int2,event_share,us
+smallint,int2,event_status_change,us
+smallint,int2,event_study_comment,us
+smallint,int2,event_thin_study_fail,us
+smallint,int2,event_thin_study_success,us
+smallint,int2,event_upload,us
+smallint,int2,event_upload_fail,us
+smallint,int2,pin_required,us
+smallint,int2,support,us
+smallint,int2,sysadmin,us
+integer,int4,account_id,route
+text,text,actions,route
+text,text,conditions,route
+timestamp with time zone,timestamptz,created,route
+integer,int4,created_by,route
+USER-DEFINED,hstore,manual_roles,route
+USER-DEFINED,citext,name,route
+integer,int4,namespace_id,route
+text,text,options,route
+USER-DEFINED,hstore,other_namespaces,route
+text,text,schedule,route
+timestamp with time zone,timestamptz,updated,route
+integer,int4,updated_by,route
+USER-DEFINED,citext,uuid,route
+integer,int4,id,route
+integer,int4,delay,route
+smallint,int2,delay_till_schedule,route
+smallint,int2,no_re_run,route
+smallint,int2,on_harvest,route
+smallint,int2,on_manual_route,route
+smallint,int2,on_share,route
+smallint,int2,on_thin,route
+smallint,int2,on_upload,route
+smallint,int2,suspended,route
+integer,int4,accelerator_id,node
+integer,int4,account_id,node
+USER-DEFINED,citext,category,node
+USER-DEFINED,hstore,configuration_h,node
+timestamp with time zone,timestamptz,created,node
+integer,int4,created_by,node
+USER-DEFINED,citext,ctc_bucket,node
+USER-DEFINED,citext,facility_contact,node
+USER-DEFINED,citext,facility_contact_title,node
+USER-DEFINED,citext,facility_email,node
+USER-DEFINED,citext,facility_name,node
+text,text,facility_notes,node
+USER-DEFINED,citext,facility_state,node
+USER-DEFINED,citext,facility_zip,node
+smallint,int2,is_public,node
+character varying,varchar,monitor_email,node
+USER-DEFINED,citext,name,node
+integer,int4,namespace_id,node
+USER-DEFINED,citext,serial_no,node
+USER-DEFINED,hstore,settings,node
+character varying,varchar,type,node
+timestamp with time zone,timestamptz,updated,node
+integer,int4,updated_by,node
+integer,int4,user_id,node
+USER-DEFINED,citext,uuid,node
+integer,int4,id,node
+smallint,int2,monitor_node_last_send,node
+integer,int4,monitor_node_last_send_threshold,node
+smallint,int2,monitor_node_ping,node
+smallint,int2,monitor_node_slow_push,node
+integer,int4,monitor_node_slow_push_threshold,node
+smallint,int2,monitor_study_create,node
+integer,int4,monitor_study_create_threshold,node
+smallint,int2,reload_configuration,node
+integer,int4,cluster_id,engine
+timestamp with time zone,timestamptz,created,engine
+integer,int4,created_by,engine
+USER-DEFINED,citext,fqdn,engine
+text,text,host_map,engine
+USER-DEFINED,citext,idle_storage_host,engine
+USER-DEFINED,citext,magic_sid,engine
+USER-DEFINED,citext,services_url,engine
+timestamp with time zone,timestamptz,updated,engine
+integer,int4,updated_by,engine
+USER-DEFINED,citext,uuid,engine
+integer,int4,id,engine
+smallint,int2,is_full,engine
+smallint,int2,is_offline,engine
+integer,int4,max_pull_jobs,engine
+integer,int4,max_push_jobs,engine
+smallint,int2,no_phi,engine
+smallint,int2,no_purge,engine
+timestamp with time zone,timestamptz,created,tag
+integer,int4,created_by,tag
+character varying,varchar,object,tag
+USER-DEFINED,citext,tag,tag
+timestamp with time zone,timestamptz,updated,tag
+integer,int4,updated_by,tag
+integer,int4,user_id,tag
+USER-DEFINED,citext,uuid,tag
+integer,int4,id,tag
+smallint,int2,acceptance_required,link
+integer,int4,account_id,link
+character varying,varchar,action,link
+text,text,anonymize,link
+integer,int4,charge_amount,link
+character varying,varchar,charge_currency,link
+character varying,varchar,charge_description,link
+timestamp with time zone,timestamptz,created,link
+integer,int4,created_by,link
+character varying,varchar,email,link
+text,text,filter,link
+text,text,message,link
+integer,int4,namespace_id,link
+character varying,varchar,notify,link
+text,text,parameters,link
+character varying,varchar,password,link
+character varying,varchar,referer,link
+USER-DEFINED,citext,share_code,link
+integer,int4,study_id,link
+timestamp with time zone,timestamptz,updated,link
+integer,int4,updated_by,link
+text,text,upload_match,link
+integer,int4,user_id,link
+USER-DEFINED,citext,uuid,link
+integer,int4,id,link
+smallint,int2,include_priors,link
+integer,int4,max_hits,link
+integer,int4,minutes_alive,link
+smallint,int2,password_is_dob,link
+integer,int4,password_max_attempts,link
+smallint,int2,pin_auth,link
+smallint,int2,prompt_for_anonymize,link
+smallint,int2,share_on_view,link
+smallint,int2,skip_email_prompt,link
+smallint,int2,use_share_code,link
+integer,int4,case_id,case_study
+timestamp with time zone,timestamptz,created,case_study
+integer,int4,created_by,case_study
+integer,int4,storage_namespace,case_study
+character varying,varchar,study_uid,case_study
+timestamp with time zone,timestamptz,updated,case_study
+integer,int4,updated_by,case_study
+USER-DEFINED,citext,uuid,case_study
+integer,int4,id,case_study
+integer,int4,account_id,validate
+text,text,conditions,validate
+timestamp with time zone,timestamptz,created,validate
+integer,int4,created_by,validate
+USER-DEFINED,citext,name,validate
+timestamp with time zone,timestamptz,updated,validate
+integer,int4,updated_by,validate
+USER-DEFINED,citext,uuid,validate
+integer,int4,id,validate
+integer,int4,brand_id,brand_vanity
+timestamp with time zone,timestamptz,created,brand_vanity
+integer,int4,created_by,brand_vanity
+timestamp with time zone,timestamptz,updated,brand_vanity
+integer,int4,updated_by,brand_vanity
+USER-DEFINED,citext,uuid,brand_vanity
+USER-DEFINED,citext,vanity,brand_vanity
+integer,int4,id,brand_vanity
+timestamp with time zone,timestamptz,created,box_file
+integer,int4,created_by,box_file
+character varying,varchar,sha1,box_file
+integer,int4,storage_namespace,box_file
+character varying,varchar,study_uid,box_file
+timestamp with time zone,timestamptz,updated,box_file
+integer,int4,updated_by,box_file
+integer,int4,user_id,box_file
+USER-DEFINED,citext,uuid,box_file
+integer,int4,id,box_file
+smallint,int2,not_dicom,box_file
+integer,int4,account_id,filter
+text,text,configuration,filter
+timestamp with time zone,timestamptz,created,filter
+integer,int4,created_by,filter
+USER-DEFINED,citext,name,filter
+character varying,varchar,type,filter
+integer,int4,id,filter
+timestamp with time zone,timestamptz,updated,filter
+integer,int4,updated_by,filter
+integer,int4,user_id,filter
+USER-DEFINED,citext,uuid,filter
+integer,int4,case_id,case_status_lock
+timestamp with time zone,timestamptz,created,case_status_lock
+integer,int4,created_by,case_status_lock
+timestamp with time zone,timestamptz,updated,case_status_lock
+integer,int4,updated_by,case_status_lock
+integer,int4,user_id,case_status_lock
+USER-DEFINED,citext,uuid,case_status_lock
+integer,int4,id,case_status_lock
+text,text,anonymous_permissions,brand
+text,text,cd_multi,brand
+text,text,cd_single,brand
+text,text,cd_viewer_settings,brand
+integer,int4,cluster_id,brand
+timestamp with time zone,timestamptz,created,brand
+integer,int4,created_by,brand
+text,text,css,brand
+text,text,image_1,brand
+text,text,image_2,brand
+text,text,image_3,brand
+text,text,less,brand
+USER-DEFINED,citext,name,brand
+text,text,oauth,brand
+text,text,phr_default_events,brand
+text,text,phr_permissions,brand
+text,text,safari_instruction_1,brand
+text,text,safari_instruction_2,brand
+text,text,safari_instruction_3,brand
+text,text,safari_instruction_4,brand
+text,text,safari_instruction_5,brand
+USER-DEFINED,hstore,saml,brand
+character varying,varchar,saml_redirect_url,brand
+USER-DEFINED,hstore,settings,brand
+text,text,ssi_js,brand
+text,text,support_html,brand
+text,text,ui_json,brand
+timestamp with time zone,timestamptz,updated,brand
+integer,int4,updated_by,brand
+text,text,uploader_icon,brand
+text,text,uploader_logo,brand
+USER-DEFINED,citext,uuid,brand
+integer,int4,id,brand
+integer,int4,session_expire,brand
+integer,int4,account_id,billing_summary
+character varying,varchar,account_name,billing_summary
+character varying,varchar,account_uuid,billing_summary
+double precision,float8,admin_fee,billing_summary
+double precision,float8,annual_volume_floor_count,billing_summary
+double precision,float8,bucket_charges,billing_summary
+timestamp with time zone,timestamptz,created,billing_summary
+integer,int4,created_by,billing_summary
+double precision,float8,flat_rate,billing_summary
+character varying,varchar,month,billing_summary
+double precision,float8,monthly_volume_floor_count,billing_summary
+double precision,float8,mtd_studies,billing_summary
+double precision,float8,per_study_price,billing_summary
+double precision,float8,size,billing_summary
+double precision,float8,size_past,billing_summary
+double precision,float8,size_price,billing_summary
+double precision,float8,size_price_past,billing_summary
+double precision,float8,storage_overage,billing_summary
+double precision,float8,storage_price,billing_summary
+double precision,float8,total,billing_summary
+double precision,float8,total_storage_size,billing_summary
+timestamp with time zone,timestamptz,updated,billing_summary
+integer,int4,updated_by,billing_summary
+USER-DEFINED,citext,uuid,billing_summary
+double precision,float8,ytd_studies,billing_summary
+integer,int4,id,billing_summary
+integer,int4,account_id,dictionary_attach
+timestamp with time zone,timestamptz,created,dictionary_attach
+integer,int4,created_by,dictionary_attach
+integer,int4,dictionary_id,dictionary_attach
+integer,int4,namespace_id,dictionary_attach
+timestamp with time zone,timestamptz,updated,dictionary_attach
+integer,int4,updated_by,dictionary_attach
+USER-DEFINED,citext,uuid,dictionary_attach
+integer,int4,id,dictionary_attach
+smallint,int2,add_if_no_match,dictionary_attach
+smallint,int2,approve_if_match,dictionary_attach
+integer,int4,sequence,dictionary_attach
+smallint,int2,skip_if_lookup_unchanged,dictionary_attach
+smallint,int2,skip_if_replace_has_value,dictionary_attach
+integer,int4,cluster_id,cluster_namespace
+timestamp with time zone,timestamptz,created,cluster_namespace
+integer,int4,created_by,cluster_namespace
+integer,int4,namespace_id,cluster_namespace
+timestamp with time zone,timestamptz,updated,cluster_namespace
+integer,int4,updated_by,cluster_namespace
+USER-DEFINED,citext,uuid,cluster_namespace
+integer,int4,id,cluster_namespace
+timestamp with time zone,timestamptz,created,database_scripts
+integer,int4,created_by,database_scripts
+character varying,varchar,name,database_scripts
+timestamp with time zone,timestamptz,updated,database_scripts
+integer,int4,updated_by,database_scripts
+integer,int4,id,database_scripts
+text,text,attachment,radreport
+timestamp with time zone,timestamptz,created,radreport
+integer,int4,created_by,radreport
+text,text,fields,radreport
+integer,int4,study_id,radreport
+character varying,varchar,type,radreport
+integer,int4,id,radreport
+timestamp with time zone,timestamptz,updated,radreport
+integer,int4,updated_by,radreport
+integer,int4,user_id,radreport
+USER-DEFINED,citext,uuid,radreport
+integer,int4,brand_id,brand_namespace
+timestamp with time zone,timestamptz,created,brand_namespace
+integer,int4,created_by,brand_namespace
+USER-DEFINED,citext,namespace_id,brand_namespace
+timestamp with time zone,timestamptz,updated,brand_namespace
+integer,int4,updated_by,brand_namespace
+USER-DEFINED,citext,uuid,brand_namespace
+integer,int4,id,brand_namespace
+USER-DEFINED,citext,accession_number,hl7_accession
+integer,int4,account_id,hl7_accession
+timestamp with time zone,timestamptz,created,hl7_accession
+integer,int4,hl7_id,hl7_accession
+integer,int4,study_id,hl7_accession
+character varying,varchar,type,hl7_accession
+integer,int4,id,hl7_accession
+integer,int4,account_id,template_assign
+timestamp with time zone,timestamptz,created,template_assign
+integer,int4,created_by,template_assign
+character varying,varchar,name,template_assign
+timestamp with time zone,timestamptz,updated,template_assign
+integer,int4,updated_by,template_assign
+USER-DEFINED,citext,uuid,template_assign
+character varying,varchar,version,template_assign
+integer,int4,id,template_assign
+integer,int4,account_id,radreport_analytics
+date,date,day,radreport_analytics
+integer,int4,namespace_id,radreport_analytics
+integer,int4,user_id,radreport_analytics
+integer,int4,id,radreport_analytics
+integer,int4,radreport_create,radreport_analytics
+integer,int4,radreport_delete,radreport_analytics
+integer,int4,radreport_report_generated,radreport_analytics
+integer,int4,radreport_signed,radreport_analytics
+text,text,ack,study_hl7
+timestamp with time zone,timestamptz,created,study_hl7
+integer,int4,created_by,study_hl7
+integer,int4,destination_id,study_hl7
+integer,int4,hl7_id,study_hl7
+integer,int4,hl7_template_hl7_id,study_hl7
+integer,int4,hl7_template_id,study_hl7
+integer,int4,node_id,study_hl7
+timestamp with time zone,timestamptz,pickup,study_hl7
+"""char""",char,status,study_hl7
+integer,int4,study_id,study_hl7
+timestamp with time zone,timestamptz,updated,study_hl7
+integer,int4,updated_by,study_hl7
+USER-DEFINED,citext,uuid,study_hl7
+integer,int4,id,study_hl7
+integer,int4,account_id,radreportmacro
+text,text,body,radreportmacro
+timestamp with time zone,timestamptz,created,radreportmacro
+integer,int4,created_by,radreportmacro
+character varying,varchar,hotkey,radreportmacro
+character varying,varchar,modality,radreportmacro
+character varying,varchar,name,radreportmacro
+character varying,varchar,type,radreportmacro
+timestamp with time zone,timestamptz,updated,radreportmacro
+integer,int4,updated_by,radreportmacro
+integer,int4,user_id,radreportmacro
+USER-DEFINED,citext,uuid,radreportmacro
+integer,int4,id,radreportmacro
+integer,int4,phi_namespace,study_not_ready
+integer,int4,study_id,study_not_ready
+integer,int4,id,study_not_ready

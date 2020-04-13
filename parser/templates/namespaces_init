@@ -1,0 +1,10 @@
+{%- for namespace in namespaces %}
+from ambra_sdk.service.entrypoints.{{ namespace.lower() }} import {{ namespace }}
+{%- endfor %}
+
+
+__all__ = [
+{%- for namespace in namespaces %}
+'{{ namespace }}',
+{%- endfor %}
+]

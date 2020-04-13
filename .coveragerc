@@ -1,0 +1,6 @@
+[run]
+omit =
+    # generated service entrypoints
+    ambra_sdk/service/entrypoints/generated/*
+    # generated models
+    ambra_sdk/models/generated.py

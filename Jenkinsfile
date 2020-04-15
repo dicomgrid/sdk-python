@@ -26,26 +26,26 @@ pipeline {
 
         stage('Remove image') {
             steps {
-                sh "docker rmi -f sdk_test || true"
+                 sh "docker rmi -f ${image} || true"
             }
         }
 
         stage('Build image') {
             steps {
-                sh "docker build -t sdk_test ."
+                 sh "docker build -t ${image} ."
             }
         }
 
         stage ('Flake8') {
             steps {
-                sh "docker run sdk_test poetry run flake8"
+                 sh "docker run ${image} poetry run flake8"
                 sh 'if [ $? -eq 0 ] ; then echo Test flake8 is complited; else echo Test flake8 is broken && exit 1; fi'
         }
     }
         
         stage ('Mypy') {
             steps {
-                sh "docker run sdk_test poetry run mypy ambra_sdk"
+                 sh "docker run ${image} poetry run mypy ambra_sdk"
                 sh 'if [ $? -eq 0 ] ; then echo Test mypy is complited; else echo Test mypy is broken && exit 1; fi'
         }
     }
@@ -53,7 +53,7 @@ pipeline {
        stage ('Pytest') {
            steps {
                sh "pwd && ls -la"               
-               sh "docker run --mount type=bind,source=/spool/workspace/sdk-python/.secrets.toml,target=/src/.secrets.toml --mount type=bind,source=/etc/hosts,target=/etc/hosts sdk_test poetry run pytest"
+                sh "docker run --mount type=bind,source='${source}',target=/src/.secrets.toml --mount type=bind,source=/etc/hosts,target=/etc/hosts ${image} poetry run pytest"
                sh 'if [ $? -eq 0 ] ; then echo Test pytest is complited; else echo Test pytest is broken && exit 1; fi'
        }
    }

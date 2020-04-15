@@ -23,7 +23,7 @@ pipeline {
                           userRemoteConfigs                : [
                                   [credentialsId: 'centos',
                                    //refspec      : '+refs/tags/*:refs/remotes/origin/tags/*',
-                                   url          : 'git@github.com:dicomgrid/sdk-python-dev.git']
+                                   url            : '${URL}' ]
                           ]
                 ])
             }
@@ -41,19 +41,19 @@ pipeline {
         
         stage('Remove image') {
             steps {
-              sh "docker rmi -f ambra_sdk_tag || true"
+              sh "docker rmi -f ${image} || true"
             }
         }
 
         stage('Build image') {
             steps {
-              sh "docker build -t ambra_sdk_tag ."
+              sh "docker build -t ${image} ."
             }
         }        
 
         stage('Flake8') {
             steps {
-              sh "docker run ambra_sdk_tag poetry run flake8"
+              sh "docker run ${image} poetry run flake8"
               // sh '[ $? -eq 0 ] && exit 0'
               sh 'if [ $? -eq 0 ] ; then echo Test flake8 is complited; else echo Test flake8 is broken && exit 1; fi'
             }
@@ -61,14 +61,14 @@ pipeline {
 
         stage('Mypy') {
             steps {
-              sh "docker run ambra_sdk_tag poetry run mypy ambra_sdk"
+              sh "docker run ${image} poetry run mypy ambra_sdk"
               sh 'if [ $? -eq 0 ] ; then echo Test mypy is complited; else echo Test mypy is broken && exit 1; fi'
             }
         }   
         
         stage('Pytest') {
             steps {
-                sh "docker run --mount type=bind,source=/spool/workspace/sdk_python_dev_tag/.secrets.toml,target=/src/.secrets.toml --mount type=bind,source=/etc/hosts,target=/etc/hosts ambra_sdk_tag poetry run pytest"
+                sh "docker run --mount type=bind,source='${source}',target=/src/.secrets.toml --mount type=bind,source=/etc/hosts,target=/etc/hosts ambra_sdk_tag poetry run pytest"
                 sh 'if [ $? -eq 0 ] ; then echo Test pytest is complited; else echo Test pytest is broken && exit 1; fi'
             }
         }   

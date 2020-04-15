@@ -5,16 +5,12 @@ pipeline {
     agent { label 'ai_back' }
     parameters {
         gitParameter branchFilter: 'origin/(.*)', defaultValue: 'develop', name: 'BRANCH', type: 'PT_BRANCH'
-  //      choice(
-  //          choices: ['sdk-python' , 'sdk-python-dev'],
-  //          description: '',
-  //          name: 'REQUESTED_ACTION')   
     }
      
     stages {
-        stage('Clone repository sdk-python-dev') {
+        stage('Clone repository sdk-python') {
             steps {
-                 git branch: "${params.BRANCH}", url: 'git@github.com:dicomgrid/sdk-python-dev.git', credentialsId: 'centos'
+                 git branch: "${params.BRANCH}", url: '${URL}', credentialsId: 'centos'
             }
         }
  
@@ -30,43 +26,34 @@ pipeline {
 
         stage('Remove image') {
             steps {
-                sh "docker rmi -f sdk_test_dev || true"
+                 sh "docker rmi -f ${image} || true"
             }
         }
 
         stage('Build image') {
             steps {
-                sh "docker build -t sdk_test_dev ."
+                 sh "docker build -t ${image} ."
             }
         }
 
         stage ('Flake8') {
-      //      when {
-      //          expression { params.REQUESTED_ACTION == 'flake8' }
-      //  }
             steps {
-                sh "docker run sdk_test_dev poetry run flake8"
+                 sh "docker run ${image} poetry run flake8"
                 sh 'if [ $? -eq 0 ] ; then echo Test flake8 is complited; else echo Test flake8 is broken && exit 1; fi'
         }
     }
         
         stage ('Mypy') {
-      //      when {
-      //          expression { params.REQUESTED_ACTION == 'mypy' }
-      //  }
             steps {
-                sh "docker run sdk_test_dev poetry run mypy ambra_sdk"
+                 sh "docker run ${image} poetry run mypy ambra_sdk"
                 sh 'if [ $? -eq 0 ] ; then echo Test mypy is complited; else echo Test mypy is broken && exit 1; fi'
         }
     }
     
        stage ('Pytest') {
-    //       when {
-    //           expression { params.REQUESTED_ACTION == 'pytest' }
-    //   }
            steps {
                sh "pwd && ls -la"               
-               sh "docker run --mount type=bind,source=/spool/workspace/sdk-python-dev/.secrets.toml,target=/src/.secrets.toml --mount type=bind,source=/etc/hosts,target=/etc/hosts sdk_test_dev poetry run pytest"
+                sh "docker run --mount type=bind,source='${source}',target=/src/.secrets.toml --mount type=bind,source=/etc/hosts,target=/etc/hosts ${image} poetry run pytest"
                sh 'if [ $? -eq 0 ] ; then echo Test pytest is complited; else echo Test pytest is broken && exit 1; fi'
        }
    }

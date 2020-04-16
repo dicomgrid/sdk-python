@@ -1,5 +1,9 @@
 # Ambra-SDK
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Doc](https://readthedocs.org/projects/ambra-sdk/badge/?version=latest&style=plastic)](https://ambra-sdk.readthedocs.io/en/latest/)
+[![PyPI version](https://badge.fury.io/py/ambra-sdk.svg)](https://badge.fury.io/py/ambra-sdk)
+
 ---
 
 Welcome to ambra-sdk library for intract with ambrahealth service and storage api. 
@@ -49,3 +53,7 @@ for study in studies:
 ## License
 
 Ambra-SDK is licensed under the terms of the Apache-2.0 License (see the file LICENSE).
+
+## Read the docs
+
+Documentation: https://ambra-sdk.readthedocs.io/en/latest

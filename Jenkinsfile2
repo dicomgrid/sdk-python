@@ -5,9 +5,9 @@ pipeline {
     agent { label 'ai_back' }
     parameters { gitParameter tagFilter: '*', name: 'TAG', type: 'PT_TAG', defaultValue: 'master'
           choice(
-          choices: ['DEV' , 'PROD'],
-            description: '',
-            name: 'SDK_ENVIRONMENT')   
+              choices: ['dev' , 'prod'],
+              description: '',
+              name: 'REQUESTED_ACTION')   
     }
         
     stages {
@@ -82,31 +82,31 @@ pipeline {
         }        
 
         stage('Poetry publish to prod') {
-            steps {
-                when {
-                expression { params.SDK_ENVIRONMENT == 'PROD' }
-               }
+            when {
+                 expression { params.REQUESTED_ACTION == 'prod' }
+          }
+          steps {
                 withCredentials([string(credentialsId: 'token', variable: 'token')]){
                 sh "/home/centos/.poetry/bin/poetry config pypi-token.pypi $token"
                 // sh "echo $token > token && cat token"
                 sh "/home/centos/.poetry/bin/poetry  publish"
              
-                }
-            }
+               }
+           }
         }           
 
         stage('Poetry publish to dev ') {
-            steps {
-                when {
-                expression { params.SDK_ENVIRONMENT == 'DEV' }
-               }
+            when {
+                 expression { params.REQUESTED_ACTION == 'dev' }
+          }
+          steps {
                  withCredentials([string(credentialsId: 'token_test', variable: 'token2')]){
                  sh "/home/centos/.poetry/bin/poetry config repositories.testpypi https://test.pypi.org/legacy"    
                  sh "/home/centos/.poetry/bin/poetry config pypi-token.testpypi $token2"
                  sh "/home/centos/.poetry/bin/poetry publish -r testpypi" 
                 
-                }
-            }
+               }
+           }
         }     
 
     }
@@ -116,4 +116,4 @@ pipeline {
             cleanWs()
         }
     }
-}  
+}     

@@ -1,0 +1,317 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Quick Start &#8212; Ambra-SDK 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reference" href="referencies/index.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="quick-start">
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="init-api">
+<h2>Init API<a class="headerlink" href="#init-api" title="Permalink to this headline">¶</a></h2>
+<p>Before we begin, to use sdk you need to know <cite>url</cite> of ambrahealth api and user credentials (<cite>username</cite> and <cite>password</cite>).</p>
+<p>For accessing to api functions you need to <cite>sid</cite> - session identificator.</p>
+<p>If you already have this, you can init api instance:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.api</span> <span class="kn">import</span> <span class="n">Api</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">API</span><span class="o">.</span><span class="n">with_sid</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">sid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or, you can use your user credentials and <cite>SDK</cite> automatically get new sid for you:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.api</span> <span class="kn">import</span> <span class="n">Api</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">API</span><span class="o">.</span><span class="n">with_creds</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="service-api">
+<h2>Service API<a class="headerlink" href="#service-api" title="Permalink to this headline">¶</a></h2>
+<p>This section describes the interaction of ambra-sdk with service api.
+This api describes in  <a class="reference external" href="https://uat.dicomgrid.com/api/v3/api.html">Service API</a> document or in some other
+ambra health instance <cite>ambra_url/api/v3/api.html</cite>.</p>
+<p>At the footer of this document you can find current version sting.
+Make sure the current version of <cite>ambra-sdk</cite> is not lower than the api version.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk</span> <span class="kn">import</span> <span class="n">API_VERSION</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">API_VERSION</span><span class="p">)</span>
+<span class="go">&#39;LBL0022 v36.0 2020-02-26&#39;</span>
+</pre></div>
+</div>
+<p>Service api is divided by type of command.
+From <cite>ambra-sdk</cite> view all request have a form
+<cite>api.TypeOfCommand.command.{get() or all()}</cite>.</p>
+<p>Description of all existing methods and you can find in <a class="reference internal" href="referencies/service_api.html#referencies-service-api"><span class="std std-ref">Service API reference</span></a>.</p>
+<p>Lets get some your user inforametion:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.api</span> <span class="kn">import</span> <span class="n">Api</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">API</span><span class="o">.</span><span class="n">with_creds</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">user_info</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">user</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can access to some fields using <cite>dot</cite> notation:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">user_info</span><span class="p">[</span><span class="s1">&#39;namespace_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">user_info</span><span class="o">.</span><span class="n">namespace_id</span>
+</pre></div>
+</div>
+<p>Now, lets get your permissions:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">namespace_id</span> <span class="o">=</span> <span class="n">user_info</span><span class="o">.</span><span class="n">namespace_id</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">permissions</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Session</span> \
+<span class="gp">&gt;&gt;&gt; </span>                 <span class="o">.</span><span class="n">permissions</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>                      <span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                 <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>As you can see this is big dictionary.
+Using <cite>only</cite> method, we can  request only some interesting fields:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">permissions</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Session</span> \
+<span class="gp">&gt;&gt;&gt; </span>                 <span class="o">.</span><span class="n">permissions</span><span class="p">(</span><span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">)</span> \
+<span class="gp">&gt;&gt;&gt; </span>                 <span class="o">.</span><span class="n">only</span><span class="p">([</span><span class="s1">&#39;study_download&#39;</span><span class="p">,</span> <span class="s1">&#39;study_upload&#39;</span><span class="p">])</span> \
+<span class="gp">&gt;&gt;&gt; </span>                 <span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">permissions</span>
+<span class="go">{&#39;study_upload&#39;: 0, &#39;study_download&#39;: 1}</span>
+</pre></div>
+</div>
+<p>In <cite>ambra-sdk</cite> we use <cite>get()</cite> method for get some results from api.
+Usually this is some dict results. But some api methods return iterable data.
+For get this kind of data we use <cite>all()</cite> of <cite>first()</cite> methods.
+Lets get list of your accounts. This is iterable response:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">accounts</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This is iterable object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">account</span> <span class="ow">in</span> <span class="n">accounts</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">account</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Also, you can use slices:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">account</span> <span class="ow">in</span> <span class="n">accounts</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">12</span><span class="p">]:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">account</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">account</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Sometimes you need only first element:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">account</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<span class="go"># Get second result</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">account</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>With <cite>Ambra-SDK</cite> you can use filtering (only for methods that support this):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.service.filtering</span> <span class="kn">import</span> <span class="n">Filter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.service.filtering</span> <span class="kn">import</span> <span class="n">FilterCondition</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">account</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span> \
+<span class="gp">&gt;&gt;&gt; </span>             <span class="o">.</span><span class="n">list</span><span class="p">()</span> \
+<span class="gp">&gt;&gt;&gt; </span>             <span class="o">.</span><span class="n">filter_by</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>                 <span class="n">Filter</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>                     <span class="s1">&#39;name&#39;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                      <span class="n">FilterCondition</span><span class="o">.</span><span class="n">equals</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                     <span class="s1">&#39;Some Account name&#39;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                 <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>             <span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">account</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;Some Account name&#39;</span>
+</pre></div>
+</div>
+<p>Or you can use <cite>models</cite> system for do the same thing easy:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.models</span> <span class="kn">import</span> <span class="n">Account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">account</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span> \
+<span class="gp">&gt;&gt;&gt; </span>             <span class="o">.</span><span class="n">list</span><span class="p">()</span> \
+<span class="gp">&gt;&gt;&gt; </span>             <span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">Account</span><span class="o">.</span><span class="n">name</span><span class="o">==</span><span class="s1">&#39;Some Account name&#39;</span><span class="p">)</span> \
+<span class="gp">&gt;&gt;&gt; </span>             <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Set of existing models and fields you can find in <a class="reference internal" href="referencies/models.html#referencies-models"><span class="std std-ref">Models reference</span></a>.</p>
+<p>If you remember, we can use <cite>only</cite> method and combine it with filtering:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">account</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span> \
+<span class="gp">&gt;&gt;&gt; </span>             <span class="o">.</span><span class="n">list</span><span class="p">()</span> \
+<span class="gp">&gt;&gt;&gt; </span>             <span class="o">.</span><span class="n">only</span><span class="p">({</span><span class="s1">&#39;account&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]})</span> \
+<span class="gp">&gt;&gt;&gt; </span>             <span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">Account</span><span class="o">.</span><span class="n">name</span><span class="o">==</span><span class="s1">&#39;Some Account name&#39;</span><span class="p">)</span> \
+<span class="gp">&gt;&gt;&gt; </span>             <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Using <cite>models</cite> for <cite>only</cite> can also simplify usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">account</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span> \
+<span class="gp">&gt;&gt;&gt; </span>             <span class="o">.</span><span class="n">list</span><span class="p">()</span> \
+<span class="gp">&gt;&gt;&gt; </span>             <span class="o">.</span><span class="n">only</span><span class="p">([</span><span class="n">Account</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">Account</span><span class="o">.</span><span class="n">uuid</span><span class="p">])</span> \
+<span class="gp">&gt;&gt;&gt; </span>             <span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">Account</span><span class="o">.</span><span class="n">name</span><span class="o">==</span><span class="s1">&#39;Some Account name&#39;</span><span class="p">)</span> \
+<span class="gp">&gt;&gt;&gt; </span>             <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The next thing, what you can do is sorting.
+Lets sort our accounts by name:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.service.sorting</span> <span class="kn">import</span> <span class="n">Sorter</span><span class="p">,</span> <span class="n">SortingOrder</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">accounts</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span><span class="o">.</span><span class="n">list</span><span class="p">()</span> \
+<span class="gp">&gt;&gt;&gt; </span>              <span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="n">Sorter</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">SortingOrder</span><span class="o">.</span><span class="n">ascending</span><span class="p">))</span> \
+<span class="gp">&gt;&gt;&gt; </span>              <span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">([</span><span class="n">account</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">account</span> <span class="ow">in</span> <span class="n">accounts</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>You can use <cite>models</cite> for this case too:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">accounts</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span><span class="o">.</span><span class="n">list</span><span class="p">()</span> \
+<span class="gp">&gt;&gt;&gt; </span>              <span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="n">Account</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">asc</span><span class="p">())</span> \
+<span class="gp">&gt;&gt;&gt; </span>              <span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>You can combine filtering sorting and <cite>only</cite> methods as you wish.</p>
+<p>Some of API methods have special parameters. For example, <cite>study/add</cite> have a <cite>customfield-{UUID}</cite> argument. For usage this arguments, you can execute <cite>Study.add()</cite> method with <cite>customfield_param</cite> argument, where <cite>customfield_param</cite> is a dict of {UUID: value}.</p>
+</div>
+<div class="section" id="storage-api">
+<h2>Storage API<a class="headerlink" href="#storage-api" title="Permalink to this headline">¶</a></h2>
+<p>This section describes ambra-sdk storage api part.
+You can find this description in  <a class="reference external" href="https://uat.dicomgrid.com/api/v3/storage/storage_api.html">Storage API</a> document or in some other ambra health instance <cite>api/v3/storage/storage_api.html</cite>.</p>
+<p>At the footer of this document you can find current version sting.
+Make sure the current version of <cite>ambra-sdk</cite> is not lower than the api version.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk</span> <span class="kn">import</span> <span class="n">STORAGE_VERSION</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">STORAGE_VERSION</span><span class="p">)</span>
+<span class="go">&#39;LBL0038 v8.0 2019-07-17&#39;</span>
+</pre></div>
+</div>
+<p>Description of all existing methods and you can find in <a class="reference internal" href="referencies/storage_api.html#referencies-storage-api"><span class="std std-ref">Storage API reference</span></a>.</p>
+<p>For accessing storage api commands you can use <cite>api.Storage</cite> namespace.</p>
+<p>As in the server documentation in <cite>ambra-sdk</cite> all api requests to storage splitted on <cite>Study</cite> and <cite>Image</cite> commands.</p>
+<p>For example, lets try to upload dicom file to your namespace.</p>
+<p>First af all, you need get your <cite>namespace_id</cite> and <cite>engine_fqdn</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">user</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">namespace_id</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">namespace_id</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fqdn</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Namespace</span><span class="o">.</span><span class="n">engine_fqdn</span><span class="p">(</span><span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">engine_fqdn</span> <span class="o">=</span> <span class="n">fqdn</span><span class="o">.</span><span class="n">engine_fqdn</span>
+</pre></div>
+</div>
+<p>Now, lets upload dicom file to the storage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dicom_path</span> <span class="o">=</span> <span class="s1">&#39;PATH_TO_DICOM&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dicom_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dicom_file</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">uploaded_image</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Storage</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">fqdn</span><span class="o">.</span><span class="n">engine_fqdn</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">namespace</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">opened_file</span><span class="o">=</span><span class="n">dicom_file</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">)</span>
+</pre></div>
+</div>
+<p>You can use <cite>dot</cite> notation for accessing attributes:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">uploaded_image</span><span class="o">.</span><span class="n">image_version</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">uploaded_image</span><span class="o">.</span><span class="n">study_uid</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="addon-methods">
+<h2>Addon methods<a class="headerlink" href="#addon-methods" title="Permalink to this headline">¶</a></h2>
+<p>This section describes ambra-sdk addon namespace part.
+Reference of all existing methods and you can find in <a class="reference internal" href="referencies/addon.html#referencies-addon"><span class="std std-ref">Addon reference</span></a>.</p>
+<p>Lets upload some <cite>study</cite> to storage.
+First of all you need to upload dicoms to storage.
+Than you should wait for study readiness in <cite>v3services</cite>.</p>
+<p>Actually, it’s a little more complicated..
+You can use <cite>api.Addon.Study.upload_and_get</cite> method for doing this:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">study_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;/path_to_study_dir&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_study</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">upload_and_get</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">study_dir</span><span class="o">=</span><span class="n">study_dir</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">namespace_id</span><span class="o">=</span><span class="n">user_info</span><span class="o">.</span><span class="n">namespace_id</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">new_study</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Ambra-SDK</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#init-api">Init API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#service-api">Service API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#storage-api">Storage API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#addon-methods">Addon methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="referencies/index.html">Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="installation.html" title="previous chapter">Installation</a></li>
+      <li>Next: <a href="referencies/index.html" title="next chapter">Reference</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ambrahealth AI team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/quickstart.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

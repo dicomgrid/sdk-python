@@ -1,0 +1,517 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>ambra_sdk.models.base &#8212; Ambra-SDK 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ambra_sdk.models.base</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Base model and field.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">import_module</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span>
+
+<span class="kn">from</span> <span class="nn">ambra_sdk.service.filtering</span> <span class="kn">import</span> <span class="n">Filter</span><span class="p">,</span> <span class="n">FilterCondition</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.service.sorting</span> <span class="kn">import</span> <span class="n">Sorter</span><span class="p">,</span> <span class="n">SortingOrder</span>
+
+
+<span class="k">class</span> <span class="nc">BaseField</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base Field.&quot;&quot;&quot;</span>
+
+    <span class="n">_python_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init.</span>
+
+<span class="sd">        :param description: field description</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">description</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Validate value.</span>
+
+<span class="sd">        :param value: value for validation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_get_descriptor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">field</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+        <span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">WithSorting</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;With sorting field mixin.&quot;&quot;&quot;</span>
+
+    <span class="n">_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">_full_name</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">def</span> <span class="nf">desc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sorter</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Desc sorting.</span>
+
+<span class="sd">        :param full_name: use full name</span>
+<span class="sd">        :returns: sorter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">field_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_full_name</span> <span class="k">if</span> <span class="n">full_name</span> <span class="ow">is</span> <span class="kc">True</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+        <span class="k">return</span> <span class="n">Sorter</span><span class="p">(</span>
+            <span class="n">field_name</span><span class="o">=</span><span class="n">field_name</span><span class="p">,</span>
+            <span class="n">order</span><span class="o">=</span><span class="n">SortingOrder</span><span class="o">.</span><span class="n">descending</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">asc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sorter</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Asc sorting.</span>
+
+<span class="sd">        :param full_name: use full name</span>
+<span class="sd">        :returns: sorter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">field_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_full_name</span> <span class="k">if</span> <span class="n">full_name</span> <span class="ow">is</span> <span class="kc">True</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+        <span class="k">return</span> <span class="n">Sorter</span><span class="p">(</span>
+            <span class="n">field_name</span><span class="o">=</span><span class="n">field_name</span><span class="p">,</span>
+            <span class="n">order</span><span class="o">=</span><span class="n">SortingOrder</span><span class="o">.</span><span class="n">ascending</span><span class="p">,</span>
+        <span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">WithFiltering</span><span class="p">:</span>  <span class="c1"># NOQA:WPS214</span>
+    <span class="sd">&quot;&quot;&quot;With filtering field mixin.&quot;&quot;&quot;</span>
+
+    <span class="n">_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">_full_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">_field</span><span class="p">:</span> <span class="n">BaseField</span>
+
+    <span class="k">def</span> <span class="nf">like</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get like filter.</span>
+
+<span class="sd">        :param value: filtering value</span>
+<span class="sd">        :param full_name: use full name for filtering</span>
+<span class="sd">        :raises ValueError: value is not string</span>
+<span class="sd">        :return: Filter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="o">.</span><span class="n">_python_type</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Use like for not string field&#39;</span><span class="p">)</span>
+        <span class="c1"># check value type</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">field_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_full_name</span> <span class="k">if</span> <span class="n">full_name</span> <span class="ow">is</span> <span class="kc">True</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+        <span class="k">return</span> <span class="n">Filter</span><span class="p">(</span>
+            <span class="n">field_name</span><span class="o">=</span><span class="n">field_name</span><span class="p">,</span>
+            <span class="n">condition</span><span class="o">=</span><span class="n">FilterCondition</span><span class="o">.</span><span class="n">like</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get attr.</span>
+
+<span class="sd">        Redefined for automatic pick filter.</span>
+
+<span class="sd">        :param attribute: attr</span>
+<span class="sd">        :return: filtering function</span>
+
+<span class="sd">        :raises AttributeError: Unknown attribute</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">conditions</span> <span class="o">=</span> <span class="n">FilterCondition</span><span class="o">.</span><span class="n">__members__</span>  <span class="c1"># NOQA:WPS609</span>
+        <span class="n">standart_filters</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;equals&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;equals_or_null&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;not_equals&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;not_equals_or_null&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;gt&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;ge&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;lt&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;le&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">filters_with_seq</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;in_condition&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;in_or_null&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">condition</span> <span class="o">=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">condition</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span>
+        <span class="k">if</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">standart_filters</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_standart_filter</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="n">condition</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">filters_with_seq</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filter_with_seq</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="n">condition</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>  <span class="c1"># NOQA:D105</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>  <span class="c1"># NOQA:D105</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">not_equals</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>  <span class="c1"># NOQA:D105</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gt</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>  <span class="c1"># NOQA:D105</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ge</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>  <span class="c1"># NOQA:D105</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lt</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>  <span class="c1"># NOQA:D105</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">le</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_standart_filter</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">,</span>
+        <span class="n">condition</span><span class="p">,</span>
+        <span class="n">full_name</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">field_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_full_name</span> <span class="k">if</span> <span class="n">full_name</span> <span class="ow">is</span> <span class="kc">True</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+        <span class="k">return</span> <span class="n">Filter</span><span class="p">(</span>
+            <span class="n">field_name</span><span class="o">=</span><span class="n">field_name</span><span class="p">,</span>
+            <span class="n">condition</span><span class="o">=</span><span class="n">condition</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_filter_with_seq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">condition</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># check value type</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Value is not iterable&#39;</span><span class="p">)</span>
+        <span class="n">field_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_full_name</span> <span class="k">if</span> <span class="n">full_name</span> <span class="ow">is</span> <span class="kc">True</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+        <span class="k">return</span> <span class="n">Filter</span><span class="p">(</span>
+            <span class="n">field_name</span><span class="o">=</span><span class="n">field_name</span><span class="p">,</span>
+            <span class="n">condition</span><span class="o">=</span><span class="n">condition</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">values</span><span class="p">),</span>
+        <span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">WithOnly</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;With only field mixin.&quot;&quot;&quot;</span>
+
+    <span class="n">_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">_lower_parent_name</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">def</span> <span class="nf">get_only</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Get dict for only method.</span>
+
+<span class="sd">        :return: only dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_lower_parent_name</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">],</span>
+        <span class="p">}</span>
+
+
+<span class="k">class</span> <span class="nc">FieldDescriptor</span><span class="p">(</span>  <span class="c1"># NOQA:WPS214</span>
+    <span class="n">WithSorting</span><span class="p">,</span>
+    <span class="n">WithFiltering</span><span class="p">,</span>
+    <span class="n">WithOnly</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Field descriptor.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init.</span>
+
+<span class="sd">        :param field: field</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_field</span> <span class="o">=</span> <span class="n">field</span>
+
+        <span class="c1"># This is init in model __new__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{field_type}</span><span class="s1">(</span><span class="si">{description}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">field_type</span><span class="o">=</span><span class="n">field</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">field</span><span class="o">.</span><span class="n">_description</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">parents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get parents.</span>
+
+<span class="sd">        :return: List of parent</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parent_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">parent_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">_parent</span>
+        <span class="k">return</span> <span class="n">parent_list</span>
+
+    <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get from instance.</span>
+
+<span class="sd">        :param instance: object</span>
+<span class="sd">        :param owner: owner</span>
+
+<span class="sd">        :return: field descriptor or field value (if instance exist)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="n">instance</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>  <span class="c1"># NOQA:WPS609</span>
+
+    <span class="k">def</span> <span class="fm">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set to instance.</span>
+
+<span class="sd">        :param instance: instance</span>
+<span class="sd">        :param value: value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>  <span class="c1"># NOQA:WPS609</span>
+
+    <span class="k">def</span> <span class="nf">__set_name__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set name.</span>
+
+<span class="sd">        :param owner: owner</span>
+<span class="sd">        :param name: name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_full_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">parents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parents</span><span class="p">()</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">reversed</span><span class="p">([</span><span class="n">parent</span><span class="o">.</span><span class="n">_name</span> <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{path}</span><span class="s1">.</span><span class="si">{name}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_parent_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_lower_parent_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">ModelDescriptor</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Model descriptor.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">field_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init.</span>
+
+<span class="sd">        :param model_name: model name</span>
+<span class="sd">        :param field_name: filed name of this descriptor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_name</span> <span class="o">=</span> <span class="n">model_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_field_name</span> <span class="o">=</span> <span class="n">field_name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_from_model</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">from_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get base model for this descriptor.</span>
+
+<span class="sd">        Lazy import model from models.generated.</span>
+
+<span class="sd">        :return: from model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">generated_models</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="s1">&#39;ambra_sdk.models.generated&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_from_model</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">generated_models</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_name</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_model</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get model for this descriptor.</span>
+
+<span class="sd">        Lazy create new model type</span>
+
+<span class="sd">        :return: model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_model</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">from_model</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>  <span class="c1"># NOQA:WPS609</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">from_model</span><span class="o">.</span><span class="vm">__bases__</span><span class="p">,</span>  <span class="c1"># NOQA:WPS609</span>
+                <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">from_model</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">),</span>  <span class="c1"># NOQA:WPS609</span>
+            <span class="p">)</span>
+            <span class="n">new_model</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field_name</span>
+            <span class="n">new_model</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="n">new_model</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span>
+
+    <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get from instance.</span>
+
+<span class="sd">        :param instance: object</span>
+<span class="sd">        :param owner: owner</span>
+
+<span class="sd">        :return: model or field value (if instance exist)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
+        <span class="k">return</span> <span class="n">instance</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>  <span class="c1"># NOQA:WPS609</span>
+
+    <span class="k">def</span> <span class="fm">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set to instance.</span>
+
+<span class="sd">        :param instance: instance</span>
+<span class="sd">        :param value: value</span>
+
+<span class="sd">        :raises ValueError: Wronk type of value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> \
+           <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_model</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="n">instance</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>  <span class="c1"># NOQA:WPS609</span>
+
+    <span class="k">def</span> <span class="nf">__set_name__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set name.</span>
+
+<span class="sd">        :param owner: owner</span>
+<span class="sd">        :param name: name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+
+<span class="k">class</span> <span class="nc">FK</span><span class="p">(</span><span class="n">BaseField</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Foreign key field.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init.</span>
+
+<span class="sd">        :param model: Foreign model</span>
+<span class="sd">        :param args: args</span>
+<span class="sd">        :param kwargs: kwargs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Validate.</span>
+
+<span class="sd">        :param value: value</span>
+<span class="sd">        :raises RuntimeError: Dont use validate for this type of fields</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;FK validated in descriptor&#39;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">BaseMetaModel</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Ambra base meta model.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>  <span class="c1"># NOQA:D102</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">attr_name</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">FK</span><span class="p">):</span>
+                <span class="c1"># Need copy class for set parent</span>
+                <span class="n">model_descriptor</span> <span class="o">=</span> <span class="n">ModelDescriptor</span><span class="p">(</span>
+                    <span class="n">model_name</span><span class="o">=</span><span class="n">attr</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+                    <span class="n">field_name</span><span class="o">=</span><span class="n">attr_name</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">attrs</span><span class="p">[</span><span class="n">attr_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_descriptor</span>
+                <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model_descriptor</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">FieldDescriptor</span><span class="p">):</span>
+                <span class="c1"># Need copy descriptor for set parent</span>
+                <span class="n">descriptor</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+                <span class="n">attrs</span><span class="p">[</span><span class="n">attr_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">descriptor</span>
+                <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">descriptor</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">BaseField</span><span class="p">):</span>
+                <span class="n">descriptor</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">_get_descriptor</span><span class="p">()</span>
+                <span class="n">descriptor</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">attr_name</span>
+                <span class="n">attrs</span><span class="p">[</span><span class="n">attr_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">descriptor</span>
+                <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">descriptor</span><span class="p">)</span>
+        <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">instance</span>
+        <span class="k">return</span> <span class="n">instance</span>
+
+
+<span class="k">class</span> <span class="nc">BaseModel</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">BaseMetaModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Ambra base model.&quot;&quot;&quot;</span>
+
+    <span class="n">_parent</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Ambra-SDK</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../referencies/index.html">Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ambrahealth AI team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Addon namespace &#8212; Ambra-SDK 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Models" href="models.html" />
+    <link rel="prev" title="Storage namespace" href="storage_api.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="addon-namespace">
+<span id="referencies-addon"></span><h1>Addon namespace<a class="headerlink" href="#addon-namespace" title="Permalink to this headline">¶</a></h1>
+<p>This is <cite>addon</cite> namespace for some useful <cite>SDK</cite> methods.</p>
+<div class="section" id="study-namespace">
+<h2>Study namespace<a class="headerlink" href="#study-namespace" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ambra_sdk.addon.study.Study">
+<em class="property">class </em><code class="sig-prename descclassname">ambra_sdk.addon.study.</code><code class="sig-name descname">Study</code><span class="sig-paren">(</span><em class="sig-param">api</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study" title="Permalink to this definition">¶</a></dt>
+<dd><p>Study addon namespace.</p>
+<dl class="method">
+<dt id="ambra_sdk.addon.study.Study.duplicate_and_get">
+<code class="sig-name descname">duplicate_and_get</code><span class="sig-paren">(</span><em class="sig-param">uuid: str</em>, <em class="sig-param">namespace_id: str</em>, <em class="sig-param">include_attachments: bool = False</em>, <em class="sig-param">timeout: int = 200</em>, <em class="sig-param">ws_timeout: int = 5</em><span class="sig-paren">)</span> &#x2192; box.Box<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.duplicate_and_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.duplicate_and_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Duplicate study to namespace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uuid</strong> – study_uuid</p></li>
+<li><p><strong>namespace_id</strong> – to namespace_id</p></li>
+<li><p><strong>include_attachments</strong> – include attachments</p></li>
+<li><p><strong>timeout</strong> – waiting timeout</p></li>
+<li><p><strong>ws_timeout</strong> – waiting from ws timeout</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>duplicated study</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ambra_sdk.addon.study.Study.upload">
+<code class="sig-name descname">upload</code><span class="sig-paren">(</span><em class="sig-param">study_dir: pathlib.Path</em>, <em class="sig-param">namespace_id: str</em><span class="sig-paren">)</span> &#x2192; Tuple[str, List[ambra_sdk.addon.study.UploadedImageParams]]<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.upload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.upload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload study to namespace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>study_dir</strong> – path to study dir</p></li>
+<li><p><strong>namespace_id</strong> – uploading to namespace</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Study dir is not directory</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of image params</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ambra_sdk.addon.study.Study.upload_and_get">
+<code class="sig-name descname">upload_and_get</code><span class="sig-paren">(</span><em class="sig-param">study_dir: pathlib.Path</em>, <em class="sig-param">namespace_id: str</em>, <em class="sig-param">timeout: int = 200</em>, <em class="sig-param">ws_timeout: int = 5</em><span class="sig-paren">)</span> &#x2192; box.Box<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.upload_and_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.upload_and_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload study to namespace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>study_dir</strong> – path to study dir</p></li>
+<li><p><strong>namespace_id</strong> – uploading to namespace</p></li>
+<li><p><strong>timeout</strong> – time for waiting new study</p></li>
+<li><p><strong>ws_timeout</strong> – time for waiting in socket</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Study box object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ambra_sdk.addon.study.Study.upload_dicom">
+<code class="sig-name descname">upload_dicom</code><span class="sig-paren">(</span><em class="sig-param">dicom_path: pathlib.Path</em>, <em class="sig-param">namespace_id: str</em>, <em class="sig-param">engine_fqdn: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; ambra_sdk.addon.study.UploadedImageParams<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.upload_dicom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.upload_dicom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload dicom to namespace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dicom_path</strong> – path to dicom</p></li>
+<li><p><strong>namespace_id</strong> – uploading to namespace</p></li>
+<li><p><strong>engine_fqdn</strong> – fqdn (if None gets namespace fqdn)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>uploaded image params</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ambra_sdk.addon.study.Study.wait">
+<code class="sig-name descname">wait</code><span class="sig-paren">(</span><em class="sig-param">study_uid: str</em>, <em class="sig-param">namespace_id: str</em>, <em class="sig-param">timeout: int</em>, <em class="sig-param">ws_timeout: int</em><span class="sig-paren">)</span> &#x2192; box.Box<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.wait"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.wait" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait study in namespace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>study_uid</strong> – study_uid</p></li>
+<li><p><strong>namespace_id</strong> – namespace</p></li>
+<li><p><strong>timeout</strong> – time for waiting new study</p></li>
+<li><p><strong>ws_timeout</strong> – time for waiting in socket</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TimeoutError</strong> – if study not ready by timeout</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Study box object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Ambra-SDK</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="service_api.html">Service namespace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storage_api.html">Storage namespace</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Addon namespace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Reference</a><ul>
+      <li>Previous: <a href="storage_api.html" title="previous chapter">Storage namespace</a></li>
+      <li>Next: <a href="models.html" title="next chapter">Models</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ambrahealth AI team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/referencies/addon.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ambra-sdk"
-version = "3.20.3.0-3"
+version = "3.20.3.0-4"
 description = "Ambrahealth python SDK"
 authors = [
 	"Ambrahealth AI team <python-sdk@ambrahealth.com>",
@@ -14,7 +14,8 @@ license = 'Apache-2.0'
 # pypi url
 homepage = 'https://github.com/dicomgrid/sdk-python'
 repository = 'https://github.com/dicomgrid/sdk-python'
-documentation = 'https://ambra-sdk.readthedocs.io/en/latest/'
+documentation = 'https://dicomgrid.github.io/sdk-python/index.html'
+
 keywords = ['ambrahealth', 'ambra']
 
 classifiers = [

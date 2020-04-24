@@ -1,7 +1,6 @@
 # Ambra-SDK
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Doc](https://readthedocs.org/projects/ambra-sdk/badge/?version=latest&style=plastic)](https://ambra-sdk.readthedocs.io/en/latest/)
 [![PyPI version](https://badge.fury.io/py/ambra-sdk.svg)](https://badge.fury.io/py/ambra-sdk)
 
 ---
@@ -56,4 +55,4 @@ Ambra-SDK is licensed under the terms of the Apache-2.0 License (see the file LI
 
 ## Read the docs
 
-Documentation: https://ambra-sdk.readthedocs.io/en/latest
+Documentation: https://dicomgrid.github.io/sdk-python/index.html

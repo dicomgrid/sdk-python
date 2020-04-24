@@ -13,5 +13,8 @@ check: flake mypy pytest
 
 html:
 	-poetry run sphinx-build -b html docs/source docs/build || true
+gh:
+	-poetry run sphinx-build -b html docs/source ../sdk-python-doc || true
+	-touch ../sdk-python-doc/.nojekyll
 tox:
 	-poetry run tox || true

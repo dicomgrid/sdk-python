@@ -9,6 +9,13 @@ class TestAccount:
         accounts = api.Account.list().all()
         assert list(accounts)
 
-    def test_account(self, account):
+    def test_account(self, account, storage_cluster):
         """Test account list."""
-        assert account.account.name == settings.TEST_ACCOUNT_NAME
+        test_account_name = settings.TEST_ACCOUNT_NAME
+        if storage_cluster:
+            test_account_name = '{account}_{cluster}'.format(
+                account=test_account_name,
+                cluster=storage_cluster.name,
+            )
+
+        assert account.account.name == test_account_name

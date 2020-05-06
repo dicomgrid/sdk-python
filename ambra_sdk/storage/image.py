@@ -4,6 +4,7 @@ from io import BufferedReader
 from typing import Optional, Set
 
 from box import Box
+from requests import Response
 
 from ambra_sdk.storage.bool_to_int import bool_to_int
 from ambra_sdk.storage.response import check_response
@@ -60,7 +61,7 @@ class Image:
         opened_file: BufferedReader,
         tags: Optional[str] = None,
         render_wrapped_pdf: Optional[bool] = None,
-    ) -> Box:
+    ) -> Response:
         """Upload a non DICOM image.
 
         URL: /namespace/{namespace}/wrap?sid={sid}&render_wrapped_pdf={0,1}
@@ -102,8 +103,7 @@ class Image:
                 params=request_data,
                 files=files,
             )
-        response = check_response(response, url_arg_names=url_arg_names)
-        return Box(response.json())
+        return check_response(response, url_arg_names=url_arg_names)
 
     def cadsr(
         self,
@@ -113,7 +113,7 @@ class Image:
         image_uid: str,
         image_version: str,
         phi_namespace: Optional[str] = None,
-    ) -> Box:
+    ) -> Response:
         """Gets graphical annotations according to vendor definitions for CAD SR object.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/cadsr?sid={sid}
@@ -147,5 +147,4 @@ class Image:
             locals(),
         )
         response = self._storage.get(url, params=request_data)
-        response = check_response(response, url_arg_names=url_arg_names)
-        return Box(response.json())
+        return check_response(response, url_arg_names=url_arg_names)

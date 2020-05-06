@@ -19,7 +19,7 @@
 Summary: Ambra-SDK library
 Name: %{name}
 Version: %{version}
-Release: 4
+Release: 5
 License: Apache-2.0
 Group: dicomgrid
 BuildArch: noarch

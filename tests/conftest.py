@@ -33,3 +33,19 @@ pytest_plugins = [
     'tests.fixtures.study',
     'tests.fixtures.ws',
 ]
+
+
+def pytest_generate_tests(metafunc):
+    """Gen tests.
+
+    :param metafunc: metafunc
+    """
+    if 'storage_cluster' in metafunc.fixturenames:
+        cluster_names = settings \
+            .from_env('testing') \
+            .get('CLUSTER_STORAGE_NAMES', ['DEFAULT'])
+        metafunc.parametrize(
+            'storage_cluster',
+            cluster_names,
+            indirect=True,
+        )

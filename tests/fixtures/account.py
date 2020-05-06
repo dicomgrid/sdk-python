@@ -2,16 +2,54 @@
 
 import json
 import logging
-from typing import NamedTuple, Optional
+from typing import List, NamedTuple, Optional, Tuple
 
 import pytest
 from box import Box
 from dynaconf import settings
 
+from ambra_sdk.exceptions.service import DuplicateName, NotEmpty
 from ambra_sdk.models import Group
 from ambra_sdk.service.filtering import Filter, FilterCondition
+from ambra_sdk.service.query import QueryO, QueryOPF
 
 logger = logging.getLogger(__name__)
+
+
+@pytest.fixture(scope='module')
+def storage_cluster(api, request):
+    """Specific storage cluster.
+
+    :param api: api
+    :param request: pytest request
+
+    :raises RuntimeError: Unknown cluster name
+    :return: cluster box
+    """
+    cluster_name = request.param
+    cluster = None
+    if cluster_name != 'DEFAULT':
+        cluster = QueryOPF(
+            api=api,
+            url='/cluster/list',
+            request_data={},
+            errors_mapping={},
+            paginated_field='clusters',
+            required_sid=True,
+        ).filter_by(
+            Filter(
+                'name',
+                FilterCondition.equals,
+                cluster_name,
+            ),
+        ).first()
+        if cluster is None:
+            raise RuntimeError(
+                'Unknown cluster name {name}'.format(
+                    name=cluster_name,
+                ),
+            )
+    return cluster
 
 
 class UserParams(NamedTuple):
@@ -29,57 +67,147 @@ class GroupParams(NamedTuple):
     name: str
 
 
-@pytest.fixture(scope='module')  # NOQA:WPS210,WPS231
-def account(api):
-    """Get account.
+def create_account(api, account_name: str) -> Tuple[Box, Box]:
+    """Create new account.
 
-    :param api: ambra api
-
-    :yields: test account
-
-    :raises RuntimeError: On deleted account with existing studies
+    :param api: api
+    :param account_name: account name
+    :raises RuntimeError: Cant find account
+    :return: user params
     """
-    test_account_name = settings.TEST_ACCOUNT_NAME
-
-    # Create new account
-    # Private api
-    account_data = {
-        'name': test_account_name,
-    }
-    response = api.service_post(
-        '/account/add',
+    # If account exists - raise DuplicateName error
+    QueryO(
+        api=api,
+        url='/account/add',
+        request_data={
+            'name': account_name,
+        },
+        errors_mapping={
+            'DUPLICATE_NAME': DuplicateName(),
+        },
         required_sid=True,
-        data=account_data,
-    )
-    response_json = response.json()
-    # Account created (it can be if some testes in
-    if response.status_code == 412:
-        error = response_json['error_type']
-        if error == 'NOT_SYSADMIN_OR_SUPPORT':
-            raise RuntimeError('Not permissions for create new account')
-        elif error == 'DUPLICATE_NAME':
-            # Need delete?
-            pass  # NOQA:WPS420
+    ).get()
 
-    account_response = api \
+    account = api \
         .Account \
         .list() \
         .filter_by(
             Filter(
                 'name',
                 FilterCondition.equals,
-                test_account_name,
+                account_name,
             ),
         ).first()
-    if account_response is None:
+    if account is None:
         raise RuntimeError('Cant find test account')
 
-    # Clear undeleted studies
+    # set role permissions
+    admin_role = api \
+        .Role \
+        .list(account_id=account.uuid) \
+        .filter_by(
+            Filter(
+                'name',
+                FilterCondition.equals,
+                'Administrator',
+            ),
+        ).first()
 
-    account_namespaces = [account_response.namespace_id]
+    if admin_role is None:
+        raise RuntimeError('Cant find admin role')
+
+    api.Role.set(
+        uuid=admin_role.uuid,
+        permissions=json.dumps(
+            {
+                'study_delete': 1,
+                'study_duplicate': 1,
+                'study_split': 1,
+                'study_merge': 1,
+                'study_delete_image': 1,
+            },
+        )).get()
+
+    user = api.User.get(account_id=account.uuid).get()
+    logger.info('Created account %s', account.name)
+    return (account, user)
+
+
+def account_studies(api, account) -> List[Box]:
+    """List of  account studies.
+
+    :param api: api
+    :param account: account
+    :return: list of studies
+    """
+    account_namespaces = [account.namespace_id]
     group_namespaces = [
         group.namespace_id for group in api.Group
-        .list(account_id=account_response.uuid)
+        .list(account_id=account.uuid)
+        .only(Group.namespace_id).all()
+    ]
+    account_namespaces.extend(group_namespaces)
+
+    # Method study list does not support in_condition filtering for namespace !
+    acc_studies = []
+    for account_namespace in account_namespaces:
+        studies = api \
+            .Study \
+            .list() \
+            .filter_by(
+                Filter(
+                    field_name='phi_namespace',
+                    condition=FilterCondition.equals,
+                    value=account_namespace,
+                ),
+            ).all()
+        acc_studies.extend(list(studies))
+    return acc_studies
+
+
+def delete_account(api, account) -> Box:
+    """Delete account.
+
+    :param api: api
+    :param account: account
+    :raises RuntimeError: if account have undeleted studies
+    """
+    try:
+        QueryO(
+            api=api,
+            url='/account/delete/',
+            request_data={
+                'uuid': account.uuid,
+            },
+            errors_mapping={
+                'NOT_EMPTY': NotEmpty(),
+            },
+            required_sid=True,
+        ).get()
+    except NotEmpty:
+        acc_studies = account_studies(api, account)
+        raise RuntimeError(
+            'Account have undeleted studies:\n{studies}'.format(
+                studies='\n'.join(
+                    [
+                        str((study.uuid, study.study_uid))
+                        for study in acc_studies
+                    ],
+                ),
+            ),
+        )
+
+
+def clear_studies(api, account):
+    """Delete account studies.
+
+    :param api: api
+    :param account: account
+    """
+    account_namespaces = [account.namespace_id]
+    group_namespaces = [
+        group.namespace_id for group in api.Group
+        .list(account_id=account.uuid)
         .only(Group.namespace_id).all()
     ]
     account_namespaces.extend(group_namespaces)
@@ -102,56 +230,67 @@ def account(api):
             logger.error('Remove undeleted study %s', study_uid)
             api.Study.delete(uuid=study_uid).get()
 
-    # set role permissions
-    admin_role = api \
-        .Role \
-        .list(account_id=account_response.uuid) \
-        .filter_by(
-            Filter(
-                'name',
-                FilterCondition.equals,
-                'Administrator',
-            ),
-        ).first()
 
-    if admin_role is None:
-        raise RuntimeError('Cant find admin role')
+@pytest.fixture(scope='module')  # NOQA:WPS210,WPS231
+def account(api, storage_cluster):
+    """Get account.
 
-    response = api.Role.set(
-        uuid=admin_role.uuid,
-        permissions=json.dumps(
-            {
-                'webhook_view': 1,
-                'webhook_edit': 1,
-                'study_delete': 1,
-                'study_duplicate': 1,
-                'study_delete_image': 1,
-                'study_manual_route': 1,
-                'customcode_view': 1,
-                'customcode_edit': 1,
-                'customcode_deploy': 1,
+    :param api: ambra api
+    :param storage_cluster: storage cluster
+
+    :yields: test account
+
+    :raises RuntimeError: On deleted account with existing studies
+    """
+    account_name = settings.TEST_ACCOUNT_NAME
+    if storage_cluster:
+        account_name = '{account}_{cluster}'.format(
+            account=account_name,
+            cluster=storage_cluster.name,
+        )
+
+    try:
+        account, user = create_account(api, account_name)
+    except DuplicateName:
+        logger.error('Duplicated account: %s', account_name)
+        account = api \
+            .Account \
+            .list() \
+            .filter_by(
+                Filter(
+                    'name',
+                    FilterCondition.equals,
+                    account_name,
+                ),
+            ).first()
+        if account is None:
+            raise RuntimeError('Account duplicated but not exists')
+        clear_studies(api, account)
+        delete_account(api, account)
+        account, user = create_account(api, account_name)
+
+    if storage_cluster is not None:
+        QueryO(
+            api=api,
+            url='/cluster/account/bind',
+            request_data={
+                'account_id': account.uuid,
+                'cluster_id': storage_cluster.uuid,
             },
-        )).get()
+            errors_mapping={},
+            required_sid=True,
+        ).get()
+        logger.info(
+            'Bind account to storage cluster {name}'.format(
+                name=storage_cluster.name,
+            ),
+        )
 
-    user_response = api.User.get(account_id=account_response.uuid).get()
     yield UserParams(
-        account=account_response,
-        user=user_response,
+        account=account,
+        user=user,
     )
-
-    # Delete account
-    # Private api
-    response = api.service_post(
-        '/account/delete',
-        required_sid=True,
-        data={
-            'uuid': account_response.uuid,
-        },
-    )
-    # TODO : mb delete studies?
-    if response.status_code == 412 and \
-       response.json()['error_type'] == 'NOT_EMPTY':
-        raise RuntimeError('Test account have undeleted studies')
+    delete_account(api, account)
 
 
 @pytest.fixture

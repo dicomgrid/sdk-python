@@ -115,7 +115,7 @@ class Study:
         namespace: str,
         study_uid: str,
         keep_attachments: Optional[bool] = None,
-    ):
+    ) -> Response:
         """Deletes a study.
 
         URL: /study/{namespace}/{study_uid}?sid={sid}&keep_attachments={1,0}
@@ -124,6 +124,8 @@ class Study:
         :param namespace: Namespace (Required).
         :param study_uid: Study uid (Required).
         :param keep_attachments: An integer value of 1 or 0.
+
+        :returns: Delete response
 
         If the optional parameter keep_attachments is set to 1, then:
             all DICOM images will be deleted.
@@ -144,8 +146,9 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.delete(url, params=request_data)
-        check_response(response, url_arg_names=url_arg_names)
+        response: Response = self._storage.delete(url, params=request_data)
+        response = check_response(response, url_arg_names=url_arg_names)
+        return response
 
     def delete_image(
         self,
@@ -154,7 +157,7 @@ class Study:
         study_uid: str,
         image_uid: str,
         version: Optional[str] = None,
-    ):
+    ) -> Response:
         """Deletes a study image.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}?sid={sid}&version={image version hash}
@@ -164,6 +167,8 @@ class Study:
         :param study_uid: Study uid (Required).
         :param image_uid: Image uid (Required).
         :param version: The image version hash
+
+        :returns: Delete image response
         """
         url_template = '/study/{namespace}/{study_uid}/image/{image_uid}'
         url_arg_names = {
@@ -179,8 +184,9 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.delete(url, params=request_data)
-        check_response(response, url_arg_names=url_arg_names)
+        response: Response = self._storage.delete(url, params=request_data)
+        response = check_response(response, url_arg_names=url_arg_names)
+        return response
 
     def count(
         self,
@@ -265,8 +271,12 @@ class Study:
         engine_fqdn: str,
         namespace: str,
         study_uid: str,
+        image_uid: str,
         image_version: str,
         phi_namespace: Optional[str] = None,
+        groups: Optional[str] = None,
+        include_tags: Optional[str] = None,
+        exclude_unnamed: Optional[str] = None,
     ) -> Box:
         """Gets study image attributes.
 
@@ -275,11 +285,21 @@ class Study:
         :param engine_fqdn: Engine FQDN (Required).
         :param namespace: Namespace (Required).
         :param study_uid: Study uid (Required).
+        :param image_uid: Image uid (Required).
         :param image_version: Image version (Required).
         :param phi_namespace: A string, set to the UUID of the namespace
             where the file was attached if it was attached to a
             shared instance of the study outside of the original storage namespace
-
+        :param groups: The groups parameter will allow the client to
+            filter tags to only those in a certain set of top-level
+            DICOM groups. Comma-separated list of decimal values, or
+            hex values preceeded with "0x".
+        :param include_tags: Comma-separated list of top-level DICOM tags
+            to include. Format: 00080018,00080020 Nested tags
+            (00081111:00080550) only filter at the top level,
+            everything is included within the sequence
+        :param exclude_unnamed: A string containing "1" or "0" (default 0).
+            When "1", private tags (with "name": "?") are not included
         :returns: study attributes
         """
         url_template = '/study/{namespace}/{study_uid}/image/{image_uid}/version/{image_version}/attribute'
@@ -290,7 +310,12 @@ class Study:
             'image_uid',
             'image_version',
         }
-        request_arg_names = {'phi_namespace'}
+        request_arg_names = {
+            'phi_namespace',
+            'groups',
+            'include_tags',
+            'exclude_unnamed',
+        }
         url, request_data = self._storage.get_url_and_request(
             url_template,
             url_arg_names,
@@ -306,6 +331,7 @@ class Study:
         engine_fqdn: str,
         namespace: str,
         study_uid: str,
+        image_uid: str,
         image_version: str,
         phi_namespace: Optional[str] = None,
     ) -> Box:
@@ -316,6 +342,7 @@ class Study:
         :param engine_fqdn: Engine FQDN (Required).
         :param namespace: Namespace (Required).
         :param study_uid: Study uid (Required).
+        :param image_uid: Image uid (Required).
         :param image_version: Image version (Required).
         :param phi_namespace: A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace
 
@@ -381,7 +408,7 @@ class Study:
         frame_number: int,
         depth: int = 8,
         phi_namespace: Optional[str] = None,
-    ) -> Box:
+    ) -> Response:
         """Gets study image thumbnail.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber}/thumbnail?sid={sid}&depth={8,16}&phi_namespace={phi_namespace}
@@ -411,6 +438,7 @@ class Study:
             'namespace',
             'study_uid',
             'image_uid',
+            'image_version',
             'frame_number',
         }
         request_arg_names = {'depth', 'phi_namespace'}
@@ -420,9 +448,13 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.get(url, params=request_data)
+        response: Response = self._storage.get(
+            url,
+            params=request_data,
+            stream=True,
+        )
         response = check_response(response, url_arg_names=url_arg_names)
-        return Box(response.json())
+        return response
 
     def diagnostic(
         self,
@@ -430,11 +462,12 @@ class Study:
         namespace: str,
         study_uid: str,
         image_uid: str,
+        image_version: str,
         frame_number: int,
         phi_namespace: Optional[str] = None,
         depth: int = 8,
         size: Optional[str] = None,
-    ) -> Box:
+    ) -> Response:
         """Gets study diagnostic image.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber}/diagnostic?sid={sid}&phi_namespace={phi_namespace}&depth={8,16}&size=[max-edge-length|{width}x{height}]
@@ -443,6 +476,7 @@ class Study:
         :param namespace: Namespace (Required).
         :param study_uid: Study uid (Required).
         :param image_uid: Image uid (Required).
+        :param image_version: Image version (Required).
         :param frame_number: Frame number (Required).
         :param phi_namespace: A string, set to the UUID of the namespace
             where the file was attached if it was attached to a shared
@@ -477,9 +511,13 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.get(url, params=request_data)
+        response: Response = self._storage.get(
+            url,
+            params=request_data,
+            stream=True,
+        )
         response = check_response(response, url_arg_names=url_arg_names)
-        return Box(response.json())
+        return response
 
     def frame(
         self,
@@ -562,7 +600,7 @@ class Study:
 
         :returns: Pdf response object
         """
-        url_template = '/study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/pdf'
+        url_template = '/study/{namespace}/{study_uid}/image/{image_uid}/version/{image_version}/pdf'
         url_arg_names = {
             'engine_fqdn',
             'namespace',
@@ -582,7 +620,15 @@ class Study:
             params=request_data,
             stream=True,
         )
-        response = check_response(response, url_arg_names=url_arg_names)
+        errors_mapping = {
+            415: UnsupportedMediaType('Pdf was not found encapsulated in the DICOM file.')  # NOQA: 997
+        }
+
+        response = check_response(
+            response,
+            url_arg_names=url_arg_names,
+            errors_mapping=errors_mapping,
+        )
         return response
 
     def image_json(
@@ -653,7 +699,7 @@ class Study:
         exclude_unnamed: Optional[str] = None,
         all_dicom_values: Optional[str] = None,
         series_uid: Optional[str] = None,
-    ) -> Box:
+    ):
         r"""Gets DICOM attributes for all images in a study.
 
         URL: /study/{namespace}/{studyUid}/json?sid={sid}&phi_namespace={phi_namespace}&groups={group ids}&include_tags={tags}
@@ -706,7 +752,7 @@ class Study:
         )
         response = self._storage.get(url, params=request_data)
         response = check_response(response, url_arg_names=url_arg_names)
-        return Box(response.json())
+        return response.json()
 
     def attachment(
         self,
@@ -812,7 +858,7 @@ class Study:
         return_html: Optional[bool] = None,
         synchronous_wrap: Optional[bool] = None,
         static_ids: Optional[bool] = None,
-    ) -> Box:
+    ):
         """Posts an attachment to a study.
 
         URL: /study/{namespace}/{studyUid}/attachment?sid={sid}&phi_namespace={phi_namespace}&wrap_images={0,1}&return_html={0,1}&synchronous_wrap={0,1}&static_ids={0,1}
@@ -862,6 +908,7 @@ class Study:
         stored in a new series within the specified study.
         UIDs assigned to the series and images will be random unless static_ids=1
         """
+        # Attachment must be an image
         wrap_images: int = bool_to_int(wrap_images)  # type: ignore
         synchronous_wrap: int = bool_to_int(synchronous_wrap)  # type: ignore
         static_ids: int = bool_to_int(static_ids)  # type: ignore
@@ -890,7 +937,8 @@ class Study:
         )
         response = self._storage.post(url, params=request_data, files=files)
         check_response(response, url_arg_names=url_arg_names)
-        return Box(response.json())
+        # Method can return Html (depends on params)...
+        return response
 
     def download(
         self,
@@ -979,12 +1027,13 @@ class Study:
         attachment_id: str,
         hash_arg: str,
         phi_namespace: Optional[str] = None,
-    ):
+    ) -> Response:
         """Deletes a study attachment.
 
         URL: /study/{namespace}/{studyUid}/attachment/{attachmentId}/version/{hash}?sid={sid}?phi_namespace={phi_namespace}
 
         Note: Instead of hash in storage api this method accept hash_arg argument.
+        Actually, hash_args is attachment version...
 
         :param engine_fqdn: Engine FQDN (Required).
         :param namespace: Namespace (Required).
@@ -994,14 +1043,16 @@ class Study:
         :param phi_namespace: A string, set to the UUID of the
             namespace where the file was attached if it was
             attached to a shared instance of the study outside of the original storage namespace
+
+        :returns: Delete attachemnt response
         """
-        url_template = '/study/{namespace}/{studyUid}/attachment/{attachmentId}/version/{hash_arg}'
+        url_template = '/study/{namespace}/{study_uid}/attachment/{attachment_id}/version/{hash_arg}'
         url_arg_names = {
             'engine_fqdn',
             'namespace',
             'study_uid',
             'attachment_id',
-            'hash',
+            'hash_arg',
         }
         request_arg_names = {'phi_namespace'}
         url, request_data = self._storage.get_url_and_request(
@@ -1011,8 +1062,9 @@ class Study:
             locals(),
         )
 
-        response = self._storage.delete(url, params=request_data)
-        check_response(response, url_arg_names=url_arg_names)
+        response: Response = self._storage.delete(url, params=request_data)
+        response = check_response(response, url_arg_names=url_arg_names)
+        return response
 
     def video(
         self,
@@ -1062,7 +1114,11 @@ class Study:
             params=request_data,
             stream=True,
         )
-        response = check_response(response, url_arg_names=url_arg_names)
+        response = check_response(
+            response,
+            url_arg_names=url_arg_names,
+            errors_mapping=errors_mapping,
+        )
         return response
 
     def split(
@@ -1127,7 +1183,7 @@ class Study:
         secondary_study_uid: str,
         delete_secondary_study: Optional[bool] = None,
         series_uids: Optional[str] = None,
-    ):
+    ) -> Response:
         """Merge studies.
 
         URL: /study/{namespace}/{studyUid}/merge?sid={sid}&secondary_study_uid={secondary_study_uid}&delete_secondary_study={0,1}
@@ -1143,6 +1199,8 @@ class Study:
         :param series_uids: A list of one or more comma-separated
             Series Instance UIDs, used to filter images merged
             from secondary study.
+
+        :returns: Actually empty response
         """
         url_template = '/study/{namespace}/{study_uid}/merge'
         url_arg_names = {
@@ -1163,20 +1221,25 @@ class Study:
             locals(),
         )
 
+        permission_denied = PermissionDenied(
+            'the SID provided does not have the proper '
+            'permission to delete the secondary study if '
+            'the optional parameter delete_secondary_study '
+            'is set to 1.'  # NOQA: 1106
+        )
+        # In api this code is 500...
+        permission_denied.code = 500
+
         errors_mapping = {
-            500: PermissionDenied(
-                'the SID provided does not have the proper '
-                'permission to delete the secondary study if '
-                'the optional parameter delete_secondary_study '
-                'is set to 1.'  # NOQA: 1106
-            ),
+            500: permission_denied,
         }
-        response = self._storage.get(url, params=request_data)
-        check_response(
+        response: Response = self._storage.get(url, params=request_data)
+        response = check_response(
             response,
             url_arg_names=url_arg_names,
             errors_mapping=errors_mapping,
         )
+        return response
 
     def anonymize(
         self,
@@ -1188,7 +1251,7 @@ class Study:
         new_study_uid: Optional[str] = None,
         keep_image_uids: Optional[str] = None,
         color: Optional[str] = None,
-    ):
+    ) -> Response:
         """Produce a new study that is a copy of the old, with specified pixel regions obscured.
 
         URL: /study/{namespace}/{studyUid}/anonymize
@@ -1206,6 +1269,8 @@ class Study:
             of modified copies be same as originals? (default is false)
         :param color: HTML-formatted color (rrggbb) of
             obscured regions (default is black-and-white checkerboard)
+
+        :returns: Anonymize study response
 
         The request entity is a JSON object specifying the regions
         to be obscured. Regions may be specified at study, series,
@@ -1231,19 +1296,24 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.post(
+        headers = {
+            'Content-Type': 'application/json; charset=utf-8',
+        }
+        response: Response = self._storage.post(
             url,
             params=request_data,
+            headers=headers,
             data=json.dumps(region),
         )
         errors_mapping = {
             412: PreconditionFailed('phi_namespace or to_namespace is not provided.'),
         }
-        check_response(
+        response = check_response(
             response,
             url_arg_names=url_arg_names,
             errors_mapping=errors_mapping,
         )
+        return response
 
     def crop(
         self,
@@ -1254,7 +1324,7 @@ class Study:
         to_namespace: Optional[str] = None,
         new_study_uid: Optional[str] = None,
         keep_image_uids: Optional[str] = None,
-    ):
+    ) -> Response:
         """Produce a new study that is a copy of the old, cropped to specified pixel region.
 
         URL: /study/{namespace}/{studyUid}/crop
@@ -1271,6 +1341,8 @@ class Study:
         :param keep_image_uids: Should SOP Instance UIDs
             of modified copies be same as originals? 1/0
             (default: 0/false)
+
+        :returns: Crop study response
 
         The request entity is a JSON object specifying the
         region to be cropped. Region may be specified at study,
@@ -1300,26 +1372,31 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.post(
+        headers = {
+            'Content-Type': 'application/json; charset=utf-8',
+        }
+        response: Response = self._storage.post(
             url,
             params=request_data,
+            headers=headers,
             data=json.dumps(region),
         )
         errors_mapping = {
             412: PreconditionFailed('phi_namespace or to_namespace is not provided.'),
         }
-        check_response(
+        response = check_response(
             response,
             url_arg_names=url_arg_names,
             errors_mapping=errors_mapping,
         )
+        return response
 
     def cache(
         self,
         engine_fqdn: str,
         namespace: str,
         study_uid: str,
-    ):
+    ) -> Response:
         """Clears the image and metadata cache for the indicated study.
 
         URL: /study/{namespace}/{studyUid}/cache
@@ -1327,6 +1404,8 @@ class Study:
         :param engine_fqdn: Engine FQDN (Required).
         :param namespace: Namespace (Required).
         :param study_uid: Study uid (Required).
+
+        :returns: Cache study response
         """
         url_template = '/study/{namespace}/{study_uid}/cache'
         url_arg_names = {
@@ -1341,5 +1420,6 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.delete(url, params=request_data)
-        check_response(response, url_arg_names=url_arg_names)
+        response: Response = self._storage.delete(url, params=request_data)
+        response = check_response(response, url_arg_names=url_arg_names)
+        return response

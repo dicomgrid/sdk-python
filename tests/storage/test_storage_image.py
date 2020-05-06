@@ -1,10 +1,43 @@
 from pathlib import Path
 
+import pytest
+
 from ambra_sdk.service.filtering import Filter, FilterCondition
 
 
 class TestStorageImage:
     """Test storage image namespace."""
+
+    @pytest.fixture(scope='class')
+    def image(self, api, readonly_study):
+        """First study image."""
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+        study_uid = readonly_study.study_uid
+
+        schema = api.Storage.Study.schema(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            study_uid=study_uid,
+        )
+        return schema.series[0]['images'][0]
+
+    def test_cadsr(self, api, image, readonly_study):
+        """Test cadsr method."""
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+        study_uid = readonly_study.study_uid
+        image_uid = image['id']
+        image_version = image['version']
+        cadsr = api.Storage.Image.cadsr(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            study_uid=study_uid,
+            image_uid=image_uid,
+            image_version=image_version,
+        )
+
+        assert cadsr.status_code == 200
 
     def test_upload_study(self, upload_study):
         """Test uploading study path."""

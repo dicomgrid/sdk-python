@@ -148,7 +148,7 @@
         <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">keep_attachments</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">):</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Deletes a study.</span>
 
 <span class="sd">        URL: /study/{namespace}/{study_uid}?sid={sid}&amp;keep_attachments={1,0}</span>
@@ -157,6 +157,8 @@
 <span class="sd">        :param namespace: Namespace (Required).</span>
 <span class="sd">        :param study_uid: Study uid (Required).</span>
 <span class="sd">        :param keep_attachments: An integer value of 1 or 0.</span>
+
+<span class="sd">        :returns: Delete response</span>
 
 <span class="sd">        If the optional parameter keep_attachments is set to 1, then:</span>
 <span class="sd">            all DICOM images will be deleted.</span>
@@ -177,8 +179,9 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span></div>
+        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
 
 <div class="viewcode-block" id="Study.delete_image"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.delete_image">[docs]</a>    <span class="k">def</span> <span class="nf">delete_image</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -187,7 +190,7 @@
         <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">image_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">version</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">):</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Deletes a study image.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/image/{imageUid}?sid={sid}&amp;version={image version hash}</span>
@@ -197,6 +200,8 @@
 <span class="sd">        :param study_uid: Study uid (Required).</span>
 <span class="sd">        :param image_uid: Image uid (Required).</span>
 <span class="sd">        :param version: The image version hash</span>
+
+<span class="sd">        :returns: Delete image response</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">url_template</span> <span class="o">=</span> <span class="s1">&#39;/study/</span><span class="si">{namespace}</span><span class="s1">/</span><span class="si">{study_uid}</span><span class="s1">/image/</span><span class="si">{image_uid}</span><span class="s1">&#39;</span>
         <span class="n">url_arg_names</span> <span class="o">=</span> <span class="p">{</span>
@@ -212,8 +217,9 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span></div>
+        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
 
 <div class="viewcode-block" id="Study.count"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.count">[docs]</a>    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -298,8 +304,12 @@
         <span class="n">engine_fqdn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">image_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">image_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">groups</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">include_tags</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">exclude_unnamed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Box</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Gets study image attributes.</span>
 
@@ -308,11 +318,21 @@
 <span class="sd">        :param engine_fqdn: Engine FQDN (Required).</span>
 <span class="sd">        :param namespace: Namespace (Required).</span>
 <span class="sd">        :param study_uid: Study uid (Required).</span>
+<span class="sd">        :param image_uid: Image uid (Required).</span>
 <span class="sd">        :param image_version: Image version (Required).</span>
 <span class="sd">        :param phi_namespace: A string, set to the UUID of the namespace</span>
 <span class="sd">            where the file was attached if it was attached to a</span>
 <span class="sd">            shared instance of the study outside of the original storage namespace</span>
-
+<span class="sd">        :param groups: The groups parameter will allow the client to</span>
+<span class="sd">            filter tags to only those in a certain set of top-level</span>
+<span class="sd">            DICOM groups. Comma-separated list of decimal values, or</span>
+<span class="sd">            hex values preceeded with &quot;0x&quot;.</span>
+<span class="sd">        :param include_tags: Comma-separated list of top-level DICOM tags</span>
+<span class="sd">            to include. Format: 00080018,00080020 Nested tags</span>
+<span class="sd">            (00081111:00080550) only filter at the top level,</span>
+<span class="sd">            everything is included within the sequence</span>
+<span class="sd">        :param exclude_unnamed: A string containing &quot;1&quot; or &quot;0&quot; (default 0).</span>
+<span class="sd">            When &quot;1&quot;, private tags (with &quot;name&quot;: &quot;?&quot;) are not included</span>
 <span class="sd">        :returns: study attributes</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">url_template</span> <span class="o">=</span> <span class="s1">&#39;/study/</span><span class="si">{namespace}</span><span class="s1">/</span><span class="si">{study_uid}</span><span class="s1">/image/</span><span class="si">{image_uid}</span><span class="s1">/version/</span><span class="si">{image_version}</span><span class="s1">/attribute&#39;</span>
@@ -323,7 +343,12 @@
             <span class="s1">&#39;image_uid&#39;</span><span class="p">,</span>
             <span class="s1">&#39;image_version&#39;</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="n">request_arg_names</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;phi_namespace&#39;</span><span class="p">}</span>
+        <span class="n">request_arg_names</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;phi_namespace&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;groups&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;include_tags&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;exclude_unnamed&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">url</span><span class="p">,</span> <span class="n">request_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get_url_and_request</span><span class="p">(</span>
             <span class="n">url_template</span><span class="p">,</span>
             <span class="n">url_arg_names</span><span class="p">,</span>
@@ -339,6 +364,7 @@
         <span class="n">engine_fqdn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">image_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">image_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Box</span><span class="p">:</span>
@@ -349,6 +375,7 @@
 <span class="sd">        :param engine_fqdn: Engine FQDN (Required).</span>
 <span class="sd">        :param namespace: Namespace (Required).</span>
 <span class="sd">        :param study_uid: Study uid (Required).</span>
+<span class="sd">        :param image_uid: Image uid (Required).</span>
 <span class="sd">        :param image_version: Image version (Required).</span>
 <span class="sd">        :param phi_namespace: A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace</span>
 
@@ -414,7 +441,7 @@
         <span class="n">frame_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Box</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Gets study image thumbnail.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber}/thumbnail?sid={sid}&amp;depth={8,16}&amp;phi_namespace={phi_namespace}</span>
@@ -444,6 +471,7 @@
             <span class="s1">&#39;namespace&#39;</span><span class="p">,</span>
             <span class="s1">&#39;study_uid&#39;</span><span class="p">,</span>
             <span class="s1">&#39;image_uid&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;image_version&#39;</span><span class="p">,</span>
             <span class="s1">&#39;frame_number&#39;</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">request_arg_names</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;depth&#39;</span><span class="p">,</span> <span class="s1">&#39;phi_namespace&#39;</span><span class="p">}</span>
@@ -453,9 +481,13 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
+        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+            <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="n">response</span></div>
 
 <div class="viewcode-block" id="Study.diagnostic"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.diagnostic">[docs]</a>    <span class="k">def</span> <span class="nf">diagnostic</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -463,11 +495,12 @@
         <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">image_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">image_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">frame_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
         <span class="n">size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Box</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Gets study diagnostic image.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber}/diagnostic?sid={sid}&amp;phi_namespace={phi_namespace}&amp;depth={8,16}&amp;size=[max-edge-length|{width}x{height}]</span>
@@ -476,6 +509,7 @@
 <span class="sd">        :param namespace: Namespace (Required).</span>
 <span class="sd">        :param study_uid: Study uid (Required).</span>
 <span class="sd">        :param image_uid: Image uid (Required).</span>
+<span class="sd">        :param image_version: Image version (Required).</span>
 <span class="sd">        :param frame_number: Frame number (Required).</span>
 <span class="sd">        :param phi_namespace: A string, set to the UUID of the namespace</span>
 <span class="sd">            where the file was attached if it was attached to a shared</span>
@@ -510,9 +544,13 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
+        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+            <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="n">response</span></div>
 
 <div class="viewcode-block" id="Study.frame"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.frame">[docs]</a>    <span class="k">def</span> <span class="nf">frame</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -595,7 +633,7 @@
 
 <span class="sd">        :returns: Pdf response object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">url_template</span> <span class="o">=</span> <span class="s1">&#39;/study/</span><span class="si">{namespace}</span><span class="s1">/</span><span class="si">{studyUid}</span><span class="s1">/image/</span><span class="si">{imageUid}</span><span class="s1">/version/</span><span class="si">{imageVersion}</span><span class="s1">/pdf&#39;</span>
+        <span class="n">url_template</span> <span class="o">=</span> <span class="s1">&#39;/study/</span><span class="si">{namespace}</span><span class="s1">/</span><span class="si">{study_uid}</span><span class="s1">/image/</span><span class="si">{image_uid}</span><span class="s1">/version/</span><span class="si">{image_version}</span><span class="s1">/pdf&#39;</span>
         <span class="n">url_arg_names</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;engine_fqdn&#39;</span><span class="p">,</span>
             <span class="s1">&#39;namespace&#39;</span><span class="p">,</span>
@@ -615,7 +653,15 @@
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
             <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">415</span><span class="p">:</span> <span class="n">UnsupportedMediaType</span><span class="p">(</span><span class="s1">&#39;Pdf was not found encapsulated in the DICOM file.&#39;</span><span class="p">)</span>  <span class="c1"># NOQA: 997</span>
+        <span class="p">}</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span>
+            <span class="n">response</span><span class="p">,</span>
+            <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">,</span>
+            <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span></div>
 
 <div class="viewcode-block" id="Study.image_json"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.image_json">[docs]</a>    <span class="k">def</span> <span class="nf">image_json</span><span class="p">(</span>
@@ -686,7 +732,7 @@
         <span class="n">exclude_unnamed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">all_dicom_values</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">series_uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Box</span><span class="p">:</span>
+    <span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Gets DICOM attributes for all images in a study.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/json?sid={sid}&amp;phi_namespace={phi_namespace}&amp;groups={group ids}&amp;include_tags={tags}</span>
@@ -739,7 +785,7 @@
         <span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.attachment"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.attachment">[docs]</a>    <span class="k">def</span> <span class="nf">attachment</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -845,7 +891,7 @@
         <span class="n">return_html</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">synchronous_wrap</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">static_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Box</span><span class="p">:</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Posts an attachment to a study.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/attachment?sid={sid}&amp;phi_namespace={phi_namespace}&amp;wrap_images={0,1}&amp;return_html={0,1}&amp;synchronous_wrap={0,1}&amp;static_ids={0,1}</span>
@@ -895,6 +941,7 @@
 <span class="sd">        stored in a new series within the specified study.</span>
 <span class="sd">        UIDs assigned to the series and images will be random unless static_ids=1</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Attachment must be an image</span>
         <span class="n">wrap_images</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">bool_to_int</span><span class="p">(</span><span class="n">wrap_images</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
         <span class="n">synchronous_wrap</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">bool_to_int</span><span class="p">(</span><span class="n">synchronous_wrap</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
         <span class="n">static_ids</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">bool_to_int</span><span class="p">(</span><span class="n">static_ids</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
@@ -923,7 +970,8 @@
         <span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">)</span>
         <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span></div>
+        <span class="c1"># Method can return Html (depends on params)...</span>
+        <span class="k">return</span> <span class="n">response</span></div>
 
 <div class="viewcode-block" id="Study.download"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1012,12 +1060,13 @@
         <span class="n">attachment_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">hash_arg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">):</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Deletes a study attachment.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/attachment/{attachmentId}/version/{hash}?sid={sid}?phi_namespace={phi_namespace}</span>
 
 <span class="sd">        Note: Instead of hash in storage api this method accept hash_arg argument.</span>
+<span class="sd">        Actually, hash_args is attachment version...</span>
 
 <span class="sd">        :param engine_fqdn: Engine FQDN (Required).</span>
 <span class="sd">        :param namespace: Namespace (Required).</span>
@@ -1027,14 +1076,16 @@
 <span class="sd">        :param phi_namespace: A string, set to the UUID of the</span>
 <span class="sd">            namespace where the file was attached if it was</span>
 <span class="sd">            attached to a shared instance of the study outside of the original storage namespace</span>
+
+<span class="sd">        :returns: Delete attachemnt response</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">url_template</span> <span class="o">=</span> <span class="s1">&#39;/study/</span><span class="si">{namespace}</span><span class="s1">/</span><span class="si">{studyUid}</span><span class="s1">/attachment/</span><span class="si">{attachmentId}</span><span class="s1">/version/</span><span class="si">{hash_arg}</span><span class="s1">&#39;</span>
+        <span class="n">url_template</span> <span class="o">=</span> <span class="s1">&#39;/study/</span><span class="si">{namespace}</span><span class="s1">/</span><span class="si">{study_uid}</span><span class="s1">/attachment/</span><span class="si">{attachment_id}</span><span class="s1">/version/</span><span class="si">{hash_arg}</span><span class="s1">&#39;</span>
         <span class="n">url_arg_names</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;engine_fqdn&#39;</span><span class="p">,</span>
             <span class="s1">&#39;namespace&#39;</span><span class="p">,</span>
             <span class="s1">&#39;study_uid&#39;</span><span class="p">,</span>
             <span class="s1">&#39;attachment_id&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;hash&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;hash_arg&#39;</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">request_arg_names</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;phi_namespace&#39;</span><span class="p">}</span>
         <span class="n">url</span><span class="p">,</span> <span class="n">request_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get_url_and_request</span><span class="p">(</span>
@@ -1044,8 +1095,9 @@
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
 
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span></div>
+        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
 
 <div class="viewcode-block" id="Study.video"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.video">[docs]</a>    <span class="k">def</span> <span class="nf">video</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1095,7 +1147,11 @@
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
             <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span>
+            <span class="n">response</span><span class="p">,</span>
+            <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">,</span>
+            <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span></div>
 
 <div class="viewcode-block" id="Study.split"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.split">[docs]</a>    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span>
@@ -1160,7 +1216,7 @@
         <span class="n">secondary_study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">delete_secondary_study</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">series_uids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">):</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Merge studies.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/merge?sid={sid}&amp;secondary_study_uid={secondary_study_uid}&amp;delete_secondary_study={0,1}</span>
@@ -1176,6 +1232,8 @@
 <span class="sd">        :param series_uids: A list of one or more comma-separated</span>
 <span class="sd">            Series Instance UIDs, used to filter images merged</span>
 <span class="sd">            from secondary study.</span>
+
+<span class="sd">        :returns: Actually empty response</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">url_template</span> <span class="o">=</span> <span class="s1">&#39;/study/</span><span class="si">{namespace}</span><span class="s1">/</span><span class="si">{study_uid}</span><span class="s1">/merge&#39;</span>
         <span class="n">url_arg_names</span> <span class="o">=</span> <span class="p">{</span>
@@ -1196,20 +1254,25 @@
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
 
+        <span class="n">permission_denied</span> <span class="o">=</span> <span class="n">PermissionDenied</span><span class="p">(</span>
+            <span class="s1">&#39;the SID provided does not have the proper &#39;</span>
+            <span class="s1">&#39;permission to delete the secondary study if &#39;</span>
+            <span class="s1">&#39;the optional parameter delete_secondary_study &#39;</span>
+            <span class="s1">&#39;is set to 1.&#39;</span>  <span class="c1"># NOQA: 1106</span>
+        <span class="p">)</span>
+        <span class="c1"># In api this code is 500...</span>
+        <span class="n">permission_denied</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="mi">500</span>
+
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="mi">500</span><span class="p">:</span> <span class="n">PermissionDenied</span><span class="p">(</span>
-                <span class="s1">&#39;the SID provided does not have the proper &#39;</span>
-                <span class="s1">&#39;permission to delete the secondary study if &#39;</span>
-                <span class="s1">&#39;the optional parameter delete_secondary_study &#39;</span>
-                <span class="s1">&#39;is set to 1.&#39;</span>  <span class="c1"># NOQA: 1106</span>
-            <span class="p">),</span>
+            <span class="mi">500</span><span class="p">:</span> <span class="n">permission_denied</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">check_response</span><span class="p">(</span>
+        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span>
             <span class="n">response</span><span class="p">,</span>
             <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">,</span>
             <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
 
 <div class="viewcode-block" id="Study.anonymize"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.anonymize">[docs]</a>    <span class="k">def</span> <span class="nf">anonymize</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1221,7 +1284,7 @@
         <span class="n">new_study_uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">keep_image_uids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">):</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Produce a new study that is a copy of the old, with specified pixel regions obscured.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/anonymize</span>
@@ -1239,6 +1302,8 @@
 <span class="sd">            of modified copies be same as originals? (default is false)</span>
 <span class="sd">        :param color: HTML-formatted color (rrggbb) of</span>
 <span class="sd">            obscured regions (default is black-and-white checkerboard)</span>
+
+<span class="sd">        :returns: Anonymize study response</span>
 
 <span class="sd">        The request entity is a JSON object specifying the regions</span>
 <span class="sd">        to be obscured. Regions may be specified at study, series,</span>
@@ -1264,19 +1329,24 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json; charset=utf-8&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
             <span class="n">url</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">region</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
             <span class="mi">412</span><span class="p">:</span> <span class="n">PreconditionFailed</span><span class="p">(</span><span class="s1">&#39;phi_namespace or to_namespace is not provided.&#39;</span><span class="p">),</span>
         <span class="p">}</span>
-        <span class="n">check_response</span><span class="p">(</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span>
             <span class="n">response</span><span class="p">,</span>
             <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">,</span>
             <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
 
 <div class="viewcode-block" id="Study.crop"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.crop">[docs]</a>    <span class="k">def</span> <span class="nf">crop</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1287,7 +1357,7 @@
         <span class="n">to_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">new_study_uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">keep_image_uids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">):</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Produce a new study that is a copy of the old, cropped to specified pixel region.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/crop</span>
@@ -1304,6 +1374,8 @@
 <span class="sd">        :param keep_image_uids: Should SOP Instance UIDs</span>
 <span class="sd">            of modified copies be same as originals? 1/0</span>
 <span class="sd">            (default: 0/false)</span>
+
+<span class="sd">        :returns: Crop study response</span>
 
 <span class="sd">        The request entity is a JSON object specifying the</span>
 <span class="sd">        region to be cropped. Region may be specified at study,</span>
@@ -1333,26 +1405,31 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json; charset=utf-8&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
             <span class="n">url</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">region</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
             <span class="mi">412</span><span class="p">:</span> <span class="n">PreconditionFailed</span><span class="p">(</span><span class="s1">&#39;phi_namespace or to_namespace is not provided.&#39;</span><span class="p">),</span>
         <span class="p">}</span>
-        <span class="n">check_response</span><span class="p">(</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span>
             <span class="n">response</span><span class="p">,</span>
             <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">,</span>
             <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
 
 <div class="viewcode-block" id="Study.cache"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.cache">[docs]</a>    <span class="k">def</span> <span class="nf">cache</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">engine_fqdn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="p">):</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Clears the image and metadata cache for the indicated study.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/cache</span>
@@ -1360,6 +1437,8 @@
 <span class="sd">        :param engine_fqdn: Engine FQDN (Required).</span>
 <span class="sd">        :param namespace: Namespace (Required).</span>
 <span class="sd">        :param study_uid: Study uid (Required).</span>
+
+<span class="sd">        :returns: Cache study response</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">url_template</span> <span class="o">=</span> <span class="s1">&#39;/study/</span><span class="si">{namespace}</span><span class="s1">/</span><span class="si">{study_uid}</span><span class="s1">/cache&#39;</span>
         <span class="n">url_arg_names</span> <span class="o">=</span> <span class="p">{</span>
@@ -1374,8 +1453,9 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span></div></div>
+        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div></div>
 </pre></div>
 
           </div>

@@ -43,7 +43,7 @@
 <dd><p>Storage Image commands.</p>
 <dl class="method">
 <dt id="ambra_sdk.storage.image.Image.cadsr">
-<code class="sig-name descname">cadsr</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; box.Box<a class="reference internal" href="../_modules/ambra_sdk/storage/image.html#Image.cadsr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.image.Image.cadsr" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">cadsr</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="reference internal" href="../_modules/ambra_sdk/storage/image.html#Image.cadsr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.image.Image.cadsr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets graphical annotations according to vendor definitions for CAD SR object.</p>
 <p>URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/cadsr?sid={sid}</p>
 <dl class="field-list simple">
@@ -87,7 +87,7 @@ outside of the original storage namespace</p></li>
 
 <dl class="method">
 <dt id="ambra_sdk.storage.image.Image.wrap">
-<code class="sig-name descname">wrap</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">opened_file: _io.BufferedReader</em>, <em class="sig-param">tags: Optional[str] = None</em>, <em class="sig-param">render_wrapped_pdf: Optional[bool] = None</em><span class="sig-paren">)</span> &#x2192; box.Box<a class="reference internal" href="../_modules/ambra_sdk/storage/image.html#Image.wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.image.Image.wrap" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">wrap</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">opened_file: _io.BufferedReader</em>, <em class="sig-param">tags: Optional[str] = None</em>, <em class="sig-param">render_wrapped_pdf: Optional[bool] = None</em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="reference internal" href="../_modules/ambra_sdk/storage/image.html#Image.wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.image.Image.wrap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upload a non DICOM image.</p>
 <p>URL: /namespace/{namespace}/wrap?sid={sid}&amp;render_wrapped_pdf={0,1}</p>
 <dl class="field-list simple">
@@ -117,7 +117,7 @@ outside of the original storage namespace</p></li>
 <dd><p>Storage Study.</p>
 <dl class="method">
 <dt id="ambra_sdk.storage.study.Study.anonymize">
-<code class="sig-name descname">anonymize</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str, namespace: str, study_uid: str, region: Dict[str, Any], to_namespace: Optional[str] = None, new_study_uid: Optional[str] = None, keep_image_uids: Optional[str] = None, color: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.anonymize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.anonymize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">anonymize</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str, namespace: str, study_uid: str, region: Dict[str, Any], to_namespace: Optional[str] = None, new_study_uid: Optional[str] = None, keep_image_uids: Optional[str] = None, color: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.anonymize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.anonymize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Produce a new study that is a copy of the old, with specified pixel regions obscured.</p>
 <p>URL: /study/{namespace}/{studyUid}/anonymize</p>
 <dl class="field-list simple">
@@ -137,6 +137,9 @@ of modified copies be same as originals? (default is false)</p></li>
 <li><p><strong>color</strong> – HTML-formatted color (rrggbb) of
 obscured regions (default is black-and-white checkerboard)</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Anonymize study response</p>
 </dd>
 </dl>
 <p>The request entity is a JSON object specifying the regions
@@ -172,7 +175,7 @@ outside of the original storage namespace</p></li>
 
 <dl class="method">
 <dt id="ambra_sdk.storage.study.Study.attribute">
-<code class="sig-name descname">attribute</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; box.Box<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.attribute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attribute</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">groups: Optional[str] = None</em>, <em class="sig-param">include_tags: Optional[str] = None</em>, <em class="sig-param">exclude_unnamed: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; box.Box<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.attribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets study image attributes.</p>
 <p>URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/attribute?sid={sid}&amp;phi_namespace={phi_namespace}</p>
 <dl class="field-list simple">
@@ -181,10 +184,21 @@ outside of the original storage namespace</p></li>
 <li><p><strong>engine_fqdn</strong> – Engine FQDN (Required).</p></li>
 <li><p><strong>namespace</strong> – Namespace (Required).</p></li>
 <li><p><strong>study_uid</strong> – Study uid (Required).</p></li>
+<li><p><strong>image_uid</strong> – Image uid (Required).</p></li>
 <li><p><strong>image_version</strong> – Image version (Required).</p></li>
 <li><p><strong>phi_namespace</strong> – A string, set to the UUID of the namespace
 where the file was attached if it was attached to a
 shared instance of the study outside of the original storage namespace</p></li>
+<li><p><strong>groups</strong> – The groups parameter will allow the client to
+filter tags to only those in a certain set of top-level
+DICOM groups. Comma-separated list of decimal values, or
+hex values preceeded with “0x”.</p></li>
+<li><p><strong>include_tags</strong> – Comma-separated list of top-level DICOM tags
+to include. Format: 00080018,00080020 Nested tags
+(00081111:00080550) only filter at the top level,
+everything is included within the sequence</p></li>
+<li><p><strong>exclude_unnamed</strong> – A string containing “1” or “0” (default 0).
+When “1”, private tags (with “name”: “?”) are not included</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -195,7 +209,7 @@ shared instance of the study outside of the original storage namespace</p></li>
 
 <dl class="method">
 <dt id="ambra_sdk.storage.study.Study.cache">
-<code class="sig-name descname">cache</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.cache" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">cache</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clears the image and metadata cache for the indicated study.</p>
 <p>URL: /study/{namespace}/{studyUid}/cache</p>
 <dl class="field-list simple">
@@ -205,6 +219,9 @@ shared instance of the study outside of the original storage namespace</p></li>
 <li><p><strong>namespace</strong> – Namespace (Required).</p></li>
 <li><p><strong>study_uid</strong> – Study uid (Required).</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Cache study response</p>
 </dd>
 </dl>
 </dd></dl>
@@ -238,7 +255,7 @@ instead of counting from (possibly cached) meta data.</p></li>
 
 <dl class="method">
 <dt id="ambra_sdk.storage.study.Study.crop">
-<code class="sig-name descname">crop</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str, namespace: str, study_uid: str, region: Dict[str, Any], to_namespace: Optional[str] = None, new_study_uid: Optional[str] = None, keep_image_uids: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.crop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.crop" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">crop</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str, namespace: str, study_uid: str, region: Dict[str, Any], to_namespace: Optional[str] = None, new_study_uid: Optional[str] = None, keep_image_uids: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.crop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.crop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Produce a new study that is a copy of the old, cropped to specified pixel region.</p>
 <p>URL: /study/{namespace}/{studyUid}/crop</p>
 <dl class="field-list simple">
@@ -258,6 +275,9 @@ of modified copies be same as originals? 1/0
 (default: 0/false)</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Crop study response</p>
+</dd>
 </dl>
 <p>The request entity is a JSON object specifying the
 region to be cropped. Region may be specified at study,
@@ -272,7 +292,7 @@ Example:
 
 <dl class="method">
 <dt id="ambra_sdk.storage.study.Study.delete">
-<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">keep_attachments: Optional[bool] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.delete" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">keep_attachments: Optional[bool] = None</em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a study.</p>
 <p>URL: /study/{namespace}/{study_uid}?sid={sid}&amp;keep_attachments={1,0}</p>
 <dl class="field-list simple">
@@ -284,6 +304,9 @@ Example:
 <li><p><strong>keep_attachments</strong> – An integer value of 1 or 0.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Delete response</p>
+</dd>
 </dl>
 <dl class="simple">
 <dt>If the optional parameter keep_attachments is set to 1, then:</dt><dd><p>all DICOM images will be deleted.
@@ -294,10 +317,11 @@ reports and attachments related to the study will be kept.</p>
 
 <dl class="method">
 <dt id="ambra_sdk.storage.study.Study.delete_attachment">
-<code class="sig-name descname">delete_attachment</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">attachment_id: str</em>, <em class="sig-param">hash_arg: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.delete_attachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.delete_attachment" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete_attachment</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">attachment_id: str</em>, <em class="sig-param">hash_arg: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.delete_attachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.delete_attachment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a study attachment.</p>
 <p>URL: /study/{namespace}/{studyUid}/attachment/{attachmentId}/version/{hash}?sid={sid}?phi_namespace={phi_namespace}</p>
-<p>Note: Instead of hash in storage api this method accept hash_arg argument.</p>
+<p>Note: Instead of hash in storage api this method accept hash_arg argument.
+Actually, hash_args is attachment version…</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -311,12 +335,15 @@ namespace where the file was attached if it was
 attached to a shared instance of the study outside of the original storage namespace</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Delete attachemnt response</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ambra_sdk.storage.study.Study.delete_image">
-<code class="sig-name descname">delete_image</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">version: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.delete_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.delete_image" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete_image</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">version: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.delete_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.delete_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a study image.</p>
 <p>URL: /study/{namespace}/{studyUid}/image/{imageUid}?sid={sid}&amp;version={image version hash}</p>
 <dl class="field-list simple">
@@ -329,12 +356,15 @@ attached to a shared instance of the study outside of the original storage names
 <li><p><strong>version</strong> – The image version hash</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Delete image response</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ambra_sdk.storage.study.Study.diagnostic">
-<code class="sig-name descname">diagnostic</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">frame_number: int</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">depth: int = 8</em>, <em class="sig-param">size: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; box.Box<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.diagnostic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.diagnostic" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">diagnostic</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">frame_number: int</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">depth: int = 8</em>, <em class="sig-param">size: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.diagnostic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.diagnostic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets study diagnostic image.</p>
 <p>URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber}/diagnostic?sid={sid}&amp;phi_namespace={phi_namespace}&amp;depth={8,16}&amp;size=[max-edge-length|{width}x{height}]</p>
 <dl class="field-list simple">
@@ -344,6 +374,7 @@ attached to a shared instance of the study outside of the original storage names
 <li><p><strong>namespace</strong> – Namespace (Required).</p></li>
 <li><p><strong>study_uid</strong> – Study uid (Required).</p></li>
 <li><p><strong>image_uid</strong> – Image uid (Required).</p></li>
+<li><p><strong>image_version</strong> – Image version (Required).</p></li>
 <li><p><strong>frame_number</strong> – Frame number (Required).</p></li>
 <li><p><strong>phi_namespace</strong> – A string, set to the UUID of the namespace
 where the file was attached if it was attached to a shared
@@ -464,7 +495,7 @@ by “”. Otherwise, only the first value is returned</p></li>
 
 <dl class="method">
 <dt id="ambra_sdk.storage.study.Study.image_phi">
-<code class="sig-name descname">image_phi</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; box.Box<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.image_phi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.image_phi" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">image_phi</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; box.Box<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.image_phi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.image_phi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets study image PHI.</p>
 <p>URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/phi?sid={sid}&amp;phi_namespace={phi_namespace}</p>
 <dl class="field-list simple">
@@ -473,6 +504,7 @@ by “”. Otherwise, only the first value is returned</p></li>
 <li><p><strong>engine_fqdn</strong> – Engine FQDN (Required).</p></li>
 <li><p><strong>namespace</strong> – Namespace (Required).</p></li>
 <li><p><strong>study_uid</strong> – Study uid (Required).</p></li>
+<li><p><strong>image_uid</strong> – Image uid (Required).</p></li>
 <li><p><strong>image_version</strong> – Image version (Required).</p></li>
 <li><p><strong>phi_namespace</strong> – A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace</p></li>
 </ul>
@@ -485,7 +517,7 @@ by “”. Otherwise, only the first value is returned</p></li>
 
 <dl class="method">
 <dt id="ambra_sdk.storage.study.Study.json">
-<code class="sig-name descname">json</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">groups: Optional[str] = None</em>, <em class="sig-param">include_tags: Optional[str] = None</em>, <em class="sig-param">exclude_unnamed: Optional[str] = None</em>, <em class="sig-param">all_dicom_values: Optional[str] = None</em>, <em class="sig-param">series_uid: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; box.Box<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">json</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">groups: Optional[str] = None</em>, <em class="sig-param">include_tags: Optional[str] = None</em>, <em class="sig-param">exclude_unnamed: Optional[str] = None</em>, <em class="sig-param">all_dicom_values: Optional[str] = None</em>, <em class="sig-param">series_uid: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets DICOM attributes for all images in a study.</p>
 <p>URL: /study/{namespace}/{studyUid}/json?sid={sid}&amp;phi_namespace={phi_namespace}&amp;groups={group ids}&amp;include_tags={tags}</p>
 <dl class="field-list simple">
@@ -547,7 +579,7 @@ outside of the original storage namespace</p></li>
 
 <dl class="method">
 <dt id="ambra_sdk.storage.study.Study.merge">
-<code class="sig-name descname">merge</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">secondary_study_uid: str</em>, <em class="sig-param">delete_secondary_study: Optional[bool] = None</em>, <em class="sig-param">series_uids: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.merge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.merge" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">merge</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">secondary_study_uid: str</em>, <em class="sig-param">delete_secondary_study: Optional[bool] = None</em>, <em class="sig-param">series_uids: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.merge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.merge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Merge studies.</p>
 <p>URL: /study/{namespace}/{studyUid}/merge?sid={sid}&amp;secondary_study_uid={secondary_study_uid}&amp;delete_secondary_study={0,1}</p>
 <dl class="field-list simple">
@@ -565,6 +597,9 @@ required permission to delete the secondary study.</p></li>
 Series Instance UIDs, used to filter images merged
 from secondary study.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Actually empty response</p>
 </dd>
 </dl>
 </dd></dl>
@@ -612,7 +647,7 @@ from secondary study.</p></li>
 
 <dl class="method">
 <dt id="ambra_sdk.storage.study.Study.post_attachment">
-<code class="sig-name descname">post_attachment</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">opened_file: _io.BufferedReader</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">wrap_images: Optional[bool] = None</em>, <em class="sig-param">return_html: Optional[bool] = None</em>, <em class="sig-param">synchronous_wrap: Optional[bool] = None</em>, <em class="sig-param">static_ids: Optional[bool] = None</em><span class="sig-paren">)</span> &#x2192; box.Box<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.post_attachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.post_attachment" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">post_attachment</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">opened_file: _io.BufferedReader</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">wrap_images: Optional[bool] = None</em>, <em class="sig-param">return_html: Optional[bool] = None</em>, <em class="sig-param">synchronous_wrap: Optional[bool] = None</em>, <em class="sig-param">static_ids: Optional[bool] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.post_attachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.post_attachment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Posts an attachment to a study.</p>
 <p>URL: /study/{namespace}/{studyUid}/attachment?sid={sid}&amp;phi_namespace={phi_namespace}&amp;wrap_images={0,1}&amp;return_html={0,1}&amp;synchronous_wrap={0,1}&amp;static_ids={0,1}</p>
 <dl class="field-list simple">
@@ -749,7 +784,7 @@ the study outside of the original storage namespace</p></li>
 
 <dl class="method">
 <dt id="ambra_sdk.storage.study.Study.thumbnail">
-<code class="sig-name descname">thumbnail</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">frame_number: int</em>, <em class="sig-param">depth: int = 8</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; box.Box<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.thumbnail"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.thumbnail" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">thumbnail</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">frame_number: int</em>, <em class="sig-param">depth: int = 8</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.thumbnail"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.thumbnail" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets study image thumbnail.</p>
 <p>URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber}/thumbnail?sid={sid}&amp;depth={8,16}&amp;phi_namespace={phi_namespace}</p>
 <dl class="field-list simple">

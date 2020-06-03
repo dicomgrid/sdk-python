@@ -31,6 +31,15 @@ class Boolean(BaseField):
         """
         return self._python_type(value)
 
+    def for_request(self, value):  # NOQA WPS110
+        """Get value for request.
+
+        :param value: value for request
+        :returns: value for requesting
+        """
+        validated_value = self.validate(value)
+        return '1' if validated_value is True else '0'
+
 
 class Integer(BaseField):
     """Int field."""

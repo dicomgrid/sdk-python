@@ -44,6 +44,7 @@
                 <li><a href="#session_uuid">/session/uuid</a>
                 <li><a href="#session_oauth_start">/session/oauth/start</a>
                 <li><a href="#session_oauth">/session/oauth</a>
+                <li><a href="#session_oauth_token">/session/oauth/token</a>
                 <li><a href="#session_pin">/session/pin</a>
                 <li><a href="#session_ttl">/session/ttl</a>
             </ul>
@@ -533,7 +534,7 @@
         <a name="error"><h3>Error handling</h3></a>
         Errors are flagged by an HTTP error code as follows:
         <ul>
-            <li> 401 Authorization required - The call needs a valid, logged in session id (sid) or valid basic authentication user name and password.
+            <li> 401 Authorization required - The call needs a valid, logged in session id (sid), valid basic authentication user name and password or an OAuth token
             <li> 405 Method not allowed - The call must be a POST not a GET
             <li> 412 Precondition failed - The returned json data structure will have the <i>status</i> flag set to ERROR.
             The <i>error_type</i> and the optional <i>error_subtype</i> fields will hold tokens that describe the error.
@@ -1812,6 +1813,14 @@
                 <td></td>
                 <td>JSON hash for the viewer3 configuration for the role.</td>
             </tr>
+            <tr>
+                <td>ui_json</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>JSON structure to control the application UI</td>
+            </tr>
         </table>
 
         <a name="schedule"><h3>Schedules</h3></a>
@@ -1917,6 +1926,16 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Automatically submit a join request if a user registers under a vanity domain</td>
+            </tr>
+            <tr>
+                <td>vanity_registration_customfields</td>
+                <td>Text</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Comma-delimited list of customfield uuids to show on vanity registration page</td>
             </tr>
             <tr>
                 <td>login_json</td>
@@ -3209,6 +3228,16 @@
                 <td>Restrict logins to the specified network or IP address e.g. 195.114.80/24,38.32.26.106/32 A CSV list can be used to specify multiple networks. This is only applied to users who solely belong to the account</td>
             </tr>
             <tr>
+                <td>link_external_whitelist</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Restrict external links access to the specified network or IP address. Further documentations is in the <a href="link_external.html">External links</a> page.
+            </tr>
+            <tr>
                 <td>load_ack_as_hl7</td>
                 <td>Flag</td>
                 <td>0</td>
@@ -3532,6 +3561,17 @@
                 <td>A JSON hash of the default link add values for the UI</td>
             </tr>
             <tr>
+                <td>upload_settings</td>
+                <td>Text</td
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>A JSON hash of the upload settings</td>
+            </tr>
+            <tr>
                 <td>hl7_fetch_filter</td>
                 <td>Text</td
                 <td></td>
@@ -3716,6 +3756,26 @@
                 <td>Limit access to /link/external to the specific referer. The referer can be a regexp to match multiple referers</td>
             </tr>
             <tr>
+                <td>link_external_whitelist</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>IP address whitelist to apply to the /link/external call. Further documentation <a href="link_external.html">here</a>
+            </tr>
+            <tr>
+                <td>link_external_whitelist_all_links</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Flag to apply the link_external_whitelist setting to all links</td>
+            </tr>
+            <tr>
                 <td>link_sticky_anon_users</td>
                 <td>Flag</td>
                 <td>0</td>
@@ -3848,6 +3908,7 @@
                         <li> domain &bull; domain for iconnect (defaults to AMBRA)
                         <li> role &bull; role for iconnect (defaults to EMRUSERS)
                         <li> priors &bull; Flag to include priors in eunity (same patientid, patient_birth_date and phi_namespace)
+                        <li> other_params &bull; A JSON array of other parameters to add to the URL
                     </ul>
                 </td>
             </tr>
@@ -3936,7 +3997,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>
-                    Enable the upload_match feature on links to restrict studies can that be uploaded. This field should be in the same format as the upload_match link field. The regular expressions can contain the special tags _LAST_,_FIRST_,_DOB_ or _MRN_ which will be replaced with the data from Epic. For example to restrict uploads to studies that match the patients last name and date of birth use the following setting <code>{"(0010,0030)":"/^_DOB_$/","(0010,0010)":"/_LAST_/"}</code>
+                    Enable the upload_match feature on links to restrict studies can that be uploaded. This field should be in the same format as the upload_match link field. The regular expressions can contain the special tags _LAST_,_FIRST_,_DOB_, _MRN_ or _SEX_  which will be replaced with the data from Epic. For example to restrict uploads to studies that match the patients last name and date of birth use the following setting <code>{"(0010,0030)":"/^_DOB_$/","(0010,0010)":"/_LAST_/"}</code>
                 </td>
             </tr>
             <tr>
@@ -4038,16 +4099,6 @@
                 <td>Settings for the AI question</td>
             </tr>
             <tr>
-                <td>ai_roche_validate_study</td>
-                <td>Text</td>
-                <td></td>
-                <td>0</td>
-                <td>0</td>
-                <td>1</td>
-                <td>0</td>
-                <td>Settings for the AI question</td>
-            </tr>
-            <tr>
                 <td>ai_delete_duplicate_images</td>
                 <td>Text</td>
                 <td></td>
@@ -4089,6 +4140,16 @@
             </tr>
             <tr>
                 <td>ai_run_custom_code_scripts</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Settings for the AI question</td>
+            </tr>
+            <tr>
+                <td>ai_bodypart_abdomen_chest_pelvis</td>
                 <td>Text</td>
                 <td></td>
                 <td>0</td>
@@ -4360,11 +4421,6 @@
                 <td>ai_anonymize_study_images_google_dlp</td>
             </tr>
             <tr>
-                <td>anonymize_study_images_opencv</td>
-                <td>Anonymize the study images using OpenCV</td>
-                <td>ai_anonymize_study_images_opencv</td>
-            </tr>
-            <tr>
                 <td>anonymize_study_images_tensorflow_east</td>
                 <td>Anonymize the study images using Tensorflow EAST</td>
                 <td>ai_anonymize_study_images_tensorflow_east</td>
@@ -4400,11 +4456,6 @@
                 <td>ai_search_and_replace_study_tags</td>
             </tr>
             <tr>
-                <td>roche_validate_study</td>
-                <td>Custom validation logic required for Roche</td>
-                <td>ai_roche_validate_study</td>
-            </tr>
-            <tr>
                 <td>delete_duplicate_images</td>
                 <td>Deletes images which values are identical to specified DICOM tages</td>
                 <td>ai_delete_duplicate_images</td>
@@ -4433,6 +4484,11 @@
                 <td>run_custom_code_scripts</td>
                 <td>Implements ability to run custom code.</td>
                 <td>ai_run_custom_code_scripts</td>
+            </tr>
+            <tr>
+                <td>bodypart_abdomen_chest_pelvis</td>
+                <td>Detects if the study image(s) contain(s) abdomen, chest and/or pelvis</td>
+                <td>ai_bodypart_abdomen_chest_pelvis</td>
             </tr>
         </table>
 
@@ -4525,7 +4581,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>settings</i> &bull; A JSON list of user settings set via /setting/set to return (optional)<br>
                 </td>
             </tr>
@@ -4569,7 +4625,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(account_id|namespace_id)</i> &bull; Either the account or namespaces to get the users permissions for<br>
                 </td>
             </tr>
@@ -4608,7 +4664,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                 </td>
             </tr>
             <tr>
@@ -4764,7 +4820,7 @@
                 <th>Returns</th>
                 <td>
                     <i>status</i> &bull; OK<br>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The users uuid<br>
                     <i>name</i> &bull; The users name<br>
                     <i>new_user</i> &bull; Flag if they are a new user<br>
@@ -4785,6 +4841,55 @@
             <tr>
                 <th>Notes</th>
                 <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#session-idx">top</a>
+
+        <p><a name="session_oauth_token"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get an OAuth token to access other API calls</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/session/oauth/token</td/>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>grant_type</i> &bull; The grant type, set to <code>client_credentials</code><br>
+                    <i>client_id</i> &bull; The users email address<br>
+                    <i>client_secret</i> &bull; The users password<br>
+                    <i>duration</i> &bull; The number of seconds the token is valid for (optional and defaults to 3600 with a maximum value of 86400)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>access_token</i> &bull; The access token<br>
+                    <i>created_at</i> &bull; Timestamp when the token was created<br>
+                    <i>expires_in</i> &bull; Number of seconds before the token expires<br>
+                    <i>token_type</i> &bull; The token type <code>bearer</code><br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    LOCKOUT &bull; Too many failed attempts<br>
+                    AUTH_FAILED &bull; Authentication failed<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ul>
+                        <li> The access_token should be passed as the Bearer value in the Authorization headers to access API entry points that require validation
+                        <li> The call must be a POST
+                    </ul>
                 </td>
             </tr>
         </table>
@@ -4893,6 +4998,7 @@
                     <i>email</i> &bull; Email<br>
                     <i>share_code</i> &bull; Share code they are joining from (optional)<br>
                     <i>captcha_response</i> &bull; Response from captcha (optional)<br>
+                    <i>customfield-(CUSTOMFIELD_UUID)</i> &bull; Custom field(s) defined in the vanity_registration_customfields account setting (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -4936,7 +5042,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; Account id to check for the user_edit permission<br>
                     <i>first</i> &bull; First name<br>
                     <i>last</i> &bull; Last name<br>
@@ -4992,7 +5098,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The users uuid (optional). Uses the session user if not passed<br>
                     <i>account_id</i> &bull; Account id if you are trying to get a user other than yourself (optional)<br>
                 </td>
@@ -5024,6 +5130,7 @@
                     <i>event_link_mine</i> &bull; Notify the user when an anonymous link created by the user is hit in the namespace<br>
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails<br>
+                    <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user<br>
                     <i>share_code</i> &bull; The share code of the user<br>
                     <i>share_description</i> &bull; The share description of the user<br>
                     <i>time_zone</i> &bull; The users time zone abbreviation<br>
@@ -5064,7 +5171,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The users uuid (optional). Uses the session user if not passed<br>
                     <i>first</i> &bull; First name (optional)<br>
                     <i>last</i> &bull; Last name (optional)<br>
@@ -5129,7 +5236,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                 </td>
             </tr>
             <tr>
@@ -5242,7 +5349,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>email</i> &bull; The email of the user to welcome<br>
                     <i>account_id</i> &bull; Id of the account to welcome them to<br>
                     <i>link</i> &bull; URL to reset the password at. The reset token will be appended to the link<br>
@@ -5287,7 +5394,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
                     <i>sort_by</i> &bull; <a href="#sort">Sorting</a> (optional)<br>
@@ -5330,7 +5437,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; Id of the account to request to join<br>
                 </td>
             </tr>
@@ -5370,7 +5477,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account to invite the person too<br>
                     <i>role_id</i> &bull; The role to give the user (optional)<br>
                     <i>email</i> &bull; Email address of the person to invite<br>
@@ -5434,7 +5541,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the invitation<br>
                 </td>
             </tr>
@@ -5474,7 +5581,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; Only return the namespaces for this account (optional)<br>
                     <i>plus_phr</i> &bull; Flag to include the PHR account as well if account_id was specified (optional)<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
@@ -5525,7 +5632,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>namespace_id</i> &bull; Id of the namespace to set the flags on<br>
                     <i>event_share</i> &bull; Notify the user on a share into the namespace (optional)<br>
                     <i>event_approve</i> &bull; Notify the user on a approval needed into the namespace (optional)<br>
@@ -5540,6 +5647,7 @@
                     <i>event_link_mine</i> &bull; Notify the user when an anonymous link created by the user is hit in the namespace (optional)<br>
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
+                    <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -5577,7 +5685,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>generate</i> &bull; Flag to generate the shared secret for a token authenticator and enable TOKEN PIN authentication<br>
                     <i>delete</i> &bull; Flag to delete the shared secret and disable TOKEN PIN authentication<br>
                 </td>
@@ -5618,7 +5726,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>signature</i> &bull; Set the users signature to this base64 encoded image<br>
                 </td>
             </tr>
@@ -5655,7 +5763,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; User uuid<br>
                 </td>
             </tr>
@@ -5935,13 +6043,14 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
                     <i>sort_by</i> &bull; <a href="#sort">Sorting</a> (optional)<br>
                     <i>template</i> &bull; A JSON hash with name, account_id and language of the template to return (optional)<br>
                     <i>extra</i> &bull; Flag to return extra data as detailed in /study/get (optional)<br>
                     <i>customfield_h</i> &bull; Flag to return a customfield hash as detailed in /study/get (optional)<br>
+                    <i>permissions_diff</i> &bull; Flag to return only the permissions that differ from the namespace permissions (optional)<br>
                     <i>fields</i> &bull; A JSON list of the study fields to return (optional)<br>
                 </td>
             </tr>
@@ -5989,7 +6098,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                 </td>
             </tr>
@@ -6078,6 +6187,7 @@
                     <i>(sid || node_id && serial_no)</i> &bull; Either the sid or the node uuid and serial number<br>
                     <i>(uuid || study_uid && storage_namespace && phi_namespace)</i> &bull; The study uuid or the storage triplet<br>
                     <i>full_hl7</i> &bull; Flag to return the full hl7 record instead of just the uuid (optional)<br>
+                    <i>permissions_diff</i> &bull; Flag to return only the permissions that differ from the namespace permissions (optional)<br>
                     <i>extra</i> &bull; Flag to return extra data as detailed below (optional)<br>
                     <i>customfield_h</i> &bull; Flag to return a customfield hash as detailed below (optional)<br>
                     <i>fields</i> &bull; A JSON list of the study fields to return (optional)<br>
@@ -6168,6 +6278,7 @@
                     * <i>destination_uuid</i> &bull; Destination Id<br>
                     * <i>destination_name</i> &bull; Destination Name<br>
                     * <i>status</i> &bull; The status, either 'I'n process, pe'N'ding, 'S'uccessful, 'P'artial or 'F'ailed<br>
+                    * <i>status_reason</i> &bull; Additional detail for the status<br>
                     * <i>image_count</i> &bull; The image count for the push<br>
                     * <i>updated</i> &bull; Date and time the status was last updated<br>
                     * <i>created</i> &bull; Date and time the push  was created<br>
@@ -6176,6 +6287,7 @@
                     <i>account_name</i> &bull; Name of the account the study is in<br>
                     <i>created_by_name</i> &bull; Name of the user who created the study<br>
                     <i>created_by_email</i> &bull; Email of the user who created the study<br>
+                    <i>created_by_mobile_phone</i> &bull; Mobile phone number of the user who created the study<br>
                     <i>hipaa_name</i> &bull; HIPAA compliant version of the patient name<br>
                     <i>first_name</i> &bull; Patient first name<br>
                     <i>last_name</i> &bull; Patient last name<br>
@@ -6214,7 +6326,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study uuid<br>
                 </td>
             </tr>
@@ -6287,7 +6399,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study uuid<br>
                     <i>destination_id</i> &bull; The destination to push it to<br>
                     <i>batch_no</i> &bull; The batch number if pushing to a CD burner<br>
@@ -6338,7 +6450,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study uuid<br>
                     <i>destination_id</i> &bull; The destination to push it to<br>
                     <i>hl7_template_id</i> &bull; The HL7 template to use (optional)<br>
@@ -6393,7 +6505,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study uuid<br>
                     <i>hl7_id</i> &bull; HL7 message to create the PDF report for<br>
                 </td>
@@ -6437,7 +6549,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study uuid<br>
                     <i>hl7_id</i> &bull; HL7 message to create the PDF report for<br>
                     <i>number</i> &bull; The fax number to send the PDF report to<br>
@@ -6578,7 +6690,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study uuid<br>
                     <i>type</i> &bull; Type of objects you want (account|location|group|user)</i><br>
                 </td>
@@ -6627,7 +6739,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(uuid || study_uid && storage_namespace && phi_namespace)</i> &bull; The study uuid or the storage triplet if you want a future share<br>
                     <i>(account_id|location_id|group_id|user_id|share_code|email|masshiway|rsna|npi)</i> &bull; uuid of the account, location, group, user or share code, email address(es), RSNA, NPI or masshiway recipient to share this study with<br>
                     <i>message</i> &bull; Message to the recipient (optional)<br>
@@ -6698,7 +6810,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study uuid<br>
                     <i>(account_id|location_id|group_id|user_id|user_invite_share_id)</i> &bull; uuid of the account, location, group, user or user invitation to stop sharing this study with<br>
                 </td>
@@ -6745,7 +6857,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study uuid<br>
                     <i>name</i> &bull; Flag to return a hash with both the uuid and name of the object (optional)<br>
                 </td>
@@ -6796,7 +6908,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study uuid<br>
                     <i>delay</i> &bull; Number of seconds to delay showing the study as approved and running routing and events on it (optional)<br>
                     <i>must_match</i> &bull; A JSON hash of study field names and values that must match before showing the study as approved and running routing and events on it (optional)<br>
@@ -6847,7 +6959,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study uuid<br>
                     <i>message</i> &bull; Message to send to the person who shared the study (optional)<br>
                 </td>
@@ -6896,7 +7008,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The id of the study (optional if study_uid and storage_namespace are passed)<br>
                     <i>study_uid</i> &bull; The v3 storage uid of the study (optional if uuid is passed)<br>
                     <i>storage_namespace</i> &bull; The storage namespace of the study (optional if uuid is passed)<br>
@@ -6940,7 +7052,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The id of the study<br>
                     <i>star</i> &bull; Star flag set on or off (1|0)<br>
 
@@ -6988,7 +7100,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; Limit to studies in the passed account<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>sort_by</i> &bull; <a href="#sort">Sorting</a> (optional)<br>
@@ -7037,7 +7149,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>namespace_id</i> &bull; Namespace to run the report on<br>
                     <i>hours</i> &bull; Report on studies acquired within the last number of hours<br>
                     <i>limit</i> &bull; Maximum size of the report. The default is 30,000 studies. If the report will be bigger than this an error will be returned (optional)<br>
@@ -7096,7 +7208,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(study_id|study_uid && storage_namespace && phi_namespace)</i> &bull; Either the study uuid or the storage triplet<br>
                 </td>
             </tr>
@@ -7157,7 +7269,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(study_id|study_uid && storage_namespace && phi_namespace)</i> &bull; Either the study uuid or the storage triplet<br>
                     <i>settings</i> &bull; A JSON list of user settings set via /setting/set to return (optional)<br>
                 </td>
@@ -7202,7 +7314,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>study_id</i> &bull; Study uuid<br>
                     <i>old</i> &bull; The old study status value<br>
                     <i>new</i> &bull; The new study status value<br>
@@ -7247,7 +7359,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
                 </td>
             </tr>
@@ -7285,7 +7397,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>study_id</i> &bull; Study uuid<br>
                 </td>
             </tr>
@@ -7329,7 +7441,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study id<br>
                     <i>namespace_id</i> &bull; The namespace id<br>
                 </td>
@@ -7377,7 +7489,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study id<br>
                     <i>namespace_id</i> &bull; The namespace id to duplicate it to<br>
                     <i>include_attachments</i> &bull; Also duplicate attachments<br>
@@ -7427,7 +7539,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study id<br>
                     <i>namespace_id</i> &bull; The namespace id to split it into<br>
                     <i>no_split</i> &bull; Do not split on the series just create a new study with a study UID<br>
@@ -7477,7 +7589,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study id<br>
                     <i>thaw</i> &bull; Flag to thaw a frozen study<br>
                 </td>
@@ -7530,7 +7642,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study id<br>
                     <i>route_id</i> &bull; The routing rule id<br>
                     <i>email</i> &bull; The email to share with if the rule has a share_email action with the USER_ENTRY token (optional)<br>
@@ -7580,7 +7692,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study id<br>
                     <i>(accession_number|patientid|patient_name)</i> &bull; The full or partial accession number, MRN or patient name to search by. If none are passed the studies accession number will be used (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -7645,7 +7757,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study id<br>
                 </td>
             </tr>
@@ -7692,7 +7804,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study id<br>
                 </td>
             </tr>
@@ -7734,7 +7846,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>study_id</i> &bull; The study id<br>
                     <i>body</i> &bull; The comment body<br>
                 </td>
@@ -7781,7 +7893,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The comment id<br>
                 </td>
             </tr>
@@ -7826,7 +7938,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The comment id<br>
                 </td>
             </tr>
@@ -7878,7 +7990,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study id<br>
                     <i>validate_id</i> &bull; The validation id<br>
                     <i>series</i> &bull; Only validate the specified series (optional)<br>
@@ -7925,7 +8037,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study id<br>
                     <i>report_name</i> &bull; The report name (optional defaults to customfields.txt)<br>
                 </td>
@@ -7967,7 +8079,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study id<br>
                     <i>redirect</i> &bull; A flag to return an HTTP redirect to the viewer URL rather than the JSON structure<br>
                 </td>
@@ -8010,7 +8122,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study id<br>
                     <i>question</i> &bull; The question to ask or a JSON array of questions to ask<br>
                     <i>detail</i> &bull; Optional detail to pass through to the AI stack<br>
@@ -8066,7 +8178,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study id<br>
                 </td>
             </tr>
@@ -8160,7 +8272,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study uuid<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
                     <i>sort_by</i> &bull; <a href="#sort">Sorting</a> (optional)<br>
@@ -8265,7 +8377,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>object</i> &bull; Object class (Study|User_account|Group|Location|Account|Patient|Case|Order|Message)<br>
                     <i>filter.*</i> &bull; <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -8309,7 +8421,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>tag</i> &bull; Value of the tag </br>
                     <i>object</i> &bull; Object class to apply it to (Study|User_account|Group|Location|Account|Patient|Case|Order|Message)<br>
                     <i>object_id</i> &bull; UUID of the object</br>
@@ -8357,7 +8469,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>tag</i> &bull; Value of the tag </br>
                     <i>object</i> &bull; Object class to apply it to (Study|User_account|Group|Location|Account|Patient|Case|Order)<br>
                     <i>object_id</i> &bull; UUID of the object</br>
@@ -8400,7 +8512,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(study_id|study_uid && storage_namespace && phi_namespace)</i> The uuid of the study or the storage triplet<br>
                 </td>
             </tr>
@@ -8447,7 +8559,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(study_id|study_uid && storage_namespace && phi_namespace)</i> The uuid of the study or the storage triplet<br>
                     <i>series_uid</i> &bull; The series uid<br>
                     <i>instance_uid</i> &bull; The instance uid<br>
@@ -8498,7 +8610,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the annotation<br>
                     <i>json</i> &bull; The JSON annotation data structure<br>
                 </td>
@@ -8546,7 +8658,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the annotation<br>
                 </td>
             </tr>
@@ -8599,7 +8711,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the annotation<br>
                 </td>
             </tr>
@@ -8646,7 +8758,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(study_id|study_uid && storage_namespace && phi_namespace)</i> The uuid of the study or the storage triplet<br>
                 </td>
             </tr>
@@ -8693,7 +8805,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(study_id|study_uid && storage_namespace && phi_namespace)</i> The uuid of the study or the storage triplet<br>
                     <i>series_uid</i> &bull; The series uid<br>
                     <i>instance_uid</i> &bull; The instance uid<br>
@@ -8744,7 +8856,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the keyimage<br>
                 </td>
             </tr>
@@ -8796,7 +8908,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the key image<br>
                 </td>
             </tr>
@@ -8843,7 +8955,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account id
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -8892,7 +9004,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account id<br>
                     <i>name</i> &bull; The validation rule name<br>
                     <i>conditions</i> &bull; The validation conditions<br>
@@ -8939,6 +9051,7 @@
                             <li> regexp - the regular expression for the match and not_match checks
                             <li> range - range of the unique and identical checks, the available ranges are or either study or series
                         </ul>
+                        <li> A validate can not have more than 10 regular expression conditions in it
                     </ul>
                 </td>
             </tr>
@@ -8958,7 +9071,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The validation id<br>
                     <i>name</i> &bull; The validation rule name<br>
                     <i>conditions</i> &bull; The validation conditions<br>
@@ -9006,7 +9119,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the validate<br>
                 </td>
             </tr>
@@ -9053,7 +9166,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the validation rule<br>
                 </td>
             </tr>
@@ -9101,7 +9214,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(study_id|namespace_id)</i> &bull; uuid of the study or namespace to search<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -9153,7 +9266,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the DICOM data<br>
                     <i>dicom_tags</i> A JSON list of the DICOM tags to return (optional)<br>
                     <i>customfields</i> &bull; An array of the custom fields associated with this dicomdata. Each object has the following <a href="#customfields">fields</a> (This is only returned if the dicomdata has custom fields)<br>
@@ -9208,7 +9321,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>study_id</i> &bull; Id of the study to add the radreport to<br>
                     <i>type</i> &bull; The type of the radreport<br>
                     <i>fields</i> &bull; A JSON hash of the fields in the report (optional)<br>
@@ -9257,7 +9370,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the radreport<br>
                     <i>fields</i> &bull; A JSON hash of the fields in the report (optional)<br>
                     <i>attachment</i> &bull; A JSON hash of the storage attachment information (optional)<br>
@@ -9305,7 +9418,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the radreport<br>
                 </td>
             </tr>
@@ -9358,7 +9471,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The id of the radreport<br>
                     <i>action</i> &bull; The audit action (SIGNED|MEDICAL_EDIT|ADMIN_EDIT|REPORT_GENERATED)<br>
                     <i>detail</i> &bull; Additional information<br>
@@ -9405,7 +9518,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the radreport<br>
                 </td>
             </tr>
@@ -9450,7 +9563,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the radreport<br>
                 </td>
             </tr>
@@ -9499,7 +9612,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>user_id</i> &bull; The user id
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -9548,7 +9661,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>modality</i> &bull; Limit to this modality (optional)<br>
                     <i>type</i> &bull; Limit to this type (optional)<br>
@@ -9599,7 +9712,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>modality</i> &bull; Modality<br>
                     <i>type</i> &bull; Type of radreport<br>
@@ -9649,7 +9762,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the macro<br>
                     <i>modality</i> &bull; Modality (optional)<br>
                     <i>type</i> &bull; Type of radreport (optional)<br>
@@ -9699,7 +9812,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the macro<br>
                 </td>
             </tr>
@@ -9749,7 +9862,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the macro<br>
                 </td>
             </tr>
@@ -9793,7 +9906,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The radreport uuid<br>
                 </td>
             </tr>
@@ -9836,7 +9949,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The radreport uuid<br>
                     <i>number</i> &bull; The fax number to send the PDF report to<br>
                 </td>
@@ -9884,7 +9997,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>type</i> &bull; Limit to this type (optional)<br>
                     <i>active</i> &bull; Limit to active templates (optional)<br>
@@ -9935,7 +10048,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>type</i> &bull; Type of radreport<br>
                     <i>name</i> &bull; Name of the template<br>
@@ -9985,7 +10098,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the template<br>
                     <i>type</i> &bull; Type of radreport (optional)<br>
                     <i>name</i> &bull; Name of the template (optional)<br>
@@ -10035,7 +10148,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the template<br>
                 </td>
             </tr>
@@ -10087,7 +10200,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>type</i> &bull; Type of the template<br>
                 </td>
@@ -10140,7 +10253,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the template<br>
                 </td>
             </tr>
@@ -10184,7 +10297,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the template<br>
                 </td>
             </tr>
@@ -10235,7 +10348,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>name</i> &bull; The name of the code<br>
                     <i>type</i> &bull; Type of code (AI_CUSTOM_VALIDATION_CODE)<br>
                     <i>language</i> &bull; Language of code (PYTHON)<br>
@@ -10288,7 +10401,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The code uuid<br>
                 </td>
             </tr>
@@ -10343,7 +10456,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The code uuid<br>
                     <i>name</i> &bull; The name of the code (optional)<br>
                     <i>code</i> &bull; The code (optional)<br>
@@ -10395,7 +10508,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The code uuid<br>
                 </td>
             </tr>
@@ -10432,7 +10545,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The code uuid<br>
                 </td>
             </tr>
@@ -10477,7 +10590,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -10530,7 +10643,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the customcode<br>
                     <i>namespace_id</i> &bull; uuid of the namespace<br>
                 </td>
@@ -10578,7 +10691,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>deployment_id</i> &bull; Deployment uuid<br>
                 </td>
             </tr>
@@ -10623,7 +10736,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of customcode deployment<br>
                 </td>
             </tr>
@@ -10674,7 +10787,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(namespace_id|customcode_id)</i> &bull; uuid of either the namespace or customcode to show the deployments for<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -10729,7 +10842,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The case uuid<br>
                 </td>
             </tr>
@@ -10809,7 +10922,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The case uuid<br>
                     <i>name</i> &bull; case name (optional)<br>
                     <i>submitted</i> &bull; Flag if the case is submitted (optional)<br>
@@ -10850,6 +10963,7 @@
                 <td>
                     <ul>
                         <li> To clear out an assigned user field send a zero UUID i.e. <code>00000000-0000-0000-0000-000000000000</code></li>
+                        <li> If the case is being assigned to a medical or admin user the corresponding user will be emailed a notification. User's <i>event_case_assignment</i> flag must be set for notification to happen.</li>
                     </ul>
                 </td>
             </tr>
@@ -10869,7 +10983,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The case uuid<br>
                     <i>reason</i> &bull; The reason the case was returned<br>
                 </td>
@@ -10916,7 +11030,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The case uuid<br>
                 </td>
             </tr>
@@ -10961,7 +11075,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account (optional)<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -11011,7 +11125,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Case uuid<br>
                     <i>study_id</i> &bull; Study uuid<br>
                     <i>detach</i> &bull; Flag to detach the study from the case (optional)<br>
@@ -11061,7 +11175,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account to add them to<br>
                     <i>study_id</i> &bull; Id of the study to create a patient from (optional)<br>
                     <i>(name|first&&last)</i> &bull; Patient name as either full name or first and last (optional if study_id is used)<br>
@@ -11124,7 +11238,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The patient uuid<br>
                 </td>
             </tr>
@@ -11183,7 +11297,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The patient uuid<br>
                     <i>(name|first&&last)</i> &bull; Patient name as either full name or first and last<br>
                     <i>mrn</i> &bull; MRN<br>
@@ -11242,7 +11356,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The patient uuid<br>
                 </td>
             </tr>
@@ -11287,7 +11401,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -11338,7 +11452,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The patient id<br>
                     <i>viewable_only</i> &bull; Flag if they only want the studies the user can view<br>
 
@@ -11546,7 +11660,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account to add them to<br>
                     <i>patientid</i> &bull; Patient MRN<br>
                     <i>patient_name</i> &bull; Patient name<br>
@@ -11601,7 +11715,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The order uuid<br>
                 </td>
             </tr>
@@ -11668,7 +11782,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The order uuid<br>
                     <i>patientid</i> &bull; Patient MRN<br>
                     <i>patient_name</i> &bull; Patient name<br>
@@ -11721,7 +11835,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The order uuid<br>
                 </td>
             </tr>
@@ -11766,7 +11880,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -11816,7 +11930,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>order_id</i> &bull; uuid of the order<br>
                     <i>modality</i> &bull; Modality<br>
                     <i>scheduled_procedure_step_id</i> &bull; Step ID<br>
@@ -11870,7 +11984,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; UUID of the SPS<br>
                     <i>modality</i> &bull; Modality (optional)<br>
                     <i>scheduled_procedure_step_id</i> &bull; Step ID (optional)<br>
@@ -11923,7 +12037,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; UUID of the SPS<br>
                 </td>
             </tr>
@@ -12080,7 +12194,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -12225,7 +12339,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The hl7 uuid<br>
                 </td>
             </tr>
@@ -12270,7 +12384,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>study_id</i> &bull; The study uuid<br>
                 </td>
             </tr>
@@ -12310,7 +12424,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The HL7 uuid<br>
                 </td>
             </tr>
@@ -12351,7 +12465,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account uuid<br>
                 </td>
             </tr>
@@ -12397,7 +12511,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account uuid<br>
                     <i>name</i> &bull; Name of the template<br>
                     <i>body</i> &bull; The HL7 message with replacement expressions<br>
@@ -12460,7 +12574,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The template id<br>
                     <i>name</i> &bull; Name of the template<br>
                     <i>body</i> &bull; The HL7 message with replacement expressions<br>
@@ -12508,7 +12622,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The template id<br>
                 </td>
             </tr>
@@ -12557,7 +12671,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The template id<br>
                     <i>study_id</i> &bull; The study id<br>
                     <i>hl7_id</i> &bull; Optional hl7 message<br>
@@ -12607,7 +12721,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The template id<br>
                 </td>
             </tr>
@@ -12652,7 +12766,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account uuid<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -12702,7 +12816,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account uuid<br>
                     <i>name</i> &bull; Name of the transform<br>
                     <i>order_by</i> &bull; A numeric ordering value. Transformations are run in this order from lowest to highest<br>
@@ -12763,7 +12877,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The transform id<br>
                     <i>name</i> &bull; Name of the transform<br>
                     <i>order_by</i> &bull; A numeric ordering value. Transformations are run in this order from lowest to highest<br>
@@ -12816,7 +12930,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The transform id<br>
                 </td>
             </tr>
@@ -12866,7 +12980,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The transform id<br>
                 </td>
             </tr>
@@ -12911,7 +13025,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>hl7</i> &bull; HL7 message to run the transformations on
                 </td>
             </tr>
@@ -12997,7 +13111,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>key</i> &bull; The key to store the value under. If the key name begins with <i>temp_</i> it is only available for the session.<br>
                     <i>value</i> &bull; The value to store <br>
                     <i>user_id</i> &bull; A sysadmin user can set the value for a specific user (optional) <br>
@@ -13039,7 +13153,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>key</i> &bull; The key to get<br>
                     <i>user_id</i> &bull; A sysadmin user can get the value for a specific user (optional)<br>
                 </td>
@@ -13078,7 +13192,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                 </td>
             </tr>
             <tr>
@@ -13117,7 +13231,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -13167,7 +13281,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account the user is in<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -13228,7 +13342,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The node id<br>
                     <i>account_id</i> &bull; The account the user is in<br>
                     <i>message</i> &bull; Message (optional)<br>
@@ -13276,7 +13390,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>name</i> &bull; Description of the node<br>
                     <i>uuid</i> &bull; uuid of the node (optional, you can use this to explicitly set the UUID)<br>
                     <i>(account_id|location_id|group_id)</i> &bull; uuid of the account, location or group to link this node to<br>
@@ -13528,6 +13642,11 @@
                     * <i>message</i> &bull; The HL7 message to deliver<br>
                     * <i>address</i> &bull; The HL7 destination address<br>
                     * <i>port</i> &bull; The HL7 destination port<br>
+                    <i>search_results</i> &bull; An array of the results from the /destination/search jobs run by the gateway. Each object in the array will have the following fields<br>
+                    * <i>uuid</i> &bull; Id of the search results<br>
+                    * <i>destination_id</i> &bull; Id of the destination that was searched<br>
+                    * <i>payload</i> &bull; Payload from the search<br>
+                    * <i>search_id</i> &bull; UUID of the original search<br>
                     <i>search</i> &bull; An array of the search jobs to run. Each object in the array will have the following fields<br>
                     * <i>uuid</i> &bull; Id of the search job<br>
                     * <i>destination_id</i> &bull; Id of the destination<br>
@@ -13640,6 +13759,7 @@
                     <i>serial_no</i> &bull; The serial number of the node<br>
                     <i>job_id</i> &bull; The uuid of the push job<br>
                     <i>status</i> &bull; Status code of the job (S|F|P|B|U) - Success, failure, partial transfer, blocked or uncached<br>
+                    <i>status_reason</i> &bull; Detail on the status change (optional)<br>
                     <i>ack</i> &bull; The HL7 ACK if this was an HL7 job (optional)<br>
                     <i>email_reason</i> &bull; Email the user this reason for the status change (optional)<br>
                 </td>
@@ -13817,7 +13937,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The node id<br>
                 </td>
             </tr>
@@ -14047,7 +14167,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The node id<br>
                     <i>start</i> &bull; Start time stamp in YYYY-MM-DD HH:MM:SS format<br>
                     <i>end</i> &bull; End time stamp in YYYY-MM-DD HH:MM:SS format<br>
@@ -14201,7 +14321,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(node_id|destination_id)</i> &bull; The node or destination id<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -14255,7 +14375,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The node progress uuid<br>
                 </td>
             </tr>
@@ -14312,7 +14432,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -14362,7 +14482,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>node_id</i> &bull; uuid of the node that handles the destination<br>
                     <i>name</i> &bull; Name of the destination<br>
@@ -14451,7 +14571,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the destination<br>
                     <i>name</i> &bull; Name of the destination (optional)<br>
                     <i>path</i> &bull; Path of the folder (optional)<br>
@@ -14529,7 +14649,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the destination<br>
                 </td>
             </tr>
@@ -14601,7 +14721,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the destination<br>
                 </td>
             </tr>
@@ -14646,9 +14766,10 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>(sid || node_id && serial_no)</i> &bull; Either the sid or the node uuid and serial number<br>
                     <i>uuid</i> &bull; uuid of the destination<br>
                     <i>copy_to</i> &bull; uuid of a namespace to copy the retrieved or create_thin studies into (optional)<br>
+                    <i>push_to</i> &bull; uuid of a destination to push the retrieved studies to (optional)<br>
                     <i>create_thin</i> &bull; The maximum number of thin studies to create from this search instead of creating an activity for the search results (optional)<br>
                     <i>create_study</i> &bull; The maximum number of studies to retrieve from this search instead of creating an activity for the search results (optional)<br>
                     -- The rest of the fields are used for the search --<br>
@@ -14671,6 +14792,7 @@
                 <th>Returns</th>
                 <td>
                     <i>status</i> &bull; OK<br>
+                    <i>uuid</i> &bull; UUID of the search<br>
                 </td>
             </tr>
             <tr>
@@ -14710,7 +14832,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>activity_id</i> &bull; uuid of the DESTINATION_SEARCH activity to retrieve from<br>
                 </td>
             </tr>
@@ -14754,7 +14876,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the destination<br>
                     <i>study_id</i> &bull; The id of the study we are searching for orders for<br>
                     -- The rest of the fields are used for the search --<br>
@@ -14813,7 +14935,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -14863,7 +14985,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>name</i> &bull; Name of the route<br>
                     <i>(account_id|group_id|location_id|namespace_id)</i> &bull; uuid of the account, group or location or namespace the route is linked with<br>
                     <i>conditions</i> &bull; Route conditions in JSON format<br>
@@ -15004,7 +15126,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The route uuid<br>
                     <i>name</i> &bull; Name of the route (optional)<br>
                     <i>conditions</i> &bull; Route conditions in JSON format (optional)<br>
@@ -15074,7 +15196,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The route uuid<br>
                 </td>
             </tr>
@@ -15138,7 +15260,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The route uuid<br>
                 </td>
             </tr>
@@ -15183,7 +15305,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account to test in<br>
                     <i>lv</i> &bull; The tag text to match against the PHYSICIAN_ALIAS rule.<br>
                 </td>
@@ -15233,7 +15355,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
                     <i>sort_by</i> &bull; <a href="#sort">Sorting</a> (optional)<br>
@@ -15280,7 +15402,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The account uuid<br>
                     <i>name</i> &bull; Name of the account (optional)<br>
                     <i>vanity</i> &bull; Vanity host name for the account. Multiple host names can be specified in a comma separate list (optional)<br>
@@ -15356,7 +15478,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The account uuid<br>
                     <i>permissions</i> &bull; Flag to return the users role and permissions in the accounts (optional)<br>
                 </td>
@@ -15426,7 +15548,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The account uuid<br>
                     <i>(email|user_id)</i> &bull; The email address or uuid of the user to add<br>
                     <i>role_id</i> &bull; uuid of the users role in the account (optional).<br>
@@ -15454,6 +15576,7 @@
                     <i>event_link_mine</i> &bull; Notify the user when an anonymous link created by the user is hit in the namespace (optional)<br>
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
+                    <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
                     <i>settings</i> &bull; A hash of the <a href="#account-settings">account settings</a> that the user can override (optional)<br>
                     <i>setting_SETTING_NAME</i> &bull; Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)<br>
                 </td>
@@ -15509,7 +15632,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The account uuid<br>
                     <i>user_id</i> &bull; The users uuid<br>
                     <i>role_id</i> &bull; uuid of the users role in the account (optional).<br>
@@ -15537,6 +15660,7 @@
                     <i>event_link_mine</i> &bull; Notify the user when an anonymous link created by the user is hit in the namespace (optional)<br>
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
+                    <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
                     <i>customfield-CUSTOMFIELD_UUID</i> &bull; Custom field(s) (optional)<br>
                     <i>settings</i> &bull; A hash of the <a href="#account-settings">account settings</a> that the user can override (optional)<br>
                     <i>setting_SETTING_NAME</i> &bull; Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)<br>
@@ -15592,7 +15716,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The account uuid<br>
                     <i>user_id</i> &bull; The users uuid<br>
                 </td>
@@ -15631,6 +15755,7 @@
                     <i>event_link_mine</i> &bull; Notify the user when an anonymous link created by the user is hit in the namespace<br>
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
+                    <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
                     <i>groups</i> &bull; An array of the accounts groups the user is a member of<br>
                     <i>locations</i> &bull; An array of the accounts locations the user is a member of. Both of these contain the following fields.<br>
                     * <i>uuid</i> &bull; uuid of the group/location<br>
@@ -15677,7 +15802,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The account uuid<br>
                     <i>user_id</i> &bull; The user uuid<br>
                 </td>
@@ -15725,7 +15850,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The account uuid<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -15775,7 +15900,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The account uuid<br>
                     <i>user_id</i> &bull; Limit to this user_id (optional)<br>
                 </td>
@@ -15823,7 +15948,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account id<br>
                     <i>by_type</i> &bull; The type of object that can share. (user|account|group|location)<br>
                     <i>by_id</i> &bull; The uuid of the object that can share<br>
@@ -15875,7 +16000,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account id<br>
                     <i>by_type</i> &bull; The type of object that can share. (user|account|group|location)<br>
                     <i>by_id</i> &bull; The uuid of the object that can share<br>
@@ -15927,7 +16052,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account id<br>
                 </td>
             </tr>
@@ -16017,6 +16142,7 @@
                     <i>sid</i> &bull; The session id (optional if not passed then only un-authenticated settings are returned)<br>
                     <i>(account_id|vanity)</i> &bull; The account_id or vanity name to get the settings for<br>
                     <i>settings</i> &bull; A comma delimited list of the settings to return (optional)<br>
+                    <i>brand_settings</i> &bull; A comma delimited list of the settings from /brand/get for this vanity to return (optional)<br>
                     <i>namespace_id</i> &bull; Apply overrides for the namespace (optional)<br>
                 </td>
             </tr>
@@ -16024,7 +16150,7 @@
                 <th>Returns</th>
                 <td>
                     <i>status</i> &bull; OK<br>
-                    <i>settings</i> &bull; A hash of the <a href="#account-settings">account settings</a><br>
+                    <i>settings</i> &bull; A hash of the <a href="#account-settings">account settings</a>, brand settings (returned as <i>brand_(SETTING NAME)</i>, and vanity registration customfields if defined<br>
                 </td>
             </tr>
             <tr>
@@ -16143,7 +16269,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -16193,7 +16319,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>name</i> &bull; Name of the location<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>must_approve</i> &bull; Flag if shared studies must be approved for the location (optional)<br>
@@ -16257,7 +16383,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The location uuid<br>
                     <i>name</i> &bull; Name of the location (optional)<br>
                     <i>must_approve</i> &bull; Flag if shared studies must be approved for the location (optional)<br>
@@ -16317,7 +16443,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The location uuid<br>
                 </td>
             </tr>
@@ -16378,7 +16504,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The location uuid<br>
                 </td>
             </tr>
@@ -16424,7 +16550,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The location id<br>
                     <i>user_id</i> &bull; Id of the user<br>
                     <i>role_id</i> &bull; Id of the users role within the location (optional). If not passed the default location role will be assigned<br>
@@ -16442,6 +16568,7 @@
                     <i>event_link_mine</i> &bull; Notify the user when an anonymous link created by the user is hit in the namespace (optional)<br>
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
+                    <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
                     <i>no_physician_alias_share</i> &bull; Flag to exclude this location from a physician alias share (optional)<br>
                 </td>
             </tr>
@@ -16489,7 +16616,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The location id<br>
                     <i>user_id</i> &bull; The user id<br>
                 </td>
@@ -16535,7 +16662,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The location id<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -16566,6 +16693,7 @@
                     * <i>event_link_mine</i> &bull; Notify the user when an anonymous link created by the user is hit in the namespace<br>
                     * <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds<br>
                     * <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails<br>
+                    * <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user<br>
                     * <i>no_physician_alias_share</i> &bull; Flag to exclude this location from a physician alias share<br>
                 </td>
             </tr>
@@ -16606,7 +16734,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -16656,7 +16784,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>name</i> &bull; Name of the group<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>must_approve</i> &bull; Flag if shared studies must be approved for the group (optional)<br>
@@ -16720,7 +16848,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The group uuid<br>
                     <i>name</i> &bull; Name of the group (optional)<br>
                     <i>must_approve</i> &bull; Flag if shared studies must be approved for the group (optional)<br>
@@ -16780,7 +16908,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The group uuid<br>
                 </td>
             </tr>
@@ -16841,7 +16969,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The group uuid<br>
                 </td>
             </tr>
@@ -16887,7 +17015,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The group id<br>
                     <i>user_id</i> &bull; Id of the user<br>
                     <i>role_id</i> &bull; Id of the users role within the group (optional). If not passed the default group role will be assigned<br>
@@ -16905,6 +17033,7 @@
                     <i>event_link_mine</i> &bull; Notify the user when an anonymous link created by the user is hit in the namespace (optional)<br>
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
+                    <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
                     <i>no_physician_alias_share</i> &bull; Flag to exclude this group from a physician alias share (optional)<br>
                 </td>
             </tr>
@@ -16952,7 +17081,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The group id<br>
                     <i>user_id</i> &bull; Id of the user<br>
                 </td>
@@ -16998,7 +17127,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The group id<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -17029,6 +17158,7 @@
                     * <i>event_link_mine</i> &bull; Notify the user when an anonymous link created by the user is hit in the namespace<br>
                     * <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds<br>
                     * <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails<br>
+                    * <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user<br>
                     * <i>no_physician_alias_share</i> &bull; Flag to exclude this group from a physician alias share<br>
                 </td>
             </tr>
@@ -17069,7 +17199,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -17119,7 +17249,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>name</i> &bull; Name of the role<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>permissions</i> &bull; A hash of the role <a href="#permissions">permissions</a> (optional)<br>
@@ -17171,7 +17301,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The role uuid<br>
                     <i>name</i> &bull; Name of the role (optional)<br>
                     <i>description</i> &bull; Description of the role (optional)<br>
@@ -17224,7 +17354,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The role uuid<br>
                 </td>
             </tr>
@@ -17274,7 +17404,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The role uuid<br>
                 </td>
             </tr>
@@ -17320,7 +17450,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account id (optional)<br>
                 </td>
             </tr>
@@ -17358,7 +17488,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account id<br>
                 </td>
             </tr>
@@ -17408,7 +17538,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; Limit to activities in this account and the personal activities<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -17451,7 +17581,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; Limit to activities in this account and the personal activities<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                 </td>
@@ -17491,7 +17621,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The activity uuid<br>
                 </td>
             </tr>
@@ -17520,6 +17650,7 @@
                             <li><i>user_id</i> &bull; Id of the user<br>
                             <li><i>user_name</i> &bull; User name<br>
                             <li><i>user_email</i> &bull; User email address<br>
+                            <li><i>customfields</i> &bull; A JSON array of the customfield data optionally provided in <a href="#user_join">/user/join</a>. Each item is a hash with the customfield uuid, name, and value.
                         </ul>
                         <li>DESTINATION_SEARCH - Result of a destination search
                         <ul>
@@ -17535,6 +17666,9 @@
                             <li><i>user_id</i> &bull; Id of the user that sent the invitation<br>
                             <li><i>user_name</i> &bull; User name that sent the invitation<br>
                             <li><i>invite_email</i> &bull; Email address the invitation was sent to<br>
+                            <li><i>role_name</i> &bull; Name of their role in the account they have been invited to<br>
+                            <li><i>locations</i> &bull; An array of locations specified in the invitation. Each item is a hash with <i>name</i> and <i>role_name</i>
+                            <li><i>groups</i> &bull; An array of groups specified in the invitation. Each item is a hash with <i>name</i> and <i>role_name</i>
                         </ul>
                     </ul>
                 </td>
@@ -17572,7 +17706,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The activity uuid<br>
                 </td>
             </tr>
@@ -17613,7 +17747,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The uuid of the object to audit<br>
                     <i>filter.*</i> &bull; <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -17687,7 +17821,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>user_id</i> &bull; The id of the user to audit<br>
                     <i>account_id</i> &bull; The id of the account<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -17754,7 +17888,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The id of the account<br>
                     <i>filter.*</i> &bull; <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> &bull; <a href="#pagination">Pagination</a> (optional)<br>
@@ -17821,7 +17955,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The id of the account<br>
                     <i>type</i> &bull; The type of the object (Study|User etc.)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -17915,7 +18049,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The id of the account<br>
                     <i>from_time</i> &bull; Only return events after the epoch time (optional)<br>
                 </td>
@@ -18030,7 +18164,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The uuid of the namespace<br>
                     <i>no_dup_share</i> &bull; Flag to stop duplicate studies (same study_uid and image count) from getting shared into the namespace<br>
                     <i>study_field_flags</i> &bull; A JSON hash of study_field_* role values to override the role values for studies in the namespace<br>
@@ -18039,6 +18173,7 @@
                     <i>auto_enable_dicom_wrapping</i> &bull; Value for the setting<br>
                     <i>enable_multipart_uploader</i> &bull; Value for the setting<br>
                     <i>link_defaults</i> &bull; Value for the setting<br>
+                    <i>upload_settings</i> &bull; Value for the setting<br>
                     <i>auto_create_patient</i> &bull; Value for the setting<br>
                     <i>enable_epic_patient_lookup</i> &bull; Value for the setting<br>
                     <i>ui_json</i> &bull; Value for the setting<br>
@@ -18141,6 +18276,7 @@
                     <i>prompt_for_anonymize</i> &bull; Flag to prompt if the anonymization rules should be applied<br>
                     <i>batch_encode_cine</i> &bull; Value of the flag for the associated account</br>
                     <i>dicom_deidentification_at_ingress</i> &bull; Value of the flag for the associated account</br>
+                    <i>upload_settings</i> &bull; Value of the namespace setting</br>
                     <i>customfields</i> &bull; An array of the custom fields that should be captured during the share process ordered by display_order. Each object has the following <a href="#customfields">fields</a> plus these additional fields. (This is only returned if the share has custom fields). If a sid is passed all custom fields for the namespace will be returned<br>
                     * <i>capture_on_share_code</i> &bull; Should the field be capture on the share code<br>
                     * <i>wrapped_dicom_only</i> &bull; Only capture for wrapped DICOM uploads<br>
@@ -18192,7 +18328,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The uuid of the namespace<br>
                     <i>currency</i> &bull; 3-letter ISO code for currency to charge in (USD|GBP) (optional) <br>
                     <i>charge_description</i> &bull; The description of the charge (optional)<br>
@@ -18264,7 +18400,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The uuid of the namespace<br>
                     <i>rules</i> &bull; Anonymization rules in JSON format. The format is a hash with the keys the names of the fields to anonymize and the values the regular expressions to apply. (optional)<br>
                     <i>prompt_for_anonymize</i> &bull; Flag to prompt if the anonymization rules should be applied. Only applicable to ingress anonymization. (optional)<br>
@@ -18335,7 +18471,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The uuid of the namespace<br>
                     <i>coverpage</i> &bull; The coverpage value. See the notes for formatting details or pass an empty string to remove the current cover page. (optional)<br>
                 </td>
@@ -18436,7 +18572,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The uuid of the namespace<br>
                     <i>event_share</i> &bull; Notify the user on a share into the namespace (optional)<br>
                     <i>event_approve</i> &bull; Notify the user on a approval needed into the namespace (optional)<br>
@@ -18452,6 +18588,7 @@
                     <i>event_link_mine</i> &bull; Notify the user when an anonymous link created by the user is hit in the namespace (optional)<br>
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
+                    <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -18472,6 +18609,7 @@
                     <i>event_link_mine</i> &bull; Notify the user when an anonymous link created by the user is hit in the namespace<br>
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
+                    <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -18510,7 +18648,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The uuid of the namespace<br>
                     <i>defaults</i> &bull; Default values in JSON format. The format is a hash with the keys the names of the fields and the values are the default value. The available field name are as listed in the returned field hash. (optional)<br>
                 </td>
@@ -18951,7 +19089,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(account_id|namespace_id)</i> &bull; The account or namespace to get the analytics for<br>
                     <i>period</i> &bull; The time period (day|week|month|year)<br>
                     <i>count</i> &bull; The number of periods to get<br>
@@ -19022,7 +19160,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account id<br>
                     <i>patient_id</i> &bull; Patient filter (optional)<br>
                     <i>period</i> &bull; The time period (day|week|month|year)<br>
@@ -19084,7 +19222,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account id<br>
                     <i>namespace_id</i> &bull; Namespace filter (optional)<br>
                     <i>user_id</i> &bull; User filter (optional)<br>
@@ -19151,7 +19289,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>type</i> &bull; The type of filter to list<br>
                     <i>account_id</i> &bull; Limit to global filters and filters within the account namespaces<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
@@ -19193,7 +19331,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>name</i> &bull; The name of the filter<br>
                     <i>type</i> &bull; The type of the filter<br>
                     <i>configuration</i> &bull; The configuration as a JSON data structure<br>
@@ -19237,7 +19375,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The filter uuid<br>
                 </td>
             </tr>
@@ -19278,7 +19416,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The filter uuid<br>
                     <i>name</i> &bull; The name of the filter (optional)<br>
                     <i>type</i> &bull; The type of the filter (optional)<br>
@@ -19320,7 +19458,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The filter uuid<br>
                 </td>
             </tr>
@@ -19358,7 +19496,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The filter uuid<br>
                     <i>(account_id|location_id|group_id|user_id)</i> &bull; uuid of the account, location, group or user to share this filter with<br>
                 </td>
@@ -19398,7 +19536,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The filter uuid<br>
                     <i>(account_id|location_id|group_id|user_id)</i> &bull; uuid of the account, location, group or user to stop sharing this filter with<br>
                 </td>
@@ -19437,7 +19575,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The filter uuid<br>
                 </td>
             </tr>
@@ -19481,7 +19619,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -19531,7 +19669,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>name</i> &bull; Name of the customfield<br>
                     <i>object</i> &bull; The object to associate the customfield with (Study|User_account|Group|Location|Account|Patient|Case|Order|Appointment|Dicomdata)<br>
@@ -19647,7 +19785,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the customfield<br>
                     <i>name</i> &bull; Name of the customfield (optional)<br>
                     <i>capture_on_share_code</i> &bull; Flag if the study type field should be captured during a share code exchange (optional)<br>
@@ -19717,7 +19855,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the customfield<br>
                 </td>
             </tr>
@@ -19791,7 +19929,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the customfield<br>
                 </td>
             </tr>
@@ -19836,7 +19974,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>name</i> &bull; Name of the customfield<br>
                 </td>
@@ -19885,7 +20023,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the customfield<br>
                     <i>search</i> &bull; The value to search for (optional)<br>
                 </td>
@@ -19935,7 +20073,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                 </td>
             </tr>
@@ -19981,7 +20119,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>node_id</i> &bull; uuid of the node to proxy the webhook through (optional)<br>
                     <i>name</i> &bull; Name of the webhook<br>
@@ -20125,7 +20263,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the webhook<br>
                     <i>name</i> &bull; Name of the webhook (optional)<br>
                     <i>event</i> &bull; Event to call it on (optional see add command for options)<br>
@@ -20203,7 +20341,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the webhook<br>
                 </td>
             </tr>
@@ -20268,7 +20406,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the webhook<br>
                 </td>
             </tr>
@@ -20313,7 +20451,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the webhook<br>
                     <i>study_id</i> &bull; uuid of the study to fire the webhook for<br>
                 </td>
@@ -20360,7 +20498,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>type</i> &bull; The type of event (STUDY_UPLOAD_START|STUDY_UPLOAD_END)<br>
                     <i>(namespace_id|share_code)</i> &bull; The namespace or share code for the event<br>
                     <i>integration_key</i> &bull; The integration key associated with the event (optional)<br>
@@ -20459,7 +20597,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(study_id|user_id|account_id)</i> &bull; uuid of the study, user or account to get the links for<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
                 </td>
@@ -20507,7 +20645,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(study_id|filter && account_id|namespace_id)</i> &bull; uuid of the study or a JSON hash of the study filter expression and the account_id or namespace_id if the action is STUDY_UPLOAD<br>
                     <i>action</i> &bull; Link action (STUDY_LIST|STUDY_VIEW|STUDY_UPLOAD)<br>
                     <i>password</i> &bull; Link password (optional)<br>
@@ -20519,6 +20657,7 @@
                     <i>max_hits</i> &bull; The maximum number of times the link can be used (optional)<br>
                     <i>minutes_alive</i> &bull; The maximum number of minutes the link will be alive for (optional)<br>
                     <i>email</i> &bull; Email the link to this address (optional)<br>
+                    <i>mobile_phone</i> &bull; Send the link to this phone number (optional)<br>
                     <i>message</i> &bull; Message to include in the email (optional)<br>
                     <i>share_on_view</i> &bull; Flag to share the study with the email after it is viewed (optional)<br>
                     <i>notify</i> &bull; Comma or space separated list of additional emails to notify of link usage (optional)<br>
@@ -20558,6 +20697,7 @@
                     NOT_PERMITTED &bull; You are not permitted to create links<br>
                     INVALID_ACTION &bull; An invalid action was passed<br>
                     INVALID_EMAIL &bull; An invalid email address was passed<br>
+                    INVALID_PHONE &bull; An invalid cellular phone number was passed<br>
                     NOT_LIST &bull; The field is not a JSON array. The <i>error_subtype</i> holds the name of the field<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
                     NOT_HASH &bull; The rules field is not a hash <br>
@@ -20599,12 +20739,13 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the link<br>
                     <i>url</i> &bull; URL for the link which will take you to the UI entry point for links to enter email, password etc.<br>
                     <i>redirect_url</i> &bull; URL for the /link/redirect API  which will take you directly to the study viewer or uploader<br>
                     <i>description</i> &bull; Description of the link<br>
                     <i>email</i> &bull; Email address the link was sent to<br>
+                    <i>mobile_phone</i> &bull; Cellular phone number the link was sent to<br>
                     <i>message</i> &bull; Message to include in the email<br>
                     <i>share_on_view</i> &bull; Flag to share the study with the email after it is viewed<br>
                     <i>notify</i> &bull; Comma or space separated list of additional emails to notify of link usage<br>
@@ -20677,7 +20818,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the link<br>
                 </td>
             </tr>
@@ -20757,6 +20898,7 @@
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     NOT_FOUND &bull; The link was not found<br>
                     INVALID_SOURCE &bull; The referer is invalid<br>
+                    IP_BLOCKED &bull; An IP whitelist blocked access<br>
                 </td>
             </tr>
             <tr>
@@ -20811,6 +20953,7 @@
                     NOT_FOUND &bull; The link was not found<br>
                     INVALID_CREDENTIALS &bull; Invalid password or email if pin_auth is required.<br>
                     INVALID_SOURCE &bull; The referer is invalid<br>
+                    IP_BLOCKED &bull; An IP whitelist blocked access<br>
                     CHARGE_REQUIRED &bull; A charge is required to access this link<br>
                     DISABLED &bull; This call is disabled for the account, you must use /link/redirect<br>
                 </td>
@@ -20861,6 +21004,7 @@
                     INVALID_CREDENTIALS &bull; Invalid password.<br>
                     EXPIRED &bull; The link has expired<br>
                     INVALID_SOURCE &bull; The referer is invalid<br>
+                    IP_BLOCKED &bull; An IP whitelist blocked access<br>
                     NOT_PERMITTED &bull; The configuration of this link requires the link UI be used instead of direct access<br>
                     If the link is valid but an associated study is not found an HTML "Study not found." message is returned for display in the browser.<br>
                     If the link is valid but more than 100 studies match it an HTML "Too many studies found." message is returned for display in the browser.<br>
@@ -21115,7 +21259,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -21165,7 +21309,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>name</i> &bull; Name of the purge rule<br>
                     <i>account_id</i> &bull; uuid of the account the rule is for<br>
                     <i>days_old</i> &bull; Studies greater than or equal to these days old will be purged<br>
@@ -21246,7 +21390,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the purge rule<br>
                     <i>name</i> &bull; Name of the purge rule (optional)<br>
                     <i>days_old</i> &bull; Studies greater than or equal to these days old will be purged (optional)<br>
@@ -21313,7 +21457,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the purge rule<br>
                 </td>
             </tr>
@@ -21376,7 +21520,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the purge rule<br>
                 </td>
             </tr>
@@ -21421,7 +21565,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(rule_id|account_id)</i> &bull; Id of the purge rule or the account id if all purge rules should be run<br>
                     <i>dry_run</i> &bull; Do a dry run of the rule - flag<br>
                 </td>
@@ -21474,7 +21618,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
                     <i>sort_by</i> &bull; <a href="#sort">Sorting</a> (optional)<br>
@@ -21524,7 +21668,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(namespace_id|user_id|group_id|location_id|account_id|email|share_code|study_id)</i> &bull; The namespace, entity, email, share code or study to send the message to<br>
                     <i>body</i> &bull; The body of the message<br>
                     <i>subject</i> &bull; The subject of the message (optional)<br>
@@ -21573,7 +21717,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the message<br>
                 </td>
             </tr>
@@ -21629,7 +21773,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the message<br>
                 </td>
             </tr>
@@ -21677,7 +21821,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>reset</i> &bull; Flag to reset counter back to zero (optional)<br>
                 </td>
             </tr>
@@ -21717,7 +21861,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account id<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -21767,10 +21911,10 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account id<br>
                     <i>name</i> &bull; The dictionary name<br>
-                    <i>object</i> &bull; Object this is applied against (Study|Order|User_account)<br>
+                    <i>object</i> &bull; Object this is applied against (Study|Order|User_account|Case)<br>
                     <i>lookup</i> &bull; A JSON array of field names that will be concatenated and MD5 hashed for the dictionary lookup value<br>
                     <i>replace</i> &bull; A JSON array of the field names that will be replaced for a successful lookup<br>
                     <i>case_sensitive</i> &bull; Flag if the dictionary lookup is case sensitive or not<br>
@@ -21825,7 +21969,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The dictionary id<br>
                     <i>name</i> &bull; The dictionary name<br>
                 </td>
@@ -21871,7 +22015,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The dictionary id<br>
                 </td>
             </tr>
@@ -21932,7 +22076,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The dictionary id<br>
                 </td>
             </tr>
@@ -21977,7 +22121,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The dictionary id<br>
                     <i>lookup</i> &bull; Only return the entry for the optional lookup entry (optional)<br>
                 </td>
@@ -22029,7 +22173,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The dictionary id<br>
                     <i>lookup</i> &bull; The JSON array of the lookup values to add. Alternatively a regular expression if the regexp parameter is passed<br>
                     <i>replace</i> &bull; The JSON array of the replacement field values<br>
@@ -22092,7 +22236,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The dictionary id<br>
                     <i>lookup</i> &bull; The JSON array of the lookup values or the regular expression to delete<br>
                 </td>
@@ -22139,7 +22283,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The dictionary id<br>
                     <i>(account_id|namespace_id)</i> &bull; uuid of the account or namespace to the dictionary to<br>
                     <i>sequence</i> &bull; An integer value. Attachments are processed from low number to high number (optional)<br>
@@ -22196,7 +22340,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The dictionary attach id<br>
                     <i>sequence</i> &bull; An integer value. Attachments are processed from low number to high number (optional)<br>
                     <i>skip_if_lookup_unchanged</i> &bull; Flag to skip the lookup if the lookup field(s) are un-changed (optional)<br>
@@ -22245,7 +22389,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The dictionary attach id<br>
                 </td>
             </tr>
@@ -22292,7 +22436,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>report_id</i> &bull; The report id<br>
                 </td>
             </tr>
@@ -22333,7 +22477,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>report_id</i> &bull; The report id
                 </td>
             </tr>
@@ -22374,7 +22518,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(study_id|study_uid && storage_namespace && phi_namespace)</i> The uuid of the study or the storage triplet<br>
                     <i>name</i> &bull; Title of the meeting<br>
                     <i>state</i> &bull; State of the meeting<br>
@@ -22425,7 +22569,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; UUID of the meeting<br>
                     <i>name</i> &bull; Title of the meeting (optional)<br>
                     <i>state</i> &bull; State of the meeting (optional)<br>
@@ -22471,7 +22615,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; UUID of the meeting<br>
                 </td>
             </tr>
@@ -22521,7 +22665,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; UUID of the meeting<br>
                 </td>
             </tr>
@@ -22565,7 +22709,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; UUID of the meeting<br>
                 </td>
             </tr>
@@ -22606,7 +22750,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; UUID of the meeting<br>
                 </td>
             </tr>
@@ -22654,7 +22798,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; UUID of the meeting<br>
                     <i>user_id</i> &bull; UUID of the user to make the presenter<br>
                 </td>
@@ -22700,7 +22844,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; UUID of the meeting<br>
                 </td>
             </tr>
@@ -22747,7 +22891,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; UUID of the meeting<br>
                 </td>
             </tr>
@@ -22794,7 +22938,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; UUID of the meeting<br>
                     <i>event</i> &bull; Event to send to the meeting<br>
                 </td>
@@ -22841,7 +22985,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account to add them to<br>
                     <i>patient_id</i> &bull; Id of the patient to create the appointment for<br>
                     <i>user_id</i> &bull; Id of the user to create the appointment for (optional defaults to current user)<br>
@@ -22899,7 +23043,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The appointment uuid<br>
                 </td>
             </tr>
@@ -22954,7 +23098,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The appointment uuid<br>
                     <i>user_id</i> &bull; Id of the user<br>
                     <i>description</i> &bull; Description of the appointment<br>
@@ -23006,7 +23150,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The appointment uuid<br>
                 </td>
             </tr>
@@ -23051,7 +23195,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -23106,7 +23250,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                 </td>
             </tr>
             <tr>
@@ -23149,7 +23293,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; Id of the account the training is for<br>
                     <i>form_number</i> &bull; The formstack id of the form<br>
                     All additional parameters will be logged as part of the TRAINING_DONE user audit event
@@ -23191,7 +23335,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>exam_id</i> &bull; RSNA-generated exam ID/token/email (DEPRECATED June 2015 - use access_code)<br>
                     <i>dob</i> &bull; Patient's date of birth YYYYMMDD<br>
                     <i>pin</i> &bull; RSNA-generated PIN (DEPRECATED June 2015 - use access_code)<br>
@@ -23240,7 +23384,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication is used)<br>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>last</i> &bull; Last name<br>
                     <i>state</i> &bull; 2 letter state code<br>
                     <i>first</i> &bull; First name (optional)<br>
@@ -23272,7 +23416,7 @@
         <a href="#npi-idx">top</a>
 
 
-    <footer>Version: LBL0022 v36.0 2020-02-26</footer>
+    <footer>Version: LBL0022 v37.0 2020-04-15</footer>
     </div>
 </body>
 </html>

@@ -109,26 +109,26 @@ class Route:
         (account_id OR group_id OR location_id OR namespace_id) - uuid of the account, group or location or namespace the route is linked with
         """
         request_data = {
-           'namespace_id': namespace_id,
-           'on_manual_route': on_manual_route,
-           'group_id': group_id,
-           'manual_roles': manual_roles,
-           'on_upload': on_upload,
-           'on_harvest': on_harvest,
-           'delay_till_schedule': delay_till_schedule,
-           'actions': actions,
-           'suspended': suspended,
-           'name': name,
            'options': options,
-           'conditions': conditions,
-           'delay': delay,
-           'schedule': schedule,
+           'on_manual_route': on_manual_route,
+           'on_upload': on_upload,
+           'name': name,
            'other_namespaces': other_namespaces,
-           'on_share': on_share,
-           'location_id': location_id,
-           'account_id': account_id,
-           'no_re_run': no_re_run,
+           'namespace_id': namespace_id,
+           'actions': actions,
            'on_thin': on_thin,
+           'account_id': account_id,
+           'on_share': on_share,
+           'on_harvest': on_harvest,
+           'delay': delay,
+           'suspended': suspended,
+           'group_id': group_id,
+           'location_id': location_id,
+           'no_re_run': no_re_run,
+           'delay_till_schedule': delay_till_schedule,
+           'schedule': schedule,
+           'conditions': conditions,
+           'manual_roles': manual_roles,
         }
 	
         errors_mapping = {}
@@ -193,22 +193,22 @@ class Route:
         :param suspended: This rule is suspended and not applied - flag (optional)
         """
         request_data = {
-           'on_manual_route': on_manual_route,
-           'delay': delay,
-           'uuid': uuid,
-           'schedule': schedule,
-           'on_upload': on_upload,
-           'name': name,
-           'conditions': conditions,
            'options': options,
-           'on_harvest': on_harvest,
-           'on_share': on_share,
-           'delay_till_schedule': delay_till_schedule,
+           'on_manual_route': on_manual_route,
            'other_namespaces': other_namespaces,
-           'actions': actions,
+           'on_share': on_share,
+           'on_harvest': on_harvest,
            'no_re_run': no_re_run,
+           'delay': delay,
+           'on_upload': on_upload,
+           'delay_till_schedule': delay_till_schedule,
            'suspended': suspended,
+           'uuid': uuid,
+           'actions': actions,
+           'schedule': schedule,
+           'conditions': conditions,
            'on_thin': on_thin,
+           'name': name,
            'manual_roles': manual_roles,
         }
 	
@@ -291,8 +291,8 @@ class Route:
         :param lv: The tag text to match against the PHYSICIAN_ALIAS rule.
         """
         request_data = {
-           'lv': lv,
            'account_id': account_id,
+           'lv': lv,
         }
 	
         errors_mapping = {}

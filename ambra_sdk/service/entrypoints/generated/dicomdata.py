@@ -34,9 +34,9 @@ class Dicomdata:
         (study_id OR namespace_id) - uuid of the study or namespace to search
         """
         request_data = {
-           'study_id': study_id,
            'dicom_tags': dicom_tags,
            'namespace_id': namespace_id,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}
@@ -67,8 +67,8 @@ class Dicomdata:
         :param dicom_tags: A JSON list of the DICOM tags to return (optional)
         """
         request_data = {
-           'uuid': uuid,
            'customfields': customfields,
+           'uuid': uuid,
            'dicom_tags': dicom_tags,
         }
 	

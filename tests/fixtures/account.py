@@ -2,6 +2,7 @@
 
 import json
 import logging
+from time import monotonic, sleep
 from typing import List, NamedTuple, Optional, Tuple
 
 import pytest
@@ -241,6 +242,7 @@ def account(api, storage_cluster):
     :yields: test account
 
     :raises RuntimeError: On deleted account with existing studies
+    :raises TimeoutError: Time for waiting account deletion is out
     """
     account_name = settings.TEST_ACCOUNT_NAME
     if storage_cluster:
@@ -291,6 +293,23 @@ def account(api, storage_cluster):
         user=user,
     )
     delete_account(api, account)
+    start = monotonic()
+    while True:
+        if monotonic() - start >= settings.API['account_deletion_timeout']:
+            raise TimeoutError('Account still exists')
+        account = api \
+            .Account \
+            .list() \
+            .filter_by(
+                Filter(
+                    'name',
+                    FilterCondition.equals,
+                    account_name,
+                ),
+            ).first()
+        if account is None:
+            return
+        sleep(settings.API['account_deletion_check_interval'])
 
 
 @pytest.fixture

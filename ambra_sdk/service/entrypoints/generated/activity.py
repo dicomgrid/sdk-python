@@ -33,8 +33,8 @@ class Activity:
         :param strict_account_filter: Flag to apply the account_id to personal activites as well (optional)
         """
         request_data = {
-           'strict_account_filter': strict_account_filter,
            'account_id': account_id,
+           'strict_account_filter': strict_account_filter,
         }
 	
         errors_mapping = {}

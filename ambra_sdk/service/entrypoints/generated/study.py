@@ -161,51 +161,51 @@ class Study:
         :param uuid: uuid
 
         Notes:
+        customfield-(CUSTOMFIELD_UUID OR DICOM_TAG) - Custom field(s), see notes in /study/add (optional)
         (sid OR uuid AND serial_no) - Either the sid or the node id and serial number
         (study_uid OR study_uid AND storage_namespace AND phi_namespace) - The study uid if node authentication or the storage triplet if sid authentication
-        customfield-(CUSTOMFIELD_UUID OR DICOM_TAG) - Custom field(s), see notes in /study/add (optional)
         """
         request_data = {
-           'patient_age': patient_age,
-           'patient_birth_date': patient_birth_date,
+           'patient_comments': patient_comments,
+           'patient_institution_residence': patient_institution_residence,
+           'modality': modality,
+           'patient_name_other': patient_name_other,
+           'patientid_other': patientid_other,
+           'patient_phone': patient_phone,
+           'patient_name': patient_name,
+           'patient_size': patient_size,
+           'patient_religious_preference': patient_religious_preference,
            'serial_no': serial_no,
+           'accession_number': accession_number,
+           'referring_physician': referring_physician,
+           'patient_mother_birthname': patient_mother_birthname,
+           'patient_ethnic_group': patient_ethnic_group,
+           'patient_birth_date': patient_birth_date,
+           'study_date': study_date,
+           'patient_birth_time': patient_birth_time,
+           'storage_namespace': storage_namespace,
+           'patient_additional_history': patient_additional_history,
+           'patient_weight': patient_weight,
+           'patient_address': patient_address,
+           'phi_namespace': phi_namespace,
+           'patient_sex': patient_sex,
+           'attachment_count': attachment_count,
+           'study_uid': study_uid,
+           'destination_ae_title': destination_ae_title,
+           'patient_current_location': patient_current_location,
+           'patientid': patientid,
+           'medical_record_locator': medical_record_locator,
+           'uuid': uuid,
+           'patient_occupation': patient_occupation,
+           'source_ae_title': source_ae_title,
+           'image_count': image_count,
+           'study_description': study_description,
+           'patient_age': patient_age,
            'node_id': node_id,
            'study_time': study_time,
-           'patient_sex': patient_sex,
-           'patient_birth_time': patient_birth_time,
-           'integration_key': integration_key,
-           'patient_mother_birthname': patient_mother_birthname,
-           'patientid': patientid,
-           'patient_religious_preference': patient_religious_preference,
-           'patient_institution_residence': patient_institution_residence,
-           'study_uid': study_uid,
-           'study_description': study_description,
-           'referring_physician': referring_physician,
-           'image_count': image_count,
-           'medical_record_locator': medical_record_locator,
-           'attachment_count': attachment_count,
-           'patient_phone': patient_phone,
-           'patient_comments': patient_comments,
-           'uuid': uuid,
-           'accession_number': accession_number,
-           'study_date': study_date,
-           'phi_namespace': phi_namespace,
-           'patient_name_other': patient_name_other,
-           'patient_additional_history': patient_additional_history,
-           'patient_birthname': patient_birthname,
-           'patient_weight': patient_weight,
-           'destination_ae_title': destination_ae_title,
-           'storage_namespace': storage_namespace,
-           'patient_address': patient_address,
-           'patient_ethnic_group': patient_ethnic_group,
-           'patientid_other': patientid_other,
-           'source_ae_title': source_ae_title,
-           'patient_name': patient_name,
-           'modality': modality,
-           'patient_size': patient_size,
-           'patient_current_location': patient_current_location,
            'thin': thin,
-           'patient_occupation': patient_occupation,
+           'integration_key': integration_key,
+           'patient_birthname': patient_birthname,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
@@ -320,53 +320,53 @@ class Study:
         :param uuid: uuid
 
         Notes:
-        (sid OR uuid AND serial_no) - Either the sid or the node id and serial number
         customfield-(CUSTOMFIELD_UUID OR DICOM_TAG) - Custom field(s), see notes in /study/add (optional)
         (study_id OR study_uid OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study if sid authentication or the study_uid if node authentication or the storage triplet if you want a future set
+        (sid OR uuid AND serial_no) - Either the sid or the node id and serial number
         """
         request_data = {
-           'patient_age': patient_age,
-           'patient_birth_date': patient_birth_date,
+           'use_upload_permission': use_upload_permission,
+           'patient_comments': patient_comments,
+           'patient_institution_residence': patient_institution_residence,
+           'modality': modality,
+           'patient_name_other': patient_name_other,
+           'patientid_other': patientid_other,
+           'patient_phone': patient_phone,
+           'patient_name': patient_name,
+           'patient_size': patient_size,
+           'patient_religious_preference': patient_religious_preference,
            'serial_no': serial_no,
+           'accession_number': accession_number,
+           'referring_physician': referring_physician,
+           'patient_mother_birthname': patient_mother_birthname,
+           'patient_ethnic_group': patient_ethnic_group,
+           'patient_birth_date': patient_birth_date,
+           'study_date': study_date,
+           'patient_birth_time': patient_birth_time,
+           'storage_namespace': storage_namespace,
+           'patient_additional_history': patient_additional_history,
+           'patient_weight': patient_weight,
+           'patient_address': patient_address,
+           'phi_namespace': phi_namespace,
+           'patient_sex': patient_sex,
+           'attachment_count': attachment_count,
+           'study_uid': study_uid,
+           'destination_ae_title': destination_ae_title,
+           'patient_current_location': patient_current_location,
+           'patientid': patientid,
+           'medical_record_locator': medical_record_locator,
+           'uuid': uuid,
+           'patient_occupation': patient_occupation,
+           'source_ae_title': source_ae_title,
+           'image_count': image_count,
+           'find_order_uuid': find_order_uuid,
+           'study_description': study_description,
+           'patient_age': patient_age,
            'node_id': node_id,
            'study_time': study_time,
-           'use_upload_permission': use_upload_permission,
-           'find_order_uuid': find_order_uuid,
-           'patient_sex': patient_sex,
-           'patient_birth_time': patient_birth_time,
-           'study_id': study_id,
            'integration_key': integration_key,
-           'patient_mother_birthname': patient_mother_birthname,
-           'patientid': patientid,
-           'patient_religious_preference': patient_religious_preference,
-           'patient_institution_residence': patient_institution_residence,
-           'study_uid': study_uid,
-           'study_description': study_description,
-           'referring_physician': referring_physician,
-           'image_count': image_count,
-           'medical_record_locator': medical_record_locator,
-           'attachment_count': attachment_count,
-           'patient_phone': patient_phone,
-           'patient_comments': patient_comments,
-           'uuid': uuid,
-           'accession_number': accession_number,
-           'study_date': study_date,
-           'phi_namespace': phi_namespace,
-           'patient_name_other': patient_name_other,
-           'patient_additional_history': patient_additional_history,
            'patient_birthname': patient_birthname,
-           'patient_weight': patient_weight,
-           'destination_ae_title': destination_ae_title,
-           'storage_namespace': storage_namespace,
-           'patient_address': patient_address,
-           'patient_ethnic_group': patient_ethnic_group,
-           'patientid_other': patientid_other,
-           'source_ae_title': source_ae_title,
-           'patient_name': patient_name,
-           'modality': modality,
-           'patient_size': patient_size,
-           'patient_current_location': patient_current_location,
-           'patient_occupation': patient_occupation,
+           'study_id': study_id,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
@@ -406,15 +406,15 @@ class Study:
         :param uuid: uuid
 
         Notes:
-        (sid OR node_id AND serial_no) - Either the sid or the node id and serial number
         (uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet
+        (sid OR node_id AND serial_no) - Either the sid or the node id and serial number
         """
         request_data = {
-           'storage_namespace': storage_namespace,
-           'serial_no': serial_no,
-           'uuid': uuid,
            'node_id': node_id,
            'study_uid': study_uid,
+           'storage_namespace': storage_namespace,
+           'uuid': uuid,
+           'serial_no': serial_no,
            'phi_namespace': phi_namespace,
         }
 	
@@ -436,6 +436,7 @@ class Study:
         customfield_h=None,
         extra=None,
         fields=None,
+        limit_hl7=None,
         permissions_diff=None,
         template=None,
     ):
@@ -443,15 +444,17 @@ class Study:
         :param customfield_h: Flag to return a customfield hash as detailed in /study/get (optional)
         :param extra: Flag to return extra data as detailed in /study/get (optional)
         :param fields: A JSON list of the study fields to return (optional)
+        :param limit_hl7: Limit the length of Hl7 list to return. Zero means no limit (optional)
         :param permissions_diff: Flag to return only the permissions that differ from the namespace permissions (optional)
         :param template: A JSON hash with name, account_id and language of the template to return (optional)
         """
         request_data = {
-           'template': template,
-           'customfield_h': customfield_h,
-           'fields': fields,
            'extra': extra,
+           'template': template,
+           'fields': fields,
            'permissions_diff': permissions_diff,
+           'limit.hl7': limit_hl7,
+           'customfield_h': customfield_h,
         }
 	
         errors_mapping = {}
@@ -509,9 +512,9 @@ class Study:
         """
         request_data = {
            'is_available': is_available,
-           'serial_no': serial_no,
-           'uuid': uuid,
            'entire_account': entire_account,
+           'uuid': uuid,
+           'serial_no': serial_no,
         }
 	
         errors_mapping = {}
@@ -536,6 +539,7 @@ class Study:
         extra=None,
         fields=None,
         full_hl7=None,
+        limit_hl7=None,
         node_id=None,
         permissions_diff=None,
         phi_namespace=None,
@@ -549,6 +553,7 @@ class Study:
         :param extra: Flag to return extra data as detailed below (optional)
         :param fields: A JSON list of the study fields to return (optional)
         :param full_hl7: Flag to return the full hl7 record instead of just the uuid (optional)
+        :param limit_hl7: Limit the length of Hl7 list to return. Zero means no limit (optional)
         :param node_id: node_id
         :param permissions_diff: Flag to return only the permissions that differ from the namespace permissions (optional)
         :param phi_namespace: phi_namespace
@@ -558,21 +563,22 @@ class Study:
         :param uuid: uuid
 
         Notes:
-        (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number
         (uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet
+        (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number
         """
         request_data = {
-           'storage_namespace': storage_namespace,
-           'serial_no': serial_no,
-           'uuid': uuid,
-           'node_id': node_id,
-           'customfield_h': customfield_h,
-           'study_uid': study_uid,
-           'fields': fields,
-           'phi_namespace': phi_namespace,
            'extra': extra,
+           'node_id': node_id,
+           'study_uid': study_uid,
+           'storage_namespace': storage_namespace,
            'full_hl7': full_hl7,
+           'fields': fields,
            'permissions_diff': permissions_diff,
+           'uuid': uuid,
+           'serial_no': serial_no,
+           'limit.hl7': limit_hl7,
+           'phi_namespace': phi_namespace,
+           'customfield_h': customfield_h,
         }
 	
         errors_mapping = {}
@@ -612,6 +618,43 @@ class Study:
         }
         return QueryO(**query_data)
     
+    def exists(
+        self,
+        account_id=None,
+        phi_namespace=None,
+        storage_namespace=None,
+        study_uid=None,
+        uuid=None,
+    ):
+        """Exists.
+        :param account_id: account_id
+        :param phi_namespace: phi_namespace
+        :param storage_namespace: storage_namespace
+        :param study_uid: study_uid
+        :param uuid: uuid
+
+        Notes:
+        (uuid OR study_uid AND storage_namespace AND phi_namespace OR study_uid AND account_id) - The study uuid, the storage triplet, or the study uid and account id
+        """
+        request_data = {
+           'study_uid': study_uid,
+           'storage_namespace': storage_namespace,
+           'uuid': uuid,
+           'account_id': account_id,
+           'phi_namespace': phi_namespace,
+        }
+	
+        errors_mapping = {}
+        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        query_data = {
+            'api': self._api,
+            'url': '/study/exists',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
     def push(
         self,
         batch_no,
@@ -626,10 +669,10 @@ class Study:
         :param uuid: The study uuid
         """
         request_data = {
-           'destination_id': destination_id,
-           'uuid': uuid,
-           'batch_no': batch_no,
            'ping': ping,
+           'uuid': uuid,
+           'destination_id': destination_id,
+           'batch_no': batch_no,
         }
 	
         errors_mapping = {}
@@ -663,11 +706,11 @@ class Study:
         :param once: Flag that this message should only be sent a maximum of one time (optional)
         """
         request_data = {
-           'destination_id': destination_id,
+           'once': once,
            'hl7_id': hl7_id,
            'uuid': uuid,
+           'destination_id': destination_id,
            'hl7_template_id': hl7_template_id,
-           'once': once,
         }
 	
         errors_mapping = {}
@@ -694,8 +737,8 @@ class Study:
         :param uuid: The study uuid
         """
         request_data = {
-           'hl7_id': hl7_id,
            'uuid': uuid,
+           'hl7_id': hl7_id,
         }
 	
         errors_mapping = {}
@@ -721,9 +764,9 @@ class Study:
         :param uuid: The study uuid
         """
         request_data = {
-           'hl7_id': hl7_id,
            'uuid': uuid,
            'number': number,
+           'hl7_id': hl7_id,
         }
 	
         errors_mapping = {}
@@ -758,12 +801,12 @@ class Study:
         :param detail: Additional detail to send on the /node/ping (optional)
         """
         request_data = {
-           'detail': detail,
-           'serial_no': serial_no,
-           'uuid': uuid,
-           'study_uid': study_uid,
            'ping': ping,
+           'study_uid': study_uid,
            'aetitle': aetitle,
+           'uuid': uuid,
+           'serial_no': serial_no,
+           'detail': detail,
         }
 	
         errors_mapping = {}
@@ -795,8 +838,8 @@ class Study:
         :param uuid: The node id
         """
         request_data = {
-           'study_uid': study_uid,
            'serial_no': serial_no,
+           'study_uid': study_uid,
            'uuid': uuid,
         }
 	
@@ -831,6 +874,9 @@ class Study:
         }
 	
         errors_mapping = {}
+        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping['NOT_FOUND'] = NotFound('The study or share object can not be found. The error_subtype holds a the name of the key that can not be found')
+        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to share this study')
         query_data = {
             'api': self._api,
             'url': '/study/share/who',
@@ -886,23 +932,23 @@ class Study:
         (account_id OR location_id OR group_id OR user_id OR share_code OR email OR masshiway OR rsna OR npi) - uuid of the account, location, group, user or share code, email address(es), RSNA, NPI or masshiway recipient to share this study with
         """
         request_data = {
-           'group_id': group_id,
-           'integration_key': integration_key,
-           'account_id': account_id,
-           'study_uid': study_uid,
-           'charge_modality': charge_modality,
-           'message': message,
-           'charge_authorized': charge_authorized,
-           'email': email,
-           'uuid': uuid,
-           'phi_namespace': phi_namespace,
            'masshiway': masshiway,
-           'storage_namespace': storage_namespace,
-           'npi': npi,
-           'location_id': location_id,
-           'user_id': user_id,
+           'charge_authorized': charge_authorized,
            'rsna': rsna,
+           'account_id': account_id,
+           'storage_namespace': storage_namespace,
+           'phi_namespace': phi_namespace,
+           'message': message,
+           'user_id': user_id,
+           'study_uid': study_uid,
+           'email': email,
+           'charge_modality': charge_modality,
+           'uuid': uuid,
+           'npi': npi,
+           'group_id': group_id,
            'share_code': share_code,
+           'location_id': location_id,
+           'integration_key': integration_key,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
@@ -949,12 +995,12 @@ class Study:
         (account_id OR location_id OR group_id OR user_id OR user_invite_share_id) - uuid of the account, location, group, user or user invitation to stop sharing this study with
         """
         request_data = {
-           'group_id': group_id,
-           'uuid': uuid,
-           'location_id': location_id,
            'user_id': user_id,
-           'user_invite_share_id': user_invite_share_id,
+           'location_id': location_id,
            'account_id': account_id,
+           'uuid': uuid,
+           'user_invite_share_id': user_invite_share_id,
+           'group_id': group_id,
         }
 	
         errors_mapping = {}
@@ -1010,8 +1056,8 @@ class Study:
         :param must_match: A JSON hash of study field names and values that must match before showing the study as approved and running routing and events on it (optional)
         """
         request_data = {
-           'must_match': must_match,
            'uuid': uuid,
+           'must_match': must_match,
            'delay': delay,
         }
 	
@@ -1077,15 +1123,15 @@ class Study:
         :param uuid: The id of the study (optional if study_uid and storage_namespace are passed)
 
         Notes:
-        action - The audit action (STUDY_VIEW OR STUDY_EDIT OR REPORT_UPLOAD OR REPORT_VIEW OR IMAGE_ADDED OR IMAGE_UPDATED OR STUDY_DOWNLOAD OR ACCEPTED_NOT_DIAGNOSTIC OR CANCELED_NOT_DIAGNOSTIC OR AI_ACTION OR VIEWER_ACTION)
+        action - The audit action (STUDY_VIEW OR STUDY_EDIT OR REPORT_UPLOAD OR REPORT_REMOVE OR REPORT_VIEW OR IMAGE_ADDED OR IMAGE_UPDATED OR STUDY_DOWNLOAD OR ACCEPTED_NOT_DIAGNOSTIC OR CANCELED_NOT_DIAGNOSTIC OR AI_ACTION OR VIEWER_ACTION)
         """
         request_data = {
            'action': action,
-           'storage_namespace': storage_namespace,
-           'detail': detail,
-           'uuid': uuid,
            'study_uid': study_uid,
+           'uuid': uuid,
+           'storage_namespace': storage_namespace,
            'phi_namespace': phi_namespace,
+           'detail': detail,
         }
 	
         errors_mapping = {}
@@ -1177,10 +1223,10 @@ class Study:
         :param limit: Maximum size of the report. The default is 30,000 studies. If the report will be bigger than this an error will be returned (optional)
         """
         request_data = {
-           'limit': limit,
            'hours': hours,
            'email': email,
            'namespace_id': namespace_id,
+           'limit': limit,
         }
 	
         errors_mapping = {}
@@ -1212,10 +1258,10 @@ class Study:
         (study_id OR study_uid AND storage_namespace AND phi_namespace) - Either the study uuid or the storage triplet
         """
         request_data = {
-           'study_id': study_id,
-           'storage_namespace': storage_namespace,
            'study_uid': study_uid,
+           'storage_namespace': storage_namespace,
            'phi_namespace': phi_namespace,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}
@@ -1249,11 +1295,11 @@ class Study:
         (study_id OR study_uid AND storage_namespace AND phi_namespace) - Either the study uuid or the storage triplet
         """
         request_data = {
-           'study_id': study_id,
-           'storage_namespace': storage_namespace,
            'study_uid': study_uid,
+           'storage_namespace': storage_namespace,
            'settings': settings,
            'phi_namespace': phi_namespace,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}
@@ -1280,9 +1326,9 @@ class Study:
         :param study_id: Study uuid
         """
         request_data = {
-           'study_id': study_id,
            'new': new,
            'old': old,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}
@@ -1355,8 +1401,8 @@ class Study:
         :param uuid: The study id
         """
         request_data = {
-           'uuid': uuid,
            'namespace_id': namespace_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
@@ -1385,8 +1431,8 @@ class Study:
         :param uuid: The study id
         """
         request_data = {
-           'uuid': uuid,
            'namespace_id': namespace_id,
+           'uuid': uuid,
            'include_attachments': include_attachments,
         }
 	
@@ -1417,9 +1463,9 @@ class Study:
         :param uuid: The study id
         """
         request_data = {
-           'uuid': uuid,
            'namespace_id': namespace_id,
            'no_split': no_split,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
@@ -1481,10 +1527,10 @@ class Study:
         :param message: The share message for the email share (optional)
         """
         request_data = {
-           'uuid': uuid,
-           'message': message,
            'route_id': route_id,
            'email': email,
+           'uuid': uuid,
+           'message': message,
         }
 	
         errors_mapping = {}
@@ -1519,10 +1565,10 @@ class Study:
         (accession_number OR patientid OR patient_name) - The full or partial accession number, MRN or patient name to search by. If none are passed the studies accession number will be used (optional)
         """
         request_data = {
+           'patient_name': patient_name,
            'patientid': patientid,
            'uuid': uuid,
            'accession_number': accession_number,
-           'patient_name': patient_name,
         }
 	
         errors_mapping = {}
@@ -1602,8 +1648,8 @@ class Study:
         :param study_id: The study id
         """
         request_data = {
-           'study_id': study_id,
            'body': body,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}
@@ -1767,9 +1813,9 @@ class Study:
         :param uuid: The study id
         """
         request_data = {
-           'detail': detail,
-           'uuid': uuid,
            'question': question,
+           'uuid': uuid,
+           'detail': detail,
         }
 	
         errors_mapping = {}
@@ -1835,12 +1881,12 @@ class Study:
         (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number
         """
         request_data = {
-           'storage_namespace': storage_namespace,
-           'serial_no': serial_no,
            'node_id': node_id,
            'study_uid': study_uid,
-           'event': event,
+           'storage_namespace': storage_namespace,
            'size': size,
+           'serial_no': serial_no,
+           'event': event,
         }
 	
         errors_mapping = {}
@@ -1905,13 +1951,13 @@ class Study:
         (study_id OR study_uid AND storage_namespace AND phi_namespace) - The study id or the study_uid/storage_namespace/phi_namespace triplet
         """
         request_data = {
-           'study_id': study_id,
-           'storage_namespace': storage_namespace,
-           'serial_no': serial_no,
            'node_id': node_id,
            'study_uid': study_uid,
-           'phi_namespace': phi_namespace,
+           'storage_namespace': storage_namespace,
            'image_count': image_count,
+           'serial_no': serial_no,
+           'phi_namespace': phi_namespace,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}

@@ -70,9 +70,9 @@ class Role:
         :param permissions: A hash of the role permissions (optional)
         """
         request_data = {
+           'account_id': account_id,
            'name': name,
            'permissions': permissions,
-           'account_id': account_id,
         }
 	
         errors_mapping = {}
@@ -107,10 +107,10 @@ class Role:
         :param permissions: A hash of the role permissions (optional)
         """
         request_data = {
-           'uuid': uuid,
            'description': description,
-           'name': name,
            'permissions': permissions,
+           'uuid': uuid,
+           'name': name,
         }
         if permission_param is not None:
             permission_param_dict = {'{prefix}{k}'.format(prefix='permission_', k=k): v for k,v in permission_param.items()}

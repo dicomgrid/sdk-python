@@ -33,11 +33,11 @@ class Rsna:
         """
         request_data = {
            'access_code': access_code,
-           'exam_id': exam_id,
-           'dob': dob,
-           'namespace': namespace,
            'pin': pin,
            'clearinghouse': clearinghouse,
+           'dob': dob,
+           'namespace': namespace,
+           'exam_id': exam_id,
         }
 	
         errors_mapping = {}

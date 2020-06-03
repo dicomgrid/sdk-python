@@ -65,3 +65,25 @@ class TestStorageImage:
                 ),
             ).all()
         assert len(list(studies)) == 1
+
+
+# This is modify readonly study so this test in external class.
+class TestStorageImageWrap:
+    """Test storage image namespace wrap."""
+
+    def test_wrap(self, api, readonly_study):
+        """Test wrap method."""
+        image_path = Path(__file__) \
+            .parents[1] \
+            .joinpath('images', 'logo.png')
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+
+        with open(image_path, 'rb') as opened_file:
+            wrap = api.Storage.Image.wrap(
+                engine_fqdn=engine_fqdn,
+                namespace=storage_namespace,
+                opened_file=opened_file,
+            )
+
+            assert wrap.status_code == 202

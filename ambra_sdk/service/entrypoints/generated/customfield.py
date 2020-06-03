@@ -112,24 +112,24 @@ class Customfield:
         hl7_segment - Segment to map this field to in HL7 ORM messages. Valid values are (NTE OR PID OR PID1 OR PV1 OR PV2 OR OBR OR DG1 OR OBX OR CTI OR BLG OR ORC) (only applicable to study fields) (optional)
         """
         request_data = {
-           'load_from_sr': load_from_sr,
-           'dicom_tag_ignore_empty': dicom_tag_ignore_empty,
-           'wrapped_dicom_only': wrapped_dicom_only,
-           'hl7_component': hl7_component,
-           'capture_on_share_code': capture_on_share_code,
-           'dicom_tag': dicom_tag,
-           'type': type,
-           'name': name,
            'options': options,
+           'load_dicom_tag': load_dicom_tag,
+           'load_hl7_filter': load_hl7_filter,
+           'wrapped_dicom_only': wrapped_dicom_only,
+           'name': name,
+           'dicom_tag': dicom_tag,
+           'other_dicom_tags': other_dicom_tags,
+           'display_order': display_order,
+           'hl7_component': hl7_component,
+           'hl7_field': hl7_field,
+           'dicom_tag_ignore_empty': dicom_tag_ignore_empty,
+           'account_id': account_id,
+           'type': type,
            'hl7_segment': hl7_segment,
            'required': required,
+           'load_from_sr': load_from_sr,
+           'capture_on_share_code': capture_on_share_code,
            'load_hl7': load_hl7,
-           'load_dicom_tag': load_dicom_tag,
-           'display_order': display_order,
-           'hl7_field': hl7_field,
-           'load_hl7_filter': load_hl7_filter,
-           'other_dicom_tags': other_dicom_tags,
-           'account_id': account_id,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
@@ -201,23 +201,23 @@ class Customfield:
         hl7_segment - Segment to map this field to in HL7 ORM messages. Valid values are (NTE OR PID OR PID1 OR PV1 OR PV2 OR OBR OR DG1 OR OBX OR CTI OR BLG OR ORC) (only applicable to study fields) (optional)
         """
         request_data = {
-           'load_from_sr': load_from_sr,
-           'dicom_tag_ignore_empty': dicom_tag_ignore_empty,
-           'wrapped_dicom_only': wrapped_dicom_only,
-           'hl7_component': hl7_component,
-           'capture_on_share_code': capture_on_share_code,
-           'dicom_tag': dicom_tag,
-           'name': name,
            'options': options,
-           'hl7_segment': hl7_segment,
-           'required': required,
-           'load_hl7': load_hl7,
-           'uuid': uuid,
            'load_dicom_tag': load_dicom_tag,
-           'display_order': display_order,
-           'hl7_field': hl7_field,
            'load_hl7_filter': load_hl7_filter,
+           'wrapped_dicom_only': wrapped_dicom_only,
+           'name': name,
+           'dicom_tag': dicom_tag,
            'other_dicom_tags': other_dicom_tags,
+           'display_order': display_order,
+           'hl7_component': hl7_component,
+           'hl7_field': hl7_field,
+           'dicom_tag_ignore_empty': dicom_tag_ignore_empty,
+           'hl7_segment': hl7_segment,
+           'uuid': uuid,
+           'required': required,
+           'load_from_sr': load_from_sr,
+           'capture_on_share_code': capture_on_share_code,
+           'load_hl7': load_hl7,
         }
 	
         errors_mapping = {}
@@ -299,8 +299,8 @@ class Customfield:
         :param name: Name of the customfield
         """
         request_data = {
-           'name': name,
            'account_id': account_id,
+           'name': name,
         }
 	
         errors_mapping = {}

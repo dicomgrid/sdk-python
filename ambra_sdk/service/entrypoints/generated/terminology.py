@@ -36,11 +36,11 @@ class Terminology:
         (account_id OR vanity OR study_uid AND storage_namespace AND phi_namespace) - The uuid or vanity name of the account or study triplet to apply any account overrides for (optional)
         """
         request_data = {
-           'storage_namespace': storage_namespace,
-           'vanity': vanity,
-           'study_uid': study_uid,
-           'phi_namespace': phi_namespace,
            'account_id': account_id,
+           'study_uid': study_uid,
+           'vanity': vanity,
+           'storage_namespace': storage_namespace,
+           'phi_namespace': phi_namespace,
         }
 	
         errors_mapping = {}
@@ -78,13 +78,13 @@ class Terminology:
         (account_id OR vanity OR study_uid AND storage_namespace AND phi_namespace) - The uuid or vanity name of the account or study triplet to apply any account overrides for (optional)
         """
         request_data = {
-           'storage_namespace': storage_namespace,
-           'vanity': vanity,
-           'tags': tags,
-           'language': language,
-           'study_uid': study_uid,
-           'phi_namespace': phi_namespace,
            'account_id': account_id,
+           'study_uid': study_uid,
+           'vanity': vanity,
+           'language': language,
+           'tags': tags,
+           'storage_namespace': storage_namespace,
+           'phi_namespace': phi_namespace,
         }
 	
         errors_mapping = {}
@@ -114,11 +114,11 @@ class Terminology:
         :param vanity: Vanity to apply the tag for (optional)
         """
         request_data = {
-           'value': value,
+           'tag': tag,
            'vanity': vanity,
            'language': language,
+           'value': value,
            'account_id': account_id,
-           'tag': tag,
         }
 	
         errors_mapping = {}
@@ -154,8 +154,8 @@ class Terminology:
         """
         request_data = {
            'vanity': vanity,
-           'tags': tags,
            'language': language,
+           'tags': tags,
            'account_id': account_id,
         }
 	
@@ -185,8 +185,8 @@ class Terminology:
         (account_id OR vanity) - The uuid or vanity name of the account to apply any account overrides for (optional)
         """
         request_data = {
-           'vanity': vanity,
            'lng': lng,
+           'vanity': vanity,
            'account_id': account_id,
         }
 	

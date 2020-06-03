@@ -60,12 +60,12 @@ class User:
         :param share_code: Share code they are joining from (optional)
         """
         request_data = {
-           'first': first,
-           'share_code': share_code,
-           'password': password,
-           'captcha_response': captcha_response,
            'email': email,
+           'captcha_response': captcha_response,
            'last': last,
+           'first': first,
+           'password': password,
+           'share_code': share_code,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
@@ -104,12 +104,12 @@ class User:
         :param password: Password
         """
         request_data = {
-           'first': first,
-           'password': password,
            'email': email,
            'mobile_phone': mobile_phone,
-           'account_id': account_id,
            'last': last,
+           'account_id': account_id,
+           'first': first,
+           'password': password,
         }
 	
         errors_mapping = {}
@@ -136,8 +136,8 @@ class User:
         :param uuid: The users uuid (optional). Uses the session user if not passed
         """
         request_data = {
-           'uuid': uuid,
            'account_id': account_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
@@ -170,6 +170,7 @@ class User:
         share_code=None,
         share_description=None,
         time_zone=None,
+        ui_json=None,
         uuid=None,
     ):
         """Set.
@@ -188,25 +189,27 @@ class User:
         :param share_code: The share code of the user (optional)
         :param share_description: The share description of the user (optional)
         :param time_zone: The users time zone name as per https://www.postgresql.org/docs/9.1/static/view-pg-timezone-names.html (optional)
+        :param ui_json: JSON for UI settings (optional)
         :param uuid: The users uuid (optional). Uses the session user if not passed
         """
         request_data = {
-           'first': first,
-           'share_code': share_code,
-           'uuid': uuid,
-           'account_id': account_id,
-           'password': password,
            'privacy_md5': privacy_md5,
-           'terms_md5': terms_md5,
-           'old_password': old_password,
-           'share_description': share_description,
-           'cc_token': cc_token,
-           'indicator_md5': indicator_md5,
-           'mobile_phone': mobile_phone,
+           'ui_json': ui_json,
+           'account_id': account_id,
            'email': email,
            'time_zone': time_zone,
-           'last': last,
+           'mobile_phone': mobile_phone,
+           'indicator_md5': indicator_md5,
+           'cc_token': cc_token,
+           'share_description': share_description,
            'pin_required': pin_required,
+           'uuid': uuid,
+           'last': last,
+           'first': first,
+           'old_password': old_password,
+           'password': password,
+           'terms_md5': terms_md5,
+           'share_code': share_code,
         }
 	
         errors_mapping = {}
@@ -279,8 +282,8 @@ class User:
         :param token: The reset token
         """
         request_data = {
-           'token': token,
            'password': password,
+           'token': token,
         }
 	
         errors_mapping = {}
@@ -308,9 +311,9 @@ class User:
         :param link: URL to reset the password at. The reset token will be appended to the link
         """
         request_data = {
-           'link': link,
            'account_id': account_id,
            'email': email,
+           'link': link,
         }
 	
         errors_mapping = {}
@@ -396,13 +399,13 @@ class User:
         :param role_id: The role to give the user (optional)
         """
         request_data = {
-           'role_id': role_id,
-           'link': link,
-           'account_id': account_id,
-           'groups': groups,
-           'locations': locations,
            'email': email,
            'link_already': link_already,
+           'locations': locations,
+           'account_id': account_id,
+           'role_id': role_id,
+           'groups': groups,
+           'link': link,
         }
 	
         errors_mapping = {}
@@ -457,8 +460,8 @@ class User:
         :param plus_phr: Flag to include the PHR account as well if account_id was specified (optional)
         """
         request_data = {
-           'plus_phr': plus_phr,
            'account_id': account_id,
+           'plus_phr': plus_phr,
         }
 	
         errors_mapping = {}
@@ -474,6 +477,34 @@ class User:
         }
         return QueryOF(**query_data)
     
+    def event(
+        self,
+        namespace_id,
+        uuid=None,
+    ):
+        """Event.
+        :param namespace_id: Id of the namespace to set the flags on
+        :param uuid: Return event flags for this user, not current user (optional)
+        """
+        request_data = {
+           'namespace_id': namespace_id,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping['INVALID_FLAG'] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping['NOT_FOUND'] = NotFound('The namespace or user can not be found')
+        errors_mapping['NOT_MEMBER'] = NotMember('The user is not a member of this namespace')
+        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not allowed to get user&#39;s event flags')
+        query_data = {
+            'api': self._api,
+            'url': '/user/event',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
     def event_set(
         self,
         namespace_id,
@@ -484,6 +515,7 @@ class User:
         event_link_mine=None,
         event_message=None,
         event_new_report=None,
+        event_report_remove=None,
         event_share=None,
         event_status_change=None,
         event_study_comment=None,
@@ -491,6 +523,7 @@ class User:
         event_thin_study_success=None,
         event_upload=None,
         event_upload_fail=None,
+        uuid=None,
     ):
         """Event set.
         :param namespace_id: Id of the namespace to set the flags on
@@ -501,6 +534,7 @@ class User:
         :param event_link_mine: Notify the user when an anonymous link created by the user is hit in the namespace (optional)
         :param event_message: Notify the user when a message is sent to the namespace (optional)
         :param event_new_report: Notify the user when a report is attached in the namespace (optional)
+        :param event_report_remove: Notify the user when a report is removed in the namespace (optional)
         :param event_share: Notify the user on a share into the namespace (optional)
         :param event_status_change: Notify the user when the status of a study is changed (optional)
         :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
@@ -508,29 +542,33 @@ class User:
         :param event_thin_study_success: Notify the user when a thin study retrieval they initiated succeeds (optional)
         :param event_upload: Notify the user on an upload into the namespace (optional)
         :param event_upload_fail: Notify the user on a failed upload into the namespace (optional)
+        :param uuid: Return event flags for this user, not current user (optional)
         """
         request_data = {
+           'event_link_mine': event_link_mine,
            'event_study_comment': event_study_comment,
-           'event_thin_study_fail': event_thin_study_fail,
-           'event_new_report': event_new_report,
-           'event_status_change': event_status_change,
-           'event_share': event_share,
-           'event_message': event_message,
-           'event_link': event_link,
+           'event_case_assignment': event_case_assignment,
            'event_thin_study_success': event_thin_study_success,
+           'event_report_remove': event_report_remove,
+           'event_upload': event_upload,
+           'event_link': event_link,
+           'namespace_id': namespace_id,
+           'event_thin_study_fail': event_thin_study_fail,
+           'uuid': uuid,
+           'event_share': event_share,
            'event_approve': event_approve,
            'event_upload_fail': event_upload_fail,
-           'event_link_mine': event_link_mine,
-           'event_case_assignment': event_case_assignment,
-           'event_upload': event_upload,
-           'namespace_id': namespace_id,
            'event_harvest': event_harvest,
+           'event_status_change': event_status_change,
+           'event_new_report': event_new_report,
+           'event_message': event_message,
         }
 	
         errors_mapping = {}
         errors_mapping['INVALID_FLAG'] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
-        errors_mapping['NOT_FOUND'] = NotFound('The namespace can not be found')
-        errors_mapping['NOT_MEMBER'] = NotMember('You are not a member of this namespace')
+        errors_mapping['NOT_FOUND'] = NotFound('The namespace or user can not be found')
+        errors_mapping['NOT_MEMBER'] = NotMember('The user is not a member of this namespace')
+        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not allowed to set user&#39;s event flags')
         query_data = {
             'api': self._api,
             'url': '/user/event/set',

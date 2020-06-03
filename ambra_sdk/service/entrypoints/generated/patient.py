@@ -66,19 +66,19 @@ class Patient:
         (name OR first AND last) - Patient name as either full name or first and last (optional if study_id is used)
         """
         request_data = {
-           'study_id': study_id,
            'alt_email': alt_email,
            'birth_date': birth_date,
-           'mrn': mrn,
-           'alt_mobile_phone': alt_mobile_phone,
-           'event_share': event_share,
-           'name': name,
            'sex': sex,
+           'mrn': mrn,
            'email': email,
            'mobile_phone': mobile_phone,
-           'account_id': account_id,
+           'event_share': event_share,
            'last': last,
+           'alt_mobile_phone': alt_mobile_phone,
+           'account_id': account_id,
+           'name': name,
            'first': first,
+           'study_id': study_id,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
@@ -162,17 +162,17 @@ class Patient:
         """
         request_data = {
            'alt_email': alt_email,
-           'mrn': mrn,
-           'alt_mobile_phone': alt_mobile_phone,
-           'uuid': uuid,
-           'event_share': event_share,
-           'name': name,
+           'birth_date': birth_date,
            'sex': sex,
+           'mrn': mrn,
            'email': email,
            'mobile_phone': mobile_phone,
-           'birth_date': birth_date,
+           'uuid': uuid,
+           'event_share': event_share,
            'last': last,
+           'alt_mobile_phone': alt_mobile_phone,
            'first': first,
+           'name': name,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
@@ -290,9 +290,9 @@ class Patient:
         :param mrn: MRN (required if the require_mrn_for_patient_portal account setting is on)
         """
         request_data = {
+           'first': first,
            'mrn': mrn,
            'last': last,
-           'first': first,
            'birth_date': birth_date,
         }
 	
@@ -327,10 +327,10 @@ class Patient:
         """
         request_data = {
            'alt_email': alt_email,
-           'patient_id': patient_id,
-           'alt_mobile_phone': alt_mobile_phone,
-           'mobile_phone': mobile_phone,
            'email': email,
+           'mobile_phone': mobile_phone,
+           'alt_mobile_phone': alt_mobile_phone,
+           'patient_id': patient_id,
         }
 	
         errors_mapping = {}

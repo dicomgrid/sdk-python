@@ -63,6 +63,7 @@
                 <li><a href="#user_invite">/user/invite</a>
                 <li><a href="#user_invite_accept">/user/invite/accept</a>
                 <li><a href="#user_namespace_list">/user/namespace/list</a>
+                <li><a href="#user_event">/user/event</a>
                 <li><a href="#user_event_set">/user/event/set</a>
                 <li><a href="#user_token">/user/token</a>
                 <li><a href="#user_signature">/user/signature</a>
@@ -78,6 +79,7 @@
                 <li><a href="#study_cfind">/study/cfind</a>
                 <li><a href="#study_get">/study/get</a>
                 <li><a href="#study_permissions">/study/permissions</a>
+                <li><a href="#study_exists">/study/exists</a>
                 <li><a href="#study_push">/study/push</a>
                 <li><a href="#study_push_hl7">/study/push/hl7</a>
                 <li><a href="#study_pdf_hl7">/study/pdf/hl7</a>
@@ -198,6 +200,7 @@
                 <li><a href="#case_delete">/case/delete</a>
                 <li><a href="#case_list">/case/list</a>
                 <li><a href="#case_attach">/case/attach</a>
+                <li><a href="#case_price">/case/price</a>
             </ul>
             <li><a href="#patient" name="patient-idx">Patient commands</a>
             <ul>
@@ -371,6 +374,7 @@
                 <li><a href="#namespace_settings">/namespace/settings</a>
                 <li><a href="#namespace_share_code">/namespace/share_code</a>
                 <li><a href="#namespace_share_pricing">/namespace/share/pricing</a>
+                <li><a href="#namespace_case_pricing">/namespace/case/pricing</a>
                 <li><a href="#namespace_anonymize">/namespace/anonymize</a>
                 <li><a href="#namespace_coverpage">/namespace/coverpage</a>
                 <li><a href="#namespace_validate_customfields">/namespace/validate/customfields</a>
@@ -453,6 +457,7 @@
                 <li><a href="#link_sid">/link/sid</a>
                 <li><a href="#link_mail">/link/mail</a>
                 <li><a href="#link_charge">/link/charge</a>
+                <li><a href="#link_pin">/link/pin</a>
             </ul>
             <li><a href="#message" name="message-idx">Message commands</a>
             <ul>
@@ -1398,12 +1403,36 @@
                 <td>Can they view or list the cases in the account</td>
             </tr>
             <tr>
+                <td>case_view_only_own</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they only view or list their own cases in the account (when assigned as medical user)</td>
+            </tr>
+            <tr>
                 <td>case_edit</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>Can they add, edit and remove cases from an account</td>
+            </tr>
+            <tr>
+                <td>case_edit_only_own</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they only edit and remove their own cases from an account (when assigned as medical user)</td>
+            </tr>
+            <tr>
+                <td>case_delete</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they delete cases</td>
             </tr>
             <tr>
                 <td>customcode_view</td>
@@ -1774,6 +1803,22 @@
                 <td>Can they modify their notifications</td>
             </tr>
             <tr>
+                <td>user_view_others_notifications</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they view other user's notifications</td>
+            </tr>
+            <tr>
+                <td>user_modify_others_notifications</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they modify other user's notifications</td>
+            </tr>
+            <tr>
                 <td>user_request_access</td>
                 <td>1</td>
                 <td>1</td>
@@ -2010,6 +2055,9 @@
                         <li>
                             study_edit_reason_per_field (boolean) &bull; display one reason field for each edited study field
                         </li>
+                        <li>
+                            study_oru_report_limit (number) &bull; Only show that number of latest ORU in the Study Reports dropdown. Zero value is for no limit
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -2092,6 +2140,16 @@
                 <td>1</td>
                 <td>0</td>
                 <td>Enable dicom wrapping support on uploading if no DICOM is detected</td>
+            </tr>
+            <tr>
+                <td>single_file_dicom_wrapping</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Limit DICOM wrapping on upload to a single file</td>
             </tr>
             <tr>
                 <td>disable_mobile_dicom_wrapping</td>
@@ -2532,6 +2590,16 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Comma separated list of email addresses to send a case_completed email when a case is completed. The special values <code>user</code> <code>assigned_admin</code> and <code>assigned_medical</code> will be replaced by the appropriate email address for the case. 
+            </tr>
+            <tr>
+                <td>case_charge_by_modality</td>
+                <td>Flag</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Charge second opinion by modality of shared study</td>
             </tr>
             <tr>
                 <td>study_status_tags</td>
@@ -3268,6 +3336,16 @@
                 <td>Check for a duplicate study on upload</td>
             </tr>
             <tr>
+                <td>disable_duplicate_study_upload</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Disable upload of a duplicate study by uid across account</td>
+            </tr>
+            <tr>
                 <td>add_patientid_to_hl7_query_retrieve</td>
                 <td>Flag</td>
                 <td>0</td>
@@ -3366,6 +3444,16 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Allow the patient portal pin to be send to duplicate patient emails or phone numbers</td>
+            </tr>
+            <tr>
+                <td>hide_patient_portal_email_regex</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A regular expression to hide matching email addresses from the patient portal access screen</td>
             </tr>
             <tr>
                 <td>use_link_on_patient_portal_share</td>
@@ -3550,8 +3638,18 @@
                 <td>Number of minutes after study creation to not show reports on studies shared into a PHR namespace</td>
             </tr>
             <tr>
+                <td>study_view_phr_delay</td>
+                <td>Test</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A JSON object with minutes to delay studies visibility in patient's portal. JSON object's names are modalities or a special value <i>ALL</i>, values are number of minutes to delay. The <i>ALL</i> record is optional and is applied when there is no match for study's modality</td>
+            </tr>
+            <tr>
                 <td>link_defaults</td>
-                <td>Text</td
+                <td>Text</td>
                 <td></td>
                 <td>0</td>
                 <td>0</td>
@@ -3562,7 +3660,7 @@
             </tr>
             <tr>
                 <td>upload_settings</td>
-                <td>Text</td
+                <td>Text</td>
                 <td></td>
                 <td>0</td>
                 <td>0</td>
@@ -3573,7 +3671,7 @@
             </tr>
             <tr>
                 <td>hl7_fetch_filter</td>
-                <td>Text</td
+                <td>Text</td>
                 <td></td>
                 <td>0</td>
                 <td>0</td>
@@ -3584,14 +3682,13 @@
             </tr>
             <tr>
                 <td>account_hl7_map</td>
-                <td>Text</td
+                <td>Text</td>
                 <td></td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>0</td
-
+                <td>0</td>
                 <td>0</td>
                 <td>A JSON hash mapping the value in MSH_3 or MSH_5 to another account uuid. The HL7 message will be attached to the mapped account. The special hash key <code>_HL7_FIELD_</code> can be used to set a different place to get the value .e.g. <code>MSH_6_1</code>  This can only be set by a sysadmin or support user</td>
             </tr>
@@ -3624,6 +3721,16 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Use slower batched rendering for producing cine files from series; use only if older OS/browser combination prevents viewing regular cine files</td>
+            </tr>
+            <tr>
+                <td>encapsulate_wrapped_pdf</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Storage setting for DICOM encapsulated PDF's</td>
             </tr>
             <tr>
                 <td>compress_audio_recordings</td>
@@ -3696,6 +3803,16 @@
                 <td>A JSON hash of regexp to apply to the /destination/search/mwl calls instead of the query_retrieve_require_regexp. The keys are the field names and the values are the regexp e.g. <code>{"patient_name":"/^\\\w{3}/"}</code>
             </tr>
             <tr>
+                <td>query_retrieve_require_criteria_min</td>
+                <td>Number</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Minimal number of search criteria for /destination/search Default is 1</code>
+            </tr>
+            <tr>
                 <td>enable_drchrono</td>
                 <td>Flag</td>
                 <td>0</td>
@@ -3733,7 +3850,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
-                <td>A JSON hash that specifies the message type as the key and the hl7 field/subfield as the value. The base64 encoded report will be extracted from message as per these specs and be attached as a report to the associated studies e.g. <code>{"ORU":"OBX-12_5_5"}</td>
+                <td>A JSON hash that specifies the message type as the key and the hl7 field/subfield as the value. The base64 encoded report will be extracted from message as per these specs and be attached as a report to the associated studies e.g. <code>{"ORU":"OBX-12_5_5"}</code></td>
             </tr>
             <tr>
                 <td>upload_select_none</td>
@@ -3846,7 +3963,7 @@
                 <td>
                     A JSON hash to configure a MRN query retrieve and PHI fixup workflow. The keys and values in the hash are as follows:
                     <ul>
-                        <li> transform &bull; A transform condition expression (see /transform/add for format) to match against the HL7 ORM messages. If the message matches a query retrieve is triggered against the destinations
+                        <li> transform &bull; A transform condition expression (see /transform/add for format) to match against the HL7 ORM or SIU messages. If the message matches a query retrieve is triggered against the destinations
                         <li> mrn &bull; The HL7 field that holds the MRN(s) to query on e.g. <code>PID_4</code>
                         <li> destination &bull; A JSON list of the destination uuid(s) to query for studies
                         <li> match &bull; A JSON hash of the study fields and HL7 fields that must match in addition to the MRN  e.g. <code>{"patient_birth_date":"PID_7"}</code>
@@ -3854,6 +3971,12 @@
                         <li> webhook_match &bull; The uuid of the webhook to call if the study and ORM match. The type of the webhook needs to be 'MANUAL'.
                         <li> webhook_no_match &bull; The uuid of the webhook to call if the study and ORM do not match. The type of the webhook needs to be 'MANUAL'.
                         <li> only_once &bull; Set this flag to 1 if you want this run only on the first order
+                        <li> siu &bull; A JSON hash if appointment SIU messages should be included in the workflow. The following keys and values are supported:
+                        <ul>
+                            <li> procedure_date &bull; The HL7 field that holds the scheduled procedure date and time e.g. <code>SCH_11_4</code>
+                            <li> minutes_before &bull; The number of minute before the procedure date the query retrieve workflow should be run
+                            <li> cancel_field &bull; The HL7 field that holds the value to link a S15 cancel message with the S12 appointment message e.g. <code>SCH_2</code>
+                        </ul>
                     </ul>
                     A JSON list of hash can also be passed and the HL7 message will run against the first matching hash
                 </td>
@@ -3878,6 +4001,23 @@
                 </td>
             </tr>
             <tr>
+                <td>hl7_delay_route</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>
+                    A JSON hash to configure a routing delay for an HL7 message. The keys and values in the hash are as follows:
+                    <ul>
+                        <li> transform &bull; A transform condition expression (see /transform/add for format) to match against the HL7 message. If the message matches the date is extracted from the HL7 message and the route is delayed.
+                        <li> procedure_date &bull; The HL7 field that holds the procedure date and time e.g. <code>OBR_7</code>
+                        <li> minutes_before &bull; The number of minute before the procedure date the route should be run
+                    </ul>
+                </td>
+            </tr>
+            <tr>
                 <td>saml_sync_on_create_only</td>
                 <td>Flag</td>
                 <td>0</td>
@@ -3898,9 +4038,9 @@
                 <td>
                     A JSON hash to configure an external viewer for the account. The keys and values in the hash are as follows:
                     <ul>
-                        <li> type &bull; The type of external viewer (resmd|eunity|iconnect)
+                        <li> type &bull; The type of external viewer (resmd|eunity|iconnect|traumacad)
                         <li> key &bull; The api key for resmd or the CLO Access Key ID for eunity or the encryption key for iconnect
-                        <li> url &bull; The root url for resmd or the base eunity or iconnect server url
+                        <li> url &bull; The root url for resmd or the base eunity, iconnect or traumacad server url
                         <li> secret &bull; The shared secret for resmd or the CLO Secret Key for eunity
                         <li> encrypt_id &bull; The encryption id for resmd
                         <li> serviceInstanceParameter &bull; Optional value for eunity (defaults to DG_HARVESTER)
@@ -3943,16 +4083,17 @@
                 <td>0</td>
                 <td>0</td>
                 <td>
-                    A JSON hash to with the information needed for the Epic patient lookup workflow. The keys and values in the hash are as follows:
+                    A JSON hash to with the information needed for the Epic patient lookup workflow. If the lookup does not return a unique patient the study will be routed to the activity queue for approvals. The keys and values in the hash are as follows:
                     <ul>
-                        <li> user &bull; The EPIC user name to use for basic auth against the Epic FHIR API
-                        <li> password &bull; The basic auth password, this will be encrypted for storage and future viewing
+                        <li> user &bull; The EPIC user name to use for basic auth against the Epic FHIR API (not needed for the OAuth integration)
+                        <li> password &bull; The basic auth password, this will be encrypted for storage and future viewing (not needed for the OAuth integration)
                         <li> epic_client_id &bull; The EPIC client id
                         <li> url &bull; The root EPIC url to call. <code>api/FHIR/DSTU2/Patient</code> will be appended to it
                         <li> version &bull; Optional version number to be used after DSTU (defaults to 2)
                         <li> full_url &bull; Optional full URL for the Epic endpoint if is not in the standard location
                         <li> mrn_field &bull; The name of the identifier field that holds the MRN e.g. <code>urn:oid:1.2.840.114350.1.13.0.1.7.5.737384.0</code>
                         <li> timeout &bull; Optional number of seconds for the timeout on the FHIR call to Epic, defaults to 5
+                        <li> mrn_search &bull; Search by MRN instead of patient PHI. This field should contain a text template to create the Epic identifier value e.g. <code>MRN|{$patientid}</code>
                     </ul>
                 </td>
             </tr>
@@ -4029,6 +4170,16 @@
                 <td>Enable charging for accessing a link</td>
             </tr>
             <tr>
+                <td>ai_attach_scanned_docs_as_pdf</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Settings for the AI question</td>
+            </tr>
+            <tr>
                 <td>ai_anonymize_study_images</td>
                 <td>Text</td>
                 <td></td>
@@ -4100,6 +4251,16 @@
             </tr>
             <tr>
                 <td>ai_delete_duplicate_images</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Settings for the AI question</td>
+            </tr>
+            <tr>
+                <td>ai_delete_scanned_docs</td>
                 <td>Text</td>
                 <td></td>
                 <td>0</td>
@@ -4380,6 +4541,26 @@
                 <td>0</td>
                 <td>Remove reports from study downloads</td>
             </tr>
+            <tr>
+                <td>group_local_pushes_by</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>JSON array of fields to form a group by key for local pushes' statuses. The only allowed value for now is "destination_address"</td>
+            </tr>
+            <tr>
+                <td>set_phantom_on_reload</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Set the study to phantom state on a re-upload</td>
+            </tr>
         </table>
 
         <a name="ai-questions"><h3>AI questions</h3></a>
@@ -4403,12 +4584,12 @@
             <tr>
                 <td>delete_scanned_docs</td>
                 <td>Delete the scanned documents</td>
-                <td></td>
+                <td>ai_delete_scanned_docs</td>
             </tr>
             <tr>
                 <td>attach_scanned_docs_as_pdf</td>
                 <td>Deletes AI identified scanned images within the study</td>
-                <td></td>
+                <td>ai_attach_scanned_docs_as_pdf</td>
             </tr>
             <tr>
                 <td>anonymize_study_images</td>
@@ -4633,7 +4814,7 @@
                 <th>Returns</th>
                 <td>
                     <i>status</i> &bull; OK<br>
-                    The <a href="#permissions">permissions</a> for the user in this account</a><br>
+                    The <a href="#permissions">permissions</a> for the user in this account<br>
                 </td>
             </tr>
             <tr>
@@ -4854,7 +5035,7 @@
             </tr>
             <tr>
                 <th>URL</th>
-                <td>/session/oauth/token</td/>
+                <td>/session/oauth/token</td>
             </tr>
             <tr>
                 <th>Parameters</th>
@@ -5123,6 +5304,7 @@
                     <i>event_upload_fail</i> &bull; Notify the user on a failed upload into the users namespace<br>
                     <i>event_harvest</i> &bull; Notify the user on a harvest into the users namespace<br>
                     <i>event_new_report</i> &bull; Notify the user when a report is attached in the users namespace<br>
+                    <i>event_report_remove</i> &bull; Notify the user when a report is removed in the users namespace<br>
                     <i>event_study_comment</i> &bull; Notify the user when a comment is attached to a study in the users namespace<br>
                     <i>event_status_change</i> &bull; Notify the user when the status of a study is changed<br>
                     <i>event_message</i> &bull; Notify the user when a message is sent to the users namespace<br>
@@ -5140,6 +5322,7 @@
                     <i>privacy_md5</i> &bull; MD5 of the accepted privacy policy<br>
                     <i>indicator_md5</i> &bull; MD5 of the accepted indications of use<br>
                     <i>last_login</i> &bull; Timestamp of the last login<br>
+                    <i>ui_json</i> &bull; JSON for UI settings<br>
                 </td>
             </tr>
             <tr>
@@ -5188,6 +5371,7 @@
                     <i>terms_md5</i> &bull; MD5 of the accepted terms of service<br>
                     <i>privacy_md5</i> &bull; MD5 of the accepted privacy policy<br>
                     <i>indicator_md5</i> &bull; MD5 of the accepted indications of use<br>
+                    <i>ui_json</i> &bull; JSON for UI settings (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -5619,6 +5803,67 @@
         </table>
         <a href="#user-idx">top</a>
 
+        <p><a name="user_event"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get the users event flags for a namespace</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/user/event</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>namespace_id</i> &bull; Id of the namespace to set the flags on<br>
+                    <i>uuid</i> &bull; Return event flags for this user, not current user (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>event_share</i> &bull; Notify the user on a share into the namespace (optional)<br>
+                    <i>event_approve</i> &bull; Notify the user on a approval needed into the namespace (optional)<br>
+                    <i>event_upload</i> &bull; Notify the user on an upload into the namespace (optional)<br>
+                    <i>event_upload_fail</i> &bull; Notify the user on a failed upload into the namespace (optional)<br>
+                    <i>event_harvest</i> &bull; Notify the user on a harvest into the namespace (optional)<br>
+                    <i>event_new_report</i> &bull; Notify the user when a report is attached in the namespace (optional)<br>
+                    <i>event_report_remove</i> &bull; Notify the user when a report is removed in the namespace (optional)<br>
+                    <i>event_study_comment</i> &bull; Notify the user when a comment is attached to a study in the namespace (optional)<br>
+                    <i>event_status_change</i> &bull; Notify the user when the status of a study is changed (optional)<br>
+                    <i>event_message</i> &bull; Notify the user when a message is sent to the namespace (optional)<br>
+                    <i>event_node</i> &bull; Notify the user when an account node sends an event (optional)<br>
+                    <i>event_link</i> &bull; Notify the user when an anonymous link is hit in the namespace (optional)<br>
+                    <i>event_link_mine</i> &bull; Notify the user when an anonymous link created by the user is hit in the namespace (optional)<br>
+                    <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
+                    <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
+                    <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
+
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    NOT_FOUND &bull; The namespace or user can not be found<br>
+                    NOT_MEMBER &bull; The user is not a member of this namespace<br>
+                    NOT_PERMITTED &bull; You are not allowed to get user's event flags<br>
+                    INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ul>
+                        <li> * To get event flags of an other user you must be a sysadmin user, a support user for the namespace or have a role with the <i>user_view_others_notifications</i> permission for the namespace
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#user-idx">top</a>
+
         <p><a name="user_event_set"></a>
         <table class="bordered-table">
             <tr>
@@ -5634,12 +5879,14 @@
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>namespace_id</i> &bull; Id of the namespace to set the flags on<br>
+                    <i>uuid</i> &bull; Return event flags for this user, not current user (optional)<br>
                     <i>event_share</i> &bull; Notify the user on a share into the namespace (optional)<br>
                     <i>event_approve</i> &bull; Notify the user on a approval needed into the namespace (optional)<br>
                     <i>event_upload</i> &bull; Notify the user on an upload into the namespace (optional)<br>
                     <i>event_upload_fail</i> &bull; Notify the user on a failed upload into the namespace (optional)<br>
                     <i>event_harvest</i> &bull; Notify the user on a harvest into the namespace (optional)<br>
                     <i>event_new_report</i> &bull; Notify the user when a report is attached in the namespace (optional)<br>
+                    <i>event_report_remove</i> &bull; Notify the user when a report is removed in the namespace (optional)<br>
                     <i>event_study_comment</i> &bull; Notify the user when a comment is attached to a study in the namespace (optional)<br>
                     <i>event_status_change</i> &bull; Notify the user when the status of a study is changed (optional)<br>
                     <i>event_message</i> &bull; Notify the user when a message is sent to the namespace (optional)<br>
@@ -5659,14 +5906,19 @@
             <tr>
                 <th>Errors</th>
                 <td>
-                    NOT_FOUND &bull; The namespace can not be found<br>
-                    NOT_MEMBER &bull; You are not a member of this namespace<br>
+                    NOT_FOUND &bull; The namespace or user can not be found<br>
+                    NOT_MEMBER &bull; The user is not a member of this namespace<br>
+                    NOT_PERMITTED &bull; You are not allowed to set user's event flags<br>
                     INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
                 </td>
             </tr>
             <tr>
                 <th>Notes</th>
                 <td>
+                    <ul>
+                        <li> * To set your own event flags you must have the <i>user_modify_notifications</i> permission for the namespace
+                        <li> * To set event flags of an other user you must be a sysadmin user, a support user for the namespace or have a role with the <i>user_modify_others_notifications</i> permission for the namespace
+                    </ul>
                 </td>
             </tr>
         </table>
@@ -6052,6 +6304,7 @@
                     <i>customfield_h</i> &bull; Flag to return a customfield hash as detailed in /study/get (optional)<br>
                     <i>permissions_diff</i> &bull; Flag to return only the permissions that differ from the namespace permissions (optional)<br>
                     <i>fields</i> &bull; A JSON list of the study fields to return (optional)<br>
+                    <i>limit.hl7</i> &bull; Limit the length of Hl7 list to return. Zero means no limit (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -6187,6 +6440,7 @@
                     <i>(sid || node_id && serial_no)</i> &bull; Either the sid or the node uuid and serial number<br>
                     <i>(uuid || study_uid && storage_namespace && phi_namespace)</i> &bull; The study uuid or the storage triplet<br>
                     <i>full_hl7</i> &bull; Flag to return the full hl7 record instead of just the uuid (optional)<br>
+                    <i>limit.hl7</i> &bull; Limit the length of Hl7 list to return. Zero means no limit (optional)<br>
                     <i>permissions_diff</i> &bull; Flag to return only the permissions that differ from the namespace permissions (optional)<br>
                     <i>extra</i> &bull; Flag to return extra data as detailed below (optional)<br>
                     <i>customfield_h</i> &bull; Flag to return a customfield hash as detailed below (optional)<br>
@@ -6258,6 +6512,7 @@
                     <i>is_dicom_wrapped</i> &bull; Is the study a wrapped DICOM<br>
                     <i>is_locked</i> &bull; Is the study locked by another user<br>
                     <i>is_frozen</i> &bull; Is the study frozen<br>
+                    <i>is_being_retrieved</i> &bull; Is this a thin study in the process of being retrieved<br>
                     <i>has_external_viewer</i> &bull; A flag if the study has an external viewer option<br>
                     <i>viewer_link</i> &bull; Link to the study viewer. If the account has SAML SSO the link will be to the SSO entry point, if not it will be a direct link.<br>
                     <i>hl7</i> &bull; An array of the hl7 objects associated with this study. Each object has the following fields or is the complete record from /hl7/get if the full_hl7 flag is passed<br>
@@ -6282,6 +6537,8 @@
                     * <i>image_count</i> &bull; The image count for the push<br>
                     * <i>updated</i> &bull; Date and time the status was last updated<br>
                     * <i>created</i> &bull; Date and time the push  was created<br>
+                    * <i>group_key</i> &bull; The string key used to group local push statuses<br>
+                    * <i>is_local</i> &bull; The flag indicating if the corresponding push was local<br>
                     --- The following fields are only returned if the extra flag is specified ---<br>
                     <i>created_at</i> &bull; Date and time the record was created<br>
                     <i>account_name</i> &bull; Name of the account the study is in<br>
@@ -6382,6 +6639,43 @@
                 <th>Notes</th>
                 <td>
                 </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_exists"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Check if a study exists in a namespace</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/exists</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>(uuid || study_uid && storage_namespace && phi_namespace || study_uid && account_id)</i> &bull; The study uuid, the storage triplet, or the study uid and account id<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>exists</i> &bull; Flag if the study exists<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td></td>
             </tr>
         </table>
         <a href="#study-idx">top</a>
@@ -6692,7 +6986,7 @@
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study uuid<br>
-                    <i>type</i> &bull; Type of objects you want (account|location|group|user)</i><br>
+                    <i>type</i> &bull; Type of objects you want (account|location|group|user)<br>
                 </td>
             </tr>
             <tr>
@@ -6791,6 +7085,7 @@
                         <li> The masshiway parameter is a JSON hash with three of the following keys required and one must be last name: last_name, first_name, speciality, zip, phone, hiway_id
                         <li> The rsna parameter is a JSON hash with pin and exam_id fields
                         <li> The email parameter can be a list of email addresses
+                        <li> The sharer is charged with namespace's <a href="#share-pricing">Share pricing table</a> or <a href="#case-pricing">Case pricing table</a> depending on account's <i>case_charge_by_modality</i> setting
                     </ul>
                 </td>
             </tr>
@@ -7013,7 +7308,7 @@
                     <i>study_uid</i> &bull; The v3 storage uid of the study (optional if uuid is passed)<br>
                     <i>storage_namespace</i> &bull; The storage namespace of the study (optional if uuid is passed)<br>
                     <i>phi_namespace</i> &bull; The phi namespace of the study (optional)<br>
-                    <i>action</i> &bull; The audit action (STUDY_VIEW|STUDY_EDIT|REPORT_UPLOAD|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)<br>
+                    <i>action</i> &bull; The audit action (STUDY_VIEW|STUDY_EDIT|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)<br>
                     <i>detail</i> &bull; Additional information<br>
                 </td>
             </tr>
@@ -8422,9 +8717,9 @@
                 <th>Parameters</th>
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
-                    <i>tag</i> &bull; Value of the tag </br>
+                    <i>tag</i> &bull; Value of the tag <br>
                     <i>object</i> &bull; Object class to apply it to (Study|User_account|Group|Location|Account|Patient|Case|Order|Message)<br>
-                    <i>object_id</i> &bull; UUID of the object</br>
+                    <i>object_id</i> &bull; UUID of the object<br>
                 </td>
             </tr>
             <tr>
@@ -8470,9 +8765,9 @@
                 <th>Parameters</th>
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
-                    <i>tag</i> &bull; Value of the tag </br>
+                    <i>tag</i> &bull; Value of the tag <br>
                     <i>object</i> &bull; Object class to apply it to (Study|User_account|Group|Location|Account|Patient|Case|Order)<br>
-                    <i>object_id</i> &bull; UUID of the object</br>
+                    <i>object_id</i> &bull; UUID of the object<br>
                 </td>
             </tr>
             <tr>
@@ -10885,7 +11180,7 @@
             <tr>
                 <th>Permission</th>
                 <td>
-                    case_view or the case owner
+                    case_view or the case owner, or the assigned medical user if case_view and case_view_only_own are enabled
                 </td>
             </tr>
             <tr>
@@ -10944,7 +11239,7 @@
             <tr>
                 <th>Permission</th>
                 <td>
-                    case_edit or the case owner
+                    case_edit or the case owner, or the assigned medical user if case_edit and case_edit_only_own are enabled
                 </td>
             </tr>
             <tr>
@@ -10997,7 +11292,7 @@
             <tr>
                 <th>Permission</th>
                 <td>
-                    case_edit
+                    case_edit, or the assigned medical user if case_edit and case_edit_only_own are enabled
                 </td>
             </tr>
             <tr>
@@ -11043,7 +11338,7 @@
             <tr>
                 <th>Permission</th>
                 <td>
-                    case_edit
+                    case_delete
                 </td>
             </tr>
             <tr>
@@ -11093,7 +11388,7 @@
             <tr>
                 <th>Permission</th>
                 <td>
-                    case_view or case ownership
+                    case_view or case ownership, or the assigned medical user if case_view and case_view_only_own are enabled
                 </td>
             </tr>
             <tr>
@@ -11159,6 +11454,47 @@
             </tr>
         </table>
         <a href="#case-idx">top</a>
+
+        <p><a name="case_price"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Calculate price for second opinion</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/case/price</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>share_code</i> &bull; The share code of the second opinion namespace.<br>
+                    <i>customfield-(CUSTOMFIELD_UUID)</i> &bull; Custom field(s) defined for the case objects with values stated in the second opinion wizard (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>price</i> &bull; Calculated price in pennies or null for no price list match<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    NOT_FOUND &bull; The namespace can not be found<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ul>
+                        <li> To be used when <i>case_charge_by_modality</i> account setting is false
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#user-idx">top</a>
 
         <a name="patient"><h3>Patient commands</h3></a>
 
@@ -13301,6 +13637,7 @@
                     * <i>facility_contact_title</i> &bull; Title of the facility contact<br>
                     * <i>facility_email</i> &bull; Email of the facility contact<br>
                     * <i>facility_notes</i> &bull; Notes about the facility<br>
+                    * <i>connect_status</i> &bull; A status indicating a connection request state<br>
                 </td>
             </tr>
             <tr>
@@ -13323,6 +13660,12 @@
                 <td>
                     <ul>
                         <li> You can only filter on the facility_* fields
+                        <li> Possible values for connect_status:
+                            <ul>
+                                <li>NONE - No connection requested
+                                <li>PENDING - There are some connection requests
+                                <li>CONNECTED - The node is connected
+                            </ul>
                     </ul>
                 </td>
             </tr>
@@ -13366,6 +13709,7 @@
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     NOT_FOUND &bull; The node or account can not be found<br>
                     NOT_PERMITTED &bull; You are not permitted to do this<br>
+                    ALREADY_CONNECTED &bull; The node is already connected to the account<br>
                 </td>
             </tr>
             <tr>
@@ -13394,7 +13738,7 @@
                     <i>name</i> &bull; Description of the node<br>
                     <i>uuid</i> &bull; uuid of the node (optional, you can use this to explicitly set the UUID)<br>
                     <i>(account_id|location_id|group_id)</i> &bull; uuid of the account, location or group to link this node to<br>
-                    <i>type</i> &bull; Type of node (STORAGE|HARVESTER|ACCELERATOR|CLEARINGHOUSE|VIRTUAL|UTILITY)<br>
+                    <i>type</i> &bull; Type of node (STORAGE|HARVESTER|ACCELERATOR|CLEARINGHOUSE|VIRTUAL|UTILITY|XDS)<br>
                     <i>accelerator_id</i> &bull; uuid of the accelerator if this is an accelerator node<br>
                     <i>facility_name</i> &bull; Name of the facility it is installed at (optional)<br>
                     <i>facility_zip</i> &bull; Zip code of the facility it is installed at (optional)<br>
@@ -13654,12 +13998,14 @@
                     * <i>address</i> &bull; The query address<br>
                     * <i>port</i> &bull; The query port<br>
                     * <i>mwl_search</i> &bull; Flag to indicate if this is a modality worklist search<br>
+                    * <i>node_search</i> &bull; Flag to indicate if this is a search from another node<br>
                     * The rest of the fields are the optional search parameters in either the <a href="#destination_search">/destination/search</a> or the <a href="#destination_search_mwl">/destination/search/mwl</a> call<br>
                     <i>webhook</i> &bull; An array of the webhooks to run. Each object in the array will have the following fields<br>
                     * <i>uuid</i> &bull; Id of the webhook job<br>
                     * <i>method</i> &bull; The HTTP method to use<br>
                     * <i>url</i> &bull; The URL to call<br>
                     * <i>parameters</i> &bull; A JSON hash of the call parameters<br>
+                    * <i>auth</i> &bull; The webhook auth setting<br>
                     <i>burn</i> &bull; An array of the CD burn jobs to run. Each object in the array will have the following fields<br>
                     * <i>uuid</i> &bull; Id of the burn job<br>
                     * <i>name</i> &bull; Name of the destination<br>
@@ -13757,11 +14103,14 @@
                 <td>
                     <i>uuid</i> &bull; The node id<br>
                     <i>serial_no</i> &bull; The serial number of the node<br>
-                    <i>job_id</i> &bull; The uuid of the push job<br>
+                    <i>job_id</i> &bull; The uuid of the push job, not used for local pushes (optional)<br>
                     <i>status</i> &bull; Status code of the job (S|F|P|B|U) - Success, failure, partial transfer, blocked or uncached<br>
                     <i>status_reason</i> &bull; Detail on the status change (optional)<br>
                     <i>ack</i> &bull; The HL7 ACK if this was an HL7 job (optional)<br>
                     <i>email_reason</i> &bull; Email the user this reason for the status change (optional)<br>
+                    <i>is_local</i> &bull; The flag used to indicate the local push (optional)<br>
+                    <i>study_uid</i> &bull; The study uid of the local push, required for local pushes only (optional)<br>
+                    <i>destination_id</i> &bull; The uuid of the destination, required for local pushes (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -14432,7 +14781,8 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>(sid || node_id && serial_no)</i> &bull; Either the sid or the node uuid and serial number<br>
+                    <i>uuid</i> &bull; uuid of the destination<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -14486,7 +14836,8 @@
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>node_id</i> &bull; uuid of the node that handles the destination<br>
                     <i>name</i> &bull; Name of the destination<br>
-                    <i>type</i> &bull; Type of the destination either DICOM, FOLDER, ACCELERATOR,VIRTUAL, BURNER or UPLOADER. Defaults to DICOM (optional)<br>
+                    <i>type</i> &bull; Type of the destination either DICOM, FOLDER, ACCELERATOR,VIRTUAL, BURNER, XDS, LINKED or UPLOADER. Defaults to DICOM (optional)<br>
+                    <i>linked_destination</i> &bull; uuid of the destination for LINKED destinations<br>
                     <i>path</i> &bull; Path of the folder for a FOLDER type of destination (required if FOLDER type)<br>
                     <i>aetitle</i> &bull; Aetitle of the destination (required if DICOM type)<br>
                     <i>address</i> &bull; Address of the destination (required if DICOM type)<br>
@@ -14542,16 +14893,20 @@
                     INVALID_GATEWAY_TYPE &bull; The type is wrong for the gateway it is getting attached to<br>
                     INVALID_CD_BURN_INFO &bull; Invalid cd_burn_info. The <i>error_subtype</i> holds more detail<br>
                     INVALID_NODE_TYPE &bull; The node type is invalid for this type of destination<br>
+                    NOT_SYSADMIN &bull; The user is not a sysadmin user<br>
                 </td>
             </tr>
             <tr>
                 <th>Notes</th>
                 <td>
-                    A virtual destination will send HL7 messages directly to the destinations hl7 address and port. It does not currently support study operations.<br>
-                    <a name="cd_burn_info">CD burning information</a><br>A JSON hash with the following field(s)
                     <ul>
-                        <li> labels_single: A JSON list of template fields for a single study burn. The fields can contain Text::Template expressions like <code>{$patient_name}</code> which will be evaluated with the study data
-                        <li> labels_multi: A JSON list of template fields for a multiple study burn. The fields can contain Text::Template expressions like <code>{$patient_name}</code> which will be evaluated with the study data
+                        <li>A VIRTUAL destination will send HL7 messages directly to the destinations hl7 address and port. It does not currently support study operations.
+                        <li>A LINKED destination allows access to destinations in other namespaces or accounts. It can only be created by a sysadmin and must be attached to a VIRTUAL node. If a /destination/search is run against the LINKED destination the search will be sent to the linked_destination and up to 20 studies will be retrieved and copied back into the LINKED destination namespace. 
+                        <li> <a name="cd_burn_info">CD burning information</a>. A JSON hash with the following field(s)
+                        <ul>
+                            <li> labels_single: A JSON list of template fields for a single study burn. The fields can contain Text::Template expressions like <code>{$patient_name}</code> which will be evaluated with the study data
+                            <li> labels_multi: A JSON list of template fields for a multiple study burn. The fields can contain Text::Template expressions like <code>{$patient_name}</code> which will be evaluated with the study data
+                        </ul>
                     </ul>
                 </td>
             </tr>
@@ -14684,6 +15039,7 @@
                     <i>cd_burn_priority</i> &bull; Integer value for the burner priority<br>
                     <i>sort_order</i> &bull; Integer value for sorting<br>
                     <i>hl7_fetch_filter</i> &bull; A transform condition expression (see /transform/add for format) to match against the HL7 message. Only fire a query retrieve if the message matches the condition
+                    <i>linked_destination</i> &bull; uuid of the linked destination if this is a LINKED type destination<br>
                 </td>
             </tr>
             <tr>
@@ -14814,6 +15170,9 @@
             <tr>
                 <th>Notes</th>
                 <td>
+                    <ul>
+                        <li> start_datetime and end_datetime support underscore token substitutions. Tokens available: __TODAY__, __YESTERDAY__. Both take users' time zone into account.
+                    </ul>
                 </td>
             </tr>
         </table>
@@ -15410,6 +15769,7 @@
                     <i>session_expire</i> &bull; Number of minutes before an idle session expires. (optional) <br>
                     <i>must_approve</i> &bull; Flag if shared studies must be approved for the account namespace (optional)<br>
                     <i>must_approve_upload</i> &bull; Flag if uploaded studies must be approved (optional)<br>
+                    <i>must_approve_harvest</i> &bull; Flag if harvested studies must be approved (optional)<br>
                     <i>no_share</i> &bull; Flag if studies can not be shared with this account (optional). Studies can still be shared with locations, groups and users in the account.<br>
                     <i>can_request</i> &bull; Flag if user can request to join the account<br>
                     <i>share_code</i> &bull; The share code of the account (optional)<br>
@@ -15481,6 +15841,7 @@
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The account uuid<br>
                     <i>permissions</i> &bull; Flag to return the users role and permissions in the accounts (optional)<br>
+                    <i>brand_settings</i> &bull; A comma delimited list of the settings from /brand/get for this vanity to return (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -15495,6 +15856,7 @@
                     <i>namespace_id</i> &bull; Namespace of the account<br>
                     <i>must_approve</i> &bull; Flag if shared studies must be approved<br>
                     <i>must_approve_upload</i> &bull; Flag if uploaded studies must be approved<br>
+                    <i>must_approve_harvest</i> &bull; Flag if harvested studies must be approved<br>
                     <i>no_share</i> &bull; Flag to stop sharing into this namespace<br>
                     <i>can_request</i> &bull; Flag if user can request to join the account<br>
                     <i>share_code</i> &bull; The share code of the account<br>
@@ -15507,7 +15869,7 @@
                     <i>vendor</i> &bull; Vendor name<br>
                     <i>role_id</i> &bull; Id of the default role for the account<br>
                     <i>role_name</i> &bull; Name of the default role for the account<br>
-                    <i>settings</i> &bull; A hash of the <a href="#account-settings">account settings</a><br>
+                    <i>settings</i> &bull; A hash of the <a href="#account-settings">account settings</a> and brand settings (returned as <i>brand_(SETTING NAME)</i><br>
                     <i>connected</i> &bull; Flag if they are connected to a payment processor</a><br>
                     <i>tags</i> &bull; An array of user tags associated with this object (This is only returned if the object has tags)<br>
                     <i>customfields</i> &bull; An array of the custom fields associated with this account. Each object has the following <a href="#customfields">fields</a> (This is only returned if the group has custom fields)<br>
@@ -15568,6 +15930,7 @@
                     <i>event_join</i> &bull; Notify the user on a join request for the account (optional)<br>
                     <i>event_purge</i> &bull; Notify the user the results of a purge job for the account (optional)<br>
                     <i>event_new_report</i> &bull; Notify the user when a report is attached in the account namespace (optional)<br>
+                    <i>event_report_remove</i> &bull; Notify the user when a report is removed in the account namespace (optional)<br>
                     <i>event_study_comment</i> &bull; Notify the user when a comment is attached to a study in the namespace (optional)<br>
                     <i>event_status_change</i> &bull; Notify the user when the status of a study is changed (optional)<br>
                     <i>event_message</i> &bull; Notify the user when a message is sent to the account namespace (optional)<br>
@@ -15652,6 +16015,7 @@
                     <i>event_join</i> &bull; Notify the user on a join request for the account (optional)<br>
                     <i>event_purge</i> &bull; Notify the user the results of a purge job for the account (optional)<br>
                     <i>event_new_report</i> &bull; Notify the user when a report is attached in the account namespace (optional)<br>
+                    <i>event_report_remove</i> &bull; Notify the user when a report is removed in the account namespace (optional)<br>
                     <i>event_study_comment</i> &bull; Notify the user when a comment is attached to a study in the namespace (optional)<br>
                     <i>event_status_change</i> &bull; Notify the user when the status of a study is changed (optional)<br>
                     <i>event_message</i> &bull; Notify the user when a message is sent to the account namespace (optional)<br>
@@ -15747,6 +16111,7 @@
                     <i>event_join</i> &bull; Notify the user on a join request for the account<br>
                     <i>event_purge</i> &bull; Notify the user the results of a purge job for the account<br>
                     <i>event_new_report</i> &bull; Notify the user when a report is attached in the account namespace<br>
+                    <i>event_report_remove</i> &bull; Notify the user when a report is removed in the account namespace<br>
                     <i>event_study_comment</i> &bull; Notify the user when a comment is attached to a study in the namespace<br>
                     <i>event_status_change</i> &bull; Notify the user when the status of a study is changed<br>
                     <i>event_message</i> &bull; Notify the user when a message is sent to the account namespace<br>
@@ -16324,6 +16689,7 @@
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>must_approve</i> &bull; Flag if shared studies must be approved for the location (optional)<br>
                     <i>must_approve_upload</i> &bull; Flag if uploaded studies must be approved (optional)<br>
+                    <i>must_approve_harvest</i> &bull; Flag if harvested studies must be approved (optional)<br>
                     <i>no_share</i> &bull; Flag if studies can not be shared with this location (optional). Studies can still be shared with users in the location.<br>
                     <i>share_code</i> &bull; The share code of the location (optional)<br>
                     <i>share_description</i> &bull; The share description of the location (optional)<br>
@@ -16388,6 +16754,7 @@
                     <i>name</i> &bull; Name of the location (optional)<br>
                     <i>must_approve</i> &bull; Flag if shared studies must be approved for the location (optional)<br>
                     <i>must_approve_upload</i> &bull; Flag if uploaded studies must be approved (optional)<br>
+                    <i>must_approve_harvest</i> &bull; Flag if harvested studies must be approved (optional)<br>
                     <i>no_share</i> &bull; Flag if studies can not be shared with this location (optional). Studies can still be shared with users in the location.<br>
                     <i>share_code</i> &bull; The share code of the location (optional)<br>
                     <i>share_description</i> &bull; The share description of the location (optional)<br>
@@ -16456,6 +16823,7 @@
                     <i>namespace_id</i> &bull; namespace of the location<br>
                     <i>must_approve</i> &bull; Flag if shared studies must be approved<br>
                     <i>must_approve_upload</i> &bull; Flag if uploaded studies must be approved<br>
+                    <i>must_approve_harvest</i> &bull; Flag if harvested studies must be approved<br>
                     <i>no_share</i> &bull; Flag to stop sharing into this namespace<br>
                     <i>share_code</i> &bull; The share code of the location<br>
                     <i>share_description</i> &bull; The share description of the location<br>
@@ -16560,6 +16928,7 @@
                     <i>event_upload_fail</i> &bull; Notify the user on a failed upload into the location namespace<br>
                     <i>event_harvest</i> &bull; Notify the user on a harvest into the location namespace (optional)<br>
                     <i>event_new_report</i> &bull; Notify the user when a report is attached in the location namespace (optional)<br>
+                    <i>event_report_remove</i> &bull; Notify the user when a report is removed in the location namespace (optional)<br>
                     <i>event_study_comment</i> &bull; Notify the user when a comment is attached to a study in the namespace (optional)<br>
                     <i>event_status_change</i> &bull; Notify the user when the status of a study is changed (optional)<br>
                     <i>event_message</i> &bull; Notify the user when a message is sent to the location namespace (optional)<br>
@@ -16685,6 +17054,7 @@
                     * <i>event_upload_fail</i> &bull; Notify the user on a failed upload into the location namespace<br>
                     * <i>event_harvest</i> &bull; Notify the user on a harvest into the location namespace <br>
                     * <i>event_new_report</i> &bull; Notify the user when a report is attached in the location namespace<br>
+                    * <i>event_report_remove</i> &bull; Notify the user when a report is removed in the location namespace<br>
                     * <i>event_study_comment</i> &bull; Notify the user when a comment is attached to a study in the namespace<br>
                     * <i>event_status_change</i> &bull; Notify the user when the status of a study is changed<br>
                     * <i>event_message</i> &bull; Notify the user when a message is sent to the location namespace<br>
@@ -16789,6 +17159,7 @@
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>must_approve</i> &bull; Flag if shared studies must be approved for the group (optional)<br>
                     <i>must_approve_upload</i> &bull; Flag if uploaded studies must be approved (optional)<br>
+                    <i>must_approve_harvest</i> &bull; Flag if harvested studies must be approved (optional)<br>
                     <i>no_share</i> &bull; Flag if studies can not be shared with this group (optional). Studies can still be shared with users in the group.<br>
                     <i>share_code</i> &bull; The share code of the group (optional)<br>
                     <i>share_description</i> &bull; The share description of the group (optional)<br>
@@ -16853,6 +17224,7 @@
                     <i>name</i> &bull; Name of the group (optional)<br>
                     <i>must_approve</i> &bull; Flag if shared studies must be approved for the group (optional)<br>
                     <i>must_approve_upload</i> &bull; Flag if uploaded studies must be approved (optional)<br>
+                    <i>must_approve_harvest</i> &bull; Flag if harvested studies must be approved (optional)<br>
                     <i>no_share</i> &bull; Flag if studies can not be shared with this group (optional). Studies can still be shared with users in the group.<br>
                     <i>share_code</i> &bull; The share code of the group (optional)<br>
                     <i>share_description</i> &bull; The share description of the group (optional)<br>
@@ -16921,6 +17293,7 @@
                     <i>namespace_id</i> &bull; Namespace of the group<br>
                     <i>must_approve</i> &bull; Flag if shared studies must be approved<br>
                     <i>must_approve_upload</i> &bull; Flag if uploaded studies must be approved<br>
+                    <i>must_approve_harvest</i> &bull; Flag if harvested studies must be approved<br>
                     <i>no_share</i> &bull; Flag to stop sharing into this group<br>
                     <i>share_code</i> &bull; The share code of the group<br>
                     <i>share_description</i> &bull; The share description of the group<br>
@@ -17025,6 +17398,7 @@
                     <i>event_upload_fail</i> &bull; Notify the user on a failed upload into the group namespace (optional)<br>
                     <i>event_harvest</i> &bull; Notify the user on a harvest into the group namespace (optional)<br>
                     <i>event_new_report</i> &bull; Notify the user when a report is attached in the group namespace (optional)<br>
+                    <i>event_report_remove</i> &bull; Notify the user when a report is removed in the group namespace (optional)<br>
                     <i>event_study_comment</i> &bull; Notify the user when a comment is attached to a study in the namespace (optional)<br>
                     <i>event_status_change</i> &bull; Notify the user when the status of a study is changed (optional)<br>
                     <i>event_message</i> &bull; Notify the user when a message is sent to the group namespace (optional)<br>
@@ -17150,6 +17524,7 @@
                     * <i>event_upload_fail</i> &bull; Notify the user on a failed upload into the group namespace<br>
                     * <i>event_harvest</i> &bull; Notify the user on a harvest into the group namespace <br>
                     * <i>event_new_report</i> &bull; Notify the user when a report is attached in the group namespace<br>
+                    * <i>event_report_remove</i> &bull; Notify the user when a report is removed in the group namespace<br>
                     * <i>event_study_comment</i> &bull; Notify the user when a comment is attached to a study in the namespace<br>
                     * <i>event_status_change</i> &bull; Notify the user when the status of a study is changed<br>
                     * <i>event_message</i> &bull; Notify the user when a message is sent to the group namespace<br>
@@ -18171,6 +18546,8 @@
                     ------ The following account settings can be over-ridden in the namespace ------ <br>
                     <i>enable_dicom_wrapping</i> &bull; Value for the setting<br>
                     <i>auto_enable_dicom_wrapping</i> &bull; Value for the setting<br>
+                    <i>single_file_dicom_wrapping</i> &bull; Value for the setting<br>
+                    <i>disable_duplicate_study_upload</i> &bull; Value for the setting<br>
                     <i>enable_multipart_uploader</i> &bull; Value for the setting<br>
                     <i>link_defaults</i> &bull; Value for the setting<br>
                     <i>upload_settings</i> &bull; Value for the setting<br>
@@ -18249,6 +18626,8 @@
                     <i>second_opinion_config</i> &bull; JSON configuration for the second opinion workflow (optional)<br>
                     <i>second_opinion_case</i> &bull; The second opinion case. The fields are per <a href="#case_get">/case/get</a> (optional)<br>
                     <i>pricing</i> &bull; <a href="#share-pricing">Pricing table</a> in JSON format. (optional - see notes)<br>
+                    <i>case_pricing</i> &bull; <a href="#case-pricing">Pricing table</a> in JSON format. (optional - see notes)<br>
+                    <i>sum_case_price_matches</i> &bull; A flag to be used with <i>case_pricing</i> pricing table<br>
                     <i>payment_processor</i> &bull; JSON hash of the payment processor information (optional)<br>
                     <i>cc_description</i> &bull; A description of the users credit card on file (optional - see notes)<br>
                     <i>enable_dicom_wrapping</i> &bull; Is dicom wrapping enabled for the associated account<br>
@@ -18263,9 +18642,12 @@
                     <i>auto_wrap_images</i> &bull; Value of the flag for the associated account<br>
                     <i>reencode_dicom_mp4</i> &bull; Value of the flag for the associated account<br>
                     <i>duplicate_study_check</i> &bull; Value of the flag for the associated account<br>
+                    <i>disable_duplicate_study_upload</i> &bull; Flag for the setting<br>
                     <i>confirm_before_upload</i> &bull; Value of the flag for the associated account<br>
                     <i>study_download_no_reports</i> &bull; Value of the flag for the associated account<br>
+                    <i>case_charge_by_modality</i> &bull; Value of the flag for the associated account<br>
                     <i>auto_enable_dicom_wrapping</i> &bull; Flag for the setting<br>
+                    <i>single_file_dicom_wrapping</i> &bull; Flag for the setting<br>
                     <i>enable_multipart_uploader</i> &bull; Flag for the setting<br>
                     <i>upload_select_none</i> &bull; Flag for the setting<br>
                     <i>hide_help_tool</i> &bull; Flag for the setting<br>
@@ -18274,9 +18656,10 @@
                     <i>anonymize_rules</i> &bull; If the upload should anonymize the study this will hold the rules from the <a href="#namespace_anonymize">/namespace/anonymize</a> calls<br>
                     <i>dicom_tag_map</i> &bull; If the upload should anonymize the study this will hold the dicom tag to name map<br>
                     <i>prompt_for_anonymize</i> &bull; Flag to prompt if the anonymization rules should be applied<br>
-                    <i>batch_encode_cine</i> &bull; Value of the flag for the associated account</br>
-                    <i>dicom_deidentification_at_ingress</i> &bull; Value of the flag for the associated account</br>
-                    <i>upload_settings</i> &bull; Value of the namespace setting</br>
+                    <i>batch_encode_cine</i> &bull; Value of the flag for the associated account<br>
+                    <i>encapsulate_wrapped_pdf</i> &bull; Value of the flag for the associated account<br>
+                    <i>dicom_deidentification_at_ingress</i> &bull; Value of the flag for the associated account<br>
+                    <i>upload_settings</i> &bull; Value of the namespace setting<br>
                     <i>customfields</i> &bull; An array of the custom fields that should be captured during the share process ordered by display_order. Each object has the following <a href="#customfields">fields</a> plus these additional fields. (This is only returned if the share has custom fields). If a sid is passed all custom fields for the namespace will be returned<br>
                     * <i>capture_on_share_code</i> &bull; Should the field be capture on the share code<br>
                     * <i>wrapped_dicom_only</i> &bull; Only capture for wrapped DICOM uploads<br>
@@ -18296,7 +18679,7 @@
                 <th>Notes</th>
                 <td>
                     <ul>
-                        <li>The currency, charge_description and pricing are only returned if the namespace has pricing and the account is setup to process credit cards.
+                        <li>The currency, charge_description, pricing and case_pricing are only returned if the namespace has pricing and the account is setup to process credit cards.
                         <li>The cc_description is only returned if the namespace has pricing and a sid was passed in the parameters
                         <li>The second_opinion_case is only returned if the sid for a non-anonymous user is passed
                         <li>If a vanity URL is used and the share code is not in the vanity account a NOT_FOUND error is returned
@@ -18381,6 +18764,71 @@
                         <li> The special key 'ALL' holds the price for all studies uploaded during a single session
                         <li> The sharer is charged for the study when it is successfully shared with the recipient.
                         <li> Send an empty hash to clear out the pricing rules for the namespace.
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#namespace-idx">top</a>
+
+        <p><a name="namespace_case_pricing"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Set/get the price for second opinion workflow, also enable and configure the second opinion workflow</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/namespace/case/pricing</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The uuid of the namespace<br>
+                    <i>case_pricing</i> &bull; <a href="#share-pricing">Pricing table</a> in JSON format (optional)<br>
+                    <i>sum_case_price_matches</i> &bull; Flag to search for all matches in pricing table and to add them up (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>case_pricing</i> &bull; <a href="#share-pricing">Pricing table</a> in JSON format.<br>
+                    <i>sum_case_price_matches</i> &bull; Flag to search for all matches in pricing table and to add them up (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    account_edit if setting
+                    account_view if getting
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_PERMITTED &bull; You are not permitted to price this namespace<br>
+                    NOT_FOUND &bull; The namespace was not found<br>
+                    INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
+                    INVALID_INTEGER &bull; The price is not an integer number<br>
+                    INVALID_CONDITION &bull; The pricing condition is invalid<br>
+                    NOT_LIST &bull; The pricing table is not a JSON list <br>
+                    INVALID_FLAG &bull; The field is not a valid flag
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <a name="case-pricing">Pricing table</a><p>
+                    <ul>
+                        <li> The table is a JSON array, each element is a price item consisting of a condition and a price value (a hash with two keys, <i>price</i> and <i>condition</i>)
+                        <li> The price must be integer number of cents/pennies.
+                        <li> The condition is an logical expression compatible with Customfield's <i>show_when</i> expression.
+                        <li> There can be customfield references in condition. Customfield is referenced with string 'customfield-UUID', where UUID is an actual UUID on customfield object. 
+                        <li> if <i>sum_case_price_matches</i> flag is false, table is searched line by line for the first condition match. The price amount from the match is the value to charge.
+                        <li> if <i>sum_case_price_matches</i> flag is true, all table rows are checked for a match, prices from all matched rows are added up together, and the total is the value charge.
+                        <li> Send an empty array to clear out the pricing rules for the namespace.
                     </ul>
                 </td>
             </tr>
@@ -18580,6 +19028,7 @@
                     <i>event_upload_fail</i> &bull; Notify the user on a failed upload into the namespace (optional)<br>
                     <i>event_harvest</i> &bull; Notify the user on a harvest into the namespace (optional)<br>
                     <i>event_new_report</i> &bull; Notify the user when a report is attached in the namespace (optional)<br>
+                    <i>event_report_remove</i> &bull; Notify the user when a report is removed in the namespace (optional)<br>
                     <i>event_study_comment</i> &bull; Notify the user when a comment is attached to a study in the namespace (optional)<br>
                     <i>event_status_change</i> &bull; Notify the user when the status of a study is changed (optional)<br>
                     <i>event_message</i> &bull; Notify the user when a message is sent to the namespace (optional)<br>
@@ -18601,6 +19050,7 @@
                     <i>event_upload_fail</i> &bull; Notify the user on a failed upload into the namespace<br>
                     <i>event_harvest</i> &bull; Notify the user on a harvest into the namespace<br>
                     <i>event_new_report</i> &bull; Notify the user when a report is attached in the namespace<br>
+                    <i>event_report_remove</i> &bull; Notify the user when a report is removed in the namespace<br>
                     <i>event_study_comment</i> &bull; Notify the user when a comment is attached to a study in the namespace<br>
                     <i>event_status_change</i> &bull; Notify the user when the status of a study is changed<br>
                     <i>event_message</i> &bull; Notify the user when a message is sent to the namespace<br>
@@ -20203,6 +20653,7 @@
                             <li>STUDY_UPLOAD_LINK - Called when a study upload link is accessed
                             <li>STUDY_STATUS - Called when the study status changes
                             <li>STUDY_REPORT - Called when a report is added to a study
+                            <li>STUDY_REPORT_REMOVE - Called when a report is removed from a study
                             <li>STUDY_RADREPORT - Called when a rad report is attached to a study
                             <li>STUDY_THIN_FAIL - Called when a thin study fails to retrieve
                             <li>STUDY_VIEW - Called when a study is viewed
@@ -20214,6 +20665,7 @@
                             <li>STUDY_AI_QUESTION - Called when an answer to the AI question is returned. e.g. <code>STUDY_AI_has_scanned_docs</code>
                             <li>STUDY_REJECT - Called when the share of the study is rejected
                             <li>STUDY_REPORT_VIEW - Called when a report is viewed
+                            <li>STUDY_EDIT - Called when a study is edited via the UI
                             <li>DESTINATION_SEARCH_RESULTS - Called for the results (/node/found) for a /destination/search query
                             <li>DESTINATION_FETCH_FAIL - Called when a /destination/retrieve fails 
                             <li>WEBHOOK_FAILED - Called when a webhook fails
@@ -20227,7 +20679,7 @@
                         <li> The sid_user_id is useful for calling API methods that require a sid. A sid will be generated and added to the call parameters.
                         <li> The filter_field can be a customfield in the <code>customfield-CUSTOMFIELD_UUID</code> format
                         <li> If the event is STUDY_RADREPORT both the study.* and radreport.* fields will be available for use
-                        <li> If the event is STUDY_REPORT and the filter_field is S-attachment_mime_type the mime type of the attachment will be filtered against the filter regular expression
+                        <li> If the event is STUDY_REPORT or STUDY_REPORT_REMOVE and the filter_field is S-attachment_mime_type the mime type of the attachment will be filtered against the filter regular expression
                         <li> If the event is STUDY_HL7 and the filter_field is S-hl7_type the HL7 message type will be filtered against the filter regular expression. The fields in the HL7 message that triggered the webhook are also for use in the webhook e.g. hl7.uuid
                         <li> If the event is STUDY_HL7 and the filter_field is S-hl7_transform_condition the filter_field_regexp should be a transform condition expression to match against the HL7 message. See /hl7/transform/add for the format for the transform condition format.
                         <li> A <a href="#filter">filter</a> expression can be passed in the filter_field_regexp if the filter_field is S-list_filter. The filter will be evaluated against the study allowing fine grained and multi-field filtering e.g. <code>filter.phi_namespace.equals=UUID&filter.study_push_status.equals=S</code>
@@ -20242,6 +20694,9 @@
                         <li> The auth fields is a JSON hash with a single key that describes the type of auth and the value for the key is a hash with the auth details. The following types of auth are supported.
                             <ul>
                                 <li> sfdc - <a href="https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_understanding_username_password_oauth_flow.htm">Salesforce Username-Password OAuth Authentication</a>. The following keys must be in the details hash, client_id, client_secret, username, and password. e.g. <nobr><code>{"sfdc":{"client_id":"3MVG9lK","client_secret":"1955279","username":"testuser@salesforce.com","password":"mypassword1234"}}</code></nobr>. /webhook/get will return the md5 of the password.
+                                <li> sfdc_jwt - <a href="https://help.salesforce.com/articleView?id=remoteaccess_oauth_jwt_flow.htm">Salesforce JWT Authentication</a>. The following keys must be in the details hash iss, sub, aud, private_key, salesforce_url. /webhook/get will return the md5 of the private key 
+                                <li> token_from_webhook - Get the access_token from the JSON returned from another webhook. Put the uuid of a manual webhook into the webhook_id key of the hash
+                                <li> basic - a hash with username and password keys and values
                                 <li> custom - a hash of keys and values that will be passed in the HTTP header of the webhook e.g. <nobr><code>{"custom":{"name":"test"}}</code></nobr>
                             </ul>
                     </ul>
@@ -20547,7 +21002,9 @@
                     <i>webhook_id</i> &bull; The uuid of the calling webhook<br>
                     <i>to</i> &bull; The email address(es) to send the email to<br>
                     <i>subject</i> &bull; The subject of the email<br>
-                    <i>text</i> &bull; The body of the email<br>
+                    <i>text</i> &bull; The text part of the email<br>
+                    <i>html</i> &bull; The HTML part of the email<br>
+                    <i>template_id</i> &bull; The email template UUID to be used<br>
                 </td>
             </tr>
             <tr>
@@ -20574,7 +21031,9 @@
                 <th>Notes</th>
                 <td>
                     <ul>
-                        <li> The to, subject and text fields will be evaluated as text templates using any other parameters passed in the call .e.g if the subject is <code>Hi {$first_name}</code> and the parameter first_name is set to Joe the subject will be <code>Hi Joe</code>
+                        <li> You can pass the template_id parameter to use a preexisting mail template or to, subject and text/html parameters as separate values.
+                        <li> The to, subject, text/html fields will be evaluated as text templates
+                        <li> The to, subject, text/html fields or a template will be evaluated using any other parameters passed in the call .e.g if the subject is <code>Hi {$first_name}</code> and the parameter first_name is set to Joe the subject will be <code>Hi Joe</code>
                     </ul>
                 </td>
             </tr>
@@ -20656,7 +21115,7 @@
                     <i>include_priors</i> &bull; Include prior studies (optional)<br>
                     <i>max_hits</i> &bull; The maximum number of times the link can be used (optional)<br>
                     <i>minutes_alive</i> &bull; The maximum number of minutes the link will be alive for (optional)<br>
-                    <i>email</i> &bull; Email the link to this address (optional)<br>
+                    <i>email</i> &bull; Email the link to these addresses (optional)<br>
                     <i>mobile_phone</i> &bull; Send the link to this phone number (optional)<br>
                     <i>message</i> &bull; Message to include in the email (optional)<br>
                     <i>share_on_view</i> &bull; Flag to share the study with the email after it is viewed (optional)<br>
@@ -20720,6 +21179,7 @@
                         <li> The parameters are an array of parameter keys and values and should not be URL encoded e.g. <code>["name","jack frost","age",30]</code>
                         <li> If the password_is_dob feature is used the password can be in any date format and it will be parsed and compared against the study date
                         <li> A sample upload_match field to restrict the study to a specific birth date would look like this <code>{"(0010,0030)":"/^19800401$/"}</code>
+                        <li> The email parameter can contain comma separated list of emails. Only the first one will be saved as link's email attribute.
                     </ul>
                 </td>
             </tr>
@@ -20866,7 +21326,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>uuid</i> &bull; Id of the link<br>
+                    <i>(uuid|pin)</i> &bull; Id or PIN of the link<br>
                     <i>link_charge_id</i> &bull; The uuid of the prior charge against this link (optional)<br>
                 </td>
             </tr>
@@ -20899,6 +21359,8 @@
                     NOT_FOUND &bull; The link was not found<br>
                     INVALID_SOURCE &bull; The referer is invalid<br>
                     IP_BLOCKED &bull; An IP whitelist blocked access<br>
+                    INVALID_PIN &bull; An invalid PIN was entered<br>
+                    PIN_LOCKOUT &bull; Too many invalid PIN entries<br>
                 </td>
             </tr>
             <tr>
@@ -20922,7 +21384,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>uuid</i> &bull; Id of the link<br>
+                    <i>(uuid|pin)</i> &bull; Id or PIN of the link<br>
                     <i>password</i> &bull; Password if needed (optional)<br>
                     <i>email_address</i> &bull; The users email (optional)<br>
                     <i>link_charge_id</i> &bull; The uuid of the prior charge against this link (optional)<br>
@@ -20956,6 +21418,8 @@
                     IP_BLOCKED &bull; An IP whitelist blocked access<br>
                     CHARGE_REQUIRED &bull; A charge is required to access this link<br>
                     DISABLED &bull; This call is disabled for the account, you must use /link/redirect<br>
+                    INVALID_PIN &bull; An invalid PIN was entered<br>
+                    PIN_LOCKOUT &bull; Too many invalid PIN entries<br>
                 </td>
             </tr>
             <tr>
@@ -20979,7 +21443,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>uuid</i> &bull; Id of the link<br>
+                    <i>(uuid|pin)</i> &bull; Id or PIN of the link<br>
                     <i>sid</i> &bull; sid from /link/session (optional)<br>
                     <i>password</i> &bull; Password if needed (optional)<br>
                     <i>link_charge_id</i> &bull; The uuid of the prior charge against this link (optional)<br>
@@ -21006,6 +21470,8 @@
                     INVALID_SOURCE &bull; The referer is invalid<br>
                     IP_BLOCKED &bull; An IP whitelist blocked access<br>
                     NOT_PERMITTED &bull; The configuration of this link requires the link UI be used instead of direct access<br>
+                    INVALID_PIN &bull; An invalid PIN was entered<br>
+                    PIN_LOCKOUT &bull; Too many invalid PIN entries<br>
                     If the link is valid but an associated study is not found an HTML "Study not found." message is returned for display in the browser.<br>
                     If the link is valid but more than 100 studies match it an HTML "Too many studies found." message is returned for display in the browser.<br>
                     If the link comes from a different vanity than the study an "Invalid vanity" message is returned for display in the browser<br>
@@ -21242,6 +21708,50 @@
             </tr>
         </table>
 
+        <p><a name="link_pin"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Generate a one time PIN to access the link</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/link/pin</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; sid<br>
+                    <i>uuid</i> &bull; The uuid of the link<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>pin</i> &bull; The PIN<br>
+                    <i>duration</i> &bull; The number of seconds the PIN is valid for<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The link was not found<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    The PIN can we used in place of the UUID in the link session or redirect calls
+                </td>
+            </tr>
+        </table>
 
         <a name="purge"><h3>Purge commands</h3></a>
         Purging rules
@@ -23416,7 +23926,7 @@
         <a href="#npi-idx">top</a>
 
 
-    <footer>Version: LBL0022 v37.0 2020-04-15</footer>
+    <footer>Version: LBL0022 v38.0 2020-05-27</footer>
     </div>
 </body>
 </html>

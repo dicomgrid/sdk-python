@@ -9,3 +9,8 @@ FIELDS = types.MappingProxyType({
 METHODS = types.MappingProxyType({
     'return': 'return_method',
 })
+
+PARAMS = types.MappingProxyType({
+    'global': 'global_param',
+    'limit.hl7': 'limit_hl7',
+})

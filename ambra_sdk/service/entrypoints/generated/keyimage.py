@@ -32,10 +32,10 @@ class Keyimage:
         (study_id OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study or the storage triplet
         """
         request_data = {
-           'study_id': study_id,
-           'storage_namespace': storage_namespace,
            'study_uid': study_uid,
+           'storage_namespace': storage_namespace,
            'phi_namespace': phi_namespace,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}
@@ -76,14 +76,14 @@ class Keyimage:
         (study_id OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study or the storage triplet
         """
         request_data = {
-           'study_id': study_id,
-           'storage_namespace': storage_namespace,
-           'frame_number': frame_number,
-           'version': version,
-           'series_uid': series_uid,
            'study_uid': study_uid,
-           'phi_namespace': phi_namespace,
+           'version': version,
            'instance_uid': instance_uid,
+           'frame_number': frame_number,
+           'series_uid': series_uid,
+           'storage_namespace': storage_namespace,
+           'phi_namespace': phi_namespace,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}

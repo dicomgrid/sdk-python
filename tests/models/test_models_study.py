@@ -8,6 +8,28 @@ class TestModelsStudyFilteringSorting:
     Test filtering and sorting.
     """
 
+    def test_study_filtering_boolean_field(
+        self,
+        api,
+        account,
+        readonly_study,
+    ):
+        """Test study list boolean field."""
+        studies = api \
+            .Study \
+            .list() \
+            .filter_by(Study.phantom == 0) \
+            .filter_by(
+                Filter(
+                    'phi_namespace',
+                    FilterCondition.equals,
+                    account.account.namespace_id,
+                ),
+            ) \
+            .only({'study': ['patient_name']}) \
+            .all()
+        assert len(list(studies[:3])) == 1
+
     def test_study_filtering(
         self,
         api,

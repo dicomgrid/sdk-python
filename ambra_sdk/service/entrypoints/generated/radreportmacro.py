@@ -32,9 +32,9 @@ class Radreportmacro:
         :param type: Limit to this type (optional)
         """
         request_data = {
+           'type': type,
            'modality': modality,
            'account_id': account_id,
-           'type': type,
         }
 	
         errors_mapping = {}
@@ -73,12 +73,12 @@ class Radreportmacro:
         :param hotkey: Hotkey of the macro (optional)
         """
         request_data = {
+           'type': type,
+           'modality': modality,
            'hotkey': hotkey,
+           'account_id': account_id,
            'body': body,
            'name': name,
-           'modality': modality,
-           'account_id': account_id,
-           'type': type,
         }
 	
         errors_mapping = {}
@@ -111,12 +111,12 @@ class Radreportmacro:
         :param type: Type of radreport (optional)
         """
         request_data = {
-           'hotkey': hotkey,
-           'body': body,
-           'uuid': uuid,
-           'name': name,
-           'modality': modality,
            'type': type,
+           'modality': modality,
+           'hotkey': hotkey,
+           'uuid': uuid,
+           'body': body,
+           'name': name,
         }
 	
         errors_mapping = {}

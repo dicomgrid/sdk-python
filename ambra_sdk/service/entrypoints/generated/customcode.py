@@ -45,11 +45,11 @@ class Customcode:
         :param zip: Base64 encoded ZIP file (optional)
         """
         request_data = {
+           'type': type,
            'language': language,
-           'name': name,
            'settings': settings,
            'zip': zip,
-           'type': type,
+           'name': name,
            'code': code,
         }
 	
@@ -109,9 +109,9 @@ class Customcode:
         """
         request_data = {
            'uuid': uuid,
-           'name': name,
            'settings': settings,
            'zip': zip,
+           'name': name,
            'code': code,
         }
 	
@@ -216,8 +216,8 @@ class Customcode:
         :param uuid: uuid of the customcode
         """
         request_data = {
-           'uuid': uuid,
            'namespace_id': namespace_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
@@ -295,8 +295,8 @@ class Customcode:
         (namespace_id OR customcode_id) - uuid of either the namespace or customcode to show the deployments for
         """
         request_data = {
-           'customcode_id': customcode_id,
            'namespace_id': namespace_id,
+           'customcode_id': customcode_id,
         }
 	
         errors_mapping = {}

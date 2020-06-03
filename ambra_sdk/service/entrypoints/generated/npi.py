@@ -29,9 +29,9 @@ class Npi:
         """
         request_data = {
            'state': state,
-           'zip': zip,
            'last': last,
            'first': first,
+           'zip': zip,
         }
 	
         errors_mapping = {}

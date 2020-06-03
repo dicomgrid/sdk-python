@@ -48,14 +48,14 @@ class Order:
         :param customfield_param: Custom field(s) (optional)
         """
         request_data = {
-           'patient_birth_date': patient_birth_date,
-           'patientid': patientid,
-           'accession_number': accession_number,
-           'referring_physician': referring_physician,
            'sending_facility': sending_facility,
+           'patient_birth_date': patient_birth_date,
            'patient_name': patient_name,
+           'patientid': patientid,
+           'referring_physician': referring_physician,
            'account_id': account_id,
            'patient_sex': patient_sex,
+           'accession_number': accession_number,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
@@ -123,14 +123,14 @@ class Order:
         :param customfield_param: Custom field(s) (optional)
         """
         request_data = {
-           'patient_birth_date': patient_birth_date,
-           'patientid': patientid,
-           'accession_number': accession_number,
-           'uuid': uuid,
-           'referring_physician': referring_physician,
            'sending_facility': sending_facility,
+           'patient_birth_date': patient_birth_date,
            'patient_name': patient_name,
+           'patientid': patientid,
+           'referring_physician': referring_physician,
+           'uuid': uuid,
            'patient_sex': patient_sex,
+           'accession_number': accession_number,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
@@ -227,15 +227,15 @@ class Order:
         :param scheduled_station_aetitle: Station AE title
         """
         request_data = {
-           'order_id': order_id,
-           'scheduled_station_aetitle': scheduled_station_aetitle,
-           'scheduled_procedure_step_start_time': scheduled_procedure_step_start_time,
-           'scheduled_procedure_step_description': scheduled_procedure_step_description,
            'requested_procedure_description': requested_procedure_description,
            'modality': modality,
            'requested_procedure_id': requested_procedure_id,
+           'scheduled_procedure_step_start_time': scheduled_procedure_step_start_time,
            'scheduled_procedure_step_id': scheduled_procedure_step_id,
            'scheduled_procedure_step_start_date': scheduled_procedure_step_start_date,
+           'scheduled_station_aetitle': scheduled_station_aetitle,
+           'scheduled_procedure_step_description': scheduled_procedure_step_description,
+           'order_id': order_id,
         }
 	
         errors_mapping = {}
@@ -275,15 +275,15 @@ class Order:
         :param scheduled_station_aetitle: Station AE title (optional)
         """
         request_data = {
-           'scheduled_station_aetitle': scheduled_station_aetitle,
-           'uuid': uuid,
-           'scheduled_procedure_step_start_time': scheduled_procedure_step_start_time,
-           'scheduled_procedure_step_description': scheduled_procedure_step_description,
            'requested_procedure_description': requested_procedure_description,
            'modality': modality,
            'requested_procedure_id': requested_procedure_id,
+           'scheduled_procedure_step_start_time': scheduled_procedure_step_start_time,
            'scheduled_procedure_step_id': scheduled_procedure_step_id,
            'scheduled_procedure_step_start_date': scheduled_procedure_step_start_date,
+           'uuid': uuid,
+           'scheduled_station_aetitle': scheduled_station_aetitle,
+           'scheduled_procedure_step_description': scheduled_procedure_step_description,
         }
 	
         errors_mapping = {}
@@ -340,10 +340,10 @@ class Order:
         mpps_status - The mpps status to set (PENDING OR IN_PROGRESS OR DISCONTINUED OR COMPLETED)
         """
         request_data = {
-           'mpps_status': mpps_status,
-           'serial_no': serial_no,
-           'uuid': uuid,
            'mpps_uid': mpps_uid,
+           'uuid': uuid,
+           'serial_no': serial_no,
+           'mpps_status': mpps_status,
         }
 	
         errors_mapping = {}
@@ -375,9 +375,9 @@ class Order:
         (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number
         """
         request_data = {
-           'serial_no': serial_no,
-           'node_id': node_id,
            'account_id': account_id,
+           'node_id': node_id,
+           'serial_no': serial_no,
         }
 	
         errors_mapping = {}

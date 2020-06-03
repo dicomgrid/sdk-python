@@ -35,15 +35,15 @@ class Analytics:
         :param period: period
 
         Notes:
-        period - The time period (day OR week OR month OR year)
         (account_id OR namespace_id) - The account or namespace to get the analytics for
+        period - The time period (day OR week OR month OR year)
         """
         request_data = {
            'period': period,
-           'count': count,
+           'namespace_id': namespace_id,
            'end_date': end_date,
            'account_id': account_id,
-           'namespace_id': namespace_id,
+           'count': count,
         }
 	
         errors_mapping = {}
@@ -82,11 +82,11 @@ class Analytics:
         period - The time period (day OR week OR month OR year)
         """
         request_data = {
-           'patient_id': patient_id,
            'period': period,
-           'count': count,
            'end_date': end_date,
            'account_id': account_id,
+           'patient_id': patient_id,
+           'count': count,
         }
 	
         errors_mapping = {}
@@ -126,12 +126,12 @@ class Analytics:
         period - The time period (day OR week OR month OR year)
         """
         request_data = {
-           'period': period,
-           'count': count,
-           'end_date': end_date,
            'user_id': user_id,
-           'account_id': account_id,
+           'period': period,
            'namespace_id': namespace_id,
+           'end_date': end_date,
+           'account_id': account_id,
+           'count': count,
         }
 	
         errors_mapping = {}

@@ -74,6 +74,7 @@ class Account:
         customfield_param=None,
         hl7_template=None,
         must_approve=None,
+        must_approve_harvest=None,
         must_approve_upload=None,
         name=None,
         no_share=None,
@@ -97,6 +98,7 @@ class Account:
         :param customfield_param: Custom field(s) (optional)
         :param hl7_template: The HL7 reporting template for the account (optional)
         :param must_approve: Flag if shared studies must be approved for the account namespace (optional)
+        :param must_approve_harvest: Flag if harvested studies must be approved (optional)
         :param must_approve_upload: Flag if uploaded studies must be approved (optional)
         :param name: Name of the account (optional)
         :param no_share: Flag if studies can not be shared with this account (optional). Studies can still be shared with locations, groups and users in the account.
@@ -114,25 +116,26 @@ class Account:
         :param vendor: Vendor name (optional)
         """
         request_data = {
-           'share_via_gateway': share_via_gateway,
+           'no_share': no_share,
            'search_threshold': search_threshold,
-           'css': css,
-           'share_description': share_description,
            'vendor': vendor,
-           'password_expire': password_expire,
-           'role_id': role_id,
-           'hl7_template': hl7_template,
-           'settings': settings,
+           'share_description': share_description,
            'name': name,
+           'css': css,
+           'share_via_gateway': share_via_gateway,
            'vanity': vanity,
+           'can_request': can_request,
+           'hl7_template': hl7_template,
+           'must_approve': must_approve,
            'share_settings': share_settings,
            'uuid': uuid,
-           'must_approve': must_approve,
-           'can_request': can_request,
+           'settings': settings,
+           'password_expire': password_expire,
            'must_approve_upload': must_approve_upload,
-           'session_expire': session_expire,
-           'no_share': no_share,
+           'role_id': role_id,
            'share_code': share_code,
+           'session_expire': session_expire,
+           'must_approve_harvest': must_approve_harvest,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
@@ -164,13 +167,16 @@ class Account:
     def get(
         self,
         uuid,
+        brand_settings=None,
         permissions=None,
     ):
         """Get.
         :param uuid: The account uuid
+        :param brand_settings: A comma delimited list of the settings from /brand/get for this vanity to return (optional)
         :param permissions: Flag to return the users role and permissions in the accounts (optional)
         """
         request_data = {
+           'brand_settings': brand_settings,
            'uuid': uuid,
            'permissions': permissions,
         }
@@ -203,6 +209,7 @@ class Account:
         event_new_report=None,
         event_node=None,
         event_purge=None,
+        event_report_remove=None,
         event_share=None,
         event_status_change=None,
         event_study_comment=None,
@@ -236,6 +243,7 @@ class Account:
         :param event_new_report: Notify the user when a report is attached in the account namespace (optional)
         :param event_node: Notify the user when an account node sends an event (optional)
         :param event_purge: Notify the user the results of a purge job for the account (optional)
+        :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)
         :param event_share: Notify the user on a share into the account namespace (optional)
         :param event_status_change: Notify the user when the status of a study is changed (optional)
         :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
@@ -256,36 +264,37 @@ class Account:
         (email OR user_id) - The email address or uuid of the user to add
         """
         request_data = {
-           'password_reset': password_reset,
-           'event_status_change': event_status_change,
-           'event_share': event_share,
-           'account_password': account_password,
-           'event_thin_study_success': event_thin_study_success,
-           'event_link_mine': event_link_mine,
-           'account_login': account_login,
-           'event_study_comment': event_study_comment,
-           'role_id': role_id,
-           'event_purge': event_purge,
-           'event_node': event_node,
-           'global_param': global_param,
-           'max_sessions': max_sessions,
-           'event_message': event_message,
-           'event_link': event_link,
-           'settings': settings,
-           'event_upload_fail': event_upload_fail,
-           'email': email,
-           'event_thin_study_fail': event_thin_study_fail,
-           'event_new_report': event_new_report,
-           'uuid': uuid,
-           'event_approve': event_approve,
-           'account_email': account_email,
-           'event_join': event_join,
-           'account_alias': account_alias,
-           'session_expire': session_expire,
            'event_case_assignment': event_case_assignment,
-           'user_id': user_id,
+           'account_login': account_login,
+           'account_password': account_password,
            'event_upload': event_upload,
+           'event_share': event_share,
+           'max_sessions': max_sessions,
            'event_harvest': event_harvest,
+           'event_node': event_node,
+           'event_link_mine': event_link_mine,
+           'event_study_comment': event_study_comment,
+           'password_reset': password_reset,
+           'account_email': account_email,
+           'event_link': event_link,
+           'event_thin_study_fail': event_thin_study_fail,
+           'event_upload_fail': event_upload_fail,
+           'event_purge': event_purge,
+           'user_id': user_id,
+           'event_report_remove': event_report_remove,
+           'event_join': event_join,
+           'email': email,
+           'uuid': uuid,
+           'event_status_change': event_status_change,
+           'account_alias': account_alias,
+           'role_id': role_id,
+           'settings': settings,
+           'event_message': event_message,
+           'session_expire': session_expire,
+           'event_thin_study_success': event_thin_study_success,
+           'event_approve': event_approve,
+           'global': global_param,
+           'event_new_report': event_new_report,
         }
         if setting_param is not None:
             setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
@@ -329,6 +338,7 @@ class Account:
         event_new_report=None,
         event_node=None,
         event_purge=None,
+        event_report_remove=None,
         event_share=None,
         event_status_change=None,
         event_study_comment=None,
@@ -362,6 +372,7 @@ class Account:
         :param event_new_report: Notify the user when a report is attached in the account namespace (optional)
         :param event_node: Notify the user when an account node sends an event (optional)
         :param event_purge: Notify the user the results of a purge job for the account (optional)
+        :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)
         :param event_share: Notify the user on a share into the account namespace (optional)
         :param event_status_change: Notify the user when the status of a study is changed (optional)
         :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
@@ -378,35 +389,36 @@ class Account:
         :param settings: A hash of the account settings that the user can override (optional)
         """
         request_data = {
-           'password_reset': password_reset,
-           'event_status_change': event_status_change,
-           'event_share': event_share,
-           'account_password': account_password,
-           'event_thin_study_success': event_thin_study_success,
-           'event_link_mine': event_link_mine,
-           'account_login': account_login,
-           'event_study_comment': event_study_comment,
-           'role_id': role_id,
-           'event_purge': event_purge,
-           'event_node': event_node,
-           'global_param': global_param,
-           'max_sessions': max_sessions,
-           'event_message': event_message,
-           'event_link': event_link,
-           'settings': settings,
-           'event_upload_fail': event_upload_fail,
-           'event_thin_study_fail': event_thin_study_fail,
-           'event_new_report': event_new_report,
-           'uuid': uuid,
-           'event_approve': event_approve,
-           'account_email': account_email,
-           'account_alias': account_alias,
-           'session_expire': session_expire,
            'event_case_assignment': event_case_assignment,
-           'user_id': user_id,
+           'account_login': account_login,
+           'account_password': account_password,
            'event_upload': event_upload,
-           'event_join': event_join,
+           'event_share': event_share,
+           'max_sessions': max_sessions,
            'event_harvest': event_harvest,
+           'event_node': event_node,
+           'event_link_mine': event_link_mine,
+           'event_study_comment': event_study_comment,
+           'password_reset': password_reset,
+           'account_email': account_email,
+           'event_link': event_link,
+           'event_thin_study_fail': event_thin_study_fail,
+           'event_upload_fail': event_upload_fail,
+           'event_purge': event_purge,
+           'user_id': user_id,
+           'event_report_remove': event_report_remove,
+           'event_join': event_join,
+           'uuid': uuid,
+           'event_status_change': event_status_change,
+           'account_alias': account_alias,
+           'role_id': role_id,
+           'settings': settings,
+           'event_message': event_message,
+           'session_expire': session_expire,
+           'event_thin_study_success': event_thin_study_success,
+           'event_approve': event_approve,
+           'global': global_param,
+           'event_new_report': event_new_report,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
@@ -568,11 +580,11 @@ class Account:
         by_type - The type of object that can share. (user OR account OR group OR location)
         """
         request_data = {
-           'by_type': by_type,
-           'with_type': with_type,
-           'with_id': with_id,
            'by_id': by_id,
+           'with_id': with_id,
            'account_id': account_id,
+           'with_type': with_type,
+           'by_type': by_type,
         }
 	
         errors_mapping = {}
@@ -611,11 +623,11 @@ class Account:
         by_type - The type of object that can share. (user OR account OR group OR location)
         """
         request_data = {
-           'by_type': by_type,
-           'with_type': with_type,
-           'with_id': with_id,
            'by_id': by_id,
+           'with_id': with_id,
            'account_id': account_id,
+           'with_type': with_type,
+           'by_type': by_type,
         }
 	
         errors_mapping = {}
@@ -671,8 +683,8 @@ class Account:
         (account_id OR vanity) - The account_id or vanity name to get the css for (optional)
         """
         request_data = {
-           'vanity': vanity,
            'account_id': account_id,
+           'vanity': vanity,
         }
 	
         errors_mapping = {}
@@ -705,10 +717,10 @@ class Account:
         """
         request_data = {
            'vanity': vanity,
+           'namespace_id': namespace_id,
+           'account_id': account_id,
            'settings': settings,
            'brand_settings': brand_settings,
-           'account_id': account_id,
-           'namespace_id': namespace_id,
         }
 	
         errors_mapping = {}
@@ -766,10 +778,10 @@ class Account:
         (sid OR node_id AND serial_no) - Either a sid or the node id and serial number
         """
         request_data = {
-           'serial_no': serial_no,
-           'uuid': uuid,
            'node_id': node_id,
+           'uuid': uuid,
            'md5': md5,
+           'serial_no': serial_no,
         }
 	
         errors_mapping = {}

@@ -60,15 +60,15 @@ class Session:
         email OR account_name AND account_login - The users email address or the account name and account_login (DEPRECIATED - Use login and vanity)
         """
         request_data = {
+           'account_login': account_login,
+           'new_password': new_password,
+           'account_name': account_name,
+           'email': email,
            'vanity': vanity,
+           'location': location,
+           'login': login,
            'validate_session': validate_session,
            'password': password,
-           'new_password': new_password,
-           'location': location,
-           'email': email,
-           'account_name': account_name,
-           'account_login': account_login,
-           'login': login,
         }
 	
         errors_mapping = {}
@@ -233,9 +233,9 @@ class Session:
         vendor - The OAuth vendor (doximity OR google OR brand)
         """
         request_data = {
+           'vendor': vendor,
            'redirect_uri': redirect_uri,
            'code': code,
-           'vendor': vendor,
         }
 	
         errors_mapping = {}
@@ -269,10 +269,10 @@ class Session:
         :param duration: The number of seconds the token is valid for (optional and defaults to 3600 with a maximum value of 86400)
         """
         request_data = {
-           'duration': duration,
-           'client_secret': client_secret,
            'grant_type': grant_type,
            'client_id': client_id,
+           'client_secret': client_secret,
+           'duration': duration,
         }
 	
         errors_mapping = {}

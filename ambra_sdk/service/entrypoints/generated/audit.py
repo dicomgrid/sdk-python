@@ -35,10 +35,10 @@ class Audit:
         :param reverse: Flag to reverse the default sort order (optional)
         """
         request_data = {
-           'reverse': reverse,
+           'download': download,
            'uuid': uuid,
            'customfield_detail': customfield_detail,
-           'download': download,
+           'reverse': reverse,
         }
 	
         errors_mapping = {}
@@ -72,10 +72,10 @@ class Audit:
         :param reverse: Flag to reverse the default sort order (optional)
         """
         request_data = {
-           'reverse': reverse,
-           'download': download,
            'user_id': user_id,
+           'download': download,
            'account_id': account_id,
+           'reverse': reverse,
         }
 	
         errors_mapping = {}
@@ -104,9 +104,9 @@ class Audit:
         :param reverse: Flag to reverse the default sort order (optional)
         """
         request_data = {
-           'reverse': reverse,
            'download': download,
            'account_id': account_id,
+           'reverse': reverse,
         }
 	
         errors_mapping = {}
@@ -139,8 +139,8 @@ class Audit:
         type - The type of the object (Study OR User etc.)
         """
         request_data = {
-           'account_id': account_id,
            'type': type,
+           'account_id': account_id,
         }
 	
         errors_mapping = {}
@@ -194,8 +194,8 @@ class Audit:
         :param from_time: Only return events after the epoch time (optional)
         """
         request_data = {
-           'from_time': from_time,
            'account_id': account_id,
+           'from_time': from_time,
         }
 	
         errors_mapping = {}

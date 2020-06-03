@@ -78,12 +78,12 @@ class Dictionary:
         object - Object this is applied against (Study OR Order OR User_account OR Case)
         """
         request_data = {
-           'replace': replace,
-           'name': name,
            'object': object,
-           'lookup': lookup,
+           'replace': replace,
            'case_sensitive': case_sensitive,
+           'lookup': lookup,
            'account_id': account_id,
+           'name': name,
         }
 	
         errors_mapping = {}
@@ -188,8 +188,8 @@ class Dictionary:
         :param lookup: Only return the entry for the optional lookup entry (optional)
         """
         request_data = {
-           'lookup': lookup,
            'uuid': uuid,
+           'lookup': lookup,
         }
 	
         errors_mapping = {}
@@ -221,9 +221,9 @@ class Dictionary:
         """
         request_data = {
            'replace': replace,
+           'regexp': regexp,
            'uuid': uuid,
            'lookup': lookup,
-           'regexp': regexp,
         }
 	
         errors_mapping = {}
@@ -253,8 +253,8 @@ class Dictionary:
         :param uuid: The dictionary id
         """
         request_data = {
-           'lookup': lookup,
            'uuid': uuid,
+           'lookup': lookup,
         }
 	
         errors_mapping = {}
@@ -296,14 +296,14 @@ class Dictionary:
         (account_id OR namespace_id) - uuid of the account or namespace to the dictionary to
         """
         request_data = {
-           'skip_if_replace_has_value': skip_if_replace_has_value,
            'skip_if_lookup_unchanged': skip_if_lookup_unchanged,
+           'sequence': sequence,
+           'skip_if_replace_has_value': skip_if_replace_has_value,
+           'namespace_id': namespace_id,
            'uuid': uuid,
            'add_if_no_match': add_if_no_match,
-           'sequence': sequence,
-           'account_id': account_id,
-           'namespace_id': namespace_id,
            'approve_if_match': approve_if_match,
+           'account_id': account_id,
         }
 	
         errors_mapping = {}
@@ -337,11 +337,11 @@ class Dictionary:
         :param skip_if_replace_has_value: Flag to skip the lookup if any of the replace fields already has a value (optional)
         """
         request_data = {
-           'skip_if_replace_has_value': skip_if_replace_has_value,
            'skip_if_lookup_unchanged': skip_if_lookup_unchanged,
+           'sequence': sequence,
+           'skip_if_replace_has_value': skip_if_replace_has_value,
            'uuid': uuid,
            'add_if_no_match': add_if_no_match,
-           'sequence': sequence,
            'approve_if_match': approve_if_match,
         }
 	

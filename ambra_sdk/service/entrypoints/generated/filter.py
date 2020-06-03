@@ -31,8 +31,8 @@ class Filter:
         :param type: The type of filter to list
         """
         request_data = {
-           'account_id': account_id,
            'type': type,
+           'account_id': account_id,
         }
 	
         errors_mapping = {}
@@ -64,8 +64,8 @@ class Filter:
         """
         request_data = {
            'type': type,
-           'configuration': configuration,
            'name': name,
+           'configuration': configuration,
         }
 	
         errors_mapping = {}
@@ -114,10 +114,10 @@ class Filter:
         :param type: The type of the filter (optional)
         """
         request_data = {
-           'uuid': uuid,
-           'configuration': configuration,
-           'name': name,
            'type': type,
+           'configuration': configuration,
+           'uuid': uuid,
+           'name': name,
         }
 	
         errors_mapping = {}
@@ -174,11 +174,11 @@ class Filter:
         (account_id OR location_id OR group_id OR user_id) - uuid of the account, location, group or user to share this filter with
         """
         request_data = {
-           'group_id': group_id,
-           'uuid': uuid,
-           'location_id': location_id,
            'user_id': user_id,
+           'location_id': location_id,
+           'uuid': uuid,
            'account_id': account_id,
+           'group_id': group_id,
         }
 	
         errors_mapping = {}
@@ -213,11 +213,11 @@ class Filter:
         (account_id OR location_id OR group_id OR user_id) - uuid of the account, location, group or user to stop sharing this filter with
         """
         request_data = {
-           'group_id': group_id,
-           'uuid': uuid,
-           'location_id': location_id,
            'user_id': user_id,
+           'location_id': location_id,
+           'uuid': uuid,
            'account_id': account_id,
+           'group_id': group_id,
         }
 	
         errors_mapping = {}

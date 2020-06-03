@@ -73,8 +73,8 @@ class Hl7:
         request_data = {
            'serial_no': serial_no,
            'uuid': uuid,
-           'message': message,
            'accession_number': accession_number,
+           'message': message,
         }
 	
         errors_mapping = {}
@@ -116,14 +116,14 @@ class Hl7:
         (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number
         """
         request_data = {
-           'study_id': study_id,
-           'storage_namespace': storage_namespace,
-           'raw': raw,
-           'serial_no': serial_no,
-           'uuid': uuid,
            'node_id': node_id,
            'study_uid': study_uid,
+           'storage_namespace': storage_namespace,
+           'raw': raw,
+           'uuid': uuid,
+           'serial_no': serial_no,
            'phi_namespace': phi_namespace,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}
@@ -248,9 +248,9 @@ class Hl7:
         :param name: Name of the template
         """
         request_data = {
+           'account_id': account_id,
            'body': body,
            'name': name,
-           'account_id': account_id,
         }
 	
         errors_mapping = {}
@@ -279,8 +279,8 @@ class Hl7:
         :param uuid: The template id
         """
         request_data = {
-           'uuid': uuid,
            'body': body,
+           'uuid': uuid,
            'name': name,
         }
 	
@@ -338,11 +338,11 @@ class Hl7:
         :param uuid: The template id
         """
         request_data = {
-           'study_id': study_id,
+           'hex': hex,
            'hl7_id': hl7_id,
            'uuid': uuid,
-           'hex': hex,
            'text': text,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}
@@ -428,11 +428,11 @@ class Hl7:
         :param replacements: A JSON array of the transform replacements
         """
         request_data = {
-           'order_by': order_by,
-           'name': name,
-           'conditions': conditions,
            'replacements': replacements,
+           'conditions': conditions,
            'account_id': account_id,
+           'name': name,
+           'order_by': order_by,
         }
 	
         errors_mapping = {}
@@ -468,11 +468,11 @@ class Hl7:
         :param uuid: The transform id
         """
         request_data = {
-           'order_by': order_by,
-           'uuid': uuid,
-           'name': name,
-           'conditions': conditions,
            'replacements': replacements,
+           'uuid': uuid,
+           'conditions': conditions,
+           'name': name,
+           'order_by': order_by,
         }
 	
         errors_mapping = {}

@@ -4,7 +4,11 @@ from pathlib import Path
 import pytest
 from dynaconf import settings
 
-from ambra_sdk.exceptions.storage import NotFound, UnsupportedMediaType
+from ambra_sdk.exceptions.storage import (
+    AmbraResponseException,
+    NotFound,
+    UnsupportedMediaType,
+)
 from ambra_sdk.service.ws import WSManager
 
 logger = logging.getLogger(__name__)
@@ -268,6 +272,24 @@ class TestStorageStudy:
         )
         assert frame.status_code == 200
 
+    def test_frame_tiff(self, api, readonly_study, image):
+        """Test frame tiff method."""
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+        study_uid = readonly_study.study_uid
+
+        # TODO test with tiff data.
+        # Current study have not tiff dicoms.
+        with pytest.raises(AmbraResponseException):
+            api.Storage.Study.frame_tiff(
+                engine_fqdn=engine_fqdn,
+                namespace=storage_namespace,
+                study_uid=study_uid,
+                image_uid=image['id'],
+                image_version=image['version'],
+                frame_number=0,
+            )
+
     def test_pdf(self, api, readonly_study, image):
         """Test pdf method."""
         engine_fqdn = readonly_study.engine_fqdn
@@ -299,6 +321,14 @@ class TestStorageStudy:
         )
         assert image_json
 
+        assert len(list(image_json.get_tags(filter_dict={'group': 2}))) == 7
+        tag = image_json.tag_by_name('Manufacturer')
+        assert tag.group == 8
+        assert tag.element == 112
+        assert tag.vr == 'LO'
+        assert tag.vl == 18
+        assert tag.value == 'GE MEDICAL SYSTEMS'
+
     def test_json(self, api, readonly_study):
         """Test json method."""
         engine_fqdn = readonly_study.engine_fqdn
@@ -311,6 +341,13 @@ class TestStorageStudy:
             study_uid=study_uid,
         )
         assert json
+        assert len(list(json[0].get_tags(filter_dict={'group': 2}))) == 7
+        tag = json[0].tag_by_name('Manufacturer')
+        assert tag.group == 8
+        assert tag.element == 112
+        assert tag.vr == 'LO'
+        assert tag.vl == 18
+        assert tag.value == 'GE MEDICAL SYSTEMS'
 
     def test_post_attachment(self, logo_attachment):
         """Test post_attachment method."""

@@ -67,8 +67,8 @@ class Tag:
         object - Object class to apply it to (Study OR User_account OR Group OR Location OR Account OR Patient OR Case OR Order OR Message)
         """
         request_data = {
-           'object': object,
            'tag': tag,
+           'object': object,
            'object_id': object_id,
         }
 	
@@ -101,8 +101,8 @@ class Tag:
         object - Object class to apply it to (Study OR User_account OR Group OR Location OR Account OR Patient OR Case OR Order)
         """
         request_data = {
-           'object': object,
            'tag': tag,
+           'object': object,
            'object_id': object_id,
         }
 	

@@ -18,6 +18,7 @@ from ambra_sdk.exceptions.service import InvalidFieldName
 from ambra_sdk.exceptions.service import InvalidJson
 from ambra_sdk.exceptions.service import InvalidPhiField
 from ambra_sdk.exceptions.service import InvalidPhone
+from ambra_sdk.exceptions.service import InvalidPin
 from ambra_sdk.exceptions.service import InvalidRegexp
 from ambra_sdk.exceptions.service import InvalidSource
 from ambra_sdk.exceptions.service import InvalidUploadMatch
@@ -31,6 +32,7 @@ from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import NotHash
 from ambra_sdk.exceptions.service import NotList
 from ambra_sdk.exceptions.service import NotPermitted
+from ambra_sdk.exceptions.service import PinLockout
 from ambra_sdk.exceptions.service import Validate
 from ambra_sdk.service.query import QueryO
 from ambra_sdk.service.query import QueryOP
@@ -57,9 +59,9 @@ class Link:
         (study_id OR user_id OR account_id) - uuid of the study, user or account to get the links for
         """
         request_data = {
-           'study_id': study_id,
            'user_id': user_id,
            'account_id': account_id,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}
@@ -118,7 +120,7 @@ class Link:
         :param charge_amount: Amount to charge in pennies before the link can be accessed (optional)
         :param charge_currency: Charge currency (optional)
         :param charge_description: Charge description (optional)
-        :param email: Email the link to this address (optional)
+        :param email: Email the link to these addresses (optional)
         :param filter: filter
         :param include_priors: Include prior studies (optional)
         :param max_hits: The maximum number of times the link can be used (optional)
@@ -146,36 +148,36 @@ class Link:
         action - Link action (STUDY_LIST OR STUDY_VIEW OR STUDY_UPLOAD)
         """
         request_data = {
-           'share_on_view': share_on_view,
-           'max_hits': max_hits,
-           'charge_description': charge_description,
-           'study_id': study_id,
            'action': action,
+           'skip_email_prompt': skip_email_prompt,
+           'meeting_id': meeting_id,
+           'upload_match': upload_match,
+           'minutes_alive': minutes_alive,
+           'charge_description': charge_description,
+           'password_is_dob': password_is_dob,
+           'share_on_view': share_on_view,
+           'charge_amount': charge_amount,
            'anonymize': anonymize,
-           'pin_auth': pin_auth,
-           'use_share_code': use_share_code,
            'parameters': parameters,
+           'notify': notify,
+           'namespace_id': namespace_id,
+           'account_id': account_id,
+           'acceptance_required': acceptance_required,
            'message': message,
            'include_priors': include_priors,
-           'email': email,
-           'mobile_phone': mobile_phone,
-           'referer': referer,
-           'charge_amount': charge_amount,
-           'meeting_id': meeting_id,
-           'password': password,
-           'password_is_dob': password_is_dob,
-           'acceptance_required': acceptance_required,
+           'password_max_attempts': password_max_attempts,
+           'study_id': study_id,
            'filter': filter,
-           'skip_email_prompt': skip_email_prompt,
+           'email': email,
+           'use_share_code': use_share_code,
            'share_code': share_code,
            'prompt_for_anonymize': prompt_for_anonymize,
+           'mobile_phone': mobile_phone,
            'charge_currency': charge_currency,
-           'minutes_alive': minutes_alive,
-           'upload_match': upload_match,
-           'account_id': account_id,
-           'namespace_id': namespace_id,
-           'password_max_attempts': password_max_attempts,
-           'notify': notify,
+           'referer': referer,
+           'pin_auth': pin_auth,
+           'password': password,
+           'max_hits': max_hits,
         }
 	
         errors_mapping = {}
@@ -279,41 +281,41 @@ class Link:
         :param uuid: Id of the link
         """
         request_data = {
-           'redirect_url': redirect_url,
-           'share_on_view': share_on_view,
-           'max_hits': max_hits,
-           'url': url,
-           'charge_description': charge_description,
-           'study_id': study_id,
            'action': action,
-           'is_meeting': is_meeting,
-           'anonymize': anonymize,
-           'pin_auth': pin_auth,
-           'use_share_code': use_share_code,
-           'parameters': parameters,
-           'message': message,
-           'mobile_phone': mobile_phone,
-           'email': email,
-           'include_priors': include_priors,
-           'referer': referer,
-           'charge_amount': charge_amount,
-           'uuid': uuid,
-           'password_is_dob': password_is_dob,
-           'acceptance_required': acceptance_required,
-           'filter': filter,
            'skip_email_prompt': skip_email_prompt,
-           'prompt_for_anonymize': prompt_for_anonymize,
-           'namespace_name': namespace_name,
-           'charge_currency': charge_currency,
-           'description': description,
-           'minutes_alive': minutes_alive,
-           'upload_match': upload_match,
-           'user_id': user_id,
-           'account_id': account_id,
+           'redirect_url': redirect_url,
            'has_password': has_password,
-           'namespace_id': namespace_id,
-           'password_max_attempts': password_max_attempts,
+           'upload_match': upload_match,
+           'minutes_alive': minutes_alive,
+           'charge_description': charge_description,
+           'password_is_dob': password_is_dob,
+           'share_on_view': share_on_view,
+           'charge_amount': charge_amount,
+           'max_hits': max_hits,
+           'anonymize': anonymize,
+           'parameters': parameters,
            'notify': notify,
+           'namespace_id': namespace_id,
+           'account_id': account_id,
+           'acceptance_required': acceptance_required,
+           'message': message,
+           'include_priors': include_priors,
+           'password_max_attempts': password_max_attempts,
+           'user_id': user_id,
+           'filter': filter,
+           'email': email,
+           'url': url,
+           'use_share_code': use_share_code,
+           'description': description,
+           'uuid': uuid,
+           'namespace_name': namespace_name,
+           'prompt_for_anonymize': prompt_for_anonymize,
+           'mobile_phone': mobile_phone,
+           'charge_currency': charge_currency,
+           'referer': referer,
+           'pin_auth': pin_auth,
+           'is_meeting': is_meeting,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}
@@ -355,23 +357,31 @@ class Link:
     
     def status(
         self,
-        uuid,
         link_charge_id=None,
+        pin=None,
+        uuid=None,
     ):
         """Status.
-        :param uuid: Id of the link
         :param link_charge_id: The uuid of the prior charge against this link (optional)
+        :param pin: pin
+        :param uuid: uuid
+
+        Notes:
+        (uuid OR pin) - Id or PIN of the link
         """
         request_data = {
-           'link_charge_id': link_charge_id,
+           'pin': pin,
            'uuid': uuid,
+           'link_charge_id': link_charge_id,
         }
 	
         errors_mapping = {}
+        errors_mapping['INVALID_PIN'] = InvalidPin('An invalid PIN was entered')
         errors_mapping['INVALID_SOURCE'] = InvalidSource('The referer is invalid')
         errors_mapping['IP_BLOCKED'] = IpBlocked('An IP whitelist blocked access')
         errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping['NOT_FOUND'] = NotFound('The link was not found')
+        errors_mapping['PIN_LOCKOUT'] = PinLockout('Too many invalid PIN entries')
         query_data = {
             'api': self._api,
             'url': '/link/status',
@@ -383,32 +393,40 @@ class Link:
     
     def session(
         self,
-        uuid,
         email_address=None,
         link_charge_id=None,
         password=None,
+        pin=None,
+        uuid=None,
     ):
         """Session.
-        :param uuid: Id of the link
         :param email_address: The users email (optional)
         :param link_charge_id: The uuid of the prior charge against this link (optional)
         :param password: Password if needed (optional)
+        :param pin: pin
+        :param uuid: uuid
+
+        Notes:
+        (uuid OR pin) - Id or PIN of the link
         """
         request_data = {
            'link_charge_id': link_charge_id,
+           'pin': pin,
+           'email_address': email_address,
            'uuid': uuid,
            'password': password,
-           'email_address': email_address,
         }
 	
         errors_mapping = {}
         errors_mapping['CHARGE_REQUIRED'] = ChargeRequired('A charge is required to access this link')
         errors_mapping['DISABLED'] = Disabled('This call is disabled for the account, you must use /link/redirect')
         errors_mapping['INVALID_CREDENTIALS'] = InvalidCredentials('Invalid password or email if pin_auth is required.')
+        errors_mapping['INVALID_PIN'] = InvalidPin('An invalid PIN was entered')
         errors_mapping['INVALID_SOURCE'] = InvalidSource('The referer is invalid')
         errors_mapping['IP_BLOCKED'] = IpBlocked('An IP whitelist blocked access')
         errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping['NOT_FOUND'] = NotFound('The link was not found')
+        errors_mapping['PIN_LOCKOUT'] = PinLockout('Too many invalid PIN entries')
         query_data = {
             'api': self._api,
             'url': '/link/session',
@@ -420,17 +438,23 @@ class Link:
     
     def redirect(
         self,
-        uuid,
         link_charge_id=None,
         password=None,
+        pin=None,
+        uuid=None,
     ):
         """Redirect.
-        :param uuid: Id of the link
         :param link_charge_id: The uuid of the prior charge against this link (optional)
         :param password: Password if needed (optional)
+        :param pin: pin
+        :param uuid: uuid
+
+        Notes:
+        (uuid OR pin) - Id or PIN of the link
         """
         request_data = {
            'link_charge_id': link_charge_id,
+           'pin': pin,
            'uuid': uuid,
            'password': password,
         }
@@ -438,11 +462,13 @@ class Link:
         errors_mapping = {}
         errors_mapping['EXPIRED'] = Expired('The link has expired')
         errors_mapping['INVALID_CREDENTIALS'] = InvalidCredentials('Invalid password.')
+        errors_mapping['INVALID_PIN'] = InvalidPin('An invalid PIN was entered')
         errors_mapping['INVALID_SOURCE'] = InvalidSource('The referer is invalid')
         errors_mapping['IP_BLOCKED'] = IpBlocked('An IP whitelist blocked access')
         errors_mapping['LINK_NOT_FOUND'] = LinkNotFound('The link was not found')
         errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping['NOT_PERMITTED'] = NotPermitted('The configuration of this link requires the link UI be used instead of direct access')
+        errors_mapping['PIN_LOCKOUT'] = PinLockout('Too many invalid PIN entries')
         query_data = {
             'api': self._api,
             'url': '/link/redirect',
@@ -527,8 +553,8 @@ class Link:
         :param uuid: The uuid of the link usage
         """
         request_data = {
-           'uuid': uuid,
            'email': email,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
@@ -552,8 +578,8 @@ class Link:
         :param uuid: The uuid of the link
         """
         request_data = {
-           'uuid': uuid,
            'email': email,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
@@ -594,6 +620,29 @@ class Link:
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': False,
+        }
+        return QueryO(**query_data)
+    
+    def pin(
+        self,
+        uuid,
+    ):
+        """Pin.
+        :param uuid: The uuid of the link
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping['NOT_FOUND'] = NotFound('The link was not found')
+        query_data = {
+            'api': self._api,
+            'url': '/link/pin',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
         }
         return QueryO(**query_data)
     

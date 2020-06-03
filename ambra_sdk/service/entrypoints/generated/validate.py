@@ -63,9 +63,9 @@ class Validate:
         :param name: The validation rule name
         """
         request_data = {
+           'account_id': account_id,
            'name': name,
            'conditions': conditions,
-           'account_id': account_id,
         }
 	
         errors_mapping = {}

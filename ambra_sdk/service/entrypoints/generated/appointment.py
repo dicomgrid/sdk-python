@@ -44,12 +44,12 @@ class Appointment:
         :param user_id: Id of the user to create the appointment for (optional defaults to current user)
         """
         request_data = {
-           'patient_id': patient_id,
-           'description': description,
-           'start_time': start_time,
            'user_id': user_id,
            'end_time': end_time,
+           'description': description,
            'account_id': account_id,
+           'start_time': start_time,
+           'patient_id': patient_id,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
@@ -113,12 +113,12 @@ class Appointment:
         :param uuid: The appointment uuid
         """
         request_data = {
-           'uuid': uuid,
-           'description': description,
-           'customfields': customfields,
-           'start_time': start_time,
            'user_id': user_id,
            'end_time': end_time,
+           'description': description,
+           'uuid': uuid,
+           'start_time': start_time,
+           'customfields': customfields,
         }
 	
         errors_mapping = {}

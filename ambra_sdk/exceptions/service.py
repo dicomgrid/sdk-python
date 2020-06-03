@@ -907,3 +907,15 @@ class NotReady(PreconditionFailed):
 
 class RouteNotMatched(PreconditionFailed):
     """RouteNotMatched."""
+
+
+class NotSysadmin(PreconditionFailed):
+    """NotSysadmin."""
+
+
+class PinLockout(PreconditionFailed):
+    """PinLockout."""
+
+
+class AlreadyConnected(PreconditionFailed):
+    """AlreadyConnected."""

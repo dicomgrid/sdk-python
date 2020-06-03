@@ -93,6 +93,7 @@ DEFAULT_FOREIGN_MODELS = MappingProxyType({
     'from_study_id': 'Study',
     'sid_user_id': 'User',
     'webhook_id': 'Webhook',
+    'linked_destination': 'Destination',
 })
 
 FOREIGN_MODELS = MappingProxyType({

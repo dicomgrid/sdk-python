@@ -98,23 +98,23 @@ class Purge:
         :param thin: Make the studies thin rather than deleting - flag (optional)
         """
         request_data = {
-           'shared_from_phr': shared_from_phr,
-           'archive': archive,
-           'max_deletes': max_deletes,
            'study_status_tags': study_status_tags,
-           'skinny': skinny,
-           'namespaces': namespaces,
-           'minors': minors,
-           'name': name,
            'modalities': modalities,
-           'owned_phr': owned_phr,
+           'archive': archive,
+           'namespaces': namespaces,
            'days_old_how': days_old_how,
-           'global_param': global_param,
-           'adults': adults,
-           'account_id': account_id,
-           'suspended': suspended,
            'thin': thin,
+           'owned_phr': owned_phr,
            'days_old': days_old,
+           'minors': minors,
+           'skinny': skinny,
+           'suspended': suspended,
+           'global': global_param,
+           'shared_from_phr': shared_from_phr,
+           'max_deletes': max_deletes,
+           'account_id': account_id,
+           'adults': adults,
+           'name': name,
         }
 	
         errors_mapping = {}
@@ -176,23 +176,23 @@ class Purge:
         :param thin: Make the studies thin rather than deleting - flag (optional)
         """
         request_data = {
-           'shared_from_phr': shared_from_phr,
-           'archive': archive,
-           'max_deletes': max_deletes,
            'study_status_tags': study_status_tags,
+           'modalities': modalities,
+           'archive': archive,
+           'namespaces': namespaces,
+           'days_old_how': days_old_how,
+           'thin': thin,
+           'owned_phr': owned_phr,
+           'days_old': days_old,
+           'minors': minors,
            'skinny': skinny,
            'uuid': uuid,
-           'namespaces': namespaces,
-           'minors': minors,
-           'name': name,
-           'modalities': modalities,
-           'owned_phr': owned_phr,
-           'days_old_how': days_old_how,
-           'global_param': global_param,
-           'adults': adults,
            'suspended': suspended,
-           'thin': thin,
-           'days_old': days_old,
+           'global': global_param,
+           'shared_from_phr': shared_from_phr,
+           'max_deletes': max_deletes,
+           'adults': adults,
+           'name': name,
         }
 	
         errors_mapping = {}
@@ -278,8 +278,8 @@ class Purge:
         """
         request_data = {
            'rule_id': rule_id,
-           'account_id': account_id,
            'dry_run': dry_run,
+           'account_id': account_id,
         }
 	
         errors_mapping = {}

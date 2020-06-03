@@ -22,13 +22,13 @@ class {{ namespace }}:
     def {{ api.func_name }}(
         self,
         {%- for req in api.request_params %}
-        {{ req.name }}{% if req.optional %}=None{% endif %},
+        {{ req.pythonic_name }}{% if req.optional %}=None{% endif %},
         {%- endfor %}
     ):
         """{{ api.func_head }}.
 
         {%- for req in api.request_params %}
-        :param {{ req.name }}: {{ req.description }}
+        :param {{ req.pythonic_name }}: {{ req.description }}
         {%- endfor %}
         {%- if api.notes %}
 
@@ -41,14 +41,14 @@ class {{ namespace }}:
         """
         request_data = {
         {%- for req in api.request_usual_params %}
-           '{{ req.name }}': {{ req.name }},
+           '{{ req.name }}': {{ req.pythonic_name }},
         {%- endfor %}
         }
 
         {%- for req in api.request_multiple_params %}
-        if {{req.name}} is not None:
-            {{ req.name }}_dict = {'{prefix}{k}'.format(prefix='{{ req.multiliple_prefix }}', k=k): v for k,v in {{ req.name }}.items()}
-            request_data.update({{ req.name }}_dict)
+        if {{req.pythonic_name}} is not None:
+            {{ req.pythonic_name }}_dict = {'{prefix}{k}'.format(prefix='{{ req.multiliple_prefix }}', k=k): v for k,v in {{ req.pythonic_name }}.items()}
+            request_data.update({{ req.pythonic_name }}_dict)
         {%- endfor %}
 	
         errors_mapping = {}

@@ -39,9 +39,9 @@ class Radreport:
         :param fields: A JSON hash of the fields in the report (optional)
         """
         request_data = {
-           'study_id': study_id,
-           'type': type,
            'fields': fields,
+           'type': type,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}
@@ -70,9 +70,9 @@ class Radreport:
         :param fields: A JSON hash of the fields in the report (optional)
         """
         request_data = {
-           'attachment': attachment,
            'uuid': uuid,
            'fields': fields,
+           'attachment': attachment,
         }
 	
         errors_mapping = {}
@@ -129,8 +129,8 @@ class Radreport:
         """
         request_data = {
            'action': action,
-           'detail': detail,
            'uuid': uuid,
+           'detail': detail,
         }
 	
         errors_mapping = {}
@@ -286,9 +286,9 @@ class Radreport:
         :param type: Limit to this type (optional)
         """
         request_data = {
+           'type': type,
            'active': active,
            'account_id': account_id,
-           'type': type,
         }
 	
         errors_mapping = {}
@@ -327,12 +327,12 @@ class Radreport:
         :param preview: Preview of the template (optional)
         """
         request_data = {
+           'options': options,
+           'type': type,
+           'preview': preview,
+           'account_id': account_id,
            'body': body,
            'name': name,
-           'options': options,
-           'account_id': account_id,
-           'preview': preview,
-           'type': type,
         }
 	
         errors_mapping = {}
@@ -365,12 +365,12 @@ class Radreport:
         :param type: Type of radreport (optional)
         """
         request_data = {
-           'body': body,
-           'uuid': uuid,
-           'name': name,
            'options': options,
-           'preview': preview,
            'type': type,
+           'uuid': uuid,
+           'preview': preview,
+           'body': body,
+           'name': name,
         }
 	
         errors_mapping = {}
@@ -419,8 +419,8 @@ class Radreport:
         :param type: Type of the template
         """
         request_data = {
-           'type': type,
            'account_id': account_id,
+           'type': type,
         }
 	
         errors_mapping = {}

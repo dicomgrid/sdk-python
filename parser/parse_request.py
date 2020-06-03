@@ -2,10 +2,7 @@
 
 from enum import Enum, auto
 from typing import List, NamedTuple, Optional
-
-PYTHONIZE_PARAM = {
-    'global': 'global_param',
-}
+from ambra_sdk.pythonize import PARAMS
 
 
 class RequestParameterType(Enum):
@@ -44,8 +41,7 @@ class RequestParameter:
     ):
         self.parameter_type = parameter_type
         self.name = name
-        if self.name in PYTHONIZE_PARAM:
-            self.name = PYTHONIZE_PARAM[self.name]
+        self.pythonic_name = PARAMS.get(name, name)
         self.description = description
         self.optional = optional
         self.multiline = False

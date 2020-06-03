@@ -45,8 +45,8 @@ class Training:
         :param form_number: The formstack id of the form
         """
         request_data = {
-           'form_number': form_number,
            'account_id': account_id,
+           'form_number': form_number,
         }
         if additional_parameters is not None:
             additional_parameters_dict = {'{prefix}{k}'.format(prefix='', k=k): v for k,v in additional_parameters.items()}

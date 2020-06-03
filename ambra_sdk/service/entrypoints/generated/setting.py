@@ -25,8 +25,8 @@ class Setting:
         :param user_id: A sysadmin user can set the value for a specific user (optional)
         """
         request_data = {
-           'user_id': user_id,
            'value': value,
+           'user_id': user_id,
            'key': key,
         }
 	

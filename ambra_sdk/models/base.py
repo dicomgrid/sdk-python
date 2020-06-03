@@ -31,6 +31,17 @@ class BaseField(ABC):
         :param value: value for validation
         """
 
+    def for_request(self, value):
+        """Get value for request.
+
+        This method should validate value and convert it for ambra
+        request.  Default implementation is return validated value.
+
+        :param value: value for request
+        :returns: value for requesting
+        """
+        return self.validate(value)
+
     def _get_descriptor(self):
         return FieldDescriptor(
             field=self,
@@ -152,7 +163,7 @@ class WithFiltering:  # NOQA:WPS214
         condition,
         full_name=False,
     ):
-        value = self._field.validate(value)
+        value = self._field.for_request(value)
         field_name = self._full_name if full_name is True else self._name
         return Filter(
             field_name=field_name,

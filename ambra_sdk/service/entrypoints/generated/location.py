@@ -66,6 +66,7 @@ class Location:
         customfield_param=None,
         hl7_template=None,
         must_approve=None,
+        must_approve_harvest=None,
         must_approve_upload=None,
         no_share=None,
         role_id=None,
@@ -81,6 +82,7 @@ class Location:
         :param customfield_param: Custom field(s) (optional)
         :param hl7_template: The HL7 reporting template for the location (optional)
         :param must_approve: Flag if shared studies must be approved for the location (optional)
+        :param must_approve_harvest: Flag if harvested studies must be approved (optional)
         :param must_approve_upload: Flag if uploaded studies must be approved (optional)
         :param no_share: Flag if studies can not be shared with this location (optional). Studies can still be shared with users in the location.
         :param role_id: Id for the default role for the location (optional)
@@ -91,18 +93,19 @@ class Location:
         :param share_via_gateway: Flag if a gateway share is allowed (optional)
         """
         request_data = {
-           'share_via_gateway': share_via_gateway,
-           'share_code': share_code,
-           'role_id': role_id,
-           'share_settings': share_settings,
-           'search_threshold': search_threshold,
-           'must_approve_upload': must_approve_upload,
-           'must_approve': must_approve,
-           'name': name,
-           'hl7_template': hl7_template,
-           'share_description': share_description,
            'no_share': no_share,
+           'search_threshold': search_threshold,
+           'share_via_gateway': share_via_gateway,
+           'share_description': share_description,
+           'hl7_template': hl7_template,
+           'must_approve': must_approve,
+           'share_settings': share_settings,
+           'name': name,
+           'must_approve_harvest': must_approve_harvest,
            'account_id': account_id,
+           'role_id': role_id,
+           'must_approve_upload': must_approve_upload,
+           'share_code': share_code,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
@@ -132,6 +135,7 @@ class Location:
         customfield_param=None,
         hl7_template=None,
         must_approve=None,
+        must_approve_harvest=None,
         must_approve_upload=None,
         name=None,
         no_share=None,
@@ -147,6 +151,7 @@ class Location:
         :param customfield_param: Custom field(s) (optional)
         :param hl7_template: The HL7 reporting template for the location (optional)
         :param must_approve: Flag if shared studies must be approved for the location (optional)
+        :param must_approve_harvest: Flag if harvested studies must be approved (optional)
         :param must_approve_upload: Flag if uploaded studies must be approved (optional)
         :param name: Name of the location (optional)
         :param no_share: Flag if studies can not be shared with this location (optional). Studies can still be shared with users in the location.
@@ -158,17 +163,18 @@ class Location:
         :param share_via_gateway: Flag if a gateway share is allowed (optional)
         """
         request_data = {
-           'share_via_gateway': share_via_gateway,
-           'role_id': role_id,
-           'share_settings': share_settings,
-           'search_threshold': search_threshold,
            'must_approve_upload': must_approve_upload,
-           'uuid': uuid,
-           'must_approve': must_approve,
-           'name': name,
-           'hl7_template': hl7_template,
-           'share_description': share_description,
            'no_share': no_share,
+           'search_threshold': search_threshold,
+           'share_via_gateway': share_via_gateway,
+           'share_description': share_description,
+           'hl7_template': hl7_template,
+           'must_approve': must_approve,
+           'share_settings': share_settings,
+           'uuid': uuid,
+           'must_approve_harvest': must_approve_harvest,
+           'role_id': role_id,
+           'name': name,
            'share_code': share_code,
         }
         if customfield_param is not None:
@@ -253,6 +259,7 @@ class Location:
         event_message=None,
         event_new_report=None,
         event_node=None,
+        event_report_remove=None,
         event_share=None,
         event_status_change=None,
         event_study_comment=None,
@@ -274,6 +281,7 @@ class Location:
         :param event_message: Notify the user when a message is sent to the location namespace (optional)
         :param event_new_report: Notify the user when a report is attached in the location namespace (optional)
         :param event_node: Notify the user when a location  node sends an event (optional)
+        :param event_report_remove: Notify the user when a report is removed in the location namespace (optional)
         :param event_share: Notify the user on a share into the location namespace (optional)
         :param event_status_change: Notify the user when the status of a study is changed (optional)
         :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
@@ -284,25 +292,26 @@ class Location:
         :param role_id: Id of the users role within the location (optional). If not passed the default location role will be assigned
         """
         request_data = {
-           'event_status_change': event_status_change,
-           'event_share': event_share,
-           'event_thin_study_success': event_thin_study_success,
-           'event_link_mine': event_link_mine,
-           'no_physician_alias_share': no_physician_alias_share,
-           'event_study_comment': event_study_comment,
-           'role_id': role_id,
-           'event_node': event_node,
-           'event_harvest': event_harvest,
-           'event_message': event_message,
-           'event_upload_fail': event_upload_fail,
-           'event_thin_study_fail': event_thin_study_fail,
-           'event_new_report': event_new_report,
-           'uuid': uuid,
-           'event_approve': event_approve,
            'event_case_assignment': event_case_assignment,
-           'user_id': user_id,
            'event_upload': event_upload,
+           'event_share': event_share,
+           'event_harvest': event_harvest,
+           'event_node': event_node,
+           'event_link_mine': event_link_mine,
+           'event_study_comment': event_study_comment,
            'event_link': event_link,
+           'event_thin_study_fail': event_thin_study_fail,
+           'event_upload_fail': event_upload_fail,
+           'user_id': user_id,
+           'event_report_remove': event_report_remove,
+           'uuid': uuid,
+           'event_status_change': event_status_change,
+           'role_id': role_id,
+           'event_message': event_message,
+           'event_thin_study_success': event_thin_study_success,
+           'event_approve': event_approve,
+           'no_physician_alias_share': no_physician_alias_share,
+           'event_new_report': event_new_report,
         }
 	
         errors_mapping = {}

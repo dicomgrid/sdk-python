@@ -57,3 +57,31 @@ class PreconditionFailed(AmbraResponseException):
         if description is None:
             description = 'Precondition failed.'
         super().__init__(code, description)
+
+
+class InconsistencyConflict(AmbraResponseException):
+    """Inconsistency conflict."""
+
+    def __init__(self, description=None):
+        """Init.
+
+        :param description: response description
+        """
+        code = 409
+        if description is None:
+            description = 'Inconsistency conflict.'
+        super().__init__(code, description)
+
+
+class EntityTooLarge(AmbraResponseException):
+    """EntityTooLarge."""
+
+    def __init__(self, description=None):
+        """Init.
+
+        :param description: response description
+        """
+        code = 413
+        if description is None:
+            description = 'Entity too large.'
+        super().__init__(code, description)

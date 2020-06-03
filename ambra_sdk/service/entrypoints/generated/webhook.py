@@ -106,25 +106,25 @@ class Webhook:
         method - Method to call it with (POST OR GET OR POST_JSON OR PUT)
         """
         request_data = {
-           'retry': retry,
-           'max_age': max_age,
-           'node_id': node_id,
-           'url': url,
-           'by_accession_number': by_accession_number,
-           'cron': cron,
-           'filter_field': filter_field,
-           'auth': auth,
-           'filter_regexp': filter_regexp,
-           'parameters': parameters,
-           'suspended': suspended,
-           'name': name,
-           'event': event,
-           'by_uid': by_uid,
            'once': once,
-           'method': method,
+           'cron': cron,
+           'auth': auth,
+           'retry': retry,
+           'by_uid': by_uid,
+           'max_age': max_age,
+           'name': name,
+           'parameters': parameters,
+           'by_accession_number': by_accession_number,
            'sid_user_id': sid_user_id,
-           'delay': delay,
            'account_id': account_id,
+           'event': event,
+           'filter_field': filter_field,
+           'delay': delay,
+           'url': url,
+           'filter_regexp': filter_regexp,
+           'suspended': suspended,
+           'method': method,
+           'node_id': node_id,
         }
 	
         errors_mapping = {}
@@ -201,25 +201,25 @@ class Webhook:
         :param url: URL to call (optional)
         """
         request_data = {
-           'retry': retry,
-           'max_age': max_age,
-           'node_id': node_id,
-           'url': url,
-           'by_accession_number': by_accession_number,
-           'cron': cron,
-           'filter_field': filter_field,
-           'auth': auth,
-           'filter_regexp': filter_regexp,
-           'parameters': parameters,
-           'suspended': suspended,
-           'name': name,
-           'event': event,
-           'uuid': uuid,
-           'by_uid': by_uid,
            'once': once,
-           'method': method,
+           'cron': cron,
+           'auth': auth,
+           'retry': retry,
+           'by_uid': by_uid,
+           'max_age': max_age,
+           'name': name,
+           'parameters': parameters,
+           'by_accession_number': by_accession_number,
            'sid_user_id': sid_user_id,
+           'event': event,
+           'filter_field': filter_field,
            'delay': delay,
+           'url': url,
+           'filter_regexp': filter_regexp,
+           'suspended': suspended,
+           'uuid': uuid,
+           'method': method,
+           'node_id': node_id,
         }
 	
         errors_mapping = {}
@@ -308,8 +308,8 @@ class Webhook:
         :param uuid: uuid of the webhook
         """
         request_data = {
-           'study_id': study_id,
            'uuid': uuid,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}
@@ -341,15 +341,15 @@ class Webhook:
         :param type: type
 
         Notes:
-        type - The type of event (STUDY_UPLOAD_START OR STUDY_UPLOAD_END)
         (namespace_id OR share_code) - The namespace or share code for the event
+        type - The type of event (STUDY_UPLOAD_START OR STUDY_UPLOAD_END)
         """
         request_data = {
+           'study_count': study_count,
+           'type': type,
            'integration_key': integration_key,
            'namespace_id': namespace_id,
-           'study_count': study_count,
            'share_code': share_code,
-           'type': type,
         }
 	
         errors_mapping = {}
@@ -366,21 +366,27 @@ class Webhook:
     
     def email(
         self,
+        html,
         subject,
+        template_id,
         text,
         to,
         webhook_id,
     ):
         """Email.
+        :param html: The HTML part of the email
         :param subject: The subject of the email
-        :param text: The body of the email
+        :param template_id: The email template UUID to be used
+        :param text: The text part of the email
         :param to: The email address(es) to send the email to
         :param webhook_id: The uuid of the calling webhook
         """
         request_data = {
-           'subject': subject,
+           'template_id': template_id,
            'to': to,
+           'html': html,
            'text': text,
+           'subject': subject,
            'webhook_id': webhook_id,
         }
 	

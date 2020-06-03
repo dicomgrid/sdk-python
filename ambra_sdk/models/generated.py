@@ -306,6 +306,7 @@ class AccountSamlRole(BaseModel):
     event_message = Boolean(description='The event flags')
     event_new_report = Boolean(description='The event flags')
     event_node = Boolean(description='The event flags')
+    event_report_remove = Boolean(description='The event flags')
     event_share = Boolean(description='The event flags')
     event_status_change = Boolean(description='The event flags')
     event_study_comment = Boolean(description='The event flags')
@@ -341,6 +342,7 @@ class AccountSamlRole(BaseModel):
         event_message=None,
         event_new_report=None,
         event_node=None,
+        event_report_remove=None,
         event_share=None,
         event_status_change=None,
         event_study_comment=None,
@@ -372,6 +374,7 @@ class AccountSamlRole(BaseModel):
         self.event_message = event_message
         self.event_new_report = event_new_report
         self.event_node = event_node
+        self.event_report_remove = event_report_remove
         self.event_share = event_share
         self.event_status_change = event_status_change
         self.event_study_comment = event_study_comment
@@ -1897,6 +1900,8 @@ class Destination(BaseModel):
     hl7_address = String(description='HL7 ORM destination address and port')
     hl7_fetch_filter = String(description='Fetch filter')
     hl7_port = Integer(description='HL7 ORM destination address and port')
+    linked_destination = Integer(description='FK. The id of the linked destination')
+    linked_destination_obj = FK(model='Destination', description='The id of the linked destination')
     name = String(description='Name')
     node_id = Integer(description='FK. The associated node')
     node = FK(model='Node', description='The associated node')
@@ -1939,6 +1944,8 @@ class Destination(BaseModel):
         hl7_address=None,
         hl7_fetch_filter=None,
         hl7_port=None,
+        linked_destination=None,
+        linked_destination_obj=None,
         name=None,
         node_id=None,
         node=None,
@@ -1977,6 +1984,8 @@ class Destination(BaseModel):
         self.hl7_address = hl7_address
         self.hl7_fetch_filter = hl7_fetch_filter
         self.hl7_port = hl7_port
+        self.linked_destination = linked_destination
+        self.linked_destination_obj = linked_destination_obj
         self.name = name
         self.node_id = node_id
         self.node = node
@@ -3383,6 +3392,7 @@ class MailTemplate(BaseModel):
     namespace = FK(model='Namespace', description='Scope it down to a namespace or vanity')
     reply_to_email_address = String(description='Email addresses')
     sms = String(description='Templates')
+    squelch_period = Integer(description='Number of seconds to squelch sending the mail for for a given template and a study')
     txt = String(description='Templates')
     type_field = String(description='Tmpl type')
     vanity = String(description='Scope it down to a namespace or vanity')
@@ -3413,6 +3423,7 @@ class MailTemplate(BaseModel):
         namespace=None,
         reply_to_email_address=None,
         sms=None,
+        squelch_period=None,
         txt=None,
         type_field=None,
         vanity=None,
@@ -3439,6 +3450,7 @@ class MailTemplate(BaseModel):
         self.namespace = namespace
         self.reply_to_email_address = reply_to_email_address
         self.sms = sms
+        self.squelch_period = squelch_period
         self.txt = txt
         self.type_field = type_field
         self.vanity = vanity
@@ -3635,6 +3647,7 @@ class Namespace(BaseModel):
     anonymize = String(description='Anonymization rules')
     archive = Integer(description='Archive setting. 0 = no archive or else archive and restore based on the priority value of the setting. e.g. 99 is high priority, -99 is low priority')
     cache = Boolean(description='Cache new studies image')
+    case_pricing = String(description='Charging information')
     charge_description = String(description='Charging information')
     coverpage = String(description='Cover page template')
     currency = String(description='Charging information')
@@ -3646,6 +3659,7 @@ class Namespace(BaseModel):
     event_message = Boolean(description='The default event settings flags')
     event_new_report = Boolean(description='The default event settings flags')
     event_node = Boolean(description='The default event settings flags')
+    event_report_remove = Boolean(description='The default event settings flags')
     event_share = Boolean(description='The default event settings flags')
     event_status_change = Boolean(description='The default event settings flags')
     event_study_comment = Boolean(description='The default event settings flags')
@@ -3661,7 +3675,9 @@ class Namespace(BaseModel):
     location_id = Integer(description='FK. Who it is linked to')
     location = FK(model='Location', description='Who it is linked to')
     must_approve = Boolean(description='Flag if study approval for a share is needed')
+    must_approve_harvest = Boolean(description='Flag if study approval for a harvest is needed')
     must_approve_upload = Boolean(description='Flag if study approval for a upload is needed')
+    no_bill = Boolean(description='Do not bill this namespace')
     no_cluster_archive = Boolean(description='Storage settings')
     no_share = Boolean(description='Flag if this namespace can not be shared into')
     prompt_for_anonymize = Boolean(description='Anonymization rules')
@@ -3675,6 +3691,7 @@ class Namespace(BaseModel):
     share_settings = String(description='Share code for the name space')
     share_via_gateway = Boolean(description='Allow gateway uploads to the share code')
     study_defaults = String(description='Study defaults')
+    sum_case_price_matches = Boolean(description='Charging information')
     upload_hold = Integer(description='Storage settings')
     user_id = Integer(description='FK. Who it is linked to')
     user = FK(model='User', description='Who it is linked to')
@@ -3696,6 +3713,7 @@ class Namespace(BaseModel):
         anonymize=None,
         archive=None,
         cache=None,
+        case_pricing=None,
         charge_description=None,
         coverpage=None,
         currency=None,
@@ -3707,6 +3725,7 @@ class Namespace(BaseModel):
         event_message=None,
         event_new_report=None,
         event_node=None,
+        event_report_remove=None,
         event_share=None,
         event_status_change=None,
         event_study_comment=None,
@@ -3722,7 +3741,9 @@ class Namespace(BaseModel):
         location_id=None,
         location=None,
         must_approve=None,
+        must_approve_harvest=None,
         must_approve_upload=None,
+        no_bill=None,
         no_cluster_archive=None,
         no_share=None,
         prompt_for_anonymize=None,
@@ -3736,6 +3757,7 @@ class Namespace(BaseModel):
         share_settings=None,
         share_via_gateway=None,
         study_defaults=None,
+        sum_case_price_matches=None,
         upload_hold=None,
         user_id=None,
         user=None,
@@ -3753,6 +3775,7 @@ class Namespace(BaseModel):
         self.anonymize = anonymize
         self.archive = archive
         self.cache = cache
+        self.case_pricing = case_pricing
         self.charge_description = charge_description
         self.coverpage = coverpage
         self.currency = currency
@@ -3764,6 +3787,7 @@ class Namespace(BaseModel):
         self.event_message = event_message
         self.event_new_report = event_new_report
         self.event_node = event_node
+        self.event_report_remove = event_report_remove
         self.event_share = event_share
         self.event_status_change = event_status_change
         self.event_study_comment = event_study_comment
@@ -3779,7 +3803,9 @@ class Namespace(BaseModel):
         self.location_id = location_id
         self.location = location
         self.must_approve = must_approve
+        self.must_approve_harvest = must_approve_harvest
         self.must_approve_upload = must_approve_upload
+        self.no_bill = no_bill
         self.no_cluster_archive = no_cluster_archive
         self.no_share = no_share
         self.prompt_for_anonymize = prompt_for_anonymize
@@ -3793,6 +3819,7 @@ class Namespace(BaseModel):
         self.share_settings = share_settings
         self.share_via_gateway = share_via_gateway
         self.study_defaults = study_defaults
+        self.sum_case_price_matches = sum_case_price_matches
         self.upload_hold = upload_hold
         self.user_id = user_id
         self.user = user
@@ -3999,6 +4026,7 @@ class NodeConnect(BaseModel):
     
     id = Integer(description='Primary key for internal use')
     uuid = String(description='UUID for external use')
+    connected = Boolean(description='Status')
     from_account_id = Integer(description='FK. Node information')
     from_account = FK(model='Account', description='Node information')
     message = String(description='Message')
@@ -4018,6 +4046,7 @@ class NodeConnect(BaseModel):
 	*,
         id=None,
         uuid=None,
+        connected=None,
         from_account_id=None,
         from_account=None,
         message=None,
@@ -4033,6 +4062,7 @@ class NodeConnect(BaseModel):
     ):
         self.id = id
         self.uuid = uuid
+        self.connected = connected
         self.from_account_id = from_account_id
         self.from_account = from_account
         self.message = message
@@ -6202,6 +6232,7 @@ class StudyPush(BaseModel):
     destination = FK(model='Destination', description='The destination')
     detail = String(description='Additional detail to send to the node')
     image_count = Integer(description='The image count when the study was pushed')
+    is_local = Boolean(description='Is this push local?')
     node_id = Integer(description='FK. The node to use')
     node = FK(model='Node', description='The node to use')
     pending = Integer(description='Counter for pending deliveries needed')
@@ -6227,6 +6258,7 @@ class StudyPush(BaseModel):
         destination=None,
         detail=None,
         image_count=None,
+        is_local=None,
         node_id=None,
         node=None,
         pending=None,
@@ -6248,6 +6280,7 @@ class StudyPush(BaseModel):
         self.destination = destination
         self.detail = detail
         self.image_count = image_count
+        self.is_local = is_local
         self.node_id = node_id
         self.node = node
         self.pending = pending
@@ -7216,6 +7249,7 @@ class User(BaseModel):
     event_link_mine = Boolean(description='The event flags for the personal namespace')
     event_message = Boolean(description='The event flags for the personal namespace')
     event_new_report = Boolean(description='The event flags for the personal namespace')
+    event_report_remove = Boolean(description='The event flags for the personal namespace')
     event_share = Boolean(description='The event flags for the personal namespace')
     event_status_change = Boolean(description='The event flags for the personal namespace')
     event_study_comment = Boolean(description='The event flags for the personal namespace')
@@ -7242,6 +7276,7 @@ class User(BaseModel):
     terms_md5 = String(description='MD5 sums of the accepted terms of use, privacy policy and indicators of use')
     time_zone = String(description='Timezone')
     token = String(description='Shared secret for TOKEN authentication')
+    ui_json = String(description='JSON for UI settings')
     created = DateTime(description='Timestamp when the record was created')
     created_by = Integer(description='FK. ID of the user who created the record')
     created_by_obj = FK(model='User', description='ID of the user who created the record')
@@ -7268,6 +7303,7 @@ class User(BaseModel):
         event_link_mine=None,
         event_message=None,
         event_new_report=None,
+        event_report_remove=None,
         event_share=None,
         event_status_change=None,
         event_study_comment=None,
@@ -7294,6 +7330,7 @@ class User(BaseModel):
         terms_md5=None,
         time_zone=None,
         token=None,
+        ui_json=None,
         created=None,
         created_by=None,
         created_by_obj=None,
@@ -7316,6 +7353,7 @@ class User(BaseModel):
         self.event_link_mine = event_link_mine
         self.event_message = event_message
         self.event_new_report = event_new_report
+        self.event_report_remove = event_report_remove
         self.event_share = event_share
         self.event_status_change = event_status_change
         self.event_study_comment = event_study_comment
@@ -7342,6 +7380,7 @@ class User(BaseModel):
         self.terms_md5 = terms_md5
         self.time_zone = time_zone
         self.token = token
+        self.ui_json = ui_json
         self.created = created
         self.created_by = created_by
         self.created_by_obj = created_by_obj
@@ -7373,6 +7412,7 @@ class UserAccount(BaseModel):
     event_new_report = Boolean(description='The event flags')
     event_node = Boolean(description='The event flags')
     event_purge = Boolean(description='The event flags')
+    event_report_remove = Boolean(description='The event flags')
     event_share = Boolean(description='The event flags')
     event_status_change = Boolean(description='The event flags')
     event_study_comment = Boolean(description='The event flags')
@@ -7420,6 +7460,7 @@ class UserAccount(BaseModel):
         event_new_report=None,
         event_node=None,
         event_purge=None,
+        event_report_remove=None,
         event_share=None,
         event_status_change=None,
         event_study_comment=None,
@@ -7463,6 +7504,7 @@ class UserAccount(BaseModel):
         self.event_new_report = event_new_report
         self.event_node = event_node
         self.event_purge = event_purge
+        self.event_report_remove = event_report_remove
         self.event_share = event_share
         self.event_status_change = event_status_change
         self.event_study_comment = event_study_comment
@@ -7553,6 +7595,7 @@ class UserGroup(BaseModel):
     event_message = Boolean(description='The event flags')
     event_new_report = Boolean(description='The event flags')
     event_node = Boolean(description='The event flags')
+    event_report_remove = Boolean(description='The event flags')
     event_share = Boolean(description='The event flags')
     event_status_change = Boolean(description='The event flags')
     event_study_comment = Boolean(description='The event flags')
@@ -7588,6 +7631,7 @@ class UserGroup(BaseModel):
         event_message=None,
         event_new_report=None,
         event_node=None,
+        event_report_remove=None,
         event_share=None,
         event_status_change=None,
         event_study_comment=None,
@@ -7619,6 +7663,7 @@ class UserGroup(BaseModel):
         self.event_message = event_message
         self.event_new_report = event_new_report
         self.event_node = event_node
+        self.event_report_remove = event_report_remove
         self.event_share = event_share
         self.event_status_change = event_status_change
         self.event_study_comment = event_study_comment
@@ -7772,6 +7817,7 @@ class UserLocation(BaseModel):
     event_message = Boolean(description='The event flags')
     event_new_report = Boolean(description='The event flags')
     event_node = Boolean(description='The event flags')
+    event_report_remove = Boolean(description='The event flags')
     event_share = Boolean(description='The event flags')
     event_status_change = Boolean(description='The event flags')
     event_study_comment = Boolean(description='The event flags')
@@ -7807,6 +7853,7 @@ class UserLocation(BaseModel):
         event_message=None,
         event_new_report=None,
         event_node=None,
+        event_report_remove=None,
         event_share=None,
         event_status_change=None,
         event_study_comment=None,
@@ -7838,6 +7885,7 @@ class UserLocation(BaseModel):
         self.event_message = event_message
         self.event_new_report = event_new_report
         self.event_node = event_node
+        self.event_report_remove = event_report_remove
         self.event_share = event_share
         self.event_status_change = event_status_change
         self.event_study_comment = event_study_comment

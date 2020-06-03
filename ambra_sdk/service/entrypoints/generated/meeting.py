@@ -36,12 +36,12 @@ class Meeting:
         (study_id OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study or the storage triplet
         """
         request_data = {
-           'study_id': study_id,
-           'storage_namespace': storage_namespace,
-           'name': name,
            'study_uid': study_uid,
-           'phi_namespace': phi_namespace,
            'state': state,
+           'storage_namespace': storage_namespace,
+           'phi_namespace': phi_namespace,
+           'name': name,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}
@@ -68,9 +68,9 @@ class Meeting:
         :param state: State of the meeting (optional)
         """
         request_data = {
+           'state': state,
            'uuid': uuid,
            'name': name,
-           'state': state,
         }
 	
         errors_mapping = {}

@@ -33,10 +33,10 @@ class Annotation:
         (study_id OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study or the storage triplet
         """
         request_data = {
-           'study_id': study_id,
-           'storage_namespace': storage_namespace,
            'study_uid': study_uid,
+           'storage_namespace': storage_namespace,
            'phi_namespace': phi_namespace,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}
@@ -80,15 +80,15 @@ class Annotation:
         (json OR stamp) - The JSON annotation data structure or the stamp flag
         """
         request_data = {
-           'study_id': study_id,
-           'storage_namespace': storage_namespace,
+           'study_uid': study_uid,
+           'instance_uid': instance_uid,
            'frame_number': frame_number,
            'json': json,
-           'stamp': stamp,
            'series_uid': series_uid,
-           'study_uid': study_uid,
+           'stamp': stamp,
+           'storage_namespace': storage_namespace,
            'phi_namespace': phi_namespace,
-           'instance_uid': instance_uid,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}
@@ -115,8 +115,8 @@ class Annotation:
         :param uuid: Id of the annotation
         """
         request_data = {
-           'json': json,
            'uuid': uuid,
+           'json': json,
         }
 	
         errors_mapping = {}

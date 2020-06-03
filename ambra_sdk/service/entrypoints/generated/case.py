@@ -76,14 +76,14 @@ class Case:
         The rest of the fields can not be set by the case owner
         """
         request_data = {
+           'assigned_medical_id': assigned_medical_id,
+           'completed': completed,
            'case_status': case_status,
+           'submitted': submitted,
            'uuid': uuid,
            'name': name,
-           'submitted': submitted,
-           'closed': closed,
            'assigned_admin_id': assigned_admin_id,
-           'completed': completed,
-           'assigned_medical_id': assigned_medical_id,
+           'closed': closed,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
@@ -197,9 +197,9 @@ class Case:
         :param detach: Flag to detach the study from the case (optional)
         """
         request_data = {
-           'study_id': study_id,
-           'uuid': uuid,
            'detach': detach,
+           'uuid': uuid,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}
@@ -212,6 +212,33 @@ class Case:
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
+    def price(
+        self,
+        share_code,
+        customfield_param=None,
+    ):
+        """Price.
+        :param share_code: The share code of the second opinion namespace.
+        :param customfield_param: Custom field(s) defined for the case objects with values stated in the second opinion wizard (optional)
+        """
+        request_data = {
+           'share_code': share_code,
+        }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping['NOT_FOUND'] = NotFound('The namespace can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/case/price',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
         }
         return QueryO(**query_data)
     

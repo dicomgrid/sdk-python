@@ -1,11 +1,17 @@
 """Storage image namespace."""
 
+import os
 from io import BufferedReader
-from typing import Optional, Set
+from typing import Optional, Set, Union
 
 from box import Box
 from requests import Response
 
+from ambra_sdk.exceptions.storage import (
+    EntityTooLarge,
+    PermissionDenied,
+    PreconditionFailed,
+)
 from ambra_sdk.storage.bool_to_int import bool_to_int
 from ambra_sdk.storage.response import check_response
 
@@ -25,7 +31,8 @@ class Image:
         engine_fqdn: str,
         namespace: str,
         opened_file: BufferedReader,
-    ) -> Box:
+        use_box: bool = True,
+    ) -> Union[Box, Response]:
         """Upload image to a namespace.
 
         URL: /namespace/{namespace}/image?sid={sid}
@@ -33,6 +40,7 @@ class Image:
         :param engine_fqdn: Engine FQDN (Required).
         :param namespace: Namespace (Required).
         :param opened_file: Opened file (Required).
+        :param use_box: Use box for response.
 
         :returns: image object attributes
         """
@@ -45,13 +53,15 @@ class Image:
             request_arg_names,
             locals(),
         )
-        response = self._storage.post(
+        response: Response = self._storage.post(
             url,
             params=request_data,
             data=opened_file,
         )
         response = check_response(response, url_arg_names=url_arg_names)
-        return Box(response.json())
+        if use_box is True:
+            return Box(response.json())
+        return response
 
     # TODO: What to do with tags?
     def wrap(
@@ -84,9 +94,11 @@ class Image:
             request_arg_names,
             locals(),
         )
+        file_size = os.fstat(opened_file.fileno()).st_size
         files = {
             'file': opened_file,
         }
+        headers = {'X-File-Size': str(file_size)}
         if tags is not None:
             post_data = {
                 'tags': tags,
@@ -95,6 +107,7 @@ class Image:
                 url,
                 params=request_data,
                 files=files,
+                headers=headers,
                 data=post_data,
             )
         else:
@@ -102,8 +115,29 @@ class Image:
                 url,
                 params=request_data,
                 files=files,
+                headers=headers,
             )
-        return check_response(response, url_arg_names=url_arg_names)
+        errors_mapping = {
+            403: PermissionDenied(
+                'The sid is not valid or the user does '
+                'not have permission to upload a non DICOM '
+                'file from a study specified by the namespace.',
+            ),
+            412: PreconditionFailed(
+                'X-File-Size header is not provided or has an '
+                'invalid value.',
+            ),
+            413: EntityTooLarge(
+                'The file to be DICOM-wrapped is larger than '
+                '2GiB (2^31 - 1 bytes).',
+            ),
+        }
+
+        return check_response(
+            response,
+            url_arg_names=url_arg_names,
+            errors_mapping=errors_mapping,
+        )
 
     def cadsr(
         self,

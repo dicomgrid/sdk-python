@@ -77,17 +77,17 @@ class Message:
         (namespace_id OR user_id OR group_id OR location_id OR account_id OR email OR share_code OR study_id) - The namespace, entity, email, share code or study to send the message to
         """
         request_data = {
-           'study_id': study_id,
+           'user_id': user_id,
+           'location_id': location_id,
+           'email': email,
            'share_code': share_code,
-           'body': body,
            'group_id': group_id,
+           'namespace_id': namespace_id,
            'parent_id': parent_id,
            'account_id': account_id,
-           'location_id': location_id,
-           'user_id': user_id,
-           'email': email,
+           'body': body,
            'subject': subject,
-           'namespace_id': namespace_id,
+           'study_id': study_id,
         }
 	
         errors_mapping = {}

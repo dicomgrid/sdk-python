@@ -2,12 +2,13 @@
 
 import json
 from io import BufferedReader
-from typing import Any, Dict, Optional, Set
+from typing import Any, Dict, Optional, Set, Union
 
-from box import Box
+from box import Box, BoxList
 from requests import Response
 
 from ambra_sdk.exceptions.storage import (
+    InconsistencyConflict,
     PermissionDenied,
     PreconditionFailed,
     UnsupportedMediaType,
@@ -51,6 +52,57 @@ def validate_size(size_str: Optional[str]):
         validate_size_x_string(size_str)
 
 
+class ImageJsonBox(Box):
+    """Image json box.
+
+    Response object for image_json method
+    """
+
+    def get_tags(self, filter_dict: Dict[str, Any]):
+        """Get tags by filter.
+
+        :param filter_dict: dict for filtering
+        :yields: tag
+        """
+        tags = self['tags']
+        for tag in tags:
+            if all(
+                tag.get(filter_key) == filter_value
+                for filter_key, filter_value in filter_dict.items()
+            ):
+                yield tag
+
+    def tag_by_name(self, name: str):
+        """Get tag by name.
+
+        :param name: name of tag
+        :returns: tag
+        """
+        return next(
+            self.get_tags(filter_dict={'name': name}),
+            None,
+        )
+
+
+class JsonBox(BoxList):
+    """Json box.
+
+    Response object for json method.
+    """
+
+    def __init__(self, *args, **kwargs):
+        """Init.
+
+        :param args: args
+        :param kwargs: kwargs
+        """
+        super().__init__(
+            *args,
+            box_class=ImageJsonBox,
+            **kwargs,
+        )
+
+
 class Study:
     """Storage Study."""
 
@@ -69,7 +121,8 @@ class Study:
         extended: Optional[bool] = None,
         attachments_only: Optional[bool] = None,
         phi_namespace: Optional[str] = None,
-    ) -> Box:
+        use_box: bool = True,
+    ) -> Union[Box, Response]:
         """Get the schema of study.
 
         URL: /study/{namespace}/{studyUid}/schema?sid={sid}&phi_namespace={phi_namespace}&extended={1,0}&attachments_only={0,1}  # NOQA E501
@@ -87,7 +140,7 @@ class Study:
             namespace where the file was attached if it was
             attached to a shared instance of the study
             outside of the original storage namespace
-
+        :param use_box: Use box for response.
         :returns: study schema
         """
         extended: int = bool_to_int(extended)  # type: ignore
@@ -105,9 +158,18 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.get(url, params=request_data)
-        response = check_response(response, url_arg_names=url_arg_names)
-        return Box(response.json())
+        response: Response = self._storage.get(url, params=request_data)
+        errors_mapping = {
+            409: InconsistencyConflict('An inconsistency is found while recomputing the schema cache. Retry the request after a short delay.')  # NOQA: 997
+        }
+        response = check_response(
+            response,
+            url_arg_names=url_arg_names,
+            errors_mapping=errors_mapping,
+        )
+        if use_box is True:
+            return Box(response.json())
+        return response
 
     def delete(
         self,
@@ -197,7 +259,8 @@ class Study:
         images_only: Optional[bool] = None,
         attachments_only: Optional[bool] = None,
         count_files: Optional[bool] = None,
-    ) -> Box:
+        use_box: bool = True,
+    ) -> Union[Box, Response]:
         """Gets study file count.
 
         URL: /study/{namespace}/{studyUid}/count?sid={sid}&images_only={1,0}&attachments_only={1,0}&count_files={1,0}
@@ -213,6 +276,7 @@ class Study:
         :param count_files: if present and set to 1 will count files stored
             on-disk for images and/or attachments,
             instead of counting from (possibly cached) meta data.
+        :param use_box: Use box for response.
 
         :returns: count obj
         """
@@ -230,7 +294,9 @@ class Study:
         )
         response = self._storage.get(url, params=request_data)
         response = check_response(response, url_arg_names=url_arg_names)
-        return Box(response.json())
+        if use_box is True:
+            return Box(response.json())
+        return response
 
     def tag(
         self,
@@ -238,7 +304,8 @@ class Study:
         namespace: str,
         study_uid: str,
         phi_namespace: str,
-    ) -> Box:
+        use_box: bool = True,
+    ) -> Union[Box, Response]:
         """Gets study tags.
 
         URL: /study/{namespace}/{studyUid}/tag?sid={sid}&phi_namespace={phi_namespace}
@@ -250,6 +317,7 @@ class Study:
             namespace where the file was attached if
             it was attached to a shared instance of
             the study outside of the original storage namespace
+        :param use_box: Use box for response.
 
         :returns: study tag object
         """
@@ -262,9 +330,11 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.get(url, params=request_data)
+        response: Response = self._storage.get(url, params=request_data)
         response = check_response(response, url_arg_names=url_arg_names)
-        return Box(response.json())
+        if use_box is True:
+            return Box(response.json())
+        return response
 
     def attribute(
         self,
@@ -277,7 +347,8 @@ class Study:
         groups: Optional[str] = None,
         include_tags: Optional[str] = None,
         exclude_unnamed: Optional[str] = None,
-    ) -> Box:
+        use_box: bool = True,
+    ) -> Union[Box, Response]:
         """Gets study image attributes.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/attribute?sid={sid}&phi_namespace={phi_namespace}
@@ -300,6 +371,8 @@ class Study:
             everything is included within the sequence
         :param exclude_unnamed: A string containing "1" or "0" (default 0).
             When "1", private tags (with "name": "?") are not included
+        :param use_box: Use box for response.
+
         :returns: study attributes
         """
         url_template = '/study/{namespace}/{study_uid}/image/{image_uid}/version/{image_version}/attribute'
@@ -322,9 +395,11 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.get(url, params=request_data)
+        response: Response = self._storage.get(url, params=request_data)
         response = check_response(response, url_arg_names=url_arg_names)
-        return Box(response.json())
+        if use_box is True:
+            return Box(response.json())
+        return response
 
     def image_phi(
         self,
@@ -334,7 +409,8 @@ class Study:
         image_uid: str,
         image_version: str,
         phi_namespace: Optional[str] = None,
-    ) -> Box:
+        use_box: bool = True,
+    ) -> Union[Box, Response]:
         """Gets study image PHI.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/phi?sid={sid}&phi_namespace={phi_namespace}
@@ -345,6 +421,7 @@ class Study:
         :param image_uid: Image uid (Required).
         :param image_version: Image version (Required).
         :param phi_namespace: A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace
+        :param use_box: Use box for response.
 
         :returns: image PHI object
         """
@@ -363,9 +440,11 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.get(url, params=request_data)
+        response: Response = self._storage.get(url, params=request_data)
         response = check_response(response, url_arg_names=url_arg_names)
-        return Box(response.json())
+        if use_box is True:
+            return Box(response.json())
+        return response
 
     def phi(
         self,
@@ -373,7 +452,8 @@ class Study:
         namespace: str,
         study_uid: str,
         phi_namespace: Optional[str] = None,
-    ) -> Box:
+        use_box: bool = True,
+    ) -> Union[Box, Response]:
         """Gets study PHI data.
 
         URL: /study/{namespace}/{studyUid}/phi?sid={sid}&phi_namespace={phi_namespace}
@@ -382,6 +462,7 @@ class Study:
         :param namespace: Namespace (Required).
         :param study_uid: Study uid (Required).
         :param phi_namespace: A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace
+        :param use_box: Use box for response.
 
         :returns: study PHI data object
         """
@@ -394,9 +475,11 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.get(url, params=request_data)
+        response: Response = self._storage.get(url, params=request_data)
         response = check_response(response, url_arg_names=url_arg_names)
-        return Box(response.json())
+        if use_box is True:
+            return Box(response.json())
+        return response
 
     def thumbnail(
         self,
@@ -580,6 +663,63 @@ class Study:
         response = self._storage.get(url, params=request_data, stream=True)
         return check_response(response, url_arg_names=url_arg_names)
 
+    def frame_tiff(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        study_uid: str,
+        image_uid: str,
+        image_version: str,
+        frame_number: str,
+        phi_namespace: Optional[str] = None,
+        depth: int = 8,
+        size: Optional[str] = None,
+    ) -> Response:
+        """Gets study image frame as TIFF.
+
+        URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber:[0-9]*}/tiff?sid={sid}&phi_namespace={phi_namespace}&depth={8,16}&size=[max-edge-length|{width}x{height}]
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param study_uid: Study uid (Required).
+        :param image_uid: Image uid (Required).
+        :param image_version: Image version (Required).
+        :param frame_number: Frame number (Required).
+        :param phi_namespace: A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace
+        :param depth: Set the bit depth of the JPEG output (8 or 16).
+        :param size: Specify size of output. Omitted or 0 indicates no change; one number sets the maximum edge length in pixels; wxh sets maximum width and height
+
+        :raises ValueError: Wrongh depth or size param
+
+        :returns: study image frame response
+        """
+        if depth not in {8, 16}:
+            raise ValueError('Depth must be in (8, 16)')
+        validate_size(size)
+
+        url_template = '/study/{namespace}/{study_uid}/image/{image_uid}/version/{image_version}/frame/{frame_number}/tiff'
+        url_arg_names = {
+            'engine_fqdn',
+            'namespace',
+            'study_uid',
+            'image_uid',
+            'image_version',
+            'frame_number',
+        }
+        request_arg_names = {
+            'phi_namespace',
+            'depth',
+            'size',
+        }
+        url, request_data = self._storage.get_url_and_request(
+            url_template,
+            url_arg_names,
+            request_arg_names,
+            locals(),
+        )
+        response = self._storage.get(url, params=request_data, stream=True)
+        return check_response(response, url_arg_names=url_arg_names)
+
     def pdf(
         self,
         engine_fqdn: str,
@@ -641,7 +781,8 @@ class Study:
         phi_namespace: Optional[str] = None,
         exclude_unnamed: Optional[str] = None,
         all_dicom_values: Optional[str] = None,
-    ) -> Box:
+        use_box: bool = True,
+    ) -> Union[ImageJsonBox, Response]:
         r"""Gets all DICOM attributes for an individual image.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/json?sid={sid}&phi_namespace={phi_namespace}
@@ -662,6 +803,7 @@ class Study:
             or "0" (default 0). When "1", all values from
             a multi-value DICOM tag will be returned, separated
             by "\". Otherwise, only the first value is returned
+        :param use_box: Use box for response.
 
         :returns: DICOM attributes object
         """
@@ -684,9 +826,11 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.get(url, params=request_data)
+        response: Response = self._storage.get(url, params=request_data)
         response = check_response(response, url_arg_names=url_arg_names)
-        return Box(response.json())
+        if use_box is True:
+            return ImageJsonBox(response.json())
+        return response
 
     def json(
         self,
@@ -699,7 +843,8 @@ class Study:
         exclude_unnamed: Optional[str] = None,
         all_dicom_values: Optional[str] = None,
         series_uid: Optional[str] = None,
-    ):
+        use_box: bool = True,
+    ) -> Union[JsonBox, Response]:
         r"""Gets DICOM attributes for all images in a study.
 
         URL: /study/{namespace}/{studyUid}/json?sid={sid}&phi_namespace={phi_namespace}&groups={group ids}&include_tags={tags}
@@ -713,9 +858,12 @@ class Study:
             outside of the original storage namespace
         :param groups: The groups parameter will allow the
             client to filter tags to only those in a certain
-            set of DICOM groups. Comma-separated list of decimal values.
-        :param include_tags: Comma-separated list of DICOM tags
-            to include. Format: 00080018,00080020
+            set of top-level DICOM groups. Comma-separated list
+            of decimal values, or hex values preceeded with "0x".
+        :param include_tags: Comma-separated list of top-level DICOM tags
+            to include. Format: 00080018,00080020 Nested tags
+            (00081111:00080550) only filter at the top level, everything
+            is included within the sequence
         :param exclude_unnamed: A string containing "1" or "0"
             (default 0). When "1", private tags (with "name": "?")
             are not included
@@ -726,6 +874,7 @@ class Study:
         :param series_uid: A string containing a Series Instance UID.
             If specified, the results will only include DICOM tags
             from images from the specified series
+        :param use_box: Use box for response.
 
         :returns: DICOM attributes object
         """
@@ -750,9 +899,11 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.get(url, params=request_data)
+        response: Response = self._storage.get(url, params=request_data)
         response = check_response(response, url_arg_names=url_arg_names)
-        return response.json()
+        if use_box is True:
+            return JsonBox(response.json())
+        return response
 
     def attachment(
         self,
@@ -858,7 +1009,7 @@ class Study:
         return_html: Optional[bool] = None,
         synchronous_wrap: Optional[bool] = None,
         static_ids: Optional[bool] = None,
-    ):
+    ) -> Response:
         """Posts an attachment to a study.
 
         URL: /study/{namespace}/{studyUid}/attachment?sid={sid}&phi_namespace={phi_namespace}&wrap_images={0,1}&return_html={0,1}&synchronous_wrap={0,1}&static_ids={0,1}
@@ -935,7 +1086,11 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.post(url, params=request_data, files=files)
+        response: Response = self._storage.post(
+            url,
+            params=request_data,
+            files=files,
+        )
         check_response(response, url_arg_names=url_arg_names)
         # Method can return Html (depends on params)...
         return response

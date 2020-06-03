@@ -69,12 +69,12 @@
 <span class="sd">        (study_id OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study or the storage triplet</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;study_id&#39;</span><span class="p">:</span> <span class="n">study_id</span><span class="p">,</span>
-           <span class="s1">&#39;storage_namespace&#39;</span><span class="p">:</span> <span class="n">storage_namespace</span><span class="p">,</span>
-           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
            <span class="s1">&#39;study_uid&#39;</span><span class="p">:</span> <span class="n">study_uid</span><span class="p">,</span>
-           <span class="s1">&#39;phi_namespace&#39;</span><span class="p">:</span> <span class="n">phi_namespace</span><span class="p">,</span>
            <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="n">state</span><span class="p">,</span>
+           <span class="s1">&#39;storage_namespace&#39;</span><span class="p">:</span> <span class="n">storage_namespace</span><span class="p">,</span>
+           <span class="s1">&#39;phi_namespace&#39;</span><span class="p">:</span> <span class="n">phi_namespace</span><span class="p">,</span>
+           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;study_id&#39;</span><span class="p">:</span> <span class="n">study_id</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -101,9 +101,9 @@
 <span class="sd">        :param state: State of the meeting (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="n">state</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
-           <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="n">state</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>

@@ -145,24 +145,24 @@
 <span class="sd">        hl7_segment - Segment to map this field to in HL7 ORM messages. Valid values are (NTE OR PID OR PID1 OR PV1 OR PV2 OR OBR OR DG1 OR OBX OR CTI OR BLG OR ORC) (only applicable to study fields) (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;load_from_sr&#39;</span><span class="p">:</span> <span class="n">load_from_sr</span><span class="p">,</span>
-           <span class="s1">&#39;dicom_tag_ignore_empty&#39;</span><span class="p">:</span> <span class="n">dicom_tag_ignore_empty</span><span class="p">,</span>
-           <span class="s1">&#39;wrapped_dicom_only&#39;</span><span class="p">:</span> <span class="n">wrapped_dicom_only</span><span class="p">,</span>
-           <span class="s1">&#39;hl7_component&#39;</span><span class="p">:</span> <span class="n">hl7_component</span><span class="p">,</span>
-           <span class="s1">&#39;capture_on_share_code&#39;</span><span class="p">:</span> <span class="n">capture_on_share_code</span><span class="p">,</span>
-           <span class="s1">&#39;dicom_tag&#39;</span><span class="p">:</span> <span class="n">dicom_tag</span><span class="p">,</span>
-           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
-           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
            <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="n">options</span><span class="p">,</span>
+           <span class="s1">&#39;load_dicom_tag&#39;</span><span class="p">:</span> <span class="n">load_dicom_tag</span><span class="p">,</span>
+           <span class="s1">&#39;load_hl7_filter&#39;</span><span class="p">:</span> <span class="n">load_hl7_filter</span><span class="p">,</span>
+           <span class="s1">&#39;wrapped_dicom_only&#39;</span><span class="p">:</span> <span class="n">wrapped_dicom_only</span><span class="p">,</span>
+           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;dicom_tag&#39;</span><span class="p">:</span> <span class="n">dicom_tag</span><span class="p">,</span>
+           <span class="s1">&#39;other_dicom_tags&#39;</span><span class="p">:</span> <span class="n">other_dicom_tags</span><span class="p">,</span>
+           <span class="s1">&#39;display_order&#39;</span><span class="p">:</span> <span class="n">display_order</span><span class="p">,</span>
+           <span class="s1">&#39;hl7_component&#39;</span><span class="p">:</span> <span class="n">hl7_component</span><span class="p">,</span>
+           <span class="s1">&#39;hl7_field&#39;</span><span class="p">:</span> <span class="n">hl7_field</span><span class="p">,</span>
+           <span class="s1">&#39;dicom_tag_ignore_empty&#39;</span><span class="p">:</span> <span class="n">dicom_tag_ignore_empty</span><span class="p">,</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
            <span class="s1">&#39;hl7_segment&#39;</span><span class="p">:</span> <span class="n">hl7_segment</span><span class="p">,</span>
            <span class="s1">&#39;required&#39;</span><span class="p">:</span> <span class="n">required</span><span class="p">,</span>
+           <span class="s1">&#39;load_from_sr&#39;</span><span class="p">:</span> <span class="n">load_from_sr</span><span class="p">,</span>
+           <span class="s1">&#39;capture_on_share_code&#39;</span><span class="p">:</span> <span class="n">capture_on_share_code</span><span class="p">,</span>
            <span class="s1">&#39;load_hl7&#39;</span><span class="p">:</span> <span class="n">load_hl7</span><span class="p">,</span>
-           <span class="s1">&#39;load_dicom_tag&#39;</span><span class="p">:</span> <span class="n">load_dicom_tag</span><span class="p">,</span>
-           <span class="s1">&#39;display_order&#39;</span><span class="p">:</span> <span class="n">display_order</span><span class="p">,</span>
-           <span class="s1">&#39;hl7_field&#39;</span><span class="p">:</span> <span class="n">hl7_field</span><span class="p">,</span>
-           <span class="s1">&#39;load_hl7_filter&#39;</span><span class="p">:</span> <span class="n">load_hl7_filter</span><span class="p">,</span>
-           <span class="s1">&#39;other_dicom_tags&#39;</span><span class="p">:</span> <span class="n">other_dicom_tags</span><span class="p">,</span>
-           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="n">customfield_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">customfield_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
@@ -234,23 +234,23 @@
 <span class="sd">        hl7_segment - Segment to map this field to in HL7 ORM messages. Valid values are (NTE OR PID OR PID1 OR PV1 OR PV2 OR OBR OR DG1 OR OBX OR CTI OR BLG OR ORC) (only applicable to study fields) (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;load_from_sr&#39;</span><span class="p">:</span> <span class="n">load_from_sr</span><span class="p">,</span>
-           <span class="s1">&#39;dicom_tag_ignore_empty&#39;</span><span class="p">:</span> <span class="n">dicom_tag_ignore_empty</span><span class="p">,</span>
-           <span class="s1">&#39;wrapped_dicom_only&#39;</span><span class="p">:</span> <span class="n">wrapped_dicom_only</span><span class="p">,</span>
-           <span class="s1">&#39;hl7_component&#39;</span><span class="p">:</span> <span class="n">hl7_component</span><span class="p">,</span>
-           <span class="s1">&#39;capture_on_share_code&#39;</span><span class="p">:</span> <span class="n">capture_on_share_code</span><span class="p">,</span>
-           <span class="s1">&#39;dicom_tag&#39;</span><span class="p">:</span> <span class="n">dicom_tag</span><span class="p">,</span>
-           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
            <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="n">options</span><span class="p">,</span>
-           <span class="s1">&#39;hl7_segment&#39;</span><span class="p">:</span> <span class="n">hl7_segment</span><span class="p">,</span>
-           <span class="s1">&#39;required&#39;</span><span class="p">:</span> <span class="n">required</span><span class="p">,</span>
-           <span class="s1">&#39;load_hl7&#39;</span><span class="p">:</span> <span class="n">load_hl7</span><span class="p">,</span>
-           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
            <span class="s1">&#39;load_dicom_tag&#39;</span><span class="p">:</span> <span class="n">load_dicom_tag</span><span class="p">,</span>
-           <span class="s1">&#39;display_order&#39;</span><span class="p">:</span> <span class="n">display_order</span><span class="p">,</span>
-           <span class="s1">&#39;hl7_field&#39;</span><span class="p">:</span> <span class="n">hl7_field</span><span class="p">,</span>
            <span class="s1">&#39;load_hl7_filter&#39;</span><span class="p">:</span> <span class="n">load_hl7_filter</span><span class="p">,</span>
+           <span class="s1">&#39;wrapped_dicom_only&#39;</span><span class="p">:</span> <span class="n">wrapped_dicom_only</span><span class="p">,</span>
+           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;dicom_tag&#39;</span><span class="p">:</span> <span class="n">dicom_tag</span><span class="p">,</span>
            <span class="s1">&#39;other_dicom_tags&#39;</span><span class="p">:</span> <span class="n">other_dicom_tags</span><span class="p">,</span>
+           <span class="s1">&#39;display_order&#39;</span><span class="p">:</span> <span class="n">display_order</span><span class="p">,</span>
+           <span class="s1">&#39;hl7_component&#39;</span><span class="p">:</span> <span class="n">hl7_component</span><span class="p">,</span>
+           <span class="s1">&#39;hl7_field&#39;</span><span class="p">:</span> <span class="n">hl7_field</span><span class="p">,</span>
+           <span class="s1">&#39;dicom_tag_ignore_empty&#39;</span><span class="p">:</span> <span class="n">dicom_tag_ignore_empty</span><span class="p">,</span>
+           <span class="s1">&#39;hl7_segment&#39;</span><span class="p">:</span> <span class="n">hl7_segment</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;required&#39;</span><span class="p">:</span> <span class="n">required</span><span class="p">,</span>
+           <span class="s1">&#39;load_from_sr&#39;</span><span class="p">:</span> <span class="n">load_from_sr</span><span class="p">,</span>
+           <span class="s1">&#39;capture_on_share_code&#39;</span><span class="p">:</span> <span class="n">capture_on_share_code</span><span class="p">,</span>
+           <span class="s1">&#39;load_hl7&#39;</span><span class="p">:</span> <span class="n">load_hl7</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -332,8 +332,8 @@
 <span class="sd">        :param name: Name of the customfield</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>

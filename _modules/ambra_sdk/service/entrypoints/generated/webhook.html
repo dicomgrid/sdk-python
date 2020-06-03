@@ -139,25 +139,25 @@
 <span class="sd">        method - Method to call it with (POST OR GET OR POST_JSON OR PUT)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;retry&#39;</span><span class="p">:</span> <span class="n">retry</span><span class="p">,</span>
-           <span class="s1">&#39;max_age&#39;</span><span class="p">:</span> <span class="n">max_age</span><span class="p">,</span>
-           <span class="s1">&#39;node_id&#39;</span><span class="p">:</span> <span class="n">node_id</span><span class="p">,</span>
-           <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
-           <span class="s1">&#39;by_accession_number&#39;</span><span class="p">:</span> <span class="n">by_accession_number</span><span class="p">,</span>
-           <span class="s1">&#39;cron&#39;</span><span class="p">:</span> <span class="n">cron</span><span class="p">,</span>
-           <span class="s1">&#39;filter_field&#39;</span><span class="p">:</span> <span class="n">filter_field</span><span class="p">,</span>
-           <span class="s1">&#39;auth&#39;</span><span class="p">:</span> <span class="n">auth</span><span class="p">,</span>
-           <span class="s1">&#39;filter_regexp&#39;</span><span class="p">:</span> <span class="n">filter_regexp</span><span class="p">,</span>
-           <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="n">parameters</span><span class="p">,</span>
-           <span class="s1">&#39;suspended&#39;</span><span class="p">:</span> <span class="n">suspended</span><span class="p">,</span>
-           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
-           <span class="s1">&#39;event&#39;</span><span class="p">:</span> <span class="n">event</span><span class="p">,</span>
-           <span class="s1">&#39;by_uid&#39;</span><span class="p">:</span> <span class="n">by_uid</span><span class="p">,</span>
            <span class="s1">&#39;once&#39;</span><span class="p">:</span> <span class="n">once</span><span class="p">,</span>
-           <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
+           <span class="s1">&#39;cron&#39;</span><span class="p">:</span> <span class="n">cron</span><span class="p">,</span>
+           <span class="s1">&#39;auth&#39;</span><span class="p">:</span> <span class="n">auth</span><span class="p">,</span>
+           <span class="s1">&#39;retry&#39;</span><span class="p">:</span> <span class="n">retry</span><span class="p">,</span>
+           <span class="s1">&#39;by_uid&#39;</span><span class="p">:</span> <span class="n">by_uid</span><span class="p">,</span>
+           <span class="s1">&#39;max_age&#39;</span><span class="p">:</span> <span class="n">max_age</span><span class="p">,</span>
+           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="n">parameters</span><span class="p">,</span>
+           <span class="s1">&#39;by_accession_number&#39;</span><span class="p">:</span> <span class="n">by_accession_number</span><span class="p">,</span>
            <span class="s1">&#39;sid_user_id&#39;</span><span class="p">:</span> <span class="n">sid_user_id</span><span class="p">,</span>
-           <span class="s1">&#39;delay&#39;</span><span class="p">:</span> <span class="n">delay</span><span class="p">,</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;event&#39;</span><span class="p">:</span> <span class="n">event</span><span class="p">,</span>
+           <span class="s1">&#39;filter_field&#39;</span><span class="p">:</span> <span class="n">filter_field</span><span class="p">,</span>
+           <span class="s1">&#39;delay&#39;</span><span class="p">:</span> <span class="n">delay</span><span class="p">,</span>
+           <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+           <span class="s1">&#39;filter_regexp&#39;</span><span class="p">:</span> <span class="n">filter_regexp</span><span class="p">,</span>
+           <span class="s1">&#39;suspended&#39;</span><span class="p">:</span> <span class="n">suspended</span><span class="p">,</span>
+           <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
+           <span class="s1">&#39;node_id&#39;</span><span class="p">:</span> <span class="n">node_id</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -234,25 +234,25 @@
 <span class="sd">        :param url: URL to call (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;retry&#39;</span><span class="p">:</span> <span class="n">retry</span><span class="p">,</span>
-           <span class="s1">&#39;max_age&#39;</span><span class="p">:</span> <span class="n">max_age</span><span class="p">,</span>
-           <span class="s1">&#39;node_id&#39;</span><span class="p">:</span> <span class="n">node_id</span><span class="p">,</span>
-           <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
-           <span class="s1">&#39;by_accession_number&#39;</span><span class="p">:</span> <span class="n">by_accession_number</span><span class="p">,</span>
-           <span class="s1">&#39;cron&#39;</span><span class="p">:</span> <span class="n">cron</span><span class="p">,</span>
-           <span class="s1">&#39;filter_field&#39;</span><span class="p">:</span> <span class="n">filter_field</span><span class="p">,</span>
-           <span class="s1">&#39;auth&#39;</span><span class="p">:</span> <span class="n">auth</span><span class="p">,</span>
-           <span class="s1">&#39;filter_regexp&#39;</span><span class="p">:</span> <span class="n">filter_regexp</span><span class="p">,</span>
-           <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="n">parameters</span><span class="p">,</span>
-           <span class="s1">&#39;suspended&#39;</span><span class="p">:</span> <span class="n">suspended</span><span class="p">,</span>
-           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
-           <span class="s1">&#39;event&#39;</span><span class="p">:</span> <span class="n">event</span><span class="p">,</span>
-           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
-           <span class="s1">&#39;by_uid&#39;</span><span class="p">:</span> <span class="n">by_uid</span><span class="p">,</span>
            <span class="s1">&#39;once&#39;</span><span class="p">:</span> <span class="n">once</span><span class="p">,</span>
-           <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
+           <span class="s1">&#39;cron&#39;</span><span class="p">:</span> <span class="n">cron</span><span class="p">,</span>
+           <span class="s1">&#39;auth&#39;</span><span class="p">:</span> <span class="n">auth</span><span class="p">,</span>
+           <span class="s1">&#39;retry&#39;</span><span class="p">:</span> <span class="n">retry</span><span class="p">,</span>
+           <span class="s1">&#39;by_uid&#39;</span><span class="p">:</span> <span class="n">by_uid</span><span class="p">,</span>
+           <span class="s1">&#39;max_age&#39;</span><span class="p">:</span> <span class="n">max_age</span><span class="p">,</span>
+           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="n">parameters</span><span class="p">,</span>
+           <span class="s1">&#39;by_accession_number&#39;</span><span class="p">:</span> <span class="n">by_accession_number</span><span class="p">,</span>
            <span class="s1">&#39;sid_user_id&#39;</span><span class="p">:</span> <span class="n">sid_user_id</span><span class="p">,</span>
+           <span class="s1">&#39;event&#39;</span><span class="p">:</span> <span class="n">event</span><span class="p">,</span>
+           <span class="s1">&#39;filter_field&#39;</span><span class="p">:</span> <span class="n">filter_field</span><span class="p">,</span>
            <span class="s1">&#39;delay&#39;</span><span class="p">:</span> <span class="n">delay</span><span class="p">,</span>
+           <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+           <span class="s1">&#39;filter_regexp&#39;</span><span class="p">:</span> <span class="n">filter_regexp</span><span class="p">,</span>
+           <span class="s1">&#39;suspended&#39;</span><span class="p">:</span> <span class="n">suspended</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
+           <span class="s1">&#39;node_id&#39;</span><span class="p">:</span> <span class="n">node_id</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -341,8 +341,8 @@
 <span class="sd">        :param uuid: uuid of the webhook</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;study_id&#39;</span><span class="p">:</span> <span class="n">study_id</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;study_id&#39;</span><span class="p">:</span> <span class="n">study_id</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -374,15 +374,15 @@
 <span class="sd">        :param type: type</span>
 
 <span class="sd">        Notes:</span>
-<span class="sd">        type - The type of event (STUDY_UPLOAD_START OR STUDY_UPLOAD_END)</span>
 <span class="sd">        (namespace_id OR share_code) - The namespace or share code for the event</span>
+<span class="sd">        type - The type of event (STUDY_UPLOAD_START OR STUDY_UPLOAD_END)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;study_count&#39;</span><span class="p">:</span> <span class="n">study_count</span><span class="p">,</span>
+           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
            <span class="s1">&#39;integration_key&#39;</span><span class="p">:</span> <span class="n">integration_key</span><span class="p">,</span>
            <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
-           <span class="s1">&#39;study_count&#39;</span><span class="p">:</span> <span class="n">study_count</span><span class="p">,</span>
            <span class="s1">&#39;share_code&#39;</span><span class="p">:</span> <span class="n">share_code</span><span class="p">,</span>
-           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -399,21 +399,27 @@
     
 <div class="viewcode-block" id="Webhook.email"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Webhook.email">[docs]</a>    <span class="k">def</span> <span class="nf">email</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
+        <span class="n">html</span><span class="p">,</span>
         <span class="n">subject</span><span class="p">,</span>
+        <span class="n">template_id</span><span class="p">,</span>
         <span class="n">text</span><span class="p">,</span>
         <span class="n">to</span><span class="p">,</span>
         <span class="n">webhook_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Email.</span>
+<span class="sd">        :param html: The HTML part of the email</span>
 <span class="sd">        :param subject: The subject of the email</span>
-<span class="sd">        :param text: The body of the email</span>
+<span class="sd">        :param template_id: The email template UUID to be used</span>
+<span class="sd">        :param text: The text part of the email</span>
 <span class="sd">        :param to: The email address(es) to send the email to</span>
 <span class="sd">        :param webhook_id: The uuid of the calling webhook</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="n">subject</span><span class="p">,</span>
+           <span class="s1">&#39;template_id&#39;</span><span class="p">:</span> <span class="n">template_id</span><span class="p">,</span>
            <span class="s1">&#39;to&#39;</span><span class="p">:</span> <span class="n">to</span><span class="p">,</span>
+           <span class="s1">&#39;html&#39;</span><span class="p">:</span> <span class="n">html</span><span class="p">,</span>
            <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span>
+           <span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="n">subject</span><span class="p">,</span>
            <span class="s1">&#39;webhook_id&#39;</span><span class="p">:</span> <span class="n">webhook_id</span><span class="p">,</span>
         <span class="p">}</span>
 	

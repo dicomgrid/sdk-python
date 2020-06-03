@@ -77,12 +77,12 @@
 <span class="sd">        :param user_id: Id of the user to create the appointment for (optional defaults to current user)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;patient_id&#39;</span><span class="p">:</span> <span class="n">patient_id</span><span class="p">,</span>
-           <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
-           <span class="s1">&#39;start_time&#39;</span><span class="p">:</span> <span class="n">start_time</span><span class="p">,</span>
            <span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
            <span class="s1">&#39;end_time&#39;</span><span class="p">:</span> <span class="n">end_time</span><span class="p">,</span>
+           <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;start_time&#39;</span><span class="p">:</span> <span class="n">start_time</span><span class="p">,</span>
+           <span class="s1">&#39;patient_id&#39;</span><span class="p">:</span> <span class="n">patient_id</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="n">customfield_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">customfield_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
@@ -146,12 +146,12 @@
 <span class="sd">        :param uuid: The appointment uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
-           <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
-           <span class="s1">&#39;customfields&#39;</span><span class="p">:</span> <span class="n">customfields</span><span class="p">,</span>
-           <span class="s1">&#39;start_time&#39;</span><span class="p">:</span> <span class="n">start_time</span><span class="p">,</span>
            <span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
            <span class="s1">&#39;end_time&#39;</span><span class="p">:</span> <span class="n">end_time</span><span class="p">,</span>
+           <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;start_time&#39;</span><span class="p">:</span> <span class="n">start_time</span><span class="p">,</span>
+           <span class="s1">&#39;customfields&#39;</span><span class="p">:</span> <span class="n">customfields</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>

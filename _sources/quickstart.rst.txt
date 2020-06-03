@@ -47,7 +47,7 @@ Make sure the current version of `ambra-sdk` is not lower than the api version.
 
    >>> from ambra_sdk import API_VERSION
    >>> print(API_VERSION)
-   LBL0022 v37.0 2020-04-15
+   LBL0022 v38.0 2020-05-27
 
 Service api is divided by type of command.
 From `ambra-sdk` view all request have a form
@@ -220,7 +220,7 @@ Make sure the current version of `ambra-sdk` is not lower than the api version.
 
     >>> from ambra_sdk import STORAGE_VERSION
     >>> print(STORAGE_VERSION)
-    LBL0038 v8.0 2019-07-17
+    LBL0038 v9.0 2020-06-03
 
 
 Description of all existing methods and you can find in :ref:`Storage API reference<referencies-storage-api>`. 

@@ -99,19 +99,19 @@
 <span class="sd">        (name OR first AND last) - Patient name as either full name or first and last (optional if study_id is used)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;study_id&#39;</span><span class="p">:</span> <span class="n">study_id</span><span class="p">,</span>
            <span class="s1">&#39;alt_email&#39;</span><span class="p">:</span> <span class="n">alt_email</span><span class="p">,</span>
            <span class="s1">&#39;birth_date&#39;</span><span class="p">:</span> <span class="n">birth_date</span><span class="p">,</span>
-           <span class="s1">&#39;mrn&#39;</span><span class="p">:</span> <span class="n">mrn</span><span class="p">,</span>
-           <span class="s1">&#39;alt_mobile_phone&#39;</span><span class="p">:</span> <span class="n">alt_mobile_phone</span><span class="p">,</span>
-           <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
-           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
            <span class="s1">&#39;sex&#39;</span><span class="p">:</span> <span class="n">sex</span><span class="p">,</span>
+           <span class="s1">&#39;mrn&#39;</span><span class="p">:</span> <span class="n">mrn</span><span class="p">,</span>
            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
            <span class="s1">&#39;mobile_phone&#39;</span><span class="p">:</span> <span class="n">mobile_phone</span><span class="p">,</span>
-           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
            <span class="s1">&#39;last&#39;</span><span class="p">:</span> <span class="n">last</span><span class="p">,</span>
+           <span class="s1">&#39;alt_mobile_phone&#39;</span><span class="p">:</span> <span class="n">alt_mobile_phone</span><span class="p">,</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
            <span class="s1">&#39;first&#39;</span><span class="p">:</span> <span class="n">first</span><span class="p">,</span>
+           <span class="s1">&#39;study_id&#39;</span><span class="p">:</span> <span class="n">study_id</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="n">customfield_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">customfield_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
@@ -195,17 +195,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;alt_email&#39;</span><span class="p">:</span> <span class="n">alt_email</span><span class="p">,</span>
-           <span class="s1">&#39;mrn&#39;</span><span class="p">:</span> <span class="n">mrn</span><span class="p">,</span>
-           <span class="s1">&#39;alt_mobile_phone&#39;</span><span class="p">:</span> <span class="n">alt_mobile_phone</span><span class="p">,</span>
-           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
-           <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
-           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;birth_date&#39;</span><span class="p">:</span> <span class="n">birth_date</span><span class="p">,</span>
            <span class="s1">&#39;sex&#39;</span><span class="p">:</span> <span class="n">sex</span><span class="p">,</span>
+           <span class="s1">&#39;mrn&#39;</span><span class="p">:</span> <span class="n">mrn</span><span class="p">,</span>
            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
            <span class="s1">&#39;mobile_phone&#39;</span><span class="p">:</span> <span class="n">mobile_phone</span><span class="p">,</span>
-           <span class="s1">&#39;birth_date&#39;</span><span class="p">:</span> <span class="n">birth_date</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
            <span class="s1">&#39;last&#39;</span><span class="p">:</span> <span class="n">last</span><span class="p">,</span>
+           <span class="s1">&#39;alt_mobile_phone&#39;</span><span class="p">:</span> <span class="n">alt_mobile_phone</span><span class="p">,</span>
            <span class="s1">&#39;first&#39;</span><span class="p">:</span> <span class="n">first</span><span class="p">,</span>
+           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="n">customfield_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">customfield_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
@@ -323,9 +323,9 @@
 <span class="sd">        :param mrn: MRN (required if the require_mrn_for_patient_portal account setting is on)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;first&#39;</span><span class="p">:</span> <span class="n">first</span><span class="p">,</span>
            <span class="s1">&#39;mrn&#39;</span><span class="p">:</span> <span class="n">mrn</span><span class="p">,</span>
            <span class="s1">&#39;last&#39;</span><span class="p">:</span> <span class="n">last</span><span class="p">,</span>
-           <span class="s1">&#39;first&#39;</span><span class="p">:</span> <span class="n">first</span><span class="p">,</span>
            <span class="s1">&#39;birth_date&#39;</span><span class="p">:</span> <span class="n">birth_date</span><span class="p">,</span>
         <span class="p">}</span>
 	
@@ -360,10 +360,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;alt_email&#39;</span><span class="p">:</span> <span class="n">alt_email</span><span class="p">,</span>
-           <span class="s1">&#39;patient_id&#39;</span><span class="p">:</span> <span class="n">patient_id</span><span class="p">,</span>
-           <span class="s1">&#39;alt_mobile_phone&#39;</span><span class="p">:</span> <span class="n">alt_mobile_phone</span><span class="p">,</span>
-           <span class="s1">&#39;mobile_phone&#39;</span><span class="p">:</span> <span class="n">mobile_phone</span><span class="p">,</span>
            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
+           <span class="s1">&#39;mobile_phone&#39;</span><span class="p">:</span> <span class="n">mobile_phone</span><span class="p">,</span>
+           <span class="s1">&#39;alt_mobile_phone&#39;</span><span class="p">:</span> <span class="n">alt_mobile_phone</span><span class="p">,</span>
+           <span class="s1">&#39;patient_id&#39;</span><span class="p">:</span> <span class="n">patient_id</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>

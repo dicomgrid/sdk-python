@@ -181,8 +181,16 @@ vendor - The OAuth vendor (doximity OR google OR brand)</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="ambra_sdk.service.entrypoints.User.event">
+<code class="sig-name descname">event</code><span class="sig-paren">(</span><em class="sig-param">namespace_id</em>, <em class="sig-param">uuid=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/user.html#User.event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.User.event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Event.
+:param namespace_id: Id of the namespace to set the flags on
+:param uuid: Return event flags for this user, not current user (optional)</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="ambra_sdk.service.entrypoints.User.event_set">
-<code class="sig-name descname">event_set</code><span class="sig-paren">(</span><em class="sig-param">namespace_id</em>, <em class="sig-param">event_approve=None</em>, <em class="sig-param">event_case_assignment=None</em>, <em class="sig-param">event_harvest=None</em>, <em class="sig-param">event_link=None</em>, <em class="sig-param">event_link_mine=None</em>, <em class="sig-param">event_message=None</em>, <em class="sig-param">event_new_report=None</em>, <em class="sig-param">event_share=None</em>, <em class="sig-param">event_status_change=None</em>, <em class="sig-param">event_study_comment=None</em>, <em class="sig-param">event_thin_study_fail=None</em>, <em class="sig-param">event_thin_study_success=None</em>, <em class="sig-param">event_upload=None</em>, <em class="sig-param">event_upload_fail=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/user.html#User.event_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.User.event_set" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">event_set</code><span class="sig-paren">(</span><em class="sig-param">namespace_id</em>, <em class="sig-param">event_approve=None</em>, <em class="sig-param">event_case_assignment=None</em>, <em class="sig-param">event_harvest=None</em>, <em class="sig-param">event_link=None</em>, <em class="sig-param">event_link_mine=None</em>, <em class="sig-param">event_message=None</em>, <em class="sig-param">event_new_report=None</em>, <em class="sig-param">event_report_remove=None</em>, <em class="sig-param">event_share=None</em>, <em class="sig-param">event_status_change=None</em>, <em class="sig-param">event_study_comment=None</em>, <em class="sig-param">event_thin_study_fail=None</em>, <em class="sig-param">event_thin_study_success=None</em>, <em class="sig-param">event_upload=None</em>, <em class="sig-param">event_upload_fail=None</em>, <em class="sig-param">uuid=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/user.html#User.event_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.User.event_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Event set.
 :param namespace_id: Id of the namespace to set the flags on
 :param event_approve: Notify the user on a approval needed into the namespace (optional)
@@ -192,13 +200,15 @@ vendor - The OAuth vendor (doximity OR google OR brand)</p>
 :param event_link_mine: Notify the user when an anonymous link created by the user is hit in the namespace (optional)
 :param event_message: Notify the user when a message is sent to the namespace (optional)
 :param event_new_report: Notify the user when a report is attached in the namespace (optional)
+:param event_report_remove: Notify the user when a report is removed in the namespace (optional)
 :param event_share: Notify the user on a share into the namespace (optional)
 :param event_status_change: Notify the user when the status of a study is changed (optional)
 :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
 :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)
 :param event_thin_study_success: Notify the user when a thin study retrieval they initiated succeeds (optional)
 :param event_upload: Notify the user on an upload into the namespace (optional)
-:param event_upload_fail: Notify the user on a failed upload into the namespace (optional)</p>
+:param event_upload_fail: Notify the user on a failed upload into the namespace (optional)
+:param uuid: Return event flags for this user, not current user (optional)</p>
 </dd></dl>
 
 <dl class="method">
@@ -280,7 +290,7 @@ vendor - The OAuth vendor (doximity OR google OR brand)</p>
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.User.set">
-<code class="sig-name descname">set</code><span class="sig-paren">(</span><em class="sig-param">indicator_md5</em>, <em class="sig-param">privacy_md5</em>, <em class="sig-param">terms_md5</em>, <em class="sig-param">account_id=None</em>, <em class="sig-param">cc_token=None</em>, <em class="sig-param">email=None</em>, <em class="sig-param">first=None</em>, <em class="sig-param">last=None</em>, <em class="sig-param">mobile_phone=None</em>, <em class="sig-param">old_password=None</em>, <em class="sig-param">password=None</em>, <em class="sig-param">pin_required=None</em>, <em class="sig-param">share_code=None</em>, <em class="sig-param">share_description=None</em>, <em class="sig-param">time_zone=None</em>, <em class="sig-param">uuid=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/user.html#User.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.User.set" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set</code><span class="sig-paren">(</span><em class="sig-param">indicator_md5</em>, <em class="sig-param">privacy_md5</em>, <em class="sig-param">terms_md5</em>, <em class="sig-param">account_id=None</em>, <em class="sig-param">cc_token=None</em>, <em class="sig-param">email=None</em>, <em class="sig-param">first=None</em>, <em class="sig-param">last=None</em>, <em class="sig-param">mobile_phone=None</em>, <em class="sig-param">old_password=None</em>, <em class="sig-param">password=None</em>, <em class="sig-param">pin_required=None</em>, <em class="sig-param">share_code=None</em>, <em class="sig-param">share_description=None</em>, <em class="sig-param">time_zone=None</em>, <em class="sig-param">ui_json=None</em>, <em class="sig-param">uuid=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/user.html#User.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.User.set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set.
 :param indicator_md5: MD5 of the accepted indications of use
 :param privacy_md5: MD5 of the accepted privacy policy
@@ -297,6 +307,7 @@ vendor - The OAuth vendor (doximity OR google OR brand)</p>
 :param share_code: The share code of the user (optional)
 :param share_description: The share description of the user (optional)
 :param time_zone: The users time zone name as per <a class="reference external" href="https://www.postgresql.org/docs/9.1/static/view-pg-timezone-names.html">https://www.postgresql.org/docs/9.1/static/view-pg-timezone-names.html</a> (optional)
+:param ui_json: JSON for UI settings (optional)
 :param uuid: The users uuid (optional). Uses the session user if not passed</p>
 </dd></dl>
 
@@ -376,9 +387,9 @@ vendor - The OAuth vendor (doximity OR google OR brand)</p>
 :param study_uid: study_uid
 :param uuid: uuid</p>
 <p>Notes:
+customfield-(CUSTOMFIELD_UUID OR DICOM_TAG) - Custom field(s), see notes in /study/add (optional)
 (sid OR uuid AND serial_no) - Either the sid or the node id and serial number
-(study_uid OR study_uid AND storage_namespace AND phi_namespace) - The study uid if node authentication or the storage triplet if sid authentication
-customfield-(CUSTOMFIELD_UUID OR DICOM_TAG) - Custom field(s), see notes in /study/add (optional)</p>
+(study_uid OR study_uid AND storage_namespace AND phi_namespace) - The study uid if node authentication or the storage triplet if sid authentication</p>
 </dd></dl>
 
 <dl class="method">
@@ -416,7 +427,7 @@ customfield-(CUSTOMFIELD_UUID OR DICOM_TAG) - Custom field(s), see notes in /stu
 :param study_uid: The v3 storage uid of the study (optional if uuid is passed)
 :param uuid: The id of the study (optional if study_uid and storage_namespace are passed)</p>
 <p>Notes:
-action - The audit action (STUDY_VIEW OR STUDY_EDIT OR REPORT_UPLOAD OR REPORT_VIEW OR IMAGE_ADDED OR IMAGE_UPDATED OR STUDY_DOWNLOAD OR ACCEPTED_NOT_DIAGNOSTIC OR CANCELED_NOT_DIAGNOSTIC OR AI_ACTION OR VIEWER_ACTION)</p>
+action - The audit action (STUDY_VIEW OR STUDY_EDIT OR REPORT_UPLOAD OR REPORT_REMOVE OR REPORT_VIEW OR IMAGE_ADDED OR IMAGE_UPDATED OR STUDY_DOWNLOAD OR ACCEPTED_NOT_DIAGNOSTIC OR CANCELED_NOT_DIAGNOSTIC OR AI_ACTION OR VIEWER_ACTION)</p>
 </dd></dl>
 
 <dl class="method">
@@ -480,8 +491,8 @@ action - The audit action (STUDY_VIEW OR STUDY_EDIT OR REPORT_UPLOAD OR REPORT_V
 :param study_uid: study_uid
 :param uuid: uuid</p>
 <p>Notes:
-(sid OR node_id AND serial_no) - Either the sid or the node id and serial number
-(uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet</p>
+(uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet
+(sid OR node_id AND serial_no) - Either the sid or the node id and serial number</p>
 </dd></dl>
 
 <dl class="method">
@@ -498,6 +509,19 @@ action - The audit action (STUDY_VIEW OR STUDY_EDIT OR REPORT_UPLOAD OR REPORT_V
 :param include_attachments: Also duplicate attachments
 :param namespace_id: The namespace id to duplicate it to
 :param uuid: The study id</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ambra_sdk.service.entrypoints.Study.exists">
+<code class="sig-name descname">exists</code><span class="sig-paren">(</span><em class="sig-param">account_id=None</em>, <em class="sig-param">phi_namespace=None</em>, <em class="sig-param">storage_namespace=None</em>, <em class="sig-param">study_uid=None</em>, <em class="sig-param">uuid=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/study.html#Study.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Study.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exists.
+:param account_id: account_id
+:param phi_namespace: phi_namespace
+:param storage_namespace: storage_namespace
+:param study_uid: study_uid
+:param uuid: uuid</p>
+<p>Notes:
+(uuid OR study_uid AND storage_namespace AND phi_namespace OR study_uid AND account_id) - The study uuid, the storage triplet, or the study uid and account id</p>
 </dd></dl>
 
 <dl class="method">
@@ -539,12 +563,13 @@ action - The audit action (STUDY_VIEW OR STUDY_EDIT OR REPORT_UPLOAD OR REPORT_V
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Study.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">customfield_h=None</em>, <em class="sig-param">extra=None</em>, <em class="sig-param">fields=None</em>, <em class="sig-param">full_hl7=None</em>, <em class="sig-param">node_id=None</em>, <em class="sig-param">permissions_diff=None</em>, <em class="sig-param">phi_namespace=None</em>, <em class="sig-param">serial_no=None</em>, <em class="sig-param">storage_namespace=None</em>, <em class="sig-param">study_uid=None</em>, <em class="sig-param">uuid=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/study.html#Study.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Study.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">customfield_h=None</em>, <em class="sig-param">extra=None</em>, <em class="sig-param">fields=None</em>, <em class="sig-param">full_hl7=None</em>, <em class="sig-param">limit_hl7=None</em>, <em class="sig-param">node_id=None</em>, <em class="sig-param">permissions_diff=None</em>, <em class="sig-param">phi_namespace=None</em>, <em class="sig-param">serial_no=None</em>, <em class="sig-param">storage_namespace=None</em>, <em class="sig-param">study_uid=None</em>, <em class="sig-param">uuid=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/study.html#Study.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Study.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get.
 :param customfield_h: Flag to return a customfield hash as detailed below (optional)
 :param extra: Flag to return extra data as detailed below (optional)
 :param fields: A JSON list of the study fields to return (optional)
 :param full_hl7: Flag to return the full hl7 record instead of just the uuid (optional)
+:param limit_hl7: Limit the length of Hl7 list to return. Zero means no limit (optional)
 :param node_id: node_id
 :param permissions_diff: Flag to return only the permissions that differ from the namespace permissions (optional)
 :param phi_namespace: phi_namespace
@@ -553,17 +578,18 @@ action - The audit action (STUDY_VIEW OR STUDY_EDIT OR REPORT_UPLOAD OR REPORT_V
 :param study_uid: study_uid
 :param uuid: uuid</p>
 <p>Notes:
-(sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number
-(uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet</p>
+(uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet
+(sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Study.list">
-<code class="sig-name descname">list</code><span class="sig-paren">(</span><em class="sig-param">customfield_h=None</em>, <em class="sig-param">extra=None</em>, <em class="sig-param">fields=None</em>, <em class="sig-param">permissions_diff=None</em>, <em class="sig-param">template=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/study.html#Study.list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Study.list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list</code><span class="sig-paren">(</span><em class="sig-param">customfield_h=None</em>, <em class="sig-param">extra=None</em>, <em class="sig-param">fields=None</em>, <em class="sig-param">limit_hl7=None</em>, <em class="sig-param">permissions_diff=None</em>, <em class="sig-param">template=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/study.html#Study.list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Study.list" title="Permalink to this definition">¶</a></dt>
 <dd><p>List.
 :param customfield_h: Flag to return a customfield hash as detailed in /study/get (optional)
 :param extra: Flag to return extra data as detailed in /study/get (optional)
 :param fields: A JSON list of the study fields to return (optional)
+:param limit_hl7: Limit the length of Hl7 list to return. Zero means no limit (optional)
 :param permissions_diff: Flag to return only the permissions that differ from the namespace permissions (optional)
 :param template: A JSON hash with name, account_id and language of the template to return (optional)</p>
 </dd></dl>
@@ -721,9 +747,9 @@ action - The audit action (STUDY_VIEW OR STUDY_EDIT OR REPORT_UPLOAD OR REPORT_V
 :param use_upload_permission: Flag to use the upload permissions for the permissions check (optional)
 :param uuid: uuid</p>
 <p>Notes:
-(sid OR uuid AND serial_no) - Either the sid or the node id and serial number
 customfield-(CUSTOMFIELD_UUID OR DICOM_TAG) - Custom field(s), see notes in /study/add (optional)
-(study_id OR study_uid OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study if sid authentication or the study_uid if node authentication or the storage triplet if you want a future set</p>
+(study_id OR study_uid OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study if sid authentication or the study_uid if node authentication or the storage triplet if you want a future set
+(sid OR uuid AND serial_no) - Either the sid or the node id and serial number</p>
 </dd></dl>
 
 <dl class="method">
@@ -1430,6 +1456,14 @@ action - The audit action (SIGNED OR MEDICAL_EDIT OR ADMIN_EDIT OR REPORT_GENERA
 </dd></dl>
 
 <dl class="method">
+<dt id="ambra_sdk.service.entrypoints.Case.price">
+<code class="sig-name descname">price</code><span class="sig-paren">(</span><em class="sig-param">share_code</em>, <em class="sig-param">customfield_param=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/case.html#Case.price"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Case.price" title="Permalink to this definition">¶</a></dt>
+<dd><p>Price.
+:param share_code: The share code of the second opinion namespace.
+:param customfield_param: Custom field(s) defined for the case objects with values stated in the second opinion wizard (optional)</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Case.return_method">
 <code class="sig-name descname">return_method</code><span class="sig-paren">(</span><em class="sig-param">reason</em>, <em class="sig-param">uuid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/case.html#Case.return_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Case.return_method" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return.
@@ -1905,7 +1939,7 @@ mpps_status - The mpps status to set (PENDING OR IN_PROGRESS OR DISCONTINUED OR 
 <p>Notes:
 category - Node category (ACTIVE OR INACTIVE OR MIGRATION OR TEST OR DUPLICATE OR INTEGRATED OR ACCELERATOR) (optional)
 (account_id OR location_id OR group_id) - uuid of the account, location or group to link this node to
-type - Type of node (STORAGE OR HARVESTER OR ACCELERATOR OR CLEARINGHOUSE OR VIRTUAL OR UTILITY)</p>
+type - Type of node (STORAGE OR HARVESTER OR ACCELERATOR OR CLEARINGHOUSE OR VIRTUAL OR UTILITY OR XDS)</p>
 </dd></dl>
 
 <dl class="method">
@@ -1934,15 +1968,18 @@ type - Type of node (STORAGE OR HARVESTER OR ACCELERATOR OR CLEARINGHOUSE OR VIR
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Node.deliver">
-<code class="sig-name descname">deliver</code><span class="sig-paren">(</span><em class="sig-param">job_id</em>, <em class="sig-param">serial_no</em>, <em class="sig-param">uuid</em>, <em class="sig-param">ack=None</em>, <em class="sig-param">email_reason=None</em>, <em class="sig-param">status=None</em>, <em class="sig-param">status_reason=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/node.html#Node.deliver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Node.deliver" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">deliver</code><span class="sig-paren">(</span><em class="sig-param">serial_no</em>, <em class="sig-param">uuid</em>, <em class="sig-param">ack=None</em>, <em class="sig-param">destination_id=None</em>, <em class="sig-param">email_reason=None</em>, <em class="sig-param">is_local=None</em>, <em class="sig-param">job_id=None</em>, <em class="sig-param">status=None</em>, <em class="sig-param">status_reason=None</em>, <em class="sig-param">study_uid=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/node.html#Node.deliver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Node.deliver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deliver.
-:param job_id: The uuid of the push job
 :param serial_no: The serial number of the node
 :param uuid: The node id
 :param ack: The HL7 ACK if this was an HL7 job (optional)
+:param destination_id: The uuid of the destination, required for local pushes (optional)
 :param email_reason: Email the user this reason for the status change (optional)
+:param is_local: The flag used to indicate the local push (optional)
+:param job_id: The uuid of the push job, not used for local pushes (optional)
 :param status: status
-:param status_reason: Detail on the status change (optional)</p>
+:param status_reason: Detail on the status change (optional)
+:param study_uid: The study uid of the local push, required for local pushes only (optional)</p>
 <p>Notes:
 status - Status code of the job (S OR F OR P OR B OR U) - Success, failure, partial transfer, blocked or uncached</p>
 </dd></dl>
@@ -2146,8 +2183,8 @@ status - Status code of the job (S OR F OR P) - Success, failure, partial transf
 :param settings: A hash of the account settings that the node can override (optional)
 :param storage_namespace: Namespace uuid to attach the node to. This requires a sysadmin sid and must be within the same account (optional)</p>
 <p>Notes:
-category - Node category (ACTIVE OR INACTIVE OR MIGRATION OR TEST OR DUPLICATE OR INTEGRATED) (optional)
-(sid OR serial_no) - The session id or serial number of the node</p>
+(sid OR serial_no) - The session id or serial number of the node
+category - Node category (ACTIVE OR INACTIVE OR MIGRATION OR TEST OR DUPLICATE OR INTEGRATED) (optional)</p>
 </dd></dl>
 
 <dl class="method">
@@ -2180,11 +2217,12 @@ status - Status code of the job (S OR F) - Success, failure</p>
 <dd><p>Destination.</p>
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Destination.add">
-<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param">account_id</em>, <em class="sig-param">address</em>, <em class="sig-param">aetitle</em>, <em class="sig-param">name</em>, <em class="sig-param">node_id</em>, <em class="sig-param">path</em>, <em class="sig-param">port</em>, <em class="sig-param">c_echo_interval=None</em>, <em class="sig-param">c_echo_schedule=None</em>, <em class="sig-param">can_mwl_search=None</em>, <em class="sig-param">can_query_retrieve=None</em>, <em class="sig-param">can_retrieve_thin=None</em>, <em class="sig-param">can_search=None</em>, <em class="sig-param">cd_burn_info=None</em>, <em class="sig-param">cd_burn_name=None</em>, <em class="sig-param">cd_burn_priority=None</em>, <em class="sig-param">default_query_retrieve_level=None</em>, <em class="sig-param">fire_webhooks=None</em>, <em class="sig-param">gateway_settings=None</em>, <em class="sig-param">hl7_address=None</em>, <em class="sig-param">hl7_fetch_filter=None</em>, <em class="sig-param">hl7_port=None</em>, <em class="sig-param">push_related_studies=None</em>, <em class="sig-param">sort_order=None</em>, <em class="sig-param">sqlch_psh_if_img_unchg=None</em>, <em class="sig-param">sqlch_psh_if_route_hl7=None</em>, <em class="sig-param">type=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/destination.html#Destination.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Destination.add" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param">account_id</em>, <em class="sig-param">address</em>, <em class="sig-param">aetitle</em>, <em class="sig-param">linked_destination</em>, <em class="sig-param">name</em>, <em class="sig-param">node_id</em>, <em class="sig-param">path</em>, <em class="sig-param">port</em>, <em class="sig-param">c_echo_interval=None</em>, <em class="sig-param">c_echo_schedule=None</em>, <em class="sig-param">can_mwl_search=None</em>, <em class="sig-param">can_query_retrieve=None</em>, <em class="sig-param">can_retrieve_thin=None</em>, <em class="sig-param">can_search=None</em>, <em class="sig-param">cd_burn_info=None</em>, <em class="sig-param">cd_burn_name=None</em>, <em class="sig-param">cd_burn_priority=None</em>, <em class="sig-param">default_query_retrieve_level=None</em>, <em class="sig-param">fire_webhooks=None</em>, <em class="sig-param">gateway_settings=None</em>, <em class="sig-param">hl7_address=None</em>, <em class="sig-param">hl7_fetch_filter=None</em>, <em class="sig-param">hl7_port=None</em>, <em class="sig-param">push_related_studies=None</em>, <em class="sig-param">sort_order=None</em>, <em class="sig-param">sqlch_psh_if_img_unchg=None</em>, <em class="sig-param">sqlch_psh_if_route_hl7=None</em>, <em class="sig-param">type=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/destination.html#Destination.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Destination.add" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add.
 :param account_id: uuid of the account
 :param address: Address of the destination (required if DICOM type)
 :param aetitle: Aetitle of the destination (required if DICOM type)
+:param linked_destination: uuid of the destination for LINKED destinations
 :param name: Name of the destination
 :param node_id: uuid of the node that handles the destination
 :param path: Path of the folder for a FOLDER type of destination (required if FOLDER type)
@@ -2208,7 +2246,7 @@ status - Status code of the job (S OR F) - Success, failure</p>
 :param sort_order: Integer value for sorting (optional)
 :param sqlch_psh_if_img_unchg: Squelch pushes to the destination if the image count has not changed and the push is by a routing rule (optional)
 :param sqlch_psh_if_route_hl7: Squelch pushes to the destination if the push was generated by HL7 triggered routing (optional)
-:param type: Type of the destination either DICOM, FOLDER, ACCELERATOR,VIRTUAL, BURNER or UPLOADER. Defaults to DICOM (optional)</p>
+:param type: Type of the destination either DICOM, FOLDER, ACCELERATOR,VIRTUAL, BURNER, XDS, LINKED or UPLOADER. Defaults to DICOM (optional)</p>
 <p>Notes:
 default_query_retrieve_level - Default query retrieve level this can be either (study OR series OR image) and defaults to study if not specified (optional)</p>
 </dd></dl>
@@ -2229,9 +2267,14 @@ default_query_retrieve_level - Default query retrieve level this can be either (
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Destination.list">
-<code class="sig-name descname">list</code><span class="sig-paren">(</span><em class="sig-param">account_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/destination.html#Destination.list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Destination.list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list</code><span class="sig-paren">(</span><em class="sig-param">account_id</em>, <em class="sig-param">uuid</em>, <em class="sig-param">node_id=None</em>, <em class="sig-param">serial_no=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/destination.html#Destination.list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Destination.list" title="Permalink to this definition">¶</a></dt>
 <dd><p>List.
-:param account_id: uuid of the account</p>
+:param account_id: uuid of the account
+:param uuid: uuid of the destination
+:param node_id: node_id
+:param serial_no: serial_no</p>
+<p>Notes:
+(sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number</p>
 </dd></dl>
 
 <dl class="method">
@@ -2467,9 +2510,10 @@ by_type - The type of object that can share. (user OR account OR group OR locati
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Account.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">uuid</em>, <em class="sig-param">permissions=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/account.html#Account.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Account.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">uuid</em>, <em class="sig-param">brand_settings=None</em>, <em class="sig-param">permissions=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/account.html#Account.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Account.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get.
 :param uuid: The account uuid
+:param brand_settings: A comma delimited list of the settings from /brand/get for this vanity to return (optional)
 :param permissions: Flag to return the users role and permissions in the accounts (optional)</p>
 </dd></dl>
 
@@ -2494,7 +2538,7 @@ by_type - The type of object that can share. (user OR account OR group OR locati
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Account.set">
-<code class="sig-name descname">set</code><span class="sig-paren">(</span><em class="sig-param">can_request</em>, <em class="sig-param">uuid</em>, <em class="sig-param">css=None</em>, <em class="sig-param">customfield_param=None</em>, <em class="sig-param">hl7_template=None</em>, <em class="sig-param">must_approve=None</em>, <em class="sig-param">must_approve_upload=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">no_share=None</em>, <em class="sig-param">password_expire=None</em>, <em class="sig-param">role_id=None</em>, <em class="sig-param">search_threshold=None</em>, <em class="sig-param">session_expire=None</em>, <em class="sig-param">setting_param=None</em>, <em class="sig-param">settings=None</em>, <em class="sig-param">share_code=None</em>, <em class="sig-param">share_description=None</em>, <em class="sig-param">share_settings=None</em>, <em class="sig-param">share_via_gateway=None</em>, <em class="sig-param">vanity=None</em>, <em class="sig-param">vendor=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/account.html#Account.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Account.set" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set</code><span class="sig-paren">(</span><em class="sig-param">can_request</em>, <em class="sig-param">uuid</em>, <em class="sig-param">css=None</em>, <em class="sig-param">customfield_param=None</em>, <em class="sig-param">hl7_template=None</em>, <em class="sig-param">must_approve=None</em>, <em class="sig-param">must_approve_harvest=None</em>, <em class="sig-param">must_approve_upload=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">no_share=None</em>, <em class="sig-param">password_expire=None</em>, <em class="sig-param">role_id=None</em>, <em class="sig-param">search_threshold=None</em>, <em class="sig-param">session_expire=None</em>, <em class="sig-param">setting_param=None</em>, <em class="sig-param">settings=None</em>, <em class="sig-param">share_code=None</em>, <em class="sig-param">share_description=None</em>, <em class="sig-param">share_settings=None</em>, <em class="sig-param">share_via_gateway=None</em>, <em class="sig-param">vanity=None</em>, <em class="sig-param">vendor=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/account.html#Account.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Account.set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set.
 :param can_request: Flag if user can request to join the account
 :param uuid: The account uuid
@@ -2502,6 +2546,7 @@ by_type - The type of object that can share. (user OR account OR group OR locati
 :param customfield_param: Custom field(s) (optional)
 :param hl7_template: The HL7 reporting template for the account (optional)
 :param must_approve: Flag if shared studies must be approved for the account namespace (optional)
+:param must_approve_harvest: Flag if harvested studies must be approved (optional)
 :param must_approve_upload: Flag if uploaded studies must be approved (optional)
 :param name: Name of the account (optional)
 :param no_share: Flag if studies can not be shared with this account (optional). Studies can still be shared with locations, groups and users in the account.
@@ -2534,7 +2579,7 @@ by_type - The type of object that can share. (user OR account OR group OR locati
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Account.user_add">
-<code class="sig-name descname">user_add</code><span class="sig-paren">(</span><em class="sig-param">uuid</em>, <em class="sig-param">account_alias=None</em>, <em class="sig-param">account_email=None</em>, <em class="sig-param">account_login=None</em>, <em class="sig-param">account_password=None</em>, <em class="sig-param">email=None</em>, <em class="sig-param">event_approve=None</em>, <em class="sig-param">event_case_assignment=None</em>, <em class="sig-param">event_harvest=None</em>, <em class="sig-param">event_join=None</em>, <em class="sig-param">event_link=None</em>, <em class="sig-param">event_link_mine=None</em>, <em class="sig-param">event_message=None</em>, <em class="sig-param">event_new_report=None</em>, <em class="sig-param">event_node=None</em>, <em class="sig-param">event_purge=None</em>, <em class="sig-param">event_share=None</em>, <em class="sig-param">event_status_change=None</em>, <em class="sig-param">event_study_comment=None</em>, <em class="sig-param">event_thin_study_fail=None</em>, <em class="sig-param">event_thin_study_success=None</em>, <em class="sig-param">event_upload=None</em>, <em class="sig-param">event_upload_fail=None</em>, <em class="sig-param">global_param=None</em>, <em class="sig-param">max_sessions=None</em>, <em class="sig-param">password_reset=None</em>, <em class="sig-param">role_id=None</em>, <em class="sig-param">session_expire=None</em>, <em class="sig-param">setting_param=None</em>, <em class="sig-param">settings=None</em>, <em class="sig-param">user_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/account.html#Account.user_add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Account.user_add" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">user_add</code><span class="sig-paren">(</span><em class="sig-param">uuid</em>, <em class="sig-param">account_alias=None</em>, <em class="sig-param">account_email=None</em>, <em class="sig-param">account_login=None</em>, <em class="sig-param">account_password=None</em>, <em class="sig-param">email=None</em>, <em class="sig-param">event_approve=None</em>, <em class="sig-param">event_case_assignment=None</em>, <em class="sig-param">event_harvest=None</em>, <em class="sig-param">event_join=None</em>, <em class="sig-param">event_link=None</em>, <em class="sig-param">event_link_mine=None</em>, <em class="sig-param">event_message=None</em>, <em class="sig-param">event_new_report=None</em>, <em class="sig-param">event_node=None</em>, <em class="sig-param">event_purge=None</em>, <em class="sig-param">event_report_remove=None</em>, <em class="sig-param">event_share=None</em>, <em class="sig-param">event_status_change=None</em>, <em class="sig-param">event_study_comment=None</em>, <em class="sig-param">event_thin_study_fail=None</em>, <em class="sig-param">event_thin_study_success=None</em>, <em class="sig-param">event_upload=None</em>, <em class="sig-param">event_upload_fail=None</em>, <em class="sig-param">global_param=None</em>, <em class="sig-param">max_sessions=None</em>, <em class="sig-param">password_reset=None</em>, <em class="sig-param">role_id=None</em>, <em class="sig-param">session_expire=None</em>, <em class="sig-param">setting_param=None</em>, <em class="sig-param">settings=None</em>, <em class="sig-param">user_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/account.html#Account.user_add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Account.user_add" title="Permalink to this definition">¶</a></dt>
 <dd><p>User add.
 :param uuid: The account uuid
 :param account_alias: Users alias in the account. (optional).
@@ -2552,6 +2597,7 @@ by_type - The type of object that can share. (user OR account OR group OR locati
 :param event_new_report: Notify the user when a report is attached in the account namespace (optional)
 :param event_node: Notify the user when an account node sends an event (optional)
 :param event_purge: Notify the user the results of a purge job for the account (optional)
+:param event_report_remove: Notify the user when a report is removed in the account namespace (optional)
 :param event_share: Notify the user on a share into the account namespace (optional)
 :param event_status_change: Notify the user when the status of a study is changed (optional)
 :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
@@ -2604,7 +2650,7 @@ by_type - The type of object that can share. (user OR account OR group OR locati
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Account.user_set">
-<code class="sig-name descname">user_set</code><span class="sig-paren">(</span><em class="sig-param">user_id</em>, <em class="sig-param">uuid</em>, <em class="sig-param">account_alias=None</em>, <em class="sig-param">account_email=None</em>, <em class="sig-param">account_login=None</em>, <em class="sig-param">account_password=None</em>, <em class="sig-param">customfield_param=None</em>, <em class="sig-param">event_approve=None</em>, <em class="sig-param">event_case_assignment=None</em>, <em class="sig-param">event_harvest=None</em>, <em class="sig-param">event_join=None</em>, <em class="sig-param">event_link=None</em>, <em class="sig-param">event_link_mine=None</em>, <em class="sig-param">event_message=None</em>, <em class="sig-param">event_new_report=None</em>, <em class="sig-param">event_node=None</em>, <em class="sig-param">event_purge=None</em>, <em class="sig-param">event_share=None</em>, <em class="sig-param">event_status_change=None</em>, <em class="sig-param">event_study_comment=None</em>, <em class="sig-param">event_thin_study_fail=None</em>, <em class="sig-param">event_thin_study_success=None</em>, <em class="sig-param">event_upload=None</em>, <em class="sig-param">event_upload_fail=None</em>, <em class="sig-param">global_param=None</em>, <em class="sig-param">max_sessions=None</em>, <em class="sig-param">password_reset=None</em>, <em class="sig-param">role_id=None</em>, <em class="sig-param">session_expire=None</em>, <em class="sig-param">setting_param=None</em>, <em class="sig-param">settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/account.html#Account.user_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Account.user_set" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">user_set</code><span class="sig-paren">(</span><em class="sig-param">user_id</em>, <em class="sig-param">uuid</em>, <em class="sig-param">account_alias=None</em>, <em class="sig-param">account_email=None</em>, <em class="sig-param">account_login=None</em>, <em class="sig-param">account_password=None</em>, <em class="sig-param">customfield_param=None</em>, <em class="sig-param">event_approve=None</em>, <em class="sig-param">event_case_assignment=None</em>, <em class="sig-param">event_harvest=None</em>, <em class="sig-param">event_join=None</em>, <em class="sig-param">event_link=None</em>, <em class="sig-param">event_link_mine=None</em>, <em class="sig-param">event_message=None</em>, <em class="sig-param">event_new_report=None</em>, <em class="sig-param">event_node=None</em>, <em class="sig-param">event_purge=None</em>, <em class="sig-param">event_report_remove=None</em>, <em class="sig-param">event_share=None</em>, <em class="sig-param">event_status_change=None</em>, <em class="sig-param">event_study_comment=None</em>, <em class="sig-param">event_thin_study_fail=None</em>, <em class="sig-param">event_thin_study_success=None</em>, <em class="sig-param">event_upload=None</em>, <em class="sig-param">event_upload_fail=None</em>, <em class="sig-param">global_param=None</em>, <em class="sig-param">max_sessions=None</em>, <em class="sig-param">password_reset=None</em>, <em class="sig-param">role_id=None</em>, <em class="sig-param">session_expire=None</em>, <em class="sig-param">setting_param=None</em>, <em class="sig-param">settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/account.html#Account.user_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Account.user_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>User set.
 :param user_id: The users uuid
 :param uuid: The account uuid
@@ -2623,6 +2669,7 @@ by_type - The type of object that can share. (user OR account OR group OR locati
 :param event_new_report: Notify the user when a report is attached in the account namespace (optional)
 :param event_node: Notify the user when an account node sends an event (optional)
 :param event_purge: Notify the user the results of a purge job for the account (optional)
+:param event_report_remove: Notify the user when a report is removed in the account namespace (optional)
 :param event_share: Notify the user on a share into the account namespace (optional)
 :param event_status_change: Notify the user when the status of a study is changed (optional)
 :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
@@ -2647,13 +2694,14 @@ by_type - The type of object that can share. (user OR account OR group OR locati
 <dd><p>Location.</p>
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Location.add">
-<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param">account_id</em>, <em class="sig-param">name</em>, <em class="sig-param">customfield_param=None</em>, <em class="sig-param">hl7_template=None</em>, <em class="sig-param">must_approve=None</em>, <em class="sig-param">must_approve_upload=None</em>, <em class="sig-param">no_share=None</em>, <em class="sig-param">role_id=None</em>, <em class="sig-param">search_threshold=None</em>, <em class="sig-param">share_code=None</em>, <em class="sig-param">share_description=None</em>, <em class="sig-param">share_settings=None</em>, <em class="sig-param">share_via_gateway=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/location.html#Location.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Location.add" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param">account_id</em>, <em class="sig-param">name</em>, <em class="sig-param">customfield_param=None</em>, <em class="sig-param">hl7_template=None</em>, <em class="sig-param">must_approve=None</em>, <em class="sig-param">must_approve_harvest=None</em>, <em class="sig-param">must_approve_upload=None</em>, <em class="sig-param">no_share=None</em>, <em class="sig-param">role_id=None</em>, <em class="sig-param">search_threshold=None</em>, <em class="sig-param">share_code=None</em>, <em class="sig-param">share_description=None</em>, <em class="sig-param">share_settings=None</em>, <em class="sig-param">share_via_gateway=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/location.html#Location.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Location.add" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add.
 :param account_id: uuid of the account
 :param name: Name of the location
 :param customfield_param: Custom field(s) (optional)
 :param hl7_template: The HL7 reporting template for the location (optional)
 :param must_approve: Flag if shared studies must be approved for the location (optional)
+:param must_approve_harvest: Flag if harvested studies must be approved (optional)
 :param must_approve_upload: Flag if uploaded studies must be approved (optional)
 :param no_share: Flag if studies can not be shared with this location (optional). Studies can still be shared with users in the location.
 :param role_id: Id for the default role for the location (optional)
@@ -2687,12 +2735,13 @@ by_type - The type of object that can share. (user OR account OR group OR locati
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Location.set">
-<code class="sig-name descname">set</code><span class="sig-paren">(</span><em class="sig-param">uuid</em>, <em class="sig-param">customfield_param=None</em>, <em class="sig-param">hl7_template=None</em>, <em class="sig-param">must_approve=None</em>, <em class="sig-param">must_approve_upload=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">no_share=None</em>, <em class="sig-param">role_id=None</em>, <em class="sig-param">search_threshold=None</em>, <em class="sig-param">share_code=None</em>, <em class="sig-param">share_description=None</em>, <em class="sig-param">share_settings=None</em>, <em class="sig-param">share_via_gateway=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/location.html#Location.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Location.set" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set</code><span class="sig-paren">(</span><em class="sig-param">uuid</em>, <em class="sig-param">customfield_param=None</em>, <em class="sig-param">hl7_template=None</em>, <em class="sig-param">must_approve=None</em>, <em class="sig-param">must_approve_harvest=None</em>, <em class="sig-param">must_approve_upload=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">no_share=None</em>, <em class="sig-param">role_id=None</em>, <em class="sig-param">search_threshold=None</em>, <em class="sig-param">share_code=None</em>, <em class="sig-param">share_description=None</em>, <em class="sig-param">share_settings=None</em>, <em class="sig-param">share_via_gateway=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/location.html#Location.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Location.set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set.
 :param uuid: The location uuid
 :param customfield_param: Custom field(s) (optional)
 :param hl7_template: The HL7 reporting template for the location (optional)
 :param must_approve: Flag if shared studies must be approved for the location (optional)
+:param must_approve_harvest: Flag if harvested studies must be approved (optional)
 :param must_approve_upload: Flag if uploaded studies must be approved (optional)
 :param name: Name of the location (optional)
 :param no_share: Flag if studies can not be shared with this location (optional). Studies can still be shared with users in the location.
@@ -2706,7 +2755,7 @@ by_type - The type of object that can share. (user OR account OR group OR locati
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Location.user_add">
-<code class="sig-name descname">user_add</code><span class="sig-paren">(</span><em class="sig-param">event_upload_fail</em>, <em class="sig-param">user_id</em>, <em class="sig-param">uuid</em>, <em class="sig-param">event_approve=None</em>, <em class="sig-param">event_case_assignment=None</em>, <em class="sig-param">event_harvest=None</em>, <em class="sig-param">event_link=None</em>, <em class="sig-param">event_link_mine=None</em>, <em class="sig-param">event_message=None</em>, <em class="sig-param">event_new_report=None</em>, <em class="sig-param">event_node=None</em>, <em class="sig-param">event_share=None</em>, <em class="sig-param">event_status_change=None</em>, <em class="sig-param">event_study_comment=None</em>, <em class="sig-param">event_thin_study_fail=None</em>, <em class="sig-param">event_thin_study_success=None</em>, <em class="sig-param">event_upload=None</em>, <em class="sig-param">no_physician_alias_share=None</em>, <em class="sig-param">role_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/location.html#Location.user_add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Location.user_add" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">user_add</code><span class="sig-paren">(</span><em class="sig-param">event_upload_fail</em>, <em class="sig-param">user_id</em>, <em class="sig-param">uuid</em>, <em class="sig-param">event_approve=None</em>, <em class="sig-param">event_case_assignment=None</em>, <em class="sig-param">event_harvest=None</em>, <em class="sig-param">event_link=None</em>, <em class="sig-param">event_link_mine=None</em>, <em class="sig-param">event_message=None</em>, <em class="sig-param">event_new_report=None</em>, <em class="sig-param">event_node=None</em>, <em class="sig-param">event_report_remove=None</em>, <em class="sig-param">event_share=None</em>, <em class="sig-param">event_status_change=None</em>, <em class="sig-param">event_study_comment=None</em>, <em class="sig-param">event_thin_study_fail=None</em>, <em class="sig-param">event_thin_study_success=None</em>, <em class="sig-param">event_upload=None</em>, <em class="sig-param">no_physician_alias_share=None</em>, <em class="sig-param">role_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/location.html#Location.user_add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Location.user_add" title="Permalink to this definition">¶</a></dt>
 <dd><p>User add.
 :param event_upload_fail: Notify the user on a failed upload into the location namespace
 :param user_id: Id of the user
@@ -2719,6 +2768,7 @@ by_type - The type of object that can share. (user OR account OR group OR locati
 :param event_message: Notify the user when a message is sent to the location namespace (optional)
 :param event_new_report: Notify the user when a report is attached in the location namespace (optional)
 :param event_node: Notify the user when a location  node sends an event (optional)
+:param event_report_remove: Notify the user when a report is removed in the location namespace (optional)
 :param event_share: Notify the user on a share into the location namespace (optional)
 :param event_status_change: Notify the user when the status of a study is changed (optional)
 :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
@@ -2752,13 +2802,14 @@ by_type - The type of object that can share. (user OR account OR group OR locati
 <dd><p>Group.</p>
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Group.add">
-<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param">account_id</em>, <em class="sig-param">name</em>, <em class="sig-param">customfield_param=None</em>, <em class="sig-param">hl7_template=None</em>, <em class="sig-param">must_approve=None</em>, <em class="sig-param">must_approve_upload=None</em>, <em class="sig-param">no_share=None</em>, <em class="sig-param">role_id=None</em>, <em class="sig-param">search_threshold=None</em>, <em class="sig-param">share_code=None</em>, <em class="sig-param">share_description=None</em>, <em class="sig-param">share_settings=None</em>, <em class="sig-param">share_via_gateway=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/group.html#Group.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Group.add" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param">account_id</em>, <em class="sig-param">name</em>, <em class="sig-param">customfield_param=None</em>, <em class="sig-param">hl7_template=None</em>, <em class="sig-param">must_approve=None</em>, <em class="sig-param">must_approve_harvest=None</em>, <em class="sig-param">must_approve_upload=None</em>, <em class="sig-param">no_share=None</em>, <em class="sig-param">role_id=None</em>, <em class="sig-param">search_threshold=None</em>, <em class="sig-param">share_code=None</em>, <em class="sig-param">share_description=None</em>, <em class="sig-param">share_settings=None</em>, <em class="sig-param">share_via_gateway=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/group.html#Group.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Group.add" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add.
 :param account_id: uuid of the account
 :param name: Name of the group
 :param customfield_param: Custom field(s) (optional)
 :param hl7_template: The HL7 reporting template for the group (optional)
 :param must_approve: Flag if shared studies must be approved for the group (optional)
+:param must_approve_harvest: Flag if harvested studies must be approved (optional)
 :param must_approve_upload: Flag if uploaded studies must be approved (optional)
 :param no_share: Flag if studies can not be shared with this group (optional). Studies can still be shared with users in the group.
 :param role_id: Id for the default role for the group (optional)
@@ -2792,12 +2843,13 @@ by_type - The type of object that can share. (user OR account OR group OR locati
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Group.set">
-<code class="sig-name descname">set</code><span class="sig-paren">(</span><em class="sig-param">uuid</em>, <em class="sig-param">customfield_param=None</em>, <em class="sig-param">hl7_template=None</em>, <em class="sig-param">must_approve=None</em>, <em class="sig-param">must_approve_upload=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">no_share=None</em>, <em class="sig-param">role_id=None</em>, <em class="sig-param">search_threshold=None</em>, <em class="sig-param">share_code=None</em>, <em class="sig-param">share_description=None</em>, <em class="sig-param">share_settings=None</em>, <em class="sig-param">share_via_gateway=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/group.html#Group.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Group.set" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set</code><span class="sig-paren">(</span><em class="sig-param">uuid</em>, <em class="sig-param">customfield_param=None</em>, <em class="sig-param">hl7_template=None</em>, <em class="sig-param">must_approve=None</em>, <em class="sig-param">must_approve_harvest=None</em>, <em class="sig-param">must_approve_upload=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">no_share=None</em>, <em class="sig-param">role_id=None</em>, <em class="sig-param">search_threshold=None</em>, <em class="sig-param">share_code=None</em>, <em class="sig-param">share_description=None</em>, <em class="sig-param">share_settings=None</em>, <em class="sig-param">share_via_gateway=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/group.html#Group.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Group.set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set.
 :param uuid: The group uuid
 :param customfield_param: Custom field(s) (optional)
 :param hl7_template: The HL7 reporting template for the group (optional)
 :param must_approve: Flag if shared studies must be approved for the group (optional)
+:param must_approve_harvest: Flag if harvested studies must be approved (optional)
 :param must_approve_upload: Flag if uploaded studies must be approved (optional)
 :param name: Name of the group (optional)
 :param no_share: Flag if studies can not be shared with this group (optional). Studies can still be shared with users in the group.
@@ -2811,7 +2863,7 @@ by_type - The type of object that can share. (user OR account OR group OR locati
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Group.user_add">
-<code class="sig-name descname">user_add</code><span class="sig-paren">(</span><em class="sig-param">user_id</em>, <em class="sig-param">uuid</em>, <em class="sig-param">event_approve=None</em>, <em class="sig-param">event_case_assignment=None</em>, <em class="sig-param">event_harvest=None</em>, <em class="sig-param">event_link=None</em>, <em class="sig-param">event_link_mine=None</em>, <em class="sig-param">event_message=None</em>, <em class="sig-param">event_new_report=None</em>, <em class="sig-param">event_node=None</em>, <em class="sig-param">event_share=None</em>, <em class="sig-param">event_status_change=None</em>, <em class="sig-param">event_study_comment=None</em>, <em class="sig-param">event_thin_study_fail=None</em>, <em class="sig-param">event_thin_study_success=None</em>, <em class="sig-param">event_upload=None</em>, <em class="sig-param">event_upload_fail=None</em>, <em class="sig-param">no_physician_alias_share=None</em>, <em class="sig-param">role_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/group.html#Group.user_add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Group.user_add" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">user_add</code><span class="sig-paren">(</span><em class="sig-param">user_id</em>, <em class="sig-param">uuid</em>, <em class="sig-param">event_approve=None</em>, <em class="sig-param">event_case_assignment=None</em>, <em class="sig-param">event_harvest=None</em>, <em class="sig-param">event_link=None</em>, <em class="sig-param">event_link_mine=None</em>, <em class="sig-param">event_message=None</em>, <em class="sig-param">event_new_report=None</em>, <em class="sig-param">event_node=None</em>, <em class="sig-param">event_report_remove=None</em>, <em class="sig-param">event_share=None</em>, <em class="sig-param">event_status_change=None</em>, <em class="sig-param">event_study_comment=None</em>, <em class="sig-param">event_thin_study_fail=None</em>, <em class="sig-param">event_thin_study_success=None</em>, <em class="sig-param">event_upload=None</em>, <em class="sig-param">event_upload_fail=None</em>, <em class="sig-param">no_physician_alias_share=None</em>, <em class="sig-param">role_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/group.html#Group.user_add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Group.user_add" title="Permalink to this definition">¶</a></dt>
 <dd><p>User add.
 :param user_id: Id of the user
 :param uuid: The group id
@@ -2823,6 +2875,7 @@ by_type - The type of object that can share. (user OR account OR group OR locati
 :param event_message: Notify the user when a message is sent to the group namespace (optional)
 :param event_new_report: Notify the user when a report is attached in the group namespace (optional)
 :param event_node: Notify the user when a group node sends an event (optional)
+:param event_report_remove: Notify the user when a report is removed in the group namespace (optional)
 :param event_share: Notify the user on a share into the group namespace (optional)
 :param event_status_change: Notify the user when the status of a study is changed (optional)
 :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
@@ -3022,6 +3075,15 @@ type - The type of the object (Study OR User etc.)</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="ambra_sdk.service.entrypoints.Namespace.case_pricing">
+<code class="sig-name descname">case_pricing</code><span class="sig-paren">(</span><em class="sig-param">uuid</em>, <em class="sig-param">case_pricing=None</em>, <em class="sig-param">sum_case_price_matches=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/namespace.html#Namespace.case_pricing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Namespace.case_pricing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Case pricing.
+:param uuid: The uuid of the namespace
+:param case_pricing: Pricing table in JSON format (optional)
+:param sum_case_price_matches: Flag to search for all matches in pricing table and to add them up (optional)</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Namespace.coverpage">
 <code class="sig-name descname">coverpage</code><span class="sig-paren">(</span><em class="sig-param">uuid</em>, <em class="sig-param">coverpage=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/namespace.html#Namespace.coverpage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Namespace.coverpage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Coverpage.
@@ -3045,7 +3107,7 @@ type - The type of the object (Study OR User etc.)</p>
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Namespace.event_defaults">
-<code class="sig-name descname">event_defaults</code><span class="sig-paren">(</span><em class="sig-param">uuid</em>, <em class="sig-param">event_approve=None</em>, <em class="sig-param">event_case_assignment=None</em>, <em class="sig-param">event_harvest=None</em>, <em class="sig-param">event_link=None</em>, <em class="sig-param">event_link_mine=None</em>, <em class="sig-param">event_message=None</em>, <em class="sig-param">event_new_report=None</em>, <em class="sig-param">event_node=None</em>, <em class="sig-param">event_share=None</em>, <em class="sig-param">event_status_change=None</em>, <em class="sig-param">event_study_comment=None</em>, <em class="sig-param">event_thin_study_fail=None</em>, <em class="sig-param">event_thin_study_success=None</em>, <em class="sig-param">event_upload=None</em>, <em class="sig-param">event_upload_fail=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/namespace.html#Namespace.event_defaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Namespace.event_defaults" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">event_defaults</code><span class="sig-paren">(</span><em class="sig-param">uuid</em>, <em class="sig-param">event_approve=None</em>, <em class="sig-param">event_case_assignment=None</em>, <em class="sig-param">event_harvest=None</em>, <em class="sig-param">event_link=None</em>, <em class="sig-param">event_link_mine=None</em>, <em class="sig-param">event_message=None</em>, <em class="sig-param">event_new_report=None</em>, <em class="sig-param">event_node=None</em>, <em class="sig-param">event_report_remove=None</em>, <em class="sig-param">event_share=None</em>, <em class="sig-param">event_status_change=None</em>, <em class="sig-param">event_study_comment=None</em>, <em class="sig-param">event_thin_study_fail=None</em>, <em class="sig-param">event_thin_study_success=None</em>, <em class="sig-param">event_upload=None</em>, <em class="sig-param">event_upload_fail=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/namespace.html#Namespace.event_defaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Namespace.event_defaults" title="Permalink to this definition">¶</a></dt>
 <dd><p>Event defaults.
 :param uuid: The uuid of the namespace
 :param event_approve: Notify the user on a approval needed into the namespace (optional)
@@ -3056,6 +3118,7 @@ type - The type of the object (Study OR User etc.)</p>
 :param event_message: Notify the user when a message is sent to the namespace (optional)
 :param event_new_report: Notify the user when a report is attached in the namespace (optional)
 :param event_node: Notify the user when a namespace node sends an event (optional)
+:param event_report_remove: Notify the user when a report is removed in the namespace (optional)
 :param event_share: Notify the user on a share into the namespace (optional)
 :param event_status_change: Notify the user when the status of a study is changed (optional)
 :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
@@ -3092,12 +3155,13 @@ type - The type of the object (Study OR User etc.)</p>
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Namespace.settings">
-<code class="sig-name descname">settings</code><span class="sig-paren">(</span><em class="sig-param">ai_settings</em>, <em class="sig-param">auto_create_patient</em>, <em class="sig-param">auto_enable_dicom_wrapping</em>, <em class="sig-param">cloud_storage_config</em>, <em class="sig-param">enable_dicom_wrapping</em>, <em class="sig-param">enable_epic_patient_lookup</em>, <em class="sig-param">enable_multipart_uploader</em>, <em class="sig-param">link_defaults</em>, <em class="sig-param">no_dup_share</em>, <em class="sig-param">pixel_anonymize_color</em>, <em class="sig-param">priority_notifications</em>, <em class="sig-param">study_field_flags</em>, <em class="sig-param">ui_json</em>, <em class="sig-param">upload_settings</em>, <em class="sig-param">uuid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/namespace.html#Namespace.settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Namespace.settings" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">settings</code><span class="sig-paren">(</span><em class="sig-param">ai_settings</em>, <em class="sig-param">auto_create_patient</em>, <em class="sig-param">auto_enable_dicom_wrapping</em>, <em class="sig-param">cloud_storage_config</em>, <em class="sig-param">disable_duplicate_study_upload</em>, <em class="sig-param">enable_dicom_wrapping</em>, <em class="sig-param">enable_epic_patient_lookup</em>, <em class="sig-param">enable_multipart_uploader</em>, <em class="sig-param">link_defaults</em>, <em class="sig-param">no_dup_share</em>, <em class="sig-param">pixel_anonymize_color</em>, <em class="sig-param">priority_notifications</em>, <em class="sig-param">single_file_dicom_wrapping</em>, <em class="sig-param">study_field_flags</em>, <em class="sig-param">ui_json</em>, <em class="sig-param">upload_settings</em>, <em class="sig-param">uuid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/namespace.html#Namespace.settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Namespace.settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Settings.
 :param ai_settings: Dict of ai settings
 :param auto_create_patient: Value for the setting
 :param auto_enable_dicom_wrapping: Value for the setting
 :param cloud_storage_config: Value for the setting
+:param disable_duplicate_study_upload: Value for the setting
 :param enable_dicom_wrapping: Value for the setting
 :param enable_epic_patient_lookup: Value for the setting
 :param enable_multipart_uploader: Value for the setting
@@ -3105,6 +3169,7 @@ type - The type of the object (Study OR User etc.)</p>
 :param no_dup_share: Flag to stop duplicate studies (same study_uid and image count) from getting shared into the namespace
 :param pixel_anonymize_color: Value for the setting
 :param priority_notifications: Value for the setting
+:param single_file_dicom_wrapping: Value for the setting
 :param study_field_flags: A JSON hash of study_field_* role values to override the role values for studies in the namespace
 :param ui_json: Value for the setting
 :param upload_settings: Value for the setting
@@ -3288,8 +3353,8 @@ period - The time period (day OR week OR month OR year)</p>
 :param namespace_id: namespace_id
 :param period: period</p>
 <p>Notes:
-period - The time period (day OR week OR month OR year)
-(account_id OR namespace_id) - The account or namespace to get the analytics for</p>
+(account_id OR namespace_id) - The account or namespace to get the analytics for
+period - The time period (day OR week OR month OR year)</p>
 </dd></dl>
 
 </dd></dl>
@@ -3511,10 +3576,12 @@ method - Method to call it with (POST OR GET OR POST_JSON OR PUT)</p>
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Webhook.email">
-<code class="sig-name descname">email</code><span class="sig-paren">(</span><em class="sig-param">subject</em>, <em class="sig-param">text</em>, <em class="sig-param">to</em>, <em class="sig-param">webhook_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/webhook.html#Webhook.email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Webhook.email" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">email</code><span class="sig-paren">(</span><em class="sig-param">html</em>, <em class="sig-param">subject</em>, <em class="sig-param">template_id</em>, <em class="sig-param">text</em>, <em class="sig-param">to</em>, <em class="sig-param">webhook_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/webhook.html#Webhook.email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Webhook.email" title="Permalink to this definition">¶</a></dt>
 <dd><p>Email.
+:param html: The HTML part of the email
 :param subject: The subject of the email
-:param text: The body of the email
+:param template_id: The email template UUID to be used
+:param text: The text part of the email
 :param to: The email address(es) to send the email to
 :param webhook_id: The uuid of the calling webhook</p>
 </dd></dl>
@@ -3529,8 +3596,8 @@ method - Method to call it with (POST OR GET OR POST_JSON OR PUT)</p>
 :param study_count: The number of studies associated with the event (optional)
 :param type: type</p>
 <p>Notes:
-type - The type of event (STUDY_UPLOAD_START OR STUDY_UPLOAD_END)
-(namespace_id OR share_code) - The namespace or share code for the event</p>
+(namespace_id OR share_code) - The namespace or share code for the event
+type - The type of event (STUDY_UPLOAD_START OR STUDY_UPLOAD_END)</p>
 </dd></dl>
 
 <dl class="method">
@@ -3598,7 +3665,7 @@ type - The type of event (STUDY_UPLOAD_START OR STUDY_UPLOAD_END)
 :param charge_amount: Amount to charge in pennies before the link can be accessed (optional)
 :param charge_currency: Charge currency (optional)
 :param charge_description: Charge description (optional)
-:param email: Email the link to this address (optional)
+:param email: Email the link to these addresses (optional)
 :param filter: filter
 :param include_priors: Include prior studies (optional)
 :param max_hits: The maximum number of times the link can be used (optional)
@@ -3713,22 +3780,35 @@ Any additional fields will the saved in the study audit trail and the following 
 </dd></dl>
 
 <dl class="method">
+<dt id="ambra_sdk.service.entrypoints.Link.pin">
+<code class="sig-name descname">pin</code><span class="sig-paren">(</span><em class="sig-param">uuid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/link.html#Link.pin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Link.pin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pin.
+:param uuid: The uuid of the link</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Link.redirect">
-<code class="sig-name descname">redirect</code><span class="sig-paren">(</span><em class="sig-param">uuid</em>, <em class="sig-param">link_charge_id=None</em>, <em class="sig-param">password=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/link.html#Link.redirect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Link.redirect" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">redirect</code><span class="sig-paren">(</span><em class="sig-param">link_charge_id=None</em>, <em class="sig-param">password=None</em>, <em class="sig-param">pin=None</em>, <em class="sig-param">uuid=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/link.html#Link.redirect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Link.redirect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Redirect.
-:param uuid: Id of the link
 :param link_charge_id: The uuid of the prior charge against this link (optional)
-:param password: Password if needed (optional)</p>
+:param password: Password if needed (optional)
+:param pin: pin
+:param uuid: uuid</p>
+<p>Notes:
+(uuid OR pin) - Id or PIN of the link</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Link.session">
-<code class="sig-name descname">session</code><span class="sig-paren">(</span><em class="sig-param">uuid</em>, <em class="sig-param">email_address=None</em>, <em class="sig-param">link_charge_id=None</em>, <em class="sig-param">password=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/link.html#Link.session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Link.session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">session</code><span class="sig-paren">(</span><em class="sig-param">email_address=None</em>, <em class="sig-param">link_charge_id=None</em>, <em class="sig-param">password=None</em>, <em class="sig-param">pin=None</em>, <em class="sig-param">uuid=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/link.html#Link.session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Link.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Session.
-:param uuid: Id of the link
 :param email_address: The users email (optional)
 :param link_charge_id: The uuid of the prior charge against this link (optional)
-:param password: Password if needed (optional)</p>
+:param password: Password if needed (optional)
+:param pin: pin
+:param uuid: uuid</p>
+<p>Notes:
+(uuid OR pin) - Id or PIN of the link</p>
 </dd></dl>
 
 <dl class="method">
@@ -3749,10 +3829,13 @@ Any additional fields will the saved in the study audit trail and the following 
 
 <dl class="method">
 <dt id="ambra_sdk.service.entrypoints.Link.status">
-<code class="sig-name descname">status</code><span class="sig-paren">(</span><em class="sig-param">uuid</em>, <em class="sig-param">link_charge_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/link.html#Link.status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Link.status" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">status</code><span class="sig-paren">(</span><em class="sig-param">link_charge_id=None</em>, <em class="sig-param">pin=None</em>, <em class="sig-param">uuid=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/service/entrypoints/generated/link.html#Link.status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.service.entrypoints.Link.status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Status.
-:param uuid: Id of the link
-:param link_charge_id: The uuid of the prior charge against this link (optional)</p>
+:param link_charge_id: The uuid of the prior charge against this link (optional)
+:param pin: pin
+:param uuid: uuid</p>
+<p>Notes:
+(uuid OR pin) - Id or PIN of the link</p>
 </dd></dl>
 
 </dd></dl>

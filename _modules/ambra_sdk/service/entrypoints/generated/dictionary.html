@@ -111,12 +111,12 @@
 <span class="sd">        object - Object this is applied against (Study OR Order OR User_account OR Case)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;replace&#39;</span><span class="p">:</span> <span class="n">replace</span><span class="p">,</span>
-           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
            <span class="s1">&#39;object&#39;</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span>
-           <span class="s1">&#39;lookup&#39;</span><span class="p">:</span> <span class="n">lookup</span><span class="p">,</span>
+           <span class="s1">&#39;replace&#39;</span><span class="p">:</span> <span class="n">replace</span><span class="p">,</span>
            <span class="s1">&#39;case_sensitive&#39;</span><span class="p">:</span> <span class="n">case_sensitive</span><span class="p">,</span>
+           <span class="s1">&#39;lookup&#39;</span><span class="p">:</span> <span class="n">lookup</span><span class="p">,</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -221,8 +221,8 @@
 <span class="sd">        :param lookup: Only return the entry for the optional lookup entry (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;lookup&#39;</span><span class="p">:</span> <span class="n">lookup</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;lookup&#39;</span><span class="p">:</span> <span class="n">lookup</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -254,9 +254,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;replace&#39;</span><span class="p">:</span> <span class="n">replace</span><span class="p">,</span>
+           <span class="s1">&#39;regexp&#39;</span><span class="p">:</span> <span class="n">regexp</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
            <span class="s1">&#39;lookup&#39;</span><span class="p">:</span> <span class="n">lookup</span><span class="p">,</span>
-           <span class="s1">&#39;regexp&#39;</span><span class="p">:</span> <span class="n">regexp</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -286,8 +286,8 @@
 <span class="sd">        :param uuid: The dictionary id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;lookup&#39;</span><span class="p">:</span> <span class="n">lookup</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;lookup&#39;</span><span class="p">:</span> <span class="n">lookup</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -329,14 +329,14 @@
 <span class="sd">        (account_id OR namespace_id) - uuid of the account or namespace to the dictionary to</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;skip_if_replace_has_value&#39;</span><span class="p">:</span> <span class="n">skip_if_replace_has_value</span><span class="p">,</span>
            <span class="s1">&#39;skip_if_lookup_unchanged&#39;</span><span class="p">:</span> <span class="n">skip_if_lookup_unchanged</span><span class="p">,</span>
+           <span class="s1">&#39;sequence&#39;</span><span class="p">:</span> <span class="n">sequence</span><span class="p">,</span>
+           <span class="s1">&#39;skip_if_replace_has_value&#39;</span><span class="p">:</span> <span class="n">skip_if_replace_has_value</span><span class="p">,</span>
+           <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
            <span class="s1">&#39;add_if_no_match&#39;</span><span class="p">:</span> <span class="n">add_if_no_match</span><span class="p">,</span>
-           <span class="s1">&#39;sequence&#39;</span><span class="p">:</span> <span class="n">sequence</span><span class="p">,</span>
-           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
-           <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
            <span class="s1">&#39;approve_if_match&#39;</span><span class="p">:</span> <span class="n">approve_if_match</span><span class="p">,</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -370,11 +370,11 @@
 <span class="sd">        :param skip_if_replace_has_value: Flag to skip the lookup if any of the replace fields already has a value (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;skip_if_replace_has_value&#39;</span><span class="p">:</span> <span class="n">skip_if_replace_has_value</span><span class="p">,</span>
            <span class="s1">&#39;skip_if_lookup_unchanged&#39;</span><span class="p">:</span> <span class="n">skip_if_lookup_unchanged</span><span class="p">,</span>
+           <span class="s1">&#39;sequence&#39;</span><span class="p">:</span> <span class="n">sequence</span><span class="p">,</span>
+           <span class="s1">&#39;skip_if_replace_has_value&#39;</span><span class="p">:</span> <span class="n">skip_if_replace_has_value</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
            <span class="s1">&#39;add_if_no_match&#39;</span><span class="p">:</span> <span class="n">add_if_no_match</span><span class="p">,</span>
-           <span class="s1">&#39;sequence&#39;</span><span class="p">:</span> <span class="n">sequence</span><span class="p">,</span>
            <span class="s1">&#39;approve_if_match&#39;</span><span class="p">:</span> <span class="n">approve_if_match</span><span class="p">,</span>
         <span class="p">}</span>
 	

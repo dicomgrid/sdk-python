@@ -69,11 +69,11 @@
 <span class="sd">        (account_id OR vanity OR study_uid AND storage_namespace AND phi_namespace) - The uuid or vanity name of the account or study triplet to apply any account overrides for (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;storage_namespace&#39;</span><span class="p">:</span> <span class="n">storage_namespace</span><span class="p">,</span>
-           <span class="s1">&#39;vanity&#39;</span><span class="p">:</span> <span class="n">vanity</span><span class="p">,</span>
-           <span class="s1">&#39;study_uid&#39;</span><span class="p">:</span> <span class="n">study_uid</span><span class="p">,</span>
-           <span class="s1">&#39;phi_namespace&#39;</span><span class="p">:</span> <span class="n">phi_namespace</span><span class="p">,</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;study_uid&#39;</span><span class="p">:</span> <span class="n">study_uid</span><span class="p">,</span>
+           <span class="s1">&#39;vanity&#39;</span><span class="p">:</span> <span class="n">vanity</span><span class="p">,</span>
+           <span class="s1">&#39;storage_namespace&#39;</span><span class="p">:</span> <span class="n">storage_namespace</span><span class="p">,</span>
+           <span class="s1">&#39;phi_namespace&#39;</span><span class="p">:</span> <span class="n">phi_namespace</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -111,13 +111,13 @@
 <span class="sd">        (account_id OR vanity OR study_uid AND storage_namespace AND phi_namespace) - The uuid or vanity name of the account or study triplet to apply any account overrides for (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;storage_namespace&#39;</span><span class="p">:</span> <span class="n">storage_namespace</span><span class="p">,</span>
-           <span class="s1">&#39;vanity&#39;</span><span class="p">:</span> <span class="n">vanity</span><span class="p">,</span>
-           <span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="n">tags</span><span class="p">,</span>
-           <span class="s1">&#39;language&#39;</span><span class="p">:</span> <span class="n">language</span><span class="p">,</span>
-           <span class="s1">&#39;study_uid&#39;</span><span class="p">:</span> <span class="n">study_uid</span><span class="p">,</span>
-           <span class="s1">&#39;phi_namespace&#39;</span><span class="p">:</span> <span class="n">phi_namespace</span><span class="p">,</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;study_uid&#39;</span><span class="p">:</span> <span class="n">study_uid</span><span class="p">,</span>
+           <span class="s1">&#39;vanity&#39;</span><span class="p">:</span> <span class="n">vanity</span><span class="p">,</span>
+           <span class="s1">&#39;language&#39;</span><span class="p">:</span> <span class="n">language</span><span class="p">,</span>
+           <span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="n">tags</span><span class="p">,</span>
+           <span class="s1">&#39;storage_namespace&#39;</span><span class="p">:</span> <span class="n">storage_namespace</span><span class="p">,</span>
+           <span class="s1">&#39;phi_namespace&#39;</span><span class="p">:</span> <span class="n">phi_namespace</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -147,11 +147,11 @@
 <span class="sd">        :param vanity: Vanity to apply the tag for (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+           <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="n">tag</span><span class="p">,</span>
            <span class="s1">&#39;vanity&#39;</span><span class="p">:</span> <span class="n">vanity</span><span class="p">,</span>
            <span class="s1">&#39;language&#39;</span><span class="p">:</span> <span class="n">language</span><span class="p">,</span>
+           <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
-           <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="n">tag</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -187,8 +187,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;vanity&#39;</span><span class="p">:</span> <span class="n">vanity</span><span class="p">,</span>
-           <span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="n">tags</span><span class="p">,</span>
            <span class="s1">&#39;language&#39;</span><span class="p">:</span> <span class="n">language</span><span class="p">,</span>
+           <span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="n">tags</span><span class="p">,</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
         <span class="p">}</span>
 	
@@ -218,8 +218,8 @@
 <span class="sd">        (account_id OR vanity) - The uuid or vanity name of the account to apply any account overrides for (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;vanity&#39;</span><span class="p">:</span> <span class="n">vanity</span><span class="p">,</span>
            <span class="s1">&#39;lng&#39;</span><span class="p">:</span> <span class="n">lng</span><span class="p">,</span>
+           <span class="s1">&#39;vanity&#39;</span><span class="p">:</span> <span class="n">vanity</span><span class="p">,</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
         <span class="p">}</span>
 	

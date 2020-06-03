@@ -93,15 +93,15 @@
 <span class="sd">        email OR account_name AND account_login - The users email address or the account name and account_login (DEPRECIATED - Use login and vanity)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_login&#39;</span><span class="p">:</span> <span class="n">account_login</span><span class="p">,</span>
+           <span class="s1">&#39;new_password&#39;</span><span class="p">:</span> <span class="n">new_password</span><span class="p">,</span>
+           <span class="s1">&#39;account_name&#39;</span><span class="p">:</span> <span class="n">account_name</span><span class="p">,</span>
+           <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
            <span class="s1">&#39;vanity&#39;</span><span class="p">:</span> <span class="n">vanity</span><span class="p">,</span>
+           <span class="s1">&#39;location&#39;</span><span class="p">:</span> <span class="n">location</span><span class="p">,</span>
+           <span class="s1">&#39;login&#39;</span><span class="p">:</span> <span class="n">login</span><span class="p">,</span>
            <span class="s1">&#39;validate_session&#39;</span><span class="p">:</span> <span class="n">validate_session</span><span class="p">,</span>
            <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
-           <span class="s1">&#39;new_password&#39;</span><span class="p">:</span> <span class="n">new_password</span><span class="p">,</span>
-           <span class="s1">&#39;location&#39;</span><span class="p">:</span> <span class="n">location</span><span class="p">,</span>
-           <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
-           <span class="s1">&#39;account_name&#39;</span><span class="p">:</span> <span class="n">account_name</span><span class="p">,</span>
-           <span class="s1">&#39;account_login&#39;</span><span class="p">:</span> <span class="n">account_login</span><span class="p">,</span>
-           <span class="s1">&#39;login&#39;</span><span class="p">:</span> <span class="n">login</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -266,9 +266,9 @@
 <span class="sd">        vendor - The OAuth vendor (doximity OR google OR brand)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;vendor&#39;</span><span class="p">:</span> <span class="n">vendor</span><span class="p">,</span>
            <span class="s1">&#39;redirect_uri&#39;</span><span class="p">:</span> <span class="n">redirect_uri</span><span class="p">,</span>
            <span class="s1">&#39;code&#39;</span><span class="p">:</span> <span class="n">code</span><span class="p">,</span>
-           <span class="s1">&#39;vendor&#39;</span><span class="p">:</span> <span class="n">vendor</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -302,10 +302,10 @@
 <span class="sd">        :param duration: The number of seconds the token is valid for (optional and defaults to 3600 with a maximum value of 86400)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="n">duration</span><span class="p">,</span>
-           <span class="s1">&#39;client_secret&#39;</span><span class="p">:</span> <span class="n">client_secret</span><span class="p">,</span>
            <span class="s1">&#39;grant_type&#39;</span><span class="p">:</span> <span class="n">grant_type</span><span class="p">,</span>
            <span class="s1">&#39;client_id&#39;</span><span class="p">:</span> <span class="n">client_id</span><span class="p">,</span>
+           <span class="s1">&#39;client_secret&#39;</span><span class="p">:</span> <span class="n">client_secret</span><span class="p">,</span>
+           <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="n">duration</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>

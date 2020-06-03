@@ -93,12 +93,12 @@
 <span class="sd">        :param share_code: Share code they are joining from (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;first&#39;</span><span class="p">:</span> <span class="n">first</span><span class="p">,</span>
-           <span class="s1">&#39;share_code&#39;</span><span class="p">:</span> <span class="n">share_code</span><span class="p">,</span>
-           <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
-           <span class="s1">&#39;captcha_response&#39;</span><span class="p">:</span> <span class="n">captcha_response</span><span class="p">,</span>
            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
+           <span class="s1">&#39;captcha_response&#39;</span><span class="p">:</span> <span class="n">captcha_response</span><span class="p">,</span>
            <span class="s1">&#39;last&#39;</span><span class="p">:</span> <span class="n">last</span><span class="p">,</span>
+           <span class="s1">&#39;first&#39;</span><span class="p">:</span> <span class="n">first</span><span class="p">,</span>
+           <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
+           <span class="s1">&#39;share_code&#39;</span><span class="p">:</span> <span class="n">share_code</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="n">customfield_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">customfield_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
@@ -137,12 +137,12 @@
 <span class="sd">        :param password: Password</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;first&#39;</span><span class="p">:</span> <span class="n">first</span><span class="p">,</span>
-           <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
            <span class="s1">&#39;mobile_phone&#39;</span><span class="p">:</span> <span class="n">mobile_phone</span><span class="p">,</span>
-           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
            <span class="s1">&#39;last&#39;</span><span class="p">:</span> <span class="n">last</span><span class="p">,</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;first&#39;</span><span class="p">:</span> <span class="n">first</span><span class="p">,</span>
+           <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -169,8 +169,8 @@
 <span class="sd">        :param uuid: The users uuid (optional). Uses the session user if not passed</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -203,6 +203,7 @@
         <span class="n">share_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">share_description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">time_zone</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ui_json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
@@ -221,25 +222,27 @@
 <span class="sd">        :param share_code: The share code of the user (optional)</span>
 <span class="sd">        :param share_description: The share description of the user (optional)</span>
 <span class="sd">        :param time_zone: The users time zone name as per https://www.postgresql.org/docs/9.1/static/view-pg-timezone-names.html (optional)</span>
+<span class="sd">        :param ui_json: JSON for UI settings (optional)</span>
 <span class="sd">        :param uuid: The users uuid (optional). Uses the session user if not passed</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;first&#39;</span><span class="p">:</span> <span class="n">first</span><span class="p">,</span>
-           <span class="s1">&#39;share_code&#39;</span><span class="p">:</span> <span class="n">share_code</span><span class="p">,</span>
-           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
-           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
-           <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
            <span class="s1">&#39;privacy_md5&#39;</span><span class="p">:</span> <span class="n">privacy_md5</span><span class="p">,</span>
-           <span class="s1">&#39;terms_md5&#39;</span><span class="p">:</span> <span class="n">terms_md5</span><span class="p">,</span>
-           <span class="s1">&#39;old_password&#39;</span><span class="p">:</span> <span class="n">old_password</span><span class="p">,</span>
-           <span class="s1">&#39;share_description&#39;</span><span class="p">:</span> <span class="n">share_description</span><span class="p">,</span>
-           <span class="s1">&#39;cc_token&#39;</span><span class="p">:</span> <span class="n">cc_token</span><span class="p">,</span>
-           <span class="s1">&#39;indicator_md5&#39;</span><span class="p">:</span> <span class="n">indicator_md5</span><span class="p">,</span>
-           <span class="s1">&#39;mobile_phone&#39;</span><span class="p">:</span> <span class="n">mobile_phone</span><span class="p">,</span>
+           <span class="s1">&#39;ui_json&#39;</span><span class="p">:</span> <span class="n">ui_json</span><span class="p">,</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
            <span class="s1">&#39;time_zone&#39;</span><span class="p">:</span> <span class="n">time_zone</span><span class="p">,</span>
-           <span class="s1">&#39;last&#39;</span><span class="p">:</span> <span class="n">last</span><span class="p">,</span>
+           <span class="s1">&#39;mobile_phone&#39;</span><span class="p">:</span> <span class="n">mobile_phone</span><span class="p">,</span>
+           <span class="s1">&#39;indicator_md5&#39;</span><span class="p">:</span> <span class="n">indicator_md5</span><span class="p">,</span>
+           <span class="s1">&#39;cc_token&#39;</span><span class="p">:</span> <span class="n">cc_token</span><span class="p">,</span>
+           <span class="s1">&#39;share_description&#39;</span><span class="p">:</span> <span class="n">share_description</span><span class="p">,</span>
            <span class="s1">&#39;pin_required&#39;</span><span class="p">:</span> <span class="n">pin_required</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;last&#39;</span><span class="p">:</span> <span class="n">last</span><span class="p">,</span>
+           <span class="s1">&#39;first&#39;</span><span class="p">:</span> <span class="n">first</span><span class="p">,</span>
+           <span class="s1">&#39;old_password&#39;</span><span class="p">:</span> <span class="n">old_password</span><span class="p">,</span>
+           <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
+           <span class="s1">&#39;terms_md5&#39;</span><span class="p">:</span> <span class="n">terms_md5</span><span class="p">,</span>
+           <span class="s1">&#39;share_code&#39;</span><span class="p">:</span> <span class="n">share_code</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -312,8 +315,8 @@
 <span class="sd">        :param token: The reset token</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;token&#39;</span><span class="p">:</span> <span class="n">token</span><span class="p">,</span>
            <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
+           <span class="s1">&#39;token&#39;</span><span class="p">:</span> <span class="n">token</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -341,9 +344,9 @@
 <span class="sd">        :param link: URL to reset the password at. The reset token will be appended to the link</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;link&#39;</span><span class="p">:</span> <span class="n">link</span><span class="p">,</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
+           <span class="s1">&#39;link&#39;</span><span class="p">:</span> <span class="n">link</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -429,13 +432,13 @@
 <span class="sd">        :param role_id: The role to give the user (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;role_id&#39;</span><span class="p">:</span> <span class="n">role_id</span><span class="p">,</span>
-           <span class="s1">&#39;link&#39;</span><span class="p">:</span> <span class="n">link</span><span class="p">,</span>
-           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
-           <span class="s1">&#39;groups&#39;</span><span class="p">:</span> <span class="n">groups</span><span class="p">,</span>
-           <span class="s1">&#39;locations&#39;</span><span class="p">:</span> <span class="n">locations</span><span class="p">,</span>
            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
            <span class="s1">&#39;link_already&#39;</span><span class="p">:</span> <span class="n">link_already</span><span class="p">,</span>
+           <span class="s1">&#39;locations&#39;</span><span class="p">:</span> <span class="n">locations</span><span class="p">,</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;role_id&#39;</span><span class="p">:</span> <span class="n">role_id</span><span class="p">,</span>
+           <span class="s1">&#39;groups&#39;</span><span class="p">:</span> <span class="n">groups</span><span class="p">,</span>
+           <span class="s1">&#39;link&#39;</span><span class="p">:</span> <span class="n">link</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -490,8 +493,8 @@
 <span class="sd">        :param plus_phr: Flag to include the PHR account as well if account_id was specified (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;plus_phr&#39;</span><span class="p">:</span> <span class="n">plus_phr</span><span class="p">,</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;plus_phr&#39;</span><span class="p">:</span> <span class="n">plus_phr</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -507,6 +510,34 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">QueryOF</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
     
+<div class="viewcode-block" id="User.event"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.User.event">[docs]</a>    <span class="k">def</span> <span class="nf">event</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">namespace_id</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Event.</span>
+<span class="sd">        :param namespace_id: Id of the namespace to set the flags on</span>
+<span class="sd">        :param uuid: Return event flags for this user, not current user (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_FLAG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidFlag</span><span class="p">(</span><span class="s1">&#39;An invalid flag was passed. The error_subtype holds the name of the invalid flag&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The namespace or user can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_MEMBER&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotMember</span><span class="p">(</span><span class="s1">&#39;The user is not a member of this namespace&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not allowed to get user&amp;#39;s event flags&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/user/event&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">QueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
 <div class="viewcode-block" id="User.event_set"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.User.event_set">[docs]</a>    <span class="k">def</span> <span class="nf">event_set</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">namespace_id</span><span class="p">,</span>
@@ -517,6 +548,7 @@
         <span class="n">event_link_mine</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_new_report</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -524,6 +556,7 @@
         <span class="n">event_thin_study_success</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_upload</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_upload_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Event set.</span>
 <span class="sd">        :param namespace_id: Id of the namespace to set the flags on</span>
@@ -534,6 +567,7 @@
 <span class="sd">        :param event_link_mine: Notify the user when an anonymous link created by the user is hit in the namespace (optional)</span>
 <span class="sd">        :param event_message: Notify the user when a message is sent to the namespace (optional)</span>
 <span class="sd">        :param event_new_report: Notify the user when a report is attached in the namespace (optional)</span>
+<span class="sd">        :param event_report_remove: Notify the user when a report is removed in the namespace (optional)</span>
 <span class="sd">        :param event_share: Notify the user on a share into the namespace (optional)</span>
 <span class="sd">        :param event_status_change: Notify the user when the status of a study is changed (optional)</span>
 <span class="sd">        :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)</span>
@@ -541,29 +575,33 @@
 <span class="sd">        :param event_thin_study_success: Notify the user when a thin study retrieval they initiated succeeds (optional)</span>
 <span class="sd">        :param event_upload: Notify the user on an upload into the namespace (optional)</span>
 <span class="sd">        :param event_upload_fail: Notify the user on a failed upload into the namespace (optional)</span>
+<span class="sd">        :param uuid: Return event flags for this user, not current user (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;event_link_mine&#39;</span><span class="p">:</span> <span class="n">event_link_mine</span><span class="p">,</span>
            <span class="s1">&#39;event_study_comment&#39;</span><span class="p">:</span> <span class="n">event_study_comment</span><span class="p">,</span>
-           <span class="s1">&#39;event_thin_study_fail&#39;</span><span class="p">:</span> <span class="n">event_thin_study_fail</span><span class="p">,</span>
-           <span class="s1">&#39;event_new_report&#39;</span><span class="p">:</span> <span class="n">event_new_report</span><span class="p">,</span>
-           <span class="s1">&#39;event_status_change&#39;</span><span class="p">:</span> <span class="n">event_status_change</span><span class="p">,</span>
-           <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
-           <span class="s1">&#39;event_message&#39;</span><span class="p">:</span> <span class="n">event_message</span><span class="p">,</span>
-           <span class="s1">&#39;event_link&#39;</span><span class="p">:</span> <span class="n">event_link</span><span class="p">,</span>
+           <span class="s1">&#39;event_case_assignment&#39;</span><span class="p">:</span> <span class="n">event_case_assignment</span><span class="p">,</span>
            <span class="s1">&#39;event_thin_study_success&#39;</span><span class="p">:</span> <span class="n">event_thin_study_success</span><span class="p">,</span>
+           <span class="s1">&#39;event_report_remove&#39;</span><span class="p">:</span> <span class="n">event_report_remove</span><span class="p">,</span>
+           <span class="s1">&#39;event_upload&#39;</span><span class="p">:</span> <span class="n">event_upload</span><span class="p">,</span>
+           <span class="s1">&#39;event_link&#39;</span><span class="p">:</span> <span class="n">event_link</span><span class="p">,</span>
+           <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
+           <span class="s1">&#39;event_thin_study_fail&#39;</span><span class="p">:</span> <span class="n">event_thin_study_fail</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
            <span class="s1">&#39;event_approve&#39;</span><span class="p">:</span> <span class="n">event_approve</span><span class="p">,</span>
            <span class="s1">&#39;event_upload_fail&#39;</span><span class="p">:</span> <span class="n">event_upload_fail</span><span class="p">,</span>
-           <span class="s1">&#39;event_link_mine&#39;</span><span class="p">:</span> <span class="n">event_link_mine</span><span class="p">,</span>
-           <span class="s1">&#39;event_case_assignment&#39;</span><span class="p">:</span> <span class="n">event_case_assignment</span><span class="p">,</span>
-           <span class="s1">&#39;event_upload&#39;</span><span class="p">:</span> <span class="n">event_upload</span><span class="p">,</span>
-           <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
            <span class="s1">&#39;event_harvest&#39;</span><span class="p">:</span> <span class="n">event_harvest</span><span class="p">,</span>
+           <span class="s1">&#39;event_status_change&#39;</span><span class="p">:</span> <span class="n">event_status_change</span><span class="p">,</span>
+           <span class="s1">&#39;event_new_report&#39;</span><span class="p">:</span> <span class="n">event_new_report</span><span class="p">,</span>
+           <span class="s1">&#39;event_message&#39;</span><span class="p">:</span> <span class="n">event_message</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_FLAG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidFlag</span><span class="p">(</span><span class="s1">&#39;An invalid flag was passed. The error_subtype holds the name of the invalid flag&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The namespace can not be found&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_MEMBER&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotMember</span><span class="p">(</span><span class="s1">&#39;You are not a member of this namespace&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The namespace or user can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_MEMBER&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotMember</span><span class="p">(</span><span class="s1">&#39;The user is not a member of this namespace&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not allowed to set user&amp;#39;s event flags&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/user/event/set&#39;</span><span class="p">,</span>

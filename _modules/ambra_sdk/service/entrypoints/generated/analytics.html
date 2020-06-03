@@ -68,15 +68,15 @@
 <span class="sd">        :param period: period</span>
 
 <span class="sd">        Notes:</span>
-<span class="sd">        period - The time period (day OR week OR month OR year)</span>
 <span class="sd">        (account_id OR namespace_id) - The account or namespace to get the analytics for</span>
+<span class="sd">        period - The time period (day OR week OR month OR year)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="n">period</span><span class="p">,</span>
-           <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span>
+           <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
            <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="n">end_date</span><span class="p">,</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
-           <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
+           <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -115,11 +115,11 @@
 <span class="sd">        period - The time period (day OR week OR month OR year)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;patient_id&#39;</span><span class="p">:</span> <span class="n">patient_id</span><span class="p">,</span>
            <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="n">period</span><span class="p">,</span>
-           <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span>
            <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="n">end_date</span><span class="p">,</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;patient_id&#39;</span><span class="p">:</span> <span class="n">patient_id</span><span class="p">,</span>
+           <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -159,12 +159,12 @@
 <span class="sd">        period - The time period (day OR week OR month OR year)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="n">period</span><span class="p">,</span>
-           <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span>
-           <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="n">end_date</span><span class="p">,</span>
            <span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
-           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="n">period</span><span class="p">,</span>
            <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
+           <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="n">end_date</span><span class="p">,</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>

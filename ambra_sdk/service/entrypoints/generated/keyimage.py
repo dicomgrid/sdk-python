@@ -32,16 +32,16 @@ class Keyimage:
         (study_id OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study or the storage triplet
         """
         request_data = {
-           'study_uid': study_uid,
-           'storage_namespace': storage_namespace,
            'phi_namespace': phi_namespace,
+           'storage_namespace': storage_namespace,
            'study_id': study_id,
+           'study_uid': study_uid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view the study or key images for the study')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the study or key images for the study')
         query_data = {
             'api': self._api,
             'url': '/keyimage/list',
@@ -76,20 +76,20 @@ class Keyimage:
         (study_id OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study or the storage triplet
         """
         request_data = {
-           'study_uid': study_uid,
-           'version': version,
-           'instance_uid': instance_uid,
            'frame_number': frame_number,
+           'instance_uid': instance_uid,
+           'phi_namespace': phi_namespace,
            'series_uid': series_uid,
            'storage_namespace': storage_namespace,
-           'phi_namespace': phi_namespace,
            'study_id': study_id,
+           'study_uid': study_uid,
+           'version': version,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to mark key images for the study')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to mark key images for the study')
         query_data = {
             'api': self._api,
             'url': '/keyimage/add',
@@ -111,9 +111,9 @@ class Keyimage:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The key image  was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view the key image')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The key image  was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the key image')
         query_data = {
             'api': self._api,
             'url': '/keyimage/get',
@@ -135,9 +135,9 @@ class Keyimage:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The key image  was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete the key image')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The key image  was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete the key image')
         query_data = {
             'api': self._api,
             'url': '/keyimage/delete',

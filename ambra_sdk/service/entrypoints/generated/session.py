@@ -61,26 +61,26 @@ class Session:
         """
         request_data = {
            'account_login': account_login,
-           'new_password': new_password,
            'account_name': account_name,
            'email': email,
-           'vanity': vanity,
            'location': location,
            'login': login,
-           'validate_session': validate_session,
+           'new_password': new_password,
            'password': password,
+           'validate_session': validate_session,
+           'vanity': vanity,
         }
 	
         errors_mapping = {}
-        errors_mapping['BAD_PASSWORD'] = BadPassword('The new_password does not meet the password requirements')
-        errors_mapping['BLOCKED'] = Blocked('The user is blocked from the system')
-        errors_mapping['DISABLED'] = Disabled('The user is disabled and needs to be /user/enabled to allow access')
-        errors_mapping['INVALID_CREDENTIALS'] = InvalidCredentials('Invalid user name or password.')
-        errors_mapping['LOCKOUT'] = Lockout('Too many failed attempts')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['PASSWORD_RESET'] = PasswordReset('The password needs to be changed')
-        errors_mapping['VALIDATION_FAILED'] = ValidationFailed('The session validation failed')
-        errors_mapping['WHITELIST_LOCKOUT'] = WhitelistLockout('Login blocked by the account whitelist')
+        errors_mapping[('BAD_PASSWORD', None)] = BadPassword('The new_password does not meet the password requirements')
+        errors_mapping[('BLOCKED', None)] = Blocked('The user is blocked from the system')
+        errors_mapping[('DISABLED', None)] = Disabled('The user is disabled and needs to be /user/enabled to allow access')
+        errors_mapping[('INVALID_CREDENTIALS', None)] = InvalidCredentials('Invalid user name or password.')
+        errors_mapping[('LOCKOUT', None)] = Lockout('Too many failed attempts')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('PASSWORD_RESET', None)] = PasswordReset('The password needs to be changed')
+        errors_mapping[('VALIDATION_FAILED', None)] = ValidationFailed('The session validation failed')
+        errors_mapping[('WHITELIST_LOCKOUT', None)] = WhitelistLockout('Login blocked by the account whitelist')
         query_data = {
             'api': self._api,
             'url': '/session/login',
@@ -124,8 +124,8 @@ class Session:
         (account_id OR namespace_id) - Either the account or namespaces to get the users permissions for
         """
         request_data = {
-           'namespace_id': namespace_id,
            'account_id': account_id,
+           'namespace_id': namespace_id,
         }
 	
         errors_mapping = {}
@@ -147,8 +147,8 @@ class Session:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The sid was not found')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The sid was not found')
         query_data = {
             'api': self._api,
             'url': '/session/logout',
@@ -170,8 +170,8 @@ class Session:
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_URL'] = InvalidUrl('The URL must be a relative URL')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('INVALID_URL', None)] = InvalidUrl('The URL must be a relative URL')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/session/csrf/enable',
@@ -208,7 +208,7 @@ class Session:
         }
 	
         errors_mapping = {}
-        errors_mapping['NO_OAUTH'] = NoOauth('OAuth is not setup for the associated brand')
+        errors_mapping[('NO_OAUTH', None)] = NoOauth('OAuth is not setup for the associated brand')
         query_data = {
             'api': self._api,
             'url': '/session/oauth/start',
@@ -222,30 +222,27 @@ class Session:
         self,
         code,
         redirect_uri,
-        vendor=None,
+        vendor,
     ):
         """Oauth.
         :param code: The OAuth code
         :param redirect_uri: The redirect_uri used to get the code parameter
-        :param vendor: vendor
-
-        Notes:
-        vendor - The OAuth vendor (doximity OR google OR brand)
+        :param vendor: The OAuth vendor (doximity|google|brand)
         """
         request_data = {
-           'vendor': vendor,
-           'redirect_uri': redirect_uri,
            'code': code,
+           'redirect_uri': redirect_uri,
+           'vendor': vendor,
         }
 	
         errors_mapping = {}
-        errors_mapping['AUTH_FAILED'] = AuthFailed('OAuth failed or a user id was not returned')
-        errors_mapping['INVALID_CODE'] = InvalidCode('Invalid code')
-        errors_mapping['INVALID_VENDOR'] = InvalidVendor('Invalid vendor')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['MISSING_INFORMATION'] = MissingInformation('The response from the OAuth provider is missing either the email, first_name or last_name fields')
-        errors_mapping['NO_OAUTH'] = NoOauth('OAuth is not setup for the associated brand')
-        errors_mapping['OTHER_OAUTH'] = OtherOauth('The user is already setup to OAuth via another vendor')
+        errors_mapping[('AUTH_FAILED', None)] = AuthFailed('OAuth failed or a user id was not returned')
+        errors_mapping[('INVALID_CODE', None)] = InvalidCode('Invalid code')
+        errors_mapping[('INVALID_VENDOR', None)] = InvalidVendor('Invalid vendor')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('MISSING_INFORMATION', None)] = MissingInformation('The response from the OAuth provider is missing either the email, first_name or last_name fields')
+        errors_mapping[('NO_OAUTH', None)] = NoOauth('OAuth is not setup for the associated brand')
+        errors_mapping[('OTHER_OAUTH', None)] = OtherOauth('The user is already setup to OAuth via another vendor')
         query_data = {
             'api': self._api,
             'url': '/session/oauth',
@@ -269,16 +266,16 @@ class Session:
         :param duration: The number of seconds the token is valid for (optional and defaults to 3600 with a maximum value of 86400)
         """
         request_data = {
-           'grant_type': grant_type,
            'client_id': client_id,
            'client_secret': client_secret,
            'duration': duration,
+           'grant_type': grant_type,
         }
 	
         errors_mapping = {}
-        errors_mapping['AUTH_FAILED'] = AuthFailed('Authentication failed')
-        errors_mapping['LOCKOUT'] = Lockout('Too many failed attempts')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('AUTH_FAILED', None)] = AuthFailed('Authentication failed')
+        errors_mapping[('LOCKOUT', None)] = Lockout('Too many failed attempts')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/session/oauth/token',
@@ -300,10 +297,10 @@ class Session:
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_PIN'] = InvalidPin('Invalid PIN')
-        errors_mapping['INVALID_SID'] = InvalidSid('Invalid sid')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['PIN_EXPIRED'] = PinExpired('The PIN has expired')
+        errors_mapping[('INVALID_PIN', None)] = InvalidPin('Invalid PIN')
+        errors_mapping[('INVALID_SID', None)] = InvalidSid('Invalid sid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('PIN_EXPIRED', None)] = PinExpired('The PIN has expired')
         query_data = {
             'api': self._api,
             'url': '/session/pin',
@@ -322,8 +319,8 @@ class Session:
         }
 	
         errors_mapping = {}
-        errors_mapping['EXPIRED'] = Expired('Expired')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('EXPIRED', None)] = Expired('Expired')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/session/ttl',

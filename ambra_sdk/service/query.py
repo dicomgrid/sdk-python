@@ -1,19 +1,23 @@
 """Query objects."""
 
-from typing import Any, Dict, Optional
+from typing import Any, Callable, Dict, Generic, Optional
 
 from box import Box
 
-from ambra_sdk.exceptions.service import PreconditionFailed
 from ambra_sdk.service.filtering import WithFilter
 from ambra_sdk.service.only import WithOnly
-from ambra_sdk.service.response import IterableResponse, check_response
+from ambra_sdk.service.response import (
+    ERROR_MAPPING,
+    RETURN_TYPE,
+    IterableResponse,
+    check_response,
+)
 from ambra_sdk.service.sorting import WithSorting
 
 DEFAULT_ROWS_IN_PAGINATION_PAGE = 100
 
 
-class Query:
+class Query(Generic[RETURN_TYPE]):
     """Simple query."""
 
     def __init__(  # NOQA: WPS211
@@ -21,8 +25,9 @@ class Query:
         api,
         url: str,
         request_data: Dict[str, Any],
-        errors_mapping: Dict[str, PreconditionFailed],
+        errors_mapping: ERROR_MAPPING,
         required_sid: bool = False,
+        return_constructor: Callable[..., RETURN_TYPE] = Box,
     ):
         """Query initialization.
 
@@ -31,28 +36,52 @@ class Query:
         :param request_data: data for request
         :param errors_mapping: map of error name and exception
         :param required_sid: is sid requred for this query
+        :param return_constructor: constructor for return type
         """
         self._api = api
-        self._url = url
-        self._request_data = request_data
+        self.url = url
+        self.request_data = request_data
         self._required_sid = required_sid
         self._errors_mapping = errors_mapping
+        self.return_constructor = return_constructor
 
-    def get(self) -> Box:
+    @property
+    def full_url(self) -> str:
+        """Full url.
+
+        :return: full method url
+        """
+        full_url: str = self._api.service_full_url(self.url)
+        return full_url  # NOQA:331
+
+    def get(self) -> RETURN_TYPE:
+        """Get response object.
+
+        If sid problems we try to get new sid
+        and retry request.
+
+        :return: response object
+        """
+        get_result: RETURN_TYPE = self._api.retry_with_new_sid(
+            self.get_once,
+        )
+        return get_result  # NOQA:331
+
+    def get_once(self) -> RETURN_TYPE:
         """Get response object.
 
         :return: response object
         """
         response = self._api.service_post(
-            url=self._url,
+            url=self.url,
             required_sid=self._required_sid,
-            data=self._request_data,
+            data=self.request_data,
         )
         response = check_response(response, self._errors_mapping)
         response_json = response.json()
         if 'status' in response_json:
             response_json.pop('status')
-        return Box(response_json)
+        return self.return_constructor(response_json)
 
 
 class QueryP(Query):
@@ -63,9 +92,10 @@ class QueryP(Query):
         api,
         url: str,
         request_data: Dict[str, Any],
-        errors_mapping: Dict[str, PreconditionFailed],
+        errors_mapping: ERROR_MAPPING,
         paginated_field: str,
         required_sid: bool = False,
+        return_constructor: Callable[..., RETURN_TYPE] = Box,
     ):
         """Query initialization.
 
@@ -75,6 +105,7 @@ class QueryP(Query):
         :param errors_mapping: map of error name and exception
         :param required_sid: is sid requred for this query
         :param paginated_field: field for pagination
+        :param return_constructor: constructor for return type
         """
         super().__init__(
             api=api,
@@ -82,6 +113,7 @@ class QueryP(Query):
             request_data=request_data,
             errors_mapping=errors_mapping,
             required_sid=required_sid,
+            return_constructor=return_constructor,
         )
         self._paginated_field = paginated_field
         self._rows_in_page = DEFAULT_ROWS_IN_PAGINATION_PAGE
@@ -105,22 +137,23 @@ class QueryP(Query):
         self._rows_in_page = rows_in_page
         return self
 
-    def all(self) -> IterableResponse:  # NOQA: A003
+    def all(self) -> IterableResponse:  # NOQA: A003,WPS125
         """Get iterable response.
 
         :returns: iterable response object
         """
         return IterableResponse(
-            self._api.service_post,
-            self._url,
+            self._api,
+            self.url,
             self._required_sid,
-            self._request_data,
+            self.request_data,
             self._errors_mapping,
             self._paginated_field,
             self._rows_in_page,
+            self.return_constructor,
         )
 
-    def first(self) -> Optional[Box]:
+    def first(self) -> Optional[RETURN_TYPE]:
         """Get First element of sequence.
 
         :returns: Response object

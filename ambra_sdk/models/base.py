@@ -217,7 +217,7 @@ class FieldDescriptor(  # NOQA:WPS214
         self._parent = None
         self._name = None
 
-        self.__doc__ = '{field_type}({description})'.format(
+        self.__doc__ = '{field_type}({description})'.format(  # NOQA: WPS125
             field_type=field.__class__.__name__,
             description=field._description,
         )

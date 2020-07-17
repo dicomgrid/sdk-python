@@ -58,20 +58,20 @@ class Namespace:
         (sid OR uuid AND serial_no) - Either the sid or the node id and serial number
         """
         request_data = {
-           'study_uid': study_uid,
-           'storage_namespace': storage_namespace,
            'namespace_id': namespace_id,
            'oauth': oauth,
-           'uuid': uuid,
-           'serial_no': serial_no,
            'phi_namespace': phi_namespace,
+           'serial_no': serial_no,
+           'storage_namespace': storage_namespace,
            'study_id': study_id,
+           'study_uid': study_uid,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_CREDENTIALS'] = InvalidCredentials('The sid or node credentials are invalid')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The object was not found')
+        errors_mapping[('INVALID_CREDENTIALS', None)] = InvalidCredentials('The sid or node credentials are invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found')
         query_data = {
             'api': self._api,
             'url': '/namespace/permissions',
@@ -84,6 +84,7 @@ class Namespace:
     def settings(
         self,
         ai_settings,
+        allow_drag_and_drop_in_study_uploader,
         auto_create_patient,
         auto_enable_dicom_wrapping,
         cloud_storage_config,
@@ -103,6 +104,7 @@ class Namespace:
     ):
         """Settings.
         :param ai_settings: Dict of ai settings
+        :param allow_drag_and_drop_in_study_uploader: Value for the setting
         :param auto_create_patient: Value for the setting
         :param auto_enable_dicom_wrapping: Value for the setting
         :param cloud_storage_config: Value for the setting
@@ -124,32 +126,33 @@ class Namespace:
         The following account settings can be over-ridden in the namespace
         """
         request_data = {
+           'allow_drag_and_drop_in_study_uploader': allow_drag_and_drop_in_study_uploader,
+           'auto_create_patient': auto_create_patient,
+           'auto_enable_dicom_wrapping': auto_enable_dicom_wrapping,
+           'cloud_storage_config': cloud_storage_config,
            'disable_duplicate_study_upload': disable_duplicate_study_upload,
+           'enable_dicom_wrapping': enable_dicom_wrapping,
+           'enable_epic_patient_lookup': enable_epic_patient_lookup,
+           'enable_multipart_uploader': enable_multipart_uploader,
            'link_defaults': link_defaults,
            'no_dup_share': no_dup_share,
-           'cloud_storage_config': cloud_storage_config,
-           'upload_settings': upload_settings,
-           'enable_multipart_uploader': enable_multipart_uploader,
-           'single_file_dicom_wrapping': single_file_dicom_wrapping,
-           'priority_notifications': priority_notifications,
-           'ui_json': ui_json,
-           'study_field_flags': study_field_flags,
-           'auto_enable_dicom_wrapping': auto_enable_dicom_wrapping,
-           'uuid': uuid,
-           'enable_dicom_wrapping': enable_dicom_wrapping,
-           'auto_create_patient': auto_create_patient,
            'pixel_anonymize_color': pixel_anonymize_color,
-           'enable_epic_patient_lookup': enable_epic_patient_lookup,
+           'priority_notifications': priority_notifications,
+           'single_file_dicom_wrapping': single_file_dicom_wrapping,
+           'study_field_flags': study_field_flags,
+           'ui_json': ui_json,
+           'upload_settings': upload_settings,
+           'uuid': uuid,
         }
         if ai_settings is not None:
             ai_settings_dict = {'{prefix}{k}'.format(prefix='', k=k): v for k,v in ai_settings.items()}
             request_data.update(ai_settings_dict)
 	
         errors_mapping = {}
-        errors_mapping['INVALID_SETTING'] = InvalidSetting('An invalid setting was passed. The error_subtype holds the name of the invalid setting')
-        errors_mapping['INVALID_SETTING_VALUE'] = InvalidSettingValue('An invalid setting value was passed. The error_subtype holds the name of the setting with the invalid value')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The namespace was not found')
+        errors_mapping[('INVALID_SETTING', None)] = InvalidSetting('An invalid setting was passed. The error_subtype holds the name of the invalid setting')
+        errors_mapping[('INVALID_SETTING_VALUE', None)] = InvalidSettingValue('An invalid setting value was passed. The error_subtype holds the name of the setting with the invalid value')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
         query_data = {
             'api': self._api,
             'url': '/namespace/settings',
@@ -178,15 +181,15 @@ class Namespace:
         """
         request_data = {
            'namespace_id': namespace_id,
-           'uuid': uuid,
            'serial_no': serial_no,
            'share_code': share_code,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_LINK'] = InvalidLink('The anonymous upload link is no longer valid')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The share code was not found or if gateway credentials are passed is not valid for gateway uploads')
+        errors_mapping[('INVALID_LINK', None)] = InvalidLink('The anonymous upload link is no longer valid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The share code was not found or if gateway credentials are passed is not valid for gateway uploads')
         query_data = {
             'api': self._api,
             'url': '/namespace/share_code',
@@ -208,33 +211,30 @@ class Namespace:
         """Share pricing.
         :param uuid: The uuid of the namespace
         :param charge_description: The description of the charge (optional)
-        :param currency: currency
+        :param currency: 3-letter ISO code for currency to charge in (USD|GBP) (optional)
         :param pricing: Pricing table in JSON format (optional)
         :param second_opinion_config: JSON configuration for the second opinion workflow (optional)
         :param second_opinion_share: Flag to enable/disable the second opinion workflow for the share (optional)
-
-        Notes:
-        currency - 3-letter ISO code for currency to charge in (USD OR GBP) (optional)
         """
         request_data = {
-           'pricing': pricing,
+           'charge_description': charge_description,
            'currency': currency,
-           'uuid': uuid,
+           'pricing': pricing,
            'second_opinion_config': second_opinion_config,
            'second_opinion_share': second_opinion_share,
-           'charge_description': charge_description,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_AMOUNT'] = InvalidAmount('An invalid amount. The error_subtype holds the invalid amount')
-        errors_mapping['INVALID_CURRENCY'] = InvalidCurrency('Invalid currency')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NEEDS_ANY_OR_ALL'] = NeedsAnyOrAll('The hash needs an &#34;ANY&#34; or &#34;ALL&#34; key')
-        errors_mapping['NOT_FOUND'] = NotFound('The namespace was not found')
-        errors_mapping['NOT_HASH'] = NotHash('The pricing field is not a hash')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to price this namespace')
-        errors_mapping['ONLY_ALL'] = OnlyAll('If the hash has an ALL value it can&#39;t have any other values')
+        errors_mapping[('INVALID_AMOUNT', None)] = InvalidAmount('An invalid amount. The error_subtype holds the invalid amount')
+        errors_mapping[('INVALID_CURRENCY', None)] = InvalidCurrency('Invalid currency')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NEEDS_ANY_OR_ALL', None)] = NeedsAnyOrAll('The hash needs an &#34;ANY&#34; or &#34;ALL&#34; key')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
+        errors_mapping[('NOT_HASH', None)] = NotHash('The pricing field is not a hash')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to price this namespace')
+        errors_mapping[('ONLY_ALL', None)] = OnlyAll('If the hash has an ALL value it can&#39;t have any other values')
         query_data = {
             'api': self._api,
             'url': '/namespace/share/pricing',
@@ -256,20 +256,20 @@ class Namespace:
         :param sum_case_price_matches: Flag to search for all matches in pricing table and to add them up (optional)
         """
         request_data = {
+           'case_pricing': case_pricing,
            'sum_case_price_matches': sum_case_price_matches,
            'uuid': uuid,
-           'case_pricing': case_pricing,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The pricing condition is invalid')
-        errors_mapping['INVALID_FLAG'] = InvalidFlag('The field is not a valid flag')
-        errors_mapping['INVALID_INTEGER'] = InvalidInteger('The price is not an integer number')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The namespace was not found')
-        errors_mapping['NOT_LIST'] = NotList('The pricing table is not a JSON list')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to price this namespace')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The pricing condition is invalid')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('The field is not a valid flag')
+        errors_mapping[('INVALID_INTEGER', None)] = InvalidInteger('The price is not an integer number')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
+        errors_mapping[('NOT_LIST', None)] = NotList('The pricing table is not a JSON list')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to price this namespace')
         query_data = {
             'api': self._api,
             'url': '/namespace/case/pricing',
@@ -291,19 +291,19 @@ class Namespace:
         :param rules: Anonymization rules in JSON format. The format is a hash with the keys the names of the fields to anonymize and the values the regular expressions to apply. (optional)
         """
         request_data = {
+           'prompt_for_anonymize': prompt_for_anonymize,
            'rules': rules,
            'uuid': uuid,
-           'prompt_for_anonymize': prompt_for_anonymize,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_FIELD_NAME'] = InvalidFieldName('The field name is n the rules hash is invalid. The error_subtype holds the invalid field name')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['INVALID_REGEXP'] = InvalidRegexp('Invalid regular expression. The error_subtype holds the invalid regexp.')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The namespace was not found')
-        errors_mapping['NOT_HASH'] = NotHash('The rules field is not a hash')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to anonymize this namespace')
+        errors_mapping[('INVALID_FIELD_NAME', None)] = InvalidFieldName('The field name is n the rules hash is invalid. The error_subtype holds the invalid field name')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('INVALID_REGEXP', None)] = InvalidRegexp('Invalid regular expression. The error_subtype holds the invalid regexp.')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
+        errors_mapping[('NOT_HASH', None)] = NotHash('The rules field is not a hash')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to anonymize this namespace')
         query_data = {
             'api': self._api,
             'url': '/namespace/anonymize',
@@ -323,14 +323,14 @@ class Namespace:
         :param coverpage: The coverpage value. See the notes for formatting details or pass an empty string to remove the current cover page. (optional)
         """
         request_data = {
-           'uuid': uuid,
            'coverpage': coverpage,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The namespace was not found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/namespace/coverpage',
@@ -357,7 +357,7 @@ class Namespace:
             request_data.update(customfield_param_dict)
 	
         errors_mapping = {}
-        errors_mapping['INVALID_CUSTOMFIELD'] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
         query_data = {
             'api': self._api,
             'url': '/namespace/validate/customfields',
@@ -407,30 +407,30 @@ class Namespace:
         :param event_upload_fail: Notify the user on a failed upload into the namespace (optional)
         """
         request_data = {
-           'event_link_mine': event_link_mine,
-           'event_study_comment': event_study_comment,
-           'event_case_assignment': event_case_assignment,
-           'event_thin_study_success': event_thin_study_success,
-           'event_report_remove': event_report_remove,
-           'event_upload': event_upload,
-           'event_link': event_link,
-           'event_thin_study_fail': event_thin_study_fail,
-           'uuid': uuid,
-           'event_share': event_share,
            'event_approve': event_approve,
-           'event_upload_fail': event_upload_fail,
+           'event_case_assignment': event_case_assignment,
            'event_harvest': event_harvest,
-           'event_status_change': event_status_change,
-           'event_node': event_node,
-           'event_new_report': event_new_report,
+           'event_link': event_link,
+           'event_link_mine': event_link_mine,
            'event_message': event_message,
+           'event_new_report': event_new_report,
+           'event_node': event_node,
+           'event_report_remove': event_report_remove,
+           'event_share': event_share,
+           'event_status_change': event_status_change,
+           'event_study_comment': event_study_comment,
+           'event_thin_study_fail': event_thin_study_fail,
+           'event_thin_study_success': event_thin_study_success,
+           'event_upload': event_upload,
+           'event_upload_fail': event_upload_fail,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_FLAG'] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The namespace was not found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to apply defaults to this namespace')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to apply defaults to this namespace')
         query_data = {
             'api': self._api,
             'url': '/namespace/event/defaults',
@@ -455,12 +455,12 @@ class Namespace:
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_FIELD_NAME'] = InvalidFieldName('The field name in the default hash is invalid. The error_subtype holds the invalid field name')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The namespace was not found')
-        errors_mapping['NOT_HASH'] = NotHash('The rules field is not a hash')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to apply defaults to this namespace')
+        errors_mapping[('INVALID_FIELD_NAME', None)] = InvalidFieldName('The field name in the default hash is invalid. The error_subtype holds the invalid field name')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
+        errors_mapping[('NOT_HASH', None)] = NotHash('The rules field is not a hash')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to apply defaults to this namespace')
         query_data = {
             'api': self._api,
             'url': '/namespace/study/defaults',
@@ -491,17 +491,17 @@ class Namespace:
         (namespace_id OR study_id OR study_uid AND storage_namespace AND phi_namespace) - The uuid of the namespace or study or the study_uid/storage_namespace/phi_namespace triplet
         """
         request_data = {
-           'source': source,
-           'study_uid': study_uid,
            'namespace_id': namespace_id,
-           'storage_namespace': storage_namespace,
            'phi_namespace': phi_namespace,
+           'source': source,
+           'storage_namespace': storage_namespace,
            'study_id': study_id,
+           'study_uid': study_uid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The namespace was not found')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
         query_data = {
             'api': self._api,
             'url': '/namespace/engine/fqdn',
@@ -513,22 +513,25 @@ class Namespace:
     
     def removed_user_report(
         self,
+        account_id,
         email,
         uuid,
     ):
         """Removed user report.
+        :param account_id: The UUID of the account. A report will be produced for group, location and account namespaces of this account
         :param email: Optional email address to send the report to
         :param uuid: The UUID of the namespace
         """
         request_data = {
+           'account_id': account_id,
            'email': email,
            'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The namespace was not found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/namespace/removed/user/report',

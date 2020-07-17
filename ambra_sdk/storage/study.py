@@ -9,12 +9,13 @@ from requests import Response
 
 from ambra_sdk.exceptions.storage import (
     InconsistencyConflict,
+    NotFound,
     PermissionDenied,
     PreconditionFailed,
     UnsupportedMediaType,
 )
 from ambra_sdk.storage.bool_to_int import bool_to_int
-from ambra_sdk.storage.response import check_response
+from ambra_sdk.storage.request import PreparedRequest, StorageMethod
 
 
 def validate_size_x_string(size_str: str):
@@ -122,7 +123,8 @@ class Study:
         attachments_only: Optional[bool] = None,
         phi_namespace: Optional[str] = None,
         use_box: bool = True,
-    ) -> Union[Box, Response]:
+        only_prepare: bool = False,
+    ) -> Union[Box, Response, PreparedRequest]:
         """Get the schema of study.
 
         URL: /study/{namespace}/{studyUid}/schema?sid={sid}&phi_namespace={phi_namespace}&extended={1,0}&attachments_only={0,1}  # NOQA E501
@@ -141,6 +143,8 @@ class Study:
             attached to a shared instance of the study
             outside of the original storage namespace
         :param use_box: Use box for response.
+        :param only_prepare: Get prepared request.
+
         :returns: study schema
         """
         extended: int = bool_to_int(extended)  # type: ignore
@@ -158,15 +162,23 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.get(url, params=request_data)
         errors_mapping = {
-            409: InconsistencyConflict('An inconsistency is found while recomputing the schema cache. Retry the request after a short delay.')  # NOQA: 997
+            409:
+            InconsistencyConflict(
+                'An inconsistency is found while recomputing the schema cache. Retry the request after a short delay.',
+            ),
         }
-        response = check_response(
-            response,
-            url_arg_names=url_arg_names,
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
             errors_mapping=errors_mapping,
+            params=request_data,
         )
+        if only_prepare is True:
+            return prepared_request
+        response = prepared_request.execute()
+
         if use_box is True:
             return Box(response.json())
         return response
@@ -177,7 +189,8 @@ class Study:
         namespace: str,
         study_uid: str,
         keep_attachments: Optional[bool] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Deletes a study.
 
         URL: /study/{namespace}/{study_uid}?sid={sid}&keep_attachments={1,0}
@@ -186,6 +199,7 @@ class Study:
         :param namespace: Namespace (Required).
         :param study_uid: Study uid (Required).
         :param keep_attachments: An integer value of 1 or 0.
+        :param only_prepare: Get prepared request.
 
         :returns: Delete response
 
@@ -208,9 +222,15 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.delete(url, params=request_data)
-        response = check_response(response, url_arg_names=url_arg_names)
-        return response
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.delete,
+            url=url,
+            params=request_data,
+        )
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
 
     def delete_image(
         self,
@@ -219,7 +239,8 @@ class Study:
         study_uid: str,
         image_uid: str,
         version: Optional[str] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Deletes a study image.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}?sid={sid}&version={image version hash}
@@ -229,6 +250,7 @@ class Study:
         :param study_uid: Study uid (Required).
         :param image_uid: Image uid (Required).
         :param version: The image version hash
+        :param only_prepare: Get prepared request.
 
         :returns: Delete image response
         """
@@ -246,9 +268,15 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.delete(url, params=request_data)
-        response = check_response(response, url_arg_names=url_arg_names)
-        return response
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.delete,
+            url=url,
+            params=request_data,
+        )
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
 
     def count(
         self,
@@ -260,7 +288,8 @@ class Study:
         attachments_only: Optional[bool] = None,
         count_files: Optional[bool] = None,
         use_box: bool = True,
-    ) -> Union[Box, Response]:
+        only_prepare: bool = False,
+    ) -> Union[Box, Response, PreparedRequest]:
         """Gets study file count.
 
         URL: /study/{namespace}/{studyUid}/count?sid={sid}&images_only={1,0}&attachments_only={1,0}&count_files={1,0}
@@ -277,6 +306,7 @@ class Study:
             on-disk for images and/or attachments,
             instead of counting from (possibly cached) meta data.
         :param use_box: Use box for response.
+        :param only_prepare: Get prepared request.
 
         :returns: count obj
         """
@@ -292,8 +322,15 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.get(url, params=request_data)
-        response = check_response(response, url_arg_names=url_arg_names)
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            params=request_data,
+        )
+        if only_prepare is True:
+            return prepared_request
+        response = prepared_request.execute()
         if use_box is True:
             return Box(response.json())
         return response
@@ -305,7 +342,8 @@ class Study:
         study_uid: str,
         phi_namespace: str,
         use_box: bool = True,
-    ) -> Union[Box, Response]:
+        only_prepare: bool = False,
+    ) -> Union[Box, Response, PreparedRequest]:
         """Gets study tags.
 
         URL: /study/{namespace}/{studyUid}/tag?sid={sid}&phi_namespace={phi_namespace}
@@ -318,6 +356,7 @@ class Study:
             it was attached to a shared instance of
             the study outside of the original storage namespace
         :param use_box: Use box for response.
+        :param only_prepare: Get prepared request.
 
         :returns: study tag object
         """
@@ -330,8 +369,15 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.get(url, params=request_data)
-        response = check_response(response, url_arg_names=url_arg_names)
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            params=request_data,
+        )
+        if only_prepare is True:
+            return prepared_request
+        response = prepared_request.execute()
         if use_box is True:
             return Box(response.json())
         return response
@@ -348,7 +394,8 @@ class Study:
         include_tags: Optional[str] = None,
         exclude_unnamed: Optional[str] = None,
         use_box: bool = True,
-    ) -> Union[Box, Response]:
+        only_prepare: bool = False,
+    ) -> Union[Box, Response, PreparedRequest]:
         """Gets study image attributes.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/attribute?sid={sid}&phi_namespace={phi_namespace}
@@ -372,6 +419,7 @@ class Study:
         :param exclude_unnamed: A string containing "1" or "0" (default 0).
             When "1", private tags (with "name": "?") are not included
         :param use_box: Use box for response.
+        :param only_prepare: Get prepared request.
 
         :returns: study attributes
         """
@@ -395,8 +443,15 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.get(url, params=request_data)
-        response = check_response(response, url_arg_names=url_arg_names)
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            params=request_data,
+        )
+        if only_prepare is True:
+            return prepared_request
+        response = prepared_request.execute()
         if use_box is True:
             return Box(response.json())
         return response
@@ -410,7 +465,8 @@ class Study:
         image_version: str,
         phi_namespace: Optional[str] = None,
         use_box: bool = True,
-    ) -> Union[Box, Response]:
+        only_prepare: bool = False,
+    ) -> Union[Box, Response, PreparedRequest]:
         """Gets study image PHI.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/phi?sid={sid}&phi_namespace={phi_namespace}
@@ -422,6 +478,7 @@ class Study:
         :param image_version: Image version (Required).
         :param phi_namespace: A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace
         :param use_box: Use box for response.
+        :param only_prepare: Get prepared request.
 
         :returns: image PHI object
         """
@@ -440,8 +497,15 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.get(url, params=request_data)
-        response = check_response(response, url_arg_names=url_arg_names)
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            params=request_data,
+        )
+        if only_prepare is True:
+            return prepared_request
+        response = prepared_request.execute()
         if use_box is True:
             return Box(response.json())
         return response
@@ -453,7 +517,8 @@ class Study:
         study_uid: str,
         phi_namespace: Optional[str] = None,
         use_box: bool = True,
-    ) -> Union[Box, Response]:
+        only_prepare: bool = False,
+    ) -> Union[Box, Response, PreparedRequest]:
         """Gets study PHI data.
 
         URL: /study/{namespace}/{studyUid}/phi?sid={sid}&phi_namespace={phi_namespace}
@@ -463,6 +528,7 @@ class Study:
         :param study_uid: Study uid (Required).
         :param phi_namespace: A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace
         :param use_box: Use box for response.
+        :param only_prepare: Get prepared request.
 
         :returns: study PHI data object
         """
@@ -475,8 +541,15 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.get(url, params=request_data)
-        response = check_response(response, url_arg_names=url_arg_names)
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            params=request_data,
+        )
+        if only_prepare is True:
+            return prepared_request
+        response = prepared_request.execute()
         if use_box is True:
             return Box(response.json())
         return response
@@ -491,7 +564,8 @@ class Study:
         frame_number: int,
         depth: int = 8,
         phi_namespace: Optional[str] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Gets study image thumbnail.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber}/thumbnail?sid={sid}&depth={8,16}&phi_namespace={phi_namespace}
@@ -507,6 +581,7 @@ class Study:
             namespace where the file was attached if it was
             attached to a shared instance of the study
             outside of the original storage namespace
+        :param only_prepare: Get prepared request.
 
         :raises ValueError: Wrong value of depth
 
@@ -531,13 +606,15 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.get(
-            url,
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
             params=request_data,
-            stream=True,
         )
-        response = check_response(response, url_arg_names=url_arg_names)
-        return response
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
 
     def diagnostic(
         self,
@@ -550,7 +627,8 @@ class Study:
         phi_namespace: Optional[str] = None,
         depth: int = 8,
         size: Optional[str] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Gets study diagnostic image.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber}/diagnostic?sid={sid}&phi_namespace={phi_namespace}&depth={8,16}&size=[max-edge-length|{width}x{height}]
@@ -568,6 +646,7 @@ class Study:
         :param size: Specify size of output. Omitted or 0 indicates no
             change; one number sets the maximum edge length in pixels;
             wxh sets maximum width and height
+        :param only_prepare: Get prepared request.
 
         :raises ValueError: Wrongh depth or size param
 
@@ -594,13 +673,15 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.get(
-            url,
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
             params=request_data,
-            stream=True,
         )
-        response = check_response(response, url_arg_names=url_arg_names)
-        return response
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
 
     def frame(
         self,
@@ -615,7 +696,8 @@ class Study:
         depth: int = 8,
         quality: float = 0.9,
         size: Optional[str] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Gets study image frame.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber:[0-9][0-9]*|[0-9][0-9]*}?sid={sid}&phi_namespace={phi_namespace}&depth={8,16}&quality={0.0-1.0}&size=[max-edge-length|{width}x{height}]
@@ -630,6 +712,7 @@ class Study:
         :param depth: Set the bit depth of the JPEG output (8 or 16).
         :param quality: Set the JPEG compression quality 0 < q ≤ 1.0 (default 0.9)
         :param size: Specify size of output. Omitted or 0 indicates no change; one number sets the maximum edge length in pixels; wxh sets maximum width and height
+        :param only_prepare: Get prepared request.
 
         :raises ValueError: Wrongh depth or size param
 
@@ -660,8 +743,16 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.get(url, params=request_data, stream=True)
-        return check_response(response, url_arg_names=url_arg_names)
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            params=request_data,
+            stream=True,
+        )
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
 
     def frame_tiff(
         self,
@@ -674,7 +765,8 @@ class Study:
         phi_namespace: Optional[str] = None,
         depth: int = 8,
         size: Optional[str] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Gets study image frame as TIFF.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber:[0-9]*}/tiff?sid={sid}&phi_namespace={phi_namespace}&depth={8,16}&size=[max-edge-length|{width}x{height}]
@@ -688,6 +780,7 @@ class Study:
         :param phi_namespace: A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace
         :param depth: Set the bit depth of the JPEG output (8 or 16).
         :param size: Specify size of output. Omitted or 0 indicates no change; one number sets the maximum edge length in pixels; wxh sets maximum width and height
+        :param only_prepare: Get prepared request.
 
         :raises ValueError: Wrongh depth or size param
 
@@ -717,8 +810,16 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response = self._storage.get(url, params=request_data, stream=True)
-        return check_response(response, url_arg_names=url_arg_names)
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            params=request_data,
+            stream=True,
+        )
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
 
     def pdf(
         self,
@@ -727,7 +828,8 @@ class Study:
         study_uid: str,
         image_uid: str,
         image_version: str,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Gets a study encapsulated pdf file.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/pdf?sid={sid}
@@ -737,6 +839,7 @@ class Study:
         :param study_uid: Study uid (Required).
         :param image_uid: Image uid (Required).
         :param image_version: Image version (Required).
+        :param only_prepare: Get prepared request.
 
         :returns: Pdf response object
         """
@@ -755,21 +858,23 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.get(
-            url,
+        errors_mapping = {
+            415:
+            UnsupportedMediaType(
+                'Pdf was not found encapsulated in the DICOM file.',
+            ),
+        }
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            errors_mapping=errors_mapping,
             params=request_data,
             stream=True,
         )
-        errors_mapping = {
-            415: UnsupportedMediaType('Pdf was not found encapsulated in the DICOM file.')  # NOQA: 997
-        }
-
-        response = check_response(
-            response,
-            url_arg_names=url_arg_names,
-            errors_mapping=errors_mapping,
-        )
-        return response
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
 
     def image_json(
         self,
@@ -782,7 +887,8 @@ class Study:
         exclude_unnamed: Optional[str] = None,
         all_dicom_values: Optional[str] = None,
         use_box: bool = True,
-    ) -> Union[ImageJsonBox, Response]:
+        only_prepare: bool = False,
+    ) -> Union[ImageJsonBox, Response, PreparedRequest]:
         r"""Gets all DICOM attributes for an individual image.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/json?sid={sid}&phi_namespace={phi_namespace}
@@ -804,6 +910,7 @@ class Study:
             a multi-value DICOM tag will be returned, separated
             by "\". Otherwise, only the first value is returned
         :param use_box: Use box for response.
+        :param only_prepare: Get prepared request.
 
         :returns: DICOM attributes object
         """
@@ -826,8 +933,15 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.get(url, params=request_data)
-        response = check_response(response, url_arg_names=url_arg_names)
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            params=request_data,
+        )
+        if only_prepare is True:
+            return prepared_request
+        response = prepared_request.execute()
         if use_box is True:
             return ImageJsonBox(response.json())
         return response
@@ -844,7 +958,8 @@ class Study:
         all_dicom_values: Optional[str] = None,
         series_uid: Optional[str] = None,
         use_box: bool = True,
-    ) -> Union[JsonBox, Response]:
+        only_prepare: bool = False,
+    ) -> Union[JsonBox, Response, PreparedRequest]:
         r"""Gets DICOM attributes for all images in a study.
 
         URL: /study/{namespace}/{studyUid}/json?sid={sid}&phi_namespace={phi_namespace}&groups={group ids}&include_tags={tags}
@@ -875,6 +990,7 @@ class Study:
             If specified, the results will only include DICOM tags
             from images from the specified series
         :param use_box: Use box for response.
+        :param only_prepare: Get prepared request.
 
         :returns: DICOM attributes object
         """
@@ -899,8 +1015,15 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.get(url, params=request_data)
-        response = check_response(response, url_arg_names=url_arg_names)
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            params=request_data,
+        )
+        if only_prepare is True:
+            return prepared_request
+        response = prepared_request.execute()
         if use_box is True:
             return JsonBox(response.json())
         return response
@@ -913,7 +1036,8 @@ class Study:
         attachment_id: str,
         version: str,
         phi_namespace: Optional[str] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Gets the selected attachment.
 
         URL: /study/{namespace}/{studyUid}/attachment/{attachmentId}/version/{version}?sid={sid}&phi_namespace={phi_namespace}
@@ -927,6 +1051,7 @@ class Study:
             the namespace where the file was attached if it
             was attached to a shared instance of the study
             outside of the original storage namespace
+        :param only_prepare: Get prepared request.
 
         :returns: attachments response
         """
@@ -945,13 +1070,16 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.get(
-            url,
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
             params=request_data,
             stream=True,
         )
-        response = check_response(response, url_arg_names=url_arg_names)
-        return response
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
 
     def latest(
         self,
@@ -960,7 +1088,8 @@ class Study:
         study_uid: str,
         file_name: str,
         phi_namespace: Optional[str] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Gets the latest attachment for a study.
 
         URL: /study/{namespace}/{studyUid}/attachment/{filename:latest|latest}?sid={sid}&phi_namespace={phi_namespace}
@@ -973,6 +1102,7 @@ class Study:
             the namespace where the file was attached if it
             was attached to a shared instance of the study
             outside of the original storage namespace
+        :param only_prepare: Get prepared request.
 
         :returns: latest attachment response
         """
@@ -990,13 +1120,16 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.get(
-            url,
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
             params=request_data,
             stream=True,
         )
-        response = check_response(response, url_arg_names=url_arg_names)
-        return response
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
 
     def post_attachment(
         self,
@@ -1009,7 +1142,8 @@ class Study:
         return_html: Optional[bool] = None,
         synchronous_wrap: Optional[bool] = None,
         static_ids: Optional[bool] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Posts an attachment to a study.
 
         URL: /study/{namespace}/{studyUid}/attachment?sid={sid}&phi_namespace={phi_namespace}&wrap_images={0,1}&return_html={0,1}&synchronous_wrap={0,1}&static_ids={0,1}
@@ -1038,6 +1172,7 @@ class Study:
         :param return_html: An integer of value 1 or 0. Return results as
             Content Type text html, instead of
             application json (required for certain browsers)
+        :param only_prepare: Get prepared request.
 
         :returns: posts attachments response
 
@@ -1086,14 +1221,17 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.post(
-            url,
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.post,
+            url=url,
             params=request_data,
             files=files,
         )
-        check_response(response, url_arg_names=url_arg_names)
+        if only_prepare is True:
+            return prepared_request
         # Method can return Html (depends on params)...
-        return response
+        return prepared_request.execute()
 
     def download(
         self,
@@ -1107,7 +1245,8 @@ class Study:
         include_wrapped_dicoms: Optional[bool] = None,
         stop_on_failure: Optional[bool] = None,
         exclude_viewer: Optional[bool] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Downloads a study ZIP file.
 
         URL: /study/{namespace}/{studyUid}/download?sid={sid}&phi_namespace={phi_namespace}&bundle={iso,dicom,osx,win}&include_wrapped_dicoms={0,1}&series_uid={series_uid[,series_uid...]}&image_uid={image_uid[,image_uid...]}
@@ -1132,6 +1271,7 @@ class Study:
         :param exclude_viewer: If "1", viewer app will not be
             included in the "iso", "osx", and "win" bundle.
             The viewer app can be retrieved separately via /download/viewer
+        :param only_prepare: Get prepared request.
 
         :raises ValueError: Wrong bundle value
 
@@ -1140,7 +1280,9 @@ class Study:
         if bundle not in {'dicom', 'iso', 'osx', 'win'}:
             raise ValueError('Boundle not in ("dicom", "iso", "osx", "win")')
 
-        include_wrapped_dicoms: int = bool_to_int(include_wrapped_dicoms)  # type: ignore
+        include_wrapped_dicoms: int = bool_to_int(  # type: ignore
+            include_wrapped_dicoms,
+        )
         stop_on_failure: int = bool_to_int(stop_on_failure)  # type: ignore
         exclude_viewer: int = bool_to_int(exclude_viewer)  # type: ignore
 
@@ -1166,13 +1308,25 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.get(
-            url,
+
+        not_found = NotFound('image/frame does not exist')
+        not_found.code = 403
+
+        errors_mapping = {
+            403: not_found,
+        }
+
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            errors_mapping=errors_mapping,
             params=request_data,
             stream=True,
         )
-        response = check_response(response, url_arg_names=url_arg_names)
-        return response
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
 
     def delete_attachment(
         self,
@@ -1182,7 +1336,8 @@ class Study:
         attachment_id: str,
         hash_arg: str,
         phi_namespace: Optional[str] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Deletes a study attachment.
 
         URL: /study/{namespace}/{studyUid}/attachment/{attachmentId}/version/{hash}?sid={sid}?phi_namespace={phi_namespace}
@@ -1198,6 +1353,7 @@ class Study:
         :param phi_namespace: A string, set to the UUID of the
             namespace where the file was attached if it was
             attached to a shared instance of the study outside of the original storage namespace
+        :param only_prepare: Get prepared request.
 
         :returns: Delete attachemnt response
         """
@@ -1216,10 +1372,15 @@ class Study:
             request_arg_names,
             locals(),
         )
-
-        response: Response = self._storage.delete(url, params=request_data)
-        response = check_response(response, url_arg_names=url_arg_names)
-        return response
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.delete,
+            url=url,
+            params=request_data,
+        )
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
 
     def video(
         self,
@@ -1229,7 +1390,8 @@ class Study:
         image_uid: str,
         image_version: str,
         reencode_video: Optional[bool] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Gets a study encapsulated video.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/video?sid={sid}&reencode_video={0,1}
@@ -1240,6 +1402,7 @@ class Study:
         :param image_uid: Image uid (Required).
         :param image_version: Image version (Required).
         :param reencode_video: An integer of value 1 or 0.
+        :param only_prepare: Get prepared request.
 
         :returns: Video response
         """
@@ -1262,19 +1425,22 @@ class Study:
         )
 
         errors_mapping = {
-            415: UnsupportedMediaType('Video was not found encapsulated in the DICOM file.')  # NOQA: 997
+            415:
+            UnsupportedMediaType(
+                'Video was not found encapsulated in the DICOM file.',
+            ),
         }
-        response: Response = self._storage.get(
-            url,
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            errors_mapping=errors_mapping,
             params=request_data,
             stream=True,
         )
-        response = check_response(
-            response,
-            url_arg_names=url_arg_names,
-            errors_mapping=errors_mapping,
-        )
-        return response
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
 
     def split(
         self,
@@ -1285,7 +1451,8 @@ class Study:
         to_namespace: Optional[str] = None,
         series_uid: Optional[str] = None,
         delete_series_from_original: Optional[str] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Split a study.
 
         URL: /study/{namespace}/{studyUid}/split?sid={sid}&phi_namespace={namespace}&to_namespace={namespace}&series_uid={series_uid,series_uid...series_uid}&delete_series_from_original={0,1}
@@ -1303,6 +1470,7 @@ class Study:
         :param delete_series_from_original: An integer value of either
             0 or 1. If 1 the series specified in the series_uid list will
             be deleted from the original study
+        :param only_prepare: Get prepared request.
 
         :returns: Split study response
         """
@@ -1325,10 +1493,16 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.post(url, params=request_data)
-        response = check_response(response, url_arg_names=url_arg_names)
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.post,
+            url=url,
+            params=request_data,
+        )
+        if only_prepare is True:
+            return prepared_request
         # new study uid
-        return response
+        return prepared_request.execute()
 
     def merge(
         self,
@@ -1338,7 +1512,8 @@ class Study:
         secondary_study_uid: str,
         delete_secondary_study: Optional[bool] = None,
         series_uids: Optional[str] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Merge studies.
 
         URL: /study/{namespace}/{studyUid}/merge?sid={sid}&secondary_study_uid={secondary_study_uid}&delete_secondary_study={0,1}
@@ -1354,6 +1529,7 @@ class Study:
         :param series_uids: A list of one or more comma-separated
             Series Instance UIDs, used to filter images merged
             from secondary study.
+        :param only_prepare: Get prepared request.
 
         :returns: Actually empty response
         """
@@ -1388,13 +1564,16 @@ class Study:
         errors_mapping = {
             500: permission_denied,
         }
-        response: Response = self._storage.get(url, params=request_data)
-        response = check_response(
-            response,
-            url_arg_names=url_arg_names,
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
             errors_mapping=errors_mapping,
+            params=request_data,
         )
-        return response
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
 
     def anonymize(
         self,
@@ -1406,7 +1585,8 @@ class Study:
         new_study_uid: Optional[str] = None,
         keep_image_uids: Optional[str] = None,
         color: Optional[str] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Produce a new study that is a copy of the old, with specified pixel regions obscured.
 
         URL: /study/{namespace}/{studyUid}/anonymize
@@ -1424,6 +1604,7 @@ class Study:
             of modified copies be same as originals? (default is false)
         :param color: HTML-formatted color (rrggbb) of
             obscured regions (default is black-and-white checkerboard)
+        :param only_prepare: Get prepared request.
 
         :returns: Anonymize study response
 
@@ -1454,21 +1635,24 @@ class Study:
         headers = {
             'Content-Type': 'application/json; charset=utf-8',
         }
-        response: Response = self._storage.post(
-            url,
+        errors_mapping = {
+            412:
+            PreconditionFailed(
+                'phi_namespace or to_namespace is not provided.',
+            ),
+        }
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.post,
+            url=url,
+            errors_mapping=errors_mapping,
             params=request_data,
             headers=headers,
             data=json.dumps(region),
         )
-        errors_mapping = {
-            412: PreconditionFailed('phi_namespace or to_namespace is not provided.'),
-        }
-        response = check_response(
-            response,
-            url_arg_names=url_arg_names,
-            errors_mapping=errors_mapping,
-        )
-        return response
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
 
     def crop(
         self,
@@ -1479,7 +1663,8 @@ class Study:
         to_namespace: Optional[str] = None,
         new_study_uid: Optional[str] = None,
         keep_image_uids: Optional[str] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Produce a new study that is a copy of the old, cropped to specified pixel region.
 
         URL: /study/{namespace}/{studyUid}/crop
@@ -1496,6 +1681,7 @@ class Study:
         :param keep_image_uids: Should SOP Instance UIDs
             of modified copies be same as originals? 1/0
             (default: 0/false)
+        :param only_prepare: Get prepared request.
 
         :returns: Crop study response
 
@@ -1530,28 +1716,32 @@ class Study:
         headers = {
             'Content-Type': 'application/json; charset=utf-8',
         }
-        response: Response = self._storage.post(
-            url,
+        errors_mapping = {
+            412:
+            PreconditionFailed(
+                'phi_namespace or to_namespace is not provided.',
+            ),
+        }
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.post,
+            url=url,
+            errors_mapping=errors_mapping,
             params=request_data,
             headers=headers,
             data=json.dumps(region),
         )
-        errors_mapping = {
-            412: PreconditionFailed('phi_namespace or to_namespace is not provided.'),
-        }
-        response = check_response(
-            response,
-            url_arg_names=url_arg_names,
-            errors_mapping=errors_mapping,
-        )
-        return response
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
 
     def cache(
         self,
         engine_fqdn: str,
         namespace: str,
         study_uid: str,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Clears the image and metadata cache for the indicated study.
 
         URL: /study/{namespace}/{studyUid}/cache
@@ -1559,6 +1749,7 @@ class Study:
         :param engine_fqdn: Engine FQDN (Required).
         :param namespace: Namespace (Required).
         :param study_uid: Study uid (Required).
+        :param only_prepare: Get prepared request.
 
         :returns: Cache study response
         """
@@ -1575,6 +1766,12 @@ class Study:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.delete(url, params=request_data)
-        response = check_response(response, url_arg_names=url_arg_names)
-        return response
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.delete,
+            url=url,
+            params=request_data,
+        )
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()

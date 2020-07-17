@@ -14,7 +14,7 @@ class TestAddonStudy:
         """Test study upload image method."""
         dicom_path = Path(__file__) \
             .parents[1] \
-            .joinpath('dicoms', 'read_only', 'IMG00001.dcm')
+            .joinpath('dicoms', 'read_only', 'series_1', 'IMG00001.dcm')
 
         namespace_id = account.account.namespace_id
         engine_fqdn = api \
@@ -47,7 +47,7 @@ class TestAddonStudy:
         """
         dicom_path = Path(__file__) \
             .parents[1] \
-            .joinpath('dicoms', 'read_only', 'IMG00001.dcm')
+            .joinpath('dicoms', 'read_only', 'series_1', 'IMG00001.dcm')
         namespace_id = account.account.namespace_id
         image_params = api.Addon.Study.upload_dicom(dicom_path, namespace_id)
         study_uid = '1.2.840.10008.1.142353.149743743.367518058.1111111111'  # NOQA:E501

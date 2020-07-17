@@ -91,7 +91,7 @@ class Study:
 
         images_params = []
 
-        first_dicom = next(study_dir.iterdir(), None)
+        first_dicom = next(study_dir.glob('**/*.dcm'), None)
         if first_dicom is None:
             raise ValueError('study_dir is empty')
 
@@ -115,7 +115,7 @@ class Study:
         uuid: str = response_data.uuid
 
         # upload images
-        for dicom_path in study_dir.iterdir():
+        for dicom_path in study_dir.glob('**/*.dcm'):
             images_params.append(
                 self.upload_dicom(
                     dicom_path,
@@ -127,7 +127,7 @@ class Study:
         # In api.html sync method have not uuid param...
         # So we use this hardcode:
         request = self._api.Study.sync(image_count=1)
-        request._request_data['uuid'] = uuid  # NOQA:WPS437
+        request.request_data['uuid'] = uuid  # NOQA:WPS437
         request.get()
 
         return uuid, images_params
@@ -148,10 +148,7 @@ class Study:
         :raises TimeoutError: if study not ready by timeout
         :return: Study box object
         """
-        # prepare ws
-        ws_url = '{url}/channel/websocket'.format(
-            url=self._api._api_url,  # NOQA:WPS437
-        )
+        ws_url = self._api.ws_url
         ws_manager = WSManager(ws_url)
         study = None
         start = monotonic()

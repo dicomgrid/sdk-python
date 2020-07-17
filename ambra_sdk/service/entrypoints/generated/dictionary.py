@@ -39,14 +39,14 @@ class Dictionary:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/dictionary/list',
@@ -63,37 +63,34 @@ class Dictionary:
         case_sensitive,
         lookup,
         name,
+        object,
         replace,
-        object=None,
     ):
         """Add.
         :param account_id: The account id
         :param case_sensitive: Flag if the dictionary lookup is case sensitive or not
         :param lookup: A JSON array of field names that will be concatenated and MD5 hashed for the dictionary lookup value
         :param name: The dictionary name
+        :param object: Object this is applied against (Study|Order|User_account|Case)
         :param replace: A JSON array of the field names that will be replaced for a successful lookup
-        :param object: object
-
-        Notes:
-        object - Object this is applied against (Study OR Order OR User_account OR Case)
         """
         request_data = {
-           'object': object,
-           'replace': replace,
+           'account_id': account_id,
            'case_sensitive': case_sensitive,
            'lookup': lookup,
-           'account_id': account_id,
            'name': name,
+           'object': object,
+           'replace': replace,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_FIELD'] = InvalidField('An invalid field name was passed. The error_subtype holds the name of the invalid field')
-        errors_mapping['INVALID_FLAG'] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
-        errors_mapping['INVALID_OBJECT'] = InvalidObject('An invalid object was passed')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_LIST'] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('An invalid field name was passed. The error_subtype holds the name of the invalid field')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('INVALID_OBJECT', None)] = InvalidObject('An invalid object was passed')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_LIST', None)] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/dictionary/add',
@@ -113,14 +110,14 @@ class Dictionary:
         :param uuid: The dictionary id
         """
         request_data = {
-           'uuid': uuid,
            'name': name,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The dictionary can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The dictionary can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/dictionary/set',
@@ -142,9 +139,9 @@ class Dictionary:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The dictionary can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The dictionary can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/dictionary/get',
@@ -166,9 +163,9 @@ class Dictionary:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The dictionary can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The dictionary can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/dictionary/delete',
@@ -188,15 +185,15 @@ class Dictionary:
         :param lookup: Only return the entry for the optional lookup entry (optional)
         """
         request_data = {
-           'uuid': uuid,
            'lookup': lookup,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The dictionary can not be found')
-        errors_mapping['NOT_LIST'] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The dictionary can not be found')
+        errors_mapping[('NOT_LIST', None)] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/dictionary/entries',
@@ -220,20 +217,20 @@ class Dictionary:
         :param regexp: An integer value that indicates that this entry is a regular expression (optional)
         """
         request_data = {
-           'replace': replace,
-           'regexp': regexp,
-           'uuid': uuid,
            'lookup': lookup,
+           'regexp': regexp,
+           'replace': replace,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_INTEGER'] = InvalidInteger('Invalid integer. The error_subtype holds the invalid integer.')
-        errors_mapping['INVALID_LOOKUP'] = InvalidLookup('The lookup does not have the required number of fields')
-        errors_mapping['INVALID_REGEXP'] = InvalidRegexp('Invalid regular expression. The error_subtype holds the invalid regexp.')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The dictionary can not be found')
-        errors_mapping['NOT_LIST'] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('INVALID_INTEGER', None)] = InvalidInteger('Invalid integer. The error_subtype holds the invalid integer.')
+        errors_mapping[('INVALID_LOOKUP', None)] = InvalidLookup('The lookup does not have the required number of fields')
+        errors_mapping[('INVALID_REGEXP', None)] = InvalidRegexp('Invalid regular expression. The error_subtype holds the invalid regexp.')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The dictionary can not be found')
+        errors_mapping[('NOT_LIST', None)] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/dictionary/entry/add',
@@ -253,15 +250,15 @@ class Dictionary:
         :param uuid: The dictionary id
         """
         request_data = {
-           'uuid': uuid,
            'lookup': lookup,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The dictionary or entry  can not be found')
-        errors_mapping['NOT_LIST'] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The dictionary or entry  can not be found')
+        errors_mapping[('NOT_LIST', None)] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/dictionary/entry/delete',
@@ -277,7 +274,9 @@ class Dictionary:
         account_id=None,
         add_if_no_match=None,
         approve_if_match=None,
+        delay=None,
         namespace_id=None,
+        run_once=None,
         sequence=None,
         skip_if_lookup_unchanged=None,
         skip_if_replace_has_value=None,
@@ -287,7 +286,9 @@ class Dictionary:
         :param account_id: account_id
         :param add_if_no_match: Flag to add the lookup and replace values to the dictionary if no match occurs (optional)
         :param approve_if_match: Approve the object if there was a match (optional)
+        :param delay: An integer number of seconds to delay the dictionary application (optional)
         :param namespace_id: namespace_id
+        :param run_once: Flag to make dictionary apply only once per object (optional)
         :param sequence: An integer value. Attachments are processed from low number to high number (optional)
         :param skip_if_lookup_unchanged: Flag to skip the lookup if the lookup field(s) are un-changed (optional)
         :param skip_if_replace_has_value: Flag to skip the lookup if the replace field already has a value (optional)
@@ -296,20 +297,22 @@ class Dictionary:
         (account_id OR namespace_id) - uuid of the account or namespace to the dictionary to
         """
         request_data = {
-           'skip_if_lookup_unchanged': skip_if_lookup_unchanged,
-           'sequence': sequence,
-           'skip_if_replace_has_value': skip_if_replace_has_value,
-           'namespace_id': namespace_id,
-           'uuid': uuid,
+           'account_id': account_id,
            'add_if_no_match': add_if_no_match,
            'approve_if_match': approve_if_match,
-           'account_id': account_id,
+           'delay': delay,
+           'namespace_id': namespace_id,
+           'run_once': run_once,
+           'sequence': sequence,
+           'skip_if_lookup_unchanged': skip_if_lookup_unchanged,
+           'skip_if_replace_has_value': skip_if_replace_has_value,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The dictionary or entry  can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The dictionary or entry  can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/dictionary/attach',
@@ -324,6 +327,8 @@ class Dictionary:
         uuid,
         add_if_no_match=None,
         approve_if_match=None,
+        delay=None,
+        run_once=None,
         sequence=None,
         skip_if_lookup_unchanged=None,
         skip_if_replace_has_value=None,
@@ -332,23 +337,27 @@ class Dictionary:
         :param uuid: The dictionary attach id
         :param add_if_no_match: Flag to add the lookup and replace values to the dictionary if no match occurs (optional)
         :param approve_if_match: Approve the object if there was a match (optional)
+        :param delay: An integer number of seconds to delay the dictionary application (optional)
+        :param run_once: Flag to make dictionary apply only once per object (optional)
         :param sequence: An integer value. Attachments are processed from low number to high number (optional)
         :param skip_if_lookup_unchanged: Flag to skip the lookup if the lookup field(s) are un-changed (optional)
         :param skip_if_replace_has_value: Flag to skip the lookup if any of the replace fields already has a value (optional)
         """
         request_data = {
-           'skip_if_lookup_unchanged': skip_if_lookup_unchanged,
-           'sequence': sequence,
-           'skip_if_replace_has_value': skip_if_replace_has_value,
-           'uuid': uuid,
            'add_if_no_match': add_if_no_match,
            'approve_if_match': approve_if_match,
+           'delay': delay,
+           'run_once': run_once,
+           'sequence': sequence,
+           'skip_if_lookup_unchanged': skip_if_lookup_unchanged,
+           'skip_if_replace_has_value': skip_if_replace_has_value,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The dictionary attachment can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The dictionary attachment can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/dictionary/attach/set',
@@ -370,9 +379,9 @@ class Dictionary:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The dictionary attachment can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The dictionary attachment can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/dictionary/detach',

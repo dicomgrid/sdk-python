@@ -22,6 +22,16 @@ class TestStorageImage:
         )
         return schema.series[0]['images'][0]
 
+    def test_all_methods_prepared(self, api):
+        """Test all methods have only prepare argument."""
+        study = api.Storage.Image
+        for attribute_name in dir(study):  # NOQA:WPS421
+            if not attribute_name.startswith('_'):
+                attribute = getattr(study, attribute_name)
+                if callable(attribute):
+                    assert 'only_prepare' in \
+                        attribute.__func__.__code__.co_varnames  # NOQA:WPS609
+
     def test_cadsr(self, api, image, readonly_study):
         """Test cadsr method."""
         engine_fqdn = readonly_study.engine_fqdn

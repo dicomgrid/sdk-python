@@ -161,64 +161,64 @@ class Study:
         :param uuid: uuid
 
         Notes:
-        customfield-(CUSTOMFIELD_UUID OR DICOM_TAG) - Custom field(s), see notes in /study/add (optional)
         (sid OR uuid AND serial_no) - Either the sid or the node id and serial number
         (study_uid OR study_uid AND storage_namespace AND phi_namespace) - The study uid if node authentication or the storage triplet if sid authentication
+        customfield-(CUSTOMFIELD_UUID OR DICOM_TAG) - Custom field(s), see notes in /study/add (optional)
         """
         request_data = {
-           'patient_comments': patient_comments,
-           'patient_institution_residence': patient_institution_residence,
-           'modality': modality,
-           'patient_name_other': patient_name_other,
-           'patientid_other': patientid_other,
-           'patient_phone': patient_phone,
-           'patient_name': patient_name,
-           'patient_size': patient_size,
-           'patient_religious_preference': patient_religious_preference,
-           'serial_no': serial_no,
            'accession_number': accession_number,
-           'referring_physician': referring_physician,
-           'patient_mother_birthname': patient_mother_birthname,
-           'patient_ethnic_group': patient_ethnic_group,
-           'patient_birth_date': patient_birth_date,
-           'study_date': study_date,
-           'patient_birth_time': patient_birth_time,
-           'storage_namespace': storage_namespace,
-           'patient_additional_history': patient_additional_history,
-           'patient_weight': patient_weight,
-           'patient_address': patient_address,
-           'phi_namespace': phi_namespace,
-           'patient_sex': patient_sex,
            'attachment_count': attachment_count,
-           'study_uid': study_uid,
            'destination_ae_title': destination_ae_title,
-           'patient_current_location': patient_current_location,
-           'patientid': patientid,
-           'medical_record_locator': medical_record_locator,
-           'uuid': uuid,
-           'patient_occupation': patient_occupation,
-           'source_ae_title': source_ae_title,
            'image_count': image_count,
-           'study_description': study_description,
-           'patient_age': patient_age,
-           'node_id': node_id,
-           'study_time': study_time,
-           'thin': thin,
            'integration_key': integration_key,
+           'medical_record_locator': medical_record_locator,
+           'modality': modality,
+           'node_id': node_id,
+           'patient_additional_history': patient_additional_history,
+           'patient_address': patient_address,
+           'patient_age': patient_age,
+           'patient_birth_date': patient_birth_date,
+           'patient_birth_time': patient_birth_time,
            'patient_birthname': patient_birthname,
+           'patient_comments': patient_comments,
+           'patient_current_location': patient_current_location,
+           'patient_ethnic_group': patient_ethnic_group,
+           'patient_institution_residence': patient_institution_residence,
+           'patient_mother_birthname': patient_mother_birthname,
+           'patient_name': patient_name,
+           'patient_name_other': patient_name_other,
+           'patient_occupation': patient_occupation,
+           'patient_phone': patient_phone,
+           'patient_religious_preference': patient_religious_preference,
+           'patient_sex': patient_sex,
+           'patient_size': patient_size,
+           'patient_weight': patient_weight,
+           'patientid': patientid,
+           'patientid_other': patientid_other,
+           'phi_namespace': phi_namespace,
+           'referring_physician': referring_physician,
+           'serial_no': serial_no,
+           'source_ae_title': source_ae_title,
+           'storage_namespace': storage_namespace,
+           'study_date': study_date,
+           'study_description': study_description,
+           'study_time': study_time,
+           'study_uid': study_uid,
+           'thin': thin,
+           'uuid': uuid,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
             request_data.update(customfield_param_dict)
 	
         errors_mapping = {}
-        errors_mapping['ALREADY_EXISTS'] = AlreadyExists('The study already exists. The error_subtype holds the uuid of the study and error_data holds the data from the /study/get call')
-        errors_mapping['INVALID_CREDENTIALS'] = InvalidCredentials('The sid or node credentials are invalid')
-        errors_mapping['INVALID_CUSTOMFIELD'] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NAMESPACE_NOT_FOUND'] = NamespaceNotFound('The namespace was not found')
-        errors_mapping['NOT_FOUND'] = NotFound('The error_subtype holds the name of the key for the object that can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('ALREADY_EXISTS', None)] = AlreadyExists('The study already exists. The error_subtype holds the uuid of the study and error_data holds the data from the /study/get call')
+        errors_mapping[('INVALID_CREDENTIALS', None)] = InvalidCredentials('The sid or node credentials are invalid')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NAMESPACE_NOT_FOUND', None)] = NamespaceNotFound('The namespace was not found')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The error_subtype holds the name of the key for the object that can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/study/add',
@@ -320,65 +320,65 @@ class Study:
         :param uuid: uuid
 
         Notes:
-        customfield-(CUSTOMFIELD_UUID OR DICOM_TAG) - Custom field(s), see notes in /study/add (optional)
-        (study_id OR study_uid OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study if sid authentication or the study_uid if node authentication or the storage triplet if you want a future set
         (sid OR uuid AND serial_no) - Either the sid or the node id and serial number
+        (study_id OR study_uid OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study if sid authentication or the study_uid if node authentication or the storage triplet if you want a future set
+        customfield-(CUSTOMFIELD_UUID OR DICOM_TAG) - Custom field(s), see notes in /study/add (optional)
         """
         request_data = {
-           'use_upload_permission': use_upload_permission,
-           'patient_comments': patient_comments,
-           'patient_institution_residence': patient_institution_residence,
-           'modality': modality,
-           'patient_name_other': patient_name_other,
-           'patientid_other': patientid_other,
-           'patient_phone': patient_phone,
-           'patient_name': patient_name,
-           'patient_size': patient_size,
-           'patient_religious_preference': patient_religious_preference,
-           'serial_no': serial_no,
            'accession_number': accession_number,
-           'referring_physician': referring_physician,
-           'patient_mother_birthname': patient_mother_birthname,
-           'patient_ethnic_group': patient_ethnic_group,
-           'patient_birth_date': patient_birth_date,
-           'study_date': study_date,
-           'patient_birth_time': patient_birth_time,
-           'storage_namespace': storage_namespace,
-           'patient_additional_history': patient_additional_history,
-           'patient_weight': patient_weight,
-           'patient_address': patient_address,
-           'phi_namespace': phi_namespace,
-           'patient_sex': patient_sex,
            'attachment_count': attachment_count,
-           'study_uid': study_uid,
            'destination_ae_title': destination_ae_title,
-           'patient_current_location': patient_current_location,
-           'patientid': patientid,
-           'medical_record_locator': medical_record_locator,
-           'uuid': uuid,
-           'patient_occupation': patient_occupation,
-           'source_ae_title': source_ae_title,
-           'image_count': image_count,
            'find_order_uuid': find_order_uuid,
-           'study_description': study_description,
-           'patient_age': patient_age,
-           'node_id': node_id,
-           'study_time': study_time,
+           'image_count': image_count,
            'integration_key': integration_key,
+           'medical_record_locator': medical_record_locator,
+           'modality': modality,
+           'node_id': node_id,
+           'patient_additional_history': patient_additional_history,
+           'patient_address': patient_address,
+           'patient_age': patient_age,
+           'patient_birth_date': patient_birth_date,
+           'patient_birth_time': patient_birth_time,
            'patient_birthname': patient_birthname,
+           'patient_comments': patient_comments,
+           'patient_current_location': patient_current_location,
+           'patient_ethnic_group': patient_ethnic_group,
+           'patient_institution_residence': patient_institution_residence,
+           'patient_mother_birthname': patient_mother_birthname,
+           'patient_name': patient_name,
+           'patient_name_other': patient_name_other,
+           'patient_occupation': patient_occupation,
+           'patient_phone': patient_phone,
+           'patient_religious_preference': patient_religious_preference,
+           'patient_sex': patient_sex,
+           'patient_size': patient_size,
+           'patient_weight': patient_weight,
+           'patientid': patientid,
+           'patientid_other': patientid_other,
+           'phi_namespace': phi_namespace,
+           'referring_physician': referring_physician,
+           'serial_no': serial_no,
+           'source_ae_title': source_ae_title,
+           'storage_namespace': storage_namespace,
+           'study_date': study_date,
+           'study_description': study_description,
            'study_id': study_id,
+           'study_time': study_time,
+           'study_uid': study_uid,
+           'use_upload_permission': use_upload_permission,
+           'uuid': uuid,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
             request_data.update(customfield_param_dict)
 	
         errors_mapping = {}
-        errors_mapping['INVALID_CREDENTIALS'] = InvalidCredentials('The sid or node credentials are invalid')
-        errors_mapping['INVALID_CUSTOMFIELD'] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to edit this study')
-        errors_mapping['PENDING_MUST_MATCH'] = PendingMustMatch('The study is pending a must match approval from storage and can not be edited in this state')
+        errors_mapping[('INVALID_CREDENTIALS', None)] = InvalidCredentials('The sid or node credentials are invalid')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit this study')
+        errors_mapping[('PENDING_MUST_MATCH', None)] = PendingMustMatch('The study is pending a must match approval from storage and can not be edited in this state')
         query_data = {
             'api': self._api,
             'url': '/study/set',
@@ -406,22 +406,22 @@ class Study:
         :param uuid: uuid
 
         Notes:
-        (uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet
         (sid OR node_id AND serial_no) - Either the sid or the node id and serial number
+        (uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet
         """
         request_data = {
            'node_id': node_id,
-           'study_uid': study_uid,
-           'storage_namespace': storage_namespace,
-           'uuid': uuid,
-           'serial_no': serial_no,
            'phi_namespace': phi_namespace,
+           'serial_no': serial_no,
+           'storage_namespace': storage_namespace,
+           'study_uid': study_uid,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete this study')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete this study')
         query_data = {
             'api': self._api,
             'url': '/study/delete',
@@ -449,22 +449,22 @@ class Study:
         :param template: A JSON hash with name, account_id and language of the template to return (optional)
         """
         request_data = {
-           'extra': extra,
-           'template': template,
-           'fields': fields,
-           'permissions_diff': permissions_diff,
-           'limit.hl7': limit_hl7,
            'customfield_h': customfield_h,
+           'extra': extra,
+           'fields': fields,
+           'limit.hl7': limit_hl7,
+           'permissions_diff': permissions_diff,
+           'template': template,
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_TEMPLATE'] = InvalidTemplate('The template is invalid the error_subtype holds the detail')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_TEMPLATE', None)] = InvalidTemplate('The template is invalid the error_subtype holds the detail')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/study/list',
@@ -484,10 +484,10 @@ class Study:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/study/count',
@@ -511,18 +511,19 @@ class Study:
         :param is_available: Flag to limit search to studies that are ready for viewing. (optional)
         """
         request_data = {
-           'is_available': is_available,
            'entire_account': entire_account,
-           'uuid': uuid,
+           'is_available': is_available,
            'serial_no': serial_no,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node can not be found')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
+        errors_mapping[('RUNNING', None)] = Running('This cfind is currently in process')
         query_data = {
             'api': self._api,
             'url': '/study/cfind',
@@ -563,28 +564,28 @@ class Study:
         :param uuid: uuid
 
         Notes:
-        (uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet
         (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number
+        (uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet
         """
         request_data = {
-           'extra': extra,
-           'node_id': node_id,
-           'study_uid': study_uid,
-           'storage_namespace': storage_namespace,
-           'full_hl7': full_hl7,
-           'fields': fields,
-           'permissions_diff': permissions_diff,
-           'uuid': uuid,
-           'serial_no': serial_no,
-           'limit.hl7': limit_hl7,
-           'phi_namespace': phi_namespace,
            'customfield_h': customfield_h,
+           'extra': extra,
+           'fields': fields,
+           'full_hl7': full_hl7,
+           'limit.hl7': limit_hl7,
+           'node_id': node_id,
+           'permissions_diff': permissions_diff,
+           'phi_namespace': phi_namespace,
+           'serial_no': serial_no,
+           'storage_namespace': storage_namespace,
+           'study_uid': study_uid,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to access this study')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to access this study')
         query_data = {
             'api': self._api,
             'url': '/study/get',
@@ -606,9 +607,9 @@ class Study:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to access this study')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to access this study')
         query_data = {
             'api': self._api,
             'url': '/study/permissions',
@@ -637,15 +638,15 @@ class Study:
         (uuid OR study_uid AND storage_namespace AND phi_namespace OR study_uid AND account_id) - The study uuid, the storage triplet, or the study uid and account id
         """
         request_data = {
-           'study_uid': study_uid,
-           'storage_namespace': storage_namespace,
-           'uuid': uuid,
            'account_id': account_id,
            'phi_namespace': phi_namespace,
+           'storage_namespace': storage_namespace,
+           'study_uid': study_uid,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/study/exists',
@@ -669,18 +670,18 @@ class Study:
         :param uuid: The study uuid
         """
         request_data = {
+           'batch_no': batch_no,
+           'destination_id': destination_id,
            'ping': ping,
            'uuid': uuid,
-           'destination_id': destination_id,
-           'batch_no': batch_no,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study or destination can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to push this study')
-        errors_mapping['NOT_READY'] = NotReady('The study is not ready for pushing')
-        errors_mapping['PENDING'] = Pending('There is already a pending push job')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or destination can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to push this study')
+        errors_mapping[('NOT_READY', None)] = NotReady('The study is not ready for pushing')
+        errors_mapping[('PENDING', None)] = Pending('There is already a pending push job')
         query_data = {
             'api': self._api,
             'url': '/study/push',
@@ -706,18 +707,18 @@ class Study:
         :param once: Flag that this message should only be sent a maximum of one time (optional)
         """
         request_data = {
-           'once': once,
-           'hl7_id': hl7_id,
-           'uuid': uuid,
            'destination_id': destination_id,
+           'hl7_id': hl7_id,
            'hl7_template_id': hl7_template_id,
+           'once': once,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study, destination, template or hl7 message can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to push this study')
-        errors_mapping['NO_HL7_SUPPORT'] = NoHl7Support('The destination doesn&#39;t support HL7')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study, destination, template or hl7 message can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to push this study')
+        errors_mapping[('NO_HL7_SUPPORT', None)] = NoHl7Support('The destination doesn&#39;t support HL7')
         query_data = {
             'api': self._api,
             'url': '/study/push/hl7',
@@ -737,12 +738,12 @@ class Study:
         :param uuid: The study uuid
         """
         request_data = {
-           'uuid': uuid,
            'hl7_id': hl7_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('Not found')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('Not found')
         query_data = {
             'api': self._api,
             'url': '/study/pdf/hl7',
@@ -764,16 +765,16 @@ class Study:
         :param uuid: The study uuid
         """
         request_data = {
-           'uuid': uuid,
-           'number': number,
            'hl7_id': hl7_id,
+           'number': number,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_PHONE'] = InvalidPhone('The fax number is invalid')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study or HL7 message can not be found')
-        errors_mapping['PDF_FAILED'] = PdfFailed('The PDF report failed to generate')
+        errors_mapping[('INVALID_PHONE', None)] = InvalidPhone('The fax number is invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or HL7 message can not be found')
+        errors_mapping[('PDF_FAILED', None)] = PdfFailed('The PDF report failed to generate')
         query_data = {
             'api': self._api,
             'url': '/study/fax/hl7',
@@ -801,22 +802,22 @@ class Study:
         :param detail: Additional detail to send on the /node/ping (optional)
         """
         request_data = {
-           'ping': ping,
-           'study_uid': study_uid,
            'aetitle': aetitle,
-           'uuid': uuid,
-           'serial_no': serial_no,
            'detail': detail,
+           'ping': ping,
+           'serial_no': serial_no,
+           'study_uid': study_uid,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['DESTINATION_NOT_FOUND'] = DestinationNotFound('The destination can not be found')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node can not be found')
-        errors_mapping['NOT_READY'] = NotReady('The study is not ready for pushing')
-        errors_mapping['PENDING'] = Pending('There is already a pending push job')
-        errors_mapping['RETRIEVE'] = Retrieve('A thin study retrieval error. The error_subtype holds further detail')
-        errors_mapping['STUDY_NOT_FOUND'] = StudyNotFound('The study can not be found')
+        errors_mapping[('DESTINATION_NOT_FOUND', None)] = DestinationNotFound('The destination can not be found')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
+        errors_mapping[('NOT_READY', None)] = NotReady('The study is not ready for pushing')
+        errors_mapping[('PENDING', None)] = Pending('There is already a pending push job')
+        errors_mapping[('RETRIEVE', None)] = Retrieve('A thin study retrieval error. The error_subtype holds further detail')
+        errors_mapping[('STUDY_NOT_FOUND', None)] = StudyNotFound('The study can not be found')
         query_data = {
             'api': self._api,
             'url': '/study/cmove',
@@ -844,9 +845,9 @@ class Study:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node can not be found')
-        errors_mapping['STUDY_NOT_FOUND'] = StudyNotFound('The study can not be found')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
+        errors_mapping[('STUDY_NOT_FOUND', None)] = StudyNotFound('The study can not be found')
         query_data = {
             'api': self._api,
             'url': '/study/node/can/remove',
@@ -858,25 +859,22 @@ class Study:
     
     def share_who(
         self,
+        type,
         uuid,
-        type=None,
     ):
         """Share who.
+        :param type: Type of objects you want (account|location|group|user)
         :param uuid: The study uuid
-        :param type: type
-
-        Notes:
-        type - Type of objects you want (account OR location OR group OR user)
         """
         request_data = {
-           'uuid': uuid,
            'type': type,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study or share object can not be found. The error_subtype holds a the name of the key that can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to share this study')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or share object can not be found. The error_subtype holds a the name of the key that can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to share this study')
         query_data = {
             'api': self._api,
             'url': '/study/share/who',
@@ -928,43 +926,47 @@ class Study:
         :param uuid: uuid
 
         Notes:
-        (uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet if you want a future share
         (account_id OR location_id OR group_id OR user_id OR share_code OR email OR masshiway OR rsna OR npi) - uuid of the account, location, group, user or share code, email address(es), RSNA, NPI or masshiway recipient to share this study with
+        (uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet if you want a future share
         """
         request_data = {
-           'masshiway': masshiway,
-           'charge_authorized': charge_authorized,
-           'rsna': rsna,
            'account_id': account_id,
-           'storage_namespace': storage_namespace,
-           'phi_namespace': phi_namespace,
-           'message': message,
-           'user_id': user_id,
-           'study_uid': study_uid,
-           'email': email,
+           'charge_authorized': charge_authorized,
            'charge_modality': charge_modality,
-           'uuid': uuid,
-           'npi': npi,
+           'email': email,
            'group_id': group_id,
-           'share_code': share_code,
-           'location_id': location_id,
            'integration_key': integration_key,
+           'location_id': location_id,
+           'masshiway': masshiway,
+           'message': message,
+           'npi': npi,
+           'phi_namespace': phi_namespace,
+           'rsna': rsna,
+           'share_code': share_code,
+           'storage_namespace': storage_namespace,
+           'study_uid': study_uid,
+           'user_id': user_id,
+           'uuid': uuid,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
             request_data.update(customfield_param_dict)
 	
         errors_mapping = {}
-        errors_mapping['INVALID_EMAIL'] = InvalidEmail('An invalid email was passed for an email share')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['INVALID_NPI'] = InvalidNpi('An invalid NPI was passed for a NPI share')
-        errors_mapping['INVALID_PARAMETERS'] = InvalidParameters('Only pass a account_id or a location_id or a group_id or a user_id or a share code or an email')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study or share object can not be found. The error_subtype holds a the name of the key that can not be found')
-        errors_mapping['NOT_HASH'] = NotHash('The field is not a JSON hash. The error_subtype holds the name of the field')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to share this study')
-        errors_mapping['PHANTOM'] = Phantom('This is a phantom study')
-        errors_mapping['SHARE_FAILED'] = ShareFailed('The share failed. The error_subtype holds one of the following conditions.')
+        errors_mapping[('INVALID_EMAIL', None)] = InvalidEmail('An invalid email was passed for an email share')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('INVALID_NPI', None)] = InvalidNpi('An invalid NPI was passed for a NPI share')
+        errors_mapping[('INVALID_PARAMETERS', None)] = InvalidParameters('Only pass a account_id or a location_id or a group_id or a user_id or a share code or an email')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or share object can not be found. The error_subtype holds a the name of the key that can not be found')
+        errors_mapping[('NOT_HASH', None)] = NotHash('The field is not a JSON hash. The error_subtype holds the name of the field')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to share this study')
+        errors_mapping[('PHANTOM', None)] = Phantom('This is a phantom study')
+        errors_mapping[('SHARE_FAILED', 'SAME')] = ShareFailed('The study can&#39;t be shared into the same namespace')
+        errors_mapping[('SHARE_FAILED', 'DECLINED')] = ShareFailed('The charge card was declined')
+        errors_mapping[('SHARE_FAILED', 'NO_CARD')] = ShareFailed('The user does not have a card on file')
+        errors_mapping[('SHARE_FAILED', 'NO_CHARGE_MODALITY')] = ShareFailed('The charge modality is required if charge_authorized is set and the charging is by modality')
+        errors_mapping[('SHARE_FAILED', 'NO_DUP_SHARE')] = ShareFailed('The destination namespace has the no_dup_share flag turned on and this study is a duplicate of an existing study in the namespace')
         query_data = {
             'api': self._api,
             'url': '/study/share',
@@ -995,19 +997,19 @@ class Study:
         (account_id OR location_id OR group_id OR user_id OR user_invite_share_id) - uuid of the account, location, group, user or user invitation to stop sharing this study with
         """
         request_data = {
-           'user_id': user_id,
-           'location_id': location_id,
            'account_id': account_id,
-           'uuid': uuid,
-           'user_invite_share_id': user_invite_share_id,
            'group_id': group_id,
+           'location_id': location_id,
+           'user_id': user_id,
+           'user_invite_share_id': user_invite_share_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_PARAMETERS'] = InvalidParameters('Only pass a account_id or a location_id or a group_id or a user_id')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study or share object can not be found. The error_subtype holds a the name of the key that can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to stop sharing this study')
+        errors_mapping[('INVALID_PARAMETERS', None)] = InvalidParameters('Only pass a account_id or a location_id or a group_id or a user_id')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or share object can not be found. The error_subtype holds a the name of the key that can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to stop sharing this study')
         query_data = {
             'api': self._api,
             'url': '/study/share/stop',
@@ -1027,14 +1029,14 @@ class Study:
         :param name: Flag to return a hash with both the uuid and name of the object (optional)
         """
         request_data = {
-           'uuid': uuid,
            'name': name,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view this list')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this list')
         query_data = {
             'api': self._api,
             'url': '/study/share/list',
@@ -1056,19 +1058,19 @@ class Study:
         :param must_match: A JSON hash of study field names and values that must match before showing the study as approved and running routing and events on it (optional)
         """
         request_data = {
-           'uuid': uuid,
-           'must_match': must_match,
            'delay': delay,
+           'must_match': must_match,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['DELAY_OR_MATCH'] = DelayOrMatch('You can either delay or match, not both')
-        errors_mapping['INVALID_DELAY'] = InvalidDelay('A delay must be between 0 and 600 seconds')
-        errors_mapping['INVALID_FIELD'] = InvalidField('An invalid must match field was passed. The error_subtype holds the name of the field')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to approve this study')
+        errors_mapping[('DELAY_OR_MATCH', None)] = DelayOrMatch('You can either delay or match, not both')
+        errors_mapping[('INVALID_DELAY', None)] = InvalidDelay('A delay must be between 0 and 600 seconds')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('An invalid must match field was passed. The error_subtype holds the name of the field')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to approve this study')
         query_data = {
             'api': self._api,
             'url': '/study/approve',
@@ -1088,14 +1090,14 @@ class Study:
         :param message: Message to send to the person who shared the study (optional)
         """
         request_data = {
-           'uuid': uuid,
            'message': message,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to approve this study')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to approve this study')
         query_data = {
             'api': self._api,
             'url': '/study/reject',
@@ -1107,37 +1109,34 @@ class Study:
     
     def audit(
         self,
+        action,
         detail,
-        action=None,
         phi_namespace=None,
         storage_namespace=None,
         study_uid=None,
         uuid=None,
     ):
         """Audit.
+        :param action: The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_MERGE|STUDY_SPLIT|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)
         :param detail: Additional information
-        :param action: action
         :param phi_namespace: The phi namespace of the study (optional)
         :param storage_namespace: The storage namespace of the study (optional if uuid is passed)
         :param study_uid: The v3 storage uid of the study (optional if uuid is passed)
         :param uuid: The id of the study (optional if study_uid and storage_namespace are passed)
-
-        Notes:
-        action - The audit action (STUDY_VIEW OR STUDY_EDIT OR REPORT_UPLOAD OR REPORT_REMOVE OR REPORT_VIEW OR IMAGE_ADDED OR IMAGE_UPDATED OR STUDY_DOWNLOAD OR ACCEPTED_NOT_DIAGNOSTIC OR CANCELED_NOT_DIAGNOSTIC OR AI_ACTION OR VIEWER_ACTION)
         """
         request_data = {
            'action': action,
+           'detail': detail,
+           'phi_namespace': phi_namespace,
+           'storage_namespace': storage_namespace,
            'study_uid': study_uid,
            'uuid': uuid,
-           'storage_namespace': storage_namespace,
-           'phi_namespace': phi_namespace,
-           'detail': detail,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_ACTION'] = InvalidAction('An invalid action was passed')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study can not be found')
+        errors_mapping[('INVALID_ACTION', None)] = InvalidAction('An invalid action was passed')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
         query_data = {
             'api': self._api,
             'url': '/study/audit',
@@ -1149,26 +1148,23 @@ class Study:
     
     def star(
         self,
+        star,
         uuid,
-        star=None,
     ):
         """Star.
+        :param star: Star flag set on or off (1|0)
         :param uuid: The id of the study
-        :param star: star
-
-        Notes:
-        star - Star flag set on or off (1 OR 0)
         """
         request_data = {
-           'uuid': uuid,
            'star': star,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_FLAG'] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to star this study')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to star this study')
         query_data = {
             'api': self._api,
             'url': '/study/star',
@@ -1188,18 +1184,18 @@ class Study:
         :param limit: Maximum size of the report. The default is 30,000 rows. If the report will be bigger than this an error will be returned (optional)
         """
         request_data = {
-           'limit': limit,
            'account_id': account_id,
+           'limit': limit,
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['REPORT_ERROR'] = ReportError('Unable to start the report')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('REPORT_ERROR', None)] = ReportError('Unable to start the report')
         query_data = {
             'api': self._api,
             'url': '/study/report/detail',
@@ -1223,15 +1219,15 @@ class Study:
         :param limit: Maximum size of the report. The default is 30,000 studies. If the report will be bigger than this an error will be returned (optional)
         """
         request_data = {
-           'hours': hours,
            'email': email,
-           'namespace_id': namespace_id,
+           'hours': hours,
            'limit': limit,
+           'namespace_id': namespace_id,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['REPORT_ERROR'] = ReportError('Unable to start the report')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('REPORT_ERROR', None)] = ReportError('Unable to start the report')
         query_data = {
             'api': self._api,
             'url': '/study/report/series',
@@ -1258,15 +1254,15 @@ class Study:
         (study_id OR study_uid AND storage_namespace AND phi_namespace) - Either the study uuid or the storage triplet
         """
         request_data = {
-           'study_uid': study_uid,
-           'storage_namespace': storage_namespace,
            'phi_namespace': phi_namespace,
+           'storage_namespace': storage_namespace,
            'study_id': study_id,
+           'study_uid': study_uid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study can not be found')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
         query_data = {
             'api': self._api,
             'url': '/study/viewer/settings',
@@ -1295,16 +1291,16 @@ class Study:
         (study_id OR study_uid AND storage_namespace AND phi_namespace) - Either the study uuid or the storage triplet
         """
         request_data = {
-           'study_uid': study_uid,
-           'storage_namespace': storage_namespace,
-           'settings': settings,
            'phi_namespace': phi_namespace,
+           'settings': settings,
+           'storage_namespace': storage_namespace,
            'study_id': study_id,
+           'study_uid': study_uid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study can not be found')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
         query_data = {
             'api': self._api,
             'url': '/study/viewer3/settings',
@@ -1332,13 +1328,13 @@ class Study:
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_TAG'] = InvalidTag('The study status new value is not a valid value')
-        errors_mapping['LOCKED'] = Locked('Another user has locked this study')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to set the status for this study')
-        errors_mapping['SINGLETON'] = Singleton('The stage is a singleton stage and the user already has a locked study')
-        errors_mapping['STALE'] = Stale('The study status you have is stale')
+        errors_mapping[('INVALID_TAG', None)] = InvalidTag('The study status new value is not a valid value')
+        errors_mapping[('LOCKED', None)] = Locked('Another user has locked this study')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to set the status for this study')
+        errors_mapping[('SINGLETON', None)] = Singleton('The stage is a singleton stage and the user already has a locked study')
+        errors_mapping[('STALE', None)] = Stale('The study status you have is stale')
         query_data = {
             'api': self._api,
             'url': '/study/status/set',
@@ -1379,9 +1375,9 @@ class Study:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view the status for this study')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the status for this study')
         query_data = {
             'api': self._api,
             'url': '/study/status/history',
@@ -1406,10 +1402,10 @@ class Study:
         }
 	
         errors_mapping = {}
-        errors_mapping['ALREADY_EXISTS'] = AlreadyExists('The study already exists in the destination namespace')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study or namespace was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to move the study to this namespace')
+        errors_mapping[('ALREADY_EXISTS', None)] = AlreadyExists('The study already exists in the destination namespace')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or namespace was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to move the study to this namespace')
         query_data = {
             'api': self._api,
             'url': '/study/move',
@@ -1431,17 +1427,17 @@ class Study:
         :param uuid: The study id
         """
         request_data = {
+           'include_attachments': include_attachments,
            'namespace_id': namespace_id,
            'uuid': uuid,
-           'include_attachments': include_attachments,
         }
 	
         errors_mapping = {}
-        errors_mapping['ALREADY_EXISTS'] = AlreadyExists('The study already exists in the destination namespace')
-        errors_mapping['FAILED'] = Failed('The storage call failed to run')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study or namespace was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to duplicate the study to this namespace')
+        errors_mapping[('ALREADY_EXISTS', None)] = AlreadyExists('The study already exists in the destination namespace')
+        errors_mapping[('FAILED', None)] = Failed('The storage call failed to run')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or namespace was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to duplicate the study to this namespace')
         query_data = {
             'api': self._api,
             'url': '/study/duplicate',
@@ -1469,12 +1465,12 @@ class Study:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_AVAILABLE'] = NotAvailable('The study is not available.')
-        errors_mapping['NOT_FOUND'] = NotFound('The study or namespace was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to split the study to this namespace')
-        errors_mapping['RECENT_NAMESPACE_SPLIT'] = RecentNamespaceSplit('The study was the result of a split in this namespace within the last 24 hours')
-        errors_mapping['RUNNING'] = Running('The split job is currently running')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_AVAILABLE', None)] = NotAvailable('The study is not available.')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or namespace was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to split the study to this namespace')
+        errors_mapping[('RECENT_NAMESPACE_SPLIT', None)] = RecentNamespaceSplit('The study was the result of a split in this namespace within the last 24 hours')
+        errors_mapping[('RUNNING', None)] = Running('The split job is currently running')
         query_data = {
             'api': self._api,
             'url': '/study/split',
@@ -1499,11 +1495,11 @@ class Study:
         }
 	
         errors_mapping = {}
-        errors_mapping['ALREADY'] = Already('The study is already frozen or thawed')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_AVAILABLE'] = NotAvailable('The study is not available.')
-        errors_mapping['NOT_FOUND'] = NotFound('The study')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to freeze or thaw the study')
+        errors_mapping[('ALREADY', None)] = Already('The study is already frozen or thawed')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_AVAILABLE', None)] = NotAvailable('The study is not available.')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to freeze or thaw the study')
         query_data = {
             'api': self._api,
             'url': '/study/freeze',
@@ -1527,18 +1523,18 @@ class Study:
         :param message: The share message for the email share (optional)
         """
         request_data = {
-           'route_id': route_id,
            'email': email,
-           'uuid': uuid,
            'message': message,
+           'route_id': route_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_EMAIL'] = InvalidEmail('An invalid email address was passed')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study or routing rule was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to manually route the study')
-        errors_mapping['ROUTE_NOT_MATCHED'] = RouteNotMatched('The study does not match the route criteria')
+        errors_mapping[('INVALID_EMAIL', None)] = InvalidEmail('An invalid email address was passed')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or routing rule was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to manually route the study')
+        errors_mapping[('ROUTE_NOT_MATCHED', None)] = RouteNotMatched('The study does not match the route criteria')
         query_data = {
             'api': self._api,
             'url': '/study/manual/route',
@@ -1565,16 +1561,16 @@ class Study:
         (accession_number OR patientid OR patient_name) - The full or partial accession number, MRN or patient name to search by. If none are passed the studies accession number will be used (optional)
         """
         request_data = {
+           'accession_number': accession_number,
            'patient_name': patient_name,
            'patientid': patientid,
            'uuid': uuid,
-           'accession_number': accession_number,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to find orders for this study')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to find orders for this study')
         query_data = {
             'api': self._api,
             'url': '/study/find/order',
@@ -1597,11 +1593,11 @@ class Study:
         }
 	
         errors_mapping = {}
-        errors_mapping['ALREADY_THIN'] = AlreadyThin('This is already a thin study')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
-        errors_mapping['NO_FRESH_ARCHIVE'] = NoFreshArchive('A fresh archive copy of the study does not exist')
+        errors_mapping[('ALREADY_THIN', None)] = AlreadyThin('This is already a thin study')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('NO_FRESH_ARCHIVE', None)] = NoFreshArchive('A fresh archive copy of the study does not exist')
         query_data = {
             'api': self._api,
             'url': '/study/archive',
@@ -1623,12 +1619,12 @@ class Study:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['MISSING_INFO'] = MissingInfo('The study needs a study_uid and an accession number')
-        errors_mapping['NOT_FOUND'] = NotFound('The study was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
-        errors_mapping['NOT_THIN'] = NotThin('This is not a thin study')
-        errors_mapping['NO_QUERY_DESTINATION'] = NoQueryDestination('No query retrieve destination for a node that creates phantoms is available')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('MISSING_INFO', None)] = MissingInfo('The study needs a study_uid and an accession number')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('NOT_THIN', None)] = NotThin('This is not a thin study')
+        errors_mapping[('NO_QUERY_DESTINATION', None)] = NoQueryDestination('No query retrieve destination for a node that creates phantoms is available')
         query_data = {
             'api': self._api,
             'url': '/study/retrieve',
@@ -1653,9 +1649,9 @@ class Study:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/study/comment/add',
@@ -1677,9 +1673,9 @@ class Study:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The comment was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The comment was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/study/comment/delete',
@@ -1701,9 +1697,9 @@ class Study:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The comment was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The comment was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/study/comment/get',
@@ -1731,10 +1727,10 @@ class Study:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study or validation was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
-        errors_mapping['UNABLE_TO_VALIDATE'] = UnableToValidate('The study is not available or did not return the data needed to validate')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or validation was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('UNABLE_TO_VALIDATE', None)] = UnableToValidate('The study is not available or did not return the data needed to validate')
         query_data = {
             'api': self._api,
             'url': '/study/validate',
@@ -1754,15 +1750,15 @@ class Study:
         :param report_name: The report name (optional defaults to customfields.txt)
         """
         request_data = {
-           'uuid': uuid,
            'report_name': report_name,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_AVAILABLE'] = NotAvailable('The study is available')
-        errors_mapping['NOT_FOUND'] = NotFound('The study was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_AVAILABLE', None)] = NotAvailable('The study is available')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/study/attach/customfields',
@@ -1782,16 +1778,16 @@ class Study:
         :param uuid: The study id
         """
         request_data = {
-           'uuid': uuid,
            'redirect': redirect,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_AVAILABLE'] = NotAvailable('The study is not available')
-        errors_mapping['NOT_FOUND'] = NotFound('The study was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
-        errors_mapping['UNABLE_TO_GENERATE'] = UnableToGenerate('The link could not be successfully generated')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_AVAILABLE', None)] = NotAvailable('The study is not available')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('UNABLE_TO_GENERATE', None)] = UnableToGenerate('The link could not be successfully generated')
         query_data = {
             'api': self._api,
             'url': '/study/external/viewer',
@@ -1813,18 +1809,18 @@ class Study:
         :param uuid: The study id
         """
         request_data = {
+           'detail': detail,
            'question': question,
            'uuid': uuid,
-           'detail': detail,
         }
 	
         errors_mapping = {}
-        errors_mapping['IN_PROCESS'] = InProcess('The question is currently in process')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NODE_NOT_SETUP'] = NodeNotSetup('A node needs to be attached to the study namespace for this question')
-        errors_mapping['NOT_ENABLED'] = NotEnabled('The account does not have the ai_QUESTION customfield')
-        errors_mapping['NOT_FOUND'] = NotFound('The study or question was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('IN_PROCESS', None)] = InProcess('The question is currently in process')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NODE_NOT_SETUP', None)] = NodeNotSetup('A node needs to be attached to the study namespace for this question')
+        errors_mapping[('NOT_ENABLED', None)] = NotEnabled('The account does not have the ai_QUESTION customfield')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or question was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/study/question',
@@ -1846,11 +1842,11 @@ class Study:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_AVAILABLE'] = NotAvailable('The study is not available in storage')
-        errors_mapping['NOT_FOUND'] = NotFound('The study or question was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
-        errors_mapping['RUNNING'] = Running('A load job is already running')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_AVAILABLE', None)] = NotAvailable('The study is not available in storage')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or question was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('RUNNING', None)] = Running('A load job is already running')
         query_data = {
             'api': self._api,
             'url': '/study/dicomdata/load',
@@ -1881,17 +1877,17 @@ class Study:
         (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number
         """
         request_data = {
-           'node_id': node_id,
-           'study_uid': study_uid,
-           'storage_namespace': storage_namespace,
-           'size': size,
-           'serial_no': serial_no,
            'event': event,
+           'node_id': node_id,
+           'serial_no': serial_no,
+           'size': size,
+           'storage_namespace': storage_namespace,
+           'study_uid': study_uid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/study/timing/event',
@@ -1913,10 +1909,10 @@ class Study:
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/study/timing/log',
@@ -1951,20 +1947,20 @@ class Study:
         (study_id OR study_uid AND storage_namespace AND phi_namespace) - The study id or the study_uid/storage_namespace/phi_namespace triplet
         """
         request_data = {
-           'node_id': node_id,
-           'study_uid': study_uid,
-           'storage_namespace': storage_namespace,
            'image_count': image_count,
-           'serial_no': serial_no,
+           'node_id': node_id,
            'phi_namespace': phi_namespace,
+           'serial_no': serial_no,
+           'storage_namespace': storage_namespace,
            'study_id': study_id,
+           'study_uid': study_uid,
         }
 	
         errors_mapping = {}
-        errors_mapping['BLOCKED'] = Blocked('This is a repeat sync which is not allowed')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to sync this study')
+        errors_mapping[('BLOCKED', None)] = Blocked('This is a repeat sync which is not allowed')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to sync this study')
         query_data = {
             'api': self._api,
             'url': '/study/sync',

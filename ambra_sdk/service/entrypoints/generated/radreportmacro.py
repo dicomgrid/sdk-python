@@ -32,19 +32,19 @@ class Radreportmacro:
         :param type: Limit to this type (optional)
         """
         request_data = {
-           'type': type,
-           'modality': modality,
            'account_id': account_id,
+           'modality': modality,
+           'type': type,
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to perform this operation')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this operation')
         query_data = {
             'api': self._api,
             'url': '/radreportmacro/list',
@@ -73,17 +73,17 @@ class Radreportmacro:
         :param hotkey: Hotkey of the macro (optional)
         """
         request_data = {
-           'type': type,
-           'modality': modality,
-           'hotkey': hotkey,
            'account_id': account_id,
            'body': body,
+           'hotkey': hotkey,
+           'modality': modality,
            'name': name,
+           'type': type,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to perform this operation')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this operation')
         query_data = {
             'api': self._api,
             'url': '/radreportmacro/add',
@@ -111,17 +111,17 @@ class Radreportmacro:
         :param type: Type of radreport (optional)
         """
         request_data = {
-           'type': type,
-           'modality': modality,
-           'hotkey': hotkey,
-           'uuid': uuid,
            'body': body,
+           'hotkey': hotkey,
+           'modality': modality,
            'name': name,
+           'type': type,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to perform this operation')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this operation')
         query_data = {
             'api': self._api,
             'url': '/radreportmacro/set',
@@ -143,8 +143,8 @@ class Radreportmacro:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to perform this operation')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this operation')
         query_data = {
             'api': self._api,
             'url': '/radreportmacro/get',
@@ -166,8 +166,8 @@ class Radreportmacro:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to perform this operation')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this operation')
         query_data = {
             'api': self._api,
             'url': '/radreportmacro/delete',

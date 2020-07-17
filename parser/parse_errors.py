@@ -4,25 +4,29 @@ from typing import List, Optional
 
 
 class ErrorSubtype:
+
     def __init__(self, name: str, description: str):
         self.name = name
         self.description = description
 
 
 class ErrorParameter:
+
     def __init__(
-            self,
-            name: str,
-            description: str,
-            error_code: int = 412,
-            subtypes: Optional[List[ErrorSubtype]] = None,
+        self,
+        name: str,
+        description: str,
+        error_code: int = 412,
+        subtypes: Optional[List[ErrorSubtype]] = None,
     ):
         # 412 - precondition failed
         self.name = name
         self.description = description
         self.error_code = error_code
         if subtypes is None:
-            self.subtypes = []
+            self.subtypes = [
+                None,
+            ]
         else:
             self.subtypes = subtypes
 
@@ -41,20 +45,64 @@ class ErrorParameter:
             description=self.description,
         )
 
+
 ERROR_PARAMETERS_STRING_MAP = {
-    '404 not found': ErrorParameter('NOT_FOUND', 'Not found', 404),
-    'Returns a 404 HTTP error if the report can not be found or is not available for download': ErrorParameter('NOT_FOUND', 'Not found', 404),
-    'SHARE_FAILED • The share failed. The error_subtype holds one of the following conditions.': ErrorParameter(
+    '404 not found':
+    ErrorParameter('NOT_FOUND', 'Not found', 404),
+    'Returns a 404 HTTP error if the report can not be found or is not available for download':
+    ErrorParameter('NOT_FOUND', 'Not found', 404),
+    'SHARE_FAILED • The share failed. The error_subtype holds one of the following conditions.':
+    ErrorParameter(
         'SHARE_FAILED',
         'The share failed. The error_subtype holds one of the following conditions.',
         subtypes=[
-            ErrorSubtype('SAME', 'The study can\'t be shared into the same namespace'),
+            ErrorSubtype(
+                'SAME', 'The study can\'t be shared into the same namespace'
+            ),
             ErrorSubtype('DECLINED', 'The charge card was declined'),
             ErrorSubtype('NO_CARD', 'The user does not have a card on file'),
-            ErrorSubtype('NO_CHARGE_MODALITY', 'The charge modality is required if charge_authorized is set and the charging is by modality'),
-            ErrorSubtype('NO_DUP_SHARE', 'The destination namespace has the no_dup_share flag turned on and this study is a duplicate of an existing study in the namespace'),
+            ErrorSubtype(
+                'NO_CHARGE_MODALITY',
+                'The charge modality is required if charge_authorized is set and the charging is by modality'
+            ),
+            ErrorSubtype(
+                'NO_DUP_SHARE',
+                'The destination namespace has the no_dup_share flag turned on and this study is a duplicate of an existing study in the namespace'
+            ),
         ]
-
+    ),
+    'NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE • The role cannot be used for the account':
+    ErrorParameter(
+        'NOT_PERMITTED',
+        'The role cannot be used for the account',
+        subtypes=[
+            ErrorSubtype(
+                'ROLE_FOR_NAMESPACE_TYPE',
+                'The role cannot be used for the account'
+            ),
+        ],
+    ),
+    'NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE • The role cannot be used for the group':
+    ErrorParameter(
+        'NOT_PERMITTED',
+        'The role cannot be used for the group',
+        subtypes=[
+            ErrorSubtype(
+                'ROLE_FOR_NAMESPACE_TYPE',
+                'The role cannot be used for the group'
+            ),
+        ],
+    ),
+    'NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE • The role cannot be used for the location':
+    ErrorParameter(
+        'NOT_PERMITTED',
+        'The role cannot be used for the location',
+        subtypes=[
+            ErrorSubtype(
+                'ROLE_FOR_NAMESPACE_TYPE',
+                'The role cannot be used for the location'
+            ),
+        ],
     ),
 }
 
@@ -71,7 +119,6 @@ BAD_ERROR_PARAMETERS_STRING = {
     'Returns a 401 HTTP error if authentication failed',
 }
 
- 
 
 def parse_error_parameter(parameter_str):
     if parameter_str in ERROR_PARAMETERS_STRING_MAP:

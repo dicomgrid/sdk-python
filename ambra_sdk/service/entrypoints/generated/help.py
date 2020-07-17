@@ -27,8 +27,8 @@ class Help:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The help was not found')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The help was not found')
         query_data = {
             'api': self._api,
             'url': '/help/get',
@@ -48,13 +48,13 @@ class Help:
         :param text: The help text
         """
         request_data = {
-           'text': text,
            'key': key,
+           'text': text,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_SYSADMIN_OR_SUPPORT'] = NotSysadminOrSupport('The user is not a sysadmin or support user')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_SYSADMIN_OR_SUPPORT', None)] = NotSysadminOrSupport('The user is not a sysadmin or support user')
         query_data = {
             'api': self._api,
             'url': '/help/set',

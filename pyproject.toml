@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ambra-sdk"
-version = "3.20.4.0-1"
+version = "3.20.5.0-1"
 description = "Ambrahealth python SDK"
 authors = [
 	"Ambrahealth AI team <python-sdk@ambrahealth.com>",
@@ -35,13 +35,13 @@ aiohttp = "^3.6.2"
 # TODO update python-box when dynaconf released.
 # https://github.com/rochacbruno/dynaconf/commit/3711d7e0643a829ac5acbc9c7db885f44af16840
 python-box = "<4.0.0"
-pydicom = "^1.4.2"
+pydicom = "^2.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 mypy = "^0.761"
 pytest-cov = "^2.8.1"
-wemake-python-styleguide = "^0.13.4"
+wemake-python-styleguide = "^0.14.0"
 dynaconf = "^2.2.2"
 beautifulsoup4 = "^4.8.2"
 jinja2 = "^2.11.1"
@@ -50,6 +50,9 @@ sphinx = "^2.4.4"
 tox = "^3.14.5"
 tomlkit = "^0.5.11"
 gitpython = "^3.1.0"
+
+# https://github.com/wemake-services/wemake-python-styleguide/issues/1512
+isort = "^4.3.21"
 
 [build-system]
 requires = ["poetry>=0.12"]

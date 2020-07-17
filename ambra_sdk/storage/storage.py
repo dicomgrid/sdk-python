@@ -65,6 +65,14 @@ class Storage:
         }
         return url, request_data
 
+    def retry_with_new_sid(self, fn):
+        """Retry with new sid.
+
+        :param fn: callable method
+        :return: fn result
+        """
+        return self._base_api.retry_with_new_sid(fn)
+
     def delete(self, url, **kwargs) -> Response:
         """Delete from storage.
 

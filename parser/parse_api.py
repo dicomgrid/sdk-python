@@ -54,7 +54,8 @@ class Api:
         self, description: str, url: str,
         request_parameters: List[RequestParameter],
         response_parameters: List[ResponseParameter],
-        errors: List[ErrorParameter], notes: List[str]
+        errors: List[ErrorParameter],
+        notes: List[str],
     ):
         self.description = description
         self.url = url
@@ -109,6 +110,17 @@ class Api:
         self.request_params = sorted(required, key=lambda x: x.name)
         self.request_params.extend(sorted(optionals, key=lambda x: x.name))
 
+        self.request_usual_params = sorted(
+            self.request_usual_params,
+            key=lambda x: x.name,
+        )
+
+        self.request_multiple_params = sorted(
+            self.request_multiple_params,
+            key=lambda x: x.pythonic_name,
+        )
+
+        self.notes = sorted(self.notes, key=lambda x: x.description)
         self.errors = sorted(set(self.errors), key=lambda x: x.name)
 
     @property

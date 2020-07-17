@@ -44,24 +44,24 @@ class Appointment:
         :param user_id: Id of the user to create the appointment for (optional defaults to current user)
         """
         request_data = {
-           'user_id': user_id,
-           'end_time': end_time,
-           'description': description,
            'account_id': account_id,
-           'start_time': start_time,
+           'description': description,
+           'end_time': end_time,
            'patient_id': patient_id,
+           'start_time': start_time,
+           'user_id': user_id,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
             request_data.update(customfield_param_dict)
 	
         errors_mapping = {}
-        errors_mapping['INVALID_CUSTOMFIELD'] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
-        errors_mapping['INVALID_DATE_TIME'] = InvalidDateTime('The timestamp is invalid')
-        errors_mapping['INVALID_RANGE'] = InvalidRange('An invalid time range was specified')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The object was not found. The error_subtype holds the type of object not found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to add a appointment to the account')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('INVALID_DATE_TIME', None)] = InvalidDateTime('The timestamp is invalid')
+        errors_mapping[('INVALID_RANGE', None)] = InvalidRange('An invalid time range was specified')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found. The error_subtype holds the type of object not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add a appointment to the account')
         query_data = {
             'api': self._api,
             'url': '/appointment/add',
@@ -83,9 +83,9 @@ class Appointment:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The appointment can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view this appointment')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The appointment can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this appointment')
         query_data = {
             'api': self._api,
             'url': '/appointment/get',
@@ -113,20 +113,20 @@ class Appointment:
         :param uuid: The appointment uuid
         """
         request_data = {
-           'user_id': user_id,
-           'end_time': end_time,
-           'description': description,
-           'uuid': uuid,
-           'start_time': start_time,
            'customfields': customfields,
+           'description': description,
+           'end_time': end_time,
+           'start_time': start_time,
+           'user_id': user_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_CUSTOMFIELD'] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
-        errors_mapping['INVALID_DATE_TIME'] = InvalidDateTime('The timestamp is invalid')
-        errors_mapping['INVALID_RANGE'] = InvalidRange('An invalid time range was specified')
-        errors_mapping['NOT_FOUND'] = NotFound('The appointment can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to edit the appointment')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('INVALID_DATE_TIME', None)] = InvalidDateTime('The timestamp is invalid')
+        errors_mapping[('INVALID_RANGE', None)] = InvalidRange('An invalid time range was specified')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The appointment can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the appointment')
         query_data = {
             'api': self._api,
             'url': '/appointment/set',
@@ -148,9 +148,9 @@ class Appointment:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The appointment can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete the appointment')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The appointment can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete the appointment')
         query_data = {
             'api': self._api,
             'url': '/appointment/delete',
@@ -172,14 +172,14 @@ class Appointment:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view appointments in this account')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view appointments in this account')
         query_data = {
             'api': self._api,
             'url': '/appointment/list',

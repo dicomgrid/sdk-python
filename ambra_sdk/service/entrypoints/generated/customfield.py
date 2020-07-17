@@ -45,14 +45,14 @@ class Customfield:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view this list')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this list')
         query_data = {
             'api': self._api,
             'url': '/customfield/list',
@@ -67,10 +67,11 @@ class Customfield:
         self,
         account_id,
         capture_on_share_code,
-        customfield_param,
         display_order,
         name,
+        object,
         required,
+        type,
         wrapped_dicom_only,
         dicom_tag=None,
         dicom_tag_ignore_empty=None,
@@ -83,72 +84,64 @@ class Customfield:
         load_hl7_filter=None,
         options=None,
         other_dicom_tags=None,
-        type=None,
     ):
         """Add.
         :param account_id: uuid of the account
         :param capture_on_share_code: Flag if the field should be captured during a share code exchange (only applicable to study fields)
-        :param customfield_param: The object to associate the customfield with (Study|User_account|Group|Location|Account|Patient|Case|Order|Appointment|Dicomdata)
         :param display_order: Integer to order how the fields should be displayed
         :param name: Name of the customfield
+        :param object: The object to associate the customfield with (Study|User_account|Group|Location|Account|Patient|Case|Order|Appointment|Dicomdata)
         :param required: Flag if the field is required
+        :param type: Type of the custom field (text|number|date|memo|select|multiselect|radio|checkbox|search)
         :param wrapped_dicom_only: Only capture for wrapped DICOM uploads during a share code exchange
         :param dicom_tag: DICOM tag to map this field to. Format should be of form (1234,1234). (only applicable to study fields) (optional)
         :param dicom_tag_ignore_empty: Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified) (optional)
         :param hl7_component: Component number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)
         :param hl7_field: Segment field number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)
-        :param hl7_segment: hl7_segment
+        :param hl7_segment: Segment to map this field to in HL7 ORM messages. Valid values are (NTE|PID|PID1|PV1|PV2|OBR|DG1|OBX|CTI|BLG|ORC) (only applicable to study fields) (optional)
         :param load_dicom_tag: Flag to load the current value from the study into this field. (only applicable if a dicom_tag is specified) (optional)
         :param load_from_sr: Load the value from the structured reports in the study (only applicable to study fields) .(optional)
         :param load_hl7: If this is set to a HL7 message type the value of this field will be updated from the hl7_segment, hl7_field and hl7_component from incoming HL7 messages of the matching message type (only applicable to study fields) (optional)
         :param load_hl7_filter: Filter token for the load_hl7 option (only applicable to study fields) (optional)
         :param options: Additional options in JSON format (optional)
         :param other_dicom_tags: JSON array of other DICOM tags to map this field to. (only applicable to study fields) (optional)
-        :param type: type
-
-        Notes:
-        object - The object to associate the customfield with (Study OR User_account OR Group OR Location OR Account OR Patient OR Case OR Order OR Appointment OR Dicomdata)
-        type - Type of the custom field (text OR number OR date OR memo OR select OR multiselect OR radio OR checkbox OR search)
-        hl7_segment - Segment to map this field to in HL7 ORM messages. Valid values are (NTE OR PID OR PID1 OR PV1 OR PV2 OR OBR OR DG1 OR OBX OR CTI OR BLG OR ORC) (only applicable to study fields) (optional)
         """
         request_data = {
-           'options': options,
-           'load_dicom_tag': load_dicom_tag,
-           'load_hl7_filter': load_hl7_filter,
-           'wrapped_dicom_only': wrapped_dicom_only,
-           'name': name,
+           'account_id': account_id,
+           'capture_on_share_code': capture_on_share_code,
            'dicom_tag': dicom_tag,
-           'other_dicom_tags': other_dicom_tags,
+           'dicom_tag_ignore_empty': dicom_tag_ignore_empty,
            'display_order': display_order,
            'hl7_component': hl7_component,
            'hl7_field': hl7_field,
-           'dicom_tag_ignore_empty': dicom_tag_ignore_empty,
-           'account_id': account_id,
-           'type': type,
            'hl7_segment': hl7_segment,
-           'required': required,
+           'load_dicom_tag': load_dicom_tag,
            'load_from_sr': load_from_sr,
-           'capture_on_share_code': capture_on_share_code,
            'load_hl7': load_hl7,
+           'load_hl7_filter': load_hl7_filter,
+           'name': name,
+           'object': object,
+           'options': options,
+           'other_dicom_tags': other_dicom_tags,
+           'required': required,
+           'type': type,
+           'wrapped_dicom_only': wrapped_dicom_only,
         }
-        if customfield_param is not None:
-            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
-            request_data.update(customfield_param_dict)
 	
         errors_mapping = {}
-        errors_mapping['INVALID_DICOM_TAG'] = InvalidDicomTag('The DICOM tag is invalid')
-        errors_mapping['INVALID_DICOM_TAG_OBJECT'] = InvalidDicomTagObject('DICOM tags can only be applied to study fields')
-        errors_mapping['INVALID_HL7_OBJECT'] = InvalidHl7Object('HL7 fields can only be applied to study fields')
-        errors_mapping['INVALID_HL7_SEGMENT'] = InvalidHl7Segment('Invalid segment name')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['INVALID_OBJECT'] = InvalidObject('An invalid object was passed.')
-        errors_mapping['INVALID_OPTIONS'] = InvalidOptions('An option is invalid. The error_subtype holds the specific error message')
-        errors_mapping['INVALID_SEARCH_SOURCE'] = InvalidSearchSource('An invalid search source was passed.')
-        errors_mapping['INVALID_TYPE'] = InvalidType('An invalid type was passed.')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to add a customfield to this account')
-        errors_mapping['NO_DICOM_TAG_DEFINED'] = NoDicomTagDefined('The load_dicom_tag flag is set but the dicom_tag field is not defined')
+        errors_mapping[('INVALID_DICOM_TAG', None)] = InvalidDicomTag('The DICOM tag is invalid')
+        errors_mapping[('INVALID_DICOM_TAG_OBJECT', None)] = InvalidDicomTagObject('DICOM tags can only be applied to study fields')
+        errors_mapping[('INVALID_HL7_OBJECT', None)] = InvalidHl7Object('HL7 fields can only be applied to study fields')
+        errors_mapping[('INVALID_HL7_SEGMENT', None)] = InvalidHl7Segment('Invalid segment name')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('INVALID_OBJECT', None)] = InvalidObject('An invalid object was passed.')
+        errors_mapping[('INVALID_OPTIONS', None)] = InvalidOptions('An option is invalid. The error_subtype holds the specific error message')
+        errors_mapping[('INVALID_SEARCH_SOURCE', None)] = InvalidSearchSource('An invalid search source was passed.')
+        errors_mapping[('INVALID_TYPE', None)] = InvalidType('An invalid type was passed.')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add a customfield to this account')
+        errors_mapping[('NO_DICOM_TAG_DEFINED', None)] = NoDicomTagDefined('The load_dicom_tag flag is set but the dicom_tag field is not defined')
         query_data = {
             'api': self._api,
             'url': '/customfield/add',
@@ -186,7 +179,7 @@ class Customfield:
         :param display_order: Integer to order how the fields should be displayed (optional)
         :param hl7_component: Component number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)
         :param hl7_field: Segment field number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)
-        :param hl7_segment: hl7_segment
+        :param hl7_segment: Segment to map this field to in HL7 ORM messages. Valid values are (NTE|PID|PID1|PV1|PV2|OBR|DG1|OBX|CTI|BLG|ORC) (only applicable to study fields) (optional)
         :param load_dicom_tag: Flag to load the current value from the study into this field. (only applicable if a dicom_tag is specified) (optional)
         :param load_from_sr: Load the value from the structured reports in the study. (only applicable to study fields) .(optional)
         :param load_hl7: If this is set to a HL7 message type the value of this field will be updated from the hl7_segment, hl7_field and hl7_component from incoming HL7 messages of the matching message type (only applicable to study fields) (optional)
@@ -196,42 +189,39 @@ class Customfield:
         :param other_dicom_tags: JSON array of other DICOM tags to map this field to. (only applicable to study fields) (optional)
         :param required: Flag if the field is required (optional)
         :param wrapped_dicom_only: Only capture for wrapped DICOM uploads during a share code exchange (optional)
-
-        Notes:
-        hl7_segment - Segment to map this field to in HL7 ORM messages. Valid values are (NTE OR PID OR PID1 OR PV1 OR PV2 OR OBR OR DG1 OR OBX OR CTI OR BLG OR ORC) (only applicable to study fields) (optional)
         """
         request_data = {
-           'options': options,
-           'load_dicom_tag': load_dicom_tag,
-           'load_hl7_filter': load_hl7_filter,
-           'wrapped_dicom_only': wrapped_dicom_only,
-           'name': name,
+           'capture_on_share_code': capture_on_share_code,
            'dicom_tag': dicom_tag,
-           'other_dicom_tags': other_dicom_tags,
+           'dicom_tag_ignore_empty': dicom_tag_ignore_empty,
            'display_order': display_order,
            'hl7_component': hl7_component,
            'hl7_field': hl7_field,
-           'dicom_tag_ignore_empty': dicom_tag_ignore_empty,
            'hl7_segment': hl7_segment,
-           'uuid': uuid,
-           'required': required,
+           'load_dicom_tag': load_dicom_tag,
            'load_from_sr': load_from_sr,
-           'capture_on_share_code': capture_on_share_code,
            'load_hl7': load_hl7,
+           'load_hl7_filter': load_hl7_filter,
+           'name': name,
+           'options': options,
+           'other_dicom_tags': other_dicom_tags,
+           'required': required,
+           'uuid': uuid,
+           'wrapped_dicom_only': wrapped_dicom_only,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_DICOM_TAG'] = InvalidDicomTag('The DICOM tag is invalid')
-        errors_mapping['INVALID_DICOM_TAG_OBJECT'] = InvalidDicomTagObject('DICOM tags can only be applied to study fields')
-        errors_mapping['INVALID_HL7_FIELD'] = InvalidHl7Field('Invalid field number')
-        errors_mapping['INVALID_HL7_OBJECT'] = InvalidHl7Object('HL7 fields can only be applied to study fields')
-        errors_mapping['INVALID_HL7_SEGMENT'] = InvalidHl7Segment('Invalid segment name')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['INVALID_OPTIONS'] = InvalidOptions('An option is invalid. The error_subtype holds the specific error message')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The customfield can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to edit the customfield')
-        errors_mapping['NO_DICOM_TAG_DEFINED'] = NoDicomTagDefined('The load_dicom_tag flag is set but the dicom_tag field is not defined')
+        errors_mapping[('INVALID_DICOM_TAG', None)] = InvalidDicomTag('The DICOM tag is invalid')
+        errors_mapping[('INVALID_DICOM_TAG_OBJECT', None)] = InvalidDicomTagObject('DICOM tags can only be applied to study fields')
+        errors_mapping[('INVALID_HL7_FIELD', None)] = InvalidHl7Field('Invalid field number')
+        errors_mapping[('INVALID_HL7_OBJECT', None)] = InvalidHl7Object('HL7 fields can only be applied to study fields')
+        errors_mapping[('INVALID_HL7_SEGMENT', None)] = InvalidHl7Segment('Invalid segment name')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('INVALID_OPTIONS', None)] = InvalidOptions('An option is invalid. The error_subtype holds the specific error message')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The customfield can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the customfield')
+        errors_mapping[('NO_DICOM_TAG_DEFINED', None)] = NoDicomTagDefined('The load_dicom_tag flag is set but the dicom_tag field is not defined')
         query_data = {
             'api': self._api,
             'url': '/customfield/set',
@@ -253,9 +243,9 @@ class Customfield:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The customfield can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view the customfield')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The customfield can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the customfield')
         query_data = {
             'api': self._api,
             'url': '/customfield/get',
@@ -277,9 +267,9 @@ class Customfield:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The customfield can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete the customfield')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The customfield can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete the customfield')
         query_data = {
             'api': self._api,
             'url': '/customfield/delete',
@@ -304,9 +294,9 @@ class Customfield:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The customfield can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The customfield can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/customfield/lookup',
@@ -326,15 +316,15 @@ class Customfield:
         :param search: The value to search for (optional)
         """
         request_data = {
-           'uuid': uuid,
            'search': search,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_A_SEARCH'] = NotASearch('This is not a search type of customfield')
-        errors_mapping['NOT_FOUND'] = NotFound('The customfield can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_A_SEARCH', None)] = NotASearch('This is not a search type of customfield')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The customfield can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/customfield/search',

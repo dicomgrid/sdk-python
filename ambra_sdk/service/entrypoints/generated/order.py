@@ -48,24 +48,24 @@ class Order:
         :param customfield_param: Custom field(s) (optional)
         """
         request_data = {
-           'sending_facility': sending_facility,
+           'accession_number': accession_number,
+           'account_id': account_id,
            'patient_birth_date': patient_birth_date,
            'patient_name': patient_name,
+           'patient_sex': patient_sex,
            'patientid': patientid,
            'referring_physician': referring_physician,
-           'account_id': account_id,
-           'patient_sex': patient_sex,
-           'accession_number': accession_number,
+           'sending_facility': sending_facility,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
             request_data.update(customfield_param_dict)
 	
         errors_mapping = {}
-        errors_mapping['INVALID_CUSTOMFIELD'] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account was not found. The error_subtype holds the type of field not found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to add a order to the account')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account was not found. The error_subtype holds the type of field not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add a order to the account')
         query_data = {
             'api': self._api,
             'url': '/order/add',
@@ -87,9 +87,9 @@ class Order:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The order can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view this order')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The order can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this order')
         query_data = {
             'api': self._api,
             'url': '/order/get',
@@ -123,23 +123,23 @@ class Order:
         :param customfield_param: Custom field(s) (optional)
         """
         request_data = {
-           'sending_facility': sending_facility,
+           'accession_number': accession_number,
            'patient_birth_date': patient_birth_date,
            'patient_name': patient_name,
+           'patient_sex': patient_sex,
            'patientid': patientid,
            'referring_physician': referring_physician,
+           'sending_facility': sending_facility,
            'uuid': uuid,
-           'patient_sex': patient_sex,
-           'accession_number': accession_number,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
             request_data.update(customfield_param_dict)
 	
         errors_mapping = {}
-        errors_mapping['INVALID_CUSTOMFIELD'] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
-        errors_mapping['NOT_FOUND'] = NotFound('The order can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to edit the order')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The order can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the order')
         query_data = {
             'api': self._api,
             'url': '/order/set',
@@ -161,9 +161,9 @@ class Order:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The order can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete the order')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The order can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete the order')
         query_data = {
             'api': self._api,
             'url': '/order/delete',
@@ -185,14 +185,14 @@ class Order:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view orders in this account')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view orders in this account')
         query_data = {
             'api': self._api,
             'url': '/order/list',
@@ -227,21 +227,21 @@ class Order:
         :param scheduled_station_aetitle: Station AE title
         """
         request_data = {
-           'requested_procedure_description': requested_procedure_description,
            'modality': modality,
+           'order_id': order_id,
+           'requested_procedure_description': requested_procedure_description,
            'requested_procedure_id': requested_procedure_id,
-           'scheduled_procedure_step_start_time': scheduled_procedure_step_start_time,
+           'scheduled_procedure_step_description': scheduled_procedure_step_description,
            'scheduled_procedure_step_id': scheduled_procedure_step_id,
            'scheduled_procedure_step_start_date': scheduled_procedure_step_start_date,
+           'scheduled_procedure_step_start_time': scheduled_procedure_step_start_time,
            'scheduled_station_aetitle': scheduled_station_aetitle,
-           'scheduled_procedure_step_description': scheduled_procedure_step_description,
-           'order_id': order_id,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The order can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to edit orders in this account')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The order can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit orders in this account')
         query_data = {
             'api': self._api,
             'url': '/order/sps/add',
@@ -275,21 +275,21 @@ class Order:
         :param scheduled_station_aetitle: Station AE title (optional)
         """
         request_data = {
-           'requested_procedure_description': requested_procedure_description,
            'modality': modality,
+           'requested_procedure_description': requested_procedure_description,
            'requested_procedure_id': requested_procedure_id,
-           'scheduled_procedure_step_start_time': scheduled_procedure_step_start_time,
+           'scheduled_procedure_step_description': scheduled_procedure_step_description,
            'scheduled_procedure_step_id': scheduled_procedure_step_id,
            'scheduled_procedure_step_start_date': scheduled_procedure_step_start_date,
-           'uuid': uuid,
+           'scheduled_procedure_step_start_time': scheduled_procedure_step_start_time,
            'scheduled_station_aetitle': scheduled_station_aetitle,
-           'scheduled_procedure_step_description': scheduled_procedure_step_description,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The SPS can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to edit orders in this account')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The SPS can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit orders in this account')
         query_data = {
             'api': self._api,
             'url': '/order/sps/set',
@@ -311,9 +311,9 @@ class Order:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The SPS can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to edit orders in this account')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The SPS can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit orders in this account')
         query_data = {
             'api': self._api,
             'url': '/order/sps/delete',
@@ -325,32 +325,29 @@ class Order:
     
     def sps_status(
         self,
+        mpps_status,
         mpps_uid,
         serial_no,
         uuid,
-        mpps_status=None,
     ):
         """Sps status.
+        :param mpps_status: The mpps status to set (PENDING|IN_PROGRESS|DISCONTINUED|COMPLETED)
         :param mpps_uid: The mpps UUID of the SPS
         :param serial_no: The serial number of the node
         :param uuid: The node id
-        :param mpps_status: mpps_status
-
-        Notes:
-        mpps_status - The mpps status to set (PENDING OR IN_PROGRESS OR DISCONTINUED OR COMPLETED)
         """
         request_data = {
-           'mpps_uid': mpps_uid,
-           'uuid': uuid,
-           'serial_no': serial_no,
            'mpps_status': mpps_status,
+           'mpps_uid': mpps_uid,
+           'serial_no': serial_no,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_STATUS'] = InvalidStatus('An invalid status was passed')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The SPS can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to set the status')
+        errors_mapping[('INVALID_STATUS', None)] = InvalidStatus('An invalid status was passed')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The SPS can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to set the status')
         query_data = {
             'api': self._api,
             'url': '/order/sps/status',
@@ -381,12 +378,12 @@ class Order:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view orders in this account')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view orders in this account')
         query_data = {
             'api': self._api,
             'url': '/order/sps/find',

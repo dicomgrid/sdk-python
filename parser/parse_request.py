@@ -149,7 +149,7 @@ def parse_request_parameter(parameter_str):
         # multiple field line Node.set::setting_SETTING_NAME
         if any(i.isupper() for i in name):
             optional = True
-            if 'customfield' in name:
+            if 'customfield-' in name:
                 multi_prefix = 'customfield-'
                 field_name = 'customfield_param'
             else:
@@ -186,7 +186,7 @@ def parse_combinated_request_parameter(parameter_str):
         .replace('•', '-')
 
     params.append(RequestGroupParametersDoc(group_doc))
-    if 'customfield' in parameter_str:
+    if 'customfield-' in parameter_str:
         _, description = parameter_str.split('•')
         description = description.strip()
         optional = False
@@ -256,7 +256,8 @@ def parse_request_parameters(parameters_str):
             request_params.append(param)
             continue
 
-        if '|' in parameter_str or '&' in parameter_str:
+        first_part = parameter_str.split('•')[0]
+        if '|' in first_part or '&' in first_part :
             request_params.extend(
                 parse_combinated_request_parameter(parameter_str)
             )

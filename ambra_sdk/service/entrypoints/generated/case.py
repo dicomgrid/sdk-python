@@ -37,9 +37,9 @@ class Case:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The case can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view this case')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The case can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this case')
         query_data = {
             'api': self._api,
             'url': '/case/get',
@@ -76,26 +76,26 @@ class Case:
         The rest of the fields can not be set by the case owner
         """
         request_data = {
+           'assigned_admin_id': assigned_admin_id,
            'assigned_medical_id': assigned_medical_id,
-           'completed': completed,
            'case_status': case_status,
+           'closed': closed,
+           'completed': completed,
+           'name': name,
            'submitted': submitted,
            'uuid': uuid,
-           'name': name,
-           'assigned_admin_id': assigned_admin_id,
-           'closed': closed,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
             request_data.update(customfield_param_dict)
 	
         errors_mapping = {}
-        errors_mapping['INVALID_CASE_STATUS'] = InvalidCaseStatus('Invalid case status')
-        errors_mapping['INVALID_CUSTOMFIELD'] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
-        errors_mapping['LOCKED'] = Locked('The case is locked by another user')
-        errors_mapping['NOT_FOUND'] = NotFound('The case or assigned user can not be found')
-        errors_mapping['NOT_IN_ACCOUNT'] = NotInAccount('The assigned user is not in the account')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to edit the case')
+        errors_mapping[('INVALID_CASE_STATUS', None)] = InvalidCaseStatus('Invalid case status')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('LOCKED', None)] = Locked('The case is locked by another user')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The case or assigned user can not be found')
+        errors_mapping[('NOT_IN_ACCOUNT', None)] = NotInAccount('The assigned user is not in the account')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the case')
         query_data = {
             'api': self._api,
             'url': '/case/set',
@@ -115,13 +115,13 @@ class Case:
         :param uuid: The case uuid
         """
         request_data = {
-           'uuid': uuid,
            'reason': reason,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The case can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to return the case')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The case can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to return the case')
         query_data = {
             'api': self._api,
             'url': '/case/return',
@@ -143,9 +143,9 @@ class Case:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The case can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete the case')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The case can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete the case')
         query_data = {
             'api': self._api,
             'url': '/case/delete',
@@ -167,14 +167,14 @@ class Case:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view cases in this account')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view cases in this account')
         query_data = {
             'api': self._api,
             'url': '/case/list',
@@ -198,14 +198,14 @@ class Case:
         """
         request_data = {
            'detach': detach,
-           'uuid': uuid,
            'study_id': study_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The case or study can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The case or study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/case/attach',
@@ -232,7 +232,7 @@ class Case:
             request_data.update(customfield_param_dict)
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The namespace can not be found')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace can not be found')
         query_data = {
             'api': self._api,
             'url': '/case/price',

@@ -37,15 +37,15 @@ class Terminology:
         """
         request_data = {
            'account_id': account_id,
+           'phi_namespace': phi_namespace,
+           'storage_namespace': storage_namespace,
            'study_uid': study_uid,
            'vanity': vanity,
-           'storage_namespace': storage_namespace,
-           'phi_namespace': phi_namespace,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account or vanity was not found')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or vanity was not found')
         query_data = {
             'api': self._api,
             'url': '/terminology/account/overrides',
@@ -79,16 +79,16 @@ class Terminology:
         """
         request_data = {
            'account_id': account_id,
-           'study_uid': study_uid,
-           'vanity': vanity,
            'language': language,
-           'tags': tags,
-           'storage_namespace': storage_namespace,
            'phi_namespace': phi_namespace,
+           'storage_namespace': storage_namespace,
+           'study_uid': study_uid,
+           'tags': tags,
+           'vanity': vanity,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/terminology/tags',
@@ -114,19 +114,19 @@ class Terminology:
         :param vanity: Vanity to apply the tag for (optional)
         """
         request_data = {
-           'tag': tag,
-           'vanity': vanity,
-           'language': language,
-           'value': value,
            'account_id': account_id,
+           'language': language,
+           'tag': tag,
+           'value': value,
+           'vanity': vanity,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account was not found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('The user is not an account administrator  and is trying to set account tags')
-        errors_mapping['NOT_SYSADMIN_OR_SUPPORT'] = NotSysadminOrSupport('The user is not a sysadmin or support user and is trying to set global tags')
-        errors_mapping['NO_VALUE'] = NoValue('The value parameter was not passed')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('The user is not an account administrator  and is trying to set account tags')
+        errors_mapping[('NOT_SYSADMIN_OR_SUPPORT', None)] = NotSysadminOrSupport('The user is not a sysadmin or support user and is trying to set global tags')
+        errors_mapping[('NO_VALUE', None)] = NoValue('The value parameter was not passed')
         query_data = {
             'api': self._api,
             'url': '/terminology/set',
@@ -153,14 +153,14 @@ class Terminology:
         (account_id OR vanity) - The uuid or vanity name of the account to apply any account overrides for (optional)
         """
         request_data = {
-           'vanity': vanity,
+           'account_id': account_id,
            'language': language,
            'tags': tags,
-           'account_id': account_id,
+           'vanity': vanity,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/terminology/list',
@@ -185,13 +185,13 @@ class Terminology:
         (account_id OR vanity) - The uuid or vanity name of the account to apply any account overrides for (optional)
         """
         request_data = {
+           'account_id': account_id,
            'lng': lng,
            'vanity': vanity,
-           'account_id': account_id,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/terminology/i18next',

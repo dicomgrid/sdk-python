@@ -33,16 +33,16 @@ class Annotation:
         (study_id OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study or the storage triplet
         """
         request_data = {
-           'study_uid': study_uid,
-           'storage_namespace': storage_namespace,
            'phi_namespace': phi_namespace,
+           'storage_namespace': storage_namespace,
            'study_id': study_id,
+           'study_uid': study_uid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view the study of the annotations')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the study of the annotations')
         query_data = {
             'api': self._api,
             'url': '/annotation/list',
@@ -76,26 +76,26 @@ class Annotation:
         :param study_uid: study_uid
 
         Notes:
-        (study_id OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study or the storage triplet
         (json OR stamp) - The JSON annotation data structure or the stamp flag
+        (study_id OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study or the storage triplet
         """
         request_data = {
-           'study_uid': study_uid,
-           'instance_uid': instance_uid,
            'frame_number': frame_number,
+           'instance_uid': instance_uid,
            'json': json,
+           'phi_namespace': phi_namespace,
            'series_uid': series_uid,
            'stamp': stamp,
            'storage_namespace': storage_namespace,
-           'phi_namespace': phi_namespace,
            'study_id': study_id,
+           'study_uid': study_uid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to add annotations to the study')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add annotations to the study')
         query_data = {
             'api': self._api,
             'url': '/annotation/add',
@@ -115,15 +115,15 @@ class Annotation:
         :param uuid: Id of the annotation
         """
         request_data = {
-           'uuid': uuid,
            'json': json,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to add annotations to the study')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add annotations to the study')
         query_data = {
             'api': self._api,
             'url': '/annotation/set',
@@ -145,9 +145,9 @@ class Annotation:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The annotation  was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view the annotation')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The annotation  was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the annotation')
         query_data = {
             'api': self._api,
             'url': '/annotation/get',
@@ -169,9 +169,9 @@ class Annotation:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The annotation  was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete the annotation')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The annotation  was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete the annotation')
         query_data = {
             'api': self._api,
             'url': '/annotation/delete',

@@ -41,14 +41,14 @@ class Group:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view this list')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this list')
         query_data = {
             'api': self._api,
             'url': '/group/list',
@@ -67,6 +67,7 @@ class Group:
         hl7_template=None,
         must_approve=None,
         must_approve_harvest=None,
+        must_approve_move=None,
         must_approve_upload=None,
         no_share=None,
         role_id=None,
@@ -83,6 +84,7 @@ class Group:
         :param hl7_template: The HL7 reporting template for the group (optional)
         :param must_approve: Flag if shared studies must be approved for the group (optional)
         :param must_approve_harvest: Flag if harvested studies must be approved (optional)
+        :param must_approve_move: Flag if moved studies must be approved (optional)
         :param must_approve_upload: Flag if uploaded studies must be approved (optional)
         :param no_share: Flag if studies can not be shared with this group (optional). Studies can still be shared with users in the group.
         :param role_id: Id for the default role for the group (optional)
@@ -93,33 +95,35 @@ class Group:
         :param share_via_gateway: Flag if a gateway share is allowed (optional)
         """
         request_data = {
-           'no_share': no_share,
-           'search_threshold': search_threshold,
-           'share_via_gateway': share_via_gateway,
-           'share_description': share_description,
+           'account_id': account_id,
            'hl7_template': hl7_template,
            'must_approve': must_approve,
-           'share_settings': share_settings,
-           'name': name,
            'must_approve_harvest': must_approve_harvest,
-           'account_id': account_id,
-           'role_id': role_id,
+           'must_approve_move': must_approve_move,
            'must_approve_upload': must_approve_upload,
+           'name': name,
+           'no_share': no_share,
+           'role_id': role_id,
+           'search_threshold': search_threshold,
            'share_code': share_code,
+           'share_description': share_description,
+           'share_settings': share_settings,
+           'share_via_gateway': share_via_gateway,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
             request_data.update(customfield_param_dict)
 	
         errors_mapping = {}
-        errors_mapping['ACCOUNT_NOT_FOUND'] = AccountNotFound('The account was not found')
-        errors_mapping['DUP_SHARE_CODE'] = DupShareCode('The share code is already used')
-        errors_mapping['INVALID_CUSTOMFIELD'] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
-        errors_mapping['INVALID_FLAG'] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The object was not found. The error_subtype holds the name of field that triggered the error')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to add a group to that account')
+        errors_mapping[('ACCOUNT_NOT_FOUND', None)] = AccountNotFound('The account was not found')
+        errors_mapping[('DUP_SHARE_CODE', None)] = DupShareCode('The share code is already used')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found. The error_subtype holds the name of field that triggered the error')
+        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the group')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add a group to that account')
         query_data = {
             'api': self._api,
             'url': '/group/add',
@@ -136,6 +140,7 @@ class Group:
         hl7_template=None,
         must_approve=None,
         must_approve_harvest=None,
+        must_approve_move=None,
         must_approve_upload=None,
         name=None,
         no_share=None,
@@ -152,6 +157,7 @@ class Group:
         :param hl7_template: The HL7 reporting template for the group (optional)
         :param must_approve: Flag if shared studies must be approved for the group (optional)
         :param must_approve_harvest: Flag if harvested studies must be approved (optional)
+        :param must_approve_move: Flag if moved studies must be approved (optional)
         :param must_approve_upload: Flag if uploaded studies must be approved (optional)
         :param name: Name of the group (optional)
         :param no_share: Flag if studies can not be shared with this group (optional). Studies can still be shared with users in the group.
@@ -163,31 +169,33 @@ class Group:
         :param share_via_gateway: Flag if a gateway share is allowed (optional)
         """
         request_data = {
-           'must_approve_upload': must_approve_upload,
-           'no_share': no_share,
-           'search_threshold': search_threshold,
-           'share_via_gateway': share_via_gateway,
-           'share_description': share_description,
            'hl7_template': hl7_template,
            'must_approve': must_approve,
-           'share_settings': share_settings,
-           'uuid': uuid,
            'must_approve_harvest': must_approve_harvest,
-           'role_id': role_id,
+           'must_approve_move': must_approve_move,
+           'must_approve_upload': must_approve_upload,
            'name': name,
+           'no_share': no_share,
+           'role_id': role_id,
+           'search_threshold': search_threshold,
            'share_code': share_code,
+           'share_description': share_description,
+           'share_settings': share_settings,
+           'share_via_gateway': share_via_gateway,
+           'uuid': uuid,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
             request_data.update(customfield_param_dict)
 	
         errors_mapping = {}
-        errors_mapping['DUP_SHARE_CODE'] = DupShareCode('The share code is already used')
-        errors_mapping['INVALID_CUSTOMFIELD'] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
-        errors_mapping['INVALID_FLAG'] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['NOT_FOUND'] = NotFound('The object was not found. The error_subtype holds the name of field that triggered the error')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to edit the location')
+        errors_mapping[('DUP_SHARE_CODE', None)] = DupShareCode('The share code is already used')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found. The error_subtype holds the name of field that triggered the error')
+        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the group')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the location')
         query_data = {
             'api': self._api,
             'url': '/group/set',
@@ -209,9 +217,9 @@ class Group:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The group can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view this group')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The group can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this group')
         query_data = {
             'api': self._api,
             'url': '/group/get',
@@ -233,10 +241,10 @@ class Group:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_EMPTY'] = NotEmpty('The group still has studies in it')
-        errors_mapping['NOT_FOUND'] = NotFound('The group can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete this group')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_EMPTY', None)] = NotEmpty('The group still has studies in it')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The group can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete this group')
         query_data = {
             'api': self._api,
             'url': '/group/delete',
@@ -292,35 +300,36 @@ class Group:
         :param role_id: Id of the users role within the group (optional). If not passed the default group role will be assigned
         """
         request_data = {
-           'event_case_assignment': event_case_assignment,
-           'event_upload': event_upload,
-           'event_share': event_share,
-           'event_harvest': event_harvest,
-           'event_node': event_node,
-           'event_link_mine': event_link_mine,
-           'event_study_comment': event_study_comment,
-           'event_link': event_link,
-           'event_thin_study_fail': event_thin_study_fail,
-           'event_upload_fail': event_upload_fail,
-           'user_id': user_id,
-           'event_report_remove': event_report_remove,
-           'uuid': uuid,
-           'event_status_change': event_status_change,
-           'role_id': role_id,
-           'event_message': event_message,
-           'event_thin_study_success': event_thin_study_success,
            'event_approve': event_approve,
-           'no_physician_alias_share': no_physician_alias_share,
+           'event_case_assignment': event_case_assignment,
+           'event_harvest': event_harvest,
+           'event_link': event_link,
+           'event_link_mine': event_link_mine,
+           'event_message': event_message,
            'event_new_report': event_new_report,
+           'event_node': event_node,
+           'event_report_remove': event_report_remove,
+           'event_share': event_share,
+           'event_status_change': event_status_change,
+           'event_study_comment': event_study_comment,
+           'event_thin_study_fail': event_thin_study_fail,
+           'event_thin_study_success': event_thin_study_success,
+           'event_upload': event_upload,
+           'event_upload_fail': event_upload_fail,
+           'no_physician_alias_share': no_physician_alias_share,
+           'role_id': role_id,
+           'user_id': user_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_FLAG'] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The group can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to edit the group')
-        errors_mapping['ROLE_NOT_FOUND'] = RoleNotFound('The role was not found or is not in the account')
-        errors_mapping['USER_NOT_FOUND'] = UserNotFound('The user was not found or is not in the account')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The group can not be found')
+        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the group')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the group')
+        errors_mapping[('ROLE_NOT_FOUND', None)] = RoleNotFound('The role was not found or is not in the account')
+        errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user was not found or is not in the account')
         query_data = {
             'api': self._api,
             'url': '/group/user/add',
@@ -340,14 +349,14 @@ class Group:
         :param uuid: The group id
         """
         request_data = {
-           'uuid': uuid,
            'user_id': user_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The group can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to edit the group')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The group can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the group')
         query_data = {
             'api': self._api,
             'url': '/group/user/delete',
@@ -369,14 +378,14 @@ class Group:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The group can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted list the group')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The group can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted list the group')
         query_data = {
             'api': self._api,
             'url': '/group/user/list',

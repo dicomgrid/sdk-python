@@ -13,7 +13,7 @@ from ambra_sdk.exceptions.storage import (
     PreconditionFailed,
 )
 from ambra_sdk.storage.bool_to_int import bool_to_int
-from ambra_sdk.storage.response import check_response
+from ambra_sdk.storage.request import PreparedRequest, StorageMethod
 
 
 class Image:
@@ -32,7 +32,8 @@ class Image:
         namespace: str,
         opened_file: BufferedReader,
         use_box: bool = True,
-    ) -> Union[Box, Response]:
+        only_prepare: bool = False,
+    ) -> Union[Box, Response, PreparedRequest]:
         """Upload image to a namespace.
 
         URL: /namespace/{namespace}/image?sid={sid}
@@ -41,6 +42,7 @@ class Image:
         :param namespace: Namespace (Required).
         :param opened_file: Opened file (Required).
         :param use_box: Use box for response.
+        :param only_prepare: Get prepared request.
 
         :returns: image object attributes
         """
@@ -53,12 +55,16 @@ class Image:
             request_arg_names,
             locals(),
         )
-        response: Response = self._storage.post(
-            url,
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.post,
+            url=url,
             params=request_data,
             data=opened_file,
         )
-        response = check_response(response, url_arg_names=url_arg_names)
+        if only_prepare is True:
+            return prepared_request
+        response = prepared_request.execute()
         if use_box is True:
             return Box(response.json())
         return response
@@ -71,7 +77,8 @@ class Image:
         opened_file: BufferedReader,
         tags: Optional[str] = None,
         render_wrapped_pdf: Optional[bool] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Upload a non DICOM image.
 
         URL: /namespace/{namespace}/wrap?sid={sid}&render_wrapped_pdf={0,1}
@@ -81,10 +88,13 @@ class Image:
         :param tags: Any DICOM tags to be overwrite or added should be provided as a form-data field.
         :param opened_file: The multipart file to be uploaded should be provided as a form-data field.
         :param render_wrapped_pdf: An integer value of either 0 or 1.
+        :param only_prepare: Get prepared request.
 
         :returns: image object attributes
         """
-        render_wrapped_pdf: int = bool_to_int(render_wrapped_pdf)  # type: ignore
+        render_wrapped_pdf: int = bool_to_int(  # type: ignore
+            render_wrapped_pdf,
+        )
         url_template = '/namespace/{namespace}/wrap'
         url_arg_names = {'engine_fqdn', 'namespace'}
         request_arg_names: Set[str] = set()
@@ -99,45 +109,54 @@ class Image:
             'file': opened_file,
         }
         headers = {'X-File-Size': str(file_size)}
+
+        errors_mapping = {
+            403:
+            PermissionDenied(
+                'The sid is not valid or the user does '
+                'not have permission to upload a non DICOM '
+                'file from a study specified by the namespace.',
+            ),
+            412:
+            PreconditionFailed(
+                'X-File-Size header is not provided or has an '
+                'invalid value.',
+            ),
+            413:
+            EntityTooLarge(
+                'The file to be DICOM-wrapped is larger than '
+                '2GiB (2^31 - 1 bytes).',
+            ),
+        }
+
         if tags is not None:
             post_data = {
                 'tags': tags,
             }
-            response = self._storage.post(
-                url,
+            prepared_request = PreparedRequest(
+                storage_=self._storage,
+                method=StorageMethod.post,
+                url=url,
+                errors_mapping=errors_mapping,
                 params=request_data,
                 files=files,
                 headers=headers,
                 data=post_data,
             )
         else:
-            response = self._storage.post(
-                url,
+            prepared_request = PreparedRequest(
+                storage_=self._storage,
+                method=StorageMethod.post,
+                url=url,
+                errors_mapping=errors_mapping,
                 params=request_data,
                 files=files,
                 headers=headers,
             )
-        errors_mapping = {
-            403: PermissionDenied(
-                'The sid is not valid or the user does '
-                'not have permission to upload a non DICOM '
-                'file from a study specified by the namespace.',
-            ),
-            412: PreconditionFailed(
-                'X-File-Size header is not provided or has an '
-                'invalid value.',
-            ),
-            413: EntityTooLarge(
-                'The file to be DICOM-wrapped is larger than '
-                '2GiB (2^31 - 1 bytes).',
-            ),
-        }
 
-        return check_response(
-            response,
-            url_arg_names=url_arg_names,
-            errors_mapping=errors_mapping,
-        )
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
 
     def cadsr(
         self,
@@ -147,7 +166,8 @@ class Image:
         image_uid: str,
         image_version: str,
         phi_namespace: Optional[str] = None,
-    ) -> Response:
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
         """Gets graphical annotations according to vendor definitions for CAD SR object.
 
         URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/cadsr?sid={sid}
@@ -161,6 +181,7 @@ class Image:
             of the namespace where the file was attached
             if it was attached to a shared instance of the study
             outside of the original storage namespace
+        :param only_prepare: Get prepared request.
 
         :returns: the vendor-specified graphical \
             annotations, empty if not implemented for the vendor or generating device.
@@ -180,5 +201,12 @@ class Image:
             request_arg_names,
             locals(),
         )
-        response = self._storage.get(url, params=request_data)
-        return check_response(response, url_arg_names=url_arg_names)
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            params=request_data,
+        )
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()

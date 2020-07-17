@@ -37,18 +37,14 @@ def storage_cluster(api, request):
             errors_mapping={},
             paginated_field='clusters',
             required_sid=True,
-        ).filter_by(
-            Filter(
-                'name',
-                FilterCondition.equals,
-                cluster_name,
-            ),
-        ).first()
+        ).filter_by(Filter(
+            'name',
+            FilterCondition.equals,
+            cluster_name,
+        )).first()
         if cluster is None:
             raise RuntimeError(
-                'Unknown cluster name {name}'.format(
-                    name=cluster_name,
-                ),
+                'Unknown cluster name {name}'.format(name=cluster_name),
             )
     return cluster
 
@@ -127,7 +123,8 @@ def create_account(api, account_name: str) -> Tuple[Box, Box]:
                 'study_merge': 1,
                 'study_delete_image': 1,
             },
-        )).get()
+        ),
+    ).get()
 
     user = api.User.get(account_id=account.uuid).get()
     logger.info('Created account %s', account.name)
@@ -143,9 +140,8 @@ def account_studies(api, account) -> List[Box]:
     """
     account_namespaces = [account.namespace_id]
     group_namespaces = [
-        group.namespace_id for group in api.Group
-        .list(account_id=account.uuid)
-        .only(Group.namespace_id).all()
+        group.namespace_id for group in
+        api.Group.list(account_id=account.uuid).only(Group.namespace_id).all()
     ]
     account_namespaces.extend(group_namespaces)
 
@@ -207,9 +203,8 @@ def clear_studies(api, account):
     """
     account_namespaces = [account.namespace_id]
     group_namespaces = [
-        group.namespace_id for group in api.Group
-        .list(account_id=account.uuid)
-        .only(Group.namespace_id).all()
+        group.namespace_id for group in
+        api.Group.list(account_id=account.uuid).only(Group.namespace_id).all()
     ]
     account_namespaces.extend(group_namespaces)
 
@@ -347,6 +342,7 @@ def create_group(api, account):
         ).get()
 
         return group
+
     yield _create_group
     for group in groups:
         api.Group.delete(uuid=group.uuid).get()

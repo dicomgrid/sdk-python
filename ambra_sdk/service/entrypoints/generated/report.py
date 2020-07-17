@@ -27,9 +27,9 @@ class Report:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The report can not be found')
-        errors_mapping['REPORT_FAILED'] = ReportFailed('The report failed')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The report can not be found')
+        errors_mapping[('REPORT_FAILED', None)] = ReportFailed('The report failed')
         query_data = {
             'api': self._api,
             'url': '/report/status',
@@ -51,7 +51,7 @@ class Report:
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('Not found')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('Not found')
         query_data = {
             'api': self._api,
             'url': '/report/zip',

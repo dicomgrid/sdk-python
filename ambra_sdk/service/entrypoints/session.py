@@ -11,6 +11,6 @@ class Session(GSession):
         :param password: user password
         :return: sid
         """
-        response = self.login(login=username, password=password).get()
+        response = self.login(login=username, password=password).get_once()
         sid: str = response.sid
         return sid  # NOQA: WPS331

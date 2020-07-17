@@ -39,14 +39,14 @@ class Hl7:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account_id can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account_id can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/hl7/list',
@@ -71,16 +71,16 @@ class Hl7:
         :param accession_number: Use this accession number instead of the accession number in the HL7 message (optional)
         """
         request_data = {
-           'serial_no': serial_no,
-           'uuid': uuid,
            'accession_number': accession_number,
            'message': message,
+           'serial_no': serial_no,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_MESSAGE'] = InvalidMessage('The message could not parsed as a HL7 message')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node can not be found')
+        errors_mapping[('INVALID_MESSAGE', None)] = InvalidMessage('The message could not parsed as a HL7 message')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
         query_data = {
             'api': self._api,
             'url': '/hl7/add',
@@ -112,24 +112,24 @@ class Hl7:
         :param study_uid: study_uid
 
         Notes:
-        (study_id OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet (optional)
         (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number
+        (study_id OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet (optional)
         """
         request_data = {
            'node_id': node_id,
-           'study_uid': study_uid,
-           'storage_namespace': storage_namespace,
-           'raw': raw,
-           'uuid': uuid,
-           'serial_no': serial_no,
            'phi_namespace': phi_namespace,
+           'raw': raw,
+           'serial_no': serial_no,
+           'storage_namespace': storage_namespace,
            'study_id': study_id,
+           'study_uid': study_uid,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The hl7 can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to access this hl7')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The hl7 can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to access this hl7')
         query_data = {
             'api': self._api,
             'url': '/hl7/get',
@@ -151,9 +151,9 @@ class Hl7:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The hl7 can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete this hl7')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The hl7 can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete this hl7')
         query_data = {
             'api': self._api,
             'url': '/hl7/delete',
@@ -175,9 +175,9 @@ class Hl7:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this')
         query_data = {
             'api': self._api,
             'url': '/hl7/study/report',
@@ -199,10 +199,10 @@ class Hl7:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_CONFIGURED'] = NotConfigured('The node setting report_from_hl7 is not configured')
-        errors_mapping['NOT_FOUND'] = NotFound('The HL7 can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to access this HL7 message')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_CONFIGURED', None)] = NotConfigured('The node setting report_from_hl7 is not configured')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The HL7 can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to access this HL7 message')
         query_data = {
             'api': self._api,
             'url': '/hl7/extract/report',
@@ -224,9 +224,9 @@ class Hl7:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view this list')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this list')
         query_data = {
             'api': self._api,
             'url': '/hl7/template/list',
@@ -254,10 +254,10 @@ class Hl7:
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_HL7'] = InvalidHl7('The body is not a valid HL7 message')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('INVALID_HL7', None)] = InvalidHl7('The body is not a valid HL7 message')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/hl7/template/add',
@@ -280,15 +280,15 @@ class Hl7:
         """
         request_data = {
            'body': body,
-           'uuid': uuid,
            'name': name,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_HL7'] = InvalidHl7('The body is not a valid HL7 message')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The template can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('INVALID_HL7', None)] = InvalidHl7('The body is not a valid HL7 message')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The template can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/hl7/template/set',
@@ -310,9 +310,9 @@ class Hl7:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The template can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The template can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/hl7/template/get',
@@ -340,15 +340,15 @@ class Hl7:
         request_data = {
            'hex': hex,
            'hl7_id': hl7_id,
-           'uuid': uuid,
-           'text': text,
            'study_id': study_id,
+           'text': text,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The template or study can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The template or study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/hl7/template/render',
@@ -370,9 +370,9 @@ class Hl7:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The template can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The template can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/hl7/template/delete',
@@ -394,14 +394,14 @@ class Hl7:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view this list')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this list')
         query_data = {
             'api': self._api,
             'url': '/hl7/transform/list',
@@ -428,21 +428,21 @@ class Hl7:
         :param replacements: A JSON array of the transform replacements
         """
         request_data = {
-           'replacements': replacements,
-           'conditions': conditions,
            'account_id': account_id,
+           'conditions': conditions,
            'name': name,
            'order_by': order_by,
+           'replacements': replacements,
         }
 	
         errors_mapping = {}
-        errors_mapping['DUPLICATE_ORDER_BY'] = DuplicateOrderBy('The order_by value is used by another transform')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('An invalid condition was passed. The error_subtype holds the details on why it is invalid')
-        errors_mapping['INVALID_REPLACEMENT'] = InvalidReplacement('An invalid replacement was passed. The error_subtype holds the details on why it is invalid')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_LIST'] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('DUPLICATE_ORDER_BY', None)] = DuplicateOrderBy('The order_by value is used by another transform')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('An invalid condition was passed. The error_subtype holds the details on why it is invalid')
+        errors_mapping[('INVALID_REPLACEMENT', None)] = InvalidReplacement('An invalid replacement was passed. The error_subtype holds the details on why it is invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_LIST', None)] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/hl7/transform/add',
@@ -468,21 +468,21 @@ class Hl7:
         :param uuid: The transform id
         """
         request_data = {
-           'replacements': replacements,
-           'uuid': uuid,
            'conditions': conditions,
            'name': name,
            'order_by': order_by,
+           'replacements': replacements,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['DUPLICATE_ORDER_BY'] = DuplicateOrderBy('The order_by value is used by another transform')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('An invalid condition was passed. The error_subtype holds the details on why it is invalid')
-        errors_mapping['INVALID_REPLACEMENT'] = InvalidReplacement('An invalid replacement was passed. The error_subtype holds the details on why it is invalid')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_LIST'] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('DUPLICATE_ORDER_BY', None)] = DuplicateOrderBy('The order_by value is used by another transform')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('An invalid condition was passed. The error_subtype holds the details on why it is invalid')
+        errors_mapping[('INVALID_REPLACEMENT', None)] = InvalidReplacement('An invalid replacement was passed. The error_subtype holds the details on why it is invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_LIST', None)] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/hl7/transform/set',
@@ -504,9 +504,9 @@ class Hl7:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The transform can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The transform can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/hl7/transform/get',
@@ -528,9 +528,9 @@ class Hl7:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The transform can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The transform can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/hl7/transform/delete',
@@ -552,8 +552,8 @@ class Hl7:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/hl7/transform/test',
@@ -578,8 +578,8 @@ class Hl7:
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_MESSAGE'] = InvalidMessage('The message could not parsed as a HL7 message')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('INVALID_MESSAGE', None)] = InvalidMessage('The message could not parsed as a HL7 message')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/hl7/parse/fields',

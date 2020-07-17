@@ -5,22 +5,15 @@ from typing import Dict, List, Union
 
 from ambra_sdk.models.base import FieldDescriptor
 
-OnlyField = Union[
-    str,
-    Dict[str, List[str]],
-    FieldDescriptor,
-]
+OnlyField = Union[str, Dict[str, List[str]], FieldDescriptor]
 
-OnlyFields = Union[
-    OnlyField,
-    List[OnlyField],
-]
+OnlyFields = Union[OnlyField, List[OnlyField]]
 
 
 class WithOnly:
     """With only fields mixin."""
 
-    _request_data: Dict
+    request_data: Dict
 
     def only_top_field(self, field: str):
         """Request only one top field.
@@ -28,13 +21,13 @@ class WithOnly:
         :param field: top field name
         :return: self object
         """
-        top_fields = self._request_data.get('fields._top')
+        top_fields = self.request_data.get('fields._top')
         if top_fields:
             top_fields = json.loads(top_fields)
             top_fields.append(field)
         else:
             top_fields = [field]
-        self._request_data['fields._top'] = json.dumps(top_fields)
+        self.request_data['fields._top'] = json.dumps(top_fields)
         return self
 
     def only_top_fields(self, fields: List[str]):
@@ -43,13 +36,13 @@ class WithOnly:
         :param fields: list of top fields
         :return: self object
         """
-        top_fields = self._request_data.get('fields._top')
+        top_fields = self.request_data.get('fields._top')
         if top_fields:
             top_fields = json.loads(top_fields)
             top_fields.extend(fields)
         else:
             top_fields = fields
-        self._request_data['fields._top'] = json.dumps(top_fields)
+        self.request_data['fields._top'] = json.dumps(top_fields)
         return self
 
     def only_struct_fields(self, fields: Dict[str, List[str]]):
@@ -63,14 +56,14 @@ class WithOnly:
             struct_name = 'fields.{struct_name}'.format(
                 struct_name=struct_name,
             )
-            struct_fields_list = self._request_data.get(struct_name)
+            struct_fields_list = self.request_data.get(struct_name)
             if struct_fields_list:
                 struct_fields_list = json.loads(struct_fields_list)
                 struct_fields_list.extend(struct_fields)
             else:
                 struct_fields_list = struct_fields
             struct_fields_list = sorted(set(struct_fields_list))
-            self._request_data[struct_name] = json.dumps(struct_fields_list)
+            self.request_data[struct_name] = json.dumps(struct_fields_list)
         return self
 
     def only(self, fields: OnlyFields):  # NOQA:WPS231

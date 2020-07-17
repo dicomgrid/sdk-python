@@ -7,6 +7,7 @@ from dynaconf import settings
 from ambra_sdk.exceptions.storage import (
     AmbraResponseException,
     NotFound,
+    PermissionDenied,
     UnsupportedMediaType,
 )
 from ambra_sdk.service.ws import WSManager
@@ -61,6 +62,30 @@ class TestStorageStudy:
             attachment_id=attachment['id'],
             hash_arg=attachment['version'],
         )
+
+    def test_all_methods_prepared(self, api):
+        """Test all methods have only prepare argument."""
+        study = api.Storage.Study
+        for attribute_name in dir(study):  # NOQA:WPS421
+            if not attribute_name.startswith('_'):
+                attribute = getattr(study, attribute_name)
+                if callable(attribute):
+                    assert 'only_prepare' in \
+                        attribute.__func__.__code__.co_varnames  # NOQA:WPS609
+
+    def test_schema_prepared(self, api, readonly_study):
+        """Test schema prepared method."""
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+        study_uid = readonly_study.study_uid
+
+        prepared = api.Storage.Study.schema(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            study_uid=study_uid,
+            only_prepare=True,
+        )
+        assert prepared.url
 
     def test_schema(self, api, readonly_study):
         """Test schema method."""
@@ -527,9 +552,7 @@ class TestStorageStudy:
 
         # Merge is async operation...
         # So we need to wait EDIT event in websocket
-        ws_url = '{url}/channel/websocket'.format(
-            url=api._api_url,
-        )
+        ws_url = '{url}/channel/websocket'.format(url=api._api_url)
 
         channel_name = 'study.{namespace_id}'.format(
             namespace_id=storage_namespace,
@@ -686,3 +709,32 @@ class TestStorageStudy:
             study_uid=study_uid,
         )
         assert cache.status_code in {200, 202}
+
+    def test_retry_storage_with_new_sid(self, api, readonly_study):
+        """Test retry storage request with new sid.
+
+        In storage PermissionDenied means two things:
+
+        1. Wrong sid
+        2. User have not access to some stoudy
+        """
+        api._sid = 'Wrong sid'
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+        study_uid = readonly_study.study_uid
+        try:
+            api.Storage.Study.schema(
+                engine_fqdn=engine_fqdn,
+                namespace=storage_namespace,
+                study_uid=study_uid,
+            )
+        except Exception:
+            pytest.fail('Something goes wrong with retrying with new sid')
+
+        # But access denied still works:
+        with pytest.raises(PermissionDenied):
+            api.Storage.Study.schema(
+                engine_fqdn=engine_fqdn,
+                namespace='abra',
+                study_uid='kadabra',
+            )

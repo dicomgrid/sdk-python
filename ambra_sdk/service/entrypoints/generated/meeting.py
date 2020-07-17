@@ -36,17 +36,17 @@ class Meeting:
         (study_id OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study or the storage triplet
         """
         request_data = {
-           'study_uid': study_uid,
+           'name': name,
+           'phi_namespace': phi_namespace,
            'state': state,
            'storage_namespace': storage_namespace,
-           'phi_namespace': phi_namespace,
-           'name': name,
            'study_id': study_id,
+           'study_uid': study_uid,
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The study can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to create a meeting for the study')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to create a meeting for the study')
         query_data = {
             'api': self._api,
             'url': '/meeting/add',
@@ -68,14 +68,14 @@ class Meeting:
         :param state: State of the meeting (optional)
         """
         request_data = {
+           'name': name,
            'state': state,
            'uuid': uuid,
-           'name': name,
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The meeting can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to modify the meeting')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The meeting can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to modify the meeting')
         query_data = {
             'api': self._api,
             'url': '/meeting/set',
@@ -97,8 +97,8 @@ class Meeting:
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The meeting can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to get the meeting')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The meeting can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to get the meeting')
         query_data = {
             'api': self._api,
             'url': '/meeting/get',
@@ -120,8 +120,8 @@ class Meeting:
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The meeting can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The meeting can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/meeting/join',
@@ -164,8 +164,8 @@ class Meeting:
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The meeting can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The meeting can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/meeting/roster',
@@ -185,14 +185,14 @@ class Meeting:
         :param uuid: UUID of the meeting
         """
         request_data = {
-           'uuid': uuid,
            'user_id': user_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_ATTENDING'] = NotAttending('The user is not attending the meeting')
-        errors_mapping['NOT_FOUND'] = NotFound('The meeting can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('NOT_ATTENDING', None)] = NotAttending('The user is not attending the meeting')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The meeting can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/meeting/presenter',
@@ -214,7 +214,7 @@ class Meeting:
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The meeting can not be found')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The meeting can not be found')
         query_data = {
             'api': self._api,
             'url': '/meeting/ping',
@@ -236,8 +236,8 @@ class Meeting:
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The meeting can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete the meeting')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The meeting can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete the meeting')
         query_data = {
             'api': self._api,
             'url': '/meeting/delete',
@@ -262,8 +262,8 @@ class Meeting:
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The meeting can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The meeting can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/meeting/events/add',

@@ -31,7 +31,7 @@ class Filter(NamedTuple):
 class WithFilter:
     """With Filter mixin."""
 
-    _request_data: Dict
+    request_data: Dict
 
     def filter_by(self, filter_obj: Filter):
         """Filter by filter.
@@ -39,7 +39,7 @@ class WithFilter:
         :param filter_obj: filter object
         :return: Self object
         """
-        self._request_data['filter.{filter_name}.{filter_condition}'.format(
+        self.request_data['filter.{filter_name}.{filter_condition}'.format(
             filter_name=filter_obj.field_name,
             filter_condition=filter_obj.condition.value,
         )] = filter_obj.value

@@ -7,6 +7,8 @@ Init API
 
 Before we begin, to use sdk you need to know `url` of ambrahealth api and user credentials (`username` and `password`).
 
+You can add `client_name` to api constructors. This value will be added to the `SDK` request headers.
+
 For accessing to api functions you need to `sid` - session identificator.
 
 If you already have this, you can init api instance:
@@ -22,14 +24,15 @@ If you already have this, you can init api instance:
 .. doctest::
 
     >>> from ambra_sdk.api import Api
-    >>> api = Api.with_sid(url, sid)
+    >>> api = Api.with_sid(url, sid, 'SDK User 1')
 
 Or, you can use your user credentials and `SDK` automatically get new sid for you:
 
 .. doctest::
 
     >>> from ambra_sdk.api import Api
-    >>> api = Api.with_creds(url, username, password)
+    >>> api = Api.with_creds(url, username, password, 'SDK User 1')
+
 
 Service API
 -----------
@@ -47,7 +50,7 @@ Make sure the current version of `ambra-sdk` is not lower than the api version.
 
    >>> from ambra_sdk import API_VERSION
    >>> print(API_VERSION)
-   LBL0022 v38.0 2020-05-27
+   LBL0022 v39.0 2020-07-15
 
 Service api is divided by type of command.
 From `ambra-sdk` view all request have a form

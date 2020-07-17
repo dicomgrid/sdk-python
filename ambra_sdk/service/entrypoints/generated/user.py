@@ -60,10 +60,10 @@ class User:
         :param share_code: Share code they are joining from (optional)
         """
         request_data = {
-           'email': email,
            'captcha_response': captcha_response,
-           'last': last,
+           'email': email,
            'first': first,
+           'last': last,
            'password': password,
            'share_code': share_code,
         }
@@ -72,11 +72,11 @@ class User:
             request_data.update(customfield_param_dict)
 	
         errors_mapping = {}
-        errors_mapping['BAD_PASSWORD'] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
-        errors_mapping['CAPTCHA_FAILED'] = CaptchaFailed('Verifying the captcha failed')
-        errors_mapping['DUPLICATE_EMAIL'] = DuplicateEmail('The email is already used')
-        errors_mapping['LOCKOUT'] = Lockout('Too many joins attempt')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('BAD_PASSWORD', None)] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
+        errors_mapping[('CAPTCHA_FAILED', None)] = CaptchaFailed('Verifying the captcha failed')
+        errors_mapping[('DUPLICATE_EMAIL', None)] = DuplicateEmail('The email is already used')
+        errors_mapping[('LOCKOUT', None)] = Lockout('Too many joins attempt')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/user/join',
@@ -104,19 +104,19 @@ class User:
         :param password: Password
         """
         request_data = {
-           'email': email,
-           'mobile_phone': mobile_phone,
-           'last': last,
            'account_id': account_id,
+           'email': email,
            'first': first,
+           'last': last,
+           'mobile_phone': mobile_phone,
            'password': password,
         }
 	
         errors_mapping = {}
-        errors_mapping['BAD_PASSWORD'] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
-        errors_mapping['DUPLICATE_EMAIL'] = DuplicateEmail('The email is already used')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('BAD_PASSWORD', None)] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
+        errors_mapping[('DUPLICATE_EMAIL', None)] = DuplicateEmail('The email is already used')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/user/add',
@@ -141,9 +141,9 @@ class User:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The user can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to access this user record')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The user can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to access this user record')
         query_data = {
             'api': self._api,
             'url': '/user/get',
@@ -193,34 +193,34 @@ class User:
         :param uuid: The users uuid (optional). Uses the session user if not passed
         """
         request_data = {
-           'privacy_md5': privacy_md5,
-           'ui_json': ui_json,
            'account_id': account_id,
-           'email': email,
-           'time_zone': time_zone,
-           'mobile_phone': mobile_phone,
-           'indicator_md5': indicator_md5,
            'cc_token': cc_token,
-           'share_description': share_description,
-           'pin_required': pin_required,
-           'uuid': uuid,
-           'last': last,
+           'email': email,
            'first': first,
+           'indicator_md5': indicator_md5,
+           'last': last,
+           'mobile_phone': mobile_phone,
            'old_password': old_password,
            'password': password,
-           'terms_md5': terms_md5,
+           'pin_required': pin_required,
+           'privacy_md5': privacy_md5,
            'share_code': share_code,
+           'share_description': share_description,
+           'terms_md5': terms_md5,
+           'time_zone': time_zone,
+           'ui_json': ui_json,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['BAD_PASSWORD'] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
-        errors_mapping['DUPLICATE_EMAIL'] = DuplicateEmail('The email is already used')
-        errors_mapping['INVALID_PASSWORD'] = InvalidPassword('The old_password does not match the current password')
-        errors_mapping['INVALID_TIME_ZONE'] = InvalidTimeZone('The time zone is invalid')
-        errors_mapping['INVALID_TOKEN'] = InvalidToken('The cc_token is invalid')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The user can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to edit this user record. The error_subtype will hold the specific reason permission was denied.')
+        errors_mapping[('BAD_PASSWORD', None)] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
+        errors_mapping[('DUPLICATE_EMAIL', None)] = DuplicateEmail('The email is already used')
+        errors_mapping[('INVALID_PASSWORD', None)] = InvalidPassword('The old_password does not match the current password')
+        errors_mapping[('INVALID_TIME_ZONE', None)] = InvalidTimeZone('The time zone is invalid')
+        errors_mapping[('INVALID_TOKEN', None)] = InvalidToken('The cc_token is invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The user can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit this user record. The error_subtype will hold the specific reason permission was denied.')
         query_data = {
             'api': self._api,
             'url': '/user/set',
@@ -239,7 +239,7 @@ class User:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/user/delete',
@@ -261,8 +261,8 @@ class User:
         }
 	
         errors_mapping = {}
-        errors_mapping['LOCKOUT'] = Lockout('Too many failed attempts')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('LOCKOUT', None)] = Lockout('Too many failed attempts')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/user/password/lost',
@@ -287,9 +287,9 @@ class User:
         }
 	
         errors_mapping = {}
-        errors_mapping['BAD_PASSWORD'] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
-        errors_mapping['INVALID_TOKEN'] = InvalidToken('The token is invalid')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('BAD_PASSWORD', None)] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
+        errors_mapping[('INVALID_TOKEN', None)] = InvalidToken('The token is invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/user/password/reset',
@@ -317,9 +317,9 @@ class User:
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_LINK'] = InvalidLink('The link needs to be a https link within the site domain')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The user can not be found')
+        errors_mapping[('INVALID_LINK', None)] = InvalidLink('The link needs to be a https link within the site domain')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The user can not be found')
         query_data = {
             'api': self._api,
             'url': '/user/welcome',
@@ -338,12 +338,12 @@ class User:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/user/join/list',
@@ -366,10 +366,10 @@ class User:
         }
 	
         errors_mapping = {}
-        errors_mapping['ALREADY_MEMBER'] = AlreadyMember('The user is already a member of the account')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to join this account')
+        errors_mapping[('ALREADY_MEMBER', None)] = AlreadyMember('The user is already a member of the account')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to join this account')
         query_data = {
             'api': self._api,
             'url': '/user/join/request',
@@ -399,24 +399,24 @@ class User:
         :param role_id: The role to give the user (optional)
         """
         request_data = {
-           'email': email,
-           'link_already': link_already,
-           'locations': locations,
            'account_id': account_id,
-           'role_id': role_id,
+           'email': email,
            'groups': groups,
            'link': link,
+           'link_already': link_already,
+           'locations': locations,
+           'role_id': role_id,
         }
 	
         errors_mapping = {}
-        errors_mapping['ALREADY_EXISTS'] = AlreadyExists('They are already in this account')
-        errors_mapping['INVALID_EMAIL'] = InvalidEmail('Enter a valid email address')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['INVALID_LINK'] = InvalidLink('The link needs to be a https link within the site domain')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account or role can not be found. The error_subtype holds the uuid of the not found item')
-        errors_mapping['NOT_HASH'] = NotHash('The field is not a JSON hash. The error_subtype holds the name of the field')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to invite users to this account')
+        errors_mapping[('ALREADY_EXISTS', None)] = AlreadyExists('They are already in this account')
+        errors_mapping[('INVALID_EMAIL', None)] = InvalidEmail('Enter a valid email address')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('INVALID_LINK', None)] = InvalidLink('The link needs to be a https link within the site domain')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or role can not be found. The error_subtype holds the uuid of the not found item')
+        errors_mapping[('NOT_HASH', None)] = NotHash('The field is not a JSON hash. The error_subtype holds the name of the field')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to invite users to this account')
         query_data = {
             'api': self._api,
             'url': '/user/invite',
@@ -438,9 +438,9 @@ class User:
         }
 	
         errors_mapping = {}
-        errors_mapping['ACCEPTED'] = Accepted('The invitation was already accepted')
-        errors_mapping['ALREADY_EXISTS'] = AlreadyExists('They are already in this account')
-        errors_mapping['NOT_FOUND'] = NotFound('The invitation was not found')
+        errors_mapping[('ACCEPTED', None)] = Accepted('The invitation was already accepted')
+        errors_mapping[('ALREADY_EXISTS', None)] = AlreadyExists('They are already in this account')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The invitation was not found')
         query_data = {
             'api': self._api,
             'url': '/user/invite/accept',
@@ -465,9 +465,9 @@ class User:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
         query_data = {
             'api': self._api,
             'url': '/user/namespace/list',
@@ -492,10 +492,10 @@ class User:
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_FLAG'] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
-        errors_mapping['NOT_FOUND'] = NotFound('The namespace or user can not be found')
-        errors_mapping['NOT_MEMBER'] = NotMember('The user is not a member of this namespace')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not allowed to get user&#39;s event flags')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace or user can not be found')
+        errors_mapping[('NOT_MEMBER', None)] = NotMember('The user is not a member of this namespace')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not allowed to get user&#39;s event flags')
         query_data = {
             'api': self._api,
             'url': '/user/event',
@@ -545,30 +545,30 @@ class User:
         :param uuid: Return event flags for this user, not current user (optional)
         """
         request_data = {
-           'event_link_mine': event_link_mine,
-           'event_study_comment': event_study_comment,
-           'event_case_assignment': event_case_assignment,
-           'event_thin_study_success': event_thin_study_success,
-           'event_report_remove': event_report_remove,
-           'event_upload': event_upload,
-           'event_link': event_link,
-           'namespace_id': namespace_id,
-           'event_thin_study_fail': event_thin_study_fail,
-           'uuid': uuid,
-           'event_share': event_share,
            'event_approve': event_approve,
-           'event_upload_fail': event_upload_fail,
+           'event_case_assignment': event_case_assignment,
            'event_harvest': event_harvest,
-           'event_status_change': event_status_change,
-           'event_new_report': event_new_report,
+           'event_link': event_link,
+           'event_link_mine': event_link_mine,
            'event_message': event_message,
+           'event_new_report': event_new_report,
+           'event_report_remove': event_report_remove,
+           'event_share': event_share,
+           'event_status_change': event_status_change,
+           'event_study_comment': event_study_comment,
+           'event_thin_study_fail': event_thin_study_fail,
+           'event_thin_study_success': event_thin_study_success,
+           'event_upload': event_upload,
+           'event_upload_fail': event_upload_fail,
+           'namespace_id': namespace_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_FLAG'] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
-        errors_mapping['NOT_FOUND'] = NotFound('The namespace or user can not be found')
-        errors_mapping['NOT_MEMBER'] = NotMember('The user is not a member of this namespace')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not allowed to set user&#39;s event flags')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace or user can not be found')
+        errors_mapping[('NOT_MEMBER', None)] = NotMember('The user is not a member of this namespace')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not allowed to set user&#39;s event flags')
         query_data = {
             'api': self._api,
             'url': '/user/event/set',
@@ -593,8 +593,8 @@ class User:
         }
 	
         errors_mapping = {}
-        errors_mapping['ALREADY_DONE'] = AlreadyDone('A shared secret was already generated')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('ALREADY_DONE', None)] = AlreadyDone('A shared secret was already generated')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/user/token',
@@ -628,18 +628,21 @@ class User:
     def enable(
         self,
         uuid,
+        disable=None,
     ):
         """Enable.
         :param uuid: User uuid
+        :param disable: A flag indicating whether to disable the user (optional)
         """
         request_data = {
+           'disable': disable,
            'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_DISABLED'] = NotDisabled('The user is not disabled')
-        errors_mapping['NOT_FOUND'] = NotFound('The user can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to enable this user')
+        errors_mapping[('NOT_DISABLED', None)] = NotDisabled('The user is not disabled')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The user can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to enable this user')
         query_data = {
             'api': self._api,
             'url': '/user/enable',

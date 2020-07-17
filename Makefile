@@ -9,7 +9,7 @@ mypy:
 pytest:
 	-poetry run pytest || true
 
-check: flake mypy pytest
+check: flake mypy doctest pytest
 
 html:
 	-poetry run sphinx-build -b html docs/source docs/build || true

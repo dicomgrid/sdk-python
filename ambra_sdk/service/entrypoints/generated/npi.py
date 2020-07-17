@@ -28,15 +28,15 @@ class Npi:
         :param zip: Zip code (optional)
         """
         request_data = {
-           'state': state,
-           'last': last,
            'first': first,
+           'last': last,
+           'state': state,
            'zip': zip,
         }
 	
         errors_mapping = {}
-        errors_mapping['LOOKUP_FAILED'] = LookupFailed('The lookup against the NPI registry failed')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('LOOKUP_FAILED', None)] = LookupFailed('The lookup against the NPI registry failed')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/npi/find',

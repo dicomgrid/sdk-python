@@ -1,6 +1,16 @@
 """Response objects."""
 
-from typing import Any, Callable, Dict, Optional
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Generic,
+    Mapping,
+    Optional,
+    Tuple,
+    TypeVar,
+    Union,
+)
 
 from box import Box
 from requests import Response
@@ -12,62 +22,50 @@ from ambra_sdk.exceptions.service import (
     PreconditionFailed,
 )
 
+RETURN_TYPE = TypeVar('RETURN_TYPE')
+ERROR_MAPPING = Mapping[
+    Union[Tuple[str, Optional[str]], str],
+    PreconditionFailed,
+]
 
-class IterableResponse:
+
+class IterableResponse(Generic[RETURN_TYPE]):
     """Iterable response."""
 
     def __init__(  # NOQA: WPS211
         self,
-        post_method: Callable[[str, Dict[str, Any]], Response],
+        api,
         url: str,
         required_sid: bool,
         request_data: Dict[str, Any],
-        errors_mapping: Dict[str, PreconditionFailed],
+        errors_mapping: ERROR_MAPPING,
         pagination_field: str,
         rows_in_page: int,
+        return_constructor: Callable[..., RETURN_TYPE] = Box,
     ):
         """Respone initialization.
 
-        :param post_method: post method
+        :param api: api
         :param url: url
         :param required_sid: require_sid
         :param request_data: data for request
         :param errors_mapping: map of error name and exception
         :param pagination_field: field for pagination
         :param rows_in_page: number of rows in page
+        :param return_constructor: constructor for return type
         """
-        self._post_method = post_method
+        self._api = api
         self._url = url
         self._required_sid = required_sid
         self._request_data = request_data
         self._errors_mapping = errors_mapping
         self._pagination_field = pagination_field
-
         self._rows_in_page = rows_in_page
+        self._return_constructor = return_constructor
 
         self._min_row: int = 0
         self._max_row: Optional[int] = None
         self._current_row = None
-
-    def set_range(self, min_row: Optional[int], max_row: Optional[int]):
-        """Set range.
-
-        :param min_row: start row number
-        :param max_row: end row number
-
-        :return: self object
-
-        :raises ValueError: min_row or max_row is negative
-        """
-        if min_row is not None and min_row < 0:
-            raise ValueError('Min row is negative')
-        if max_row is not None and max_row < 0:
-            raise ValueError('Max row is negative')
-        if min_row is None:
-            min_row = 0
-        self._min_row = min_row
-        self._max_row = max_row
-        return self
 
     def __getitem__(self, key: slice):
         """Set range.
@@ -99,13 +97,7 @@ class IterableResponse:
         self._current_row = 0
         while True:
             self._prepare_data()
-            response = self._post_method(
-                url=self._url,
-                required_sid=self._required_sid,
-                data=self._request_data,
-            )
-            response = check_response(response, self._errors_mapping)
-
+            response = self._api.retry_with_new_sid(self._get_response)
             json = response.json()
             more = json['page']['more']
             # maximum rows in page
@@ -123,17 +115,37 @@ class IterableResponse:
                    self._current_row >= self._max_row:
                     return
                 self._current_row += 1
-                yield Box(row)
+                yield self._return_constructor(row)
             if more == 0:
                 break
 
-    def first(self) -> Optional[Box]:
+    def set_range(self, min_row: Optional[int], max_row: Optional[int]):
+        """Set range.
+
+        :param min_row: start row number
+        :param max_row: end row number
+
+        :return: self object
+
+        :raises ValueError: min_row or max_row is negative
+        """
+        if min_row is not None and min_row < 0:
+            raise ValueError('Min row is negative')
+        if max_row is not None and max_row < 0:
+            raise ValueError('Max row is negative')
+        if min_row is None:
+            min_row = 0
+        self._min_row = min_row
+        self._max_row = max_row
+        return self
+
+    def first(self) -> Optional[RETURN_TYPE]:
         """First element.
 
         :return: Return first element of seq.
         """
         try:
-            response_obj: Box = next(iter(self))
+            response_obj: RETURN_TYPE = next(iter(self))
         except StopIteration:
             return None
         return response_obj  # NOQA:WPS331
@@ -151,10 +163,18 @@ class IterableResponse:
             self._request_data['page.number'] = page_number + 1
             self._current_row = self._rows_in_page * page_number
 
+    def _get_response(self):
+        response = self._api.service_post(
+            url=self._url,
+            required_sid=self._required_sid,
+            data=self._request_data,
+        )
+        return check_response(response, self._errors_mapping)
+
 
 def check_response(  # NOQA:WPS231
     response: Response,
-    errors_mapping: Dict[str, PreconditionFailed],
+    errors_mapping: ERROR_MAPPING,
 ):
     """Check response on errors.
 
@@ -176,11 +196,18 @@ def check_response(  # NOQA:WPS231
         json = response.json()
         if json['status'] != 'ERROR':
             raise RuntimeError('Wrong respone')
-        error_type = json.get('error_type')
-        error_subtype = json.get('error_subtype')
+        error_type: str = json.get('error_type')
+        error_subtype: Optional[str] = json.get('error_subtype', None)
         error_data = json.get('error_data')
 
-        exception = errors_mapping.get(error_type)
+        exception = errors_mapping.get((error_type, error_subtype))
+        # For backward compatibility
+        # In previous version we have errors_mapping:
+        # error_type => exception
+        # Now we have:
+        # (error_type, error_subtype) => exception
+        if not exception and error_subtype is None:
+            exception = errors_mapping.get(error_type)
         if exception:
             exception.set_additional_info(error_subtype, error_data)
             raise exception

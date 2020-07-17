@@ -30,12 +30,12 @@ class Message:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/message/list',
@@ -77,23 +77,23 @@ class Message:
         (namespace_id OR user_id OR group_id OR location_id OR account_id OR email OR share_code OR study_id) - The namespace, entity, email, share code or study to send the message to
         """
         request_data = {
-           'user_id': user_id,
-           'location_id': location_id,
-           'email': email,
-           'share_code': share_code,
-           'group_id': group_id,
-           'namespace_id': namespace_id,
-           'parent_id': parent_id,
            'account_id': account_id,
            'body': body,
-           'subject': subject,
+           'email': email,
+           'group_id': group_id,
+           'location_id': location_id,
+           'namespace_id': namespace_id,
+           'parent_id': parent_id,
+           'share_code': share_code,
            'study_id': study_id,
+           'subject': subject,
+           'user_id': user_id,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The recipient or the parent message cannot be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to send to the recipient')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The recipient or the parent message cannot be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to send to the recipient')
         query_data = {
             'api': self._api,
             'url': '/message/add',
@@ -115,9 +115,9 @@ class Message:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The message can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view this message')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The message can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this message')
         query_data = {
             'api': self._api,
             'url': '/message/get',
@@ -139,9 +139,9 @@ class Message:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The message can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete this message')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The message can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete this message')
         query_data = {
             'api': self._api,
             'url': '/message/delete',

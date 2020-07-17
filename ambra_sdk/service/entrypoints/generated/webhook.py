@@ -47,9 +47,9 @@ class Webhook:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view this list')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this list')
         query_data = {
             'api': self._api,
             'url': '/webhook/list',
@@ -63,6 +63,7 @@ class Webhook:
         self,
         account_id,
         event,
+        method,
         name,
         url,
         auth=None,
@@ -73,7 +74,6 @@ class Webhook:
         filter_field=None,
         filter_regexp=None,
         max_age=None,
-        method=None,
         node_id=None,
         once=None,
         parameters=None,
@@ -84,6 +84,7 @@ class Webhook:
         """Add.
         :param account_id: uuid of the account
         :param event: Event to call it on (See the notes for the available events)
+        :param method: Method to call it with (POST|GET|POST_JSON|PUT)
         :param name: Name of the webhook
         :param url: URL to call
         :param auth: A JSON hash with the authentication details (optional)
@@ -94,60 +95,56 @@ class Webhook:
         :param filter_field: Name of the study field to filter on (optional)
         :param filter_regexp: Regular expression to match the value of the filter_field against (optional)
         :param max_age: Ignore studies that are more than this number of days old based on the study_date (optional)
-        :param method: method
         :param node_id: uuid of the node to proxy the webhook through (optional)
         :param once: Flag that this webhook should only be run once for a specific study (optional)
         :param parameters: A JSON object of the parameter names and values (optional)
         :param retry: Retry the webhook if it fails (optional)
         :param sid_user_id: UUID of the user to generate a sid as (optional)
         :param suspended: This webhook is suspended and not triggered (optional)
-
-        Notes:
-        method - Method to call it with (POST OR GET OR POST_JSON OR PUT)
         """
         request_data = {
-           'once': once,
-           'cron': cron,
-           'auth': auth,
-           'retry': retry,
-           'by_uid': by_uid,
-           'max_age': max_age,
-           'name': name,
-           'parameters': parameters,
-           'by_accession_number': by_accession_number,
-           'sid_user_id': sid_user_id,
            'account_id': account_id,
+           'auth': auth,
+           'by_accession_number': by_accession_number,
+           'by_uid': by_uid,
+           'cron': cron,
+           'delay': delay,
            'event': event,
            'filter_field': filter_field,
-           'delay': delay,
-           'url': url,
            'filter_regexp': filter_regexp,
-           'suspended': suspended,
+           'max_age': max_age,
            'method': method,
+           'name': name,
            'node_id': node_id,
+           'once': once,
+           'parameters': parameters,
+           'retry': retry,
+           'sid_user_id': sid_user_id,
+           'suspended': suspended,
+           'url': url,
         }
 	
         errors_mapping = {}
-        errors_mapping['ACCOUNT_NOT_FOUND'] = AccountNotFound('The account can not be found')
-        errors_mapping['CUSTOM_NOT_HASH'] = CustomNotHash('The custom auth value is not a JSON hash')
-        errors_mapping['INCOMPLETE_FILTER'] = IncompleteFilter('Both a field and regexp are required')
-        errors_mapping['INVALID_CRON'] = InvalidCron('The cron value is invalid')
-        errors_mapping['INVALID_EVENT'] = InvalidEvent('An invalid event was passed')
-        errors_mapping['INVALID_FILTER_FIELD'] = InvalidFilterField('Invalid filter field name')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The parameters field is not in valid JSON format.')
-        errors_mapping['INVALID_METHOD'] = InvalidMethod('An invalid method was passed')
-        errors_mapping['INVALID_REGEXP'] = InvalidRegexp('Invalid regular expression')
-        errors_mapping['INVALID_TRANSFORM_CONDITION'] = InvalidTransformCondition('The transform condition is invalid')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NODE_NOT_FOUND'] = NodeNotFound('The node can not be found')
-        errors_mapping['NOT_HASH'] = NotHash('The parameter or auth field is not a hash.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to add a webhook to this account')
-        errors_mapping['NOT_WITH_CRON'] = NotWithCron('The delay or retry option can not be used for cron events')
-        errors_mapping['SFDC_MISSING_FIELDS'] = SfdcMissingFields('Fields are missing for the SFDC auth hash')
-        errors_mapping['SFDC_NOT_HASH'] = SfdcNotHash('The SFDC auth value is not a JSON hash')
-        errors_mapping['SID_USER_NOT_FOUND'] = SidUserNotFound('The sid user can not be found')
-        errors_mapping['SID_USER_NOT_IN_ACCOUNT'] = SidUserNotInAccount('The sid user is not a member of this account')
-        errors_mapping['USER_NOT_FOUND'] = UserNotFound('The basic authentication user can not be found')
+        errors_mapping[('ACCOUNT_NOT_FOUND', None)] = AccountNotFound('The account can not be found')
+        errors_mapping[('CUSTOM_NOT_HASH', None)] = CustomNotHash('The custom auth value is not a JSON hash')
+        errors_mapping[('INCOMPLETE_FILTER', None)] = IncompleteFilter('Both a field and regexp are required')
+        errors_mapping[('INVALID_CRON', None)] = InvalidCron('The cron value is invalid')
+        errors_mapping[('INVALID_EVENT', None)] = InvalidEvent('An invalid event was passed')
+        errors_mapping[('INVALID_FILTER_FIELD', None)] = InvalidFilterField('Invalid filter field name')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The parameters field is not in valid JSON format.')
+        errors_mapping[('INVALID_METHOD', None)] = InvalidMethod('An invalid method was passed')
+        errors_mapping[('INVALID_REGEXP', None)] = InvalidRegexp('Invalid regular expression')
+        errors_mapping[('INVALID_TRANSFORM_CONDITION', None)] = InvalidTransformCondition('The transform condition is invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NODE_NOT_FOUND', None)] = NodeNotFound('The node can not be found')
+        errors_mapping[('NOT_HASH', None)] = NotHash('The parameter or auth field is not a hash.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add a webhook to this account')
+        errors_mapping[('NOT_WITH_CRON', None)] = NotWithCron('The delay or retry option can not be used for cron events')
+        errors_mapping[('SFDC_MISSING_FIELDS', None)] = SfdcMissingFields('Fields are missing for the SFDC auth hash')
+        errors_mapping[('SFDC_NOT_HASH', None)] = SfdcNotHash('The SFDC auth value is not a JSON hash')
+        errors_mapping[('SID_USER_NOT_FOUND', None)] = SidUserNotFound('The sid user can not be found')
+        errors_mapping[('SID_USER_NOT_IN_ACCOUNT', None)] = SidUserNotInAccount('The sid user is not a member of this account')
+        errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The basic authentication user can not be found')
         query_data = {
             'api': self._api,
             'url': '/webhook/add',
@@ -201,46 +198,46 @@ class Webhook:
         :param url: URL to call (optional)
         """
         request_data = {
-           'once': once,
-           'cron': cron,
            'auth': auth,
-           'retry': retry,
-           'by_uid': by_uid,
-           'max_age': max_age,
-           'name': name,
-           'parameters': parameters,
            'by_accession_number': by_accession_number,
-           'sid_user_id': sid_user_id,
+           'by_uid': by_uid,
+           'cron': cron,
+           'delay': delay,
            'event': event,
            'filter_field': filter_field,
-           'delay': delay,
-           'url': url,
            'filter_regexp': filter_regexp,
-           'suspended': suspended,
-           'uuid': uuid,
+           'max_age': max_age,
            'method': method,
+           'name': name,
            'node_id': node_id,
+           'once': once,
+           'parameters': parameters,
+           'retry': retry,
+           'sid_user_id': sid_user_id,
+           'suspended': suspended,
+           'url': url,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INCOMPLETE_FILTER'] = IncompleteFilter('Both a field and regexp are required')
-        errors_mapping['INVALID_CRON'] = InvalidCron('The cron value is invalid')
-        errors_mapping['INVALID_EVENT'] = InvalidEvent('An invalid event was passed')
-        errors_mapping['INVALID_FILTER_FIELD'] = InvalidFilterField('Invalid filter field name')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The parameters field is not in valid JSON format.')
-        errors_mapping['INVALID_METHOD'] = InvalidMethod('An invalid method was passed')
-        errors_mapping['INVALID_REGEXP'] = InvalidRegexp('Invalid regular expression')
-        errors_mapping['INVALID_TRANSFORM_CONDITION'] = InvalidTransformCondition('The transform condition is invalid')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NODE_NOT_FOUND'] = NodeNotFound('The node can not be found')
-        errors_mapping['NOT_FOUND'] = NotFound('The webhook can not be found')
-        errors_mapping['NOT_HASH'] = NotHash('The parameter field is not a hash.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to edit the webhook')
-        errors_mapping['NOT_WITH_CRON'] = NotWithCron('The delay or retry option can not be used for cron events')
-        errors_mapping['SFDC_MISSING_FIELDS'] = SfdcMissingFields('Fields are missing for the SFDC auth hash')
-        errors_mapping['SFDC_NOT_HASH'] = SfdcNotHash('The SFDC auth value is not a JSON hash')
-        errors_mapping['SID_USER_NOT_FOUND'] = SidUserNotFound('The sid user can not be found')
-        errors_mapping['SID_USER_NOT_IN_ACCOUNT'] = SidUserNotInAccount('The sid user is not a member of this account')
+        errors_mapping[('INCOMPLETE_FILTER', None)] = IncompleteFilter('Both a field and regexp are required')
+        errors_mapping[('INVALID_CRON', None)] = InvalidCron('The cron value is invalid')
+        errors_mapping[('INVALID_EVENT', None)] = InvalidEvent('An invalid event was passed')
+        errors_mapping[('INVALID_FILTER_FIELD', None)] = InvalidFilterField('Invalid filter field name')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The parameters field is not in valid JSON format.')
+        errors_mapping[('INVALID_METHOD', None)] = InvalidMethod('An invalid method was passed')
+        errors_mapping[('INVALID_REGEXP', None)] = InvalidRegexp('Invalid regular expression')
+        errors_mapping[('INVALID_TRANSFORM_CONDITION', None)] = InvalidTransformCondition('The transform condition is invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NODE_NOT_FOUND', None)] = NodeNotFound('The node can not be found')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The webhook can not be found')
+        errors_mapping[('NOT_HASH', None)] = NotHash('The parameter field is not a hash.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the webhook')
+        errors_mapping[('NOT_WITH_CRON', None)] = NotWithCron('The delay or retry option can not be used for cron events')
+        errors_mapping[('SFDC_MISSING_FIELDS', None)] = SfdcMissingFields('Fields are missing for the SFDC auth hash')
+        errors_mapping[('SFDC_NOT_HASH', None)] = SfdcNotHash('The SFDC auth value is not a JSON hash')
+        errors_mapping[('SID_USER_NOT_FOUND', None)] = SidUserNotFound('The sid user can not be found')
+        errors_mapping[('SID_USER_NOT_IN_ACCOUNT', None)] = SidUserNotInAccount('The sid user is not a member of this account')
         query_data = {
             'api': self._api,
             'url': '/webhook/set',
@@ -262,9 +259,9 @@ class Webhook:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The webhook can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view the webhook')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The webhook can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the webhook')
         query_data = {
             'api': self._api,
             'url': '/webhook/get',
@@ -286,9 +283,9 @@ class Webhook:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The webhook can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete the webhook')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The webhook can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete the webhook')
         query_data = {
             'api': self._api,
             'url': '/webhook/delete',
@@ -308,14 +305,14 @@ class Webhook:
         :param uuid: uuid of the webhook
         """
         request_data = {
-           'uuid': uuid,
            'study_id': study_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The webhook or study can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to trigger the webhook')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The webhook or study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to trigger the webhook')
         query_data = {
             'api': self._api,
             'url': '/webhook/trigger',
@@ -327,34 +324,33 @@ class Webhook:
     
     def event(
         self,
+        type,
         integration_key=None,
         namespace_id=None,
         share_code=None,
         study_count=None,
-        type=None,
     ):
         """Event.
+        :param type: The type of event (STUDY_UPLOAD_START|STUDY_UPLOAD_END)
         :param integration_key: The integration key associated with the event (optional)
         :param namespace_id: namespace_id
         :param share_code: share_code
         :param study_count: The number of studies associated with the event (optional)
-        :param type: type
 
         Notes:
         (namespace_id OR share_code) - The namespace or share code for the event
-        type - The type of event (STUDY_UPLOAD_START OR STUDY_UPLOAD_END)
         """
         request_data = {
-           'study_count': study_count,
-           'type': type,
            'integration_key': integration_key,
            'namespace_id': namespace_id,
            'share_code': share_code,
+           'study_count': study_count,
+           'type': type,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_TYPE'] = InvalidType('Invalid event type')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('INVALID_TYPE', None)] = InvalidType('Invalid event type')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/webhook/event',
@@ -382,18 +378,18 @@ class Webhook:
         :param webhook_id: The uuid of the calling webhook
         """
         request_data = {
-           'template_id': template_id,
-           'to': to,
            'html': html,
-           'text': text,
            'subject': subject,
+           'template_id': template_id,
+           'text': text,
+           'to': to,
            'webhook_id': webhook_id,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('This is not a call from a valid webhook')
-        errors_mapping['PARSE_FAILED'] = ParseFailed('Template parsing failed for a field. The error_subtype holds the name of the field')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('This is not a call from a valid webhook')
+        errors_mapping[('PARSE_FAILED', None)] = ParseFailed('Template parsing failed for a field. The error_subtype holds the name of the field')
         query_data = {
             'api': self._api,
             'url': '/webhook/email',

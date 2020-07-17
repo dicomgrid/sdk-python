@@ -213,6 +213,7 @@
                 <li><a href="#patient_portal_find">/patient/portal/find</a>
                 <li><a href="#patient_portal_pin">/patient/portal/pin</a>
                 <li><a href="#patient_portal_login">/patient/portal/login</a>
+                <li><a href="#patient_portal_list">/patient/portal/list</a>
             </ul>
             <li><a href="#order" name="order-idx">Order commands</a>
             <ul>
@@ -1571,6 +1572,14 @@
                 <td>Can they view or list the HL7 messages in the account</td>
             </tr>
             <tr>
+                <td>hl7_message_delete</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they delete the HL7 messages in the account</td>
+            </tr>
+            <tr>
                 <td>hl7_template_view</td>
                 <td>0</td>
                 <td>0</td>
@@ -1753,6 +1762,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Can they add, edit and remove links from an account</td>
+            </tr>
+            <tr>
+                <td>link_edit_pin</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they generate a one-time pin for a link</td>
             </tr>
             <tr>
                 <td>link_edit_upload</td>
@@ -2172,6 +2189,16 @@
                 <td>Enable multipart uploading</td>
             </tr>
             <tr>
+                <td>allow_drag_and_drop_in_study_uploader</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Allow Drag-n-Drop in the web uploader</td>
+            </tr>
+            <tr>
                 <td>enable_dicom_deidentification</td>
                 <td>Flag</td>
                 <td>0</td>
@@ -2552,6 +2579,16 @@
                 <td>The default mouse tool in the viewer</td>
             </tr>
             <tr>
+                <td>auto_transcode</td>
+                <td>Flag</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Enable pre-caching of all transcoded images during upload</td>
+            </tr>
+            <tr>
                 <td>auto_transcode_modalities</td>
                 <td>Text</td>
                 <td></td>
@@ -2650,6 +2687,26 @@
                 <td>0</td>
                 <td>0</td>
                 <td>A JSON hash. The keys are study status tags and the values are a list of the attributes attached to the tag</td>
+            </tr>
+            <tr>
+                <td>study_status_timer_suspensive_tags</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Comma separated list of study status tags that stops the study status timer.</td>
+            </tr>
+            <tr>
+                <td>study_status_timer_visible_at_last_status</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>When a study is at its final status show current timer value. Othervise -1 will be returned</td>
             </tr>
             <tr>
                 <td>study_share_use_account_template</td>
@@ -2840,6 +2897,16 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Enable tracking and display of the study push status for the account</td>
+            </tr>
+            <tr>
+                <td>show_study_copy_push_status</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Enable display of the study push status for the account when they push to a destination node in a different namespace</td>
             </tr>
             <tr>
                 <td>reverse_patient_name</td>
@@ -3341,9 +3408,19 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>0</td>
+                <td>1</td>
                 <td>0</td>
                 <td>Disable upload of a duplicate study by uid across account</td>
+            </tr>
+            <tr>
+                <td>must_approve_duplicate_study_uid</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Require approval of a study if the same study_uid already exists in the namespace</td>
             </tr>
             <tr>
                 <td>add_patientid_to_hl7_query_retrieve</td>
@@ -3416,6 +3493,16 @@
                 <td>Enable the patient portal feature</td>
             </tr>
             <tr>
+                <td>expose_patient_portal</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Make a patient portal publicly visible</td>
+            </tr>
+            <tr>
                 <td>require_mrn_for_patient_portal</td>
                 <td>Flag</td>
                 <td>0</td>
@@ -3484,6 +3571,16 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Suppress all emails to the patients</td>
+            </tr>
+            <tr>
+                <td>suppress_new_report_event_in_phr_for_patients</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Make sure a patient will not get twin new_report emails as a patient and as a PHR namespace user</td>
             </tr>
             <tr>
                 <td>study_search_modifiers</td>
@@ -3635,17 +3732,37 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>Number of minutes after study creation to not show reports on studies shared into a PHR namespace</td>
+                <td>A setting to delay a study report exposure in patient's portal. This can be a delay spec or a JSON object with delay specs by madality (object names are modalities or a special value <i>ALL</i> for default). A delay spec can be a number of minutes to delay or a number of work hours with suffix 'wh'</td>
+            </tr>
+            <tr>
+                <td>account_time_zone</td>
+                <td>Text</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A timezone for the account. Used for date and time calculations.</td>
+            </tr>
+            <tr>
+                <td>work_hour_matrix</td>
+                <td>Text</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A JSON list of lists which makes up a matrix 7 by 24 of work hours for the account. 1s mark work hours, 0s mark non-work hours, tailing zeroes are optional. The first index is for day of week (0 means monday), the second is for day hour (0 means 00:00-01:00am). </td>
             </tr>
             <tr>
                 <td>study_view_phr_delay</td>
-                <td>Test</td>
+                <td>Text</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>A JSON object with minutes to delay studies visibility in patient's portal. JSON object's names are modalities or a special value <i>ALL</i>, values are number of minutes to delay. The <i>ALL</i> record is optional and is applied when there is no match for study's modality</td>
+                <td>A setting to delay studies visibility in patient's portal. This can be a delay spec or a JSON object with delay specs by madality (object names are modalities or a special value <i>ALL</i> for default). A delay spec can be a number of minutes to delay or a number of work hours with suffix 'wh'</td>
             </tr>
             <tr>
                 <td>link_defaults</td>
@@ -3655,7 +3772,6 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
-                <td>0</td>
                 <td>A JSON hash of the default link add values for the UI</td>
             </tr>
             <tr>
@@ -3666,7 +3782,6 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
-                <td>0</td>
                 <td>A JSON hash of the upload settings</td>
             </tr>
             <tr>
@@ -3677,15 +3792,12 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>0</td>
                 <td>A transform condition expression (see /transform/add for format) to match against the HL7 message. Only fire a query retrieve if the message matches the condition</td>
             </tr>
             <tr>
                 <td>account_hl7_map</td>
                 <td>Text</td>
                 <td></td>
-                <td>0</td>
-                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3997,6 +4109,7 @@
                         <li> destination &bull; A JSON list of the destination uuid(s) to query for studies
                         <li> fields &bull; A JSON hash of the study fields and HL7 fields to update the retrieved study(s) with e.g. <code>{"patientid":"PID_3"}</code>
                         <li> max &bull; The maximum number of studies to retrieve. If the search returns more than the max the retrieve is not run. This defaults to 1.
+                        <li> rerun &bull; Flag to re-run the search and retrieve even if a study is already associated with the message
                     </ul>
                 </td>
             </tr>
@@ -4093,7 +4206,9 @@
                         <li> full_url &bull; Optional full URL for the Epic endpoint if is not in the standard location
                         <li> mrn_field &bull; The name of the identifier field that holds the MRN e.g. <code>urn:oid:1.2.840.114350.1.13.0.1.7.5.737384.0</code>
                         <li> timeout &bull; Optional number of seconds for the timeout on the FHIR call to Epic, defaults to 5
-                        <li> mrn_search &bull; Search by MRN instead of patient PHI. This field should contain a text template to create the Epic identifier value e.g. <code>MRN|{$patientid}</code>
+                        <li> mrn_search &bull; Search by MRN instead of patient PHI. This field should contain a text template to create the Epic identifier value e.g. <nobr><code>MRN|{$patientid}</code></nobr>
+                        <li> server_oauth_url &bull; Full URL to the Epic endpoint to get the server to server OAuth token from e.g. <code>https://apporchard.epic.com/interconnect-aocurprd-oauth/oauth2/token</code>
+                        <li> server_oauth_private_key &bull; The private key to encrypt the JWT token for server OAuth. The public key is registered with Epic. Each setup requires a unique key setup and the the keys can be generated as follows<br><code>openssl genrsa -out privatekey.pem 2048</code><br><code>openssl req -new -x509 -key privatekey.pem -out publickey509.pem -subj '/CN=myapp'</code><br>To convert the private key to a single line for JSON usage run the following command<br><code>jq -sR < privatekey.pem</code>
                     </ul>
                 </td>
             </tr>
@@ -4560,6 +4675,16 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Set the study to phantom state on a re-upload</td>
+            </tr>
+            <tr>
+                <td>disable_sticky_phi</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Do not make the PHI information sticky so that if the study data changes it is reflected in the UI</td>
             </tr>
         </table>
 
@@ -6017,6 +6142,7 @@
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; User uuid<br>
+                    <i>disable</i> &bull; A flag indicating whether to disable the user (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -6413,6 +6539,7 @@
                 <td>
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     NOT_FOUND &bull; The node can not be found<br>
+                    RUNNING &bull; This cfind is currently in process<br>
                 </td>
             </tr>
             <tr>
@@ -6538,6 +6665,7 @@
                     * <i>updated</i> &bull; Date and time the status was last updated<br>
                     * <i>created</i> &bull; Date and time the push  was created<br>
                     * <i>group_key</i> &bull; The string key used to group local push statuses<br>
+                    * <i>copy_namespace</i> &bull; The PHI namespace uuid of the study copy used to push to a destination<br>
                     * <i>is_local</i> &bull; The flag indicating if the corresponding push was local<br>
                     --- The following fields are only returned if the extra flag is specified ---<br>
                     <i>created_at</i> &bull; Date and time the record was created<br>
@@ -6623,6 +6751,7 @@
                     <i>meeting_view</i> &bull; The permission flag setting<br>
                     <i>link_direct</i> &bull; The permission flag setting<br>
                     <i>link_edit</i> &bull; The permission flag setting<br>
+                    <i>link_edit_pin</i> &bull; The permission flag setting<br>
                     <i>link_view</i> &bull; The permission flag setting<br>
                     <i>reports</i> &bull; A JSON array of the report ids they can view. This is not returned if they can view all reports<br>
                 </td>
@@ -7308,7 +7437,7 @@
                     <i>study_uid</i> &bull; The v3 storage uid of the study (optional if uuid is passed)<br>
                     <i>storage_namespace</i> &bull; The storage namespace of the study (optional if uuid is passed)<br>
                     <i>phi_namespace</i> &bull; The phi namespace of the study (optional)<br>
-                    <i>action</i> &bull; The audit action (STUDY_VIEW|STUDY_EDIT|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)<br>
+                    <i>action</i> &bull; The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_MERGE|STUDY_SPLIT|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)<br>
                     <i>detail</i> &bull; Additional information<br>
                 </td>
             </tr>
@@ -7524,6 +7653,7 @@
                     <i>viewer_study_page_link_visible</i> &bull; Value for the account flag<br>
                     <i>viewer_study_page_link_url</i> &bull; Value for the account flag<br>
                     <i>viewer_setting_not_diagnostic</i> &bull; Value for the account flag<br>
+                    <i>auto_transcode</i> &bull; Value for the account flag<br>
                     <i>auto_transcode_modalities</i> &bull; Value for the account flag<br>
                     <i>viewer_default_mouse_tool</i> &bull; Value for the account flag<br>
                     <i>viewer_link_series</i> &bull; Value for the account flag<br>
@@ -11524,6 +11654,7 @@
                     <i>alt_mobile_phone</i> &bull; Alternate mobile phone number (optional)<br>
                     <i>customfield-CUSTOMFIELD_UUID</i> &bull; Custom field(s) (optional)<br>
                     <i>event_share</i> &bull; Notify the patient if a new study is available on the patient portal (optional)<br>
+                    <i>event_new_report</i> &bull; Notify the patient if a report is attached on the patient portal (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -11555,7 +11686,10 @@
             <tr>
                 <th>Notes</th>
                 <td>
-                    If a study is used the base fields values are taken from the study and any explicit values sent in the call will override the study fields
+                    <ul>
+                        <li> * If a study is used the base fields values are taken from the study and any explicit values sent in the call will override the study fields
+                        <li> * event_new_report is on by default. It will be set to 1 if you omit it.
+                    </ul>
                 </td>
             </tr>
         </table>
@@ -11594,6 +11728,7 @@
                     <i>alt_email</i> &bull; Alternate email address<br>
                     <i>alt_mobile_phone</i> &bull; Alternate mobile phone number<br>
                     <i>event_share</i> &bull; Notify the patient if a new study is available on the patient portal<br>
+                    <i>event_new_report</i> &bull; Notify the patient if a report is attached on the patient portal<br>
                     <i>tags</i> &bull; An array of user tags associated with this object (This is only returned if the object has tags)<br>
                     <i>customfields</i> &bull; An array of the custom fields associated with this patient. Each object has the following <a href="#customfields">fields</a> (This is only returned if the group has custom fields)<br>
                 </td>
@@ -11644,6 +11779,7 @@
                     <i>alt_email</i> &bull; Alternate email address (optional)<br>
                     <i>alt_mobile_phone</i> &bull; Alternate mobile phone number (optional)<br>
                     <i>event_share</i> &bull; Notify the patient if a new study is available on the patient portal (optional)<br>
+                    <i>event_new_report</i> &bull; Notify the patient if a report is attached on the patient portal (optional)<br>
                     <i>customfield-CUSTOMFIELD_UUID</i> &bull; Custom field(s) (optional)<br>
                 </td>
             </tr>
@@ -11976,6 +12112,53 @@
             <tr>
                 <th>Notes</th>
                 <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#patient-idx">top</a>
+
+        <p><a name="patient_portal_list"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>List user's accounts with patient portal enabled</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/patient/portal/list</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
+                    <i>sort_by</i> &bull; <a href="#sort">Sorting</a> (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>page</i> &bull; The pagination status hash<br>
+                    <i>portals</i> &bull; An array of the accounts with patient portal enabled.  Each object holds the following fields<br>
+                    * <i>uuid</i> &bull; The account UUID<br>
+                    * <i>name</i> &bull; Name of the account<br>
+                    * <i>vanity</i> &bull; Vanity host name(s) for the account<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    Only patient portals with the expose_patient_portal setting turned on are returned.
                 </td>
             </tr>
         </table>
@@ -12611,6 +12794,9 @@
             <tr>
                 <th>Notes</th>
                 <td>
+                    <ul>
+                        <li> If the accession number value is <code>__DG_LOAD_FROM_MRN__</code> and the message has an MRN the accession numbers will be populated with the accession numbers of matching studies 
+                    </ul>
                 </td>
             </tr>
         </table>
@@ -12688,7 +12874,7 @@
             <tr>
                 <th>Permission</th>
                 <td>
-                    study_report_delete permission for the associated study
+                    hl7_message_delete or study_report_delete permission for the associated study
                 </td>
             </tr>
             <tr>
@@ -15359,6 +15545,7 @@
                     <i>no_re_run</i> &bull; Do not run this rule on a re-notification from storage - flag (optional)<br>
                     <i>suspended</i> &bull; This rule is suspended and not applied - flag (optional)<br>
                     <i>delay</i> &bull; Number of minutes to delay running this rule for after it is triggered (optional)<br>
+                    <i>delay_seconds</i> &bull; Number of seconds to delay running this rule for after it is triggered (optional)<br>
                     <i>delay_till_schedule</i> &bull; Delay running this rule after it is triggered until the next scheduled time - flag (optional)<br>
                     <i>other_namespaces</i> &bull; A comma separated list of the uuid of other namespaces to apply this rule to (optional)<br>
                     <i>manual_roles</i> &bull; A comma separated list of the uuid of roles that can run the rule manually (optional)<br>
@@ -15423,6 +15610,7 @@
                                 <li> op - operator value. The available operators are
                                 <ul>
                                     <li> equals
+                                    <li> in
                                     <li> contains
                                     <li> not_equals
                                     <li> not_contains
@@ -15436,6 +15624,7 @@
                                 <li> rv - right value to compare. The available options are
                                 <ul>
                                     <li> A free form textual entry
+                                    <li> A JSON array with free form textual entries - only when op is <i>in</i>
                                     <li> PHYSICIAN_ALIAS - This means the lv will be compared with the account_aliases for the users in the account. equals is the only valid operator.<br>
                                          If the account_alias is in the form of a regex i.e. /test.*\d/ a case insensitive regular expression comparison will be run. The regex can not have any modifier flags.
                                     <li> HL7 field to match in the format hl7_SEGMENT_FIELD e.g. hl7_PID_3 or in the format hl7_SEGMENT_FIELD_COMPONENT e.g. hl7_OBR_5_2
@@ -15500,6 +15689,7 @@
                     <i>no_re_run</i> &bull; Do not run this rule on a re-notification from storage - flag (optional)<br>
                     <i>suspended</i> &bull; This rule is suspended and not applied - flag (optional)<br>
                     <i>delay</i> &bull; Number of minutes to delay running this rule for after it is triggered (optional)<br>
+                    <i>delay_seconds</i> &bull; Number of seconds to delay running this rule for after it is triggered (optional)<br>
                     <i>delay_till_schedule</i> &bull; Delay running this rule after it is triggered until the next scheduled time - flag (optional)<br>
                     <i>other_namespaces</i> &bull; A comma separated list of the uuid of other namespaces to apply this rule to (optional)<br>
                     <i>manual_roles</i> &bull; A comma separated list of the uuid of roles that can run the rule manually (optional)<br>
@@ -15578,6 +15768,7 @@
                     <i>no_re_run</i> &bull; Do not run this rule on a re-notification from storage - flag<br>
                     <i>suspended</i> &bull; This rule is suspended and not applied - flag<br>
                     <i>delay</i> &bull; Number of minutes to delay running this rule for after it is triggered<br>
+                    <i>delay_seconds</i> &bull; Number of seconds to delay running this rule for after it is triggered<br>
                     <i>delay_till_schedule</i> &bull; Delay running this rule after it is triggered until the next scheduled time - flag<br>
                     <i>capture_email</i> &bull; Does an email need to be captured to run this rule - flag<br>
                     <i>other_namespaces</i> &bull; A comma separated list of the uuid of other namespaces to apply this rule to<br>
@@ -15770,6 +15961,7 @@
                     <i>must_approve</i> &bull; Flag if shared studies must be approved for the account namespace (optional)<br>
                     <i>must_approve_upload</i> &bull; Flag if uploaded studies must be approved (optional)<br>
                     <i>must_approve_harvest</i> &bull; Flag if harvested studies must be approved (optional)<br>
+                    <i>must_approve_move</i> &bull; Flag if moved studies must be approved (optional)<br>
                     <i>no_share</i> &bull; Flag if studies can not be shared with this account (optional). Studies can still be shared with locations, groups and users in the account.<br>
                     <i>can_request</i> &bull; Flag if user can request to join the account<br>
                     <i>share_code</i> &bull; The share code of the account (optional)<br>
@@ -15811,6 +16003,7 @@
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
                     INVALID_INTEGER &bull; An invalid integer was passed. The <i>error_subtype</i> holds the name of the invalid integer<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
+                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the account<br>
                 </td>
             </tr>
             <tr>
@@ -15857,6 +16050,7 @@
                     <i>must_approve</i> &bull; Flag if shared studies must be approved<br>
                     <i>must_approve_upload</i> &bull; Flag if uploaded studies must be approved<br>
                     <i>must_approve_harvest</i> &bull; Flag if harvested studies must be approved<br>
+                    <i>must_approve_move</i> &bull; Flag if moved studies must be approved<br>
                     <i>no_share</i> &bull; Flag to stop sharing into this namespace<br>
                     <i>can_request</i> &bull; Flag if user can request to join the account<br>
                     <i>share_code</i> &bull; The share code of the account<br>
@@ -15969,6 +16163,7 @@
                     DUPLICATE_NAME &bull; The account_login is already in use<br>
                     BAD_PASSWORD &bull; Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can't be one of your last three passwords<br>
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
+                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the account<br>
                 </td>
             </tr>
             <tr>
@@ -16056,6 +16251,7 @@
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
                     CAN_NOT_PROMOTE &bull; A user can not switch themselves to an admin role if they are currently not in an admin role<br>
                     NO_USER_OVERRIDE &bull; The setting does not allow a user override<br>
+                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the account<br>
                 </td>
             </tr>
             <tr>
@@ -16690,6 +16886,7 @@
                     <i>must_approve</i> &bull; Flag if shared studies must be approved for the location (optional)<br>
                     <i>must_approve_upload</i> &bull; Flag if uploaded studies must be approved (optional)<br>
                     <i>must_approve_harvest</i> &bull; Flag if harvested studies must be approved (optional)<br>
+                    <i>must_approve_move</i> &bull; Flag if moved studies must be approved (optional)<br>
                     <i>no_share</i> &bull; Flag if studies can not be shared with this location (optional). Studies can still be shared with users in the location.<br>
                     <i>share_code</i> &bull; The share code of the location (optional)<br>
                     <i>share_description</i> &bull; The share description of the location (optional)<br>
@@ -16726,6 +16923,7 @@
                     DUP_SHARE_CODE &bull; The share code is already used<br>
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
+                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the location<br>
                 </td>
             </tr>
             <tr>
@@ -16755,6 +16953,7 @@
                     <i>must_approve</i> &bull; Flag if shared studies must be approved for the location (optional)<br>
                     <i>must_approve_upload</i> &bull; Flag if uploaded studies must be approved (optional)<br>
                     <i>must_approve_harvest</i> &bull; Flag if harvested studies must be approved (optional)<br>
+                    <i>must_approve_move</i> &bull; Flag if moved studies must be approved (optional)<br>
                     <i>no_share</i> &bull; Flag if studies can not be shared with this location (optional). Studies can still be shared with users in the location.<br>
                     <i>share_code</i> &bull; The share code of the location (optional)<br>
                     <i>share_description</i> &bull; The share description of the location (optional)<br>
@@ -16787,6 +16986,7 @@
                     DUP_SHARE_CODE &bull; The share code is already used<br>
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
+                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the location<br>
                 </td>
             </tr>
             <tr>
@@ -16824,6 +17024,7 @@
                     <i>must_approve</i> &bull; Flag if shared studies must be approved<br>
                     <i>must_approve_upload</i> &bull; Flag if uploaded studies must be approved<br>
                     <i>must_approve_harvest</i> &bull; Flag if harvested studies must be approved<br>
+                    <i>must_approve_move</i> &bull; Flag if moved studies must be approved<br>
                     <i>no_share</i> &bull; Flag to stop sharing into this namespace<br>
                     <i>share_code</i> &bull; The share code of the location<br>
                     <i>share_description</i> &bull; The share description of the location<br>
@@ -16959,6 +17160,7 @@
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     NOT_FOUND &bull; The location can not be found<br>
                     NOT_PERMITTED &bull; You are not permitted to edit the location<br>
+                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the location<br>
                     USER_NOT_FOUND &bull; The user was not found or is not in the account<br>
                     ROLE_NOT_FOUND &bull; The role was not found or is not in the account<br>
                     INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
@@ -17160,6 +17362,7 @@
                     <i>must_approve</i> &bull; Flag if shared studies must be approved for the group (optional)<br>
                     <i>must_approve_upload</i> &bull; Flag if uploaded studies must be approved (optional)<br>
                     <i>must_approve_harvest</i> &bull; Flag if harvested studies must be approved (optional)<br>
+                    <i>must_approve_move</i> &bull; Flag if moved studies must be approved (optional)<br>
                     <i>no_share</i> &bull; Flag if studies can not be shared with this group (optional). Studies can still be shared with users in the group.<br>
                     <i>share_code</i> &bull; The share code of the group (optional)<br>
                     <i>share_description</i> &bull; The share description of the group (optional)<br>
@@ -17196,6 +17399,7 @@
                     DUP_SHARE_CODE &bull; The share code is already used<br>
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
+                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the group<br>
                 </td>
             </tr>
             <tr>
@@ -17225,6 +17429,7 @@
                     <i>must_approve</i> &bull; Flag if shared studies must be approved for the group (optional)<br>
                     <i>must_approve_upload</i> &bull; Flag if uploaded studies must be approved (optional)<br>
                     <i>must_approve_harvest</i> &bull; Flag if harvested studies must be approved (optional)<br>
+                    <i>must_approve_move</i> &bull; Flag if moved studies must be approved (optional)<br>
                     <i>no_share</i> &bull; Flag if studies can not be shared with this group (optional). Studies can still be shared with users in the group.<br>
                     <i>share_code</i> &bull; The share code of the group (optional)<br>
                     <i>share_description</i> &bull; The share description of the group (optional)<br>
@@ -17257,6 +17462,7 @@
                     DUP_SHARE_CODE &bull; The share code is already used<br>
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
+                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the group<br>
                 </td>
             </tr>
             <tr>
@@ -17294,6 +17500,7 @@
                     <i>must_approve</i> &bull; Flag if shared studies must be approved<br>
                     <i>must_approve_upload</i> &bull; Flag if uploaded studies must be approved<br>
                     <i>must_approve_harvest</i> &bull; Flag if harvested studies must be approved<br>
+                    <i>must_approve_move</i> &bull; Flag if moved studies must be approved<br>
                     <i>no_share</i> &bull; Flag to stop sharing into this group<br>
                     <i>share_code</i> &bull; The share code of the group<br>
                     <i>share_description</i> &bull; The share description of the group<br>
@@ -17429,6 +17636,7 @@
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     NOT_FOUND &bull; The group can not be found<br>
                     NOT_PERMITTED &bull; You are not permitted to edit the group<br>
+                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the group<br>
                     USER_NOT_FOUND &bull; The user was not found or is not in the account<br>
                     ROLE_NOT_FOUND &bull; The role was not found or is not in the account<br>
                     INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
@@ -17626,6 +17834,9 @@
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>name</i> &bull; Name of the role<br>
+                    <i>for_account</i> &bull; A flag that the role can be used in an account, default is on (optional)<br>
+                    <i>for_group</i> &bull; A flag that the role can be used in a group, default is on (optional)<br>
+                    <i>for_location</i> &bull; A flag that the role can be used in a location, default is on (optional)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>permissions</i> &bull; A hash of the role <a href="#permissions">permissions</a> (optional)<br>
                 </td>
@@ -17680,6 +17891,9 @@
                     <i>uuid</i> &bull; The role uuid<br>
                     <i>name</i> &bull; Name of the role (optional)<br>
                     <i>description</i> &bull; Description of the role (optional)<br>
+                    <i>for_account</i> &bull; A flag that the role can be used in an account (optional)<br>
+                    <i>for_group</i> &bull; A flag that the role can be used in a group (optional)<br>
+                    <i>for_location</i> &bull; A flag that the role can be used in a location (optional)<br>
                     <i>permissions</i> &bull; A hash of the role <a href="#permissions">permissions</a> (optional)<br>
                     <i>permission_PERMISSION_NAME</i> &bull; Set an individual permission. This is an alternative to the permissions hash for easier use in the API tester (optional)<br>
                 </td>
@@ -17740,6 +17954,9 @@
                     <i>uuid</i> &bull; The role uuid<br>
                     <i>name</i> &bull; Name of the role<br>
                     <i>description</i> &bull; Description of the role.<br>
+                    <i>for_account</i> &bull; A flag that the role can be used in an account<br>
+                    <i>for_group</i> &bull; A flag that the role can be used in a group<br>
+                    <i>for_location</i> &bull; A flag that the role can be used in a location,<br>
                     <i>type</i> &bull; Type of the role. If it is system generated this will be either admin or user<br>
                     <i>permissions</i> &bull; The role <a href="#permissions">permissions</a> as a JSON hash<br>
                 </td>
@@ -18549,6 +18766,7 @@
                     <i>single_file_dicom_wrapping</i> &bull; Value for the setting<br>
                     <i>disable_duplicate_study_upload</i> &bull; Value for the setting<br>
                     <i>enable_multipart_uploader</i> &bull; Value for the setting<br>
+                    <i>allow_drag_and_drop_in_study_uploader</i> &bull; Value for the setting<br>
                     <i>link_defaults</i> &bull; Value for the setting<br>
                     <i>upload_settings</i> &bull; Value for the setting<br>
                     <i>auto_create_patient</i> &bull; Value for the setting<br>
@@ -18649,6 +18867,7 @@
                     <i>auto_enable_dicom_wrapping</i> &bull; Flag for the setting<br>
                     <i>single_file_dicom_wrapping</i> &bull; Flag for the setting<br>
                     <i>enable_multipart_uploader</i> &bull; Flag for the setting<br>
+                    <i>allow_drag_and_drop_in_study_uploader</i> &bull; Flag for the setting<br>
                     <i>upload_select_none</i> &bull; Flag for the setting<br>
                     <i>hide_help_tool</i> &bull; Flag for the setting<br>
                     <i>is_production</i> &bull; Flag if this is a production site<br>
@@ -19196,6 +19415,7 @@
                 <td>
                     <i>sid</i> &bull; The session id<br>
                     <i>uuid</i> &bull; The UUID of the namespace<br>
+                    <i>account_id</i> &bull; The UUID of the account. A report will be produced for group, location and account namespaces of this account<br>
                     <i>email</i> &bull; Optional email address to send the report to<br>
                 </td>
             </tr>
@@ -20666,6 +20886,10 @@
                             <li>STUDY_REJECT - Called when the share of the study is rejected
                             <li>STUDY_REPORT_VIEW - Called when a report is viewed
                             <li>STUDY_EDIT - Called when a study is edited via the UI
+                            <li>STUDY_MOVE - Called when a study is moved to a namespace
+                            <li>STUDY_MERGE - Called for a study when another study merges in
+                            <li>STUDY_SPLIT - Called when a study is split
+                            <li>HL7_ADD - Called when an HL7 is added to Ambra
                             <li>DESTINATION_SEARCH_RESULTS - Called for the results (/node/found) for a /destination/search query
                             <li>DESTINATION_FETCH_FAIL - Called when a /destination/retrieve fails 
                             <li>WEBHOOK_FAILED - Called when a webhook fails
@@ -20680,8 +20904,8 @@
                         <li> The filter_field can be a customfield in the <code>customfield-CUSTOMFIELD_UUID</code> format
                         <li> If the event is STUDY_RADREPORT both the study.* and radreport.* fields will be available for use
                         <li> If the event is STUDY_REPORT or STUDY_REPORT_REMOVE and the filter_field is S-attachment_mime_type the mime type of the attachment will be filtered against the filter regular expression
-                        <li> If the event is STUDY_HL7 and the filter_field is S-hl7_type the HL7 message type will be filtered against the filter regular expression. The fields in the HL7 message that triggered the webhook are also for use in the webhook e.g. hl7.uuid
-                        <li> If the event is STUDY_HL7 and the filter_field is S-hl7_transform_condition the filter_field_regexp should be a transform condition expression to match against the HL7 message. See /hl7/transform/add for the format for the transform condition format.
+                        <li> If the event is STUDY_HL7 or HL7_ADDand the filter_field is S-hl7_type the HL7 message type will be filtered against the filter regular expression. The fields in the HL7 message that triggered the webhook are also for use in the webhook e.g. hl7.uuid
+                        <li> If the event is STUDY_HL7 or HL7_ADD and the filter_field is S-hl7_transform_condition the filter_field_regexp should be a transform condition expression to match against the HL7 message. See /hl7/transform/add for the format for the transform condition format.
                         <li> A <a href="#filter">filter</a> expression can be passed in the filter_field_regexp if the filter_field is S-list_filter. The filter will be evaluated against the study allowing fine grained and multi-field filtering e.g. <code>filter.phi_namespace.equals=UUID&filter.study_push_status.equals=S</code>
                         <li> If multiple filter expressions are required pass JSON arrays to both the filter_field and filter_regexp fields. The webhook will only run if all the filter conditions are satisfied.
                         <li> If the once flag is set the webhook is only run one time (after the flag is set) for a specific study. If by_uid or by_accession_number flag is specified as well the exclusion is expanded to include studies with the same study_uid or accession_number
@@ -21132,6 +21356,7 @@
                     <i>charge_currency</i> &bull; Charge currency (optional) <br>
                     <i>charge_description</i> &bull; Charge description (optional) <br>
                     <i>upload_match</i> &bull; A JSON hash of DICOM tags and regular expressions they must match uploaded against this link (optional) <br>
+                    <i>upload_study_customfields</i> &bull; A JSON hash of customfields that will be mapped to a study on study upload. A key is a customfield UUID, a value is a value for the field (optional) <br>
             </tr>
             <tr>
                 <th>Returns</th>
@@ -21235,6 +21460,7 @@
                     <i>charge_currency</i> &bull; Charge currency<br>
                     <i>charge_description</i> &bull; Charge description<br>
                     <i>upload_match</i> &bull; A JSON hash of DICOM tags and regular expressions they must match uploaded against this link<br>
+                    <i>upload_study_customfields</i> &bull; A JSON hash of customfields that will be mapped to a study on study upload<br>
                 </td>
             </tr>
             <tr>
@@ -21736,6 +21962,8 @@
             <tr>
                 <th>Permission</th>
                 <td>
+                    link_view
+                    link_edit_pin
                 </td>
             </tr>
             <tr>
@@ -21823,7 +22051,7 @@
                     <i>name</i> &bull; Name of the purge rule<br>
                     <i>account_id</i> &bull; uuid of the account the rule is for<br>
                     <i>days_old</i> &bull; Studies greater than or equal to these days old will be purged<br>
-                    <i>days_old_how</i> &bull; How should the days old value be calculated using the 'U'pdated or 'C'reated date<br>
+                    <i>days_old_how</i> &bull; How should the days old value be calculated using the 'U'pdated, 'C'reated or 'S'tudy date<br>
                     <i>namespaces</i> &bull; A JSON array of namespace uuid to limit the rule to (optional)<br>
                     <i>modalities</i> &bull; A JSON array of modalities to limit the rule to (optional)<br>
                     <i>minors</i> &bull; Apply this rule to minors - flag (optional)<br>
@@ -21904,7 +22132,7 @@
                     <i>uuid</i> &bull; Id of the purge rule<br>
                     <i>name</i> &bull; Name of the purge rule (optional)<br>
                     <i>days_old</i> &bull; Studies greater than or equal to these days old will be purged (optional)<br>
-                    <i>days_old_how</i> &bull; How should the days old value be calculated using the 'U'pdated or 'C'reated date (optional)<br>
+                    <i>days_old_how</i> &bull; How should the days old value be calculated using the 'U'pdated, 'C'reated or 'S'tudy date (optional)<br>
                     <i>namespaces</i> &bull; A JSON array of namespace uuid to limit the rule to (optional)<br>
                     <i>modalities</i> &bull; A JSON array of modalities to limit the rule to) (optional)<br>
                     <i>minors</i> &bull; Apply this rule to minors - flag (optional)<br>
@@ -21978,7 +22206,7 @@
                     <i>account_id</i> &bull; uuid of the account the rule is for<br>
                     <i>name</i> &bull; Name of the purge rule<br>
                     <i>days_old</i> &bull; Studies greater than or equal to these days old will be purged<br>
-                    <i>days_old_how</i> &bull; How should the days old value be calculated using the 'U'pdated or 'C'reated date<br>
+                    <i>days_old_how</i> &bull; How should the days old value be calculated using the 'U'pdated, 'C'reated or 'S'tudy date<br>
                     <i>namespaces</i> &bull; A JSON array of namespace uuid to limit the rule to<br>
                     <i>namespaces_names</i> &bull; A JSON array of the namespace names to limit the rule to<br>
                     <i>modalities</i> &bull; A JSON array of modalities to limit the rule to<br>
@@ -22720,6 +22948,7 @@
                     <ul>
                         <li> Replacement values can be either literal values or a Text::Template expression. For example if this is a study dictionary and the replacement value is <code>{$patient_name}</code>
                         the replace value will be the current value of the patient_name field
+                        <li> Functions available in the replace Text::Template expression are: full_years_between, dicom_to_date
                         <li> Customfields can get accessed from the template as follows {$customfield_h{'UUID_OF_CUSTOM_FIELD'}}
                         <li> Regular expressions are evaluated against the space concatenated value of the lookup field(s).
                         <li> Regular expressions are evaluated if there is no match against the normal JSON entries
@@ -22801,6 +23030,8 @@
                     <i>skip_if_replace_has_value</i> &bull; Flag to skip the lookup if the replace field already has a value (optional)<br>
                     <i>add_if_no_match</i> &bull; Flag to add the lookup and replace values to the dictionary if no match occurs (optional)<br>
                     <i>approve_if_match</i> &bull; Approve the object if there was a match (optional)<br>
+                    <i>run_once</i> &bull; Flag to make dictionary apply only once per object (optional)<br>
+                    <i>delay</i> &bull; An integer number of seconds to delay the dictionary application (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -22857,6 +23088,8 @@
                     <i>skip_if_replace_has_value</i> &bull; Flag to skip the lookup if any of the replace fields already has a value (optional)<br>
                     <i>add_if_no_match</i> &bull; Flag to add the lookup and replace values to the dictionary if no match occurs (optional)<br>
                     <i>approve_if_match</i> &bull; Approve the object if there was a match (optional)<br>
+                    <i>run_once</i> &bull; Flag to make dictionary apply only once per object (optional)<br>
+                    <i>delay</i> &bull; An integer number of seconds to delay the dictionary application (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -23926,7 +24159,7 @@
         <a href="#npi-idx">top</a>
 
 
-    <footer>Version: LBL0022 v38.0 2020-05-27</footer>
+    <footer>Version: LBL0022 v39.0 2020-07-15</footer>
     </div>
 </body>
 </html>

@@ -51,14 +51,14 @@ class Node:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view this list')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this list')
         query_data = {
             'api': self._api,
             'url': '/node/list',
@@ -81,15 +81,15 @@ class Node:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FILTER'] = InvalidFilter('Invalid filter field')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node or account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FILTER', None)] = InvalidFilter('Invalid filter field')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node or account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/node/public',
@@ -113,15 +113,15 @@ class Node:
         """
         request_data = {
            'account_id': account_id,
-           'uuid': uuid,
            'message': message,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['ALREADY_CONNECTED'] = AlreadyConnected('The node is already connected to the account')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node or account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('ALREADY_CONNECTED', None)] = AlreadyConnected('The node is already connected to the account')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node or account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/node/connect',
@@ -135,6 +135,7 @@ class Node:
         self,
         accelerator_id,
         name,
+        type,
         account_id=None,
         category=None,
         ctc_bucket=None,
@@ -147,14 +148,14 @@ class Node:
         group_id=None,
         is_public=None,
         location_id=None,
-        type=None,
         uuid=None,
     ):
         """Add.
         :param accelerator_id: uuid of the accelerator if this is an accelerator node
         :param name: Description of the node
+        :param type: Type of node (STORAGE|HARVESTER|ACCELERATOR|CLEARINGHOUSE|VIRTUAL|UTILITY|XDS)
         :param account_id: account_id
-        :param category: category
+        :param category: Node category (ACTIVE|INACTIVE|MIGRATION|TEST|DUPLICATE|INTEGRATED|ACCELERATOR) (optional)
         :param ctc_bucket: Name of the S3 bucket to use for a cloud to cloud gateway (optional)
         :param facility_contact: Name of the facility contact (optional)
         :param facility_contact_title: Title of the facility contact (optional)
@@ -165,40 +166,37 @@ class Node:
         :param group_id: group_id
         :param is_public: Flag if the node is public (optional)
         :param location_id: location_id
-        :param type: type
         :param uuid: uuid of the node (optional, you can use this to explicitly set the UUID)
 
         Notes:
-        category - Node category (ACTIVE OR INACTIVE OR MIGRATION OR TEST OR DUPLICATE OR INTEGRATED OR ACCELERATOR) (optional)
         (account_id OR location_id OR group_id) - uuid of the account, location or group to link this node to
-        type - Type of node (STORAGE OR HARVESTER OR ACCELERATOR OR CLEARINGHOUSE OR VIRTUAL OR UTILITY OR XDS)
         """
         request_data = {
-           'facility_email': facility_email,
-           'facility_zip': facility_zip,
-           'facility_contact_title': facility_contact_title,
-           'is_public': is_public,
-           'name': name,
            'accelerator_id': accelerator_id,
-           'facility_contact': facility_contact,
            'account_id': account_id,
            'category': category,
-           'facility_notes': facility_notes,
-           'type': type,
-           'facility_name': facility_name,
            'ctc_bucket': ctc_bucket,
-           'uuid': uuid,
+           'facility_contact': facility_contact,
+           'facility_contact_title': facility_contact_title,
+           'facility_email': facility_email,
+           'facility_name': facility_name,
+           'facility_notes': facility_notes,
+           'facility_zip': facility_zip,
            'group_id': group_id,
+           'is_public': is_public,
            'location_id': location_id,
+           'name': name,
+           'type': type,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['ACCOUNT_NOT_FOUND'] = AccountNotFound('The account was not found')
-        errors_mapping['INVALID_LINKAGE'] = InvalidLinkage('The linkage is invalid')
-        errors_mapping['INVALID_TYPE'] = InvalidType('Invalid type of node')
-        errors_mapping['INVALID_UUID'] = InvalidUuid('Invalid uuid format or this uuid is already in use')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to add a node to this account')
+        errors_mapping[('ACCOUNT_NOT_FOUND', None)] = AccountNotFound('The account was not found')
+        errors_mapping[('INVALID_LINKAGE', None)] = InvalidLinkage('The linkage is invalid')
+        errors_mapping[('INVALID_TYPE', None)] = InvalidType('Invalid type of node')
+        errors_mapping[('INVALID_UUID', None)] = InvalidUuid('Invalid uuid format or this uuid is already in use')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add a node to this account')
         query_data = {
             'api': self._api,
             'url': '/node/add',
@@ -238,7 +236,7 @@ class Node:
     ):
         """Set.
         :param uuid: The node id
-        :param category: category
+        :param category: Node category (ACTIVE|INACTIVE|MIGRATION|TEST|DUPLICATE|INTEGRATED) (optional)
         :param configuration: The configuration as a JSON hash of key values pairs (optional)
         :param ctc_bucket: Name of the S3 bucket to use for a cloud to cloud gateway (optional)
         :param facility_contact: Name of the facility contact (optional)
@@ -265,45 +263,44 @@ class Node:
 
         Notes:
         (sid OR serial_no) - The session id or serial number of the node
-        category - Node category (ACTIVE OR INACTIVE OR MIGRATION OR TEST OR DUPLICATE OR INTEGRATED) (optional)
         """
         request_data = {
-           'monitor_node_slow_push_threshold': monitor_node_slow_push_threshold,
-           'facility_email': facility_email,
-           'monitor_node_slow_push': monitor_node_slow_push,
-           'facility_zip': facility_zip,
-           'facility_contact_title': facility_contact_title,
-           'serial_no': serial_no,
-           'name': name,
-           'is_public': is_public,
-           'configuration': configuration,
-           'facility_contact': facility_contact,
-           'storage_namespace': storage_namespace,
            'category': category,
-           'monitor_node_last_send_threshold': monitor_node_last_send_threshold,
-           'facility_notes': facility_notes,
-           'facility_name': facility_name,
+           'configuration': configuration,
            'ctc_bucket': ctc_bucket,
-           'uuid': uuid,
-           'settings': settings,
+           'facility_contact': facility_contact,
+           'facility_contact_title': facility_contact_title,
+           'facility_email': facility_email,
+           'facility_name': facility_name,
+           'facility_notes': facility_notes,
+           'facility_zip': facility_zip,
+           'is_public': is_public,
            'monitor_email': monitor_email,
-           'monitor_node_ping': monitor_node_ping,
-           'monitor_study_create': monitor_study_create,
            'monitor_node_last_send': monitor_node_last_send,
-           'reload_configuration': reload_configuration,
+           'monitor_node_last_send_threshold': monitor_node_last_send_threshold,
+           'monitor_node_ping': monitor_node_ping,
+           'monitor_node_slow_push': monitor_node_slow_push,
+           'monitor_node_slow_push_threshold': monitor_node_slow_push_threshold,
+           'monitor_study_create': monitor_study_create,
            'monitor_study_create_threshold': monitor_study_create_threshold,
+           'name': name,
+           'reload_configuration': reload_configuration,
+           'serial_no': serial_no,
+           'settings': settings,
+           'storage_namespace': storage_namespace,
+           'uuid': uuid,
         }
         if setting_param is not None:
             setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
             request_data.update(setting_param_dict)
 	
         errors_mapping = {}
-        errors_mapping['INVALID_CONFIGURATION'] = InvalidConfiguration('An invalid combination of configuration options was set. The error_subtype will hold more detail')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to edit this node')
-        errors_mapping['NO_NODE_OVERRIDE'] = NoNodeOverride('The setting does not allow a node override')
+        errors_mapping[('INVALID_CONFIGURATION', None)] = InvalidConfiguration('An invalid combination of configuration options was set. The error_subtype will hold more detail')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit this node')
+        errors_mapping[('NO_NODE_OVERRIDE', None)] = NoNodeOverride('The setting does not allow a node override')
         query_data = {
             'api': self._api,
             'url': '/node/set',
@@ -331,8 +328,8 @@ class Node:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node can not be found')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
         query_data = {
             'api': self._api,
             'url': '/node/get',
@@ -354,14 +351,14 @@ class Node:
         :param uuid: The node id
         """
         request_data = {
+           'ack': ack,
            'serial_no': serial_no,
            'uuid': uuid,
-           'ack': ack,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node can not be found')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
         query_data = {
             'api': self._api,
             'url': '/node/ping',
@@ -386,8 +383,8 @@ class Node:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node can not be found')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
         query_data = {
             'api': self._api,
             'url': '/node/ping/ack',
@@ -400,48 +397,45 @@ class Node:
     def deliver(
         self,
         serial_no,
+        status,
         uuid,
         ack=None,
         destination_id=None,
         email_reason=None,
         is_local=None,
         job_id=None,
-        status=None,
         status_reason=None,
         study_uid=None,
     ):
         """Deliver.
         :param serial_no: The serial number of the node
+        :param status: Status code of the job (S|F|P|B|U) - Success, failure, partial transfer, blocked or uncached
         :param uuid: The node id
         :param ack: The HL7 ACK if this was an HL7 job (optional)
         :param destination_id: The uuid of the destination, required for local pushes (optional)
         :param email_reason: Email the user this reason for the status change (optional)
         :param is_local: The flag used to indicate the local push (optional)
         :param job_id: The uuid of the push job, not used for local pushes (optional)
-        :param status: status
         :param status_reason: Detail on the status change (optional)
         :param study_uid: The study uid of the local push, required for local pushes only (optional)
-
-        Notes:
-        status - Status code of the job (S OR F OR P OR B OR U) - Success, failure, partial transfer, blocked or uncached
         """
         request_data = {
+           'ack': ack,
+           'destination_id': destination_id,
+           'email_reason': email_reason,
            'is_local': is_local,
            'job_id': job_id,
-           'email_reason': email_reason,
-           'study_uid': study_uid,
-           'destination_id': destination_id,
-           'status_reason': status_reason,
-           'uuid': uuid,
            'serial_no': serial_no,
-           'ack': ack,
            'status': status,
+           'status_reason': status_reason,
+           'study_uid': study_uid,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_STATUS'] = InvalidStatus('Invalid status code')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node or job can not be found')
+        errors_mapping[('INVALID_STATUS', None)] = InvalidStatus('Invalid status code')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node or job can not be found')
         query_data = {
             'api': self._api,
             'url': '/node/deliver',
@@ -455,29 +449,26 @@ class Node:
         self,
         job_id,
         serial_no,
+        status,
         uuid,
-        status=None,
     ):
         """Retrieve.
         :param job_id: The uuid of the fetch job
         :param serial_no: The serial number of the node
+        :param status: Status code of the job (S|F|P) - Success, failure, partial transfer
         :param uuid: The node id
-        :param status: status
-
-        Notes:
-        status - Status code of the job (S OR F OR P) - Success, failure, partial transfer
         """
         request_data = {
            'job_id': job_id,
-           'uuid': uuid,
            'serial_no': serial_no,
            'status': status,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_STATUS'] = InvalidStatus('Invalid status code')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node or job can not be found')
+        errors_mapping[('INVALID_STATUS', None)] = InvalidStatus('Invalid status code')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node or job can not be found')
         query_data = {
             'api': self._api,
             'url': '/node/retrieve',
@@ -490,33 +481,30 @@ class Node:
     def webhook(
         self,
         serial_no,
+        status,
         uuid,
         webhook_id,
         error_message=None,
-        status=None,
     ):
         """Webhook.
         :param serial_no: The serial number of the node
+        :param status: Status code of the job (S|F) - Success, failure
         :param uuid: The node id
         :param webhook_id: The uuid of the webhook job
         :param error_message: Detailed error message (optional)
-        :param status: status
-
-        Notes:
-        status - Status code of the job (S OR F) - Success, failure
         """
         request_data = {
-           'uuid': uuid,
            'error_message': error_message,
            'serial_no': serial_no,
-           'webhook_id': webhook_id,
            'status': status,
+           'uuid': uuid,
+           'webhook_id': webhook_id,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_STATUS'] = InvalidStatus('Invalid status code')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node or webhook can not be found')
+        errors_mapping[('INVALID_STATUS', None)] = InvalidStatus('Invalid status code')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node or webhook can not be found')
         query_data = {
             'api': self._api,
             'url': '/node/webhook',
@@ -541,8 +529,8 @@ class Node:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node can not be found')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
         query_data = {
             'api': self._api,
             'url': '/node/configuration',
@@ -564,10 +552,10 @@ class Node:
         }
 	
         errors_mapping = {}
-        errors_mapping['HAS_DESTINATIONS'] = HasDestinations('The node has associated destinations')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete this node')
+        errors_mapping[('HAS_DESTINATIONS', None)] = HasDestinations('The node has associated destinations')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete this node')
         query_data = {
             'api': self._api,
             'url': '/node/delete',
@@ -595,8 +583,8 @@ class Node:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node can not be found')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
         query_data = {
             'api': self._api,
             'url': '/node/study/queued',
@@ -631,17 +619,17 @@ class Node:
         :param uuid: The node id
         """
         request_data = {
-           'serial_no': serial_no,
-           'uuid': uuid,
-           'studies': studies,
            'search_id': search_id,
+           'serial_no': serial_no,
+           'studies': studies,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['ALREADY_DONE'] = AlreadyDone('The search has already had results returned against it')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node or search can not be found')
+        errors_mapping[('ALREADY_DONE', None)] = AlreadyDone('The search has already had results returned against it')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node or search can not be found')
         query_data = {
             'api': self._api,
             'url': '/node/found',
@@ -672,17 +660,17 @@ class Node:
         :param uuid: The node id
         """
         request_data = {
-           'serial_no': serial_no,
-           'uuid': uuid,
            'orders': orders,
            'search_id': search_id,
+           'serial_no': serial_no,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['ALREADY_DONE'] = AlreadyDone('The search has already had results returned against it')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node or search can not be found')
+        errors_mapping[('ALREADY_DONE', None)] = AlreadyDone('The search has already had results returned against it')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node or search can not be found')
         query_data = {
             'api': self._api,
             'url': '/node/found/mwl',
@@ -706,17 +694,17 @@ class Node:
         :param uuid: The node id
         """
         request_data = {
+           'destination_id': destination_id,
+           'event': event,
            'serial_no': serial_no,
            'uuid': uuid,
-           'event': event,
-           'destination_id': destination_id,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_EVENT'] = InvalidEvent('Invalid event')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node or destination can not be found')
-        errors_mapping['SCHEDULE_IS_OFF'] = ScheduleIsOff('The event is outside of its scheduled time')
+        errors_mapping[('INVALID_EVENT', None)] = InvalidEvent('Invalid event')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node or destination can not be found')
+        errors_mapping[('SCHEDULE_IS_OFF', None)] = ScheduleIsOff('The event is outside of its scheduled time')
         query_data = {
             'api': self._api,
             'url': '/node/event',
@@ -730,32 +718,29 @@ class Node:
         self,
         end,
         start,
+        type,
         uuid,
-        type=None,
     ):
         """Log.
         :param end: End time stamp in YYYY-MM-DD HH:MM:SS format
         :param start: Start time stamp in YYYY-MM-DD HH:MM:SS format
+        :param type: Type of log (log|dicom|queue) defaults to log if not passed
         :param uuid: The node id
-        :param type: type
-
-        Notes:
-        type - Type of log (log OR dicom OR queue) defaults to log if not passed
         """
         request_data = {
-           'type': type,
            'end': end,
-           'uuid': uuid,
            'start': start,
+           'type': type,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_DATE_TIME'] = InvalidDateTime('The timestamp is invalid')
-        errors_mapping['INVALID_RANGE'] = InvalidRange('An invalid time range was specified')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to perform this action')
-        errors_mapping['TRY_LATER'] = TryLater('The log search queue is full')
+        errors_mapping[('INVALID_DATE_TIME', None)] = InvalidDateTime('The timestamp is invalid')
+        errors_mapping[('INVALID_RANGE', None)] = InvalidRange('An invalid time range was specified')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this action')
+        errors_mapping[('TRY_LATER', None)] = TryLater('The log search queue is full')
         query_data = {
             'api': self._api,
             'url': '/node/log',
@@ -779,16 +764,16 @@ class Node:
         :param uuid: The node id
         """
         request_data = {
-           'serial_no': serial_no,
            'job_id': job_id,
-           'uuid': uuid,
            'metric': metric,
+           'serial_no': serial_no,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_METRIC'] = InvalidMetric('The metric is invalid for this job type')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node or job can not be found')
+        errors_mapping[('INVALID_METRIC', None)] = InvalidMetric('The metric is invalid for this job type')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node or job can not be found')
         query_data = {
             'api': self._api,
             'url': '/node/metric',
@@ -822,20 +807,20 @@ class Node:
         :param study_uid: Study uid (optional)
         """
         request_data = {
-           'state': state,
+           'accession_number': accession_number,
            'destination_id': destination_id,
-           'study_uid': study_uid,
+           'detail': detail,
            'patientid': patientid,
            'queue': queue,
-           'uuid': uuid,
            'serial_no': serial_no,
-           'accession_number': accession_number,
-           'detail': detail,
+           'state': state,
+           'study_uid': study_uid,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node or destination can not be found')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node or destination can not be found')
         query_data = {
             'api': self._api,
             'url': '/node/progress/add',
@@ -858,19 +843,19 @@ class Node:
         (node_id OR destination_id) - The node or destination id
         """
         request_data = {
-           'node_id': node_id,
            'destination_id': destination_id,
+           'node_id': node_id,
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The node can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/node/progress/list',
@@ -893,9 +878,9 @@ class Node:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The record can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The record can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/node/progress/get',

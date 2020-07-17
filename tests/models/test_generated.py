@@ -57,7 +57,4 @@ class TestGeneratedModels:
         assert account.role.permissions == '1234'
 
         with pytest.raises(ValueError):
-            account.role.account_id = 'abc'
-
-        with pytest.raises(ValueError):
             account.role = 'abc'

@@ -24,7 +24,7 @@ from ambra_sdk.models import Study
 from ambra_sdk.service.filtering import Filter, FilterCondition
 from ambra_sdk.service.sorting import Sorter, SortingOrder
 
-api = API.with_creds(url, username, password)
+api = Api.with_creds(url, username, password)
 user_info = api.Session.user().get()
 
 studies = api \

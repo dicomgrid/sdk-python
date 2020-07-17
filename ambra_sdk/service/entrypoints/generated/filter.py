@@ -31,16 +31,16 @@ class Filter:
         :param type: The type of filter to list
         """
         request_data = {
-           'type': type,
            'account_id': account_id,
+           'type': type,
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
         query_data = {
             'api': self._api,
             'url': '/filter/list',
@@ -63,9 +63,9 @@ class Filter:
         :param type: The type of the filter
         """
         request_data = {
-           'type': type,
-           'name': name,
            'configuration': configuration,
+           'name': name,
+           'type': type,
         }
 	
         errors_mapping = {}
@@ -90,7 +90,7 @@ class Filter:
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The filter can not be found')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The filter can not be found')
         query_data = {
             'api': self._api,
             'url': '/filter/get',
@@ -114,15 +114,15 @@ class Filter:
         :param type: The type of the filter (optional)
         """
         request_data = {
-           'type': type,
            'configuration': configuration,
-           'uuid': uuid,
            'name': name,
+           'type': type,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The filter can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not the owner of the filter')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The filter can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not the owner of the filter')
         query_data = {
             'api': self._api,
             'url': '/filter/set',
@@ -144,8 +144,8 @@ class Filter:
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The filter can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not the owner of the filter')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The filter can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not the owner of the filter')
         query_data = {
             'api': self._api,
             'url': '/filter/delete',
@@ -174,17 +174,17 @@ class Filter:
         (account_id OR location_id OR group_id OR user_id) - uuid of the account, location, group or user to share this filter with
         """
         request_data = {
-           'user_id': user_id,
-           'location_id': location_id,
-           'uuid': uuid,
            'account_id': account_id,
            'group_id': group_id,
+           'location_id': location_id,
+           'user_id': user_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_PARAMETERS'] = InvalidParameters('Only pass a account_id or a location_id or a group_id or a user_id')
-        errors_mapping['NOT_FOUND'] = NotFound('The filter or share object can not be found. The error_subtype holds a the name of the key that can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not the owner of the filter or are not permitted to share a filter with the destination')
+        errors_mapping[('INVALID_PARAMETERS', None)] = InvalidParameters('Only pass a account_id or a location_id or a group_id or a user_id')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The filter or share object can not be found. The error_subtype holds a the name of the key that can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not the owner of the filter or are not permitted to share a filter with the destination')
         query_data = {
             'api': self._api,
             'url': '/filter/share',
@@ -213,16 +213,16 @@ class Filter:
         (account_id OR location_id OR group_id OR user_id) - uuid of the account, location, group or user to stop sharing this filter with
         """
         request_data = {
-           'user_id': user_id,
-           'location_id': location_id,
-           'uuid': uuid,
            'account_id': account_id,
            'group_id': group_id,
+           'location_id': location_id,
+           'user_id': user_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The filter can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not the owner of the filter')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The filter can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not the owner of the filter')
         query_data = {
             'api': self._api,
             'url': '/filter/share/stop',
@@ -244,7 +244,7 @@ class Filter:
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The filter can not be found')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The filter can not be found')
         query_data = {
             'api': self._api,
             'url': '/filter/share/list',

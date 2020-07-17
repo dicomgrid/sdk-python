@@ -1,14 +1,15 @@
 """Ambra storage and service API."""
 
 import logging
-from typing import NamedTuple, Optional
+from typing import Callable, NamedTuple, Optional
 
 import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util import Retry
 
+from ambra_sdk import __version__
 from ambra_sdk.addon.addon import Addon
-from ambra_sdk.exceptions.service import InvalidCredentials
+from ambra_sdk.exceptions.service import AuthorizationRequired
 from ambra_sdk.exceptions.storage import PermissionDenied
 from ambra_sdk.service.entrypoints import (
     Account,
@@ -57,6 +58,7 @@ from ambra_sdk.service.entrypoints import (
 from ambra_sdk.storage.storage import Storage
 
 logger = logging.getLogger(__name__)
+DEFAULT_SDK_CLIENT_NAME = 'Ambra SDK default client'
 
 
 class Credentials(NamedTuple):
@@ -75,6 +77,7 @@ class Api:  # NOQA:WPS214,WPS230
         username: Optional[str] = None,
         password: Optional[str] = None,
         sid: Optional[str] = None,
+        client_name: str = DEFAULT_SDK_CLIENT_NAME,
     ):
         """Init api.
 
@@ -82,10 +85,16 @@ class Api:  # NOQA:WPS214,WPS230
         :param sid: session id
         :param username: username credential
         :param password: password credential
+        :param client_name: user defined client name
         """
         self._api_url: str = url
         self._creds: Optional[Credentials] = None
         self._sid: Optional[str] = sid
+        self._client_name = client_name
+        self._default_headers = {
+            'SDK_CLIENT_NAME': client_name,
+            'SDK_VERSION': __version__,
+        }
         if username is not None and password is not None:
             self._creds = Credentials(username=username, password=password)
         self._service_session: Optional[requests.Session] = None
@@ -99,22 +108,28 @@ class Api:  # NOQA:WPS214,WPS230
         # Init addon namespace
         self.Addon = Addon(self)
 
+        # prepare ws
+        self.ws_url = '{url}/channel/websocket'.format(url=url)
+
     @classmethod
     def with_sid(
         cls,
         url: str,
         sid: str,
+        client_name: str = DEFAULT_SDK_CLIENT_NAME,
     ) -> 'Api':
         """Create Api with sid.
 
         :param url: api url
         :param sid: session id
+        :param client_name: user defined client name
 
         :return: Api
         """
         return cls(
             url=url,
             sid=sid,
+            client_name=client_name,
         )
 
     @classmethod
@@ -123,12 +138,14 @@ class Api:  # NOQA:WPS214,WPS230
         url: str,
         username: str,
         password: str,
+        client_name: str = DEFAULT_SDK_CLIENT_NAME,
     ) -> 'Api':
         """Create Api with (username, password) credentials.
 
         :param url: api url
         :param username: username credential
         :param password: password credential
+        :param client_name: user defined client name
 
         :return: Api
         """
@@ -136,6 +153,7 @@ class Api:  # NOQA:WPS214,WPS230
             url=url,
             username=username,
             password=password,
+            client_name=client_name,
         )
 
     @property
@@ -150,6 +168,7 @@ class Api:  # NOQA:WPS214,WPS230
             adapter = HTTPAdapter(max_retries=retries)
             self._service_session.mount('http://', adapter)
             self._service_session.mount('https://', adapter)
+            self._service_session.headers.update(self._default_headers)
         return self._service_session
 
     @property
@@ -164,6 +183,7 @@ class Api:  # NOQA:WPS214,WPS230
             adapter = HTTPAdapter(max_retries=retries)
             self._storage_session.mount('http://', adapter)
             self._storage_session.mount('https://', adapter)
+            self._storage_session.headers.update(self._default_headers)
         return self._storage_session
 
     def storage_get(
@@ -185,15 +205,6 @@ class Api:  # NOQA:WPS214,WPS230
             # Get or create new sid
             request_params['sid'] = self.sid
             kwargs['params'] = request_params
-            try:
-                return self.storage_session.get(
-                    url=url,
-                    **kwargs,
-                )
-            except PermissionDenied:
-                logger.info('Try update sid')
-                request_params['sid'] = self.get_new_sid()
-                kwargs['params'] = request_params
         return self.storage_session.get(url=url, **kwargs)
 
     def storage_delete(
@@ -215,15 +226,6 @@ class Api:  # NOQA:WPS214,WPS230
             # Delete or create new sid
             request_params['sid'] = self.sid
             kwargs['params'] = request_params
-            try:
-                return self.storage_session.delete(
-                    url=url,
-                    **kwargs,
-                )
-            except PermissionDenied:
-                logger.info('Try update sid')
-                request_params['sid'] = self.get_new_sid()
-                kwargs['params'] = request_params
         return self.storage_session.delete(url=url, **kwargs)
 
     def storage_post(
@@ -245,16 +247,18 @@ class Api:  # NOQA:WPS214,WPS230
             # Post or create new sid
             request_params['sid'] = self.sid
             kwargs['params'] = request_params
-            try:
-                return self.storage_session.post(
-                    url=url,
-                    **kwargs,
-                )
-            except PermissionDenied:
-                logger.info('Try update sid')
-                request_params['sid'] = self.get_new_sid()
-                kwargs['params'] = request_params
         return self.storage_session.post(url=url, **kwargs)
+
+    def service_full_url(self, url: str) -> str:
+        """Full service method url.
+
+        :param url: method url
+        :return: full url
+        """
+        return '{base_url}{entrypoint_url}'.format(
+            base_url=self._api_url,
+            entrypoint_url=url,
+        )
 
     def service_post(
         self,
@@ -269,21 +273,12 @@ class Api:  # NOQA:WPS214,WPS230
         :param kwargs: request arguments
         :return: response
         """
-        url = '{base_url}{entrypoint_url}'.format(
-            base_url=self._api_url,
-            entrypoint_url=url,
-        )
+        full_url = self.service_full_url(url)
         if required_sid is True:
             request_data = kwargs.pop('data')
             request_data['sid'] = self.sid
             kwargs['data'] = request_data
-            try:
-                return self.service_session.post(url=url, **kwargs)
-            except InvalidCredentials:
-                logger.info('Try update sid')
-                request_data['sid'] = self.get_new_sid()
-                kwargs['data'] = request_data
-        return self.service_session.post(url=url, **kwargs)
+        return self.service_session.post(url=full_url, **kwargs)
 
     @property
     def sid(self) -> str:
@@ -315,7 +310,31 @@ class Api:  # NOQA:WPS214,WPS230
         self._sid = new_sid
         return new_sid
 
+    def retry_with_new_sid(
+        self,
+        fn: Callable,
+    ):
+        """Retry with new sid.
+
+        :param fn: callable method
+        :return: fn result
+        """
+        try:
+            return fn()
+        except (AuthorizationRequired, PermissionDenied):
+            self.get_new_sid()
+            return fn()
+
     def _init_request_params(self):
+        method_whitelist = [
+            'HEAD',
+            'TRACE',
+            'GET',
+            'PUT',
+            'OPTIONS',
+            'DELETE',
+            'POST',
+        ]
         # https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html#module-urllib3.util.retry
         self.service_retry_params = {
             'total': 10,
@@ -324,6 +343,7 @@ class Api:  # NOQA:WPS214,WPS230
             'status': 5,
             'status_forcelist': [500, 502, 503, 504],
             'backoff_factor': 0.1,
+            'method_whitelist': method_whitelist,
         }
         # Merge studies
         # /study/{namespace}/{studyUid}/merge?sid={sid}&secondary_study_uid={secondary_study_uid}&delete_secondary_study={0,1}
@@ -335,6 +355,7 @@ class Api:  # NOQA:WPS214,WPS230
             'status': 5,
             'status_forcelist': [502, 503, 504],
             'backoff_factor': 0.1,
+            'method_whitelist': method_whitelist,
         }
 
     def _init_service_entrypoints(self):

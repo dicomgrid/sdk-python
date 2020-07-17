@@ -5,6 +5,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [3.20.5.0-1] - 2020-07-15
+### Added
+- url, full_url, request_data for service query objects
+- only_prepare argument (default is False) for all storage methods. If it is True, method return PreparedRequest object
+- Examples of using retry mechanism for specific methods
+- client_name argument in Api constructors
+- SDK_VERSION, SDK_CLIENT_NAME in default session headers
+- SDK version in documentation
+- Service public api support: LBL0022 v39.0 2020-07-15
+- Service models: LBL0022 v39.0 2020-07-15
+
+### Changed
+- Update to pydicom==2.0.0
+- Change INFO log level in ws to DEBUG
+
+### Fixed
+- Fix usage example in README
+- Fix retrying requests with new SID
+
 ## [3.20.4.0-1] - 2020-06-03
 ### Added
 - Storage api support: LBL0038 v9.0 2020-06-03

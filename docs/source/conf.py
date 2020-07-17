@@ -26,7 +26,10 @@ copyright = '2020, Ambrahealth AI team'
 author = 'Ambrahealth AI team'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+from ambra_sdk import __version__
+release = __version__
+version = __version__
+
 
 
 # -- General configuration ---------------------------------------------------
@@ -63,3 +66,12 @@ html_theme = 'alabaster'
 html_static_path = []
 
 master_doc = 'index'
+
+
+html_theme_options = {
+    'github_user': 'dicomgrid',
+    'github_repo': 'sdk-python',
+    'github_count': False,
+    'description': 'version {version}'.format(version=version),
+    'show_powered_by': False,
+}

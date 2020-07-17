@@ -59,15 +59,15 @@ class Link:
         (study_id OR user_id OR account_id) - uuid of the study, user or account to get the links for
         """
         request_data = {
-           'user_id': user_id,
            'account_id': account_id,
            'study_id': study_id,
+           'user_id': user_id,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view this list')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this list')
         query_data = {
             'api': self._api,
             'url': '/link/list',
@@ -80,10 +80,10 @@ class Link:
     
     def add(
         self,
+        action,
         prompt_for_anonymize,
         acceptance_required=None,
         account_id=None,
-        action=None,
         anonymize=None,
         charge_amount=None,
         charge_currency=None,
@@ -109,13 +109,14 @@ class Link:
         skip_email_prompt=None,
         study_id=None,
         upload_match=None,
+        upload_study_customfields=None,
         use_share_code=None,
     ):
         """Add.
+        :param action: Link action (STUDY_LIST|STUDY_VIEW|STUDY_UPLOAD)
         :param prompt_for_anonymize: Flag to prompt if the anonymization rules should be applied on ingress
         :param acceptance_required: Flag that acceptance of TOS is required (optional)
         :param account_id: account_id
-        :param action: action
         :param anonymize: Anonymization rules to the applied to any STUDY_UPLOAD done with this link. Rules are formatted as per the rules parameter in /namespace/anonymize  (optional)
         :param charge_amount: Amount to charge in pennies before the link can be accessed (optional)
         :param charge_currency: Charge currency (optional)
@@ -141,61 +142,62 @@ class Link:
         :param skip_email_prompt: Skip the prompt for email step (optional)
         :param study_id: study_id
         :param upload_match: A JSON hash of DICOM tags and regular expressions they must match uploaded against this link (optional)
+        :param upload_study_customfields: A JSON hash of customfields that will be mapped to a study on study upload. A key is a customfield UUID, a value is a value for the field (optional)
         :param use_share_code: Flag to use the namespace share code settings for a STUDY_UPLOAD (optional)
 
         Notes:
         (study_id OR filter AND account_id OR namespace_id) - uuid of the study or a JSON hash of the study filter expression and the account_id or namespace_id if the action is STUDY_UPLOAD
-        action - Link action (STUDY_LIST OR STUDY_VIEW OR STUDY_UPLOAD)
         """
         request_data = {
-           'action': action,
-           'skip_email_prompt': skip_email_prompt,
-           'meeting_id': meeting_id,
-           'upload_match': upload_match,
-           'minutes_alive': minutes_alive,
-           'charge_description': charge_description,
-           'password_is_dob': password_is_dob,
-           'share_on_view': share_on_view,
-           'charge_amount': charge_amount,
-           'anonymize': anonymize,
-           'parameters': parameters,
-           'notify': notify,
-           'namespace_id': namespace_id,
-           'account_id': account_id,
            'acceptance_required': acceptance_required,
-           'message': message,
-           'include_priors': include_priors,
-           'password_max_attempts': password_max_attempts,
-           'study_id': study_id,
-           'filter': filter,
-           'email': email,
-           'use_share_code': use_share_code,
-           'share_code': share_code,
-           'prompt_for_anonymize': prompt_for_anonymize,
-           'mobile_phone': mobile_phone,
+           'account_id': account_id,
+           'action': action,
+           'anonymize': anonymize,
+           'charge_amount': charge_amount,
            'charge_currency': charge_currency,
-           'referer': referer,
-           'pin_auth': pin_auth,
-           'password': password,
+           'charge_description': charge_description,
+           'email': email,
+           'filter': filter,
+           'include_priors': include_priors,
            'max_hits': max_hits,
+           'meeting_id': meeting_id,
+           'message': message,
+           'minutes_alive': minutes_alive,
+           'mobile_phone': mobile_phone,
+           'namespace_id': namespace_id,
+           'notify': notify,
+           'parameters': parameters,
+           'password': password,
+           'password_is_dob': password_is_dob,
+           'password_max_attempts': password_max_attempts,
+           'pin_auth': pin_auth,
+           'prompt_for_anonymize': prompt_for_anonymize,
+           'referer': referer,
+           'share_code': share_code,
+           'share_on_view': share_on_view,
+           'skip_email_prompt': skip_email_prompt,
+           'study_id': study_id,
+           'upload_match': upload_match,
+           'upload_study_customfields': upload_study_customfields,
+           'use_share_code': use_share_code,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_ACTION'] = InvalidAction('An invalid action was passed')
-        errors_mapping['INVALID_CHARGE'] = InvalidCharge('The charge is invalid. The error_subtype holds the details on the error')
-        errors_mapping['INVALID_EMAIL'] = InvalidEmail('An invalid email address was passed')
-        errors_mapping['INVALID_FIELD_NAME'] = InvalidFieldName('The field name in the rules hash is invalid. The error_subtype holds the invalid field name')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['INVALID_PHI_FIELD'] = InvalidPhiField('The password_is_phi field is invalid or a study_id was not passed')
-        errors_mapping['INVALID_PHONE'] = InvalidPhone('An invalid cellular phone number was passed')
-        errors_mapping['INVALID_REGEXP'] = InvalidRegexp('Invalid regular expression. The error_subtype holds the invalid regexp.')
-        errors_mapping['INVALID_UPLOAD_MATCH'] = InvalidUploadMatch('The upload_match is invalid. The error_subtype holds the details on the error')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The patient or study could not be found. The error_subtype holds the uuid that can not be found')
-        errors_mapping['NOT_HASH'] = NotHash('The rules field is not a hash')
-        errors_mapping['NOT_LIST'] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to create links')
-        errors_mapping['VALIDATE'] = Validate('A validation error. The error_subtype holds the details on the error')
+        errors_mapping[('INVALID_ACTION', None)] = InvalidAction('An invalid action was passed')
+        errors_mapping[('INVALID_CHARGE', None)] = InvalidCharge('The charge is invalid. The error_subtype holds the details on the error')
+        errors_mapping[('INVALID_EMAIL', None)] = InvalidEmail('An invalid email address was passed')
+        errors_mapping[('INVALID_FIELD_NAME', None)] = InvalidFieldName('The field name in the rules hash is invalid. The error_subtype holds the invalid field name')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('INVALID_PHI_FIELD', None)] = InvalidPhiField('The password_is_phi field is invalid or a study_id was not passed')
+        errors_mapping[('INVALID_PHONE', None)] = InvalidPhone('An invalid cellular phone number was passed')
+        errors_mapping[('INVALID_REGEXP', None)] = InvalidRegexp('Invalid regular expression. The error_subtype holds the invalid regexp.')
+        errors_mapping[('INVALID_UPLOAD_MATCH', None)] = InvalidUploadMatch('The upload_match is invalid. The error_subtype holds the details on the error')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The patient or study could not be found. The error_subtype holds the uuid that can not be found')
+        errors_mapping[('NOT_HASH', None)] = NotHash('The rules field is not a hash')
+        errors_mapping[('NOT_LIST', None)] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to create links')
+        errors_mapping[('VALIDATE', None)] = Validate('A validation error. The error_subtype holds the details on the error')
         query_data = {
             'api': self._api,
             'url': '/link/add',
@@ -238,6 +240,7 @@ class Link:
         skip_email_prompt,
         study_id,
         upload_match,
+        upload_study_customfields,
         url,
         use_share_code,
         user_id,
@@ -275,53 +278,55 @@ class Link:
         :param skip_email_prompt: Skip the prompt for email step
         :param study_id: uuid of the study
         :param upload_match: A JSON hash of DICOM tags and regular expressions they must match uploaded against this link
+        :param upload_study_customfields: A JSON hash of customfields that will be mapped to a study on study upload
         :param url: URL for the link which will take you to the UI entry point for links to enter email, password etc.
         :param use_share_code: Flag to use the namespace share code settings for a STUDY_UPLOAD
         :param user_id: The user id
         :param uuid: Id of the link
         """
         request_data = {
-           'action': action,
-           'skip_email_prompt': skip_email_prompt,
-           'redirect_url': redirect_url,
-           'has_password': has_password,
-           'upload_match': upload_match,
-           'minutes_alive': minutes_alive,
-           'charge_description': charge_description,
-           'password_is_dob': password_is_dob,
-           'share_on_view': share_on_view,
-           'charge_amount': charge_amount,
-           'max_hits': max_hits,
-           'anonymize': anonymize,
-           'parameters': parameters,
-           'notify': notify,
-           'namespace_id': namespace_id,
-           'account_id': account_id,
            'acceptance_required': acceptance_required,
-           'message': message,
-           'include_priors': include_priors,
-           'password_max_attempts': password_max_attempts,
-           'user_id': user_id,
-           'filter': filter,
+           'account_id': account_id,
+           'action': action,
+           'anonymize': anonymize,
+           'charge_amount': charge_amount,
+           'charge_currency': charge_currency,
+           'charge_description': charge_description,
+           'description': description,
            'email': email,
+           'filter': filter,
+           'has_password': has_password,
+           'include_priors': include_priors,
+           'is_meeting': is_meeting,
+           'max_hits': max_hits,
+           'message': message,
+           'minutes_alive': minutes_alive,
+           'mobile_phone': mobile_phone,
+           'namespace_id': namespace_id,
+           'namespace_name': namespace_name,
+           'notify': notify,
+           'parameters': parameters,
+           'password_is_dob': password_is_dob,
+           'password_max_attempts': password_max_attempts,
+           'pin_auth': pin_auth,
+           'prompt_for_anonymize': prompt_for_anonymize,
+           'redirect_url': redirect_url,
+           'referer': referer,
+           'share_on_view': share_on_view,
+           'skip_email_prompt': skip_email_prompt,
+           'study_id': study_id,
+           'upload_match': upload_match,
+           'upload_study_customfields': upload_study_customfields,
            'url': url,
            'use_share_code': use_share_code,
-           'description': description,
+           'user_id': user_id,
            'uuid': uuid,
-           'namespace_name': namespace_name,
-           'prompt_for_anonymize': prompt_for_anonymize,
-           'mobile_phone': mobile_phone,
-           'charge_currency': charge_currency,
-           'referer': referer,
-           'pin_auth': pin_auth,
-           'is_meeting': is_meeting,
-           'study_id': study_id,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The link was not found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view the link')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The link was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the link')
         query_data = {
             'api': self._api,
             'url': '/link/get',
@@ -343,9 +348,9 @@ class Link:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The link was not found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete the link')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The link was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete the link')
         query_data = {
             'api': self._api,
             'url': '/link/delete',
@@ -370,18 +375,18 @@ class Link:
         (uuid OR pin) - Id or PIN of the link
         """
         request_data = {
+           'link_charge_id': link_charge_id,
            'pin': pin,
            'uuid': uuid,
-           'link_charge_id': link_charge_id,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_PIN'] = InvalidPin('An invalid PIN was entered')
-        errors_mapping['INVALID_SOURCE'] = InvalidSource('The referer is invalid')
-        errors_mapping['IP_BLOCKED'] = IpBlocked('An IP whitelist blocked access')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The link was not found')
-        errors_mapping['PIN_LOCKOUT'] = PinLockout('Too many invalid PIN entries')
+        errors_mapping[('INVALID_PIN', None)] = InvalidPin('An invalid PIN was entered')
+        errors_mapping[('INVALID_SOURCE', None)] = InvalidSource('The referer is invalid')
+        errors_mapping[('IP_BLOCKED', None)] = IpBlocked('An IP whitelist blocked access')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The link was not found')
+        errors_mapping[('PIN_LOCKOUT', None)] = PinLockout('Too many invalid PIN entries')
         query_data = {
             'api': self._api,
             'url': '/link/status',
@@ -410,23 +415,23 @@ class Link:
         (uuid OR pin) - Id or PIN of the link
         """
         request_data = {
-           'link_charge_id': link_charge_id,
-           'pin': pin,
            'email_address': email_address,
-           'uuid': uuid,
+           'link_charge_id': link_charge_id,
            'password': password,
+           'pin': pin,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['CHARGE_REQUIRED'] = ChargeRequired('A charge is required to access this link')
-        errors_mapping['DISABLED'] = Disabled('This call is disabled for the account, you must use /link/redirect')
-        errors_mapping['INVALID_CREDENTIALS'] = InvalidCredentials('Invalid password or email if pin_auth is required.')
-        errors_mapping['INVALID_PIN'] = InvalidPin('An invalid PIN was entered')
-        errors_mapping['INVALID_SOURCE'] = InvalidSource('The referer is invalid')
-        errors_mapping['IP_BLOCKED'] = IpBlocked('An IP whitelist blocked access')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The link was not found')
-        errors_mapping['PIN_LOCKOUT'] = PinLockout('Too many invalid PIN entries')
+        errors_mapping[('CHARGE_REQUIRED', None)] = ChargeRequired('A charge is required to access this link')
+        errors_mapping[('DISABLED', None)] = Disabled('This call is disabled for the account, you must use /link/redirect')
+        errors_mapping[('INVALID_CREDENTIALS', None)] = InvalidCredentials('Invalid password or email if pin_auth is required.')
+        errors_mapping[('INVALID_PIN', None)] = InvalidPin('An invalid PIN was entered')
+        errors_mapping[('INVALID_SOURCE', None)] = InvalidSource('The referer is invalid')
+        errors_mapping[('IP_BLOCKED', None)] = IpBlocked('An IP whitelist blocked access')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The link was not found')
+        errors_mapping[('PIN_LOCKOUT', None)] = PinLockout('Too many invalid PIN entries')
         query_data = {
             'api': self._api,
             'url': '/link/session',
@@ -454,21 +459,21 @@ class Link:
         """
         request_data = {
            'link_charge_id': link_charge_id,
+           'password': password,
            'pin': pin,
            'uuid': uuid,
-           'password': password,
         }
 	
         errors_mapping = {}
-        errors_mapping['EXPIRED'] = Expired('The link has expired')
-        errors_mapping['INVALID_CREDENTIALS'] = InvalidCredentials('Invalid password.')
-        errors_mapping['INVALID_PIN'] = InvalidPin('An invalid PIN was entered')
-        errors_mapping['INVALID_SOURCE'] = InvalidSource('The referer is invalid')
-        errors_mapping['IP_BLOCKED'] = IpBlocked('An IP whitelist blocked access')
-        errors_mapping['LINK_NOT_FOUND'] = LinkNotFound('The link was not found')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('The configuration of this link requires the link UI be used instead of direct access')
-        errors_mapping['PIN_LOCKOUT'] = PinLockout('Too many invalid PIN entries')
+        errors_mapping[('EXPIRED', None)] = Expired('The link has expired')
+        errors_mapping[('INVALID_CREDENTIALS', None)] = InvalidCredentials('Invalid password.')
+        errors_mapping[('INVALID_PIN', None)] = InvalidPin('An invalid PIN was entered')
+        errors_mapping[('INVALID_SOURCE', None)] = InvalidSource('The referer is invalid')
+        errors_mapping[('IP_BLOCKED', None)] = IpBlocked('An IP whitelist blocked access')
+        errors_mapping[('LINK_NOT_FOUND', None)] = LinkNotFound('The link was not found')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('The configuration of this link requires the link UI be used instead of direct access')
+        errors_mapping[('PIN_LOCKOUT', None)] = PinLockout('Too many invalid PIN entries')
         query_data = {
             'api': self._api,
             'url': '/link/redirect',
@@ -497,13 +502,13 @@ class Link:
         }
 	
         errors_mapping = {}
-        errors_mapping['ACCOUNT_NOT_SET'] = AccountNotSet('The account is not setup for the integration')
-        errors_mapping['ACCOUNT_USER_NOT_FOUND'] = AccountUserNotFound('The account user record was not found')
-        errors_mapping['DECRYPT_FAILED'] = DecryptFailed('The decryption failed')
-        errors_mapping['INVALID_SOURCE'] = InvalidSource('The referer is invalid')
-        errors_mapping['MISSING_PARAMETERS'] = MissingParameters('The u or v parameter is missing')
-        errors_mapping['NOT_HASH'] = NotHash('The v parameter is not a JSON hash')
-        errors_mapping['NO_FILTER'] = NoFilter('A filter expressions was not passed')
+        errors_mapping[('ACCOUNT_NOT_SET', None)] = AccountNotSet('The account is not setup for the integration')
+        errors_mapping[('ACCOUNT_USER_NOT_FOUND', None)] = AccountUserNotFound('The account user record was not found')
+        errors_mapping[('DECRYPT_FAILED', None)] = DecryptFailed('The decryption failed')
+        errors_mapping[('INVALID_SOURCE', None)] = InvalidSource('The referer is invalid')
+        errors_mapping[('MISSING_PARAMETERS', None)] = MissingParameters('The u or v parameter is missing')
+        errors_mapping[('NOT_HASH', None)] = NotHash('The v parameter is not a JSON hash')
+        errors_mapping[('NO_FILTER', None)] = NoFilter('A filter expressions was not passed')
         query_data = {
             'api': self._api,
             'url': '/link/external',
@@ -528,12 +533,12 @@ class Link:
         }
 	
         errors_mapping = {}
-        errors_mapping['ACCOUNT_NOT_SET'] = AccountNotSet('The account is not setup for the integration')
-        errors_mapping['ACCOUNT_USER_NOT_FOUND'] = AccountUserNotFound('The account user record was not found')
-        errors_mapping['DECRYPT_FAILED'] = DecryptFailed('The decryption failed')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['MISSING_INFO'] = MissingInfo('User information is missing from the hash')
-        errors_mapping['NOT_HASH'] = NotHash('The v parameter is not a JSON hash')
+        errors_mapping[('ACCOUNT_NOT_SET', None)] = AccountNotSet('The account is not setup for the integration')
+        errors_mapping[('ACCOUNT_USER_NOT_FOUND', None)] = AccountUserNotFound('The account user record was not found')
+        errors_mapping[('DECRYPT_FAILED', None)] = DecryptFailed('The decryption failed')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('MISSING_INFO', None)] = MissingInfo('User information is missing from the hash')
+        errors_mapping[('NOT_HASH', None)] = NotHash('The v parameter is not a JSON hash')
         query_data = {
             'api': self._api,
             'url': '/link/sso',
@@ -558,7 +563,7 @@ class Link:
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The usage was not found')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The usage was not found')
         query_data = {
             'api': self._api,
             'url': '/link/sid',
@@ -583,10 +588,10 @@ class Link:
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_EMAIL'] = InvalidEmail('Enter a valid email address')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The link was not found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('INVALID_EMAIL', None)] = InvalidEmail('Enter a valid email address')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The link was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/link/mail',
@@ -611,9 +616,9 @@ class Link:
         }
 	
         errors_mapping = {}
-        errors_mapping['CHARGE_FAILED'] = ChargeFailed('The charge failed. The error_subtype holds the details on the error')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The link was not found')
+        errors_mapping[('CHARGE_FAILED', None)] = ChargeFailed('The charge failed. The error_subtype holds the details on the error')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The link was not found')
         query_data = {
             'api': self._api,
             'url': '/link/charge',
@@ -635,8 +640,8 @@ class Link:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The link was not found')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The link was not found')
         query_data = {
             'api': self._api,
             'url': '/link/pin',

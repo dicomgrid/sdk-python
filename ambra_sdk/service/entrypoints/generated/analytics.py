@@ -22,38 +22,37 @@ class Analytics:
     def study(
         self,
         count,
+        period,
         account_id=None,
         end_date=None,
         namespace_id=None,
-        period=None,
     ):
         """Study.
         :param count: The number of periods to get
+        :param period: The time period (day|week|month|year)
         :param account_id: account_id
         :param end_date: The end date, default is today if not passed (optional)
         :param namespace_id: namespace_id
-        :param period: period
 
         Notes:
         (account_id OR namespace_id) - The account or namespace to get the analytics for
-        period - The time period (day OR week OR month OR year)
         """
         request_data = {
-           'period': period,
-           'namespace_id': namespace_id,
-           'end_date': end_date,
            'account_id': account_id,
            'count': count,
+           'end_date': end_date,
+           'namespace_id': namespace_id,
+           'period': period,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_COUNT'] = InvalidCount('Invalid or excessive count value')
-        errors_mapping['INVALID_END_DATE'] = InvalidEndDate('An invalid period')
-        errors_mapping['INVALID_PARAMETERS'] = InvalidParameters('Only pass a account_id or namespace_id')
-        errors_mapping['INVALID_PERIOD'] = InvalidPeriod('An invalid period')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account or namespace can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view analytics for this account or namespace')
+        errors_mapping[('INVALID_COUNT', None)] = InvalidCount('Invalid or excessive count value')
+        errors_mapping[('INVALID_END_DATE', None)] = InvalidEndDate('An invalid period')
+        errors_mapping[('INVALID_PARAMETERS', None)] = InvalidParameters('Only pass a account_id or namespace_id')
+        errors_mapping[('INVALID_PERIOD', None)] = InvalidPeriod('An invalid period')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or namespace can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view analytics for this account or namespace')
         query_data = {
             'api': self._api,
             'url': '/analytics/study',
@@ -67,35 +66,32 @@ class Analytics:
         self,
         account_id,
         count,
+        period,
         end_date=None,
         patient_id=None,
-        period=None,
     ):
         """Patient portal.
         :param account_id: The account id
         :param count: The number of periods to get
+        :param period: The time period (day|week|month|year)
         :param end_date: The end date, default is today if not passed (optional)
         :param patient_id: Patient filter (optional)
-        :param period: period
-
-        Notes:
-        period - The time period (day OR week OR month OR year)
         """
         request_data = {
-           'period': period,
-           'end_date': end_date,
            'account_id': account_id,
-           'patient_id': patient_id,
            'count': count,
+           'end_date': end_date,
+           'patient_id': patient_id,
+           'period': period,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_COUNT'] = InvalidCount('Invalid or excessive count value')
-        errors_mapping['INVALID_END_DATE'] = InvalidEndDate('An invalid period')
-        errors_mapping['INVALID_PERIOD'] = InvalidPeriod('An invalid period')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account or patient can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view analytics for this account or namespace')
+        errors_mapping[('INVALID_COUNT', None)] = InvalidCount('Invalid or excessive count value')
+        errors_mapping[('INVALID_END_DATE', None)] = InvalidEndDate('An invalid period')
+        errors_mapping[('INVALID_PERIOD', None)] = InvalidPeriod('An invalid period')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or patient can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view analytics for this account or namespace')
         query_data = {
             'api': self._api,
             'url': '/analytics/patient/portal',
@@ -109,38 +105,35 @@ class Analytics:
         self,
         account_id,
         count,
+        period,
         end_date=None,
         namespace_id=None,
-        period=None,
         user_id=None,
     ):
         """Radreport.
         :param account_id: The account id
         :param count: The number of periods to get
+        :param period: The time period (day|week|month|year)
         :param end_date: The end date, default is today if not passed (optional)
         :param namespace_id: Namespace filter (optional)
-        :param period: period
         :param user_id: User filter (optional)
-
-        Notes:
-        period - The time period (day OR week OR month OR year)
         """
         request_data = {
-           'user_id': user_id,
-           'period': period,
-           'namespace_id': namespace_id,
-           'end_date': end_date,
            'account_id': account_id,
            'count': count,
+           'end_date': end_date,
+           'namespace_id': namespace_id,
+           'period': period,
+           'user_id': user_id,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_COUNT'] = InvalidCount('Invalid or excessive count value')
-        errors_mapping['INVALID_END_DATE'] = InvalidEndDate('An invalid period')
-        errors_mapping['INVALID_PERIOD'] = InvalidPeriod('An invalid period')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account or patient can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view analytics for this account or namespace')
+        errors_mapping[('INVALID_COUNT', None)] = InvalidCount('Invalid or excessive count value')
+        errors_mapping[('INVALID_END_DATE', None)] = InvalidEndDate('An invalid period')
+        errors_mapping[('INVALID_PERIOD', None)] = InvalidPeriod('An invalid period')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or patient can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view analytics for this account or namespace')
         query_data = {
             'api': self._api,
             'url': '/analytics/radreport',

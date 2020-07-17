@@ -33,16 +33,16 @@ class Rsna:
         """
         request_data = {
            'access_code': access_code,
-           'pin': pin,
            'clearinghouse': clearinghouse,
            'dob': dob,
-           'namespace': namespace,
            'exam_id': exam_id,
+           'namespace': namespace,
+           'pin': pin,
         }
 	
         errors_mapping = {}
-        errors_mapping['ERROR_CREATING_STUDY'] = ErrorCreatingStudy('An unknown error was received when study was added via /study/add')
-        errors_mapping['EXAM_NOT_FOUND'] = ExamNotFound('Exam cannot be found in designated RSNA Image Share clearinghouse')
+        errors_mapping[('ERROR_CREATING_STUDY', None)] = ErrorCreatingStudy('An unknown error was received when study was added via /study/add')
+        errors_mapping[('EXAM_NOT_FOUND', None)] = ExamNotFound('Exam cannot be found in designated RSNA Image Share clearinghouse')
         query_data = {
             'api': self._api,
             'url': '/rsna/phr_study',

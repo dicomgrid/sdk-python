@@ -51,11 +51,11 @@ class Account:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
         query_data = {
             'api': self._api,
             'url': '/account/list',
@@ -75,6 +75,7 @@ class Account:
         hl7_template=None,
         must_approve=None,
         must_approve_harvest=None,
+        must_approve_move=None,
         must_approve_upload=None,
         name=None,
         no_share=None,
@@ -99,6 +100,7 @@ class Account:
         :param hl7_template: The HL7 reporting template for the account (optional)
         :param must_approve: Flag if shared studies must be approved for the account namespace (optional)
         :param must_approve_harvest: Flag if harvested studies must be approved (optional)
+        :param must_approve_move: Flag if moved studies must be approved (optional)
         :param must_approve_upload: Flag if uploaded studies must be approved (optional)
         :param name: Name of the account (optional)
         :param no_share: Flag if studies can not be shared with this account (optional). Studies can still be shared with locations, groups and users in the account.
@@ -116,26 +118,27 @@ class Account:
         :param vendor: Vendor name (optional)
         """
         request_data = {
-           'no_share': no_share,
-           'search_threshold': search_threshold,
-           'vendor': vendor,
-           'share_description': share_description,
-           'name': name,
-           'css': css,
-           'share_via_gateway': share_via_gateway,
-           'vanity': vanity,
            'can_request': can_request,
+           'css': css,
            'hl7_template': hl7_template,
            'must_approve': must_approve,
-           'share_settings': share_settings,
-           'uuid': uuid,
-           'settings': settings,
-           'password_expire': password_expire,
-           'must_approve_upload': must_approve_upload,
-           'role_id': role_id,
-           'share_code': share_code,
-           'session_expire': session_expire,
            'must_approve_harvest': must_approve_harvest,
+           'must_approve_move': must_approve_move,
+           'must_approve_upload': must_approve_upload,
+           'name': name,
+           'no_share': no_share,
+           'password_expire': password_expire,
+           'role_id': role_id,
+           'search_threshold': search_threshold,
+           'session_expire': session_expire,
+           'settings': settings,
+           'share_code': share_code,
+           'share_description': share_description,
+           'share_settings': share_settings,
+           'share_via_gateway': share_via_gateway,
+           'uuid': uuid,
+           'vanity': vanity,
+           'vendor': vendor,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
@@ -145,16 +148,17 @@ class Account:
             request_data.update(setting_param_dict)
 	
         errors_mapping = {}
-        errors_mapping['DUPLICATE_NAME'] = DuplicateName('The account name is already taken')
-        errors_mapping['DUPLICATE_VANITY'] = DuplicateVanity('The vanity host name is already taken. The error_subtype holds the taken hostname')
-        errors_mapping['DUP_SHARE_CODE'] = DupShareCode('The share code is already used')
-        errors_mapping['INVALID_CUSTOMFIELD'] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
-        errors_mapping['INVALID_FLAG'] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
-        errors_mapping['INVALID_INTEGER'] = InvalidInteger('An invalid integer was passed. The error_subtype holds the name of the invalid integer')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['INVALID_VANITY'] = InvalidVanity('The vanity host name is invalid. The error_subtype holds the invalid hostname')
-        errors_mapping['NOT_FOUND'] = NotFound('The object was not found. The error_subtype holds the name of field that triggered the error')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to modify this record')
+        errors_mapping[('DUPLICATE_NAME', None)] = DuplicateName('The account name is already taken')
+        errors_mapping[('DUPLICATE_VANITY', None)] = DuplicateVanity('The vanity host name is already taken. The error_subtype holds the taken hostname')
+        errors_mapping[('DUP_SHARE_CODE', None)] = DupShareCode('The share code is already used')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('INVALID_INTEGER', None)] = InvalidInteger('An invalid integer was passed. The error_subtype holds the name of the invalid integer')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('INVALID_VANITY', None)] = InvalidVanity('The vanity host name is invalid. The error_subtype holds the invalid hostname')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found. The error_subtype holds the name of field that triggered the error')
+        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the account')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to modify this record')
         query_data = {
             'api': self._api,
             'url': '/account/set',
@@ -177,8 +181,8 @@ class Account:
         """
         request_data = {
            'brand_settings': brand_settings,
-           'uuid': uuid,
            'permissions': permissions,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
@@ -264,52 +268,53 @@ class Account:
         (email OR user_id) - The email address or uuid of the user to add
         """
         request_data = {
-           'event_case_assignment': event_case_assignment,
+           'account_alias': account_alias,
+           'account_email': account_email,
            'account_login': account_login,
            'account_password': account_password,
-           'event_upload': event_upload,
-           'event_share': event_share,
-           'max_sessions': max_sessions,
-           'event_harvest': event_harvest,
-           'event_node': event_node,
-           'event_link_mine': event_link_mine,
-           'event_study_comment': event_study_comment,
-           'password_reset': password_reset,
-           'account_email': account_email,
-           'event_link': event_link,
-           'event_thin_study_fail': event_thin_study_fail,
-           'event_upload_fail': event_upload_fail,
-           'event_purge': event_purge,
-           'user_id': user_id,
-           'event_report_remove': event_report_remove,
-           'event_join': event_join,
            'email': email,
-           'uuid': uuid,
-           'event_status_change': event_status_change,
-           'account_alias': account_alias,
-           'role_id': role_id,
-           'settings': settings,
-           'event_message': event_message,
-           'session_expire': session_expire,
-           'event_thin_study_success': event_thin_study_success,
            'event_approve': event_approve,
-           'global': global_param,
+           'event_case_assignment': event_case_assignment,
+           'event_harvest': event_harvest,
+           'event_join': event_join,
+           'event_link': event_link,
+           'event_link_mine': event_link_mine,
+           'event_message': event_message,
            'event_new_report': event_new_report,
+           'event_node': event_node,
+           'event_purge': event_purge,
+           'event_report_remove': event_report_remove,
+           'event_share': event_share,
+           'event_status_change': event_status_change,
+           'event_study_comment': event_study_comment,
+           'event_thin_study_fail': event_thin_study_fail,
+           'event_thin_study_success': event_thin_study_success,
+           'event_upload': event_upload,
+           'event_upload_fail': event_upload_fail,
+           'global': global_param,
+           'max_sessions': max_sessions,
+           'password_reset': password_reset,
+           'role_id': role_id,
+           'session_expire': session_expire,
+           'settings': settings,
+           'user_id': user_id,
+           'uuid': uuid,
         }
         if setting_param is not None:
             setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
             request_data.update(setting_param_dict)
 	
         errors_mapping = {}
-        errors_mapping['ALREADY_EXISTS'] = AlreadyExists('The user is already a member of the account')
-        errors_mapping['BAD_PASSWORD'] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
-        errors_mapping['DUPLICATE_NAME'] = DuplicateName('The account_login is already in use')
-        errors_mapping['INVALID_CUSTOMFIELD'] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
-        errors_mapping['INVALID_FLAG'] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to add this user to the account')
-        errors_mapping['USER_NOT_FOUND'] = UserNotFound('The user can not be found')
+        errors_mapping[('ALREADY_EXISTS', None)] = AlreadyExists('The user is already a member of the account')
+        errors_mapping[('BAD_PASSWORD', None)] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
+        errors_mapping[('DUPLICATE_NAME', None)] = DuplicateName('The account_login is already in use')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the account')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add this user to the account')
+        errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user can not be found')
         query_data = {
             'api': self._api,
             'url': '/account/user/add',
@@ -389,36 +394,36 @@ class Account:
         :param settings: A hash of the account settings that the user can override (optional)
         """
         request_data = {
-           'event_case_assignment': event_case_assignment,
+           'account_alias': account_alias,
+           'account_email': account_email,
            'account_login': account_login,
            'account_password': account_password,
-           'event_upload': event_upload,
-           'event_share': event_share,
-           'max_sessions': max_sessions,
-           'event_harvest': event_harvest,
-           'event_node': event_node,
-           'event_link_mine': event_link_mine,
-           'event_study_comment': event_study_comment,
-           'password_reset': password_reset,
-           'account_email': account_email,
-           'event_link': event_link,
-           'event_thin_study_fail': event_thin_study_fail,
-           'event_upload_fail': event_upload_fail,
-           'event_purge': event_purge,
-           'user_id': user_id,
-           'event_report_remove': event_report_remove,
-           'event_join': event_join,
-           'uuid': uuid,
-           'event_status_change': event_status_change,
-           'account_alias': account_alias,
-           'role_id': role_id,
-           'settings': settings,
-           'event_message': event_message,
-           'session_expire': session_expire,
-           'event_thin_study_success': event_thin_study_success,
            'event_approve': event_approve,
-           'global': global_param,
+           'event_case_assignment': event_case_assignment,
+           'event_harvest': event_harvest,
+           'event_join': event_join,
+           'event_link': event_link,
+           'event_link_mine': event_link_mine,
+           'event_message': event_message,
            'event_new_report': event_new_report,
+           'event_node': event_node,
+           'event_purge': event_purge,
+           'event_report_remove': event_report_remove,
+           'event_share': event_share,
+           'event_status_change': event_status_change,
+           'event_study_comment': event_study_comment,
+           'event_thin_study_fail': event_thin_study_fail,
+           'event_thin_study_success': event_thin_study_success,
+           'event_upload': event_upload,
+           'event_upload_fail': event_upload_fail,
+           'global': global_param,
+           'max_sessions': max_sessions,
+           'password_reset': password_reset,
+           'role_id': role_id,
+           'session_expire': session_expire,
+           'settings': settings,
+           'user_id': user_id,
+           'uuid': uuid,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
@@ -428,17 +433,18 @@ class Account:
             request_data.update(setting_param_dict)
 	
         errors_mapping = {}
-        errors_mapping['BAD_PASSWORD'] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
-        errors_mapping['CAN_NOT_PROMOTE'] = CanNotPromote('A user can not switch themselves to an admin role if they are currently not in an admin role')
-        errors_mapping['DUPLICATE_NAME'] = DuplicateName('The account_login is already in use')
-        errors_mapping['INVALID_CUSTOMFIELD'] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
-        errors_mapping['INVALID_FLAG'] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to edit this user')
-        errors_mapping['NO_USER_OVERRIDE'] = NoUserOverride('The setting does not allow a user override')
-        errors_mapping['ROLE_NOT_FOUND'] = RoleNotFound('The role was not found or is not an account role')
-        errors_mapping['USER_NOT_FOUND'] = UserNotFound('The user can not be found or is not a member of this account')
+        errors_mapping[('BAD_PASSWORD', None)] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
+        errors_mapping[('CAN_NOT_PROMOTE', None)] = CanNotPromote('A user can not switch themselves to an admin role if they are currently not in an admin role')
+        errors_mapping[('DUPLICATE_NAME', None)] = DuplicateName('The account_login is already in use')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the account')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit this user')
+        errors_mapping[('NO_USER_OVERRIDE', None)] = NoUserOverride('The setting does not allow a user override')
+        errors_mapping[('ROLE_NOT_FOUND', None)] = RoleNotFound('The role was not found or is not an account role')
+        errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user can not be found or is not a member of this account')
         query_data = {
             'api': self._api,
             'url': '/account/user/set',
@@ -458,14 +464,14 @@ class Account:
         :param uuid: The account uuid
         """
         request_data = {
-           'uuid': uuid,
            'user_id': user_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['USER_NOT_FOUND'] = UserNotFound('The user can not be found or is not a member of this account')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user can not be found or is not a member of this account')
         query_data = {
             'api': self._api,
             'url': '/account/user/get',
@@ -485,15 +491,15 @@ class Account:
         :param uuid: The account uuid
         """
         request_data = {
-           'uuid': uuid,
            'user_id': user_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete this user')
-        errors_mapping['USER_NOT_FOUND'] = UserNotFound('The user can not be found or is not a member of this account')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete this user')
+        errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user can not be found or is not a member of this account')
         query_data = {
             'api': self._api,
             'url': '/account/user/delete',
@@ -515,14 +521,14 @@ class Account:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to list the users in this account')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to list the users in this account')
         query_data = {
             'api': self._api,
             'url': '/account/user/list',
@@ -543,14 +549,14 @@ class Account:
         :param user_id: Limit to this user_id (optional)
         """
         request_data = {
-           'uuid': uuid,
            'user_id': user_id,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to list the users in this account')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to list the users in this account')
         query_data = {
             'api': self._api,
             'url': '/account/user/report/login',
@@ -564,36 +570,32 @@ class Account:
         self,
         account_id,
         by_id,
+        by_type,
         with_id,
-        by_type=None,
-        with_type=None,
+        with_type,
     ):
         """Can share.
         :param account_id: The account id
         :param by_id: The uuid of the object that can share
+        :param by_type: The type of object that can share. (user|account|group|location)
         :param with_id: The uuid of the object that they can share with
-        :param by_type: by_type
-        :param with_type: with_type
-
-        Notes:
-        with_type - The type of object that they can share with (user OR account OR group OR location)
-        by_type - The type of object that can share. (user OR account OR group OR location)
+        :param with_type: The type of object that they can share with (user|account|group|location)
         """
         request_data = {
-           'by_id': by_id,
-           'with_id': with_id,
            'account_id': account_id,
-           'with_type': with_type,
+           'by_id': by_id,
            'by_type': by_type,
+           'with_id': with_id,
+           'with_type': with_type,
         }
 	
         errors_mapping = {}
-        errors_mapping['BY_NOT_FOUND'] = ByNotFound('The &#34;by&#34; object can not be found')
-        errors_mapping['INVALID_TYPE'] = InvalidType('The type of object is invalidate. The error_subtype holds the type that is invalid')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to perform this action')
-        errors_mapping['WITH_NOT_FOUND'] = WithNotFound('The &#34;with&#34; object can not be found')
+        errors_mapping[('BY_NOT_FOUND', None)] = ByNotFound('The &#34;by&#34; object can not be found')
+        errors_mapping[('INVALID_TYPE', None)] = InvalidType('The type of object is invalidate. The error_subtype holds the type that is invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this action')
+        errors_mapping[('WITH_NOT_FOUND', None)] = WithNotFound('The &#34;with&#34; object can not be found')
         query_data = {
             'api': self._api,
             'url': '/account/can/share',
@@ -607,36 +609,32 @@ class Account:
         self,
         account_id,
         by_id,
+        by_type,
         with_id,
-        by_type=None,
-        with_type=None,
+        with_type,
     ):
         """Can share stop.
         :param account_id: The account id
         :param by_id: The uuid of the object that can share
+        :param by_type: The type of object that can share. (user|account|group|location)
         :param with_id: The uuid of the object that they can share with
-        :param by_type: by_type
-        :param with_type: with_type
-
-        Notes:
-        with_type - The type of object that they can share with (user OR account OR group OR location)
-        by_type - The type of object that can share. (user OR account OR group OR location)
+        :param with_type: The type of object that they can share with (user|account|group|location)
         """
         request_data = {
-           'by_id': by_id,
-           'with_id': with_id,
            'account_id': account_id,
-           'with_type': with_type,
+           'by_id': by_id,
            'by_type': by_type,
+           'with_id': with_id,
+           'with_type': with_type,
         }
 	
         errors_mapping = {}
-        errors_mapping['BY_NOT_FOUND'] = ByNotFound('The &#34;by&#34; object can not be found')
-        errors_mapping['INVALID_TYPE'] = InvalidType('The type of object is invalidate. The error_subtype holds the type that is invalid')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to perform this action')
-        errors_mapping['WITH_NOT_FOUND'] = WithNotFound('The &#34;with&#34; object can not be found')
+        errors_mapping[('BY_NOT_FOUND', None)] = ByNotFound('The &#34;by&#34; object can not be found')
+        errors_mapping[('INVALID_TYPE', None)] = InvalidType('The type of object is invalidate. The error_subtype holds the type that is invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this action')
+        errors_mapping[('WITH_NOT_FOUND', None)] = WithNotFound('The &#34;with&#34; object can not be found')
         query_data = {
             'api': self._api,
             'url': '/account/can/share/stop',
@@ -658,9 +656,9 @@ class Account:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to perform this action')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this action')
         query_data = {
             'api': self._api,
             'url': '/account/can/share/list',
@@ -716,15 +714,15 @@ class Account:
         (account_id OR vanity) - The account_id or vanity name to get the settings for
         """
         request_data = {
-           'vanity': vanity,
-           'namespace_id': namespace_id,
            'account_id': account_id,
-           'settings': settings,
            'brand_settings': brand_settings,
+           'namespace_id': namespace_id,
+           'settings': settings,
+           'vanity': vanity,
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The account or namespace can not be found')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or namespace can not be found')
         query_data = {
             'api': self._api,
             'url': '/account/settings',
@@ -744,14 +742,14 @@ class Account:
         :param uuid: The account_id
         """
         request_data = {
-           'uuid': uuid,
            'code': code,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
-        errors_mapping['TOKEN_FAILED'] = TokenFailed('The OAuth code did not return a valid token from the processor')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('TOKEN_FAILED', None)] = TokenFailed('The OAuth code did not return a valid token from the processor')
         query_data = {
             'api': self._api,
             'url': '/account/connect',
@@ -778,10 +776,10 @@ class Account:
         (sid OR node_id AND serial_no) - Either a sid or the node id and serial number
         """
         request_data = {
-           'node_id': node_id,
-           'uuid': uuid,
            'md5': md5,
+           'node_id': node_id,
            'serial_no': serial_no,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}

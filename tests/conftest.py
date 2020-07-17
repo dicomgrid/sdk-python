@@ -23,6 +23,7 @@ def api():
         url,
         username,
         password,
+        'SDK testing',
     )
     yield api
     api.logout()
@@ -32,6 +33,7 @@ pytest_plugins = [
     'tests.fixtures.account',
     'tests.fixtures.study',
     'tests.fixtures.ws',
+    'tests.fixtures.customfield',
 ]
 
 

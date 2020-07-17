@@ -23,7 +23,7 @@ class Training:
         }
 	
         errors_mapping = {}
-        errors_mapping['ALL_DONE'] = AllDone('No more training is needed')
+        errors_mapping[('ALL_DONE', None)] = AllDone('No more training is needed')
         query_data = {
             'api': self._api,
             'url': '/training/todo',
@@ -53,7 +53,7 @@ class Training:
             request_data.update(additional_parameters_dict)
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('The form was not found for this user')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The form was not found for this user')
         query_data = {
             'api': self._api,
             'url': '/training/done',

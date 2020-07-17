@@ -40,15 +40,15 @@ class Radreport:
         """
         request_data = {
            'fields': fields,
-           'type': type,
            'study_id': study_id,
+           'type': type,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to add a radreport to the study')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add a radreport to the study')
         query_data = {
             'api': self._api,
             'url': '/radreport/add',
@@ -70,16 +70,16 @@ class Radreport:
         :param fields: A JSON hash of the fields in the report (optional)
         """
         request_data = {
-           'uuid': uuid,
-           'fields': fields,
            'attachment': attachment,
+           'fields': fields,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The study was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to add a radreport to the study')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add a radreport to the study')
         query_data = {
             'api': self._api,
             'url': '/radreport/set',
@@ -101,9 +101,9 @@ class Radreport:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The radreport  was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view the radreport')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The radreport  was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the radreport')
         query_data = {
             'api': self._api,
             'url': '/radreport/get',
@@ -115,28 +115,25 @@ class Radreport:
     
     def audit(
         self,
+        action,
         detail,
         uuid,
-        action=None,
     ):
         """Audit.
+        :param action: The audit action (SIGNED|MEDICAL_EDIT|ADMIN_EDIT|REPORT_GENERATED)
         :param detail: Additional information
         :param uuid: The id of the radreport
-        :param action: action
-
-        Notes:
-        action - The audit action (SIGNED OR MEDICAL_EDIT OR ADMIN_EDIT OR REPORT_GENERATED)
         """
         request_data = {
            'action': action,
-           'uuid': uuid,
            'detail': detail,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_ACTION'] = InvalidAction('An invalid action was passed')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The radreport can not be found')
+        errors_mapping[('INVALID_ACTION', None)] = InvalidAction('An invalid action was passed')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The radreport can not be found')
         query_data = {
             'api': self._api,
             'url': '/radreport/audit',
@@ -158,9 +155,9 @@ class Radreport:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The radreport  was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete the radreport')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The radreport  was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete the radreport')
         query_data = {
             'api': self._api,
             'url': '/radreport/delete',
@@ -182,9 +179,9 @@ class Radreport:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The radreport  was not found.')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view the radreport')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The radreport  was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the radreport')
         query_data = {
             'api': self._api,
             'url': '/radreport/description',
@@ -206,13 +203,13 @@ class Radreport:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The user was not found.')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The user was not found.')
         query_data = {
             'api': self._api,
             'url': '/radreport/user/list',
@@ -235,7 +232,7 @@ class Radreport:
         }
 	
         errors_mapping = {}
-        errors_mapping['NOT_FOUND'] = NotFound('Not found')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('Not found')
         query_data = {
             'api': self._api,
             'url': '/radreport/pdf',
@@ -255,16 +252,16 @@ class Radreport:
         :param uuid: The radreport uuid
         """
         request_data = {
-           'uuid': uuid,
            'number': number,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_PHONE'] = InvalidPhone('The fax number is invalid')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The radreport can not be found')
-        errors_mapping['NO_ATTACHMENT'] = NoAttachment('The radreport does not have an attached report')
-        errors_mapping['PDF_FAILED'] = PdfFailed('The PDF report failed to generate')
+        errors_mapping[('INVALID_PHONE', None)] = InvalidPhone('The fax number is invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The radreport can not be found')
+        errors_mapping[('NO_ATTACHMENT', None)] = NoAttachment('The radreport does not have an attached report')
+        errors_mapping[('PDF_FAILED', None)] = PdfFailed('The PDF report failed to generate')
         query_data = {
             'api': self._api,
             'url': '/radreport/fax',
@@ -286,19 +283,19 @@ class Radreport:
         :param type: Limit to this type (optional)
         """
         request_data = {
-           'type': type,
-           'active': active,
            'account_id': account_id,
+           'active': active,
+           'type': type,
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to perform this operation')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this operation')
         query_data = {
             'api': self._api,
             'url': '/radreport/template/list',
@@ -327,17 +324,17 @@ class Radreport:
         :param preview: Preview of the template (optional)
         """
         request_data = {
-           'options': options,
-           'type': type,
-           'preview': preview,
            'account_id': account_id,
            'body': body,
            'name': name,
+           'options': options,
+           'preview': preview,
+           'type': type,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_SYSADMIN_OR_SUPPORT'] = NotSysadminOrSupport('The user is not a sysadmin or support user')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_SYSADMIN_OR_SUPPORT', None)] = NotSysadminOrSupport('The user is not a sysadmin or support user')
         query_data = {
             'api': self._api,
             'url': '/radreport/template/add',
@@ -365,17 +362,17 @@ class Radreport:
         :param type: Type of radreport (optional)
         """
         request_data = {
-           'options': options,
-           'type': type,
-           'uuid': uuid,
-           'preview': preview,
            'body': body,
            'name': name,
+           'options': options,
+           'preview': preview,
+           'type': type,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_SYSADMIN_OR_SUPPORT'] = NotSysadminOrSupport('You are not permitted to perform this operation')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_SYSADMIN_OR_SUPPORT', None)] = NotSysadminOrSupport('You are not permitted to perform this operation')
         query_data = {
             'api': self._api,
             'url': '/radreport/template/set',
@@ -397,9 +394,9 @@ class Radreport:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The radreport template can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to perform this operation')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The radreport template can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this operation')
         query_data = {
             'api': self._api,
             'url': '/radreport/template/get',
@@ -424,9 +421,9 @@ class Radreport:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The radreport template can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to perform this operation')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The radreport template can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this operation')
         query_data = {
             'api': self._api,
             'url': '/radreport/template/get/type',
@@ -448,8 +445,8 @@ class Radreport:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_SYSADMIN_OR_SUPPORT'] = NotSysadminOrSupport('The user is not a sysadmin or support user')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_SYSADMIN_OR_SUPPORT', None)] = NotSysadminOrSupport('The user is not a sysadmin or support user')
         query_data = {
             'api': self._api,
             'url': '/radreport/template/delete',
@@ -471,9 +468,9 @@ class Radreport:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The radreport template can not be found')
-        errors_mapping['NOT_SYSADMIN_OR_SUPPORT'] = NotSysadminOrSupport('The user is not a sysadmin or support user')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The radreport template can not be found')
+        errors_mapping[('NOT_SYSADMIN_OR_SUPPORT', None)] = NotSysadminOrSupport('The user is not a sysadmin or support user')
         query_data = {
             'api': self._api,
             'url': '/radreport/template/activate',

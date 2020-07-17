@@ -40,14 +40,14 @@ class Purge:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view this list')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this list')
         query_data = {
             'api': self._api,
             'url': '/purge/list',
@@ -81,7 +81,7 @@ class Purge:
         """Add.
         :param account_id: uuid of the account the rule is for
         :param days_old: Studies greater than or equal to these days old will be purged
-        :param days_old_how: How should the days old value be calculated using the &#39;U&#39;pdated or &#39;C&#39;reated date
+        :param days_old_how: How should the days old value be calculated using the &#39;U&#39;pdated, &#39;C&#39;reated or &#39;S&#39;tudy date
         :param name: Name of the purge rule
         :param adults: Apply this rule to adults - flag (optional)
         :param archive: Archive the studies rather than deleting them - flag (optional)
@@ -98,35 +98,35 @@ class Purge:
         :param thin: Make the studies thin rather than deleting - flag (optional)
         """
         request_data = {
-           'study_status_tags': study_status_tags,
-           'modalities': modalities,
-           'archive': archive,
-           'namespaces': namespaces,
-           'days_old_how': days_old_how,
-           'thin': thin,
-           'owned_phr': owned_phr,
-           'days_old': days_old,
-           'minors': minors,
-           'skinny': skinny,
-           'suspended': suspended,
-           'global': global_param,
-           'shared_from_phr': shared_from_phr,
-           'max_deletes': max_deletes,
            'account_id': account_id,
            'adults': adults,
+           'archive': archive,
+           'days_old': days_old,
+           'days_old_how': days_old_how,
+           'global': global_param,
+           'max_deletes': max_deletes,
+           'minors': minors,
+           'modalities': modalities,
            'name': name,
+           'namespaces': namespaces,
+           'owned_phr': owned_phr,
+           'shared_from_phr': shared_from_phr,
+           'skinny': skinny,
+           'study_status_tags': study_status_tags,
+           'suspended': suspended,
+           'thin': thin,
         }
 	
         errors_mapping = {}
-        errors_mapping['GT_ZERO'] = GtZero('The parameter must be great than zero. The error_subtype holds the name of the parameter')
-        errors_mapping['INVALID_FLAG'] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_A_NUMBER'] = NotANumber('The parameter must be a valid number. The error_subtype holds the name of the parameter')
-        errors_mapping['NOT_FOUND'] = NotFound('The account or namespace was not found. The error_subtype holds the uuid of the not found item')
-        errors_mapping['NOT_LIST'] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to add a purge to that account')
-        errors_mapping['ONLY_ONE_FLAG'] = OnlyOneFlag('You can set either the skinny, thin or archive flag, not multiple')
-        errors_mapping['VALIDATION_FAILED'] = ValidationFailed('A field failed validation. The error_subtype holds the name of the invalid field')
+        errors_mapping[('GT_ZERO', None)] = GtZero('The parameter must be great than zero. The error_subtype holds the name of the parameter')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_A_NUMBER', None)] = NotANumber('The parameter must be a valid number. The error_subtype holds the name of the parameter')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or namespace was not found. The error_subtype holds the uuid of the not found item')
+        errors_mapping[('NOT_LIST', None)] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add a purge to that account')
+        errors_mapping[('ONLY_ONE_FLAG', None)] = OnlyOneFlag('You can set either the skinny, thin or archive flag, not multiple')
+        errors_mapping[('VALIDATION_FAILED', None)] = ValidationFailed('A field failed validation. The error_subtype holds the name of the invalid field')
         query_data = {
             'api': self._api,
             'url': '/purge/add',
@@ -161,7 +161,7 @@ class Purge:
         :param adults: Apply this rule to adults - flag (optional)
         :param archive: Archive the studies rather than deleting them - flag (optional)
         :param days_old: Studies greater than or equal to these days old will be purged (optional)
-        :param days_old_how: How should the days old value be calculated using the &#39;U&#39;pdated or &#39;C&#39;reated date (optional)
+        :param days_old_how: How should the days old value be calculated using the &#39;U&#39;pdated, &#39;C&#39;reated or &#39;S&#39;tudy date (optional)
         :param global_param: Flag to make this a global purge rule (optional)
         :param max_deletes: Maximum number of purges per run of the rule (optional)
         :param minors: Apply this rule to minors - flag (optional)
@@ -176,35 +176,35 @@ class Purge:
         :param thin: Make the studies thin rather than deleting - flag (optional)
         """
         request_data = {
-           'study_status_tags': study_status_tags,
-           'modalities': modalities,
-           'archive': archive,
-           'namespaces': namespaces,
-           'days_old_how': days_old_how,
-           'thin': thin,
-           'owned_phr': owned_phr,
-           'days_old': days_old,
-           'minors': minors,
-           'skinny': skinny,
-           'uuid': uuid,
-           'suspended': suspended,
-           'global': global_param,
-           'shared_from_phr': shared_from_phr,
-           'max_deletes': max_deletes,
            'adults': adults,
+           'archive': archive,
+           'days_old': days_old,
+           'days_old_how': days_old_how,
+           'global': global_param,
+           'max_deletes': max_deletes,
+           'minors': minors,
+           'modalities': modalities,
            'name': name,
+           'namespaces': namespaces,
+           'owned_phr': owned_phr,
+           'shared_from_phr': shared_from_phr,
+           'skinny': skinny,
+           'study_status_tags': study_status_tags,
+           'suspended': suspended,
+           'thin': thin,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['GT_ZERO'] = GtZero('The parameter must be great than zero. The error_subtype holds the name of the parameter')
-        errors_mapping['INVALID_FLAG'] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_A_NUMBER'] = NotANumber('The parameter must be a valid number. The error_subtype holds the name of the parameter')
-        errors_mapping['NOT_FOUND'] = NotFound('The account or namespace was not found. The error_subtype holds the uuid of the not found item')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to edit a purge rule')
-        errors_mapping['ONLY_ONE_FLAG'] = OnlyOneFlag('You can set either the skinny, thin or archive flag, not multiple')
-        errors_mapping['VALIDATION_FAILED'] = ValidationFailed('A field failed validation. The error_subtype holds the name of the invalid field')
+        errors_mapping[('GT_ZERO', None)] = GtZero('The parameter must be great than zero. The error_subtype holds the name of the parameter')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_A_NUMBER', None)] = NotANumber('The parameter must be a valid number. The error_subtype holds the name of the parameter')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or namespace was not found. The error_subtype holds the uuid of the not found item')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit a purge rule')
+        errors_mapping[('ONLY_ONE_FLAG', None)] = OnlyOneFlag('You can set either the skinny, thin or archive flag, not multiple')
+        errors_mapping[('VALIDATION_FAILED', None)] = ValidationFailed('A field failed validation. The error_subtype holds the name of the invalid field')
         query_data = {
             'api': self._api,
             'url': '/purge/set',
@@ -226,9 +226,9 @@ class Purge:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The rule was not found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view purge rules for this account')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The rule was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view purge rules for this account')
         query_data = {
             'api': self._api,
             'url': '/purge/get',
@@ -250,9 +250,9 @@ class Purge:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The rule was not found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete purge rules for this account')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The rule was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete purge rules for this account')
         query_data = {
             'api': self._api,
             'url': '/purge/delete',
@@ -277,15 +277,15 @@ class Purge:
         (rule_id OR account_id) - Id of the purge rule or the account id if all purge rules should be run
         """
         request_data = {
-           'rule_id': rule_id,
-           'dry_run': dry_run,
            'account_id': account_id,
+           'dry_run': dry_run,
+           'rule_id': rule_id,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The rule or account was not found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to run purge rules for this account')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The rule or account was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to run purge rules for this account')
         query_data = {
             'api': self._api,
             'url': '/purge/run',

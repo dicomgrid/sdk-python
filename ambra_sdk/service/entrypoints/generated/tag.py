@@ -24,24 +24,21 @@ class Tag:
     
     def list(
         self,
-        object=None,
+        object,
     ):
         """List.
-        :param object: object
-
-        Notes:
-        object - Object class (Study OR User_account OR Group OR Location OR Account OR Patient OR Case OR Order OR Message)
+        :param object: Object class (Study|User_account|Group|Location|Account|Patient|Case|Order|Message)
         """
         request_data = {
            'object': object,
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
         query_data = {
             'api': self._api,
             'url': '/tag/list',
@@ -54,29 +51,26 @@ class Tag:
     
     def add(
         self,
+        object,
         object_id,
         tag,
-        object=None,
     ):
         """Add.
+        :param object: Object class to apply it to (Study|User_account|Group|Location|Account|Patient|Case|Order|Message)
         :param object_id: UUID of the object
         :param tag: Value of the tag
-        :param object: object
-
-        Notes:
-        object - Object class to apply it to (Study OR User_account OR Group OR Location OR Account OR Patient OR Case OR Order OR Message)
         """
         request_data = {
-           'tag': tag,
            'object': object,
            'object_id': object_id,
+           'tag': tag,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_OBJECT'] = InvalidObject('The object type is invalid')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The object was not found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to tag this object')
+        errors_mapping[('INVALID_OBJECT', None)] = InvalidObject('The object type is invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to tag this object')
         query_data = {
             'api': self._api,
             'url': '/tag/add',
@@ -88,28 +82,25 @@ class Tag:
     
     def delete(
         self,
+        object,
         object_id,
         tag,
-        object=None,
     ):
         """Delete.
+        :param object: Object class to apply it to (Study|User_account|Group|Location|Account|Patient|Case|Order)
         :param object_id: UUID of the object
         :param tag: Value of the tag
-        :param object: object
-
-        Notes:
-        object - Object class to apply it to (Study OR User_account OR Group OR Location OR Account OR Patient OR Case OR Order)
         """
         request_data = {
-           'tag': tag,
            'object': object,
            'object_id': object_id,
+           'tag': tag,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_OBJECT'] = InvalidObject('The object type is invalid')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The object was not found')
+        errors_mapping[('INVALID_OBJECT', None)] = InvalidObject('The object type is invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found')
         query_data = {
             'api': self._api,
             'url': '/tag/delete',

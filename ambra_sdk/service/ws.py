@@ -316,15 +316,12 @@ class WS:  # NOQA: WPS214
         self._runned = False
         self._requests = requests
         self._responses = responses
-        # In pytest gather create different loops.
-        self._loop = None
 
     async def run(self):
         """Run websocket handlers."""
         self._runned = True
-        self._loop = asyncio_get_running_loop()
-        self._ws_lock = asyncio.Lock(loop=self._loop)
-        self._session_lock = asyncio.Lock(loop=self._loop)
+        self._ws_lock = asyncio.Lock()
+        self._session_lock = asyncio.Lock()
         try:  # NOQA:WPS501
             await asyncio.gather(
                 self._request_handler(),
@@ -361,11 +358,12 @@ class WS:  # NOQA: WPS214
         return self._requests.get(timeout=self._check_request_interval)
 
     async def _request_handler(self):
-        logger.info('Start request handler')
+        logger.debug('Start request handler')
+        loop = asyncio_get_running_loop()
         while True:
             try:
                 # This is blocking. So run in executor
-                request_type, kwargs = await self._loop.run_in_executor(
+                request_type, kwargs = await loop.run_in_executor(
                     None, self._get_from_requests,
                 )
             except Empty:
@@ -382,7 +380,7 @@ class WS:  # NOQA: WPS214
                 return
 
     async def _response_handler(self):
-        logger.info('Start response handler')
+        logger.debug('Start response handler')
         while True:
             if self._runned is False:
                 break
@@ -406,7 +404,7 @@ class WS:  # NOQA: WPS214
                 )
 
     async def _subscribe(self, sid, channel):
-        logger.info('Subscribe %s', channel)
+        logger.debug('Subscribe %s', channel)
         self._channels[channel] = sid
         sub_request = json.dumps(
             {
@@ -419,12 +417,12 @@ class WS:  # NOQA: WPS214
         await ws.send_str(sub_request)
 
     async def _resubscribe(self):
-        logger.info('Resubscribe')
+        logger.debug('Resubscribe')
         for channel, sid in self._channels.items():
             await self._subscribe(sid, channel)
 
     async def _unsubscribe(self, channel):
-        logger.info('Unsubscribe %s', channel)
+        logger.debug('Unsubscribe %s', channel)
         self._channels.pop(channel)
         close_request = json.dumps(
             {
@@ -442,7 +440,7 @@ class WS:  # NOQA: WPS214
         if self._last_ping is None:
             self._last_ping = now
         if now - self._last_ping >= self._ping_interval:
-            logger.info('Ping')
+            logger.debug('Ping')
             ping_request = json.dumps({'action': 'ping'})
             ws = await self._get_ws()
             await ws.send_str(ping_request)
@@ -453,7 +451,7 @@ class WS:  # NOQA: WPS214
             # Already stopped
             return
 
-        logger.info('Stop')
+        logger.debug('Stop')
         # refresh socket and closed it
         self._runned = False
         await self._get_ws()

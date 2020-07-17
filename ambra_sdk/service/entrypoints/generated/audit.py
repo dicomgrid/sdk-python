@@ -35,19 +35,19 @@ class Audit:
         :param reverse: Flag to reverse the default sort order (optional)
         """
         request_data = {
-           'download': download,
-           'uuid': uuid,
            'customfield_detail': customfield_detail,
+           'download': download,
            'reverse': reverse,
+           'uuid': uuid,
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The object was not found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to access this object')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to access this object')
         query_data = {
             'api': self._api,
             'url': '/audit/object',
@@ -72,16 +72,16 @@ class Audit:
         :param reverse: Flag to reverse the default sort order (optional)
         """
         request_data = {
-           'user_id': user_id,
-           'download': download,
            'account_id': account_id,
+           'download': download,
            'reverse': reverse,
+           'user_id': user_id,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The user was not found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to access this user record')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The user was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to access this user record')
         query_data = {
             'api': self._api,
             'url': '/audit/user',
@@ -104,18 +104,18 @@ class Audit:
         :param reverse: Flag to reverse the default sort order (optional)
         """
         request_data = {
-           'download': download,
            'account_id': account_id,
+           'download': download,
            'reverse': reverse,
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account was not found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to access this information')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to access this information')
         query_data = {
             'api': self._api,
             'url': '/audit/account',
@@ -129,23 +129,20 @@ class Audit:
     def deleted(
         self,
         account_id,
-        type=None,
+        type,
     ):
         """Deleted.
         :param account_id: The id of the account
-        :param type: type
-
-        Notes:
-        type - The type of the object (Study OR User etc.)
+        :param type: The type of the object (Study|User etc.)
         """
         request_data = {
-           'type': type,
            'account_id': account_id,
+           'type': type,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to access this record')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to access this record')
         query_data = {
             'api': self._api,
             'url': '/audit/deleted',
@@ -173,8 +170,8 @@ class Audit:
             request_data.update(logged_params_dict)
 	
         errors_mapping = {}
-        errors_mapping['INVALID_BUCKET'] = InvalidBucket('The bucket name can only contain A-z characters and must be between 4 and 16 characters long')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('INVALID_BUCKET', None)] = InvalidBucket('The bucket name can only contain A-z characters and must be between 4 and 16 characters long')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/audit/log',

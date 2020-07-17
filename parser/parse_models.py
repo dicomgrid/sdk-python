@@ -30,116 +30,128 @@ from jinja2 import Environment, FileSystemLoader
 
 from ambra_sdk.pythonize import FIELDS
 
-TYPE_MAPPING = MappingProxyType({
-    'citext': 'String',
-    'char': 'String',
-    'text': 'String',
-    'memo': 'String',  # its bytes, but for api its simple str
-    'flag': 'Boolean',
-    'flag_no_default': 'Boolean',
-    'primary_key': 'Integer',
-    'big_primary_key': 'Integer',
-    'integer': 'Integer',
-    'big_integer': 'Integer',
-    'integer_no_default': 'Integer',
-    'double': 'Float',
-    'json': 'JsonB',
-    'foreign_key': 'FK',
-    'datetime': 'DateTime',
-    'date': 'Date',
-    'kv': 'DictField',
-})
+TYPE_MAPPING = MappingProxyType(
+    {
+        'citext': 'String',
+        'char': 'String',
+        'text': 'String',
+        'memo': 'String',  # its bytes, but for api its simple str
+        'flag': 'Boolean',
+        'flag_no_default': 'Boolean',
+        'primary_key': 'Integer',
+        'big_primary_key': 'Integer',
+        'integer': 'Integer',
+        'big_integer': 'Integer',
+        'integer_no_default': 'Integer',
+        'double': 'Float',
+        'json': 'JsonB',
+        'foreign_key': 'FK',
+        'datetime': 'DateTime',
+        'date': 'Date',
+        'kv': 'DictField',
+    }
+)
 
-DEFAULT_FOREIGN_MODELS = MappingProxyType({
-    'account_id': 'Account',
-    'user_id': 'User',
-    'created_by': 'User',
-    'updated_by': 'User',
-    'asked_by': 'User',
-    'namespace_id': 'Namespace',
-    'role_id': 'Role',
-    'study_id': 'Study',
-    'patient_id': 'Patient',
-    'engine_id': 'Engine',
-    'cluster_id': 'Cluster',
-    'brand_id': 'Brand',
-    'case_id': 'Case',
-    'customcode_id': 'Customcode',
-    'node_id': 'Node',
-    'asking_node': 'Node',
-    'destination_id': 'Destination',
-    'hl7_id': 'Hl7',
-    'phi_namespace': 'Namespace',
-    'storage_namespace': 'Namespace',
-    'dictionary_id': 'Dictionary',
-    'filter_id': 'Filter',
-    'group_id': 'Group',
-    'location_id': 'Location',
-    'link_id': 'Link',
-    'meeting_id': 'Meeting',
-    'accelerator_id': 'Accelerator',
-    'from_account_id': 'Account',
-    'to_account_id': 'Account',
-    'order_id': 'Order',
-    'route_id': 'Route',
-    'rsnaclr_subset_id': 'RsnaclrSubset',
-    'rsync_id': 'Rsync',
-    'deleted_by': 'User',
-    'shared_from': 'StudyShare',
-    'hl7_template_hl7_id': 'Hl7Template',
-    'hl7_template_id': 'Hl7Template',
-    'study_push_id': 'StudyPush',
-    'new_study_id': 'Study',
-    'from_study_id': 'Study',
-    'sid_user_id': 'User',
-    'webhook_id': 'Webhook',
-    'linked_destination': 'Destination',
-})
+DEFAULT_FOREIGN_MODELS = MappingProxyType(
+    {
+        'account_id': 'Account',
+        'user_id': 'User',
+        'created_by': 'User',
+        'updated_by': 'User',
+        'asked_by': 'User',
+        'namespace_id': 'Namespace',
+        'role_id': 'Role',
+        'study_id': 'Study',
+        'patient_id': 'Patient',
+        'engine_id': 'Engine',
+        'cluster_id': 'Cluster',
+        'brand_id': 'Brand',
+        'case_id': 'Case',
+        'customcode_id': 'Customcode',
+        'node_id': 'Node',
+        'asking_node': 'Node',
+        'destination_id': 'Destination',
+        'hl7_id': 'Hl7',
+        'phi_namespace': 'Namespace',
+        'storage_namespace': 'Namespace',
+        'dictionary_id': 'Dictionary',
+        'filter_id': 'Filter',
+        'group_id': 'Group',
+        'location_id': 'Location',
+        'link_id': 'Link',
+        'meeting_id': 'Meeting',
+        'accelerator_id': 'Accelerator',
+        'from_account_id': 'Account',
+        'to_account_id': 'Account',
+        'order_id': 'Order',
+        'route_id': 'Route',
+        'rsnaclr_subset_id': 'RsnaclrSubset',
+        'rsync_id': 'Rsync',
+        'deleted_by': 'User',
+        'shared_from': 'StudyShare',
+        'hl7_template_hl7_id': 'Hl7Template',
+        'hl7_template_id': 'Hl7Template',
+        'study_push_id': 'StudyPush',
+        'new_study_id': 'Study',
+        'from_study_id': 'Study',
+        'sid_user_id': 'User',
+        'webhook_id': 'Webhook',
+        'linked_destination': 'Destination',
+    }
+)
 
-FOREIGN_MODELS = MappingProxyType({
-    'AccountCanShare': {
-        'by_account_id': 'Account',
-        'by_group_id': 'Group',
-        'by_location_id': 'Location',
-        'by_user_id': 'User',
-        'with_account_id': 'Account',
-        'with_group_id': 'Group',
-        'with_location_id': 'Location',
-        'with_user_id': 'User',
-    },
-    'ArchiveStudy': {
-        'archive_vault_id': 'Archive',
-    },
-    'ArchiveStudyAws': {
-        'archive_study_id': 'Archive',
-    },
-    'Audit': {
-        'parent_id': 'SelfField',
-        'proxy_id': 'User',
-    },
-    'Case': {
-        'assigned_admin_id': 'User',
-        'assigned_medical_id': 'User',
-        'study_charge_id': 'Unknown',
-    },
-    'Cluster': {
-        'archive_cluster_id': 'Archive',
-        'backup_cluster_id': 'Archive',
-    },
-    'DestinationSearch': {
-        'copy_to': 'Namespace',
-        'push_to': 'Destination',
-    },
-    'NamespaceChildren': {
-        'child_id': 'SelfField',
-    },
-    'TagObject': {
-        'object_id': 'Unknown',
-    },
-    'Message': {
-        'parent_id': 'Message',
-    },
-})
+FOREIGN_MODELS = MappingProxyType(
+    {
+        'AccountCanShare': {
+            'by_account_id': 'Account',
+            'by_group_id': 'Group',
+            'by_location_id': 'Location',
+            'by_user_id': 'User',
+            'with_account_id': 'Account',
+            'with_group_id': 'Group',
+            'with_location_id': 'Location',
+            'with_user_id': 'User',
+        },
+        'ArchiveStudy': {
+            'archive_vault_id': 'Archive',
+        },
+        'ArchiveStudyAws': {
+            'archive_study_id': 'Archive',
+        },
+        'Audit': {
+            'parent_id': 'SelfField',
+            'proxy_id': 'User',
+        },
+        'Case': {
+            'assigned_admin_id': 'User',
+            'assigned_medical_id': 'User',
+            'study_charge_id': 'Unknown',
+        },
+        'Cluster': {
+            'archive_cluster_id': 'Archive',
+            'backup_cluster_id': 'Archive',
+        },
+        'DestinationSearch': {
+            'copy_to': 'Namespace',
+            'push_to': 'Destination',
+        },
+        'NamespaceChildren': {
+            'child_id': 'SelfField',
+        },
+        'TagObject': {
+            'object_id': 'Unknown',
+        },
+        'Message': {
+            'parent_id': 'Message',
+        },
+        'DictionaryRun': {
+            'dictionary_attach_id': 'DictionaryAttach',
+        },
+        'StudyPushStatus': {
+            'copy_src_phi_namespace': 'Namespace',
+        },
+    }
+)
 
 
 class Field(NamedTuple):
@@ -175,7 +187,7 @@ class Model(NamedTuple):
                 # ID key
                 yield Field(
                     field.name,
-                    'Integer',
+                    'String',
                     None,
                     'FK. {description}'.format(description=field.description),
                 )
@@ -285,6 +297,7 @@ def parse_models(path_to_file: Path) -> List[Model]:
                 )
             models.append(Model(table_name, fields))
         return models
+
 
 def generate_models(
     models_path: Path,

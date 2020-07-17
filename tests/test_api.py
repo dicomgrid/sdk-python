@@ -1,4 +1,5 @@
 import pytest
+import requests
 from dynaconf import settings
 
 from ambra_sdk.api import Api
@@ -58,3 +59,38 @@ class TestApi:
         assert api._sid is not None
         api.logout()
         assert api._sid is None
+
+    def test_retry_get_with_new_sid(self, api):
+        """Test retry get with new sid."""
+        api._sid = 'Wrong sid'
+        try:
+            api.Session.user().get()
+        except Exception:
+            pytest.fail('Something goes wrong with retrying with new sid')
+
+    def test_retry_first_with_new_sid(self, api):
+        """Test retry first with new sid.
+
+        This test also test all method
+        (first run all method and return first result)
+        """
+        api._sid = 'Wrong sid'
+        try:
+            api.Study.list().first()
+        except Exception:
+            pytest.fail('Something goes wrong with retrying with new sid')
+
+    def test_headers(self, requests_mock):
+        """Test post method."""
+        client_name = 'client name'
+
+        def matcher(request):  # NOQA: WPS430
+            r = request._request
+            assert 'SDK_VERSION' in r.headers
+            assert r.headers['SDK_CLIENT_NAME'] == client_name
+            return requests.Response()
+
+        api = Api(url='http://127.0.0.1', client_name=client_name)
+        url = '/some_url'
+        requests_mock.add_matcher(matcher)
+        api.service_post(url, {'a': 1})

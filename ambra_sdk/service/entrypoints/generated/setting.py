@@ -25,13 +25,13 @@ class Setting:
         :param user_id: A sysadmin user can set the value for a specific user (optional)
         """
         request_data = {
-           'value': value,
-           'user_id': user_id,
            'key': key,
+           'user_id': user_id,
+           'value': value,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/setting/set',
@@ -51,12 +51,12 @@ class Setting:
         :param user_id: A sysadmin user can get the value for a specific user (optional)
         """
         request_data = {
-           'user_id': user_id,
            'key': key,
+           'user_id': user_id,
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         query_data = {
             'api': self._api,
             'url': '/setting/get',

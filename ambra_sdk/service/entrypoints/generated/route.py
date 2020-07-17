@@ -42,14 +42,14 @@ class Route:
         }
 	
         errors_mapping = {}
-        errors_mapping['FILTER_NOT_FOUND'] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_FIELD'] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
-        errors_mapping['INVALID_SORT_FIELD'] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
-        errors_mapping['INVALID_SORT_ORDER'] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view this list')
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this list')
         query_data = {
             'api': self._api,
             'url': '/route/list',
@@ -69,6 +69,7 @@ class Route:
         on_share,
         account_id=None,
         delay=None,
+        delay_seconds=None,
         delay_till_schedule=None,
         group_id=None,
         location_id=None,
@@ -91,6 +92,7 @@ class Route:
         :param on_share: Apply the rule to studies shared into the namespace
         :param account_id: account_id
         :param delay: Number of minutes to delay running this rule for after it is triggered (optional)
+        :param delay_seconds: Number of seconds to delay running this rule for after it is triggered (optional)
         :param delay_till_schedule: Delay running this rule after it is triggered until the next scheduled time - flag (optional)
         :param group_id: group_id
         :param location_id: location_id
@@ -109,41 +111,42 @@ class Route:
         (account_id OR group_id OR location_id OR namespace_id) - uuid of the account, group or location or namespace the route is linked with
         """
         request_data = {
-           'options': options,
-           'on_manual_route': on_manual_route,
-           'on_upload': on_upload,
-           'name': name,
-           'other_namespaces': other_namespaces,
-           'namespace_id': namespace_id,
-           'actions': actions,
-           'on_thin': on_thin,
            'account_id': account_id,
-           'on_share': on_share,
-           'on_harvest': on_harvest,
+           'actions': actions,
+           'conditions': conditions,
            'delay': delay,
-           'suspended': suspended,
+           'delay_seconds': delay_seconds,
+           'delay_till_schedule': delay_till_schedule,
            'group_id': group_id,
            'location_id': location_id,
-           'no_re_run': no_re_run,
-           'delay_till_schedule': delay_till_schedule,
-           'schedule': schedule,
-           'conditions': conditions,
            'manual_roles': manual_roles,
+           'name': name,
+           'namespace_id': namespace_id,
+           'no_re_run': no_re_run,
+           'on_harvest': on_harvest,
+           'on_manual_route': on_manual_route,
+           'on_share': on_share,
+           'on_thin': on_thin,
+           'on_upload': on_upload,
+           'options': options,
+           'other_namespaces': other_namespaces,
+           'schedule': schedule,
+           'suspended': suspended,
         }
 	
         errors_mapping = {}
-        errors_mapping['ACCOUNT_NOT_FOUND'] = AccountNotFound('The account was not found')
-        errors_mapping['INVALID_ACTION'] = InvalidAction('An action is invalid. The error_subtype holds the error detail')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('A condition is invalid. The error_subtype holds the condition')
-        errors_mapping['INVALID_FLAG'] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['INVALID_LINKAGE'] = InvalidLinkage('The linkage is invalid')
-        errors_mapping['INVALID_MANUAL_ROLES'] = InvalidManualRoles('The manual_roles is invalid. The error_subtype holds the error detail')
-        errors_mapping['INVALID_OPTION'] = InvalidOption('An option is invalid. The error_subtype holds the error detail')
-        errors_mapping['INVALID_OTHER_NAMESPACES'] = InvalidOtherNamespaces('The other_namespaces is invalid. The error_subtype holds the error detail')
-        errors_mapping['INVALID_SCHEDULE'] = InvalidSchedule('The schedule is invalid. The error_subtype holds the error detail')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to add a route to that account')
+        errors_mapping[('ACCOUNT_NOT_FOUND', None)] = AccountNotFound('The account was not found')
+        errors_mapping[('INVALID_ACTION', None)] = InvalidAction('An action is invalid. The error_subtype holds the error detail')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('A condition is invalid. The error_subtype holds the condition')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('INVALID_LINKAGE', None)] = InvalidLinkage('The linkage is invalid')
+        errors_mapping[('INVALID_MANUAL_ROLES', None)] = InvalidManualRoles('The manual_roles is invalid. The error_subtype holds the error detail')
+        errors_mapping[('INVALID_OPTION', None)] = InvalidOption('An option is invalid. The error_subtype holds the error detail')
+        errors_mapping[('INVALID_OTHER_NAMESPACES', None)] = InvalidOtherNamespaces('The other_namespaces is invalid. The error_subtype holds the error detail')
+        errors_mapping[('INVALID_SCHEDULE', None)] = InvalidSchedule('The schedule is invalid. The error_subtype holds the error detail')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add a route to that account')
         query_data = {
             'api': self._api,
             'url': '/route/add',
@@ -159,6 +162,7 @@ class Route:
         actions=None,
         conditions=None,
         delay=None,
+        delay_seconds=None,
         delay_till_schedule=None,
         manual_roles=None,
         name=None,
@@ -178,6 +182,7 @@ class Route:
         :param actions: Route actions in JSON format (optional)
         :param conditions: Route conditions in JSON format (optional)
         :param delay: Number of minutes to delay running this rule for after it is triggered (optional)
+        :param delay_seconds: Number of seconds to delay running this rule for after it is triggered (optional)
         :param delay_till_schedule: Delay running this rule after it is triggered until the next scheduled time - flag (optional)
         :param manual_roles: A comma separated list of the uuid of roles that can run the rule manually (optional)
         :param name: Name of the route (optional)
@@ -193,37 +198,38 @@ class Route:
         :param suspended: This rule is suspended and not applied - flag (optional)
         """
         request_data = {
-           'options': options,
-           'on_manual_route': on_manual_route,
-           'other_namespaces': other_namespaces,
-           'on_share': on_share,
-           'on_harvest': on_harvest,
-           'no_re_run': no_re_run,
+           'actions': actions,
+           'conditions': conditions,
            'delay': delay,
-           'on_upload': on_upload,
+           'delay_seconds': delay_seconds,
            'delay_till_schedule': delay_till_schedule,
+           'manual_roles': manual_roles,
+           'name': name,
+           'no_re_run': no_re_run,
+           'on_harvest': on_harvest,
+           'on_manual_route': on_manual_route,
+           'on_share': on_share,
+           'on_thin': on_thin,
+           'on_upload': on_upload,
+           'options': options,
+           'other_namespaces': other_namespaces,
+           'schedule': schedule,
            'suspended': suspended,
            'uuid': uuid,
-           'actions': actions,
-           'schedule': schedule,
-           'conditions': conditions,
-           'on_thin': on_thin,
-           'name': name,
-           'manual_roles': manual_roles,
         }
 	
         errors_mapping = {}
-        errors_mapping['INVALID_ACTION'] = InvalidAction('An action is invalid. The error_subtype holds the error detail')
-        errors_mapping['INVALID_CONDITION'] = InvalidCondition('A condition is invalid. The error_subtype holds the condition')
-        errors_mapping['INVALID_FLAG'] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
-        errors_mapping['INVALID_JSON'] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping['INVALID_MANUAL_ROLES'] = InvalidManualRoles('The manual_roles is invalid. The error_subtype holds the error detail')
-        errors_mapping['INVALID_OPTION'] = InvalidOption('An option is invalid. The error_subtype holds the error detail')
-        errors_mapping['INVALID_OTHER_NAMESPACES'] = InvalidOtherNamespaces('The other_namespaces is invalid. The error_subtype holds the error detail')
-        errors_mapping['INVALID_SCHEDULE'] = InvalidSchedule('The schedule is invalid. The error_subtype holds the error detail')
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The route can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to edit the route')
+        errors_mapping[('INVALID_ACTION', None)] = InvalidAction('An action is invalid. The error_subtype holds the error detail')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('A condition is invalid. The error_subtype holds the condition')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('INVALID_MANUAL_ROLES', None)] = InvalidManualRoles('The manual_roles is invalid. The error_subtype holds the error detail')
+        errors_mapping[('INVALID_OPTION', None)] = InvalidOption('An option is invalid. The error_subtype holds the error detail')
+        errors_mapping[('INVALID_OTHER_NAMESPACES', None)] = InvalidOtherNamespaces('The other_namespaces is invalid. The error_subtype holds the error detail')
+        errors_mapping[('INVALID_SCHEDULE', None)] = InvalidSchedule('The schedule is invalid. The error_subtype holds the error detail')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The route can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the route')
         query_data = {
             'api': self._api,
             'url': '/route/set',
@@ -245,9 +251,9 @@ class Route:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The route can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to view the route')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The route can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the route')
         query_data = {
             'api': self._api,
             'url': '/route/get',
@@ -269,9 +275,9 @@ class Route:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The route can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to delete the route')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The route can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete the route')
         query_data = {
             'api': self._api,
             'url': '/route/delete',
@@ -296,9 +302,9 @@ class Route:
         }
 	
         errors_mapping = {}
-        errors_mapping['MISSING_FIELDS'] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping['NOT_FOUND'] = NotFound('The account can not be found')
-        errors_mapping['NOT_PERMITTED'] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/route/physician/alias/match',

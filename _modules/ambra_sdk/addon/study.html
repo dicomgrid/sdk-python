@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>ambra_sdk.addon.study &#8212; Ambra-SDK 0.0.1 documentation</title>
+    <title>ambra_sdk.addon.study &#8212; Ambra-SDK 3.20.5.0-1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -124,7 +124,7 @@
 
         <span class="n">images_params</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="n">first_dicom</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">study_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">first_dicom</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">study_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;**/*.dcm&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">first_dicom</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;study_dir is empty&#39;</span><span class="p">)</span>
 
@@ -148,7 +148,7 @@
         <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">response_data</span><span class="o">.</span><span class="n">uuid</span>
 
         <span class="c1"># upload images</span>
-        <span class="k">for</span> <span class="n">dicom_path</span> <span class="ow">in</span> <span class="n">study_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">dicom_path</span> <span class="ow">in</span> <span class="n">study_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;**/*.dcm&#39;</span><span class="p">):</span>
             <span class="n">images_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">upload_dicom</span><span class="p">(</span>
                     <span class="n">dicom_path</span><span class="p">,</span>
@@ -160,7 +160,7 @@
         <span class="c1"># In api.html sync method have not uuid param...</span>
         <span class="c1"># So we use this hardcode:</span>
         <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">sync</span><span class="p">(</span><span class="n">image_count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">request</span><span class="o">.</span><span class="n">_request_data</span><span class="p">[</span><span class="s1">&#39;uuid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uuid</span>  <span class="c1"># NOQA:WPS437</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">request_data</span><span class="p">[</span><span class="s1">&#39;uuid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uuid</span>  <span class="c1"># NOQA:WPS437</span>
         <span class="n">request</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">images_params</span></div>
@@ -181,10 +181,7 @@
 <span class="sd">        :raises TimeoutError: if study not ready by timeout</span>
 <span class="sd">        :return: Study box object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># prepare ws</span>
-        <span class="n">ws_url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{url}</span><span class="s1">/channel/websocket&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">_api_url</span><span class="p">,</span>  <span class="c1"># NOQA:WPS437</span>
-        <span class="p">)</span>
+        <span class="n">ws_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">ws_url</span>
         <span class="n">ws_manager</span> <span class="o">=</span> <span class="n">WSManager</span><span class="p">(</span><span class="n">ws_url</span><span class="p">)</span>
         <span class="n">study</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">start</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
@@ -292,6 +289,15 @@
 
 
 
+<p class="blurb">version 3.20.5.0-1</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=dicomgrid&repo=sdk-python&type=watch&count=False&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
 
 
 
@@ -338,10 +344,6 @@
     </div>
     <div class="footer">
       &copy;2020, Ambrahealth AI team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 

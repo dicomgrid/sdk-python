@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>ambra_sdk.storage.image &#8212; Ambra-SDK 0.0.1 documentation</title>
+    <title>ambra_sdk.storage.image &#8212; Ambra-SDK 3.20.5.0-1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -46,7 +46,7 @@
     <span class="n">PreconditionFailed</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.storage.bool_to_int</span> <span class="kn">import</span> <span class="n">bool_to_int</span>
-<span class="kn">from</span> <span class="nn">ambra_sdk.storage.response</span> <span class="kn">import</span> <span class="n">check_response</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.storage.request</span> <span class="kn">import</span> <span class="n">PreparedRequest</span><span class="p">,</span> <span class="n">StorageMethod</span>
 
 
 <div class="viewcode-block" id="Image"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.image.Image">[docs]</a><span class="k">class</span> <span class="nc">Image</span><span class="p">:</span>
@@ -65,7 +65,8 @@
         <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">opened_file</span><span class="p">:</span> <span class="n">BufferedReader</span><span class="p">,</span>
         <span class="n">use_box</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="n">Response</span><span class="p">]:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Upload image to a namespace.</span>
 
 <span class="sd">        URL: /namespace/{namespace}/image?sid={sid}</span>
@@ -74,6 +75,7 @@
 <span class="sd">        :param namespace: Namespace (Required).</span>
 <span class="sd">        :param opened_file: Opened file (Required).</span>
 <span class="sd">        :param use_box: Use box for response.</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: image object attributes</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -86,12 +88,16 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-            <span class="n">url</span><span class="p">,</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">post</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="n">opened_file</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">use_box</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">response</span></div>
@@ -104,7 +110,8 @@
         <span class="n">opened_file</span><span class="p">:</span> <span class="n">BufferedReader</span><span class="p">,</span>
         <span class="n">tags</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">render_wrapped_pdf</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Upload a non DICOM image.</span>
 
 <span class="sd">        URL: /namespace/{namespace}/wrap?sid={sid}&amp;render_wrapped_pdf={0,1}</span>
@@ -114,10 +121,13 @@
 <span class="sd">        :param tags: Any DICOM tags to be overwrite or added should be provided as a form-data field.</span>
 <span class="sd">        :param opened_file: The multipart file to be uploaded should be provided as a form-data field.</span>
 <span class="sd">        :param render_wrapped_pdf: An integer value of either 0 or 1.</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: image object attributes</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">render_wrapped_pdf</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">bool_to_int</span><span class="p">(</span><span class="n">render_wrapped_pdf</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="n">render_wrapped_pdf</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">bool_to_int</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+            <span class="n">render_wrapped_pdf</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">url_template</span> <span class="o">=</span> <span class="s1">&#39;/namespace/</span><span class="si">{namespace}</span><span class="s1">/wrap&#39;</span>
         <span class="n">url_arg_names</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;engine_fqdn&#39;</span><span class="p">,</span> <span class="s1">&#39;namespace&#39;</span><span class="p">}</span>
         <span class="n">request_arg_names</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -132,45 +142,54 @@
             <span class="s1">&#39;file&#39;</span><span class="p">:</span> <span class="n">opened_file</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;X-File-Size&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">file_size</span><span class="p">)}</span>
+
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">403</span><span class="p">:</span>
+            <span class="n">PermissionDenied</span><span class="p">(</span>
+                <span class="s1">&#39;The sid is not valid or the user does &#39;</span>
+                <span class="s1">&#39;not have permission to upload a non DICOM &#39;</span>
+                <span class="s1">&#39;file from a study specified by the namespace.&#39;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="mi">412</span><span class="p">:</span>
+            <span class="n">PreconditionFailed</span><span class="p">(</span>
+                <span class="s1">&#39;X-File-Size header is not provided or has an &#39;</span>
+                <span class="s1">&#39;invalid value.&#39;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="mi">413</span><span class="p">:</span>
+            <span class="n">EntityTooLarge</span><span class="p">(</span>
+                <span class="s1">&#39;The file to be DICOM-wrapped is larger than &#39;</span>
+                <span class="s1">&#39;2GiB (2^31 - 1 bytes).&#39;</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">}</span>
+
         <span class="k">if</span> <span class="n">tags</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">post_data</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="n">tags</span><span class="p">,</span>
             <span class="p">}</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-                <span class="n">url</span><span class="p">,</span>
+            <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+                <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+                <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">post</span><span class="p">,</span>
+                <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+                <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
                 <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
                 <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span>
                 <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
                 <span class="n">data</span><span class="o">=</span><span class="n">post_data</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-                <span class="n">url</span><span class="p">,</span>
+            <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+                <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+                <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">post</span><span class="p">,</span>
+                <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+                <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
                 <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
                 <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span>
                 <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="mi">403</span><span class="p">:</span> <span class="n">PermissionDenied</span><span class="p">(</span>
-                <span class="s1">&#39;The sid is not valid or the user does &#39;</span>
-                <span class="s1">&#39;not have permission to upload a non DICOM &#39;</span>
-                <span class="s1">&#39;file from a study specified by the namespace.&#39;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="mi">412</span><span class="p">:</span> <span class="n">PreconditionFailed</span><span class="p">(</span>
-                <span class="s1">&#39;X-File-Size header is not provided or has an &#39;</span>
-                <span class="s1">&#39;invalid value.&#39;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="mi">413</span><span class="p">:</span> <span class="n">EntityTooLarge</span><span class="p">(</span>
-                <span class="s1">&#39;The file to be DICOM-wrapped is larger than &#39;</span>
-                <span class="s1">&#39;2GiB (2^31 - 1 bytes).&#39;</span><span class="p">,</span>
-            <span class="p">),</span>
-        <span class="p">}</span>
 
-        <span class="k">return</span> <span class="n">check_response</span><span class="p">(</span>
-            <span class="n">response</span><span class="p">,</span>
-            <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">,</span>
-            <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
-        <span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Image.cadsr"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.image.Image.cadsr">[docs]</a>    <span class="k">def</span> <span class="nf">cadsr</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -180,7 +199,8 @@
         <span class="n">image_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">image_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Gets graphical annotations according to vendor definitions for CAD SR object.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/cadsr?sid={sid}</span>
@@ -194,6 +214,7 @@
 <span class="sd">            of the namespace where the file was attached</span>
 <span class="sd">            if it was attached to a shared instance of the study</span>
 <span class="sd">            outside of the original storage namespace</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: the vendor-specified graphical \</span>
 <span class="sd">            annotations, empty if not implemented for the vendor or generating device.</span>
@@ -213,8 +234,15 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span></div></div>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div></div>
 </pre></div>
 
           </div>
@@ -227,6 +255,15 @@
 
 
 
+<p class="blurb">version 3.20.5.0-1</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=dicomgrid&repo=sdk-python&type=watch&count=False&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
 
 
 
@@ -273,10 +310,6 @@
     </div>
     <div class="footer">
       &copy;2020, Ambrahealth AI team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 

@@ -3,6 +3,16 @@
 Storage namespace
 -----------------
 
+.. testsetup::
+
+        from dynaconf import settings
+	from ambra_sdk.api import Api
+	url = settings.API['url']
+	username = settings.API['username']
+	password = settings.API['password']
+	api = Api.with_creds(url, username, password)
+
+
 Namespace for using `ambra-sdk` with `v3storage`.
 
 For example:
@@ -20,11 +30,11 @@ For example:
 Using boxes
 ^^^^^^^^^^^
 
-All `Storage` methods returns `Response` or `Box`_ objects.
+All `Storage` methods returns `Response`, `PreparedRequest` or `Box`_ objects.
 
 .. _`Box`: https://github.com/cdgriffith/Box
 
-To select returns type you can use `use_box` method argument.
+To select returns type `Box` you can use `use_box` method argument.
 By default all methods prefer to return box objects.
 
 for example:
@@ -101,9 +111,67 @@ For all elements in response you can filter tags or get tag by name:
     >>> print(tag.value)
 
 
+PreparedRequest
+^^^^^^^^^^^^^^^
+
+To select returns type  `PreparedRequest` you can use `only_prepare` argument.
+
+for example:
+
+.. testsetup::
+
+        engine_fqdn='engine_fqdn'
+        storage_namespace='storage_namespace'
+        study_uid='study_uid'
+	
+.. doctest::
+
+    >>> from ambra_sdk.storage.request import PreparedRequest
+    >>> 
+    >>> study_schema = api.Storage.Study.schema(
+    ...     engine_fqdn=engine_fqdn,
+    ...     namespace=storage_namespace,
+    ...     study_uid=study_uid,
+    ...     only_prepare=True,
+    ...  )
+    >>> 
+    >>> assert type(study_schema) == PreparedRequest
+    >>> study_schema.url
+    'https://engine_fqdn/api/v3/storage/study/storage_namespace/study_uid/schema'
+    >>> study_schema.method.value
+    'GET'
+
+Retries
+^^^^^^^
+
+`SDK` storage namespace supports retry mechanism. By default, `sdk` sets some retry settings.
+In some cases, you may need to define your settings for some methods.
+The example below shows how to do this:
 
 
-This entrypoints for using storage API methods.
+.. doctest::
+
+    >>> from requests.adapters import HTTPAdapter
+    >>> from requests.packages.urllib3.util import Retry
+    >>> 
+    >>> max_retries = Retry(
+    ...     total=10,
+    ...     backoff_factor=0.2,
+    ...     method_whitelist=['GET', 'DELETE', 'POST'],
+    ...  )
+    >>> 
+    >>> adapter = HTTPAdapter(max_retries=max_retries)
+    >>> 
+    >>> some_method_url = api.Storage.Study.schema(
+    ...     engine_fqdn=engine_fqdn,
+    ...     namespace=storage_namespace,
+    ...     study_uid=study_uid,
+    ...     only_prepare=True,
+    ...  ).url
+    >>> 
+    >>> api.storage_session.mount(some_method_url, adapter)
+
+
 
 Image namespace
 ^^^^^^^^^^^^^^^

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>ambra_sdk.service.entrypoints.generated.session &#8212; Ambra-SDK 0.0.1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.session &#8212; Ambra-SDK 3.20.5.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -94,26 +94,26 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;account_login&#39;</span><span class="p">:</span> <span class="n">account_login</span><span class="p">,</span>
-           <span class="s1">&#39;new_password&#39;</span><span class="p">:</span> <span class="n">new_password</span><span class="p">,</span>
            <span class="s1">&#39;account_name&#39;</span><span class="p">:</span> <span class="n">account_name</span><span class="p">,</span>
            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
-           <span class="s1">&#39;vanity&#39;</span><span class="p">:</span> <span class="n">vanity</span><span class="p">,</span>
            <span class="s1">&#39;location&#39;</span><span class="p">:</span> <span class="n">location</span><span class="p">,</span>
            <span class="s1">&#39;login&#39;</span><span class="p">:</span> <span class="n">login</span><span class="p">,</span>
-           <span class="s1">&#39;validate_session&#39;</span><span class="p">:</span> <span class="n">validate_session</span><span class="p">,</span>
+           <span class="s1">&#39;new_password&#39;</span><span class="p">:</span> <span class="n">new_password</span><span class="p">,</span>
            <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
+           <span class="s1">&#39;validate_session&#39;</span><span class="p">:</span> <span class="n">validate_session</span><span class="p">,</span>
+           <span class="s1">&#39;vanity&#39;</span><span class="p">:</span> <span class="n">vanity</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;BAD_PASSWORD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">BadPassword</span><span class="p">(</span><span class="s1">&#39;The new_password does not meet the password requirements&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;BLOCKED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Blocked</span><span class="p">(</span><span class="s1">&#39;The user is blocked from the system&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;DISABLED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Disabled</span><span class="p">(</span><span class="s1">&#39;The user is disabled and needs to be /user/enabled to allow access&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_CREDENTIALS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidCredentials</span><span class="p">(</span><span class="s1">&#39;Invalid user name or password.&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;LOCKOUT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Lockout</span><span class="p">(</span><span class="s1">&#39;Too many failed attempts&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;PASSWORD_RESET&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">PasswordReset</span><span class="p">(</span><span class="s1">&#39;The password needs to be changed&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;VALIDATION_FAILED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ValidationFailed</span><span class="p">(</span><span class="s1">&#39;The session validation failed&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;WHITELIST_LOCKOUT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">WhitelistLockout</span><span class="p">(</span><span class="s1">&#39;Login blocked by the account whitelist&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;BAD_PASSWORD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">BadPassword</span><span class="p">(</span><span class="s1">&#39;The new_password does not meet the password requirements&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;BLOCKED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Blocked</span><span class="p">(</span><span class="s1">&#39;The user is blocked from the system&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;DISABLED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Disabled</span><span class="p">(</span><span class="s1">&#39;The user is disabled and needs to be /user/enabled to allow access&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CREDENTIALS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCredentials</span><span class="p">(</span><span class="s1">&#39;Invalid user name or password.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;LOCKOUT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Lockout</span><span class="p">(</span><span class="s1">&#39;Too many failed attempts&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;PASSWORD_RESET&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">PasswordReset</span><span class="p">(</span><span class="s1">&#39;The password needs to be changed&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;VALIDATION_FAILED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ValidationFailed</span><span class="p">(</span><span class="s1">&#39;The session validation failed&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;WHITELIST_LOCKOUT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">WhitelistLockout</span><span class="p">(</span><span class="s1">&#39;Login blocked by the account whitelist&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/session/login&#39;</span><span class="p">,</span>
@@ -157,8 +157,8 @@
 <span class="sd">        (account_id OR namespace_id) - Either the account or namespaces to get the users permissions for</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -180,8 +180,8 @@
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The sid was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The sid was not found&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/session/logout&#39;</span><span class="p">,</span>
@@ -203,8 +203,8 @@
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_URL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidUrl</span><span class="p">(</span><span class="s1">&#39;The URL must be a relative URL&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_URL&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidUrl</span><span class="p">(</span><span class="s1">&#39;The URL must be a relative URL&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/session/csrf/enable&#39;</span><span class="p">,</span>
@@ -241,7 +241,7 @@
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NO_OAUTH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NoOauth</span><span class="p">(</span><span class="s1">&#39;OAuth is not setup for the associated brand&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NO_OAUTH&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NoOauth</span><span class="p">(</span><span class="s1">&#39;OAuth is not setup for the associated brand&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/session/oauth/start&#39;</span><span class="p">,</span>
@@ -255,30 +255,27 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">code</span><span class="p">,</span>
         <span class="n">redirect_uri</span><span class="p">,</span>
-        <span class="n">vendor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">vendor</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Oauth.</span>
 <span class="sd">        :param code: The OAuth code</span>
 <span class="sd">        :param redirect_uri: The redirect_uri used to get the code parameter</span>
-<span class="sd">        :param vendor: vendor</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        vendor - The OAuth vendor (doximity OR google OR brand)</span>
+<span class="sd">        :param vendor: The OAuth vendor (doximity|google|brand)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;vendor&#39;</span><span class="p">:</span> <span class="n">vendor</span><span class="p">,</span>
-           <span class="s1">&#39;redirect_uri&#39;</span><span class="p">:</span> <span class="n">redirect_uri</span><span class="p">,</span>
            <span class="s1">&#39;code&#39;</span><span class="p">:</span> <span class="n">code</span><span class="p">,</span>
+           <span class="s1">&#39;redirect_uri&#39;</span><span class="p">:</span> <span class="n">redirect_uri</span><span class="p">,</span>
+           <span class="s1">&#39;vendor&#39;</span><span class="p">:</span> <span class="n">vendor</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;AUTH_FAILED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">AuthFailed</span><span class="p">(</span><span class="s1">&#39;OAuth failed or a user id was not returned&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_CODE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidCode</span><span class="p">(</span><span class="s1">&#39;Invalid code&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_VENDOR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidVendor</span><span class="p">(</span><span class="s1">&#39;Invalid vendor&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;MISSING_INFORMATION&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MissingInformation</span><span class="p">(</span><span class="s1">&#39;The response from the OAuth provider is missing either the email, first_name or last_name fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NO_OAUTH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NoOauth</span><span class="p">(</span><span class="s1">&#39;OAuth is not setup for the associated brand&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;OTHER_OAUTH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">OtherOauth</span><span class="p">(</span><span class="s1">&#39;The user is already setup to OAuth via another vendor&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;AUTH_FAILED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">AuthFailed</span><span class="p">(</span><span class="s1">&#39;OAuth failed or a user id was not returned&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CODE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCode</span><span class="p">(</span><span class="s1">&#39;Invalid code&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_VENDOR&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidVendor</span><span class="p">(</span><span class="s1">&#39;Invalid vendor&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_INFORMATION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingInformation</span><span class="p">(</span><span class="s1">&#39;The response from the OAuth provider is missing either the email, first_name or last_name fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NO_OAUTH&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NoOauth</span><span class="p">(</span><span class="s1">&#39;OAuth is not setup for the associated brand&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;OTHER_OAUTH&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">OtherOauth</span><span class="p">(</span><span class="s1">&#39;The user is already setup to OAuth via another vendor&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/session/oauth&#39;</span><span class="p">,</span>
@@ -302,16 +299,16 @@
 <span class="sd">        :param duration: The number of seconds the token is valid for (optional and defaults to 3600 with a maximum value of 86400)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;grant_type&#39;</span><span class="p">:</span> <span class="n">grant_type</span><span class="p">,</span>
            <span class="s1">&#39;client_id&#39;</span><span class="p">:</span> <span class="n">client_id</span><span class="p">,</span>
            <span class="s1">&#39;client_secret&#39;</span><span class="p">:</span> <span class="n">client_secret</span><span class="p">,</span>
            <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="n">duration</span><span class="p">,</span>
+           <span class="s1">&#39;grant_type&#39;</span><span class="p">:</span> <span class="n">grant_type</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;AUTH_FAILED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">AuthFailed</span><span class="p">(</span><span class="s1">&#39;Authentication failed&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;LOCKOUT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Lockout</span><span class="p">(</span><span class="s1">&#39;Too many failed attempts&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;AUTH_FAILED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">AuthFailed</span><span class="p">(</span><span class="s1">&#39;Authentication failed&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;LOCKOUT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Lockout</span><span class="p">(</span><span class="s1">&#39;Too many failed attempts&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/session/oauth/token&#39;</span><span class="p">,</span>
@@ -333,10 +330,10 @@
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_PIN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidPin</span><span class="p">(</span><span class="s1">&#39;Invalid PIN&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_SID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidSid</span><span class="p">(</span><span class="s1">&#39;Invalid sid&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;PIN_EXPIRED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">PinExpired</span><span class="p">(</span><span class="s1">&#39;The PIN has expired&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_PIN&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidPin</span><span class="p">(</span><span class="s1">&#39;Invalid PIN&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SID&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSid</span><span class="p">(</span><span class="s1">&#39;Invalid sid&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;PIN_EXPIRED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">PinExpired</span><span class="p">(</span><span class="s1">&#39;The PIN has expired&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/session/pin&#39;</span><span class="p">,</span>
@@ -355,8 +352,8 @@
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;EXPIRED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Expired</span><span class="p">(</span><span class="s1">&#39;Expired&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;EXPIRED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Expired</span><span class="p">(</span><span class="s1">&#39;Expired&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/session/ttl&#39;</span><span class="p">,</span>
@@ -378,6 +375,15 @@
 
 
 
+<p class="blurb">version 3.20.5.0-1</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=dicomgrid&repo=sdk-python&type=watch&count=False&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
 
 
 
@@ -424,10 +430,6 @@
     </div>
     <div class="footer">
       &copy;2020, Ambrahealth AI team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>ambra_sdk.service.entrypoints.generated.customfield &#8212; Ambra-SDK 0.0.1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.customfield &#8212; Ambra-SDK 3.20.5.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -78,14 +78,14 @@
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;FILTER_NOT_FOUND&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FilterNotFound</span><span class="p">(</span><span class="s1">&#39;The filter can not be found. The error_subtype will hold the filter UUID&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_CONDITION&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidCondition</span><span class="p">(</span><span class="s1">&#39;The condition is not support. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_FIELD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_SORT_FIELD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidSortField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the field name this applies to&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_SORT_ORDER&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidSortOrder</span><span class="p">(</span><span class="s1">&#39;The sort order for the field is invalid. The error_subtype will hold the field name this applies to&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The account can not be found&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to view this list&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;FILTER_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">FilterNotFound</span><span class="p">(</span><span class="s1">&#39;The filter can not be found. The error_subtype will hold the filter UUID&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CONDITION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCondition</span><span class="p">(</span><span class="s1">&#39;The condition is not support. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SORT_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSortField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the field name this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SORT_ORDER&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSortOrder</span><span class="p">(</span><span class="s1">&#39;The sort order for the field is invalid. The error_subtype will hold the field name this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The account can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to view this list&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/customfield/list&#39;</span><span class="p">,</span>
@@ -100,10 +100,11 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">account_id</span><span class="p">,</span>
         <span class="n">capture_on_share_code</span><span class="p">,</span>
-        <span class="n">customfield_param</span><span class="p">,</span>
         <span class="n">display_order</span><span class="p">,</span>
         <span class="n">name</span><span class="p">,</span>
+        <span class="nb">object</span><span class="p">,</span>
         <span class="n">required</span><span class="p">,</span>
+        <span class="nb">type</span><span class="p">,</span>
         <span class="n">wrapped_dicom_only</span><span class="p">,</span>
         <span class="n">dicom_tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">dicom_tag_ignore_empty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -116,72 +117,64 @@
         <span class="n">load_hl7_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">other_dicom_tags</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        :param capture_on_share_code: Flag if the field should be captured during a share code exchange (only applicable to study fields)</span>
-<span class="sd">        :param customfield_param: The object to associate the customfield with (Study|User_account|Group|Location|Account|Patient|Case|Order|Appointment|Dicomdata)</span>
 <span class="sd">        :param display_order: Integer to order how the fields should be displayed</span>
 <span class="sd">        :param name: Name of the customfield</span>
+<span class="sd">        :param object: The object to associate the customfield with (Study|User_account|Group|Location|Account|Patient|Case|Order|Appointment|Dicomdata)</span>
 <span class="sd">        :param required: Flag if the field is required</span>
+<span class="sd">        :param type: Type of the custom field (text|number|date|memo|select|multiselect|radio|checkbox|search)</span>
 <span class="sd">        :param wrapped_dicom_only: Only capture for wrapped DICOM uploads during a share code exchange</span>
 <span class="sd">        :param dicom_tag: DICOM tag to map this field to. Format should be of form (1234,1234). (only applicable to study fields) (optional)</span>
 <span class="sd">        :param dicom_tag_ignore_empty: Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified) (optional)</span>
 <span class="sd">        :param hl7_component: Component number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)</span>
 <span class="sd">        :param hl7_field: Segment field number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)</span>
-<span class="sd">        :param hl7_segment: hl7_segment</span>
+<span class="sd">        :param hl7_segment: Segment to map this field to in HL7 ORM messages. Valid values are (NTE|PID|PID1|PV1|PV2|OBR|DG1|OBX|CTI|BLG|ORC) (only applicable to study fields) (optional)</span>
 <span class="sd">        :param load_dicom_tag: Flag to load the current value from the study into this field. (only applicable if a dicom_tag is specified) (optional)</span>
 <span class="sd">        :param load_from_sr: Load the value from the structured reports in the study (only applicable to study fields) .(optional)</span>
 <span class="sd">        :param load_hl7: If this is set to a HL7 message type the value of this field will be updated from the hl7_segment, hl7_field and hl7_component from incoming HL7 messages of the matching message type (only applicable to study fields) (optional)</span>
 <span class="sd">        :param load_hl7_filter: Filter token for the load_hl7 option (only applicable to study fields) (optional)</span>
 <span class="sd">        :param options: Additional options in JSON format (optional)</span>
 <span class="sd">        :param other_dicom_tags: JSON array of other DICOM tags to map this field to. (only applicable to study fields) (optional)</span>
-<span class="sd">        :param type: type</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        object - The object to associate the customfield with (Study OR User_account OR Group OR Location OR Account OR Patient OR Case OR Order OR Appointment OR Dicomdata)</span>
-<span class="sd">        type - Type of the custom field (text OR number OR date OR memo OR select OR multiselect OR radio OR checkbox OR search)</span>
-<span class="sd">        hl7_segment - Segment to map this field to in HL7 ORM messages. Valid values are (NTE OR PID OR PID1 OR PV1 OR PV2 OR OBR OR DG1 OR OBX OR CTI OR BLG OR ORC) (only applicable to study fields) (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="n">options</span><span class="p">,</span>
-           <span class="s1">&#39;load_dicom_tag&#39;</span><span class="p">:</span> <span class="n">load_dicom_tag</span><span class="p">,</span>
-           <span class="s1">&#39;load_hl7_filter&#39;</span><span class="p">:</span> <span class="n">load_hl7_filter</span><span class="p">,</span>
-           <span class="s1">&#39;wrapped_dicom_only&#39;</span><span class="p">:</span> <span class="n">wrapped_dicom_only</span><span class="p">,</span>
-           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;capture_on_share_code&#39;</span><span class="p">:</span> <span class="n">capture_on_share_code</span><span class="p">,</span>
            <span class="s1">&#39;dicom_tag&#39;</span><span class="p">:</span> <span class="n">dicom_tag</span><span class="p">,</span>
-           <span class="s1">&#39;other_dicom_tags&#39;</span><span class="p">:</span> <span class="n">other_dicom_tags</span><span class="p">,</span>
+           <span class="s1">&#39;dicom_tag_ignore_empty&#39;</span><span class="p">:</span> <span class="n">dicom_tag_ignore_empty</span><span class="p">,</span>
            <span class="s1">&#39;display_order&#39;</span><span class="p">:</span> <span class="n">display_order</span><span class="p">,</span>
            <span class="s1">&#39;hl7_component&#39;</span><span class="p">:</span> <span class="n">hl7_component</span><span class="p">,</span>
            <span class="s1">&#39;hl7_field&#39;</span><span class="p">:</span> <span class="n">hl7_field</span><span class="p">,</span>
-           <span class="s1">&#39;dicom_tag_ignore_empty&#39;</span><span class="p">:</span> <span class="n">dicom_tag_ignore_empty</span><span class="p">,</span>
-           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
-           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
            <span class="s1">&#39;hl7_segment&#39;</span><span class="p">:</span> <span class="n">hl7_segment</span><span class="p">,</span>
-           <span class="s1">&#39;required&#39;</span><span class="p">:</span> <span class="n">required</span><span class="p">,</span>
+           <span class="s1">&#39;load_dicom_tag&#39;</span><span class="p">:</span> <span class="n">load_dicom_tag</span><span class="p">,</span>
            <span class="s1">&#39;load_from_sr&#39;</span><span class="p">:</span> <span class="n">load_from_sr</span><span class="p">,</span>
-           <span class="s1">&#39;capture_on_share_code&#39;</span><span class="p">:</span> <span class="n">capture_on_share_code</span><span class="p">,</span>
            <span class="s1">&#39;load_hl7&#39;</span><span class="p">:</span> <span class="n">load_hl7</span><span class="p">,</span>
+           <span class="s1">&#39;load_hl7_filter&#39;</span><span class="p">:</span> <span class="n">load_hl7_filter</span><span class="p">,</span>
+           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;object&#39;</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span>
+           <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="n">options</span><span class="p">,</span>
+           <span class="s1">&#39;other_dicom_tags&#39;</span><span class="p">:</span> <span class="n">other_dicom_tags</span><span class="p">,</span>
+           <span class="s1">&#39;required&#39;</span><span class="p">:</span> <span class="n">required</span><span class="p">,</span>
+           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
+           <span class="s1">&#39;wrapped_dicom_only&#39;</span><span class="p">:</span> <span class="n">wrapped_dicom_only</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="k">if</span> <span class="n">customfield_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">customfield_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
-            <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">customfield_param_dict</span><span class="p">)</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_DICOM_TAG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidDicomTag</span><span class="p">(</span><span class="s1">&#39;The DICOM tag is invalid&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_DICOM_TAG_OBJECT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidDicomTagObject</span><span class="p">(</span><span class="s1">&#39;DICOM tags can only be applied to study fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_HL7_OBJECT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidHl7Object</span><span class="p">(</span><span class="s1">&#39;HL7 fields can only be applied to study fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_HL7_SEGMENT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidHl7Segment</span><span class="p">(</span><span class="s1">&#39;Invalid segment name&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_OBJECT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidObject</span><span class="p">(</span><span class="s1">&#39;An invalid object was passed.&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_OPTIONS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidOptions</span><span class="p">(</span><span class="s1">&#39;An option is invalid. The error_subtype holds the specific error message&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_SEARCH_SOURCE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidSearchSource</span><span class="p">(</span><span class="s1">&#39;An invalid search source was passed.&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_TYPE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidType</span><span class="p">(</span><span class="s1">&#39;An invalid type was passed.&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The account can not be found&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to add a customfield to this account&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NO_DICOM_TAG_DEFINED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NoDicomTagDefined</span><span class="p">(</span><span class="s1">&#39;The load_dicom_tag flag is set but the dicom_tag field is not defined&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_DICOM_TAG&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidDicomTag</span><span class="p">(</span><span class="s1">&#39;The DICOM tag is invalid&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_DICOM_TAG_OBJECT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidDicomTagObject</span><span class="p">(</span><span class="s1">&#39;DICOM tags can only be applied to study fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_HL7_OBJECT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidHl7Object</span><span class="p">(</span><span class="s1">&#39;HL7 fields can only be applied to study fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_HL7_SEGMENT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidHl7Segment</span><span class="p">(</span><span class="s1">&#39;Invalid segment name&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_OBJECT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidObject</span><span class="p">(</span><span class="s1">&#39;An invalid object was passed.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_OPTIONS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidOptions</span><span class="p">(</span><span class="s1">&#39;An option is invalid. The error_subtype holds the specific error message&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SEARCH_SOURCE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSearchSource</span><span class="p">(</span><span class="s1">&#39;An invalid search source was passed.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_TYPE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidType</span><span class="p">(</span><span class="s1">&#39;An invalid type was passed.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The account can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to add a customfield to this account&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NO_DICOM_TAG_DEFINED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NoDicomTagDefined</span><span class="p">(</span><span class="s1">&#39;The load_dicom_tag flag is set but the dicom_tag field is not defined&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/customfield/add&#39;</span><span class="p">,</span>
@@ -219,7 +212,7 @@
 <span class="sd">        :param display_order: Integer to order how the fields should be displayed (optional)</span>
 <span class="sd">        :param hl7_component: Component number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)</span>
 <span class="sd">        :param hl7_field: Segment field number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)</span>
-<span class="sd">        :param hl7_segment: hl7_segment</span>
+<span class="sd">        :param hl7_segment: Segment to map this field to in HL7 ORM messages. Valid values are (NTE|PID|PID1|PV1|PV2|OBR|DG1|OBX|CTI|BLG|ORC) (only applicable to study fields) (optional)</span>
 <span class="sd">        :param load_dicom_tag: Flag to load the current value from the study into this field. (only applicable if a dicom_tag is specified) (optional)</span>
 <span class="sd">        :param load_from_sr: Load the value from the structured reports in the study. (only applicable to study fields) .(optional)</span>
 <span class="sd">        :param load_hl7: If this is set to a HL7 message type the value of this field will be updated from the hl7_segment, hl7_field and hl7_component from incoming HL7 messages of the matching message type (only applicable to study fields) (optional)</span>
@@ -229,42 +222,39 @@
 <span class="sd">        :param other_dicom_tags: JSON array of other DICOM tags to map this field to. (only applicable to study fields) (optional)</span>
 <span class="sd">        :param required: Flag if the field is required (optional)</span>
 <span class="sd">        :param wrapped_dicom_only: Only capture for wrapped DICOM uploads during a share code exchange (optional)</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        hl7_segment - Segment to map this field to in HL7 ORM messages. Valid values are (NTE OR PID OR PID1 OR PV1 OR PV2 OR OBR OR DG1 OR OBX OR CTI OR BLG OR ORC) (only applicable to study fields) (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="n">options</span><span class="p">,</span>
-           <span class="s1">&#39;load_dicom_tag&#39;</span><span class="p">:</span> <span class="n">load_dicom_tag</span><span class="p">,</span>
-           <span class="s1">&#39;load_hl7_filter&#39;</span><span class="p">:</span> <span class="n">load_hl7_filter</span><span class="p">,</span>
-           <span class="s1">&#39;wrapped_dicom_only&#39;</span><span class="p">:</span> <span class="n">wrapped_dicom_only</span><span class="p">,</span>
-           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;capture_on_share_code&#39;</span><span class="p">:</span> <span class="n">capture_on_share_code</span><span class="p">,</span>
            <span class="s1">&#39;dicom_tag&#39;</span><span class="p">:</span> <span class="n">dicom_tag</span><span class="p">,</span>
-           <span class="s1">&#39;other_dicom_tags&#39;</span><span class="p">:</span> <span class="n">other_dicom_tags</span><span class="p">,</span>
+           <span class="s1">&#39;dicom_tag_ignore_empty&#39;</span><span class="p">:</span> <span class="n">dicom_tag_ignore_empty</span><span class="p">,</span>
            <span class="s1">&#39;display_order&#39;</span><span class="p">:</span> <span class="n">display_order</span><span class="p">,</span>
            <span class="s1">&#39;hl7_component&#39;</span><span class="p">:</span> <span class="n">hl7_component</span><span class="p">,</span>
            <span class="s1">&#39;hl7_field&#39;</span><span class="p">:</span> <span class="n">hl7_field</span><span class="p">,</span>
-           <span class="s1">&#39;dicom_tag_ignore_empty&#39;</span><span class="p">:</span> <span class="n">dicom_tag_ignore_empty</span><span class="p">,</span>
            <span class="s1">&#39;hl7_segment&#39;</span><span class="p">:</span> <span class="n">hl7_segment</span><span class="p">,</span>
-           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
-           <span class="s1">&#39;required&#39;</span><span class="p">:</span> <span class="n">required</span><span class="p">,</span>
+           <span class="s1">&#39;load_dicom_tag&#39;</span><span class="p">:</span> <span class="n">load_dicom_tag</span><span class="p">,</span>
            <span class="s1">&#39;load_from_sr&#39;</span><span class="p">:</span> <span class="n">load_from_sr</span><span class="p">,</span>
-           <span class="s1">&#39;capture_on_share_code&#39;</span><span class="p">:</span> <span class="n">capture_on_share_code</span><span class="p">,</span>
            <span class="s1">&#39;load_hl7&#39;</span><span class="p">:</span> <span class="n">load_hl7</span><span class="p">,</span>
+           <span class="s1">&#39;load_hl7_filter&#39;</span><span class="p">:</span> <span class="n">load_hl7_filter</span><span class="p">,</span>
+           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="n">options</span><span class="p">,</span>
+           <span class="s1">&#39;other_dicom_tags&#39;</span><span class="p">:</span> <span class="n">other_dicom_tags</span><span class="p">,</span>
+           <span class="s1">&#39;required&#39;</span><span class="p">:</span> <span class="n">required</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;wrapped_dicom_only&#39;</span><span class="p">:</span> <span class="n">wrapped_dicom_only</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_DICOM_TAG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidDicomTag</span><span class="p">(</span><span class="s1">&#39;The DICOM tag is invalid&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_DICOM_TAG_OBJECT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidDicomTagObject</span><span class="p">(</span><span class="s1">&#39;DICOM tags can only be applied to study fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_HL7_FIELD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidHl7Field</span><span class="p">(</span><span class="s1">&#39;Invalid field number&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_HL7_OBJECT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidHl7Object</span><span class="p">(</span><span class="s1">&#39;HL7 fields can only be applied to study fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_HL7_SEGMENT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidHl7Segment</span><span class="p">(</span><span class="s1">&#39;Invalid segment name&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;INVALID_OPTIONS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">InvalidOptions</span><span class="p">(</span><span class="s1">&#39;An option is invalid. The error_subtype holds the specific error message&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The customfield can not be found&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to edit the customfield&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NO_DICOM_TAG_DEFINED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NoDicomTagDefined</span><span class="p">(</span><span class="s1">&#39;The load_dicom_tag flag is set but the dicom_tag field is not defined&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_DICOM_TAG&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidDicomTag</span><span class="p">(</span><span class="s1">&#39;The DICOM tag is invalid&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_DICOM_TAG_OBJECT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidDicomTagObject</span><span class="p">(</span><span class="s1">&#39;DICOM tags can only be applied to study fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_HL7_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidHl7Field</span><span class="p">(</span><span class="s1">&#39;Invalid field number&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_HL7_OBJECT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidHl7Object</span><span class="p">(</span><span class="s1">&#39;HL7 fields can only be applied to study fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_HL7_SEGMENT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidHl7Segment</span><span class="p">(</span><span class="s1">&#39;Invalid segment name&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_OPTIONS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidOptions</span><span class="p">(</span><span class="s1">&#39;An option is invalid. The error_subtype holds the specific error message&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The customfield can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to edit the customfield&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NO_DICOM_TAG_DEFINED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NoDicomTagDefined</span><span class="p">(</span><span class="s1">&#39;The load_dicom_tag flag is set but the dicom_tag field is not defined&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/customfield/set&#39;</span><span class="p">,</span>
@@ -286,9 +276,9 @@
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The customfield can not be found&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to view the customfield&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The customfield can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to view the customfield&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/customfield/get&#39;</span><span class="p">,</span>
@@ -310,9 +300,9 @@
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The customfield can not be found&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to delete the customfield&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The customfield can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to delete the customfield&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/customfield/delete&#39;</span><span class="p">,</span>
@@ -337,9 +327,9 @@
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The customfield can not be found&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to do this&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The customfield can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to do this&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/customfield/lookup&#39;</span><span class="p">,</span>
@@ -359,15 +349,15 @@
 <span class="sd">        :param search: The value to search for (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
-           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
            <span class="s1">&#39;search&#39;</span><span class="p">:</span> <span class="n">search</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_A_SEARCH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotASearch</span><span class="p">(</span><span class="s1">&#39;This is not a search type of customfield&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The customfield can not be found&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to do this&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_A_SEARCH&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotASearch</span><span class="p">(</span><span class="s1">&#39;This is not a search type of customfield&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The customfield can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to do this&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/customfield/search&#39;</span><span class="p">,</span>
@@ -389,6 +379,15 @@
 
 
 
+<p class="blurb">version 3.20.5.0-1</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=dicomgrid&repo=sdk-python&type=watch&count=False&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
 
 
 
@@ -435,10 +434,6 @@
     </div>
     <div class="footer">
       &copy;2020, Ambrahealth AI team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 

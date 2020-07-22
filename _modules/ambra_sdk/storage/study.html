@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>ambra_sdk.storage.study &#8212; Ambra-SDK 0.0.1 documentation</title>
+    <title>ambra_sdk.storage.study &#8212; Ambra-SDK 3.20.5.0-1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -42,12 +42,13 @@
 
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.storage</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">InconsistencyConflict</span><span class="p">,</span>
+    <span class="n">NotFound</span><span class="p">,</span>
     <span class="n">PermissionDenied</span><span class="p">,</span>
     <span class="n">PreconditionFailed</span><span class="p">,</span>
     <span class="n">UnsupportedMediaType</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.storage.bool_to_int</span> <span class="kn">import</span> <span class="n">bool_to_int</span>
-<span class="kn">from</span> <span class="nn">ambra_sdk.storage.response</span> <span class="kn">import</span> <span class="n">check_response</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.storage.request</span> <span class="kn">import</span> <span class="n">PreparedRequest</span><span class="p">,</span> <span class="n">StorageMethod</span>
 
 
 <span class="k">def</span> <span class="nf">validate_size_x_string</span><span class="p">(</span><span class="n">size_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -155,7 +156,8 @@
         <span class="n">attachments_only</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">use_box</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="n">Response</span><span class="p">]:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Get the schema of study.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/schema?sid={sid}&amp;phi_namespace={phi_namespace}&amp;extended={1,0}&amp;attachments_only={0,1}  # NOQA E501</span>
@@ -174,6 +176,8 @@
 <span class="sd">            attached to a shared instance of the study</span>
 <span class="sd">            outside of the original storage namespace</span>
 <span class="sd">        :param use_box: Use box for response.</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
+
 <span class="sd">        :returns: study schema</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">extended</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">bool_to_int</span><span class="p">(</span><span class="n">extended</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
@@ -191,15 +195,23 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="mi">409</span><span class="p">:</span> <span class="n">InconsistencyConflict</span><span class="p">(</span><span class="s1">&#39;An inconsistency is found while recomputing the schema cache. Retry the request after a short delay.&#39;</span><span class="p">)</span>  <span class="c1"># NOQA: 997</span>
+            <span class="mi">409</span><span class="p">:</span>
+            <span class="n">InconsistencyConflict</span><span class="p">(</span>
+                <span class="s1">&#39;An inconsistency is found while recomputing the schema cache. Retry the request after a short delay.&#39;</span><span class="p">,</span>
+            <span class="p">),</span>
         <span class="p">}</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span>
-            <span class="n">response</span><span class="p">,</span>
-            <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">,</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
             <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+
         <span class="k">if</span> <span class="n">use_box</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">response</span></div>
@@ -210,7 +222,8 @@
         <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">keep_attachments</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Deletes a study.</span>
 
 <span class="sd">        URL: /study/{namespace}/{study_uid}?sid={sid}&amp;keep_attachments={1,0}</span>
@@ -219,6 +232,7 @@
 <span class="sd">        :param namespace: Namespace (Required).</span>
 <span class="sd">        :param study_uid: Study uid (Required).</span>
 <span class="sd">        :param keep_attachments: An integer value of 1 or 0.</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: Delete response</span>
 
@@ -241,9 +255,15 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span></div>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.delete_image"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.delete_image">[docs]</a>    <span class="k">def</span> <span class="nf">delete_image</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -252,7 +272,8 @@
         <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">image_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">version</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Deletes a study image.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/image/{imageUid}?sid={sid}&amp;version={image version hash}</span>
@@ -262,6 +283,7 @@
 <span class="sd">        :param study_uid: Study uid (Required).</span>
 <span class="sd">        :param image_uid: Image uid (Required).</span>
 <span class="sd">        :param version: The image version hash</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: Delete image response</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -279,9 +301,15 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span></div>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.count"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.count">[docs]</a>    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -293,7 +321,8 @@
         <span class="n">attachments_only</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">count_files</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">use_box</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="n">Response</span><span class="p">]:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Gets study file count.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/count?sid={sid}&amp;images_only={1,0}&amp;attachments_only={1,0}&amp;count_files={1,0}</span>
@@ -310,6 +339,7 @@
 <span class="sd">            on-disk for images and/or attachments,</span>
 <span class="sd">            instead of counting from (possibly cached) meta data.</span>
 <span class="sd">        :param use_box: Use box for response.</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: count obj</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -325,8 +355,15 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">use_box</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">response</span></div>
@@ -338,7 +375,8 @@
         <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">use_box</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="n">Response</span><span class="p">]:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Gets study tags.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/tag?sid={sid}&amp;phi_namespace={phi_namespace}</span>
@@ -351,6 +389,7 @@
 <span class="sd">            it was attached to a shared instance of</span>
 <span class="sd">            the study outside of the original storage namespace</span>
 <span class="sd">        :param use_box: Use box for response.</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: study tag object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -363,8 +402,15 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">use_box</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">response</span></div>
@@ -381,7 +427,8 @@
         <span class="n">include_tags</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">exclude_unnamed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">use_box</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="n">Response</span><span class="p">]:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Gets study image attributes.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/attribute?sid={sid}&amp;phi_namespace={phi_namespace}</span>
@@ -405,6 +452,7 @@
 <span class="sd">        :param exclude_unnamed: A string containing &quot;1&quot; or &quot;0&quot; (default 0).</span>
 <span class="sd">            When &quot;1&quot;, private tags (with &quot;name&quot;: &quot;?&quot;) are not included</span>
 <span class="sd">        :param use_box: Use box for response.</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: study attributes</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -428,8 +476,15 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">use_box</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">response</span></div>
@@ -443,7 +498,8 @@
         <span class="n">image_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">use_box</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="n">Response</span><span class="p">]:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Gets study image PHI.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/phi?sid={sid}&amp;phi_namespace={phi_namespace}</span>
@@ -455,6 +511,7 @@
 <span class="sd">        :param image_version: Image version (Required).</span>
 <span class="sd">        :param phi_namespace: A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace</span>
 <span class="sd">        :param use_box: Use box for response.</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: image PHI object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -473,8 +530,15 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">use_box</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">response</span></div>
@@ -486,7 +550,8 @@
         <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">use_box</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="n">Response</span><span class="p">]:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Gets study PHI data.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/phi?sid={sid}&amp;phi_namespace={phi_namespace}</span>
@@ -496,6 +561,7 @@
 <span class="sd">        :param study_uid: Study uid (Required).</span>
 <span class="sd">        :param phi_namespace: A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace</span>
 <span class="sd">        :param use_box: Use box for response.</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: study PHI data object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -508,8 +574,15 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">use_box</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">response</span></div>
@@ -524,7 +597,8 @@
         <span class="n">frame_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Gets study image thumbnail.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber}/thumbnail?sid={sid}&amp;depth={8,16}&amp;phi_namespace={phi_namespace}</span>
@@ -540,6 +614,7 @@
 <span class="sd">            namespace where the file was attached if it was</span>
 <span class="sd">            attached to a shared instance of the study</span>
 <span class="sd">            outside of the original storage namespace</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :raises ValueError: Wrong value of depth</span>
 
@@ -564,13 +639,15 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="n">url</span><span class="p">,</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
-            <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span></div>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.diagnostic"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.diagnostic">[docs]</a>    <span class="k">def</span> <span class="nf">diagnostic</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -583,7 +660,8 @@
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
         <span class="n">size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Gets study diagnostic image.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber}/diagnostic?sid={sid}&amp;phi_namespace={phi_namespace}&amp;depth={8,16}&amp;size=[max-edge-length|{width}x{height}]</span>
@@ -601,6 +679,7 @@
 <span class="sd">        :param size: Specify size of output. Omitted or 0 indicates no</span>
 <span class="sd">            change; one number sets the maximum edge length in pixels;</span>
 <span class="sd">            wxh sets maximum width and height</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :raises ValueError: Wrongh depth or size param</span>
 
@@ -627,13 +706,15 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="n">url</span><span class="p">,</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
-            <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span></div>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.frame"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.frame">[docs]</a>    <span class="k">def</span> <span class="nf">frame</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -648,7 +729,8 @@
         <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
         <span class="n">quality</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span>
         <span class="n">size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Gets study image frame.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber:[0-9][0-9]*|[0-9][0-9]*}?sid={sid}&amp;phi_namespace={phi_namespace}&amp;depth={8,16}&amp;quality={0.0-1.0}&amp;size=[max-edge-length|{width}x{height}]</span>
@@ -663,6 +745,7 @@
 <span class="sd">        :param depth: Set the bit depth of the JPEG output (8 or 16).</span>
 <span class="sd">        :param quality: Set the JPEG compression quality 0 &lt; q ≤ 1.0 (default 0.9)</span>
 <span class="sd">        :param size: Specify size of output. Omitted or 0 indicates no change; one number sets the maximum edge length in pixels; wxh sets maximum width and height</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :raises ValueError: Wrongh depth or size param</span>
 
@@ -693,8 +776,16 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span></div>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+            <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.frame_tiff"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.frame_tiff">[docs]</a>    <span class="k">def</span> <span class="nf">frame_tiff</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -707,7 +798,8 @@
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
         <span class="n">size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Gets study image frame as TIFF.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber:[0-9]*}/tiff?sid={sid}&amp;phi_namespace={phi_namespace}&amp;depth={8,16}&amp;size=[max-edge-length|{width}x{height}]</span>
@@ -721,6 +813,7 @@
 <span class="sd">        :param phi_namespace: A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace</span>
 <span class="sd">        :param depth: Set the bit depth of the JPEG output (8 or 16).</span>
 <span class="sd">        :param size: Specify size of output. Omitted or 0 indicates no change; one number sets the maximum edge length in pixels; wxh sets maximum width and height</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :raises ValueError: Wrongh depth or size param</span>
 
@@ -750,8 +843,16 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span></div>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+            <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.pdf"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.pdf">[docs]</a>    <span class="k">def</span> <span class="nf">pdf</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -760,7 +861,8 @@
         <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">image_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">image_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Gets a study encapsulated pdf file.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/pdf?sid={sid}</span>
@@ -770,6 +872,7 @@
 <span class="sd">        :param study_uid: Study uid (Required).</span>
 <span class="sd">        :param image_uid: Image uid (Required).</span>
 <span class="sd">        :param image_version: Image version (Required).</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: Pdf response object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -788,21 +891,23 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="n">url</span><span class="p">,</span>
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">415</span><span class="p">:</span>
+            <span class="n">UnsupportedMediaType</span><span class="p">(</span>
+                <span class="s1">&#39;Pdf was not found encapsulated in the DICOM file.&#39;</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">}</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
             <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="mi">415</span><span class="p">:</span> <span class="n">UnsupportedMediaType</span><span class="p">(</span><span class="s1">&#39;Pdf was not found encapsulated in the DICOM file.&#39;</span><span class="p">)</span>  <span class="c1"># NOQA: 997</span>
-        <span class="p">}</span>
-
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span>
-            <span class="n">response</span><span class="p">,</span>
-            <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">,</span>
-            <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span></div>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.image_json"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.image_json">[docs]</a>    <span class="k">def</span> <span class="nf">image_json</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -815,7 +920,8 @@
         <span class="n">exclude_unnamed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">all_dicom_values</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">use_box</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">ImageJsonBox</span><span class="p">,</span> <span class="n">Response</span><span class="p">]:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">ImageJsonBox</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Gets all DICOM attributes for an individual image.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/json?sid={sid}&amp;phi_namespace={phi_namespace}</span>
@@ -837,6 +943,7 @@
 <span class="sd">            a multi-value DICOM tag will be returned, separated</span>
 <span class="sd">            by &quot;\&quot;. Otherwise, only the first value is returned</span>
 <span class="sd">        :param use_box: Use box for response.</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: DICOM attributes object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -859,8 +966,15 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">use_box</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">ImageJsonBox</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">response</span></div>
@@ -877,7 +991,8 @@
         <span class="n">all_dicom_values</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">series_uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">use_box</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">JsonBox</span><span class="p">,</span> <span class="n">Response</span><span class="p">]:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">JsonBox</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Gets DICOM attributes for all images in a study.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/json?sid={sid}&amp;phi_namespace={phi_namespace}&amp;groups={group ids}&amp;include_tags={tags}</span>
@@ -908,6 +1023,7 @@
 <span class="sd">            If specified, the results will only include DICOM tags</span>
 <span class="sd">            from images from the specified series</span>
 <span class="sd">        :param use_box: Use box for response.</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: DICOM attributes object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -932,8 +1048,15 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">use_box</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">JsonBox</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">response</span></div>
@@ -946,7 +1069,8 @@
         <span class="n">attachment_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Gets the selected attachment.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/attachment/{attachmentId}/version/{version}?sid={sid}&amp;phi_namespace={phi_namespace}</span>
@@ -960,6 +1084,7 @@
 <span class="sd">            the namespace where the file was attached if it</span>
 <span class="sd">            was attached to a shared instance of the study</span>
 <span class="sd">            outside of the original storage namespace</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: attachments response</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -978,13 +1103,16 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="n">url</span><span class="p">,</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
             <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span></div>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.latest"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.latest">[docs]</a>    <span class="k">def</span> <span class="nf">latest</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -993,7 +1121,8 @@
         <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Gets the latest attachment for a study.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/attachment/{filename:latest|latest}?sid={sid}&amp;phi_namespace={phi_namespace}</span>
@@ -1006,6 +1135,7 @@
 <span class="sd">            the namespace where the file was attached if it</span>
 <span class="sd">            was attached to a shared instance of the study</span>
 <span class="sd">            outside of the original storage namespace</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: latest attachment response</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1023,13 +1153,16 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="n">url</span><span class="p">,</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
             <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span></div>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.post_attachment"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.post_attachment">[docs]</a>    <span class="k">def</span> <span class="nf">post_attachment</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1042,7 +1175,8 @@
         <span class="n">return_html</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">synchronous_wrap</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">static_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Posts an attachment to a study.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/attachment?sid={sid}&amp;phi_namespace={phi_namespace}&amp;wrap_images={0,1}&amp;return_html={0,1}&amp;synchronous_wrap={0,1}&amp;static_ids={0,1}</span>
@@ -1071,6 +1205,7 @@
 <span class="sd">        :param return_html: An integer of value 1 or 0. Return results as</span>
 <span class="sd">            Content Type text html, instead of</span>
 <span class="sd">            application json (required for certain browsers)</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: posts attachments response</span>
 
@@ -1119,14 +1254,17 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-            <span class="n">url</span><span class="p">,</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">post</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
             <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
         <span class="c1"># Method can return Html (depends on params)...</span>
-        <span class="k">return</span> <span class="n">response</span></div>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.download"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1140,7 +1278,8 @@
         <span class="n">include_wrapped_dicoms</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">stop_on_failure</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">exclude_viewer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Downloads a study ZIP file.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/download?sid={sid}&amp;phi_namespace={phi_namespace}&amp;bundle={iso,dicom,osx,win}&amp;include_wrapped_dicoms={0,1}&amp;series_uid={series_uid[,series_uid...]}&amp;image_uid={image_uid[,image_uid...]}</span>
@@ -1165,6 +1304,7 @@
 <span class="sd">        :param exclude_viewer: If &quot;1&quot;, viewer app will not be</span>
 <span class="sd">            included in the &quot;iso&quot;, &quot;osx&quot;, and &quot;win&quot; bundle.</span>
 <span class="sd">            The viewer app can be retrieved separately via /download/viewer</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :raises ValueError: Wrong bundle value</span>
 
@@ -1173,7 +1313,9 @@
         <span class="k">if</span> <span class="n">bundle</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;dicom&#39;</span><span class="p">,</span> <span class="s1">&#39;iso&#39;</span><span class="p">,</span> <span class="s1">&#39;osx&#39;</span><span class="p">,</span> <span class="s1">&#39;win&#39;</span><span class="p">}:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Boundle not in (&quot;dicom&quot;, &quot;iso&quot;, &quot;osx&quot;, &quot;win&quot;)&#39;</span><span class="p">)</span>
 
-        <span class="n">include_wrapped_dicoms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">bool_to_int</span><span class="p">(</span><span class="n">include_wrapped_dicoms</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="n">include_wrapped_dicoms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">bool_to_int</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+            <span class="n">include_wrapped_dicoms</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">stop_on_failure</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">bool_to_int</span><span class="p">(</span><span class="n">stop_on_failure</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
         <span class="n">exclude_viewer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">bool_to_int</span><span class="p">(</span><span class="n">exclude_viewer</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
@@ -1199,13 +1341,25 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="n">url</span><span class="p">,</span>
+
+        <span class="n">not_found</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;image/frame does not exist&#39;</span><span class="p">)</span>
+        <span class="n">not_found</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="mi">403</span>
+
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">403</span><span class="p">:</span> <span class="n">not_found</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
             <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span></div>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.delete_attachment"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.delete_attachment">[docs]</a>    <span class="k">def</span> <span class="nf">delete_attachment</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1215,7 +1369,8 @@
         <span class="n">attachment_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">hash_arg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Deletes a study attachment.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/attachment/{attachmentId}/version/{hash}?sid={sid}?phi_namespace={phi_namespace}</span>
@@ -1231,6 +1386,7 @@
 <span class="sd">        :param phi_namespace: A string, set to the UUID of the</span>
 <span class="sd">            namespace where the file was attached if it was</span>
 <span class="sd">            attached to a shared instance of the study outside of the original storage namespace</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: Delete attachemnt response</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1249,10 +1405,15 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span></div>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.video"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.video">[docs]</a>    <span class="k">def</span> <span class="nf">video</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1262,7 +1423,8 @@
         <span class="n">image_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">image_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">reencode_video</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Gets a study encapsulated video.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/video?sid={sid}&amp;reencode_video={0,1}</span>
@@ -1273,6 +1435,7 @@
 <span class="sd">        :param image_uid: Image uid (Required).</span>
 <span class="sd">        :param image_version: Image version (Required).</span>
 <span class="sd">        :param reencode_video: An integer of value 1 or 0.</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: Video response</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1295,19 +1458,22 @@
         <span class="p">)</span>
 
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="mi">415</span><span class="p">:</span> <span class="n">UnsupportedMediaType</span><span class="p">(</span><span class="s1">&#39;Video was not found encapsulated in the DICOM file.&#39;</span><span class="p">)</span>  <span class="c1"># NOQA: 997</span>
+            <span class="mi">415</span><span class="p">:</span>
+            <span class="n">UnsupportedMediaType</span><span class="p">(</span>
+                <span class="s1">&#39;Video was not found encapsulated in the DICOM file.&#39;</span><span class="p">,</span>
+            <span class="p">),</span>
         <span class="p">}</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="n">url</span><span class="p">,</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
             <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span>
-            <span class="n">response</span><span class="p">,</span>
-            <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">,</span>
-            <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span></div>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.split"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.split">[docs]</a>    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1318,7 +1484,8 @@
         <span class="n">to_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">series_uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">delete_series_from_original</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Split a study.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/split?sid={sid}&amp;phi_namespace={namespace}&amp;to_namespace={namespace}&amp;series_uid={series_uid,series_uid...series_uid}&amp;delete_series_from_original={0,1}</span>
@@ -1336,6 +1503,7 @@
 <span class="sd">        :param delete_series_from_original: An integer value of either</span>
 <span class="sd">            0 or 1. If 1 the series specified in the series_uid list will</span>
 <span class="sd">            be deleted from the original study</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: Split study response</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1358,10 +1526,16 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">post</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
         <span class="c1"># new study uid</span>
-        <span class="k">return</span> <span class="n">response</span></div>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.merge"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.merge">[docs]</a>    <span class="k">def</span> <span class="nf">merge</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1371,7 +1545,8 @@
         <span class="n">secondary_study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">delete_secondary_study</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">series_uids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Merge studies.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/merge?sid={sid}&amp;secondary_study_uid={secondary_study_uid}&amp;delete_secondary_study={0,1}</span>
@@ -1387,6 +1562,7 @@
 <span class="sd">        :param series_uids: A list of one or more comma-separated</span>
 <span class="sd">            Series Instance UIDs, used to filter images merged</span>
 <span class="sd">            from secondary study.</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: Actually empty response</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1421,13 +1597,16 @@
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
             <span class="mi">500</span><span class="p">:</span> <span class="n">permission_denied</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span>
-            <span class="n">response</span><span class="p">,</span>
-            <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">,</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
             <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span></div>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.anonymize"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.anonymize">[docs]</a>    <span class="k">def</span> <span class="nf">anonymize</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1439,7 +1618,8 @@
         <span class="n">new_study_uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">keep_image_uids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Produce a new study that is a copy of the old, with specified pixel regions obscured.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/anonymize</span>
@@ -1457,6 +1637,7 @@
 <span class="sd">            of modified copies be same as originals? (default is false)</span>
 <span class="sd">        :param color: HTML-formatted color (rrggbb) of</span>
 <span class="sd">            obscured regions (default is black-and-white checkerboard)</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: Anonymize study response</span>
 
@@ -1487,21 +1668,24 @@
         <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json; charset=utf-8&#39;</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-            <span class="n">url</span><span class="p">,</span>
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">412</span><span class="p">:</span>
+            <span class="n">PreconditionFailed</span><span class="p">(</span>
+                <span class="s1">&#39;phi_namespace or to_namespace is not provided.&#39;</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">}</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">post</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
             <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">region</span><span class="p">),</span>
         <span class="p">)</span>
-        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="mi">412</span><span class="p">:</span> <span class="n">PreconditionFailed</span><span class="p">(</span><span class="s1">&#39;phi_namespace or to_namespace is not provided.&#39;</span><span class="p">),</span>
-        <span class="p">}</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span>
-            <span class="n">response</span><span class="p">,</span>
-            <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">,</span>
-            <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span></div>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.crop"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.crop">[docs]</a>    <span class="k">def</span> <span class="nf">crop</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1512,7 +1696,8 @@
         <span class="n">to_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">new_study_uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">keep_image_uids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Produce a new study that is a copy of the old, cropped to specified pixel region.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/crop</span>
@@ -1529,6 +1714,7 @@
 <span class="sd">        :param keep_image_uids: Should SOP Instance UIDs</span>
 <span class="sd">            of modified copies be same as originals? 1/0</span>
 <span class="sd">            (default: 0/false)</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: Crop study response</span>
 
@@ -1563,28 +1749,32 @@
         <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json; charset=utf-8&#39;</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-            <span class="n">url</span><span class="p">,</span>
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">412</span><span class="p">:</span>
+            <span class="n">PreconditionFailed</span><span class="p">(</span>
+                <span class="s1">&#39;phi_namespace or to_namespace is not provided.&#39;</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">}</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">post</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
             <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">region</span><span class="p">),</span>
         <span class="p">)</span>
-        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="mi">412</span><span class="p">:</span> <span class="n">PreconditionFailed</span><span class="p">(</span><span class="s1">&#39;phi_namespace or to_namespace is not provided.&#39;</span><span class="p">),</span>
-        <span class="p">}</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span>
-            <span class="n">response</span><span class="p">,</span>
-            <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">,</span>
-            <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span></div>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Study.cache"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.cache">[docs]</a>    <span class="k">def</span> <span class="nf">cache</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">engine_fqdn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Clears the image and metadata cache for the indicated study.</span>
 
 <span class="sd">        URL: /study/{namespace}/{studyUid}/cache</span>
@@ -1592,6 +1782,7 @@
 <span class="sd">        :param engine_fqdn: Engine FQDN (Required).</span>
 <span class="sd">        :param namespace: Namespace (Required).</span>
 <span class="sd">        :param study_uid: Study uid (Required).</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: Cache study response</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1608,9 +1799,15 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">check_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">url_arg_names</span><span class="o">=</span><span class="n">url_arg_names</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span></div></div>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div></div>
 </pre></div>
 
           </div>
@@ -1623,6 +1820,15 @@
 
 
 
+<p class="blurb">version 3.20.5.0-1</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=dicomgrid&repo=sdk-python&type=watch&count=False&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
 
 
 
@@ -1669,10 +1875,6 @@
     </div>
     <div class="footer">
       &copy;2020, Ambrahealth AI team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 

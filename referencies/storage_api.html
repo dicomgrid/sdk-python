@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>Storage namespace &#8212; Ambra-SDK 3.20.5.0-1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Storage namespace &#8212; Ambra-SDK 3.20.6.0-1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -34,142 +35,15 @@
             
   <div class="section" id="storage-namespace">
 <span id="referencies-storage-api"></span><h1>Storage namespace<a class="headerlink" href="#storage-namespace" title="Permalink to this headline">¶</a></h1>
-<p>Namespace for using <cite>ambra-sdk</cite> with <cite>v3storage</cite>.</p>
-<p>For example:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># get study schema:</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span><span class="o">.</span><span class="n">Storage</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">schema</span><span class="p">(</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">namespace</span><span class="o">=</span><span class="n">storage_namespace</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="section" id="using-boxes">
-<h2>Using boxes<a class="headerlink" href="#using-boxes" title="Permalink to this headline">¶</a></h2>
-<p>All <cite>Storage</cite> methods returns <cite>Response</cite>, <cite>PreparedRequest</cite> or <a class="reference external" href="https://github.com/cdgriffith/Box">Box</a> objects.</p>
-<p>To select returns type <cite>Box</cite> you can use <cite>use_box</cite> method argument.
-By default all methods prefer to return box objects.</p>
-<p>for example:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Returns box</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Storage</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">schema</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">namespace</span><span class="o">=</span><span class="n">storage_namespace</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span> <span class="o">==</span> <span class="n">Box</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Returns Response</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Storage</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">schema</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">namespace</span><span class="o">=</span><span class="n">storage_namespace</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">use_box</span><span class="o">=</span><span class="kc">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span> <span class="o">==</span> <span class="n">Response</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="image-json-method">
-<h2>image_json method<a class="headerlink" href="#image-json-method" title="Permalink to this headline">¶</a></h2>
-<p>This method by default return <cite>ImageJsonBox</cite>.
-You can filter tags in json or get tag by name:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">image_json</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Storage</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">image_json</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">namespace</span><span class="o">=</span><span class="n">storage_namespace</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">image_uid</span><span class="o">=</span><span class="n">image</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="n">image_version</span><span class="o">=</span><span class="n">image</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">],</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># get_tags return generator</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">image_json</span><span class="o">.</span><span class="n">get_tags</span><span class="p">(</span><span class="n">filter_dict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># tag_by_name return first existing tag or None</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tag</span> <span class="o">=</span> <span class="n">image_json</span><span class="o">.</span><span class="n">tag_by_name</span><span class="p">(</span><span class="s1">&#39;Manufacturer&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="json-method">
-<h2>json method<a class="headerlink" href="#json-method" title="Permalink to this headline">¶</a></h2>
-<p>This method by default return <cite>JsonBox</cite>.
-For all elements in response you can filter tags or get tag by name:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">json</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Storage</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">json</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">namespace</span><span class="o">=</span><span class="n">storage_namespace</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">image_json</span> <span class="o">=</span> <span class="n">json</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># get first image element</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># get_tags return generator</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">image_json</span><span class="o">.</span><span class="n">get_tags</span><span class="p">(</span><span class="n">filter_dict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># tag_by_name return first existing tag or None</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tag</span> <span class="o">=</span> <span class="n">image_json</span><span class="o">.</span><span class="n">tag_by_name</span><span class="p">(</span><span class="s1">&#39;Manufacturer&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="preparedrequest">
-<h2>PreparedRequest<a class="headerlink" href="#preparedrequest" title="Permalink to this headline">¶</a></h2>
-<p>To select returns type  <cite>PreparedRequest</cite> you can use <cite>only_prepare</cite> argument.</p>
-<p>for example:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.storage.request</span> <span class="kn">import</span> <span class="n">PreparedRequest</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">study_schema</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Storage</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">schema</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">namespace</span><span class="o">=</span><span class="n">storage_namespace</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">only_prepare</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="gp">... </span> <span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">study_schema</span><span class="p">)</span> <span class="o">==</span> <span class="n">PreparedRequest</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">study_schema</span><span class="o">.</span><span class="n">url</span>
-<span class="go">&#39;https://engine_fqdn/api/v3/storage/study/storage_namespace/study_uid/schema&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">study_schema</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">value</span>
-<span class="go">&#39;GET&#39;</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="retries">
-<h2>Retries<a class="headerlink" href="#retries" title="Permalink to this headline">¶</a></h2>
-<p><cite>SDK</cite> storage namespace supports retry mechanism. By default, <cite>sdk</cite> sets some retry settings.
-In some cases, you may need to define your settings for some methods.
-The example below shows how to do this:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">requests.adapters</span> <span class="kn">import</span> <span class="n">HTTPAdapter</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">requests.packages.urllib3.util</span> <span class="kn">import</span> <span class="n">Retry</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">max_retries</span> <span class="o">=</span> <span class="n">Retry</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">total</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">backoff_factor</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">method_whitelist</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">],</span>
-<span class="gp">... </span> <span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">adapter</span> <span class="o">=</span> <span class="n">HTTPAdapter</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="n">max_retries</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">some_method_url</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Storage</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">schema</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">namespace</span><span class="o">=</span><span class="n">storage_namespace</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">only_prepare</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="gp">... </span> <span class="p">)</span><span class="o">.</span><span class="n">url</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span><span class="o">.</span><span class="n">storage_session</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="n">some_method_url</span><span class="p">,</span> <span class="n">adapter</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
 <div class="section" id="image-namespace">
 <h2>Image namespace<a class="headerlink" href="#image-namespace" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="ambra_sdk.storage.image.Image">
-<em class="property">class </em><code class="sig-prename descclassname">ambra_sdk.storage.image.</code><code class="sig-name descname">Image</code><span class="sig-paren">(</span><em class="sig-param">storage</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/storage/image.html#Image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.image.Image" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ambra_sdk.storage.image.</code><code class="sig-name descname">Image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">storage</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/storage/image.html#Image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.image.Image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Storage Image commands.</p>
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.image.Image.cadsr">
-<code class="sig-name descname">cadsr</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/image.html#Image.cadsr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.image.Image.cadsr" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">cadsr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_version</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/image.html#Image.cadsr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.image.Image.cadsr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets graphical annotations according to vendor definitions for CAD SR object.</p>
 <p>URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/cadsr?sid={sid}</p>
 <dl class="field-list simple">
@@ -193,9 +67,9 @@ outside of the original storage namespace</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.image.Image.upload">
-<code class="sig-name descname">upload</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">opened_file: _io.BufferedReader</em>, <em class="sig-param">use_box: bool = True</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[box.Box, requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/image.html#Image.upload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.image.Image.upload" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">upload</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">opened_file</span><span class="p">:</span> <span class="n">_io.BufferedReader</span></em>, <em class="sig-param"><span class="n">use_box</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>box.box.Box<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/image.html#Image.upload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.image.Image.upload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upload image to a namespace.</p>
 <p>URL: /namespace/{namespace}/image?sid={sid}</p>
 <dl class="field-list simple">
@@ -214,9 +88,9 @@ outside of the original storage namespace</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.image.Image.wrap">
-<code class="sig-name descname">wrap</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">opened_file: _io.BufferedReader</em>, <em class="sig-param">tags: Optional[str] = None</em>, <em class="sig-param">render_wrapped_pdf: Optional[bool] = None</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/image.html#Image.wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.image.Image.wrap" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">wrap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">opened_file</span><span class="p">:</span> <span class="n">_io.BufferedReader</span></em>, <em class="sig-param"><span class="n">tags</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">render_wrapped_pdf</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/image.html#Image.wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.image.Image.wrap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upload a non DICOM image.</p>
 <p>URL: /namespace/{namespace}/wrap?sid={sid}&amp;render_wrapped_pdf={0,1}</p>
 <dl class="field-list simple">
@@ -241,13 +115,13 @@ outside of the original storage namespace</p></li>
 </div>
 <div class="section" id="study-namespace">
 <h2>Study namespace<a class="headerlink" href="#study-namespace" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="ambra_sdk.storage.study.Study">
-<em class="property">class </em><code class="sig-prename descclassname">ambra_sdk.storage.study.</code><code class="sig-name descname">Study</code><span class="sig-paren">(</span><em class="sig-param">storage</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ambra_sdk.storage.study.</code><code class="sig-name descname">Study</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">storage</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study" title="Permalink to this definition">¶</a></dt>
 <dd><p>Storage Study.</p>
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.anonymize">
-<code class="sig-name descname">anonymize</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str, namespace: str, study_uid: str, region: Dict[str, Any], to_namespace: Optional[str] = None, new_study_uid: Optional[str] = None, keep_image_uids: Optional[str] = None, color: Optional[str] = None, only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.anonymize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.anonymize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">anonymize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">region</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">to_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">new_study_uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">keep_image_uids</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">color</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.anonymize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.anonymize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Produce a new study that is a copy of the old, with specified pixel regions obscured.</p>
 <p>URL: /study/{namespace}/{studyUid}/anonymize</p>
 <dl class="field-list simple">
@@ -279,9 +153,9 @@ or instance level; but only the highest matching level
 containing a regions field will be used.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.attachment">
-<code class="sig-name descname">attachment</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">attachment_id: str</em>, <em class="sig-param">version: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.attachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.attachment" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attachment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">attachment_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">version</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.attachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.attachment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the selected attachment.</p>
 <p>URL: /study/{namespace}/{studyUid}/attachment/{attachmentId}/version/{version}?sid={sid}&amp;phi_namespace={phi_namespace}</p>
 <dl class="field-list simple">
@@ -305,9 +179,9 @@ outside of the original storage namespace</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.attribute">
-<code class="sig-name descname">attribute</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">groups: Optional[str] = None</em>, <em class="sig-param">include_tags: Optional[str] = None</em>, <em class="sig-param">exclude_unnamed: Optional[str] = None</em>, <em class="sig-param">use_box: bool = True</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[box.Box, requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.attribute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attribute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_version</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">groups</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">include_tags</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exclude_unnamed</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">use_box</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>box.box.Box<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.attribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets study image attributes.</p>
 <p>URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/attribute?sid={sid}&amp;phi_namespace={phi_namespace}</p>
 <dl class="field-list simple">
@@ -341,9 +215,9 @@ When “1”, private tags (with “name”: “?”) are not included</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.cache">
-<code class="sig-name descname">cache</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.cache" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">cache</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clears the image and metadata cache for the indicated study.</p>
 <p>URL: /study/{namespace}/{studyUid}/cache</p>
 <dl class="field-list simple">
@@ -361,9 +235,9 @@ When “1”, private tags (with “name”: “?”) are not included</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.count">
-<code class="sig-name descname">count</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">images_only: Optional[bool] = None</em>, <em class="sig-param">attachments_only: Optional[bool] = None</em>, <em class="sig-param">count_files: Optional[bool] = None</em>, <em class="sig-param">use_box: bool = True</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[box.Box, requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.count" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">count</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">images_only</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">attachments_only</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">count_files</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">use_box</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>box.box.Box<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets study file count.</p>
 <p>URL: /study/{namespace}/{studyUid}/count?sid={sid}&amp;images_only={1,0}&amp;attachments_only={1,0}&amp;count_files={1,0}</p>
 <dl class="field-list simple">
@@ -390,9 +264,9 @@ instead of counting from (possibly cached) meta data.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.crop">
-<code class="sig-name descname">crop</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str, namespace: str, study_uid: str, region: Dict[str, Any], to_namespace: Optional[str] = None, new_study_uid: Optional[str] = None, keep_image_uids: Optional[str] = None, only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.crop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.crop" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">crop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">region</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">to_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">new_study_uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">keep_image_uids</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.crop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.crop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Produce a new study that is a copy of the old, cropped to specified pixel region.</p>
 <p>URL: /study/{namespace}/{studyUid}/crop</p>
 <dl class="field-list simple">
@@ -428,9 +302,9 @@ Example:
 {“x”:20,”y”:20, “width”:30, “height”:20} } } } }</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.delete">
-<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">keep_attachments: Optional[bool] = None</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.delete" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">keep_attachments</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a study.</p>
 <p>URL: /study/{namespace}/{study_uid}?sid={sid}&amp;keep_attachments={1,0}</p>
 <dl class="field-list simple">
@@ -454,9 +328,9 @@ reports and attachments related to the study will be kept.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.delete_attachment">
-<code class="sig-name descname">delete_attachment</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">attachment_id: str</em>, <em class="sig-param">hash_arg: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.delete_attachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.delete_attachment" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete_attachment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">attachment_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">hash_arg</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.delete_attachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.delete_attachment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a study attachment.</p>
 <p>URL: /study/{namespace}/{studyUid}/attachment/{attachmentId}/version/{hash}?sid={sid}?phi_namespace={phi_namespace}</p>
 <p>Note: Instead of hash in storage api this method accept hash_arg argument.
@@ -481,11 +355,15 @@ attached to a shared instance of the study outside of the original storage names
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.delete_image">
-<code class="sig-name descname">delete_image</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">version: Optional[str] = None</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.delete_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.delete_image" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deletes a study image.</p>
-<p>URL: /study/{namespace}/{studyUid}/image/{imageUid}?sid={sid}&amp;version={image version hash}</p>
+<code class="sig-name descname">delete_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.delete_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.delete_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a single image from a study.</p>
+<p>To delete multiple images, study/delete/images/.</p>
+<p>The HTTP method must be DELETE
+This method sends a STUDY_DELETE notification to Services after the image is deleted
+This method is synchronous - it doesn’t return until the image is deleted and Services notification is sent</p>
+<p>URL: /study/{namespace}/{studyUid}/image/{imageUid}?sid={sid}</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -493,7 +371,6 @@ attached to a shared instance of the study outside of the original storage names
 <li><p><strong>namespace</strong> – Namespace (Required).</p></li>
 <li><p><strong>study_uid</strong> – Study uid (Required).</p></li>
 <li><p><strong>image_uid</strong> – Image uid (Required).</p></li>
-<li><p><strong>version</strong> – The image version hash</p></li>
 <li><p><strong>only_prepare</strong> – Get prepared request.</p></li>
 </ul>
 </dd>
@@ -503,9 +380,34 @@ attached to a shared instance of the study outside of the original storage names
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
+<dt id="ambra_sdk.storage.study.Study.delete_images">
+<code class="sig-name descname">delete_images</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">request_body</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.delete_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.delete_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete multiple images from a study.</p>
+<p>The HTTP method must be DELETE
+This method sends one STUDY_DELETE notification to Services after the images are deleted
+This method is synchronous - it doesn’t return until all images are deleted and Services notification is sent</p>
+<p>URL: /study/{namespace}/{studyUid}/images?sid={sid}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine_fqdn</strong> – Engine FQDN (Required).</p></li>
+<li><p><strong>namespace</strong> – Namespace (Required).</p></li>
+<li><p><strong>study_uid</strong> – Study uid (Required).</p></li>
+<li><p><strong>request_body</strong> – Comma-separated list of
+multiple image UIDs (Required).</p></li>
+<li><p><strong>only_prepare</strong> – Get prepared request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Delete images response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.diagnostic">
-<code class="sig-name descname">diagnostic</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">frame_number: int</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">depth: int = 8</em>, <em class="sig-param">size: Optional[str] = None</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.diagnostic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.diagnostic" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">diagnostic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_version</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">frame_number</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">depth</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">8</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.diagnostic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.diagnostic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets study diagnostic image.</p>
 <p>URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber}/diagnostic?sid={sid}&amp;phi_namespace={phi_namespace}&amp;depth={8,16}&amp;size=[max-edge-length|{width}x{height}]</p>
 <dl class="field-list simple">
@@ -536,9 +438,9 @@ wxh sets maximum width and height</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.download">
-<code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">bundle: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">series_uid: Optional[str] = None</em>, <em class="sig-param">image_uid: Optional[str] = None</em>, <em class="sig-param">include_wrapped_dicoms: Optional[bool] = None</em>, <em class="sig-param">stop_on_failure: Optional[bool] = None</em>, <em class="sig-param">exclude_viewer: Optional[bool] = None</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.download" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">bundle</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">series_uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">include_wrapped_dicoms</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">stop_on_failure</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exclude_viewer</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Downloads a study ZIP file.</p>
 <p>URL: /study/{namespace}/{studyUid}/download?sid={sid}&amp;phi_namespace={phi_namespace}&amp;bundle={iso,dicom,osx,win}&amp;include_wrapped_dicoms={0,1}&amp;series_uid={series_uid[,series_uid…]}&amp;image_uid={image_uid[,image_uid…]}</p>
 <dl class="field-list simple">
@@ -575,9 +477,9 @@ The viewer app can be retrieved separately via /download/viewer</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.frame">
-<code class="sig-name descname">frame</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">frame_number: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">depth: int = 8</em>, <em class="sig-param">quality: float = 0.9</em>, <em class="sig-param">size: Optional[str] = None</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.frame" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">frame</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_version</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">frame_number</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">depth</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">8</span></em>, <em class="sig-param"><span class="n">quality</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets study image frame.</p>
 <p>URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber:[0-9][0-9]*|[0-9][0-9]*}?sid={sid}&amp;phi_namespace={phi_namespace}&amp;depth={8,16}&amp;quality={0.0-1.0}&amp;size=[max-edge-length|{width}x{height}]</p>
 <dl class="field-list simple">
@@ -605,9 +507,9 @@ The viewer app can be retrieved separately via /download/viewer</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.frame_tiff">
-<code class="sig-name descname">frame_tiff</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">frame_number: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">depth: int = 8</em>, <em class="sig-param">size: Optional[str] = None</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.frame_tiff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.frame_tiff" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">frame_tiff</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_version</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">frame_number</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">depth</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">8</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.frame_tiff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.frame_tiff" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets study image frame as TIFF.</p>
 <p>URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber:[0-9]*}/tiff?sid={sid}&amp;phi_namespace={phi_namespace}&amp;depth={8,16}&amp;size=[max-edge-length|{width}x{height}]</p>
 <dl class="field-list simple">
@@ -634,9 +536,9 @@ The viewer app can be retrieved separately via /download/viewer</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.image_json">
-<code class="sig-name descname">image_json</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">exclude_unnamed: Optional[str] = None</em>, <em class="sig-param">all_dicom_values: Optional[str] = None</em>, <em class="sig-param">use_box: bool = True</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[ambra_sdk.storage.study.ImageJsonBox, requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.image_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.image_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">image_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_version</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exclude_unnamed</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">all_dicom_values</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">use_box</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>ambra_sdk.storage.study.ImageJsonBox<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.image_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.image_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets all DICOM attributes for an individual image.</p>
 <p>URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/json?sid={sid}&amp;phi_namespace={phi_namespace}</p>
 <dl class="field-list simple">
@@ -657,7 +559,7 @@ or “0” (default 0). When “1”, private tags
 <li><p><strong>all_dicom_values</strong> – A string containing “1”
 or “0” (default 0). When “1”, all values from
 a multi-value DICOM tag will be returned, separated
-by “”. Otherwise, only the first value is returned</p></li>
+by “&quot;. Otherwise, only the first value is returned</p></li>
 <li><p><strong>use_box</strong> – Use box for response.</p></li>
 <li><p><strong>only_prepare</strong> – Get prepared request.</p></li>
 </ul>
@@ -668,9 +570,9 @@ by “”. Otherwise, only the first value is returned</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.image_phi">
-<code class="sig-name descname">image_phi</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">use_box: bool = True</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[box.Box, requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.image_phi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.image_phi" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">image_phi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_version</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">use_box</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>box.box.Box<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.image_phi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.image_phi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets study image PHI.</p>
 <p>URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/phi?sid={sid}&amp;phi_namespace={phi_namespace}</p>
 <dl class="field-list simple">
@@ -692,9 +594,9 @@ by “”. Otherwise, only the first value is returned</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.json">
-<code class="sig-name descname">json</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">groups: Optional[str] = None</em>, <em class="sig-param">include_tags: Optional[str] = None</em>, <em class="sig-param">exclude_unnamed: Optional[str] = None</em>, <em class="sig-param">all_dicom_values: Optional[str] = None</em>, <em class="sig-param">series_uid: Optional[str] = None</em>, <em class="sig-param">use_box: bool = True</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[ambra_sdk.storage.study.JsonBox, requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">groups</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">include_tags</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exclude_unnamed</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">all_dicom_values</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">series_uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">use_box</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>ambra_sdk.storage.study.JsonBox<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets DICOM attributes for all images in a study.</p>
 <p>URL: /study/{namespace}/{studyUid}/json?sid={sid}&amp;phi_namespace={phi_namespace}&amp;groups={group ids}&amp;include_tags={tags}</p>
 <dl class="field-list simple">
@@ -720,7 +622,7 @@ is included within the sequence</p></li>
 are not included</p></li>
 <li><p><strong>all_dicom_values</strong> – A string containing “1” or “0”
 (default 0). When “1”, all values from a multi-value
-DICOM tag will be returned, separated by “”.
+DICOM tag will be returned, separated by “&quot;.
 Otherwise, only the first value is returned</p></li>
 <li><p><strong>series_uid</strong> – A string containing a Series Instance UID.
 If specified, the results will only include DICOM tags
@@ -735,9 +637,9 @@ from images from the specified series</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.latest">
-<code class="sig-name descname">latest</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">file_name: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.latest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.latest" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">latest</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">file_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.latest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.latest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the latest attachment for a study.</p>
 <p>URL: /study/{namespace}/{studyUid}/attachment/{filename:latest|latest}?sid={sid}&amp;phi_namespace={phi_namespace}</p>
 <dl class="field-list simple">
@@ -760,9 +662,9 @@ outside of the original storage namespace</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.merge">
-<code class="sig-name descname">merge</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">secondary_study_uid: str</em>, <em class="sig-param">delete_secondary_study: Optional[bool] = None</em>, <em class="sig-param">series_uids: Optional[str] = None</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.merge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.merge" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">merge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">secondary_study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">delete_secondary_study</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">series_uids</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.merge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.merge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Merge studies.</p>
 <p>URL: /study/{namespace}/{studyUid}/merge?sid={sid}&amp;secondary_study_uid={secondary_study_uid}&amp;delete_secondary_study={0,1}</p>
 <dl class="field-list simple">
@@ -788,9 +690,9 @@ from secondary study.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.pdf">
-<code class="sig-name descname">pdf</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.pdf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pdf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_version</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.pdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a study encapsulated pdf file.</p>
 <p>URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/pdf?sid={sid}</p>
 <dl class="field-list simple">
@@ -810,9 +712,9 @@ from secondary study.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.phi">
-<code class="sig-name descname">phi</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">use_box: bool = True</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[box.Box, requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.phi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.phi" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">phi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">use_box</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>box.box.Box<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.phi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.phi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets study PHI data.</p>
 <p>URL: /study/{namespace}/{studyUid}/phi?sid={sid}&amp;phi_namespace={phi_namespace}</p>
 <dl class="field-list simple">
@@ -832,9 +734,9 @@ from secondary study.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.post_attachment">
-<code class="sig-name descname">post_attachment</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">opened_file: _io.BufferedReader</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">wrap_images: Optional[bool] = None</em>, <em class="sig-param">return_html: Optional[bool] = None</em>, <em class="sig-param">synchronous_wrap: Optional[bool] = None</em>, <em class="sig-param">static_ids: Optional[bool] = None</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.post_attachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.post_attachment" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">post_attachment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">opened_file</span><span class="p">:</span> <span class="n">_io.BufferedReader</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">wrap_images</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">wrap_html_as_pdf</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">return_html</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">synchronous_wrap</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">static_ids</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.post_attachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.post_attachment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Posts an attachment to a study.</p>
 <p>URL: /study/{namespace}/{studyUid}/attachment?sid={sid}&amp;phi_namespace={phi_namespace}&amp;wrap_images={0,1}&amp;return_html={0,1}&amp;synchronous_wrap={0,1}&amp;static_ids={0,1}</p>
 <dl class="field-list simple">
@@ -848,14 +750,18 @@ from secondary study.</p></li>
 the namespace where the file was attached if it
 was attached to a shared instance of the study
 outside of the original storage namespace</p></li>
-<li><p><strong>wrap_images</strong> – An integer of value 1 or 0.
-For attachments that are images, or can be rendered
+<li><p><strong>wrap_images</strong> – An integer of value 1 or 0. If 1,
+for attachments that are images, or can be rendered
 to an image, generate a new DICOM image in the study
 containing (a rendered image of) the attachment
 (also controlled by namespace setting auto_wrap_images).</p></li>
+<li><p><strong>wrap_html_as_pdf</strong> – An integer of value 1 or 0.
+If 1, for attachments that are html, generate a
+new pdf and attach that (instead of the original html).</p></li>
 <li><p><strong>synchronous_wrap</strong> – An integer of value 1 or 0.
-If 1, do all processing for image wrapping before returning,
-including Services notifications.</p></li>
+If 1, do all processing for image wrapping before
+returning, including Services notifications.
+Additionally triggers wrap_images functionality.</p></li>
 <li><p><strong>static_ids</strong> – An integer of value 1 or 0. If 1,
 the attachment, series and any images rendered from PDF
 are assigned (u)uids based on a hash of the attachment,
@@ -889,9 +795,9 @@ stored in a new series within the specified study.
 UIDs assigned to the series and images will be random unless static_ids=1</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.schema">
-<code class="sig-name descname">schema</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">extended: Optional[bool] = None</em>, <em class="sig-param">attachments_only: Optional[bool] = None</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">use_box: bool = True</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[box.Box, requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.schema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.schema" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">schema</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">extended</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">attachments_only</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">use_box</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>box.box.Box<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.schema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.schema" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the schema of study.</p>
 <p>URL: /study/{namespace}/{studyUid}/schema?sid={sid}&amp;phi_namespace={phi_namespace}&amp;extended={1,0}&amp;attachments_only={0,1}  # NOQA E501</p>
 <dl class="field-list simple">
@@ -920,9 +826,9 @@ outside of the original storage namespace</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.split">
-<code class="sig-name descname">split</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">to_namespace: Optional[str] = None</em>, <em class="sig-param">series_uid: Optional[str] = None</em>, <em class="sig-param">delete_series_from_original: Optional[str] = None</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.split" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">split</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">to_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">series_uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">delete_series_from_original</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.split" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split a study.</p>
 <p>URL: /study/{namespace}/{studyUid}/split?sid={sid}&amp;phi_namespace={namespace}&amp;to_namespace={namespace}&amp;series_uid={series_uid,series_uid…series_uid}&amp;delete_series_from_original={0,1}</p>
 <dl class="field-list simple">
@@ -950,9 +856,9 @@ be deleted from the original study</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.tag">
-<code class="sig-name descname">tag</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">phi_namespace: str</em>, <em class="sig-param">use_box: bool = True</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[box.Box, requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.tag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.tag" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">tag</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">use_box</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>box.box.Box<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.tag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.tag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets study tags.</p>
 <p>URL: /study/{namespace}/{studyUid}/tag?sid={sid}&amp;phi_namespace={phi_namespace}</p>
 <dl class="field-list simple">
@@ -975,9 +881,9 @@ the study outside of the original storage namespace</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.thumbnail">
-<code class="sig-name descname">thumbnail</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">frame_number: int</em>, <em class="sig-param">depth: int = 8</em>, <em class="sig-param">phi_namespace: Optional[str] = None</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.thumbnail"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.thumbnail" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">thumbnail</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_version</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">frame_number</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">depth</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">8</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.thumbnail"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.thumbnail" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets study image thumbnail.</p>
 <p>URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber}/thumbnail?sid={sid}&amp;depth={8,16}&amp;phi_namespace={phi_namespace}</p>
 <dl class="field-list simple">
@@ -1006,9 +912,9 @@ outside of the original storage namespace</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.video">
-<code class="sig-name descname">video</code><span class="sig-paren">(</span><em class="sig-param">engine_fqdn: str</em>, <em class="sig-param">namespace: str</em>, <em class="sig-param">study_uid: str</em>, <em class="sig-param">image_uid: str</em>, <em class="sig-param">image_version: str</em>, <em class="sig-param">reencode_video: Optional[bool] = None</em>, <em class="sig-param">only_prepare: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[requests.models.Response, ambra_sdk.storage.request.PreparedRequest]<a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.video"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.video" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">video</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_version</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">reencode_video</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.video"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.video" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a study encapsulated video.</p>
 <p>URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/video?sid={sid}&amp;reencode_video={0,1}</p>
 <dl class="field-list simple">
@@ -1045,7 +951,7 @@ outside of the original storage namespace</p></li>
 
 
 
-<p class="blurb">version 3.20.5.0-1</p>
+<p class="blurb">version 3.20.6.0-1</p>
 
 
 
@@ -1060,13 +966,21 @@ outside of the original storage namespace</p></li>
 
 
 <h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p class="caption"><span class="caption-text">Table of contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../service_api.html">Service API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage_api.html">Storage API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../addon.html">Addon methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">References</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="service_api.html">Service namespace</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Storage namespace</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Storage namespace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#image-namespace">Image namespace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#study-namespace">Study namespace</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="addon.html">Addon namespace</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
 </ul>
@@ -1077,7 +991,7 @@ outside of the original storage namespace</p></li>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">Reference</a><ul>
+  <li><a href="index.html">References</a><ul>
       <li>Previous: <a href="service_api.html" title="previous chapter">Service namespace</a></li>
       <li>Next: <a href="addon.html" title="next chapter">Addon namespace</a></li>
   </ul></li>

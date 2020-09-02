@@ -1,0 +1,370 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Service API &#8212; Ambra-SDK 3.20.6.0-1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Storage API" href="storage_api.html" />
+    <link rel="prev" title="Quick Start" href="quickstart.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <span class="target" id="service-api"></span><div class="section" id="id1">
+<h1>Service API<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>This section describes the interaction with <a class="reference external" href="https://uat.dicomgrid.com/api/v3/api.html">AmbraHealth service API</a> .</p>
+<p>At the footer of this document, the current version of the <cite>AmbraHealth API</cite> is specified.
+Make sure that the current version of <cite>ambra-sdk</cite> is not lower.</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk</span> <span class="kn">import</span> <span class="n">API_VERSION</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">API_VERSION</span><span class="p">)</span>
+<span class="go">LBL0022 v40.0 2020-08-26</span>
+</pre></div>
+</div>
+<p>In <cite>ambra-sdk</cite> all service api methods have the form
+<cite>api.CommandNamespace.command.{get(),all() or first()}</cite>.</p>
+<p>You can find a description of all existing methods in the <a class="reference internal" href="referencies/service_api.html#referencies-service-api"><span class="std std-ref">Service API reference</span></a>.</p>
+<div class="section" id="query-objects">
+<h2>Query objects<a class="headerlink" href="#query-objects" title="Permalink to this headline">¶</a></h2>
+<p>All <cite>Service</cite> methods returns <cite>Query</cite> object for preparing data request.
+For example:</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query_object</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">query_object</span><span class="p">))</span>
+<span class="go">&lt;class &#39;ambra_sdk.service.query.QueryOPSF&#39;&gt;</span>
+</pre></div>
+</div>
+<p><cite>OSF</cite> in query type name means that you can use <cite>only</cite>, <cite>sort_by</cite>, and <cite>filter_by</cite> methods. <cite>P</cite> means that this is a query for results with pagination. So you can use <cite>all</cite> or <cite>first</cite> method on this object.</p>
+<p>Inspect your <cite>query</cite> object to get information about request:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">query_object</span><span class="o">.</span><span class="n">url</span>
+<span class="n">query_object</span><span class="o">.</span><span class="n">full_url</span>
+<span class="n">query_object</span><span class="o">.</span><span class="n">request_data</span>
+</pre></div>
+</div>
+<p>Execute this query using <cite>first()</cite> or <cite>all()</cite> method (<cite>api.Study.list()</cite> is query for request multiple results):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">some_study</span> <span class="o">=</span> <span class="n">query_object</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">study</span> <span class="ow">in</span> <span class="n">query_object</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="n">do_somethingwith</span><span class="p">(</span><span class="n">study</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Another example is a query for requesting one result:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">study_get_query</span> <span class="o">=</span> <span class="n">api</span> \
+    <span class="o">.</span><span class="n">Study</span> \
+    <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For requesting study data using this query, we use <cite>get()</cite> method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">some_study</span> <span class="o">=</span> <span class="n">study_get_query</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="only">
+<h2>Only<a class="headerlink" href="#only" title="Permalink to this headline">¶</a></h2>
+<p>All <cite>ambra-sdk</cite> service api methods support the <cite>only</cite> method to limit the set of requested fields.
+Using this method is slightly different for different types of requests.</p>
+<p>For example, let’s imagine that we are using a method for requesting only one Field in the result.
+In this case, we pass to the <code class="xref py py-meth docutils literal notranslate"><span class="pre">query.only()</span></code> function to specify the required field or list of required fields:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user_query</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">only</span><span class="p">([</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">])</span>
+
+<span class="c1"># for request only one field</span>
+<span class="n">user_query</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">only</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">)</span>
+<span class="n">user</span> <span class="o">=</span> <span class="n">user_query</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Another use case: When preparing a request to get multiple results, pass a dict in the <code class="xref py py-meth docutils literal notranslate"><span class="pre">query.only()</span></code> function where the key is the request object name and the value is a list of requested fields. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">account_request</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span> \
+    <span class="o">.</span><span class="n">list</span><span class="p">()</span> \
+    <span class="o">.</span><span class="n">only</span><span class="p">({</span><span class="s1">&#39;account&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;uuid&#39;</span><span class="p">]})</span>
+<span class="n">account</span> <span class="o">=</span> <span class="n">account_request</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">account</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">==</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;uuid&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>An easier way to do this is using models:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ambra_sdk.models</span> <span class="kn">import</span> <span class="n">Account</span>
+
+<span class="n">account_request</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span> \
+     <span class="o">.</span><span class="n">list</span><span class="p">()</span> \
+     <span class="o">.</span><span class="n">only</span><span class="p">([</span><span class="n">Account</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">Account</span><span class="o">.</span><span class="n">uuid</span><span class="p">])</span>
+ <span class="n">account</span> <span class="o">=</span> <span class="n">account_request</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pagination">
+<h2>Pagination<a class="headerlink" href="#pagination" title="Permalink to this headline">¶</a></h2>
+<p>When querying methods that return multiple results, <cite>ambra-sdk</cite> supports an automatic pagination of server requests.</p>
+<p>Suppose we have a study list query:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">study_list_query</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Then let’s create study list iterator using the <cite>all()</cite> method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">study_list_iterator</span> <span class="o">=</span> <span class="n">study_list_query</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">study</span> <span class="ow">in</span> <span class="n">study_list_iterator</span><span class="p">:</span>
+     <span class="n">do_something_with</span><span class="p">(</span><span class="n">study</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><cite>study_list_iterator</cite> requests the 100 studies from <cite>AmbraHalth API</cite>, yields the results in the loop, and then requests the next 100 results.</p>
+<p>In the query level, one can change the number of rows in one pagination page:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">study_list_query</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">set_rows_in_page</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Set a range of requested results: For example, to skip the first 5 results and take the next 10 items:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">study</span> <span class="ow">in</span> <span class="n">study_list_iterator</span> \
+    <span class="o">.</span><span class="n">set_range</span><span class="p">(</span><span class="n">min_row</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_row</span><span class="o">=</span><span class="mi">15</span><span class="p">):</span>
+    <span class="n">do_something_with</span><span class="p">(</span><span class="n">study</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Slices can also be used to achieve the same result:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">study</span> <span class="ow">in</span> <span class="n">study_list_iterator</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">15</span><span class="p">]:</span>
+    <span class="n">do_something_with</span><span class="p">(</span><span class="n">study</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>At this moment, <cite>ambra-sdk</cite> does not support stepping or reverse stepping through multiple results:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># This code is invalid</span>
+<span class="k">for</span> <span class="n">study</span> <span class="ow">in</span> <span class="n">study_list_iterator</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">15</span><span class="p">:</span><span class="mi">2</span><span class="p">]:</span>
+     <span class="n">do_something_with</span><span class="p">(</span><span class="n">study</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="sorting">
+<h2>Sorting<a class="headerlink" href="#sorting" title="Permalink to this headline">¶</a></h2>
+<p>Some service api methods in <cite>ambra-sdk</cite> support sorting: To top sort, pass <cite>Sorter</cite> object to <cite>sort_by</cite> query method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ambra_sdk.service.sorting</span> <span class="kn">import</span> <span class="n">Sorter</span><span class="p">,</span> <span class="n">SortingOrder</span>
+
+<span class="n">sorter</span> <span class="o">=</span> <span class="n">Sorter</span><span class="p">(</span>
+    <span class="n">field_name</span><span class="o">=</span><span class="s1">&#39;patient_name&#39;</span><span class="p">,</span>
+    <span class="n">order</span><span class="o">=</span><span class="n">SortingOrder</span><span class="o">.</span><span class="n">ascending</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">study_query</span> <span class="o">=</span> <span class="n">api</span> \
+    <span class="o">.</span><span class="n">Study</span> \
+    <span class="o">.</span><span class="n">list</span><span class="p">()</span> \
+    <span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="n">sorter</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using models:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ambra_sdk.models</span> <span class="kn">import</span> <span class="n">Study</span>
+
+<span class="n">study_query</span> <span class="o">=</span> <span class="n">api</span> \
+    <span class="o">.</span><span class="n">Study</span> \
+    <span class="o">.</span><span class="n">list</span><span class="p">()</span> \
+    <span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="n">Study</span><span class="o">.</span><span class="n">patient_name</span><span class="o">.</span><span class="n">asc</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="filtering">
+<h2>Filtering<a class="headerlink" href="#filtering" title="Permalink to this headline">¶</a></h2>
+<p>Some service api methods in <cite>ambra-sdk</cite> support filtering.
+To filter results, pass <cite>Filter</cite> object to <cite>filter_by</cite> query method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ambra_sdk.service.filtering</span> <span class="kn">import</span> <span class="n">Filter</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.service.filtering</span> <span class="kn">import</span> <span class="n">FilterCondition</span>
+
+<span class="n">account_name</span> <span class="o">=</span> <span class="s1">&#39;SOME_ACCOUNT_NAME&#39;</span>
+<span class="n">account</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span> \
+             <span class="o">.</span><span class="n">list</span><span class="p">()</span> \
+             <span class="o">.</span><span class="n">filter_by</span><span class="p">(</span>
+                 <span class="n">Filter</span><span class="p">(</span>
+                     <span class="s1">&#39;name&#39;</span><span class="p">,</span>
+                      <span class="n">FilterCondition</span><span class="o">.</span><span class="n">equals</span><span class="p">,</span>
+                     <span class="n">account_name</span><span class="p">,</span>
+                 <span class="p">)</span>
+             <span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">account</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">account_name</span>
+</pre></div>
+</div>
+<p>Using <cite>models</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ambra_sdk.models</span> <span class="kn">import</span> <span class="n">Account</span>
+
+<span class="n">account</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span> \
+             <span class="o">.</span><span class="n">list</span><span class="p">()</span> \
+             <span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">Account</span><span class="o">.</span><span class="n">name</span><span class="o">==</span><span class="n">account_name</span><span class="p">)</span> \
+             <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="special-arguments-customfields">
+<h2>Special arguments (customfields)<a class="headerlink" href="#special-arguments-customfields" title="Permalink to this headline">¶</a></h2>
+<p>Some of <cite>AmbraHealth API</cite> methods accept special parameters.</p>
+<p>For example, <a class="reference external" href="https://uat.dicomgrid.com/api/v3/api.html#study_add">add a method in the study namespace</a> has a <cite>customfield-{UUID}</cite> argument.
+To use this argument, execute <cite>Study.add()</cite> method with <cite>customfield_param</cite> argument, where <cite>customfield_param</cite> is a dict of {UUID: value}:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">api</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="o">...</span><span class="p">,</span>
+    <span class="n">customfield_param</span><span class="o">=</span><span class="p">{</span>
+        <span class="n">customfield_uid1</span><span class="p">:</span> <span class="n">customfield_value1</span><span class="p">,</span>
+        <span class="n">customfield_uid2</span><span class="p">:</span> <span class="n">customfield_value2</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="study-customfields-filtering">
+<h2>Study customfields filtering<a class="headerlink" href="#study-customfields-filtering" title="Permalink to this headline">¶</a></h2>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">api.Study.get()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">api.Study.list()</span></code> methods return study data.
+If a given study has <cite>customfields</cite> attributes, one can use filtering to retrieve specific fields. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">study</span> <span class="o">=</span> <span class="n">api</span> \
+    <span class="o">.</span><span class="n">Study</span> \
+    <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+<span class="c1"># Or</span>
+
+<span class="n">study</span> <span class="o">=</span> <span class="n">api</span> \
+    <span class="o">.</span><span class="n">Study</span> \
+    <span class="o">.</span><span class="n">list</span><span class="p">()</span> \
+    <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+<span class="n">filtered_customfields</span> <span class="o">=</span> <span class="n">study</span> \
+    <span class="o">.</span><span class="n">customfields</span> \
+    <span class="o">.</span><span class="n">filter_by</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;some_name&#39;</span><span class="p">})</span>
+
+<span class="k">for</span> <span class="n">customfield</span> <span class="ow">in</span> <span class="n">filtered_customfields</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">customfield</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Use <cite>get_by_name</cite> or <cite>get_by_uuid</cite> functions to get only the first filtered result:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">customfield</span> <span class="o">=</span> <span class="n">study</span><span class="o">.</span><span class="n">customfields</span><span class="o">.</span><span class="n">get_by_name</span><span class="p">(</span><span class="s1">&#39;some_name&#39;</span><span class="p">)</span>
+<span class="n">customfield</span> <span class="o">=</span> <span class="n">study</span><span class="o">.</span><span class="n">customfields</span><span class="o">.</span><span class="n">get_by_uuid</span><span class="p">(</span><span class="s1">&#39;some_uuid&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="retries">
+<h2>Retries<a class="headerlink" href="#retries" title="Permalink to this headline">¶</a></h2>
+<p><cite>SDK</cite> service namespace supports a retry mechanism.
+By default, <cite>ambra-sdk</cite> sets specific retry settings.
+In some cases, one can define custom settings for specific methods.
+The example below shows how to do this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">requests.adapters</span> <span class="kn">import</span> <span class="n">HTTPAdapter</span>
+<span class="kn">from</span> <span class="nn">requests.packages.urllib3.util</span> <span class="kn">import</span> <span class="n">Retry</span>
+
+<span class="n">max_retries</span> <span class="o">=</span> <span class="n">Retry</span><span class="p">(</span>
+    <span class="n">total</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">backoff_factor</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">method_whitelist</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">],</span>
+ <span class="p">)</span>
+
+<span class="n">adapter</span> <span class="o">=</span> <span class="n">HTTPAdapter</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="n">max_retries</span><span class="p">)</span>
+
+<span class="n">some_method_url</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">full_url</span>
+<span class="n">api</span><span class="o">.</span><span class="n">service_session</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="n">some_method_url</span><span class="p">,</span> <span class="n">adapter</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Ambra-SDK</a></h1>
+
+
+
+<p class="blurb">version 3.20.6.0-1</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=dicomgrid&repo=sdk-python&type=watch&count=False&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Service API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#query-objects">Query objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#only">Only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pagination">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sorting">Sorting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#filtering">Filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#special-arguments-customfields">Special arguments (customfields)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#study-customfields-filtering">Study customfields filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#retries">Retries</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="storage_api.html">Storage API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="addon.html">Addon methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencies/index.html">References</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="quickstart.html" title="previous chapter">Quick Start</a></li>
+      <li>Next: <a href="storage_api.html" title="next chapter">Storage API</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ambrahealth AI team.
+      
+      |
+      <a href="_sources/service_api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

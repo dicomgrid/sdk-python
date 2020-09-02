@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>Welcome to Ambra-SDK’s documentation! &#8212; Ambra-SDK 3.20.5.0-1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ambra-sdk - An easy way to use AmbraHealth using Python &#8212; Ambra-SDK 3.20.6.0-1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -31,10 +32,41 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="welcome-to-ambra-sdk-s-documentation">
-<h1>Welcome to Ambra-SDK’s documentation!<a class="headerlink" href="#welcome-to-ambra-sdk-s-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="ambra-sdk-an-easy-way-to-use-ambrahealth-using-python">
+<h1>Ambra-sdk - An easy way to use AmbraHealth using Python<a class="headerlink" href="#ambra-sdk-an-easy-way-to-use-ambrahealth-using-python" title="Permalink to this headline">¶</a></h1>
+<p>Release v3.20.6.0-1. <a class="reference internal" href="installation.html#referencies-installation"><span class="std std-ref">Installation</span></a>.</p>
+<a class="reference external image-reference" href="https://opensource.org/licenses/Apache-2.0"><img alt="https://img.shields.io/badge/License-Apache%202.0-blue.svg" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>
+<a class="reference external image-reference" href="https://badge.fury.io/py/ambra-sdk"><img alt="https://badge.fury.io/py/ambra-sdk.svg" src="https://badge.fury.io/py/ambra-sdk.svg" /></a>
+<div class="section" id="key-features">
+<h2>Key features<a class="headerlink" href="#key-features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="service_api.html#service-api"><span class="std std-ref">Service API</span></a></p></li>
+<li><p><a class="reference internal" href="storage_api.html#storage-api"><span class="std std-ref">Storage API</span></a></p></li>
+<li><p><a class="reference internal" href="referencies/models.html#referencies-models"><span class="std std-ref">Models</span></a> for easier sdk usage</p></li>
+<li><p>Some useful <a class="reference internal" href="referencies/addon.html#referencies-addon"><span class="std std-ref">addon functions</span></a></p></li>
+</ul>
+</div>
+<div class="section" id="source-code">
+<h2>Source code<a class="headerlink" href="#source-code" title="Permalink to this headline">¶</a></h2>
+<p>The project is hosted on <a class="reference external" href="https://github.com/dicomgrid/sdk-python">GitHub</a>.</p>
+<p>Please feel free to create issues in the <a class="reference external" href="https://github.com/dicomgrid/sdk-python/issues">bug tracker</a> if you find a bug or have some suggestions in order to improve the library.</p>
+</div>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Python 3.6+</p></li>
+<li><p><em>requests</em></p></li>
+<li><p><em>aiohttp</em></p></li>
+<li><p><em>python-box</em></p></li>
+<li><p><em>pydicom</em></p></li>
+</ul>
+</div>
+<div class="section" id="authors-and-license">
+<h2>Authors and License<a class="headerlink" href="#authors-and-license" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">ambra-sdk</span></code> package is written by the AmbraHealth AI team.</p>
+<p>It’s <em>Apache 2</em> licensed and is freely available.</p>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p class="caption"><span class="caption-text">Table of contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a><ul>
@@ -44,14 +76,58 @@
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#addon-methods">Addon methods</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="referencies/index.html">Reference</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="service_api.html">Service API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="service_api.html#query-objects">Query objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_api.html#only">Only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_api.html#pagination">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_api.html#sorting">Sorting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_api.html#filtering">Filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_api.html#special-arguments-customfields">Special arguments (customfields)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_api.html#study-customfields-filtering">Study customfields filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_api.html#retries">Retries</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="storage_api.html">Storage API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="storage_api.html#image-json-method">image_json method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storage_api.html#json-method">json method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storage_api.html#box-result">Box result</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storage_api.html#preparedrequest">PreparedRequest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storage_api.html#retries">Retries</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="addon.html">Addon methods</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="addon.html#study">Study</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="addon.html#upload-dicom">upload_dicom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="addon.html#upload">upload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="addon.html#wait">wait</a></li>
+<li class="toctree-l3"><a class="reference internal" href="addon.html#upload-and-get">upload_and_get</a></li>
+<li class="toctree-l3"><a class="reference internal" href="addon.html#duplicate-and-get">duplicate_and_get</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-can-i-get-the-nth-element-of-results-in-service-api-methods">How can I get the nth element of results in service api methods?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-can-i-execute-a-large-number-of-queries">How can I execute a large number of queries?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-difference-between-api-study-duplicate-and-api-addon-study-duplicate-and-get-methods">What is the difference between <code class="xref py py-meth docutils literal notranslate"><span class="pre">api.Study.duplicate()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">api.Addon.Study.duplicate_and_get()</span></code> methods ?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="referencies/index.html">References</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="referencies/service_api.html">Service namespace</a></li>
-<li class="toctree-l2"><a class="reference internal" href="referencies/storage_api.html">Storage namespace</a></li>
-<li class="toctree-l2"><a class="reference internal" href="referencies/addon.html">Addon namespace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="referencies/storage_api.html">Storage namespace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="referencies/storage_api.html#image-namespace">Image namespace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="referencies/storage_api.html#study-namespace">Study namespace</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="referencies/addon.html">Addon namespace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="referencies/addon.html#study-namespace">Study namespace</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="referencies/models.html">Models</a></li>
 </ul>
 </li>
 </ul>
+</div>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
@@ -74,7 +150,7 @@
 
 
 
-<p class="blurb">version 3.20.5.0-1</p>
+<p class="blurb">version 3.20.6.0-1</p>
 
 
 
@@ -89,11 +165,15 @@
 
 
 <h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p class="caption"><span class="caption-text">Table of contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="referencies/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="service_api.html">Service API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage_api.html">Storage API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="addon.html">Addon methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencies/index.html">References</a></li>
 </ul>
 
 <div class="relations">

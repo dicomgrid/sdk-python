@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>Quick Start &#8212; Ambra-SDK 3.20.5.0-1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quick Start &#8212; Ambra-SDK 3.20.6.0-1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -14,7 +15,7 @@
     <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Reference" href="referencies/index.html" />
+    <link rel="next" title="Service API" href="service_api.html" />
     <link rel="prev" title="Installation" href="installation.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -32,202 +33,120 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="quick-start">
-<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="quick-start"></span><div class="section" id="id1">
+<h1>Quick Start<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>This page gives an introduction on how to get started with the <cite>ambra-sdk</cite> library.
+First, make sure that <cite>ambra-sdk</cite> is installed and up-to-date.
+Let’s get started with some simple examples.</p>
 <div class="section" id="init-api">
 <h2>Init API<a class="headerlink" href="#init-api" title="Permalink to this headline">¶</a></h2>
-<p>Before we begin, to use sdk you need to know <cite>url</cite> of ambrahealth api and user credentials (<cite>username</cite> and <cite>password</cite>).</p>
-<p>You can add <cite>client_name</cite> to api constructors. This value will be added to the <cite>SDK</cite> request headers.</p>
-<p>For accessing to api functions you need to <cite>sid</cite> - session identificator.</p>
-<p>If you already have this, you can init api instance:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.api</span> <span class="kn">import</span> <span class="n">Api</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">Api</span><span class="o">.</span><span class="n">with_sid</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">sid</span><span class="p">,</span> <span class="s1">&#39;SDK User 1&#39;</span><span class="p">)</span>
+<p>Begin by importing the <cite>ambra-sdk</cite> module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ambra_sdk.api</span> <span class="kn">import</span> <span class="n">Api</span>
 </pre></div>
 </div>
-<p>Or, you can use your user credentials and <cite>SDK</cite> automatically get new sid for you:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.api</span> <span class="kn">import</span> <span class="n">Api</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">Api</span><span class="o">.</span><span class="n">with_creds</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="s1">&#39;SDK User 1&#39;</span><span class="p">)</span>
+<p>To use <cite>ambra-sdk</cite> one needs to know the <cite>url</cite> of <cite>AmbraHealth API</cite> and <cite>SID</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">api</span> <span class="o">=</span> <span class="n">Api</span><span class="o">.</span><span class="n">with_sid</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">sid</span><span class="p">)</span>  <span class="c1"># Init API with sid</span>
+</pre></div>
+</div>
+<p>Another option is to use user credentials (<cite>username</cite> and <cite>password</cite>) and <cite>ambra-sdk</cite> takes care of using  the <cite>sid</cite> for the session:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">api</span> <span class="o">=</span> <span class="n">Api</span><span class="o">.</span><span class="n">with_creds</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><cite>client_name</cite> to <cite>ambra-sdk</cite> constructors can be used.
+This value will be added to the <cite>SDK</cite> request headers.
+Thus, <cite>AmbraHealth</cite> will be able to understand and log who exactly is making requests to help troubleshoot issues.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">api</span> <span class="o">=</span> <span class="n">Api</span><span class="o">.</span><span class="n">with_creds</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">client_name</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="service-api">
 <h2>Service API<a class="headerlink" href="#service-api" title="Permalink to this headline">¶</a></h2>
-<p>This section describes the interaction of ambra-sdk with service api.
-This api describes in  <a class="reference external" href="https://uat.dicomgrid.com/api/v3/api.html">Service API</a> document or in some other
-ambra health instance <cite>ambra_url/api/v3/api.html</cite>.</p>
-<p>At the footer of this document you can find current version sting.
-Make sure the current version of <cite>ambra-sdk</cite> is not lower than the api version.</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk</span> <span class="kn">import</span> <span class="n">API_VERSION</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">API_VERSION</span><span class="p">)</span>
-<span class="go">LBL0022 v39.0 2020-07-15</span>
+<p>All <cite>ambra-sdk</cite> service API methods are described in the <a class="reference external" href="https://uat.dicomgrid.com/api/v3/api.html">AmbraHealth Service API</a> document and all of them are divided by namespaces.
+In <cite>ambra-sdk</cite> we have the same separation of methods by namespaces.</p>
+<p>All methods in <cite>AmbraHealth service API</cite> can be divided on two groups:</p>
+<ul class="simple">
+<li><p>Methods with one result</p></li>
+<li><p>Methods with multiple results</p></li>
+</ul>
+<p>In order to deal with the first group, use <cite>get()</cite> method for getting results from a prepared request.
+Alternatively, multiple results can be retrieved by using <cite>first()</cite> or <cite>all()</cite> methods to get the first row of results or getting an iterator over all results.</p>
+<p>For example, let’s request your user information.
+This is <a class="reference external" href="https://uat.dicomgrid.com/api/v3/api.html#session_user">user method in session namespace</a>, so we should use an <cite>api.Session.user</cite> method of <cite>ambra-sdk</cite>.</p>
+<p>This is a simple method with only one result, so for fetching data from the service,  use the <cite>get()</cite> method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ambra_sdk.api</span> <span class="kn">import</span> <span class="n">Api</span>
+<span class="n">api</span> <span class="o">=</span> <span class="n">Api</span><span class="o">.</span><span class="n">with_creds</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+<span class="n">user_info</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">user</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">user_info</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Service api is divided by type of command.
-From <cite>ambra-sdk</cite> view all request have a form
-<cite>api.TypeOfCommand.command.{get() or all()}</cite>.</p>
-<p>Description of all existing methods and you can find in <a class="reference internal" href="referencies/service_api.html#referencies-service-api"><span class="std std-ref">Service API reference</span></a>.</p>
-<p>Lets get some your user inforametion:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.api</span> <span class="kn">import</span> <span class="n">Api</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">Api</span><span class="o">.</span><span class="n">with_creds</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">user_info</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">user</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">user_info</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
-<span class="go">user@ambrahealth.com</span>
+<p>Let’s look at another example where we are using methods that return multiple results.
+One of these methods is the <a class="reference external" href="https://uat.dicomgrid.com/api/v3/api.html#account_list">account list method</a>.</p>
+<p>Let’s get a first object in results:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">account</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>You can access to some fields using <cite>dot</cite> notation:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">user_info</span><span class="p">[</span><span class="s1">&#39;namespace_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">user_info</span><span class="o">.</span><span class="n">namespace_id</span>
+<p><cite>all()</cite> method returns an iterator over all elements:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get all accounts</span>
+<span class="n">accounts</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Now, lets get your permissions:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">namespace_id</span> <span class="o">=</span> <span class="n">user_info</span><span class="o">.</span><span class="n">namespace_id</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">permissions</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Session</span> \
-<span class="gp">... </span>                 <span class="o">.</span><span class="n">permissions</span><span class="p">(</span>
-<span class="gp">... </span>                     <span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
-<span class="gp">... </span>                 <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<p>One can use slices for skipping and taking some number of results:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get 7 results after skipping the first 5 rows.</span>
+<span class="n">accounts</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">5</span><span class="p">:</span><span class="mi">12</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>As you can see this is big dictionary.
-Using <cite>only</cite> method, we can  request only some interesting fields:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">permissions</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Session</span> \
-<span class="gp">... </span>                 <span class="o">.</span><span class="n">permissions</span><span class="p">(</span><span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">)</span> \
-<span class="gp">... </span>                 <span class="o">.</span><span class="n">only</span><span class="p">([</span><span class="s1">&#39;study_download&#39;</span><span class="p">,</span> <span class="s1">&#39;study_upload&#39;</span><span class="p">])</span> \
-<span class="gp">... </span>                 <span class="o">.</span><span class="n">get</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">permissions</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;study_download&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;study_upload&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+<p>Now, iterate over all accounts:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">account</span> <span class="ow">in</span> <span class="n">accounts</span><span class="p">:</span>
+    <span class="n">account_name</span> <span class="o">=</span> <span class="n">account</span><span class="o">.</span><span class="n">name</span>
 </pre></div>
 </div>
-<p>In <cite>ambra-sdk</cite> we use <cite>get()</cite> method for get some results from api.
-Usually this is some dict results. But some api methods return iterable data.
-For get this kind of data we use <cite>all()</cite> of <cite>first()</cite> methods.
-Lets get list of your accounts. This is iterable response:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">accounts</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-</pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>ambra-sdk</em> <cite>all()</cite> method returns a lazy iterator.
+It means that we request new data from <cite>AmbraHealth API</cite> only when we actually need it.</p>
 </div>
-<p>This is iterable object:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">account</span> <span class="ow">in</span> <span class="n">accounts</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">account_name</span> <span class="o">=</span> <span class="n">account</span><span class="o">.</span><span class="n">name</span>
-</pre></div>
-</div>
-<p>Also, you can use slices:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">account</span> <span class="ow">in</span> <span class="n">accounts</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">12</span><span class="p">]:</span>
-<span class="gp">... </span>    <span class="n">account_name</span><span class="p">,</span> <span class="n">account_uuid</span> <span class="o">=</span> <span class="p">(</span><span class="n">account</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">account</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Sometimes you need only first element:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">account</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get second result</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">account</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>With <cite>Ambra-SDK</cite> you can use filtering (only for methods that support this):</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.service.filtering</span> <span class="kn">import</span> <span class="n">Filter</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.service.filtering</span> <span class="kn">import</span> <span class="n">FilterCondition</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">account</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span> \
-<span class="gp">... </span>             <span class="o">.</span><span class="n">list</span><span class="p">()</span> \
-<span class="gp">... </span>             <span class="o">.</span><span class="n">filter_by</span><span class="p">(</span>
-<span class="gp">... </span>                 <span class="n">Filter</span><span class="p">(</span>
-<span class="gp">... </span>                     <span class="s1">&#39;name&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                      <span class="n">FilterCondition</span><span class="o">.</span><span class="n">equals</span><span class="p">,</span>
-<span class="gp">... </span>                     <span class="n">account_name</span><span class="p">,</span>
-<span class="gp">... </span>                 <span class="p">)</span>
-<span class="gp">... </span>             <span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">account</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">account_name</span>
-</pre></div>
-</div>
-<p>Or you can use <cite>models</cite> system for do the same thing easy:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.models</span> <span class="kn">import</span> <span class="n">Account</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">account</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span> \
-<span class="gp">... </span>             <span class="o">.</span><span class="n">list</span><span class="p">()</span> \
-<span class="gp">... </span>             <span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">Account</span><span class="o">.</span><span class="n">name</span><span class="o">==</span><span class="s1">&#39;Some Account name&#39;</span><span class="p">)</span> \
-<span class="gp">... </span>             <span class="o">.</span><span class="n">first</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Set of existing models and fields you can find in <a class="reference internal" href="referencies/models.html#referencies-models"><span class="std std-ref">Models reference</span></a>.</p>
-<p>If you remember, we can use <cite>only</cite> method and combine it with filtering:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">account</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span> \
-<span class="gp">... </span>             <span class="o">.</span><span class="n">list</span><span class="p">()</span> \
-<span class="gp">... </span>             <span class="o">.</span><span class="n">only</span><span class="p">({</span><span class="s1">&#39;account&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]})</span> \
-<span class="gp">... </span>             <span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">Account</span><span class="o">.</span><span class="n">name</span><span class="o">==</span><span class="s1">&#39;Some Account name&#39;</span><span class="p">)</span> \
-<span class="gp">... </span>             <span class="o">.</span><span class="n">first</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Using <cite>models</cite> for <cite>only</cite> can also simplify usage:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">account</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span> \
-<span class="gp">... </span>             <span class="o">.</span><span class="n">list</span><span class="p">()</span> \
-<span class="gp">... </span>             <span class="o">.</span><span class="n">only</span><span class="p">([</span><span class="n">Account</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">Account</span><span class="o">.</span><span class="n">uuid</span><span class="p">])</span> \
-<span class="gp">... </span>             <span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">Account</span><span class="o">.</span><span class="n">name</span><span class="o">==</span><span class="s1">&#39;Some Account name&#39;</span><span class="p">)</span> \
-<span class="gp">... </span>             <span class="o">.</span><span class="n">first</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>The next thing, what you can do is sorting.
-Lets sort our accounts by name:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.service.sorting</span> <span class="kn">import</span> <span class="n">Sorter</span><span class="p">,</span> <span class="n">SortingOrder</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">accounts</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span><span class="o">.</span><span class="n">list</span><span class="p">()</span> \
-<span class="gp">... </span>              <span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="n">Sorter</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">SortingOrder</span><span class="o">.</span><span class="n">ascending</span><span class="p">))</span> \
-<span class="gp">... </span>              <span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>You can use <cite>models</cite> for this case too:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">accounts</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Account</span><span class="o">.</span><span class="n">list</span><span class="p">()</span> \
-<span class="gp">... </span>              <span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="n">Account</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">asc</span><span class="p">())</span> \
-<span class="gp">... </span>              <span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>You can combine filtering sorting and <cite>only</cite> methods as you wish.</p>
-<p>Some of API methods have special parameters. For example, <cite>study/add</cite> have a <cite>customfield-{UUID}</cite> argument. For usage this arguments, you can execute <cite>Study.add()</cite> method with <cite>customfield_param</cite> argument, where <cite>customfield_param</cite> is a dict of {UUID: value}.</p>
 </div>
 <div class="section" id="storage-api">
 <h2>Storage API<a class="headerlink" href="#storage-api" title="Permalink to this headline">¶</a></h2>
-<p>This section describes ambra-sdk storage api part.
-You can find this description in  <a class="reference external" href="https://uat.dicomgrid.com/api/v3/storage/storage_api.html">Storage API</a> document or in some other ambra health instance <cite>api/v3/storage/storage_api.html</cite>.</p>
-<p>At the footer of this document you can find current version sting.
-Make sure the current version of <cite>ambra-sdk</cite> is not lower than the api version.</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk</span> <span class="kn">import</span> <span class="n">STORAGE_VERSION</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">STORAGE_VERSION</span><span class="p">)</span>
-<span class="go">LBL0038 v9.0 2020-06-03</span>
+<p>All <cite>ambra-sdk</cite> storage API methods are described in the <a class="reference external" href="https://uat.dicomgrid.com/api/v3/storage/storage_api.html">AmbraHealth Storage API</a> document .</p>
+<p>As in the server documentation in <cite>ambra-sdk</cite>, all api requests to storage are divided into <cite>Study</cite> and <cite>Image</cite> namespaces.</p>
+<p>For accessing storage api methods, use the  ambra-sdk <cite>api.Storage</cite> namespace.</p>
+<p>For example, let’s try to upload a <cite>dicom</cite> file to your user namespace.</p>
+<p>Let’s get your user <cite>namespace_id</cite> and <cite>engine_fqdn</cite> using <cite>ambra-sdk</cite> service api <cite>User.get</cite> and <cite>Namespaces.engine_fqdn</cite> methods:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="n">namespace_id</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">namespace_id</span>
+<span class="n">fqdn</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Namespace</span><span class="o">.</span><span class="n">engine_fqdn</span><span class="p">(</span><span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="n">engine_fqdn</span> <span class="o">=</span> <span class="n">fqdn</span><span class="o">.</span><span class="n">engine_fqdn</span>
 </pre></div>
 </div>
-<p>Description of all existing methods and you can find in <a class="reference internal" href="referencies/storage_api.html#referencies-storage-api"><span class="std std-ref">Storage API reference</span></a>.</p>
-<p>For accessing storage api commands you can use <cite>api.Storage</cite> namespace.</p>
-<p>As in the server documentation in <cite>ambra-sdk</cite> all api requests to storage splitted on <cite>Study</cite> and <cite>Image</cite> commands.</p>
-<p>For example, lets try to upload dicom file to your namespace.</p>
-<p>First af all, you need get your <cite>namespace_id</cite> and <cite>engine_fqdn</cite>:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">user</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">namespace_id</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">namespace_id</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fqdn</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Namespace</span><span class="o">.</span><span class="n">engine_fqdn</span><span class="p">(</span><span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">engine_fqdn</span> <span class="o">=</span> <span class="n">fqdn</span><span class="o">.</span><span class="n">engine_fqdn</span>
+<p>Then, upload <cite>dicom</cite> file to the storage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dicom_path</span> <span class="o">=</span> <span class="s1">&#39;PATH_TO_DICOM&#39;</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dicom_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dicom_file</span><span class="p">:</span>
+    <span class="n">uploaded_image</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Storage</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span>
+        <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">fqdn</span><span class="o">.</span><span class="n">engine_fqdn</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
+        <span class="n">opened_file</span><span class="o">=</span><span class="n">dicom_file</span><span class="p">,</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
-<p>Now, lets upload dicom file to the storage:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dicom_path</span> <span class="o">=</span> <span class="s1">&#39;PATH_TO_DICOM&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dicom_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dicom_file</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">uploaded_image</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Storage</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">fqdn</span><span class="o">.</span><span class="n">engine_fqdn</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">namespace</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">opened_file</span><span class="o">=</span><span class="n">dicom_file</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="p">)</span>
-</pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unlike service API methods, storage methods do not use <cite>get()</cite>, <cite>first()</cite> or <cite>all()</cite>.</p>
 </div>
 </div>
 <div class="section" id="addon-methods">
 <h2>Addon methods<a class="headerlink" href="#addon-methods" title="Permalink to this headline">¶</a></h2>
-<p>This section describes ambra-sdk addon namespace part.
-Reference of all existing methods and you can find in <a class="reference internal" href="referencies/addon.html#referencies-addon"><span class="std std-ref">Addon reference</span></a>.</p>
-<p>Lets upload some <cite>study</cite> to storage.
-First of all you need to upload dicoms to storage.
-Than you should wait for study readiness in <cite>v3services</cite>.</p>
-<p>Actually, it’s a little more complicated..
-You can use <cite>api.Addon.Study.upload_and_get</cite> method for doing this:</p>
-<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">study_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;/path_to_study_dir&#39;</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">new_study</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">upload_and_get</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">study_dir</span><span class="o">=</span><span class="n">study_dir</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">namespace_id</span><span class="o">=</span><span class="n">user_info</span><span class="o">.</span><span class="n">namespace_id</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">new_study</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
+<p>All service and storage api methods are  described in the <cite>AmbraHealth</cite> specification documents.
+In <cite>ambra-sdk</cite>, all methods outside of this specifications are placed in the <cite>Addon</cite> namespace.</p>
+<p>For example, one common task is to upload a new study in <cite>AmbraHealth</cite>, upload <cite>dicom</cite> files to storage, and wait for a new study object in service.
+Use <cite>api.Addon.Study.upload_and_get</cite> method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="n">study_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;/path_to_study_dir&#39;</span><span class="p">)</span>
+
+<span class="n">new_study</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">upload_and_get</span><span class="p">(</span>
+    <span class="n">study_dir</span><span class="o">=</span><span class="n">study_dir</span><span class="p">,</span>
+    <span class="n">namespace_id</span><span class="o">=</span><span class="n">user_info</span><span class="o">.</span><span class="n">namespace_id</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -244,7 +163,7 @@ You can use <cite>api.Addon.Study.upload_and_get</cite> method for doing this:</
 
 
 
-<p class="blurb">version 3.20.5.0-1</p>
+<p class="blurb">version 3.20.6.0-1</p>
 
 
 
@@ -259,7 +178,7 @@ You can use <cite>api.Addon.Study.upload_and_get</cite> method for doing this:</
 
 
 <h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p class="caption"><span class="caption-text">Table of contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a><ul>
@@ -269,7 +188,11 @@ You can use <cite>api.Addon.Study.upload_and_get</cite> method for doing this:</
 <li class="toctree-l2"><a class="reference internal" href="#addon-methods">Addon methods</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="referencies/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="service_api.html">Service API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage_api.html">Storage API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="addon.html">Addon methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencies/index.html">References</a></li>
 </ul>
 
 <div class="relations">
@@ -277,7 +200,7 @@ You can use <cite>api.Addon.Study.upload_and_get</cite> method for doing this:</
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="installation.html" title="previous chapter">Installation</a></li>
-      <li>Next: <a href="referencies/index.html" title="next chapter">Reference</a></li>
+      <li>Next: <a href="service_api.html" title="next chapter">Service API</a></li>
   </ul></li>
 </ul>
 </div>

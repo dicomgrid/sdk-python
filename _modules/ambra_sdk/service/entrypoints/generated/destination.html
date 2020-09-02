@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>ambra_sdk.service.entrypoints.generated.destination &#8212; Ambra-SDK 3.20.5.0-1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ambra_sdk.service.entrypoints.generated.destination &#8212; Ambra-SDK 3.20.6.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -134,6 +135,7 @@
         <span class="n">hl7_address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">hl7_fetch_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">hl7_port</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">manual_push_roles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">push_related_studies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">sort_order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">sqlch_psh_if_img_unchg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -164,6 +166,7 @@
 <span class="sd">        :param hl7_address: Address of an attached HL7 destination (optional except for VIRTUAL destinations)</span>
 <span class="sd">        :param hl7_fetch_filter: A transform condition expression (see /transform/add for format) to match against the HL7 message. Only fire a query retrieve if the message matches the condition (optional)</span>
 <span class="sd">        :param hl7_port: Port of an attached HL7 destination (optional except for VIRTUAL destinations)</span>
+<span class="sd">        :param manual_push_roles: A comma separated list of role uuids, a user is required to have one of them to manually push to this destination (optional)</span>
 <span class="sd">        :param push_related_studies: Push all the related studies (same MRN/patientid) in the namespace when a study is pushed (optional)</span>
 <span class="sd">        :param sort_order: Integer value for sorting (optional)</span>
 <span class="sd">        :param sqlch_psh_if_img_unchg: Squelch pushes to the destination if the image count has not changed and the push is by a routing rule (optional)</span>
@@ -190,6 +193,7 @@
            <span class="s1">&#39;hl7_fetch_filter&#39;</span><span class="p">:</span> <span class="n">hl7_fetch_filter</span><span class="p">,</span>
            <span class="s1">&#39;hl7_port&#39;</span><span class="p">:</span> <span class="n">hl7_port</span><span class="p">,</span>
            <span class="s1">&#39;linked_destination&#39;</span><span class="p">:</span> <span class="n">linked_destination</span><span class="p">,</span>
+           <span class="s1">&#39;manual_push_roles&#39;</span><span class="p">:</span> <span class="n">manual_push_roles</span><span class="p">,</span>
            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
            <span class="s1">&#39;node_id&#39;</span><span class="p">:</span> <span class="n">node_id</span><span class="p">,</span>
            <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span>
@@ -246,6 +250,7 @@
         <span class="n">hl7_address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">hl7_fetch_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">hl7_port</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">manual_push_roles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">node_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -274,6 +279,7 @@
 <span class="sd">        :param hl7_address: Address of an attached HL7 destination (optional)</span>
 <span class="sd">        :param hl7_fetch_filter: A transform condition expression (see /transform/add for format) to match against the HL7 message. Only fire a query retrieve if the message matches the condition (optional)</span>
 <span class="sd">        :param hl7_port: Port of an attached HL7 destination (optional)</span>
+<span class="sd">        :param manual_push_roles: A comma separated list of role uuids, a user is required to have one of them to manually push to this destination (optional)</span>
 <span class="sd">        :param name: Name of the destination (optional)</span>
 <span class="sd">        :param node_id: uuid of the node that handles the destination (optional)</span>
 <span class="sd">        :param path: Path of the folder (optional)</span>
@@ -301,6 +307,7 @@
            <span class="s1">&#39;hl7_address&#39;</span><span class="p">:</span> <span class="n">hl7_address</span><span class="p">,</span>
            <span class="s1">&#39;hl7_fetch_filter&#39;</span><span class="p">:</span> <span class="n">hl7_fetch_filter</span><span class="p">,</span>
            <span class="s1">&#39;hl7_port&#39;</span><span class="p">:</span> <span class="n">hl7_port</span><span class="p">,</span>
+           <span class="s1">&#39;manual_push_roles&#39;</span><span class="p">:</span> <span class="n">manual_push_roles</span><span class="p">,</span>
            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
            <span class="s1">&#39;node_id&#39;</span><span class="p">:</span> <span class="n">node_id</span><span class="p">,</span>
            <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span>
@@ -385,6 +392,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">uuid</span><span class="p">,</span>
         <span class="n">accession_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">bundle_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">copy_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">create_study</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">create_thin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -406,6 +414,7 @@
         <span class="sd">&quot;&quot;&quot;Search.</span>
 <span class="sd">        :param uuid: uuid of the destination</span>
 <span class="sd">        :param accession_number: Accession number to find (optional)</span>
+<span class="sd">        :param bundle_id: An integral number Used internally to track searches initiated from a single bundle (optional)</span>
 <span class="sd">        :param copy_to: uuid of a namespace to copy the retrieved or create_thin studies into (optional)</span>
 <span class="sd">        :param create_study: The maximum number of studies to retrieve from this search instead of creating an activity for the search results (optional)</span>
 <span class="sd">        :param create_thin: The maximum number of thin studies to create from this search instead of creating an activity for the search results (optional)</span>
@@ -430,6 +439,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;accession_number&#39;</span><span class="p">:</span> <span class="n">accession_number</span><span class="p">,</span>
+           <span class="s1">&#39;bundle_id&#39;</span><span class="p">:</span> <span class="n">bundle_id</span><span class="p">,</span>
            <span class="s1">&#39;copy_to&#39;</span><span class="p">:</span> <span class="n">copy_to</span><span class="p">,</span>
            <span class="s1">&#39;create_study&#39;</span><span class="p">:</span> <span class="n">create_study</span><span class="p">,</span>
            <span class="s1">&#39;create_thin&#39;</span><span class="p">:</span> <span class="n">create_thin</span><span class="p">,</span>
@@ -553,7 +563,7 @@
 
 
 
-<p class="blurb">version 3.20.5.0-1</p>
+<p class="blurb">version 3.20.6.0-1</p>
 
 
 
@@ -568,11 +578,15 @@
 
 
 <h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p class="caption"><span class="caption-text">Table of contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../referencies/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../service_api.html">Service API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../storage_api.html">Storage API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../addon.html">Addon methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../referencies/index.html">References</a></li>
 </ul>
 
 <div class="relations">

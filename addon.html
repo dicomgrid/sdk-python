@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Addon methods &#8212; Ambra-SDK 3.20.6.0-1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="FAQ" href="faq.html" />
+    <link rel="prev" title="Storage API" href="storage_api.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="addon-methods">
+<h1>Addon methods<a class="headerlink" href="#addon-methods" title="Permalink to this headline">¶</a></h1>
+<p>Addon methods include useful methods not described in <cite>AmbraHealth API</cite> documentation.</p>
+<div class="section" id="study">
+<h2>Study<a class="headerlink" href="#study" title="Permalink to this headline">¶</a></h2>
+<p>Study level addon methods.</p>
+<div class="section" id="upload-dicom">
+<h3>upload_dicom<a class="headerlink" href="#upload-dicom" title="Permalink to this headline">¶</a></h3>
+<p>This method is for uploading dicom to the some namespace in storage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">dicom_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="n">image_params</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">upload_dicom</span><span class="p">(</span>
+    <span class="n">dicom_path</span><span class="p">,</span>
+    <span class="n">namespace_id</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This method gets <cite>engine_fqdn</cite> from the service API for a specific namespace_id and then uploads dicom to the storage using <code class="xref py py-meth docutils literal notranslate"><span class="pre">api.Storage.Image.upload()</span></code> method.</p>
+</div>
+<div class="section" id="upload">
+<h3>upload<a class="headerlink" href="#upload" title="Permalink to this headline">¶</a></h3>
+<p>This method creates a new <cite>thin</cite> study, uploads all dicom files (<cite>**/*.dcm</cite>) from a specific study path to storage, and calls sync for this study:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">study_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="n">study_uuid</span><span class="p">,</span> <span class="n">image_params</span>  <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span>
+    <span class="n">study_path</span><span class="p">,</span>
+    <span class="n">namespace_id</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="wait">
+<h3>wait<a class="headerlink" href="#wait" title="Permalink to this headline">¶</a></h3>
+<p>Wait for a new study (not phantom) in namespace:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">new_study</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span>
+    <span class="n">study_uid</span><span class="p">,</span>
+    <span class="n">namespace_id</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="upload-and-get">
+<h3>upload_and_get<a class="headerlink" href="#upload-and-get" title="Permalink to this headline">¶</a></h3>
+<p>Upload dicoms from specific study dir using <code class="xref py py-meth docutils literal notranslate"><span class="pre">api.Addon.Study.upload()</span></code> method and wait for this object to appear in <cite>v3services</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">new_study</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">upload_and_get</span><span class="p">(</span>
+    <span class="n">study_dir</span><span class="o">=</span><span class="n">study_dir</span><span class="p">,</span>
+    <span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="duplicate-and-get">
+<h3>duplicate_and_get<a class="headerlink" href="#duplicate-and-get" title="Permalink to this headline">¶</a></h3>
+<p>This method calls <code class="xref py py-meth docutils literal notranslate"><span class="pre">api.Study.duplicate()</span></code> async method and waits for new duplicated study:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">duplicated_study</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">duplicate_and_get</span><span class="p">(</span>
+    <span class="n">uuid</span><span class="o">=</span><span class="n">some_study</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+    <span class="n">namespace_id</span><span class="o">=</span><span class="n">to_namespace_id</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Ambra-SDK</a></h1>
+
+
+
+<p class="blurb">version 3.20.6.0-1</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=dicomgrid&repo=sdk-python&type=watch&count=False&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="service_api.html">Service API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage_api.html">Storage API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Addon methods</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#study">Study</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#upload-dicom">upload_dicom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upload">upload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wait">wait</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upload-and-get">upload_and_get</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#duplicate-and-get">duplicate_and_get</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencies/index.html">References</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="storage_api.html" title="previous chapter">Storage API</a></li>
+      <li>Next: <a href="faq.html" title="next chapter">FAQ</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ambrahealth AI team.
+      
+      |
+      <a href="_sources/addon.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

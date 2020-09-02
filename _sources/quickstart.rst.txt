@@ -1,17 +1,4 @@
-Quick Start
-===========
-
-
-Init API
---------
-
-Before we begin, to use sdk you need to know `url` of ambrahealth api and user credentials (`username` and `password`).
-
-You can add `client_name` to api constructors. This value will be added to the `SDK` request headers.
-
-For accessing to api functions you need to `sid` - session identificator.
-
-If you already have this, you can init api instance:
+.. _quick-start:
 
 .. testsetup::
 
@@ -20,266 +7,149 @@ If you already have this, you can init api instance:
 	username = settings.API['username']
 	password = settings.API['password']
 	sid = 'SOME BAD SID'
+	client_name = 'SOME_CLIENT_NAME'
 
-.. doctest::
 
-    >>> from ambra_sdk.api import Api
-    >>> api = Api.with_sid(url, sid, 'SDK User 1')
+Quick Start
+===========
 
-Or, you can use your user credentials and `SDK` automatically get new sid for you:
+This page gives an introduction on how to get started with the `ambra-sdk` library.
+First, make sure that `ambra-sdk` is installed and up-to-date.
+Let’s get started with some simple examples.
 
-.. doctest::
 
-    >>> from ambra_sdk.api import Api
-    >>> api = Api.with_creds(url, username, password, 'SDK User 1')
+Init API
+--------
+
+Begin by importing the `ambra-sdk` module::
+
+  from ambra_sdk.api import Api
+
+To use `ambra-sdk` one needs to know the `url` of `AmbraHealth API` and `SID`.
+
+::
+
+  api = Api.with_sid(url, sid)  # Init API with sid
+
+Another option is to use user credentials (`username` and `password`) and `ambra-sdk` takes care of using  the `sid` for the session::
+
+  api = Api.with_creds(url, username, password)
+  
+`client_name` to `ambra-sdk` constructors can be used.
+This value will be added to the `SDK` request headers.
+Thus, `AmbraHealth` will be able to understand and log who exactly is making requests to help troubleshoot issues.
+
+::
+
+  api = Api.with_creds(url, username, password, client_name)
 
 
 Service API
 -----------
 
-This section describes the interaction of ambra-sdk with service api.
-This api describes in  `Service API`_ document or in some other
-ambra health instance `ambra_url/api/v3/api.html`.
-
-.. _`Service API`: https://uat.dicomgrid.com/api/v3/api.html
-
-At the footer of this document you can find current version sting.
-Make sure the current version of `ambra-sdk` is not lower than the api version.
-
-.. doctest::
-
-   >>> from ambra_sdk import API_VERSION
-   >>> print(API_VERSION)
-   LBL0022 v39.0 2020-07-15
-
-Service api is divided by type of command.
-From `ambra-sdk` view all request have a form
-`api.TypeOfCommand.command.{get() or all()}`.
-
-Description of all existing methods and you can find in :ref:`Service API reference<referencies-service-api>`. 
-
-Lets get some your user inforametion:
-
-.. doctest::
-
-    >>> from ambra_sdk.api import Api
-    >>> api = Api.with_creds(url, username, password)
-    >>> user_info = api.Session.user().get()
-    >>> print(user_info.email)
-    user@ambrahealth.com
+All `ambra-sdk` service API methods are described in the `AmbraHealth Service API`_ document and all of them are divided by namespaces.
+In `ambra-sdk` we have the same separation of methods by namespaces.
 
 
-You can access to some fields using `dot` notation:
+All methods in `AmbraHealth service API` can be divided on two groups:
 
-.. doctest::
+- Methods with one result
+- Methods with multiple results
 
-    >>> assert user_info['namespace_id'] == user_info.namespace_id
+In order to deal with the first group, use `get()` method for getting results from a prepared request.
+Alternatively, multiple results can be retrieved by using `first()` or `all()` methods to get the first row of results or getting an iterator over all results.
 
-Now, lets get your permissions:
+For example, let's request your user information.
+This is `user method in session namespace`_, so we should use an `api.Session.user` method of `ambra-sdk`.
 
-.. doctest::
+This is a simple method with only one result, so for fetching data from the service,  use the `get()` method::
 
-    >>> namespace_id = user_info.namespace_id
-    >>> permissions = api.Session \
-    ...                  .permissions(
-    ...                      namespace_id=namespace_id,
-    ...                  ).get()
+    from ambra_sdk.api import Api
+    api = Api.with_creds(url, username, password)
+    user_info = api.Session.user().get()
+    print(user_info.email)
 
-As you can see this is big dictionary.
-Using `only` method, we can  request only some interesting fields:
+Let's look at another example where we are using methods that return multiple results.
+One of these methods is the `account list method`_.
 
+Let's get a first object in results::
 
-.. doctest::
+  account = api.Account.list().first()
 
-    >>> permissions = api.Session \
-    ...                  .permissions(namespace_id=namespace_id) \
-    ...  		 .only(['study_download', 'study_upload']) \
-    ...                  .get()
-    >>> assert permissions.to_dict() == {'study_download': 1, 'study_upload': 0}
+`all()` method returns an iterator over all elements::
 
-In `ambra-sdk` we use `get()` method for get some results from api.
-Usually this is some dict results. But some api methods return iterable data.
-For get this kind of data we use `all()` of `first()` methods.
-Lets get list of your accounts. This is iterable response:
+  # Get all accounts
+  accounts = api.Account.list().all()
 
+One can use slices for skipping and taking some number of results::
 
-.. doctest::
+  # Get 7 results after skipping the first 5 rows.
+  accounts = api.Account.list().all()[5:12]
 
-    >>> accounts = api.Account.list().all()
+Now, iterate over all accounts::
 
-This is iterable object:
+  for account in accounts:
+      account_name = account.name
 
-.. doctest::
+.. note::
 
-    >>> for account in accounts:
-    ...     account_name = account.name
+   *ambra-sdk* `all()` method returns a lazy iterator.
+   It means that we request new data from `AmbraHealth API` only when we actually need it.
 
-
-Also, you can use slices:
-
-.. doctest::
-
-    >>> for account in accounts[5:12]:
-    ...     account_name, account_uuid = (account.name, account.uuid)
-
-
-Sometimes you need only first element:
-
-.. doctest::
-
-    >>> account = api.Account.list().first()
-    >>> # Get second result
-    >>> account = api.Account.list().all()[1:].first()
-
-With `Ambra-SDK` you can use filtering (only for methods that support this):
-
-.. doctest::
-
-    >>> from ambra_sdk.service.filtering import Filter
-    >>> from ambra_sdk.service.filtering import FilterCondition
-    >>> 
-    >>> account = api.Account \
-    ...              .list() \
-    ...              .filter_by(
-    ...                  Filter(
-    ...                      'name',
-    ...                       FilterCondition.equals,
-    ...                      account_name,
-    ...                  )
-    ...              ).first()
-    >>> assert account.name == account_name 
-
-Or you can use `models` system for do the same thing easy:
-
-.. doctest::
-
-    >>> from ambra_sdk.models import Account
-    >>> 
-    >>> account = api.Account \
-    ...              .list() \
-    ...              .filter_by(Account.name=='Some Account name') \
-    ...              .first()
-
-
-Set of existing models and fields you can find in :ref:`Models reference<referencies-models>`.
-
-If you remember, we can use `only` method and combine it with filtering:
-
-.. doctest::
-
-    >>> account = api.Account \
-    ...              .list() \
-    ...              .only({'account': ['name']}) \
-    ...              .filter_by(Account.name=='Some Account name') \
-    ...              .first()
-
-
-Using `models` for `only` can also simplify usage:
-
-.. doctest::
-
-    >>> account = api.Account \
-    ...              .list() \
-    ...              .only([Account.name, Account.uuid]) \
-    ...              .filter_by(Account.name=='Some Account name') \
-    ...              .first()
-
-The next thing, what you can do is sorting.
-Lets sort our accounts by name:
-
-.. doctest::
-
-    >>> from ambra_sdk.service.sorting import Sorter, SortingOrder
-    >>> 
-    >>> accounts = api.Account.list() \
-    ...               .sort_by(Sorter('name', SortingOrder.ascending)) \
-    ...               .all()[3:5]
-
-You can use `models` for this case too:
-
-.. doctest::
-
-    >>> accounts = api.Account.list() \
-    ...               .sort_by(Account.name.asc()) \
-    ...               .all()[3:5]
-
-You can combine filtering sorting and `only` methods as you wish.
-
-Some of API methods have special parameters. For example, `study/add` have a `customfield-{UUID}` argument. For usage this arguments, you can execute `Study.add()` method with `customfield_param` argument, where `customfield_param` is a dict of {UUID: value}.
 
 
 Storage API
 -----------
 
-This section describes ambra-sdk storage api part.
-You can find this description in  `Storage API`_ document or in some other ambra health instance `api/v3/storage/storage_api.html`.
+All `ambra-sdk` storage API methods are described in the `AmbraHealth Storage API`_ document .
 
-.. _`Storage API`: https://uat.dicomgrid.com/api/v3/storage/storage_api.html
+As in the server documentation in `ambra-sdk`, all api requests to storage are divided into `Study` and `Image` namespaces.
 
-At the footer of this document you can find current version sting.
-Make sure the current version of `ambra-sdk` is not lower than the api version.
+For accessing storage api methods, use the  ambra-sdk `api.Storage` namespace.
 
-.. doctest::
+For example, let's try to upload a `dicom` file to your user namespace.
 
-    >>> from ambra_sdk import STORAGE_VERSION
-    >>> print(STORAGE_VERSION)
-    LBL0038 v9.0 2020-06-03
+Let’s get your user `namespace_id` and `engine_fqdn` using `ambra-sdk` service api `User.get` and `Namespaces.engine_fqdn` methods::
 
+  user = api.User.get().get()
+  namespace_id = user.namespace_id
+  fqdn = api.Namespace.engine_fqdn(namespace_id=namespace_id).get()
+  engine_fqdn = fqdn.engine_fqdn
 
-Description of all existing methods and you can find in :ref:`Storage API reference<referencies-storage-api>`. 
+Then, upload `dicom` file to the storage::
 
-For accessing storage api commands you can use `api.Storage` namespace.
-
-As in the server documentation in `ambra-sdk` all api requests to storage splitted on `Study` and `Image` commands.
-
-For example, lets try to upload dicom file to your namespace.
-
-First af all, you need get your `namespace_id` and `engine_fqdn`:
-
-.. doctest::
-
-    >>> user = api.User.get().get()
-    >>> namespace_id = user.namespace_id
-    >>> fqdn = api.Namespace.engine_fqdn(namespace_id=namespace_id).get()
-    >>> engine_fqdn = fqdn.engine_fqdn
-
-Now, lets upload dicom file to the storage:
-
-
-.. doctest::
-    :options: +SKIP
-
-    >>> dicom_path = 'PATH_TO_DICOM'
-    >>> with open(dicom_path, 'rb') as dicom_file:
-    ...     uploaded_image = api.Storage.Image.upload(
-    ...         engine_fqdn=fqdn.engine_fqdn,
-    ...         namespace=namespace_id,
-    ...         opened_file=dicom_file,
-    ...     )
+  dicom_path = 'PATH_TO_DICOM'
+  with open(dicom_path, 'rb') as dicom_file:
+      uploaded_image = api.Storage.Image.upload(
+          engine_fqdn=fqdn.engine_fqdn,
+          namespace=namespace_id,
+          opened_file=dicom_file,
+      )
  
+.. note::
+
+   Unlike service API methods, storage methods do not use `get()`, `first()` or `all()`.
 
 
 Addon methods
 -------------
 
-This section describes ambra-sdk addon namespace part.
-Reference of all existing methods and you can find in :ref:`Addon reference<referencies-addon>`. 
+All service and storage api methods are  described in the `AmbraHealth` specification documents.
+In `ambra-sdk`, all methods outside of this specifications are placed in the `Addon` namespace.
 
-Lets upload some `study` to storage.
-First of all you need to upload dicoms to storage.
-Than you should wait for study readiness in `v3services`.
+For example, one common task is to upload a new study in `AmbraHealth`, upload `dicom` files to storage, and wait for a new study object in service.
+Use `api.Addon.Study.upload_and_get` method::
 
-Actually, it's a little more complicated..
-You can use `api.Addon.Study.upload_and_get` method for doing this:
+  from pathlib import Path
+  study_dir = Path('/path_to_study_dir')
+  
+  new_study = api.Addon.Study.upload_and_get(
+      study_dir=study_dir,
+      namespace_id=user_info.namespace_id
+  )
 
-.. doctest::
-    :options: +SKIP
 
-    >>> from pathlib import Path
-    >>> study_dir = Path('/path_to_study_dir')
-    >>> 
-    >>> new_study = api.Addon.Study.upload_and_get(
-    ...     study_dir=study_dir,
-    ...     namespace_id=user_info.namespace_id
-    ... )
-    >>> print(new_study.uuid)
+.. _`AmbraHealth service API`: https://uat.dicomgrid.com/api/v3/api.html
+.. _`AmbraHealth storage API`: https://uat.dicomgrid.com/api/v3/storage/storage_api.html
+.. _`user method in session namespace`: https://uat.dicomgrid.com/api/v3/api.html#session_user
+.. _`account list method`: https://uat.dicomgrid.com/api/v3/api.html#account_list

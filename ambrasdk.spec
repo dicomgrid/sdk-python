@@ -14,7 +14,7 @@
 %define _missing_doc_files_terminate_build 0
 
 %define name    ambra-sdk
-%define version 3.20.5.0
+%define version 3.20.6.0
 
 Summary: Ambra-SDK library
 Name: %{name}

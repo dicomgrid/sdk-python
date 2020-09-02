@@ -203,6 +203,7 @@ class Account:
         account_login=None,
         account_password=None,
         email=None,
+        epic_user=None,
         event_approve=None,
         event_case_assignment=None,
         event_harvest=None,
@@ -237,6 +238,7 @@ class Account:
         :param account_login: Users login name in the account. (optional).
         :param account_password: Password for the account_password. (optional).
         :param email: email
+        :param epic_user: Epic user used to map Epic users into Ambra&#39;s ones to track activity. (optional).
         :param event_approve: Notify the user on a approval needed into the account namespace (optional)
         :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)
         :param event_harvest: Notify the user on a harvest into the account namespace (optional)
@@ -255,7 +257,7 @@ class Account:
         :param event_thin_study_success: Notify the user when a thin study retrieval they initiated succeeds (optional)
         :param event_upload: Notify the user on an upload into the account namespace (optional)
         :param event_upload_fail: Notify the user on a failed upload into the account namespace (optional)
-        :param global_param: Flag if this is a global user. (optional).
+        :param global_param: Flag if this is a global user (optional).
         :param max_sessions: Over-ride value for the max number of simultaneous sessions the user can have. (optional).
         :param password_reset: Flag if the password needs to be reset. (optional).
         :param role_id: uuid of the users role in the account (optional).
@@ -273,6 +275,7 @@ class Account:
            'account_login': account_login,
            'account_password': account_password,
            'email': email,
+           'epic_user': epic_user,
            'event_approve': event_approve,
            'event_case_assignment': event_case_assignment,
            'event_harvest': event_harvest,
@@ -333,6 +336,7 @@ class Account:
         account_login=None,
         account_password=None,
         customfield_param=None,
+        epic_user=None,
         event_approve=None,
         event_case_assignment=None,
         event_harvest=None,
@@ -367,6 +371,7 @@ class Account:
         :param account_login: Users login name in the account. (optional).
         :param account_password: Password for the account_password. (optional).
         :param customfield_param: Custom field(s) (optional)
+        :param epic_user: Epic user used to map Epic users into Ambra&#39;s ones to track activity (optional).
         :param event_approve: Notify the user on a approval needed into the account namespace (optional)
         :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)
         :param event_harvest: Notify the user on a harvest into the account namespace (optional)
@@ -398,6 +403,7 @@ class Account:
            'account_email': account_email,
            'account_login': account_login,
            'account_password': account_password,
+           'epic_user': epic_user,
            'event_approve': event_approve,
            'event_case_assignment': event_case_assignment,
            'event_harvest': event_harvest,

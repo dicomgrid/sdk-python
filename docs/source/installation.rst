@@ -1,3 +1,5 @@
+.. _referencies-installation:
+
 Installation
 ============
 

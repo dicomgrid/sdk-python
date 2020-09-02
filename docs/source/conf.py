@@ -42,6 +42,16 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
+    'sphinxcontrib.spelling',
+]
+
+spelling_lang='en_US'
+tokenizer_lang='en_US'
+spelling_word_list_filename='spelling_wordlist.txt'
+spelling_exclude_patterns=[
+    'referencies/models.rst',
+    'referencies/service_api.rst',
+    'referencies/storage_api.rst',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

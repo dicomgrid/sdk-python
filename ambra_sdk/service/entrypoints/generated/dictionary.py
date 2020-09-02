@@ -71,7 +71,7 @@ class Dictionary:
         :param case_sensitive: Flag if the dictionary lookup is case sensitive or not
         :param lookup: A JSON array of field names that will be concatenated and MD5 hashed for the dictionary lookup value
         :param name: The dictionary name
-        :param object: Object this is applied against (Study|Order|User_account|Case)
+        :param object: Object this is applied against (Study|Order|User_account|Case|Patient)
         :param replace: A JSON array of the field names that will be replaced for a successful lookup
         """
         request_data = {

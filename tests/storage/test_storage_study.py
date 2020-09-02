@@ -5,9 +5,9 @@ import pytest
 from dynaconf import settings
 
 from ambra_sdk.exceptions.storage import (
-    AmbraResponseException,
     NotFound,
     PermissionDenied,
+    UnprocessableEntity,
     UnsupportedMediaType,
 )
 from ambra_sdk.service.ws import WSManager
@@ -177,6 +177,69 @@ class TestStorageStudy:
                 image_uid=image['id'],
             )
 
+    def test_delete_images(
+        self,
+        api,
+        account,
+        auto_remove,
+        storage_auto_remove,
+    ):
+        """Test delete_images method."""
+        study_dir = Path(__file__) \
+            .parents[1] \
+            .joinpath('dicoms', 'anonymize')
+        study = api.Addon.Study.upload_and_get(
+            study_dir=study_dir,
+            namespace_id=account.account.namespace_id,
+            timeout=settings.API['upload_study_timeout'],
+            ws_timeout=settings.API['ws_timeout'],
+        )
+        logger.info('Uploaded study %s', study.uuid)
+        auto_remove(study)
+
+        engine_fqdn = study.engine_fqdn
+        storage_namespace = study.storage_namespace
+        study_uid = study.study_uid
+        storage_auto_remove(
+            engine_fqdn,
+            storage_namespace,
+            study_uid,
+        )
+        schema = api.Storage.Study.schema(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            study_uid=study_uid,
+        )
+        request_body = ','.join(
+            [
+                i['id'] for i in schema.series[0]['images']
+            ],
+        )
+
+        delete_images = api.Storage.Study.delete_images(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            study_uid=study_uid,
+            request_body=request_body,
+        )
+        assert delete_images.status_code in {200, 202}
+
+        with pytest.raises(NotFound):
+            delete_images = api.Storage.Study.delete_images(
+                engine_fqdn=engine_fqdn,
+                namespace=storage_namespace,
+                study_uid='unknownstudy',
+                request_body=request_body,
+            )
+
+        with pytest.raises(UnprocessableEntity):
+            delete_images = api.Storage.Study.delete_images(
+                engine_fqdn=engine_fqdn,
+                namespace=storage_namespace,
+                study_uid=study_uid,
+                request_body='',
+            )
+
     def test_count(self, api, readonly_study, image):
         """Test count method."""
         engine_fqdn = readonly_study.engine_fqdn
@@ -303,17 +366,15 @@ class TestStorageStudy:
         storage_namespace = readonly_study.storage_namespace
         study_uid = readonly_study.study_uid
 
-        # TODO test with tiff data.
-        # Current study have not tiff dicoms.
-        with pytest.raises(AmbraResponseException):
-            api.Storage.Study.frame_tiff(
-                engine_fqdn=engine_fqdn,
-                namespace=storage_namespace,
-                study_uid=study_uid,
-                image_uid=image['id'],
-                image_version=image['version'],
-                frame_number=0,
-            )
+        frame_tiff = api.Storage.Study.frame_tiff(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            study_uid=study_uid,
+            image_uid=image['id'],
+            image_version=image['version'],
+            frame_number=0,
+        )
+        assert frame_tiff.status_code == 200
 
     def test_pdf(self, api, readonly_study, image):
         """Test pdf method."""

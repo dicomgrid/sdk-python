@@ -216,6 +216,7 @@ class Link:
         charge_amount,
         charge_currency,
         charge_description,
+        created,
         description,
         email,
         filter,
@@ -254,6 +255,7 @@ class Link:
         :param charge_amount: Amount to charge in pennies before the link can be accessed
         :param charge_currency: Charge currency
         :param charge_description: Charge description
+        :param created: Created datetime stamp of the link
         :param description: Description of the link
         :param email: Email address the link was sent to
         :param filter: The filter expression
@@ -292,6 +294,7 @@ class Link:
            'charge_amount': charge_amount,
            'charge_currency': charge_currency,
            'charge_description': charge_description,
+           'created': created,
            'description': description,
            'email': email,
            'filter': filter,

@@ -18,6 +18,7 @@ from ambra_sdk.exceptions.service import InvalidSetting
 from ambra_sdk.exceptions.service import InvalidSettingValue
 from ambra_sdk.exceptions.service import MissingFields
 from ambra_sdk.exceptions.service import NeedsAnyOrAll
+from ambra_sdk.exceptions.service import NotCustomfieldsPricing
 from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import NotHash
 from ambra_sdk.exceptions.service import NotList
@@ -204,35 +205,48 @@ class Namespace:
         uuid,
         charge_description=None,
         currency=None,
+        customfields_pricing=None,
         pricing=None,
         second_opinion_config=None,
         second_opinion_share=None,
+        share_charge_by_modality=None,
+        sum_price_matches=None,
     ):
         """Share pricing.
         :param uuid: The uuid of the namespace
         :param charge_description: The description of the charge (optional)
         :param currency: 3-letter ISO code for currency to charge in (USD|GBP) (optional)
+        :param customfields_pricing: Pricing table in JSON format (optional)
         :param pricing: Pricing table in JSON format (optional)
         :param second_opinion_config: JSON configuration for the second opinion workflow (optional)
         :param second_opinion_share: Flag to enable/disable the second opinion workflow for the share (optional)
+        :param share_charge_by_modality: Charge shares (including second opinion) by modality of a shared study if this flag is set (optional)
+        :param sum_price_matches: Flag to search for all matches in customfields_pricing table and to add them up (optional)
         """
         request_data = {
            'charge_description': charge_description,
            'currency': currency,
+           'customfields_pricing': customfields_pricing,
            'pricing': pricing,
            'second_opinion_config': second_opinion_config,
            'second_opinion_share': second_opinion_share,
+           'share_charge_by_modality': share_charge_by_modality,
+           'sum_price_matches': sum_price_matches,
            'uuid': uuid,
         }
 	
         errors_mapping = {}
         errors_mapping[('INVALID_AMOUNT', None)] = InvalidAmount('An invalid amount. The error_subtype holds the invalid amount')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The pricing condition is invalid')
         errors_mapping[('INVALID_CURRENCY', None)] = InvalidCurrency('Invalid currency')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('The field is not a valid flag')
+        errors_mapping[('INVALID_INTEGER', None)] = InvalidInteger('The price is not an integer number')
         errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NEEDS_ANY_OR_ALL', None)] = NeedsAnyOrAll('The hash needs an &#34;ANY&#34; or &#34;ALL&#34; key')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
         errors_mapping[('NOT_HASH', None)] = NotHash('The pricing field is not a hash')
+        errors_mapping[('NOT_LIST', None)] = NotList('The customfields_pricing table is not a JSON list')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to price this namespace')
         errors_mapping[('ONLY_ALL', None)] = OnlyAll('If the hash has an ALL value it can&#39;t have any other values')
         query_data = {
@@ -244,38 +258,31 @@ class Namespace:
         }
         return QueryO(**query_data)
     
-    def case_pricing(
+    def share_price(
         self,
         uuid,
-        case_pricing=None,
-        sum_case_price_matches=None,
+        customfield_param=None,
     ):
-        """Case pricing.
+        """Share price.
         :param uuid: The uuid of the namespace
-        :param case_pricing: Pricing table in JSON format (optional)
-        :param sum_case_price_matches: Flag to search for all matches in pricing table and to add them up (optional)
+        :param customfield_param: Custom field(s) defined for the case (or study) account objects with values entered in the second opinion wizard (or in the image share screen) (optional)
         """
         request_data = {
-           'case_pricing': case_pricing,
-           'sum_case_price_matches': sum_case_price_matches,
            'uuid': uuid,
         }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
 	
         errors_mapping = {}
-        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The pricing condition is invalid')
-        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('The field is not a valid flag')
-        errors_mapping[('INVALID_INTEGER', None)] = InvalidInteger('The price is not an integer number')
-        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
-        errors_mapping[('NOT_LIST', None)] = NotList('The pricing table is not a JSON list')
-        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to price this namespace')
+        errors_mapping[('NOT_CUSTOMFIELDS_PRICING', None)] = NotCustomfieldsPricing('The namespace is set up to charge by modality')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace can not be found')
         query_data = {
             'api': self._api,
-            'url': '/namespace/case/pricing',
+            'url': '/namespace/share/price',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
-            'required_sid': True,
+            'required_sid': False,
         }
         return QueryO(**query_data)
     

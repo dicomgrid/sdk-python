@@ -1117,7 +1117,7 @@ class Study:
         uuid=None,
     ):
         """Audit.
-        :param action: The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_MERGE|STUDY_SPLIT|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)
+        :param action: The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_MERGE|STUDY_SPLIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)
         :param detail: Additional information
         :param phi_namespace: The phi namespace of the study (optional)
         :param storage_namespace: The storage namespace of the study (optional if uuid is passed)

@@ -233,6 +233,7 @@ class Node:
         setting_param=None,
         settings=None,
         storage_namespace=None,
+        warning_email=None,
     ):
         """Set.
         :param uuid: The node id
@@ -260,6 +261,7 @@ class Node:
         :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
         :param settings: A hash of the account settings that the node can override (optional)
         :param storage_namespace: Namespace uuid to attach the node to. This requires a sysadmin sid and must be within the same account (optional)
+        :param warning_email: Email address(es) to send warning notices (optional)
 
         Notes:
         (sid OR serial_no) - The session id or serial number of the node
@@ -289,6 +291,7 @@ class Node:
            'settings': settings,
            'storage_namespace': storage_namespace,
            'uuid': uuid,
+           'warning_email': warning_email,
         }
         if setting_param is not None:
             setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
@@ -724,7 +727,7 @@ class Node:
         """Log.
         :param end: End time stamp in YYYY-MM-DD HH:MM:SS format
         :param start: Start time stamp in YYYY-MM-DD HH:MM:SS format
-        :param type: Type of log (log|dicom|queue) defaults to log if not passed
+        :param type: Type of log (log|dicom|queue|system) defaults to log if not passed
         :param uuid: The node id
         """
         request_data = {
@@ -780,6 +783,64 @@ class Node:
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': False,
+        }
+        return QueryO(**query_data)
+    
+    def performance_set(
+        self,
+        data,
+        serial_no,
+        uuid,
+    ):
+        """Performance set.
+        :param data: A JSON data structure with performance data
+        :param serial_no: The serial number of the node
+        :param uuid: The node id
+        """
+        request_data = {
+           'data': data,
+           'serial_no': serial_no,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/node/performance/set',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        return QueryO(**query_data)
+    
+    def performance_get(
+        self,
+        uuid,
+        serial_no=None,
+    ):
+        """Performance get.
+        :param uuid: The node id
+        :param serial_no: serial_no
+
+        Notes:
+        (sid OR serial_no) - The session id or serial number of the node
+        """
+        request_data = {
+           'serial_no': serial_no,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this node')
+        query_data = {
+            'api': self._api,
+            'url': '/node/performance/get',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
         }
         return QueryO(**query_data)
     

@@ -101,6 +101,7 @@ class Destination:
         hl7_address=None,
         hl7_fetch_filter=None,
         hl7_port=None,
+        manual_push_roles=None,
         push_related_studies=None,
         sort_order=None,
         sqlch_psh_if_img_unchg=None,
@@ -131,6 +132,7 @@ class Destination:
         :param hl7_address: Address of an attached HL7 destination (optional except for VIRTUAL destinations)
         :param hl7_fetch_filter: A transform condition expression (see /transform/add for format) to match against the HL7 message. Only fire a query retrieve if the message matches the condition (optional)
         :param hl7_port: Port of an attached HL7 destination (optional except for VIRTUAL destinations)
+        :param manual_push_roles: A comma separated list of role uuids, a user is required to have one of them to manually push to this destination (optional)
         :param push_related_studies: Push all the related studies (same MRN/patientid) in the namespace when a study is pushed (optional)
         :param sort_order: Integer value for sorting (optional)
         :param sqlch_psh_if_img_unchg: Squelch pushes to the destination if the image count has not changed and the push is by a routing rule (optional)
@@ -157,6 +159,7 @@ class Destination:
            'hl7_fetch_filter': hl7_fetch_filter,
            'hl7_port': hl7_port,
            'linked_destination': linked_destination,
+           'manual_push_roles': manual_push_roles,
            'name': name,
            'node_id': node_id,
            'path': path,
@@ -213,6 +216,7 @@ class Destination:
         hl7_address=None,
         hl7_fetch_filter=None,
         hl7_port=None,
+        manual_push_roles=None,
         name=None,
         node_id=None,
         path=None,
@@ -241,6 +245,7 @@ class Destination:
         :param hl7_address: Address of an attached HL7 destination (optional)
         :param hl7_fetch_filter: A transform condition expression (see /transform/add for format) to match against the HL7 message. Only fire a query retrieve if the message matches the condition (optional)
         :param hl7_port: Port of an attached HL7 destination (optional)
+        :param manual_push_roles: A comma separated list of role uuids, a user is required to have one of them to manually push to this destination (optional)
         :param name: Name of the destination (optional)
         :param node_id: uuid of the node that handles the destination (optional)
         :param path: Path of the folder (optional)
@@ -268,6 +273,7 @@ class Destination:
            'hl7_address': hl7_address,
            'hl7_fetch_filter': hl7_fetch_filter,
            'hl7_port': hl7_port,
+           'manual_push_roles': manual_push_roles,
            'name': name,
            'node_id': node_id,
            'path': path,
@@ -352,6 +358,7 @@ class Destination:
         self,
         uuid,
         accession_number=None,
+        bundle_id=None,
         copy_to=None,
         create_study=None,
         create_thin=None,
@@ -373,6 +380,7 @@ class Destination:
         """Search.
         :param uuid: uuid of the destination
         :param accession_number: Accession number to find (optional)
+        :param bundle_id: An integral number Used internally to track searches initiated from a single bundle (optional)
         :param copy_to: uuid of a namespace to copy the retrieved or create_thin studies into (optional)
         :param create_study: The maximum number of studies to retrieve from this search instead of creating an activity for the search results (optional)
         :param create_thin: The maximum number of thin studies to create from this search instead of creating an activity for the search results (optional)
@@ -397,6 +405,7 @@ class Destination:
         """
         request_data = {
            'accession_number': accession_number,
+           'bundle_id': bundle_id,
            'copy_to': copy_to,
            'create_study': create_study,
            'create_thin': create_thin,

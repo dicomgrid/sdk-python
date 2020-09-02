@@ -341,7 +341,7 @@ class Api:  # NOQA:WPS214,WPS230
             'connect': 5,
             'read': 5,
             'status': 5,
-            'status_forcelist': [500, 502, 503, 504],
+            'status_forcelist': [503, 504],
             'backoff_factor': 0.1,
             'method_whitelist': method_whitelist,
         }

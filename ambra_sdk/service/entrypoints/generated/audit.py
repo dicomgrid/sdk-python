@@ -64,21 +64,27 @@ class Audit:
         user_id,
         download=None,
         reverse=None,
+        study_fields=None,
     ):
         """User.
         :param account_id: The id of the account
         :param user_id: The id of the user to audit
         :param download: Flag to create a zipped CSV file. A report_id will be returned and the file can be accessed via /report/status and /report/zip (optional)
         :param reverse: Flag to reverse the default sort order (optional)
+        :param study_fields: JSON list of study fields to include in the response (optional)
         """
         request_data = {
            'account_id': account_id,
            'download': download,
            'reverse': reverse,
+           'study_fields': study_fields,
            'user_id': user_id,
         }
 	
         errors_mapping = {}
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The user was not found')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to access this user record')
@@ -90,7 +96,7 @@ class Audit:
             'required_sid': True,
         }
         query_data['paginated_field'] = 'events'
-        return QueryOP(**query_data)
+        return QueryOPF(**query_data)
     
     def account(
         self,

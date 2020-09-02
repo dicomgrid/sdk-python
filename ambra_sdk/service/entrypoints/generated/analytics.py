@@ -143,3 +143,45 @@ class Analytics:
         }
         return QueryO(**query_data)
     
+    def user(
+        self,
+        account_id,
+        count,
+        period,
+        end_date=None,
+        namespace_id=None,
+        user_id=None,
+    ):
+        """User.
+        :param account_id: The account id
+        :param count: The number of periods to get
+        :param period: The time period (day|week|month|year)
+        :param end_date: The end date, default is today if not passed (optional)
+        :param namespace_id: Namespace filter (optional)
+        :param user_id: User filter (optional)
+        """
+        request_data = {
+           'account_id': account_id,
+           'count': count,
+           'end_date': end_date,
+           'namespace_id': namespace_id,
+           'period': period,
+           'user_id': user_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_COUNT', None)] = InvalidCount('Invalid or excessive count value')
+        errors_mapping[('INVALID_END_DATE', None)] = InvalidEndDate('An invalid period')
+        errors_mapping[('INVALID_PERIOD', None)] = InvalidPeriod('An invalid period')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or patient can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view analytics for this account or namespace')
+        query_data = {
+            'api': self._api,
+            'url': '/analytics/user',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    

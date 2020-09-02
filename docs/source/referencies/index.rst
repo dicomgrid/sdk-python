@@ -1,5 +1,5 @@
-Reference
-=========
+References
+==========
 
 The page contains all information API entrypoints and models.
 

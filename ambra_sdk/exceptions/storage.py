@@ -85,3 +85,17 @@ class EntityTooLarge(AmbraResponseException):
         if description is None:
             description = 'Entity too large.'
         super().__init__(code, description)
+
+
+class UnprocessableEntity(AmbraResponseException):
+    """UnprocessableEntity."""
+
+    def __init__(self, description=None):
+        """Init.
+
+        :param description: response description
+        """
+        code = 422
+        if description is None:
+            description = 'Request body is empty.'
+        super().__init__(code, description)

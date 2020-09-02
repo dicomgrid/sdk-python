@@ -200,7 +200,6 @@
                 <li><a href="#case_delete">/case/delete</a>
                 <li><a href="#case_list">/case/list</a>
                 <li><a href="#case_attach">/case/attach</a>
-                <li><a href="#case_price">/case/price</a>
             </ul>
             <li><a href="#patient" name="patient-idx">Patient commands</a>
             <ul>
@@ -277,6 +276,8 @@
                 <li><a href="#node_event">/node/event</a>
                 <li><a href="#node_log">/node/log</a>
                 <li><a href="#node_metric">/node/metric</a>
+                <li><a href="#node_performance_set">/node/performance/set</a>
+                <li><a href="#node_performance_get">/node/performance/get</a>
                 <li><a href="#node_progress_add">/node/progress/add</a>
                 <li><a href="#node_progress_list">/node/progress/list</a>
                 <li><a href="#node_progress_get">/node/progress/get</a>
@@ -375,7 +376,7 @@
                 <li><a href="#namespace_settings">/namespace/settings</a>
                 <li><a href="#namespace_share_code">/namespace/share_code</a>
                 <li><a href="#namespace_share_pricing">/namespace/share/pricing</a>
-                <li><a href="#namespace_case_pricing">/namespace/case/pricing</a>
+                <li><a href="#namespace_share_price">/namespace/share/price</a>
                 <li><a href="#namespace_anonymize">/namespace/anonymize</a>
                 <li><a href="#namespace_coverpage">/namespace/coverpage</a>
                 <li><a href="#namespace_validate_customfields">/namespace/validate/customfields</a>
@@ -402,6 +403,7 @@
                 <li><a href="#analytics_study">/analytics/study</a>
                 <li><a href="#analytics_patient_portal">/analytics/patient/portal</a>
                 <li><a href="#analytics_radreport">/analytics/radreport</a>
+                <li><a href="#analytics_user">/analytics/user</a>
             </ul>
             <li><a href="#filter" name="filter-idx">Filter commands</a>
             <ul>
@@ -2629,16 +2631,6 @@
                 <td>Comma separated list of email addresses to send a case_completed email when a case is completed. The special values <code>user</code> <code>assigned_admin</code> and <code>assigned_medical</code> will be replaced by the appropriate email address for the case. 
             </tr>
             <tr>
-                <td>case_charge_by_modality</td>
-                <td>Flag</td>
-                <td>1</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>Charge second opinion by modality of shared study</td>
-            </tr>
-            <tr>
                 <td>study_status_tags</td>
                 <td>Text</td>
                 <td></td>
@@ -2909,12 +2901,22 @@
                 <td>Enable display of the study push status for the account when they push to a destination node in a different namespace</td>
             </tr>
             <tr>
-                <td>reverse_patient_name</td>
+                <td>show_study_same_uid_push_status</td>
                 <td>Flag</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
+                <td>Enable display of the study push status from all study versions with the same UID in the account</td>
+            </tr>
+            <tr>
+                <td>reverse_patient_name</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
                 <td>0</td>
                 <td>Define patient name as last^first instead of first^last</td>
             </tr>
@@ -3353,6 +3355,16 @@
                 <td>Authenticate against both the account_password and user password when logging in using an account_alias</td>
             </tr>
             <tr>
+                <td>welcome_password_reset_token_ttl</td>
+                <td>Number</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Reset tokens generated for welcome messages are valid for so many seconds</td>
+            </tr>
+            <tr>
                 <td>ip_whitelist</td>
                 <td>Text</td>
                 <td></td>
@@ -3391,6 +3403,16 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Modify the /user/invite behavior to automatically add the user to the account if they are already on the system</td>
+            </tr>
+            <tr>
+                <td>invite_ttl</td>
+                <td>Number</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Account user invites are valid for so many seconds</td>
             </tr>
             <tr>
                 <td>duplicate_study_check</td>
@@ -3451,6 +3473,16 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Include ADT messages when search for orders in /study/find/order</td>
+            </tr>
+            <tr>
+                <td>include_manual_orders_in_study_find_order</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Include orders created in Ambra through the API when search for orders in /study/find/order</td>
             </tr>
             <tr>
                 <td>use_namespace_name_on_upload_request</td>
@@ -3521,6 +3553,16 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Allow retrieving of thin studies in the patient portal</td>
+            </tr>
+            <tr>
+                <td>ignore_mrn_on_thin_retrieve</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Ignore MRN on thin retrieve</td>
             </tr>
             <tr>
                 <td>allow_portal_pin_to_dup_addresses</td>
@@ -3802,7 +3844,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>A JSON hash mapping the value in MSH_3 or MSH_5 to another account uuid. The HL7 message will be attached to the mapped account. The special hash key <code>_HL7_FIELD_</code> can be used to set a different place to get the value .e.g. <code>MSH_6_1</code>  This can only be set by a sysadmin or support user</td>
+                <td>A JSON hash mapping the value in MSH_3 or MSH_5 to another account uuid. The hash key is an HL7 message field, the value can be an account uuid or a hash with acount_id and node_id(optional) keys. The HL7 message will be attached to the mapped account and a node will be replaced with the given one. The special hash key <code>_HL7_FIELD_</code> can be used to set a different place to get the value .e.g. <code>MSH_6_1</code>  This can only be set by a sysadmin or support user</td>
             </tr>
             <tr>
                 <td>report_csv_download_concat</td>
@@ -4203,9 +4245,11 @@
                         <li> epic_client_id &bull; The EPIC client id
                         <li> url &bull; The root EPIC url to call. <code>api/FHIR/DSTU2/Patient</code> will be appended to it
                         <li> version &bull; Optional version number to be used after DSTU (defaults to 2)
-                        <li> full_url &bull; Optional full URL for the Epic endpoint if is not in the standard location
-                        <li> mrn_field &bull; The name of the identifier field that holds the MRN e.g. <code>urn:oid:1.2.840.114350.1.13.0.1.7.5.737384.0</code>
+                        <li> full_url &bull; Optional full URL for the Epic endpoint if is not in the standard location.
+                        <li> use_iss_host &bull; Flag to substitute the host passed in the iss parameter during the OAuth cycle into the full_url
+                        <li> mrn_field &bull; The name of the identifier field that holds the MRN e.g. <code>urn:oid:1.2.840.114350.1.13.0.1.7.5.737384.0</code>. If the integration supports multiple Epic instances that can be a JSON array of the identifier fields to search for. 
                         <li> timeout &bull; Optional number of seconds for the timeout on the FHIR call to Epic, defaults to 5
+                        <li> upload_namespace_id &bull; UUID of the namespace to upload into. Defaults to the account namespace if not specified
                         <li> mrn_search &bull; Search by MRN instead of patient PHI. This field should contain a text template to create the Epic identifier value e.g. <nobr><code>MRN|{$patientid}</code></nobr>
                         <li> server_oauth_url &bull; Full URL to the Epic endpoint to get the server to server OAuth token from e.g. <code>https://apporchard.epic.com/interconnect-aocurprd-oauth/oauth2/token</code>
                         <li> server_oauth_private_key &bull; The private key to encrypt the JWT token for server OAuth. The public key is registered with Epic. Each setup requires a unique key setup and the the keys can be generated as follows<br><code>openssl genrsa -out privatekey.pem 2048</code><br><code>openssl req -new -x509 -key privatekey.pem -out publickey509.pem -subj '/CN=myapp'</code><br>To convert the private key to a single line for JSON usage run the following command<br><code>jq -sR < privatekey.pem</code>
@@ -4335,7 +4379,27 @@
                 <td>Settings for the AI question</td>
             </tr>
             <tr>
+                <td>anonymize_study_images_aws_textract</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Settings for the AI question</td>
+            </tr>
+            <tr>
                 <td>anonymize_study_images_tensorflow_east</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Settings for the AI question</td>
+            </tr>
+            <tr>
+                <td>detect_phi_in_study_images_google_dlp</td>
                 <td>Text</td>
                 <td></td>
                 <td>0</td>
@@ -4426,6 +4490,36 @@
             </tr>
             <tr>
                 <td>ai_bodypart_abdomen_chest_pelvis</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Settings for the AI question</td>
+            </tr>
+            <tr>
+                <td>ai_ocr_study_images_google_vision</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Settings for the AI question</td>
+            </tr>
+            <tr>
+                <td>ai_anonymize_study_hl7_dwf</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Settings for the AI question</td>
+            </tr>
+            <tr>
+                <td>ai_classify_contrast_in_study_series</td>
                 <td>Text</td>
                 <td></td>
                 <td>0</td>
@@ -4535,14 +4629,14 @@
                 <td>Sync the user credentials on account_login and account_password when they are added to an account. If they change their password under an account vanity only update the account_password</td>
             </tr>
             <tr>
-                <td>exclude_from_global_purge</td>
+                <td>include_in_global_purge</td>
                 <td>Flag</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>Exclude this account from global purging rules</td>
+                <td>Include this account in global purging rules</td>
             </tr>
             <tr>
                 <td>helpscout_beacon_id</td>
@@ -4677,6 +4771,17 @@
                 <td>Set the study to phantom state on a re-upload</td>
             </tr>
             <tr>
+                <td>bundle_notify_destination_search</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Condense email notifications for destination searhes initiated from a bundle</td>
+            </tr>
+
+            <tr>
                 <td>disable_sticky_phi</td>
                 <td>Flag</td>
                 <td>0</td>
@@ -4732,9 +4837,19 @@
                 <td>ai_anonymize_study_images_tensorflow_east</td>
             </tr>
             <tr>
+                <td>detect_phi_in_study_images_google_dlp</td>
+                <td>Detect PHI presence in the study images using Google DLP</td>
+                <td>ai_detect_phi_in_study_images_google_dlp</td>
+            </tr>
+            <tr>
                 <td>anonymize_study_images_aws_rekognition</td>
-                <td>Anonymize the study images using AWS</td>
+                <td>Anonymize the study images using AWS Rekognition</td>
                 <td>ai_anonymize_study_images_aws_rekognition</td>
+            </tr>
+            <tr>
+                <td>anonymize_study_images_aws_textract</td>
+                <td>Anonymize the study images using AWS Textract</td>
+                <td>ai_anonymize_study_images_aws_textract</td>
             </tr>
             <tr>
                 <td>anonymize_study_hl7</td>
@@ -4795,6 +4910,21 @@
                 <td>bodypart_abdomen_chest_pelvis</td>
                 <td>Detects if the study image(s) contain(s) abdomen, chest and/or pelvis</td>
                 <td>ai_bodypart_abdomen_chest_pelvis</td>
+            </tr>
+            <tr>
+                <td>ocr_study_images_google_vision</td>
+                <td>Performs OCR using Google Vision API and returns detected text</td>
+                <td>ai_ocr_study_images_google_vision</td>
+            </tr>
+            <tr>
+                <td>ai_anonymize_study_hl7_dwf</td>
+                <td>Detects if text contains PHI and replaces it with asterisk chars</td>
+                <td>anonymize_study_hl7_dwf</td>
+            </tr>
+            <tr>
+                <td>classify_contrast_in_study_series</td>
+                <td>Detects the presence of contrast in a series of study images</td>
+                <td>ai_classify_contrast_in_study_series</td>
             </tr>
         </table>
 
@@ -5907,7 +6037,7 @@
                     * <i>type_uuid</i> &bull; Id of the object the namespace is linked to<br>
                     * <i>permissions</i> &bull; The users permissions in the namespace<br>
                     * <i>settings</i> &bull; The namespace settings<br>
-                    * <i>destinations</i> &bull; An array of the destinations the users can push too. Each object in the array has the same fields as the <a href="#destination_get">/destination/get</a> command.<br>
+                    * <i>destinations</i> &bull; An array of the destinations the users can push to. Each object in the array has the same fields as the <a href="#destination_get">/destination/get</a> command.<br>
                     * <i>events</i> &bull; A hash of the event flags for the namespace.<br>
                     * <i>share_code</i> &bull; The share code of the namespace.<br>
                     * <i>study_count</i> &bull; The total number of approved, non-phantom studies in the namespace<br>
@@ -6625,7 +6755,6 @@
                     <i>referring_physician</i> &bull; DICOM tag (0008,0090)<br>
                     <i>image_count</i> &bull; Images in the study<br>
                     <i>attachment_count</i> &bull; Attachment count<br>
-                    <i>must_approve</i> &bull; Is the study waiting approval<br>
                     <i>size</i> &bull; Size of the study in bytes<br>
                     <i>compressed_size</i> &bull; Compressed size of the study in bytes<br>
                     <i>integration_key</i> &bull; Integration key for the study<br>
@@ -6664,8 +6793,7 @@
                     * <i>image_count</i> &bull; The image count for the push<br>
                     * <i>updated</i> &bull; Date and time the status was last updated<br>
                     * <i>created</i> &bull; Date and time the push  was created<br>
-                    * <i>group_key</i> &bull; The string key used to group local push statuses<br>
-                    * <i>copy_namespace</i> &bull; The PHI namespace uuid of the study copy used to push to a destination<br>
+                    * <i>group_key</i> &bull; The string key used to group push statuses. Statuses that group: local pushes (by destination address), copy statuses, same UID statuses<br>
                     * <i>is_local</i> &bull; The flag indicating if the corresponding push was local<br>
                     --- The following fields are only returned if the extra flag is specified ---<br>
                     <i>created_at</i> &bull; Date and time the record was created<br>
@@ -7214,7 +7342,7 @@
                         <li> The masshiway parameter is a JSON hash with three of the following keys required and one must be last name: last_name, first_name, speciality, zip, phone, hiway_id
                         <li> The rsna parameter is a JSON hash with pin and exam_id fields
                         <li> The email parameter can be a list of email addresses
-                        <li> The sharer is charged with namespace's <a href="#share-pricing">Share pricing table</a> or <a href="#case-pricing">Case pricing table</a> depending on account's <i>case_charge_by_modality</i> setting
+                        <li> The sharer is charged with namespace's <a href="#share-pricing">Share pricing table</a> by modality or by customfields depending on namespace's <i>share_charge_by_modality</i> flag
                     </ul>
                 </td>
             </tr>
@@ -7437,7 +7565,7 @@
                     <i>study_uid</i> &bull; The v3 storage uid of the study (optional if uuid is passed)<br>
                     <i>storage_namespace</i> &bull; The storage namespace of the study (optional if uuid is passed)<br>
                     <i>phi_namespace</i> &bull; The phi namespace of the study (optional)<br>
-                    <i>action</i> &bull; The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_MERGE|STUDY_SPLIT|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)<br>
+                    <i>action</i> &bull; The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_MERGE|STUDY_SPLIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)<br>
                     <i>detail</i> &bull; Additional information<br>
                 </td>
             </tr>
@@ -11585,47 +11713,6 @@
         </table>
         <a href="#case-idx">top</a>
 
-        <p><a name="case_price"></a>
-        <table class="bordered-table">
-            <tr>
-                <th>Description</th>
-                <td>Calculate price for second opinion</td>
-            </tr>
-            <tr>
-                <th>URL</th>
-                <td>/case/price</td>
-            </tr>
-            <tr>
-                <th>Parameters</th>
-                <td>
-                    <i>share_code</i> &bull; The share code of the second opinion namespace.<br>
-                    <i>customfield-(CUSTOMFIELD_UUID)</i> &bull; Custom field(s) defined for the case objects with values stated in the second opinion wizard (optional)<br>
-                </td>
-            </tr>
-            <tr>
-                <th>Returns</th>
-                <td>
-                    <i>status</i> &bull; OK<br>
-                    <i>price</i> &bull; Calculated price in pennies or null for no price list match<br>
-                </td>
-            </tr>
-            <tr>
-                <th>Errors</th>
-                <td>
-                    NOT_FOUND &bull; The namespace can not be found<br>
-                </td>
-            </tr>
-            <tr>
-                <th>Notes</th>
-                <td>
-                    <ul>
-                        <li> To be used when <i>case_charge_by_modality</i> account setting is false
-                    </ul>
-                </td>
-            </tr>
-        </table>
-        <a href="#user-idx">top</a>
-
         <a name="patient"><h3>Patient commands</h3></a>
 
         <p><a name="patient_add"></a>
@@ -14000,6 +14087,7 @@
                     <i>monitor_node_last_send</i> &bull; Check if the node has sent a study recently (optional)<br>
                     <i>monitor_node_last_send_threshold</i> &bull; Threshold in minutes for triggering the monitor_node_last_send notification (optional)<br>
                     <i>monitor_email</i> &bull; Email address(es) to send monitor failure notices (optional)<br>
+                    <i>warning_email</i> &bull; Email address(es) to send warning notices (optional)<br>
                     <i>storage_namespace</i> &bull; Namespace uuid to attach the node to. This requires a sysadmin sid and must be within the same account (optional)<br>
                     <i>settings</i> &bull; A hash of the <a href="#account-settings">account settings</a> that the node can override (optional)<br>
                     <i>setting_SETTING_NAME</i> &bull; Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)<br>
@@ -14082,6 +14170,7 @@
                     <i>monitor_node_last_send</i> &bull; Check if the node has sent a study recently<br>
                     <i>monitor_node_last_send_threshold</i> &bull; Threshold in minutes for triggering the monitor_node_last_send notification<br>
                     <i>monitor_email</i> &bull; Email address(es) to send monitor failure notices<br>
+                    <i>warning_email</i> &bull; Email address(es) to send warning notices<br>
                     <i>accelerator_id</i> &bull; uuid of the accelerator if this is an accelerator node<br>
                     <i>account_id</i> &bull; The associated account id<br>
                     <i>settings</i> &bull; A hash of the  <a href="#account-settings">account settings</a> that the node has overridden<br>
@@ -14185,6 +14274,8 @@
                     * <i>port</i> &bull; The query port<br>
                     * <i>mwl_search</i> &bull; Flag to indicate if this is a modality worklist search<br>
                     * <i>node_search</i> &bull; Flag to indicate if this is a search from another node<br>
+                    * <i>create_thin</i> &bull; Value entered in the /destination/search<br>
+                    * <i>create_study</i> &bull; Value entered in the /destination/search<br>
                     * The rest of the fields are the optional search parameters in either the <a href="#destination_search">/destination/search</a> or the <a href="#destination_search_mwl">/destination/search/mwl</a> call<br>
                     <i>webhook</i> &bull; An array of the webhooks to run. Each object in the array will have the following fields<br>
                     * <i>uuid</i> &bull; Id of the webhook job<br>
@@ -14209,12 +14300,9 @@
                     ** <i>engine_fqdn</i> &bull; The FQDN of the storage engine for the study<br>
                     ** <i>labels</i> &bull; A JSON array of the <a href="#cd_burn_info">labels</a><br>
                     <i>log</i> &bull; An array of the log search jobs to run. Each object in the array will have the following fields<br>
-                    * <i>study_uid</i> &bull; The study uid to attach the log to<br>
-                    * <i>storage_namespace</i> &bull; The storage namespace of the study<br>
-                    * <i>phi_namespace</i> &bull; The phi namespace of the study<br>
-                    * <i>engine_fqdn</i> &bull; The FQDN of the storage engine for the study<br>
                     * <i>start</i> &bull; The start date and time for the log range<br>
                     * <i>end</i> &bull; The end date and time for the log range<br>
+                    * <i>type</i> &bull; The log type to process (log|dicom|queue|system)<br>
                 </td>
             </tr>
             <tr>
@@ -14706,7 +14794,7 @@
                     <i>uuid</i> &bull; The node id<br>
                     <i>start</i> &bull; Start time stamp in YYYY-MM-DD HH:MM:SS format<br>
                     <i>end</i> &bull; End time stamp in YYYY-MM-DD HH:MM:SS format<br>
-                    <i>type</i> &bull; Type of log (log|dicom|queue) defaults to log if not passed<br>
+                    <i>type</i> &bull; Type of log (log|dicom|queue|system) defaults to log if not passed<br>
                 </td>
             </tr>
             <tr>
@@ -14792,6 +14880,84 @@
                                 <li>burn_end
                             </ul>
                     </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#node-idx">top</a>
+
+        <p><a name="node_performance_set"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Set performance counters for the node</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/node/performance/set</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>uuid</i> &bull; The node id<br>
+                    <i>serial_no</i> &bull; The serial number of the node<br>
+                    <i>data</i> &bull; A JSON data structure with performance data<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The node can not be found<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#node-idx">top</a>
+
+        <p><a name="node_performance_get"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get performance counters for the node</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/node/performance/get</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>(sid|serial_no)</i> &bull; The session id or serial number of the node<br>
+                    <i>uuid</i> &bull; The node id<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>data</i> &bull; The node's performance data<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    NOT_FOUND &bull; The node can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to view this node<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
                 </td>
             </tr>
         </table>
@@ -15047,6 +15213,7 @@
                     <i>cd_burn_priority</i> &bull; Integer value for the burner priority (optional)<br>
                     <i>sort_order</i> &bull; Integer value for sorting (optional)<br>
                     <i>hl7_fetch_filter</i> &bull; A transform condition expression (see /transform/add for format) to match against the HL7 message. Only fire a query retrieve if the message matches the condition (optional)
+                    <i>manual_push_roles</i> &bull; A comma separated list of role uuids, a user is required to have one of them to manually push to this destination (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -15139,6 +15306,7 @@
                     <i>cd_burn_priority</i> &bull; Integer value for the burner priority (optional)<br>
                     <i>sort_order</i> &bull; Integer value for sorting (optional)<br>
                     <i>hl7_fetch_filter</i> &bull; A transform condition expression (see /transform/add for format) to match against the HL7 message. Only fire a query retrieve if the message matches the condition (optional)
+                    <i>manual_push_roles</i> &bull; A comma separated list of role uuids, a user is required to have one of them to manually push to this destination (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -15226,6 +15394,7 @@
                     <i>sort_order</i> &bull; Integer value for sorting<br>
                     <i>hl7_fetch_filter</i> &bull; A transform condition expression (see /transform/add for format) to match against the HL7 message. Only fire a query retrieve if the message matches the condition
                     <i>linked_destination</i> &bull; uuid of the linked destination if this is a LINKED type destination<br>
+                    <i>manual_push_roles</i> &bull; A comma separated list of role uuids, a user is required to have one of them to manually push to this destination<br>
                 </td>
             </tr>
             <tr>
@@ -15314,6 +15483,7 @@
                     <i>push_to</i> &bull; uuid of a destination to push the retrieved studies to (optional)<br>
                     <i>create_thin</i> &bull; The maximum number of thin studies to create from this search instead of creating an activity for the search results (optional)<br>
                     <i>create_study</i> &bull; The maximum number of studies to retrieve from this search instead of creating an activity for the search results (optional)<br>
+                    <i>bundle_id</i> &bull; An integral number Used internally to track searches initiated from a single bundle (optional)<br>
                     -- The rest of the fields are used for the search --<br>
                     <i>study_uid</i> &bull; Study uid to find (optional)<br>
                     <i>patient_name</i> &bull; Patient name to find (optional)<br>
@@ -16113,7 +16283,8 @@
                     <i>account_login</i> &bull; Users login name in the account. (optional).<br>
                     <i>account_password</i> &bull; Password for the account_password. (optional).<br>
                     <i>password_reset</i> &bull; Flag if the password needs to be reset. (optional).<br>
-                    <i>global</i> &bull; Flag if this is a global user. (optional).<br>
+                    <i>global</i> &bull; Flag if this is a global user (optional).<br>
+                    <i>epic_user</i> &bull; Epic user used to map Epic users into Ambra's ones to track activity. (optional).<br>
                     <i>session_expire</i> &bull; Number of minutes before an idle session expires. (optional)<br>
                     <i>max_sessions</i> &bull; Over-ride value for the max number of simultaneous sessions the user can have. (optional).<br>
                     <i>event_share</i> &bull; Notify the user on a share into the account namespace (optional)<br>
@@ -16200,6 +16371,7 @@
                     <i>account_password</i> &bull; Password for the account_password. (optional).<br>
                     <i>password_reset</i> &bull; Flag if the password needs to be reset. (optional).<br>
                     <i>global</i> &bull; Flag if this is a global user. (optional).<br>
+                    <i>epic_user</i> &bull; Epic user used to map Epic users into Ambra's ones to track activity (optional).<br>
                     <i>session_expire</i> &bull; Number of minutes before an idle session expires. (optional)<br>
                     <i>max_sessions</i> &bull; Over-ride value for the max number of simultaneous sessions the user can have. (optional).<br>
                     <i>event_share</i> &bull; Notify the user on a share into the account namespace (optional)<br>
@@ -16297,6 +16469,7 @@
                     <i>password_reset</i> &bull; Flag if the password needs to be reset<br>
                     <i>user_account_id</i> &bull; Id linking user and account for external integrations<br>
                     <i>global</i> &bull; Flag if this is a global user.<br>
+                    <i>epic_user</i> &bull; Epic user used to map Epic users into Ambra's ones to track activity.<br>
                     <i>session_expire</i> &bull; Number of minutes before an idle session expires<br>
                     <i>max_sessions</i> &bull; Over-ride value for the max number of simultaneous sessions the user can have<br>
                     <i>event_share</i> &bull; Notify the user on a share into the account namespace <br>
@@ -18234,6 +18407,7 @@
                             <li><i>share_message</i> &bull; The share message<br>
                             <li><i>study</i> &bull; The study object. The fields are the same as the <a href="#study_get">/study/get</a> command<br>
                             <li><i>mwl_orders</i> &bull; An array of the MWL orders that were found. The orders structure is as per the <a href="#node_found_mwl">/node/found/mwl</a> command<br>
+                            <li><i>approval_reason</i> &bull; A reason why the study must be approved. 'S' - the study has been shared, 'M' - moved, 'H' - harvested, 'U' - uploaded, 'D' - it duplicated another study with the same UID, 'E' - miscellaneous auto edits (Epic patient update, MPI workflow).<br>
                         </ul>
                         <li>JOIN_REQUEST - A user has requested to join the account
                         <ul>
@@ -18417,7 +18591,9 @@
                     <i>user_id</i> &bull; The id of the user to audit<br>
                     <i>account_id</i> &bull; The id of the account<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
+                    <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>reverse</i> &bull; Flag to reverse the default sort order (optional)<br>
+                    <i>study_fields</i> &bull; JSON list of study fields to include in the response (optional)<br>
                     <i>download</i> &bull; Flag to create a zipped CSV file. A report_id will be returned and the file can be accessed via /report/status and /report/zip (optional)<br>
                 </td>
             </tr>
@@ -18440,6 +18616,7 @@
                     * <i>track</i> &bull; A JSON hash of tracking keys and values if tracking is applied to this event (optional)<br>
                     * <i>client_address</i> &bull; IP address that performed the action<br>
                     * <i>sid</i> &bull; sid that performed the action<br>
+                    * <i>study</i> &bull; A JSON hash of study fields for study events. Returned only if study_fields are provided in the parameters<br>
                 </td>
             </tr>
             <tr>
@@ -18844,8 +19021,8 @@
                     <i>second_opinion_config</i> &bull; JSON configuration for the second opinion workflow (optional)<br>
                     <i>second_opinion_case</i> &bull; The second opinion case. The fields are per <a href="#case_get">/case/get</a> (optional)<br>
                     <i>pricing</i> &bull; <a href="#share-pricing">Pricing table</a> in JSON format. (optional - see notes)<br>
-                    <i>case_pricing</i> &bull; <a href="#case-pricing">Pricing table</a> in JSON format. (optional - see notes)<br>
-                    <i>sum_case_price_matches</i> &bull; A flag to be used with <i>case_pricing</i> pricing table<br>
+                    <i>customfields_pricing</i> &bull; <a href="#share-pricing">Pricing table</a> in JSON format. (optional - see notes)<br>
+                    <i>sum_price_matches</i> &bull; A flag to be used with <i>customfields_pricing</i> pricing table<br>
                     <i>payment_processor</i> &bull; JSON hash of the payment processor information (optional)<br>
                     <i>cc_description</i> &bull; A description of the users credit card on file (optional - see notes)<br>
                     <i>enable_dicom_wrapping</i> &bull; Is dicom wrapping enabled for the associated account<br>
@@ -18863,7 +19040,7 @@
                     <i>disable_duplicate_study_upload</i> &bull; Flag for the setting<br>
                     <i>confirm_before_upload</i> &bull; Value of the flag for the associated account<br>
                     <i>study_download_no_reports</i> &bull; Value of the flag for the associated account<br>
-                    <i>case_charge_by_modality</i> &bull; Value of the flag for the associated account<br>
+                    <i>share_charge_by_modality</i> &bull; Charge shares (including second opinion) by modality of a shared study<br>
                     <i>auto_enable_dicom_wrapping</i> &bull; Flag for the setting<br>
                     <i>single_file_dicom_wrapping</i> &bull; Flag for the setting<br>
                     <i>enable_multipart_uploader</i> &bull; Flag for the setting<br>
@@ -18898,7 +19075,7 @@
                 <th>Notes</th>
                 <td>
                     <ul>
-                        <li>The currency, charge_description, pricing and case_pricing are only returned if the namespace has pricing and the account is setup to process credit cards.
+                        <li>The currency, charge_description, pricing and customfields_pricing are only returned if the namespace has pricing and the account is setup to process credit cards.
                         <li>The cc_description is only returned if the namespace has pricing and a sid was passed in the parameters
                         <li>The second_opinion_case is only returned if the sid for a non-anonymous user is passed
                         <li>If a vanity URL is used and the share code is not in the vanity account a NOT_FOUND error is returned
@@ -18935,8 +19112,11 @@
                     <i>currency</i> &bull; 3-letter ISO code for currency to charge in (USD|GBP) (optional) <br>
                     <i>charge_description</i> &bull; The description of the charge (optional)<br>
                     <i>pricing</i> &bull; <a href="#share-pricing">Pricing table</a> in JSON format (optional)<br>
+                    <i>customfields_pricing</i> &bull; <a href="#share-pricing">Pricing table</a> in JSON format (optional)<br>
+                    <i>sum_price_matches</i> &bull; Flag to search for all matches in customfields_pricing table and to add them up (optional)<br>
                     <i>second_opinion_share</i> &bull; Flag to enable/disable the second opinion workflow for the share (optional)<br>
                     <i>second_opinion_config</i> &bull; JSON configuration for the second opinion workflow (optional)<br>
+                    <i>share_charge_by_modality</i> &bull; Charge shares (including second opinion) by modality of a shared study if this flag is set (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -18947,73 +19127,11 @@
                     <i>is_production</i> &bull; Flag if this is a production site<br>
                     <i>charge_description</i> &bull; The description of the charge<br>
                     <i>pricing</i> &bull; <a href="#share-pricing">Pricing table</a> in JSON format.<br>
+                    <i>customfields_pricing</i> &bull; <a href="#share-pricing">Pricing table</a> in JSON format.<br>
+                    <i>sum_price_matches</i> &bull; Flag to search for all matches in pricing table and to add them up<br>
                     <i>second_opinion_share</i> &bull; Flag to enable/disable the second opinion workflow for the share<br>
                     <i>second_opinion_config</i> &bull; JSON configuration for the second opinion workflow<br>
-                </td>
-            </tr>
-            <tr>
-                <th>Permission</th>
-                <td>
-                    account_edit if setting
-                    account_view if getting
-                </td>
-            </tr>
-            <tr>
-                <th>Errors</th>
-                <td>
-                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
-                    NOT_PERMITTED &bull; You are not permitted to price this namespace<br>
-                    NOT_FOUND &bull; The namespace was not found<br>
-                    INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
-                    NOT_HASH &bull; The pricing field is not a hash <br>
-                    INVALID_CURRENCY &bull; Invalid currency <br>
-                    NEEDS_ANY_OR_ALL &bull; The hash needs an "ANY" or "ALL" key <br>
-                    ONLY_ALL &bull; If the hash has an ALL value it can't have any other values<br>
-                    INVALID_AMOUNT &bull; An invalid amount. The <i>error_subtype</i> holds the invalid amount <br>
-                </td>
-            </tr>
-            <tr>
-                <th>Notes</th>
-                <td>
-                    <a name="share-pricing">Pricing table</a><p>
-                    <ul>
-                        <li> The table is a JSON hash, keys are the modality of the study and the value is the price in cents.
-                        <li> The price can be either zero or greater than or equal to 50 cents.
-                        <li> The special key 'ANY' holds the price for any modality not specifically named and is required.
-                        <li> The special key 'ALL' holds the price for all studies uploaded during a single session
-                        <li> The sharer is charged for the study when it is successfully shared with the recipient.
-                        <li> Send an empty hash to clear out the pricing rules for the namespace.
-                    </ul>
-                </td>
-            </tr>
-        </table>
-        <a href="#namespace-idx">top</a>
-
-        <p><a name="namespace_case_pricing"></a>
-        <table class="bordered-table">
-            <tr>
-                <th>Description</th>
-                <td>Set/get the price for second opinion workflow, also enable and configure the second opinion workflow</td>
-            </tr>
-            <tr>
-                <th>URL</th>
-                <td>/namespace/case/pricing</td>
-            </tr>
-            <tr>
-                <th>Parameters</th>
-                <td>
-                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
-                    <i>uuid</i> &bull; The uuid of the namespace<br>
-                    <i>case_pricing</i> &bull; <a href="#share-pricing">Pricing table</a> in JSON format (optional)<br>
-                    <i>sum_case_price_matches</i> &bull; Flag to search for all matches in pricing table and to add them up (optional)<br>
-                </td>
-            </tr>
-            <tr>
-                <th>Returns</th>
-                <td>
-                    <i>status</i> &bull; OK<br>
-                    <i>case_pricing</i> &bull; <a href="#share-pricing">Pricing table</a> in JSON format.<br>
-                    <i>sum_case_price_matches</i> &bull; Flag to search for all matches in pricing table and to add them up (optional)<br>
+                    <i>share_charge_by_modality</i> &bull; Charge shares (including second opinion) by modality of a shared study if this flag is set<br>
                 </td>
             </tr>
             <tr>
@@ -19032,27 +19150,88 @@
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
                     INVALID_INTEGER &bull; The price is not an integer number<br>
                     INVALID_CONDITION &bull; The pricing condition is invalid<br>
-                    NOT_LIST &bull; The pricing table is not a JSON list <br>
                     INVALID_FLAG &bull; The field is not a valid flag
+                    NOT_LIST &bull; The customfields_pricing table is not a JSON list <br>
+                    NOT_HASH &bull; The pricing field is not a hash <br>
+                    INVALID_CURRENCY &bull; Invalid currency <br>
+                    NEEDS_ANY_OR_ALL &bull; The hash needs an "ANY" or "ALL" key <br>
+                    ONLY_ALL &bull; If the hash has an ALL value it can't have any other values<br>
+                    INVALID_AMOUNT &bull; An invalid amount. The <i>error_subtype</i> holds the invalid amount <br>
                 </td>
             </tr>
             <tr>
                 <th>Notes</th>
                 <td>
-                    <a name="case-pricing">Pricing table</a><p>
+                    <a name="share-pricing">Pricing table</a><p>
                     <ul>
-                        <li> The table is a JSON array, each element is a price item consisting of a condition and a price value (a hash with two keys, <i>price</i> and <i>condition</i>)
-                        <li> The price must be integer number of cents/pennies.
-                        <li> The condition is an logical expression compatible with Customfield's <i>show_when</i> expression.
-                        <li> There can be customfield references in condition. Customfield is referenced with string 'customfield-UUID', where UUID is an actual UUID on customfield object. 
-                        <li> if <i>sum_case_price_matches</i> flag is false, table is searched line by line for the first condition match. The price amount from the match is the value to charge.
-                        <li> if <i>sum_case_price_matches</i> flag is true, all table rows are checked for a match, prices from all matched rows are added up together, and the total is the value charge.
-                        <li> Send an empty array to clear out the pricing rules for the namespace.
+                        <li>pricing
+                            <ul>
+                                <li> The table is a JSON hash, keys are the modality of the study and the value is the price in cents.
+                                <li> The price can be either zero or greater than or equal to 50 cents.
+                                <li> The special key 'ANY' holds the price for any modality not specifically named and is required.
+                                <li> The special key 'ALL' holds the price for all studies uploaded during a single session
+                                <li> The sharer is charged for the study when it is successfully shared with the recipient.
+                                <li> Send an empty hash to clear out the pricing rules for the namespace.
+                            </ul>
+                        </li>
+                        <li>customfields_pricing
+                            <ul>
+                                <li> The table is a JSON array, each element is a price item consisting of a condition and a price value (a hash with two keys, <i>price</i> and <i>condition</i>)
+                                <li> The price must be integer number of cents/pennies.
+                                <li> The condition is an logical expression compatible with Customfield's <i>show_when</i> expression.
+                                <li> There can be customfield references in condition. Customfield is referenced with string 'customfield-UUID', where UUID is an actual UUID on customfield object. 
+                                <li> if <i>sum_price_matches</i> flag is false, table is searched line by line for the first condition match. The price amount from the match is the value to charge.
+                                <li> if <i>sum_price_matches</i> flag is true, all table rows are checked for a match, prices from all matched rows are added up together, and the total is the value charge.
+                                <li> Send an empty array to clear out the pricing rules for the namespace.
+                            </ul>
+                        </li>
                     </ul>
                 </td>
             </tr>
         </table>
         <a href="#namespace-idx">top</a>
+
+        <p><a name="namespace_share_price"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Calculate price for sharing with this namespace. The price is calculated based on customfields, so it is useless for namespaces set up to charge by modality.</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/namespace/share/price</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>uuid</i> &bull; The uuid of the namespace<br>
+                    <i>customfield-(CUSTOMFIELD_UUID)</i> &bull; Custom field(s) defined for the case (or study) account objects with values entered in the second opinion wizard (or in the image share screen) (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>price</i> &bull; Calculated price in pennies or null for no price match<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    NOT_FOUND &bull; The namespace can not be found<br>
+                    NOT_CUSTOMFIELDS_PRICING &bull; The namespace is set up to charge by modality<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ul>
+                        <li> To be used when <i>share_charge_by_modality</i> namespace flag is false
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#user-idx">top</a>
 
         <p><a name="namespace_anonymize"></a>
         <table class="bordered-table">
@@ -19943,6 +20122,69 @@
         </table>
         <a href="#analytics-idx">top</a>
 
+        <p><a name="analytics_user"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get the user analytics</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/analytics/user</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>account_id</i> &bull; The account id<br>
+                    <i>namespace_id</i> &bull; Namespace filter (optional)<br>
+                    <i>user_id</i> &bull; User filter (optional)<br>
+                    <i>period</i> &bull; The time period (day|week|month|year)<br>
+                    <i>count</i> &bull; The number of periods to get<br>
+                    <i>end_date</i> &bull; The end date, default is today if not passed (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>current</i> &bull; The date and timestamp for how current the analytics data is<br>
+                    <i>periods</i> &bull; An array of the periods for earliest to latest each object in the array will have the following fields<br>
+                    * <i>start</i> &bull; Starting date of the period<br>
+                    * <i>end</i> &bull; Ending date of the period<br>
+                    * <i>label</i> &bull; Display label for the period<br>
+                    * <i>study_approve</i> &bull; Number of studies approved<br>
+                    * <i>study_reject</i> &bull; Number of studies rejected<br>
+                    * <i>study_upload_epic</i> &bull; Number of studies uploaded using Epic workflow<br>
+                    * <i>study_view</i> &bull; Number of studies viewed<br>
+                    * <i>namespaces</i> &bull; A JSON array of unique namespaces covered by the period. Each array element is a hash with a id and name kv pair<br>
+                    * <i>users</i> &bull; A JSON array of unique users covered by the period. Each array element is a hash with a id and name kv pair<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    analytics_view
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The account or patient can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to view analytics for this account or namespace<br>
+                    INVALID_PERIOD &bull; An invalid period<br>
+                    INVALID_END_DATE &bull; An invalid period<br>
+                    INVALID_COUNT &bull; Invalid or excessive count value<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#analytics-idx">top</a>
 
         <a name="sfilter"><h3>Filter commands</h3></a>
 
@@ -21461,6 +21703,7 @@
                     <i>charge_description</i> &bull; Charge description<br>
                     <i>upload_match</i> &bull; A JSON hash of DICOM tags and regular expressions they must match uploaded against this link<br>
                     <i>upload_study_customfields</i> &bull; A JSON hash of customfields that will be mapped to a study on study upload<br>
+                    <i>created</i> &bull; Created datetime stamp of the link<br>
                 </td>
             </tr>
             <tr>
@@ -22652,7 +22895,7 @@
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; The account id<br>
                     <i>name</i> &bull; The dictionary name<br>
-                    <i>object</i> &bull; Object this is applied against (Study|Order|User_account|Case)<br>
+                    <i>object</i> &bull; Object this is applied against (Study|Order|User_account|Case|Patient)<br>
                     <i>lookup</i> &bull; A JSON array of field names that will be concatenated and MD5 hashed for the dictionary lookup value<br>
                     <i>replace</i> &bull; A JSON array of the field names that will be replaced for a successful lookup<br>
                     <i>case_sensitive</i> &bull; Flag if the dictionary lookup is case sensitive or not<br>
@@ -24159,7 +24402,7 @@
         <a href="#npi-idx">top</a>
 
 
-    <footer>Version: LBL0022 v39.0 2020-07-15</footer>
+    <footer>Version: LBL0022 v40.0 2020-08-26</footer>
     </div>
 </body>
 </html>

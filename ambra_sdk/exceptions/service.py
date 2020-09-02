@@ -919,3 +919,10 @@ class PinLockout(PreconditionFailed):
 
 class AlreadyConnected(PreconditionFailed):
     """AlreadyConnected."""
+
+
+class NotCustomfieldsPricing(PreconditionFailed):
+    """NotCustomfieldsPricing.
+
+    The namespace is set up to charge by modality
+    """

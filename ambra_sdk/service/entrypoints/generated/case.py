@@ -215,30 +215,3 @@ class Case:
         }
         return QueryO(**query_data)
     
-    def price(
-        self,
-        share_code,
-        customfield_param=None,
-    ):
-        """Price.
-        :param share_code: The share code of the second opinion namespace.
-        :param customfield_param: Custom field(s) defined for the case objects with values stated in the second opinion wizard (optional)
-        """
-        request_data = {
-           'share_code': share_code,
-        }
-        if customfield_param is not None:
-            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
-            request_data.update(customfield_param_dict)
-	
-        errors_mapping = {}
-        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace can not be found')
-        query_data = {
-            'api': self._api,
-            'url': '/case/price',
-            'request_data': request_data,
-            'errors_mapping': errors_mapping,
-            'required_sid': False,
-        }
-        return QueryO(**query_data)
-    

@@ -5,6 +5,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [3.20.6.0-1] - 2020-08-26
+### Added
+- Documentation updates
+- Service public api support: LBL0022 v40.0 2020-08-26
+- Service models: LBL0022 v40.0 2020-08-26
+- Storage public api support: LBL0038 v10.0 2020-08-26
+
+### Changed
+- Removed 502, 503 errors from default retry service params
+- Update python-box dependence to 5.1.1
+- Update requests dependence to 2.24.0
+
 ## [3.20.5.0-1] - 2020-07-15
 ### Added
 - url, full_url, request_data for service query objects

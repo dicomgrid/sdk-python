@@ -314,6 +314,8 @@ class AccountSamlRole(BaseModel):
     event_thin_study_success = Boolean(description='The event flags')
     event_upload = Boolean(description='The event flags')
     event_upload_fail = Boolean(description='The event flags')
+    for_group = Boolean(description='Apply this mapping to all namespaces of the corresponding type')
+    for_location = Boolean(description='Apply this mapping to all namespaces of the corresponding type')
     namespace_id = String(description='FK. The namespace this is for')
     namespace = FK(model='Namespace', description='The namespace this is for')
     role_id = String(description='FK. The role this is for')
@@ -350,6 +352,8 @@ class AccountSamlRole(BaseModel):
         event_thin_study_success=None,
         event_upload=None,
         event_upload_fail=None,
+        for_group=None,
+        for_location=None,
         namespace_id=None,
         namespace=None,
         role_id=None,
@@ -382,6 +386,8 @@ class AccountSamlRole(BaseModel):
         self.event_thin_study_success = event_thin_study_success
         self.event_upload = event_upload
         self.event_upload_fail = event_upload_fail
+        self.for_group = for_group
+        self.for_location = for_location
         self.namespace_id = namespace_id
         self.namespace = namespace
         self.role_id = role_id
@@ -402,6 +408,7 @@ class Activity(BaseModel):
     
     id = Integer(description='Primary key for internal use')
     uuid = String(description='UUID for external use')
+    approval_reason = String(description='The reason why the study is pending approval. S - share, U - upload, H - harvest, M - move, D - duplicate UID, E - auto edits')
     message = String(description='Message associated with activity')
     namespace_id = String(description='FK. Id of the namespace the activity is associated with')
     namespace = FK(model='Namespace', description='Id of the namespace the activity is associated with')
@@ -423,6 +430,7 @@ class Activity(BaseModel):
 	*,
         id=None,
         uuid=None,
+        approval_reason=None,
         message=None,
         namespace_id=None,
         namespace=None,
@@ -440,6 +448,7 @@ class Activity(BaseModel):
     ):
         self.id = id
         self.uuid = uuid
+        self.approval_reason = approval_reason
         self.message = message
         self.namespace_id = namespace_id
         self.namespace = namespace
@@ -1905,6 +1914,7 @@ class Destination(BaseModel):
     hl7_port = Integer(description='HL7 ORM destination address and port')
     linked_destination = String(description='FK. The id of the linked destination')
     linked_destination_obj = FK(model='Destination', description='The id of the linked destination')
+    manual_push_roles = String(description='Comma separated list of role uuids allowed to push manually')
     name = String(description='Name')
     node_id = String(description='FK. The associated node')
     node = FK(model='Node', description='The associated node')
@@ -1949,6 +1959,7 @@ class Destination(BaseModel):
         hl7_port=None,
         linked_destination=None,
         linked_destination_obj=None,
+        manual_push_roles=None,
         name=None,
         node_id=None,
         node=None,
@@ -1989,6 +2000,7 @@ class Destination(BaseModel):
         self.hl7_port = hl7_port
         self.linked_destination = linked_destination
         self.linked_destination_obj = linked_destination_obj
+        self.manual_push_roles = manual_push_roles
         self.name = name
         self.node_id = node_id
         self.node = node
@@ -2086,6 +2098,7 @@ class DestinationSearch(BaseModel):
     asked_by_obj = FK(model='User', description='This is the id of the destination search that requested the asking_node search')
     asking_node = String(description='FK. Pass the results of this back to this node')
     asking_node_obj = FK(model='Node', description='Pass the results of this back to this node')
+    bundle_id = Integer(description='Bundle operation link. Index needed for summarizing bundled searches')
     copy_to = String(description='FK. Namespace to copy any retrieved or thin studies into')
     copy_to_obj = FK(model='Namespace', description='Namespace to copy any retrieved or thin studies into')
     count = Integer(description='Status of the search')
@@ -2125,6 +2138,7 @@ class DestinationSearch(BaseModel):
         asked_by_obj=None,
         asking_node=None,
         asking_node_obj=None,
+        bundle_id=None,
         copy_to=None,
         copy_to_obj=None,
         count=None,
@@ -2160,6 +2174,7 @@ class DestinationSearch(BaseModel):
         self.asked_by_obj = asked_by_obj
         self.asking_node = asking_node
         self.asking_node_obj = asking_node_obj
+        self.bundle_id = bundle_id
         self.copy_to = copy_to
         self.copy_to_obj = copy_to_obj
         self.count = count
@@ -2550,6 +2565,7 @@ class Engine(BaseModel):
     cluster_id = String(description='FK. The cluster it is in')
     cluster = FK(model='Cluster', description='The cluster it is in')
     fqdn = String(description='The fully qualified domain name of the storage engine')
+    ghc_info = String(description='The Google healthcare information')
     host_map = String(description='The host map JSON')
     idle_storage_host = String(description='The URL services should for archiving activity')
     is_full = Boolean(description='Flag if the engine is full or offline')
@@ -2576,6 +2592,7 @@ class Engine(BaseModel):
         cluster_id=None,
         cluster=None,
         fqdn=None,
+        ghc_info=None,
         host_map=None,
         idle_storage_host=None,
         is_full=None,
@@ -2598,6 +2615,7 @@ class Engine(BaseModel):
         self.cluster_id = cluster_id
         self.cluster = cluster
         self.fqdn = fqdn
+        self.ghc_info = ghc_info
         self.host_map = host_map
         self.idle_storage_host = idle_storage_host
         self.is_full = is_full
@@ -3152,6 +3170,7 @@ class Link(BaseModel):
     use_share_code = Boolean(description='Use the namespace share code information for uploads')
     user_id = String(description='FK. The user who created the link. Any filter is applied in this users context as well')
     user = FK(model='User', description='The user who created the link. Any filter is applied in this users context as well')
+    workflow = String(description='Workflow this link is involved in. The only possible value currently is &#39;epic_upload&#39;')
     created = DateTime(description='Timestamp when the record was created')
     created_by = String(description='FK. ID of the user who created the record')
     created_by_obj = FK(model='User', description='ID of the user who created the record')
@@ -3200,6 +3219,7 @@ class Link(BaseModel):
         use_share_code=None,
         user_id=None,
         user=None,
+        workflow=None,
         created=None,
         created_by=None,
         created_by_obj=None,
@@ -3244,6 +3264,7 @@ class Link(BaseModel):
         self.use_share_code = use_share_code
         self.user_id = user_id
         self.user = user
+        self.workflow = workflow
         self.created = created
         self.created_by = created_by
         self.created_by_obj = created_by_obj
@@ -3701,7 +3722,6 @@ class Namespace(BaseModel):
     anonymize = String(description='Anonymization rules')
     archive = Integer(description='Archive setting. 0 = no archive or else archive and restore based on the priority value of the setting. e.g. 99 is high priority, -99 is low priority')
     cache = Boolean(description='Cache new studies image')
-    case_pricing = String(description='Charging information')
     charge_description = String(description='Charging information')
     coverpage = String(description='Cover page template')
     currency = String(description='Charging information')
@@ -3740,13 +3760,15 @@ class Namespace(BaseModel):
     second_opinion_config = String(description='Second opinion settings')
     second_opinion_share = Boolean(description='Second opinion settings')
     settings = DictField(description='Namespace settings')
+    share_charge_by_modality = Boolean(description='Charging information')
     share_code = String(description='Share code for the name space')
+    share_customfields_pricing = String(description='Charging information')
     share_description = String(description='Share code for the name space')
     share_pricing = String(description='Charging information')
     share_settings = String(description='Share code for the name space')
     share_via_gateway = Boolean(description='Allow gateway uploads to the share code')
     study_defaults = String(description='Study defaults')
-    sum_case_price_matches = Boolean(description='Charging information')
+    sum_price_matches = Boolean(description='Charging information')
     upload_hold = Integer(description='Storage settings')
     user_id = String(description='FK. Who it is linked to')
     user = FK(model='User', description='Who it is linked to')
@@ -3768,7 +3790,6 @@ class Namespace(BaseModel):
         anonymize=None,
         archive=None,
         cache=None,
-        case_pricing=None,
         charge_description=None,
         coverpage=None,
         currency=None,
@@ -3807,13 +3828,15 @@ class Namespace(BaseModel):
         second_opinion_config=None,
         second_opinion_share=None,
         settings=None,
+        share_charge_by_modality=None,
         share_code=None,
+        share_customfields_pricing=None,
         share_description=None,
         share_pricing=None,
         share_settings=None,
         share_via_gateway=None,
         study_defaults=None,
-        sum_case_price_matches=None,
+        sum_price_matches=None,
         upload_hold=None,
         user_id=None,
         user=None,
@@ -3831,7 +3854,6 @@ class Namespace(BaseModel):
         self.anonymize = anonymize
         self.archive = archive
         self.cache = cache
-        self.case_pricing = case_pricing
         self.charge_description = charge_description
         self.coverpage = coverpage
         self.currency = currency
@@ -3870,13 +3892,15 @@ class Namespace(BaseModel):
         self.second_opinion_config = second_opinion_config
         self.second_opinion_share = second_opinion_share
         self.settings = settings
+        self.share_charge_by_modality = share_charge_by_modality
         self.share_code = share_code
+        self.share_customfields_pricing = share_customfields_pricing
         self.share_description = share_description
         self.share_pricing = share_pricing
         self.share_settings = share_settings
         self.share_via_gateway = share_via_gateway
         self.study_defaults = study_defaults
-        self.sum_case_price_matches = sum_case_price_matches
+        self.sum_price_matches = sum_price_matches
         self.upload_hold = upload_hold
         self.user_id = user_id
         self.user = user
@@ -3977,12 +4001,14 @@ class Node(BaseModel):
     name = String(description='Name')
     namespace_id = String(description='FK. The associated namespace')
     namespace = FK(model='Namespace', description='The associated namespace')
+    performance_data = String(description='as well as a rolling array of maybe 10 minutes worth of CPU, memory, disk and network usage')
     reload_configuration = Boolean(description='Reload configuration')
     serial_no = String(description='The serial number')
     settings = DictField(description='Account settings overrides')
     type_field = String(description='The type of the node')
     user_id = String(description='FK. The user to generate a node sid for')
     user = FK(model='User', description='The user to generate a node sid for')
+    warning_email = String(description='Emails that node&#39;s warning messages will go to')
     created = DateTime(description='Timestamp when the record was created')
     created_by = String(description='FK. ID of the user who created the record')
     created_by_obj = FK(model='User', description='ID of the user who created the record')
@@ -4022,12 +4048,14 @@ class Node(BaseModel):
         name=None,
         namespace_id=None,
         namespace=None,
+        performance_data=None,
         reload_configuration=None,
         serial_no=None,
         settings=None,
         type_field=None,
         user_id=None,
         user=None,
+        warning_email=None,
         created=None,
         created_by=None,
         created_by_obj=None,
@@ -4063,12 +4091,14 @@ class Node(BaseModel):
         self.name = name
         self.namespace_id = namespace_id
         self.namespace = namespace
+        self.performance_data = performance_data
         self.reload_configuration = reload_configuration
         self.serial_no = serial_no
         self.settings = settings
         self.type_field = type_field
         self.user_id = user_id
         self.user = user
+        self.warning_email = warning_email
         self.created = created
         self.created_by = created_by
         self.created_by_obj = created_by_obj
@@ -4312,6 +4342,7 @@ class Order(BaseModel):
     account_id = String(description='FK. The associated account')
     account = FK(model='Account', description='The associated account')
     customfields = DictField(description='Custom fields')
+    is_manual = Boolean(description='Flag indicating if order was created through the API')
     order_number = String(description='Basic information')
     patient_birth_date = String(description='Basic information')
     patient_name = String(description='Basic information')
@@ -4337,6 +4368,7 @@ class Order(BaseModel):
         account_id=None,
         account=None,
         customfields=None,
+        is_manual=None,
         order_number=None,
         patient_birth_date=None,
         patient_name=None,
@@ -4358,6 +4390,7 @@ class Order(BaseModel):
         self.account_id = account_id
         self.account = account
         self.customfields = customfields
+        self.is_manual = is_manual
         self.order_number = order_number
         self.patient_birth_date = patient_birth_date
         self.patient_name = patient_name
@@ -6468,6 +6501,8 @@ class StudyPushStatus(BaseModel):
     
     id = Integer(description='Primary key for internal use')
     uuid = String(description='UUID for external use')
+    account_id = String(description='FK. Account for scoping &#39;same account&#39; filter down')
+    account = FK(model='Account', description='Account for scoping &#39;same account&#39; filter down')
     copy_src_phi_namespace = String(description='FK. PHI namespace for the source of this study if copied. Used to narrow list filters down')
     copy_src_phi_namespace_obj = FK(model='Namespace', description='PHI namespace for the source of this study if copied. Used to narrow list filters down')
     destination_id = String(description='FK. The destination')
@@ -6493,6 +6528,8 @@ class StudyPushStatus(BaseModel):
 	*,
         id=None,
         uuid=None,
+        account_id=None,
+        account=None,
         copy_src_phi_namespace=None,
         copy_src_phi_namespace_obj=None,
         destination_id=None,
@@ -6514,6 +6551,8 @@ class StudyPushStatus(BaseModel):
     ):
         self.id = id
         self.uuid = uuid
+        self.account_id = account_id
+        self.account = account
         self.copy_src_phi_namespace = copy_src_phi_namespace
         self.copy_src_phi_namespace_obj = copy_src_phi_namespace_obj
         self.destination_id = destination_id
@@ -6964,6 +7003,7 @@ class System(BaseModel):
     log_days = Integer(description='Number of days to retain logs for')
     passwdqc = String(description='Password controls')
     passwdqc_description = String(description='Password controls')
+    phr_bypass_study_oversized_threshold = Boolean(description='Bypass oversized threshold for studies in PHR accounts')
     phr_permissions = String(description='The PHR  permissions over-ride')
     privacy_html = String(description='HTML for the terms of use, privacy policy and indicators of use')
     privacy_md5 = String(description='MD5 sums of the terms of use, privacy policy and indicators of use')
@@ -7021,6 +7061,7 @@ class System(BaseModel):
         log_days=None,
         passwdqc=None,
         passwdqc_description=None,
+        phr_bypass_study_oversized_threshold=None,
         phr_permissions=None,
         privacy_html=None,
         privacy_md5=None,
@@ -7074,6 +7115,7 @@ class System(BaseModel):
         self.log_days = log_days
         self.passwdqc = passwdqc
         self.passwdqc_description = passwdqc_description
+        self.phr_bypass_study_oversized_threshold = phr_bypass_study_oversized_threshold
         self.phr_permissions = phr_permissions
         self.privacy_html = privacy_html
         self.privacy_md5 = privacy_md5
@@ -7573,6 +7615,7 @@ class UserAccount(BaseModel):
     account_login = String(description='The users login name for the account')
     account_password = String(description='The users password in the account')
     customfields = DictField(description='Custom fields')
+    epic_user = String(description='Epic user to match account user against')
     event_approve = Boolean(description='The event flags')
     event_case_assignment = Boolean(description='The event flags')
     event_harvest = Boolean(description='The event flags')
@@ -7621,6 +7664,7 @@ class UserAccount(BaseModel):
         account_login=None,
         account_password=None,
         customfields=None,
+        epic_user=None,
         event_approve=None,
         event_case_assignment=None,
         event_harvest=None,
@@ -7665,6 +7709,7 @@ class UserAccount(BaseModel):
         self.account_login = account_login
         self.account_password = account_password
         self.customfields = customfields
+        self.epic_user = epic_user
         self.event_approve = event_approve
         self.event_case_assignment = event_case_assignment
         self.event_harvest = event_harvest
@@ -7699,6 +7744,54 @@ class UserAccount(BaseModel):
         self.updated = updated
         self.updated_by = updated_by
         self.updated_by_obj = updated_by_obj
+
+
+
+class UserAnalytics(BaseModel):
+    """UserAnalytics."""
+    
+    id = Integer(description='Primary key for internal use')
+    account_id = String(description='FK. The primary keys')
+    account = FK(model='Account', description='The primary keys')
+    day = Date(description='The day')
+    namespace_id = String(description='FK. The primary keys')
+    namespace = FK(model='Namespace', description='The primary keys')
+    study_approve = Integer(description='The metrics')
+    study_reject = Integer(description='The metrics')
+    study_upload_epic = Integer(description='The metrics')
+    study_view = Integer(description='The metrics')
+    user_id = String(description='FK. The primary keys')
+    user = FK(model='User', description='The primary keys')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        account_id=None,
+        account=None,
+        day=None,
+        namespace_id=None,
+        namespace=None,
+        study_approve=None,
+        study_reject=None,
+        study_upload_epic=None,
+        study_view=None,
+        user_id=None,
+        user=None,
+    ):
+        self.id = id
+        self.account_id = account_id
+        self.account = account
+        self.day = day
+        self.namespace_id = namespace_id
+        self.namespace = namespace
+        self.study_approve = study_approve
+        self.study_reject = study_reject
+        self.study_upload_epic = study_upload_epic
+        self.study_view = study_view
+        self.user_id = user_id
+        self.user = user
 
 
 

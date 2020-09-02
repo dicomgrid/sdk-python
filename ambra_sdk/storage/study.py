@@ -12,6 +12,7 @@ from ambra_sdk.exceptions.storage import (
     NotFound,
     PermissionDenied,
     PreconditionFailed,
+    UnprocessableEntity,
     UnsupportedMediaType,
 )
 from ambra_sdk.storage.bool_to_int import bool_to_int
@@ -238,18 +239,22 @@ class Study:
         namespace: str,
         study_uid: str,
         image_uid: str,
-        version: Optional[str] = None,
         only_prepare: bool = False,
     ) -> Union[Response, PreparedRequest]:
-        """Deletes a study image.
+        """Deletes a single image from a study.
 
-        URL: /study/{namespace}/{studyUid}/image/{imageUid}?sid={sid}&version={image version hash}
+        To delete multiple images, study/delete/images/.
+
+        The HTTP method must be DELETE
+        This method sends a STUDY_DELETE notification to Services after the image is deleted
+        This method is synchronous - it doesn't return until the image is deleted and Services notification is sent
+
+        URL: /study/{namespace}/{studyUid}/image/{imageUid}?sid={sid}
 
         :param engine_fqdn: Engine FQDN (Required).
         :param namespace: Namespace (Required).
         :param study_uid: Study uid (Required).
         :param image_uid: Image uid (Required).
-        :param version: The image version hash
         :param only_prepare: Get prepared request.
 
         :returns: Delete image response
@@ -261,18 +266,85 @@ class Study:
             'study_uid',
             'image_uid',
         }
-        request_arg_names = {'version'}
+        request_arg_names: Set[str] = set()
         url, request_data = self._storage.get_url_and_request(
             url_template,
             url_arg_names,
             request_arg_names,
             locals(),
         )
+        errors_mapping = {
+            404:
+            NotFound(
+                'Image does not exists.',
+            ),
+        }
         prepared_request = PreparedRequest(
             storage_=self._storage,
             method=StorageMethod.delete,
             url=url,
+            errors_mapping=errors_mapping,
             params=request_data,
+        )
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
+
+    def delete_images(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        study_uid: str,
+        request_body: str,
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
+        """Delete multiple images from a study.
+
+        The HTTP method must be DELETE
+        This method sends one STUDY_DELETE notification to Services after the images are deleted
+        This method is synchronous - it doesn't return until all images are deleted and Services notification is sent
+
+        URL: /study/{namespace}/{studyUid}/images?sid={sid}
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param study_uid: Study uid (Required).
+        :param request_body: Comma-separated list of
+            multiple image UIDs (Required).
+        :param only_prepare: Get prepared request.
+
+        :returns: Delete images response
+        """
+        url_template = '/study/{namespace}/{study_uid}/images'
+        url_arg_names = {
+            'engine_fqdn',
+            'namespace',
+            'study_uid',
+        }
+        request_arg_names: Set[str] = set()
+        url, request_data = self._storage.get_url_and_request(
+            url_template,
+            url_arg_names,
+            request_arg_names,
+            locals(),
+        )
+        errors_mapping = {
+            404:
+            NotFound(
+                'Study does not exist.',
+            ),
+            422:
+            UnprocessableEntity(
+                'Request body is empty.',
+            ),
+        }
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.delete,
+            url=url,
+            errors_mapping=errors_mapping,
+            params=request_data,
+            data=request_body,
         )
         if only_prepare is True:
             return prepared_request
@@ -1139,6 +1211,7 @@ class Study:
         opened_file: BufferedReader,
         phi_namespace: Optional[str] = None,
         wrap_images: Optional[bool] = None,
+        wrap_html_as_pdf: Optional[bool] = None,
         return_html: Optional[bool] = None,
         synchronous_wrap: Optional[bool] = None,
         static_ids: Optional[bool] = None,
@@ -1153,17 +1226,21 @@ class Study:
         :param study_uid: Study uid (Required).
         :param opened_file: Opened file (Required).
         :param phi_namespace: A string, set to the UUID of
-            the namespace where the file was attached if it
-            was attached to a shared instance of the study
-            outside of the original storage namespace
-        :param wrap_images: An integer of value 1 or 0.
-            For attachments that are images, or can be rendered
-            to an image, generate a new DICOM image in the study
-            containing (a rendered image of) the attachment
-            (also controlled by namespace setting auto_wrap_images).
+             the namespace where the file was attached if it
+             was attached to a shared instance of the study
+             outside of the original storage namespace
+        :param wrap_images: An integer of value 1 or 0. If 1,
+             for attachments that are images, or can be rendered
+             to an image, generate a new DICOM image in the study
+             containing (a rendered image of) the attachment
+             (also controlled by namespace setting auto_wrap_images).
+        :param wrap_html_as_pdf: An integer of value 1 or 0.
+             If 1, for attachments that are html, generate a
+             new pdf and attach that (instead of the original html).
         :param synchronous_wrap: An integer of value 1 or 0.
-            If 1, do all processing for image wrapping before returning,
-            including Services notifications.
+             If 1, do all processing for image wrapping before
+             returning, including Services notifications.
+             Additionally triggers wrap_images functionality.
         :param static_ids: An integer of value 1 or 0. If 1,
             the attachment, series and any images rendered from PDF
             are assigned (u)uids based on a hash of the attachment,
@@ -1196,6 +1273,7 @@ class Study:
         """
         # Attachment must be an image
         wrap_images: int = bool_to_int(wrap_images)  # type: ignore
+        wrap_html_as_pdf: int = bool_to_int(wrap_html_as_pdf)  # type: ignore
         synchronous_wrap: int = bool_to_int(synchronous_wrap)  # type: ignore
         static_ids: int = bool_to_int(static_ids)  # type: ignore
         return_html: int = bool_to_int(return_html)  # type: ignore
@@ -1211,6 +1289,7 @@ class Study:
         request_arg_names = {
             'phi_namespace',
             'wrap_images',
+            'wrap_html_as_pdf',
             'return_html',
             'synchronous_wrap',
             'static_ids',

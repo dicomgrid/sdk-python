@@ -1,4 +1,4 @@
-__version__ = '3.20.6.0-1'
+__version__ = '3.20.6.0-2'
 
 # from footer in api.html
 API_VERSION = 'LBL0022 v40.0 2020-08-26'

@@ -197,10 +197,19 @@ def check_response(  # NOQA:WPS231
         if json['status'] != 'ERROR':
             raise RuntimeError('Wrong respone')
         error_type: str = json.get('error_type')
-        error_subtype: Optional[str] = json.get('error_subtype', None)
+        error_subtype: Optional[Any] = json.get('error_subtype', None)
         error_data = json.get('error_data')
 
-        exception = errors_mapping.get((error_type, error_subtype))
+        # Error subtype can be a list.
+        # We should use only hashable types for dict keys
+        error_subtype_str: Optional[str] = str(error_subtype) \
+            if error_subtype is not None else None
+        exception = errors_mapping.get((error_type, error_subtype_str))
+
+        # If we have not special exc for subtype - get default
+        if exception is None:
+            exception = errors_mapping.get((error_type, None))
+
         # For backward compatibility
         # In previous version we have errors_mapping:
         # error_type => exception

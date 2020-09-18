@@ -1,5 +1,7 @@
+import pytest
 from dynaconf import settings
 
+from ambra_sdk.exceptions.service import MissingFields
 from ambra_sdk.service.filtering import Filter, FilterCondition
 from ambra_sdk.service.sorting import Sorter, SortingOrder
 
@@ -208,3 +210,15 @@ class TestStudy:
 
         customfield = customfields.get_by_uuid(customfield.uuid)
         assert customfield is not None
+
+    def test_study_set_list_subtype(
+        self,
+        api,
+        account,
+    ):
+        """Test SDK handling on list in error_subtype.
+
+        In the next request server return error with list error subtype.
+        """
+        with pytest.raises(MissingFields):
+            api.Study.set(study_uid='abc', study_description='reason').get()

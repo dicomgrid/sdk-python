@@ -1600,8 +1600,9 @@ class Study:
         :param engine_fqdn: Engine FQDN (Required).
         :param namespace: Namespace (Required).
         :param study_uid: Study uid (Required).
-        :param secondary_study_uid: The secondary study uid to be
-            merged into the studyUid(Required).
+        :param secondary_study_uid: A list of one or more
+            comma-separated secondary Study UIDs to be merged
+            into the studyUid(Required).
         :param delete_secondary_study: An integer, when set to 1
             the process will check that the sid provided has the
             required permission to delete the secondary study.

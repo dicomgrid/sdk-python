@@ -122,8 +122,8 @@ class Location:
         errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found. The error_subtype holds the name of field that triggered the error')
-        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the location')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add a location to the account')
+        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the location')
         query_data = {
             'api': self._api,
             'url': '/location/add',
@@ -194,8 +194,8 @@ class Location:
         errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
         errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found. The error_subtype holds the name of field that triggered the error')
-        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the location')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the location')
+        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the location')
         query_data = {
             'api': self._api,
             'url': '/location/set',
@@ -326,8 +326,8 @@ class Location:
         errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The location can not be found')
-        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the location')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the location')
+        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the location')
         errors_mapping[('ROLE_NOT_FOUND', None)] = RoleNotFound('The role was not found or is not in the account')
         errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user was not found or is not in the account')
         query_data = {

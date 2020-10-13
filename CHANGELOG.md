@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [3.20.7.0-1] - 2020-10-07
+### Added
+- Service public api support: LBL0022 v41.0 2020-10-07
+- Service models: LBL0022 v41.0 2020-10-07
+- Storage public api support: LBL0038 v11.0 2020-10-07
+
+### Changed
+- Using dashes instead of underscores in SDK header names (for example SDK_VERSION -> SDK-VERSION)
+
 ## [3.20.6.0-2] - 2020-08-26
 ### Fixed
 - Error handling with list error_subtype

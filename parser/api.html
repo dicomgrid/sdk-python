@@ -33,7 +33,8 @@
             <li><a href="#permissions">Permissions</a>
             <li><a href="#schedule">Schedules</a>
             <li><a href="#account-settings">Account settings</a>
-            <li><a href="#ai-questions">AI questions</a>
+            <li><a href="#ai-questions">Study AI questions</a>
+            <li><a href="#ai-ns-questions">Namespace AI questions</a>
             <li><a href="#session" name="session-idx">Session commands</a>
             <ul>
                 <li><a href="#session_login">/session/login</a>
@@ -260,6 +261,7 @@
                 <li><a href="#node_list">/node/list</a>
                 <li><a href="#node_public">/node/public</a>
                 <li><a href="#node_connect">/node/connect</a>
+                <li><a href="#node_approve">/node/approve</a>
                 <li><a href="#node_add">/node/add</a>
                 <li><a href="#node_set">/node/set</a>
                 <li><a href="#node_get">/node/get</a>
@@ -384,6 +386,8 @@
                 <li><a href="#namespace_study_defaults">/namespace/study/defaults</a>
                 <li><a href="#namespace_engine_fqdn">/namespace/engine/fqdn</a>
                 <li><a href="#namespace_removed_user_report">/namespace/removed/user/report</a>
+                <li><a href="#namespace_question">/namespace/question</a>
+                <li><a href="#namespace_audit">/namespace/audit</a>
             </ul>
             <li><a href="#help" name="help-idx">Help commands</a>
             <ul>
@@ -852,6 +856,14 @@
                 <td>Can they view and connect to public nodes</td>
             </tr>
             <tr>
+                <td>node_approve_connect</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they approve connect to theirs public nodes</td>
+            </tr>
+            <tr>
                 <td>study_approve</td>
                 <td>1</td>
                 <td>0</td>
@@ -1178,6 +1190,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Can they delete a report from an unapproved study</td>
+            </tr>
+            <tr>
+                <td>study_send_status_view</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Can they view study push statuses when enabled</td>
             </tr>
             <tr>
                 <td>study_sync</td>
@@ -1745,8 +1765,8 @@
                 <td>link_direct</td>
                 <td>1</td>
                 <td>1</td>
-                <td>1</td>
-                <td>1</td>
+                <td>0</td>
+                <td>0</td>
                 <td>Can they view and copy the direct link to the study</td>
             </tr>
             <tr>
@@ -1884,6 +1904,14 @@
                 <td></td>
                 <td></td>
                 <td>JSON structure to control the application UI</td>
+            </tr>
+            <tr>
+                <td>namespace_question</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they ask AI questions for a namespace</td>
             </tr>
         </table>
 
@@ -2259,6 +2287,16 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Use the version 2 viewer for this account</td>
+            </tr>
+            <tr>
+                <td>enable_v3_viewer</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Use the version 3 proviewer for this account</td>
             </tr>
             <tr>
                 <td>auto_create_patient</td>
@@ -2758,7 +2796,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>The default list view</td>
+                <td>The default list view. Accepts: namespace ids, 'USER_NAMESPACE' and 'FILTER-*' (*  for a filter ID)</td>
             </tr>
             <tr>
                 <td>enable_dicom_tag_customfields</td>
@@ -2781,6 +2819,16 @@
                 <td>Generate patients from HL7 ORM messages using the email address in the HL7 field specified in this setting. Use the notation specified in <a href="#hl7_transform_add">/hl7/transform/add</a> e.g. <code>PID_13_4</code>. Optionally you can pass a JSON hash formatted as per the patients_from_hl7_adt setting</td>
             </tr>
             <tr>
+                <td>patients_from_hl7_conditions</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A condition to generate patients from HL7 ORM messages. Use the notation specified for conditions in <a href="#hl7_transform_add">/hl7/transform/add</a></td>
+            </tr>
+            <tr>
                 <td>patients_from_hl7_adt</td>
                 <td>Text</td>
                 <td></td>
@@ -2788,7 +2836,17 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>Generate patients from HL7 ADT messages. The value for this setting is a JSON hash that maps the Patient fields to corresponding HL7 fields. Customfields and Text::Template expressions are supported e.g. <code>{"birth_date":"PID_7","last":"PID_5_1","email":"PID_13_4","first":"PID_5_2","mobile_phone":"PID_13_1","sex":"PID_8", "customfield-UUID":"{$PV1_35_2} to {$PV1_35_4}"}</code>
+                <td>Generate patients from HL7 ADT messages. The value for this setting is a JSON hash that maps the Patient fields to corresponding HL7 fields. Customfields and Text::Template expressions are supported e.g. <code>{"birth_date":"PID_7","last":"PID_5_1","email":"PID_13_4","first":"PID_5_2","mobile_phone":"PID_13_1","sex":"PID_8", "customfield-UUID":"{$PV1_35_2} to {$PV1_35_4}"}</code></td>
+            </tr>
+            <tr>
+                <td>patients_from_hl7_adt_conditions
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A condition to generate patients from HL7 ADT messages. Use the notation specified for conditions in <a href="#hl7_transform_add">/hl7/transform/add</a></td>
             </tr>
             <tr>
                 <td>update_patients_from_hl7</td>
@@ -3443,6 +3501,16 @@
                 <td>1</td>
                 <td>0</td>
                 <td>Require approval of a study if the same study_uid already exists in the namespace</td>
+            </tr>
+            <tr>
+                <td>force_new_study_on_upload</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>On upload create a new UID for the study if it already exists in the namespace</td>
             </tr>
             <tr>
                 <td>add_patientid_to_hl7_query_retrieve</td>
@@ -4238,7 +4306,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>
-                    A JSON hash to with the information needed for the Epic patient lookup workflow. If the lookup does not return a unique patient the study will be routed to the activity queue for approvals. The keys and values in the hash are as follows:
+                    A JSON hash to with the information needed for the Epic patient lookup workflow. If the lookup does not return a unique patient the study will be routed to the activity queue for approvals. This setting can also be set at the brand level if multiple Epic integrations are needed into an account. The keys and values in the hash are as follows:
                     <ul>
                         <li> user &bull; The EPIC user name to use for basic auth against the Epic FHIR API (not needed for the OAuth integration)
                         <li> password &bull; The basic auth password, this will be encrypted for storage and future viewing (not needed for the OAuth integration)
@@ -4280,13 +4348,13 @@
             </tr>
             <tr>
                 <td>epic_prompt_for_anonymize</td>
-                <td>Flag</td>
+                <td>Text</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>Enable the prompt_for_anonymize feature for uploads via the Epic integration</td>
+                <td>Set to 1 to enable the prompt_for_anonymize feature for uploads via the Epic integration. Set to 2 if you want to prompt in the UI bbut only apply the changes server side and save the old data to the pre_anon customfields</td>
             </tr>
             <tr>
                 <td>epic_upload_match</td>
@@ -4527,6 +4595,36 @@
                 <td>1</td>
                 <td>0</td>
                 <td>Settings for the AI question</td>
+            </tr>
+            <tr>
+                <td>ai_categorize_phi_in_study_images_google_vision_then_dlp</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Settings for the AI question</td>
+            </tr>
+            <tr>
+                <td>ai_run_custom_code_namespace_scripts</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Settings for the AI question</td>
+            </tr>
+            <tr>
+                <td>enable_namespace_ai_questions</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>A JSON list of enabled namespace AI questions</td>
             </tr>
             <tr>
                 <td>apply_settings_to_owned_phr</td>
@@ -4780,7 +4878,6 @@
                 <td>0</td>
                 <td>Condense email notifications for destination searhes initiated from a bundle</td>
             </tr>
-
             <tr>
                 <td>disable_sticky_phi</td>
                 <td>Flag</td>
@@ -4791,9 +4888,19 @@
                 <td>0</td>
                 <td>Do not make the PHI information sticky so that if the study data changes it is reflected in the UI</td>
             </tr>
+            <tr>
+                <td>enable_messages_by_study_uid</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Show messages tied to studies with the same UID in the same account</td>
+            </tr>
         </table>
 
-        <a name="ai-questions"><h3>AI questions</h3></a>
+        <a name="ai-questions"><h3>Study AI questions</h3></a>
         AI questions can be run for a study against the AI neural network stack via the <a href="#study_question">/study/question</a> call. The following questions are available:
         <table class="bordered-table">
             <tr>
@@ -4926,6 +5033,26 @@
                 <td>Detects the presence of contrast in a series of study images</td>
                 <td>ai_classify_contrast_in_study_series</td>
             </tr>
+            <tr>
+                <td>categorize_phi_in_study_images_google_vision_then_dlp</td>
+                <td>Detects the presence of phi in study images and assigns categories to results</td>
+                <td>ai_categorize_phi_in_study_images_google_vision_then_dlp</td>
+            </tr>
+        </table>
+
+        <a name="ai-ns-questions"><h3>Namespace AI questions</h3></a>
+        AI questions can be run for a namespace against the AI neural network stack via the <a href="#namespace_question">/namespace/question</a> call. The following questions are available:
+        <table class="bordered-table">
+            <tr>
+                <th>Question</th>
+                <th>Description</th>
+                <th>Account setting</th>
+            </tr>
+            <tr>
+                <td>run_custom_code_namespace_scripts</td>
+                <td>Implements ability to run custom code.</td>
+                <td>ai_run_custom_code_namespace_scripts</td>
+            </tr>
         </table>
 
         <a name="session"><h3>Session commands</h3></a>
@@ -4966,6 +5093,7 @@
                     <i>privacy_md5</i> &bull; MD5 of the accepted privacy policy<br>
                     <i>indicator_md5</i> &bull; MD5 of the accepted indications of use<br>
                     <i>patientid</i> &bull; The primary patientid this session is for (optional)<br>
+                    <i>is_proxy</i> &bull; Flag if this is a proxy login<br>
                 </td>
             </tr>
             <tr>
@@ -7565,7 +7693,7 @@
                     <i>study_uid</i> &bull; The v3 storage uid of the study (optional if uuid is passed)<br>
                     <i>storage_namespace</i> &bull; The storage namespace of the study (optional if uuid is passed)<br>
                     <i>phi_namespace</i> &bull; The phi namespace of the study (optional)<br>
-                    <i>action</i> &bull; The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_MERGE|STUDY_SPLIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)<br>
+                    <i>action</i> &bull; The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)<br>
                     <i>detail</i> &bull; Additional information<br>
                 </td>
             </tr>
@@ -7769,6 +7897,7 @@
                 <td>
                     <i>status</i> &bull; OK<br>
                     <i>enable_v2_viewer</i> &bull; Value for the account flag<br>
+                    <i>enable_v3_viewer</i> &bull; Value for the account flag<br>
                     <i>enable_viewer_print</i> &bull; Value for the account flag<br>
                     <i>viewer_show_reports</i> &bull; Value for the account flag<br>
                     <i>enable_viewer_export</i> &bull; Value for the account flag<br>
@@ -8046,6 +8175,7 @@
                     <i>uuid</i> &bull; The study id<br>
                     <i>namespace_id</i> &bull; The namespace id to duplicate it to<br>
                     <i>include_attachments</i> &bull; Also duplicate attachments<br>
+                    <i>overwrite</i> &bull; Flag if you want to overwrite an existing study in the destination namespace<br>
                 </td>
             </tr>
             <tr>
@@ -13160,6 +13290,7 @@
                         <li> The __DIRECT_LINK-UUID__ value will be replaced by a link with the HTML user UI that is a duplicate of the link with the UUID. This must not be in a Text::Template expression.
                         <li> The duplicate link is updated with the current study data. If the link used a filter the filter values will be parsed as a Text::Template expressions for the current study.
                         <li> If a study has an associated radreport the fields in the radreport can be included via the radreport_fields hash i.e. <code>{$radreport_fields{'text-input-2'}}</code>
+                        <li> If a study has an attachment the corresponding PDF can be included via the latest_attachment_pdf variable i.e. <code>{$latest_attachment_pdf}</code>. The value is base64 encoded.
                         <li> If a study has an associated HL7 message specified in /study/push/hl7 the full HL7 message can be included e.g. <code>{$hl7_message}</code>
                         <li> If a study has an associated HL7 message specified in /study/push/hl7 the HL7 segments can be included from the hl7_segments array, first segment is index 0, second segment is index 1 etc. e.g. <code>{$hl7_segments[2]}</code>
                         <li> If a study has an associated HL7 message specified in /study/push/hl7 the HL7 fields can be included from the hl7_fields hash using the notation specified in <a href="#hl7_transform_add">/hl7/transform/add</a> e.g. <code>{$hl7_fields{'PID_2'}}</code>
@@ -13938,6 +14069,7 @@
                                 <li>NONE - No connection requested
                                 <li>PENDING - There are some connection requests
                                 <li>CONNECTED - The node is connected
+                                <li>REJECTED - The node connection was rejected
                             </ul>
                     </ul>
                 </td>
@@ -13983,12 +14115,60 @@
                     NOT_FOUND &bull; The node or account can not be found<br>
                     NOT_PERMITTED &bull; You are not permitted to do this<br>
                     ALREADY_CONNECTED &bull; The node is already connected to the account<br>
+                    ALREADY_PENDING &bull; The node is pending connection already<br>
                 </td>
             </tr>
             <tr>
                 <th>Notes</th>
                 <td>
                     An email requesting the connection will sent to Ambra, the node operator and the user. The email is generated from the node_connect template for the account the node is located in.
+                </td>
+            </tr>
+        </table>
+        <a href="#node-idx">top</a>
+
+        <p><a name="node_approve"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Approve a public node connection</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/node/approve</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The node id<br>
+                    <i>account_id</i> &bull; The account which requested the connection<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    node_approve_connect
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The node, node connection request or account can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to do this<br>
+                    ALREADY_CONNECTED &bull; The node is already connected to the account<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
                 </td>
             </tr>
         </table>
@@ -16287,6 +16467,7 @@
                     <i>epic_user</i> &bull; Epic user used to map Epic users into Ambra's ones to track activity. (optional).<br>
                     <i>session_expire</i> &bull; Number of minutes before an idle session expires. (optional)<br>
                     <i>max_sessions</i> &bull; Over-ride value for the max number of simultaneous sessions the user can have. (optional).<br>
+                    <i>set_default_organization</i> &bull; A flag to set this account as a default one for the user using <i>user_default_organization</i> Setting. (optional)<br>
                     <i>event_share</i> &bull; Notify the user on a share into the account namespace (optional)<br>
                     <i>event_approve</i> &bull; Notify the user on a approval needed into the account namespace (optional)<br>
                     <i>event_upload</i> &bull; Notify the user on an upload into the account namespace (optional)<br>
@@ -16471,6 +16652,7 @@
                     <i>global</i> &bull; Flag if this is a global user.<br>
                     <i>epic_user</i> &bull; Epic user used to map Epic users into Ambra's ones to track activity.<br>
                     <i>session_expire</i> &bull; Number of minutes before an idle session expires<br>
+                    <i>last_login</i> &bull; The users last login date and time<br>
                     <i>max_sessions</i> &bull; Over-ride value for the max number of simultaneous sessions the user can have<br>
                     <i>event_share</i> &bull; Notify the user on a share into the account namespace <br>
                     <i>event_approve</i> &bull; Notify the user on a approval needed into the account namespace <br>
@@ -18436,6 +18618,14 @@
                             <li><i>locations</i> &bull; An array of locations specified in the invitation. Each item is a hash with <i>name</i> and <i>role_name</i>
                             <li><i>groups</i> &bull; An array of groups specified in the invitation. Each item is a hash with <i>name</i> and <i>role_name</i>
                         </ul>
+
+                        <li>NODE_CONNECT- A user has requested to connect the public node
+                        <ul>
+                            <li><i>node_id</i> &bull; Id of the node they have requested to connect<br>
+                            <li><i>node_name</i> &bull; Name of the node they have requested to connect<br>
+                            <li><i>account_id</i> &bull; Id of the account the request came from<br>
+                            <li><i>account_name</i> &bull; Name of the account the request came from<br>
+                        </ul>
                     </ul>
                 </td>
             </tr>
@@ -18942,6 +19132,7 @@
                     <i>auto_enable_dicom_wrapping</i> &bull; Value for the setting<br>
                     <i>single_file_dicom_wrapping</i> &bull; Value for the setting<br>
                     <i>disable_duplicate_study_upload</i> &bull; Value for the setting<br>
+                    <i>force_new_study_on_upload</i> &bull; Value for the setting<br>
                     <i>enable_multipart_uploader</i> &bull; Value for the setting<br>
                     <i>allow_drag_and_drop_in_study_uploader</i> &bull; Value for the setting<br>
                     <i>link_defaults</i> &bull; Value for the setting<br>
@@ -18952,6 +19143,12 @@
                     <i>cloud_storage_config</i> &bull; Value for the setting<br>
                     <i>pixel_anonymize_color</i> &bull; Value for the setting<br>
                     <i>priority_notifications</i> &bull; Value for the setting<br>
+                    <i>enable_namespace_ai_questions</i> &bull; Value for the setting<br>
+                    <i>disable_mobile_dicom_wrapping</i> &bull; Value for the setting<br>
+                    <i>enable_dicom_deidentification</i> &bull; Value for the setting<br>
+                    <i>try_update_original_study</i> &bull; Value for the setting<br>
+                    <i>must_approve_duplicate_study_uid</i> &bull; Value for the setting<br>
+                    <i>reverse_patient_name</i> &bull; Value for the setting<br>
                     And all the ai_* settings
                 </td>
             </tr>
@@ -19038,6 +19235,7 @@
                     <i>reencode_dicom_mp4</i> &bull; Value of the flag for the associated account<br>
                     <i>duplicate_study_check</i> &bull; Value of the flag for the associated account<br>
                     <i>disable_duplicate_study_upload</i> &bull; Flag for the setting<br>
+                    <i>force_new_study_on_upload</i> &bull; Flag for the setting<br>
                     <i>confirm_before_upload</i> &bull; Value of the flag for the associated account<br>
                     <i>study_download_no_reports</i> &bull; Value of the flag for the associated account<br>
                     <i>share_charge_by_modality</i> &bull; Charge shares (including second opinion) by modality of a shared study<br>
@@ -19626,6 +19824,101 @@
             </tr>
         </table>
         <a href="#namespace-idx">top</a>
+
+        <p><a name="namespace_question"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Ask an AI question for the namespace</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/namespace/question</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The namespace id<br>
+                    <i>question</i> &bull; The question to ask or a JSON array of questions to ask<br>
+                    <i>detail</i> &bull; Optional detail to pass through to the AI stack<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    group_edit, location_edit or account_edit
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The namespace or question was not found.<br>
+                    NOT_PERMITTED &bull; You are not permitted to do this<br>
+                    NODE_NOT_SETUP &bull; A node needs to be attached to the namespace for this question<br>
+                    IN_PROCESS &bull; The question is currently in process<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ul>
+                        <li> Any NAMESPACE_AI_QUESTION webhooks will be triggered for the answer.
+                        <li> A JSON array of questions is processed sequentially and waits for the answer before asking the next question
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="namespace_audit"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Attach an audit action to a namespace</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/namespace/audit</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The id of the namespace<br>
+                    <i>action</i> &bull; The audit action (AI_ACTION)<br>
+                    <i>detail</i> &bull; Additional information<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The study can not be found<br>
+                    INVALID_ACTION &bull; An invalid action was passed<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
 
         <a name="help"><h3>help commands</h3></a>
 
@@ -20654,6 +20947,7 @@
                             <li> max_length - The maximum length of the field
                             <li> show_when - A hash keyed by uuid of other customfield(s), the hash value is an array of values. If the referenced customfield has a value that is in the array of values this field should be shown. If it doesn't this field should be hidden.
                             <li> admin_only - Only show customfield to administrators (only applies to User_account customfields)
+                            <li> hint_as_help_text - Make the hint appear below the field input
                             <li> search_source - The data source for a search field. The available options are:
                             <ul>
                                 <li> athena_providers &bull; Search Athena for the provider
@@ -21125,11 +21419,14 @@
                             <li>STUDY_VIEWER_ERROR - Called when a viewer error occurs
                             <li>STUDY_ANNOTATION - Called when an annotation is added to the study
                             <li>STUDY_AI_QUESTION - Called when an answer to the AI question is returned. e.g. <code>STUDY_AI_has_scanned_docs</code>
+                            <li>NAMESPACE_AI_QUESTION - Called when an answer to the AI question is returned. e.g. <code>NAMESPACE_AI_run_custom_code_namespace_scripts</code>
                             <li>STUDY_REJECT - Called when the share of the study is rejected
+                            <li>STUDY_DELETE - Called when the the study is deleted. Use the study_deleted object for parameters e.g. <code>study_deleted.study_uid</code>
                             <li>STUDY_REPORT_VIEW - Called when a report is viewed
                             <li>STUDY_EDIT - Called when a study is edited via the UI
                             <li>STUDY_MOVE - Called when a study is moved to a namespace
                             <li>STUDY_MERGE - Called for a study when another study merges in
+                            <li>STUDY_MERGE_FAIL - Called for a study when the storage fails to merge in another study
                             <li>STUDY_SPLIT - Called when a study is split
                             <li>HL7_ADD - Called when an HL7 is added to Ambra
                             <li>DESTINATION_SEARCH_RESULTS - Called for the results (/node/found) for a /destination/search query
@@ -21137,6 +21434,7 @@
                             <li>WEBHOOK_FAILED - Called when a webhook fails
                             <li>MANUAL - The webhook needs to be manually or programmatically triggered
                             <li>CRON - The webhook is time triggered by the cron value
+                            <li>STUDY_DEID_FAIL - Called for a study when the storage fails to de-identify it
                         </ul>
                         <li> For the STUDY_PUSH_STATUS event the destination fields are available as destination.field and the push status as study_push.status for the letter status or study_push.success for a 1/0 flag where 0 is success and 1 is failed
                         <li> For the STUDY_UPLOAD_FAIL event the reason the upload failed is available in the study.failed_upload_reason field
@@ -21155,6 +21453,7 @@
                         <li> For the STUDY_UPLOAD_START and STUDY_UPLOAD_END event the parameters passed to /webhook/event are available in the webhook_event.* fields e.g. webhook_event.study_count, webhook_event.integration_key, webhook_event.namespace_id, webhook_event.share_code. These fields can also be used in the filter_field to filter the webhook.
                         <li> For the STUDY_UPLOAD_LINK event and other events for session created via a study upload link the following additional parameters are available: link_usage.client_email, link_usage.client_address also the user who is associated with or created the link is available via the <code>user_account.*</code> parameters
                         <li> For the STUDY_ANNOTATION event the annotation data is available as <code>annotation.*</code> parameters
+                        <li> For the NAMESPACE_AI_* event the namespace data is available as <code>namespace.*</code> parameters, the question data is available as <code>ai_question.*</code> parameters
                         <li> For the DESTINATION_SEARCH_RESULTS event the returned study list is in the <code>destination_search.results</code> field and the count is in the <code>destination_search.count</code> field
                         <li> For the DESTINATION_FETCH_FAIL event the details are available in the following fields <code>study_fetch.(accession_number|study_uid|patientid|destination_name|destination_uuid)</code> 
                         <li> The auth fields is a JSON hash with a single key that describes the type of auth and the value for the key is a hash with the auth details. The following types of auth are supported.
@@ -21524,7 +21823,9 @@
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(study_id|user_id|account_id)</i> &bull; uuid of the study, user or account to get the links for<br>
+                    <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
+                    <i>sort_by</i> &bull; <a href="#sort">Sorting</a> (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -21591,7 +21892,7 @@
                     <i>parameters</i> &bull; JSON array of parameters to add to the redirect URL or return in /namespace/share_code if an upload (optional)<br>
                     <i>meeting_id</i> &bull; UUID of the meeting to associate the link with (optional)<br>
                     <i>anonymize</i> &bull; Anonymization rules to the applied to any STUDY_UPLOAD done with this link. Rules are formatted as per the rules parameter in <a href="#namespace_anonymize">/namespace/anonymize</a>  (optional)<br>
-                    <i>prompt_for_anonymize</i> &bull; Flag to prompt if the anonymization rules should be applied on ingress<br>
+                    <i>prompt_for_anonymize</i> &bull; Flag to prompt if the anonymization rules should be applied on ingress. If the flag has a value of 2 then the change UI should be displayed but the actual anonymization should not be applied on ingress.<br>
                     <i>referer</i> &bull; The link can only be accessed from the specified referer. The referer can be a regexp to match multiple referers (optional)<br>
                     <i>acceptance_required</i> &bull; Flag that acceptance of TOS is required (optional) <br>
                     <i>charge_amount</i> &bull; Amount to charge in pennies before the link can be accessed (optional) <br>
@@ -23483,6 +23784,9 @@
             <tr>
                 <th>Notes</th>
                 <td>
+                    <ul>
+                        <li> Reports are expired either 4 hours after creation or 10 minutes after download
+                    </ul>
                 </td>
             </tr>
         </table>
@@ -24402,7 +24706,7 @@
         <a href="#npi-idx">top</a>
 
 
-    <footer>Version: LBL0022 v40.0 2020-08-26</footer>
+    <footer>Version: LBL0022 v41.0 2020-10-07</footer>
     </div>
 </body>
 </html>

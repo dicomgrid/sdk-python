@@ -29,6 +29,8 @@ class ErrorParameter:
             ]
         else:
             self.subtypes = subtypes
+        self.subtypes = sorted(self.subtypes, key=lambda x: str(x))
+
 
     def exception_name(self):
         return ''.join(part.capitalize() for part in self.name.split('_'))

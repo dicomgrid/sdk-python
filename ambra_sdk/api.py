@@ -92,8 +92,8 @@ class Api:  # NOQA:WPS214,WPS230
         self._sid: Optional[str] = sid
         self._client_name = client_name
         self._default_headers = {
-            'SDK_CLIENT_NAME': client_name,
-            'SDK_VERSION': __version__,
+            'SDK-CLIENT-NAME': client_name,
+            'SDK-VERSION': __version__,
         }
         if username is not None and password is not None:
             self._creds = Credentials(username=username, password=password)

@@ -86,8 +86,8 @@ class TestApi:
 
         def matcher(request):  # NOQA: WPS430
             r = request._request
-            assert 'SDK_VERSION' in r.headers
-            assert r.headers['SDK_CLIENT_NAME'] == client_name
+            assert 'SDK-VERSION' in r.headers
+            assert r.headers['SDK-CLIENT-NAME'] == client_name
             return requests.Response()
 
         api = Api(url='http://127.0.0.1', client_name=client_name)

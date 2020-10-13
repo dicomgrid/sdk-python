@@ -10,16 +10,21 @@ from ambra_sdk.exceptions.service import ChargeRequired
 from ambra_sdk.exceptions.service import DecryptFailed
 from ambra_sdk.exceptions.service import Disabled
 from ambra_sdk.exceptions.service import Expired
+from ambra_sdk.exceptions.service import FilterNotFound
 from ambra_sdk.exceptions.service import InvalidAction
 from ambra_sdk.exceptions.service import InvalidCharge
+from ambra_sdk.exceptions.service import InvalidCondition
 from ambra_sdk.exceptions.service import InvalidCredentials
 from ambra_sdk.exceptions.service import InvalidEmail
+from ambra_sdk.exceptions.service import InvalidField
 from ambra_sdk.exceptions.service import InvalidFieldName
 from ambra_sdk.exceptions.service import InvalidJson
 from ambra_sdk.exceptions.service import InvalidPhiField
 from ambra_sdk.exceptions.service import InvalidPhone
 from ambra_sdk.exceptions.service import InvalidPin
 from ambra_sdk.exceptions.service import InvalidRegexp
+from ambra_sdk.exceptions.service import InvalidSortField
+from ambra_sdk.exceptions.service import InvalidSortOrder
 from ambra_sdk.exceptions.service import InvalidSource
 from ambra_sdk.exceptions.service import InvalidUploadMatch
 from ambra_sdk.exceptions.service import IpBlocked
@@ -35,7 +40,7 @@ from ambra_sdk.exceptions.service import NotPermitted
 from ambra_sdk.exceptions.service import PinLockout
 from ambra_sdk.exceptions.service import Validate
 from ambra_sdk.service.query import QueryO
-from ambra_sdk.service.query import QueryOP
+from ambra_sdk.service.query import QueryOPSF
 
 class Link:
     """Link."""
@@ -65,6 +70,11 @@ class Link:
         }
 	
         errors_mapping = {}
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this list')
@@ -76,7 +86,7 @@ class Link:
             'required_sid': True,
         }
         query_data['paginated_field'] = 'links'
-        return QueryOP(**query_data)
+        return QueryOPSF(**query_data)
     
     def add(
         self,
@@ -114,7 +124,7 @@ class Link:
     ):
         """Add.
         :param action: Link action (STUDY_LIST|STUDY_VIEW|STUDY_UPLOAD)
-        :param prompt_for_anonymize: Flag to prompt if the anonymization rules should be applied on ingress
+        :param prompt_for_anonymize: Flag to prompt if the anonymization rules should be applied on ingress. If the flag has a value of 2 then the change UI should be displayed but the actual anonymization should not be applied on ingress.
         :param acceptance_required: Flag that acceptance of TOS is required (optional)
         :param account_id: account_id
         :param anonymize: Anonymization rules to the applied to any STUDY_UPLOAD done with this link. Rules are formatted as per the rules parameter in /namespace/anonymize  (optional)

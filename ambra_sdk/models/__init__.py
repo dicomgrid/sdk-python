@@ -88,7 +88,6 @@ from ambra_sdk.models.models import (
     StudyPhi,
     StudyPush,
     StudyPushStatus,
-    StudyQuestion,
     StudyShare,
     StudyShareAi,
     StudyShareRsna,

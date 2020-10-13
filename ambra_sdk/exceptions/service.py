@@ -926,3 +926,7 @@ class NotCustomfieldsPricing(PreconditionFailed):
 
     The namespace is set up to charge by modality
     """
+
+
+class AlreadyPending(PreconditionFailed):
+    """AlreadyPending."""

@@ -126,6 +126,16 @@ REQUEST_PARAMETERS_STRING_MAP = {
     RequestGroupParametersDoc(
         'The following account settings can be over-ridden in the namespace',
     ),
+
+    # study.duplicate overwrite is actually optional
+    'overwrite • Flag if you want to overwrite an existing study in the destination namespace':
+    RequestParameter(
+        RequestParameterType.Usual,
+        'overwrite',
+        'Flag if you want to overwrite an existing study in the destination namespace',
+        optional=True,
+    ),
+
 }
 
 

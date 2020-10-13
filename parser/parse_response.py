@@ -19,6 +19,7 @@ DOC_FIELDS = {
     'JOIN_REQUEST - A user has requested to join the account',
     'DESTINATION_SEARCH - Result of a destination search',
     'USER_INVITE- An invitation to join the account to user has being sent to a user',
+    'NODE_CONNECT- A user has requested to connect the public node',
     '* Epoch time of the event',
     '* LOCKOUT if the login failed due to the lockout or PRIMARY if the login failed due to invalid credentials',
     '* The vanity of the event',
@@ -139,7 +140,7 @@ def parse_response_parameter(parameter_str):
     try:
         name, description = parameter_str.split('•')
     except ValueError:
-        raise ValueError
+        raise ValueError(parameter_str)
     name = name.replace('*', '').replace('↳', '').strip()
     return ResponseParameter(name, description, deep)
 

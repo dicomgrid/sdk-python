@@ -412,6 +412,8 @@ class Activity(BaseModel):
     message = String(description='Message associated with activity')
     namespace_id = String(description='FK. Id of the namespace the activity is associated with')
     namespace = FK(model='Namespace', description='Id of the namespace the activity is associated with')
+    node_connect_id = String(description='FK. Id of the node connect request the activity is associated with')
+    node_connect = FK(model='NodeConnect', description='Id of the node connect request the activity is associated with')
     study_id = String(description='FK. Id of the study the activity is associated with')
     study = FK(model='Study', description='Id of the study the activity is associated with')
     type_field = String(description='Type of activity')
@@ -434,6 +436,8 @@ class Activity(BaseModel):
         message=None,
         namespace_id=None,
         namespace=None,
+        node_connect_id=None,
+        node_connect=None,
         study_id=None,
         study=None,
         type_field=None,
@@ -452,11 +456,88 @@ class Activity(BaseModel):
         self.message = message
         self.namespace_id = namespace_id
         self.namespace = namespace
+        self.node_connect_id = node_connect_id
+        self.node_connect = node_connect
         self.study_id = study_id
         self.study = study
         self.type_field = type_field
         self.user_id = user_id
         self.user = user
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+        self.updated = updated
+        self.updated_by = updated_by
+        self.updated_by_obj = updated_by_obj
+
+
+
+class AiQuestion(BaseModel):
+    """AiQuestion."""
+    
+    id = Integer(description='Primary key for internal use')
+    uuid = String(description='UUID for external use')
+    account_id = String(description='FK. The study, namespace and account id')
+    account = FK(model='Account', description='The study, namespace and account id')
+    answer = String(description='Question and answer')
+    answered = DateTime(description='When was this picked up and answered by the ai stack')
+    detail = String(description='Question and answer')
+    namespace_id = String(description='FK. The study, namespace and account id')
+    namespace = FK(model='Namespace', description='The study, namespace and account id')
+    next_question = Integer(description='Id of the next question to ask when this one is answered')
+    pickup = DateTime(description='When was this picked up and answered by the ai stack')
+    question = String(description='Question and answer')
+    raw_answer = String(description='Question and answer')
+    study_id = String(description='FK. The study, namespace and account id')
+    study = FK(model='Study', description='The study, namespace and account id')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+    updated = DateTime(description='Timestamp when the record was last updated')
+    updated_by = String(description='FK. ID of the user who updated the record')
+    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        uuid=None,
+        account_id=None,
+        account=None,
+        answer=None,
+        answered=None,
+        detail=None,
+        namespace_id=None,
+        namespace=None,
+        next_question=None,
+        pickup=None,
+        question=None,
+        raw_answer=None,
+        study_id=None,
+        study=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+        updated=None,
+        updated_by=None,
+        updated_by_obj=None,
+    ):
+        self.id = id
+        self.uuid = uuid
+        self.account_id = account_id
+        self.account = account
+        self.answer = answer
+        self.answered = answered
+        self.detail = detail
+        self.namespace_id = namespace_id
+        self.namespace = namespace
+        self.next_question = next_question
+        self.pickup = pickup
+        self.question = question
+        self.raw_answer = raw_answer
+        self.study_id = study_id
+        self.study = study
         self.created = created
         self.created_by = created_by
         self.created_by_obj = created_by_obj
@@ -1063,6 +1144,7 @@ class Brand(BaseModel):
     image_1 = String(description='The branding elements')
     image_2 = String(description='The branding elements')
     image_3 = String(description='The branding elements')
+    image_4 = String(description='The branding elements')
     less = String(description='The branding elements')
     name = String(description='Name for the brand')
     oauth = String(description='OAuth information')
@@ -1080,6 +1162,7 @@ class Brand(BaseModel):
     ssi_js = String(description='The branding elements')
     support_html = String(description='The branding elements')
     svg_1 = String(description='The branding elements')
+    svg_2 = String(description='The branding elements')
     ui_json = String(description='The branding elements')
     uploader_icon = String(description='The branding elements')
     uploader_logo = String(description='The branding elements')
@@ -1106,6 +1189,7 @@ class Brand(BaseModel):
         image_1=None,
         image_2=None,
         image_3=None,
+        image_4=None,
         less=None,
         name=None,
         oauth=None,
@@ -1123,6 +1207,7 @@ class Brand(BaseModel):
         ssi_js=None,
         support_html=None,
         svg_1=None,
+        svg_2=None,
         ui_json=None,
         uploader_icon=None,
         uploader_logo=None,
@@ -1145,6 +1230,7 @@ class Brand(BaseModel):
         self.image_1 = image_1
         self.image_2 = image_2
         self.image_3 = image_3
+        self.image_4 = image_4
         self.less = less
         self.name = name
         self.oauth = oauth
@@ -1162,6 +1248,7 @@ class Brand(BaseModel):
         self.ssi_js = ssi_js
         self.support_html = support_html
         self.svg_1 = svg_1
+        self.svg_2 = svg_2
         self.ui_json = ui_json
         self.uploader_icon = uploader_icon
         self.uploader_logo = uploader_logo
@@ -3651,6 +3738,8 @@ class Message(BaseModel):
     
     id = Integer(description='Primary key for internal use')
     uuid = String(description='UUID for external use')
+    account_id = String(description='FK. The account of a study for study messages')
+    account = FK(model='Account', description='The account of a study for study messages')
     body = String(description='Body of the message')
     namespace_id = String(description='FK. The namespace the message is for')
     namespace = FK(model='Namespace', description='The namespace the message is for')
@@ -3658,6 +3747,7 @@ class Message(BaseModel):
     parent = FK(model='Message', description='The parent message')
     study_id = String(description='FK. The study the message is for')
     study = FK(model='Study', description='The study the message is for')
+    study_uid = String(description='The study UID the message is for')
     subject = String(description='Subject')
     user_id = String(description='FK. The user who sent the message')
     user = FK(model='User', description='The user who sent the message')
@@ -3674,6 +3764,8 @@ class Message(BaseModel):
 	*,
         id=None,
         uuid=None,
+        account_id=None,
+        account=None,
         body=None,
         namespace_id=None,
         namespace=None,
@@ -3681,6 +3773,7 @@ class Message(BaseModel):
         parent=None,
         study_id=None,
         study=None,
+        study_uid=None,
         subject=None,
         user_id=None,
         user=None,
@@ -3693,6 +3786,8 @@ class Message(BaseModel):
     ):
         self.id = id
         self.uuid = uuid
+        self.account_id = account_id
+        self.account = account
         self.body = body
         self.namespace_id = namespace_id
         self.namespace = namespace
@@ -3700,6 +3795,7 @@ class Message(BaseModel):
         self.parent = parent
         self.study_id = study_id
         self.study = study
+        self.study_uid = study_uid
         self.subject = subject
         self.user_id = user_id
         self.user = user
@@ -4113,12 +4209,12 @@ class NodeConnect(BaseModel):
     
     id = Integer(description='Primary key for internal use')
     uuid = String(description='UUID for external use')
-    connected = Boolean(description='Status')
     from_account_id = String(description='FK. Node information')
     from_account = FK(model='Account', description='Node information')
     message = String(description='Message')
     node_id = String(description='FK. Node information')
     node = FK(model='Node', description='Node information')
+    status = String(description='Status P-Pending, R-Rejected, A-Approved, C-Connected')
     to_account_id = String(description='FK. Node information')
     to_account = FK(model='Account', description='Node information')
     user_id = String(description='FK. Node information')
@@ -4133,12 +4229,12 @@ class NodeConnect(BaseModel):
 	*,
         id=None,
         uuid=None,
-        connected=None,
         from_account_id=None,
         from_account=None,
         message=None,
         node_id=None,
         node=None,
+        status=None,
         to_account_id=None,
         to_account=None,
         user_id=None,
@@ -4149,12 +4245,12 @@ class NodeConnect(BaseModel):
     ):
         self.id = id
         self.uuid = uuid
-        self.connected = connected
         self.from_account_id = from_account_id
         self.from_account = from_account
         self.message = message
         self.node_id = node_id
         self.node = node
+        self.status = status
         self.to_account_id = to_account_id
         self.to_account = to_account
         self.user_id = user_id
@@ -4567,6 +4663,99 @@ class Patient(BaseModel):
         self.updated = updated
         self.updated_by = updated_by
         self.updated_by_obj = updated_by_obj
+
+
+
+class PerfEvent(BaseModel):
+    """PerfEvent."""
+    
+    id = Integer(description='Primary key for internal use')
+    account_id = String(description='FK. Objects tied to the action')
+    account = FK(model='Account', description='Objects tied to the action')
+    action_id = String(description='User action ID to track events relation')
+    browser = String(description='User environment detected using User-Agent')
+    bytes_transferred = Integer(description='Bytes transferred over network')
+    day = Date(description='Reporting day')
+    event = String(description='Event label (eg API endpoint, short mnemonic name for user action like study_list)')
+    event_timestamp = DateTime(description='Time of event provided by user')
+    event_type = String(description='Event type (eg services_call, user_action)')
+    namespace_id = String(description='FK. Objects tied to the action')
+    namespace = FK(model='Namespace', description='Objects tied to the action')
+    os = String(description='User environment detected using User-Agent')
+    parameters = String(description='Action arguments (eg HTTP GET params)')
+    processing_time = Integer(description='Time spent on action in milliseconds')
+    proxy_id = String(description='FK. User ID')
+    proxy = FK(model='User', description='User ID')
+    records_processed = Integer(description='Count of object records processed')
+    sid = String(description='Session ID')
+    source = String(description='Event source (eg UI, AI)')
+    study_id = String(description='FK. Objects tied to the action')
+    study = FK(model='Study', description='Objects tied to the action')
+    ua = String(description='User-Agent header')
+    user_id = String(description='FK. User ID')
+    user = FK(model='User', description='User ID')
+    vanity = String(description='Vanity')
+    created = DateTime(description='Timestamp when the record was created')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        account_id=None,
+        account=None,
+        action_id=None,
+        browser=None,
+        bytes_transferred=None,
+        day=None,
+        event=None,
+        event_timestamp=None,
+        event_type=None,
+        namespace_id=None,
+        namespace=None,
+        os=None,
+        parameters=None,
+        processing_time=None,
+        proxy_id=None,
+        proxy=None,
+        records_processed=None,
+        sid=None,
+        source=None,
+        study_id=None,
+        study=None,
+        ua=None,
+        user_id=None,
+        user=None,
+        vanity=None,
+        created=None,
+    ):
+        self.id = id
+        self.account_id = account_id
+        self.account = account
+        self.action_id = action_id
+        self.browser = browser
+        self.bytes_transferred = bytes_transferred
+        self.day = day
+        self.event = event
+        self.event_timestamp = event_timestamp
+        self.event_type = event_type
+        self.namespace_id = namespace_id
+        self.namespace = namespace
+        self.os = os
+        self.parameters = parameters
+        self.processing_time = processing_time
+        self.proxy_id = proxy_id
+        self.proxy = proxy
+        self.records_processed = records_processed
+        self.sid = sid
+        self.source = source
+        self.study_id = study_id
+        self.study = study
+        self.ua = ua
+        self.user_id = user_id
+        self.user = user
+        self.vanity = vanity
+        self.created = created
 
 
 
@@ -6574,75 +6763,6 @@ class StudyPushStatus(BaseModel):
 
 
 
-class StudyQuestion(BaseModel):
-    """StudyQuestion."""
-    
-    id = Integer(description='Primary key for internal use')
-    uuid = String(description='UUID for external use')
-    account_id = String(description='FK. The study and account id')
-    account = FK(model='Account', description='The study and account id')
-    answer = String(description='Question and answer')
-    answered = DateTime(description='When was this picked up and answered by the ai stack')
-    detail = String(description='Question and answer')
-    next_question = Integer(description='Id of the next question to ask when this one is answered')
-    pickup = DateTime(description='When was this picked up and answered by the ai stack')
-    question = String(description='Question and answer')
-    raw_answer = String(description='Question and answer')
-    study_id = String(description='FK. The study and account id')
-    study = FK(model='Study', description='The study and account id')
-    created = DateTime(description='Timestamp when the record was created')
-    created_by = String(description='FK. ID of the user who created the record')
-    created_by_obj = FK(model='User', description='ID of the user who created the record')
-    updated = DateTime(description='Timestamp when the record was last updated')
-    updated_by = String(description='FK. ID of the user who updated the record')
-    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
-
-
-    def __init__(
-        self,
-	*,
-        id=None,
-        uuid=None,
-        account_id=None,
-        account=None,
-        answer=None,
-        answered=None,
-        detail=None,
-        next_question=None,
-        pickup=None,
-        question=None,
-        raw_answer=None,
-        study_id=None,
-        study=None,
-        created=None,
-        created_by=None,
-        created_by_obj=None,
-        updated=None,
-        updated_by=None,
-        updated_by_obj=None,
-    ):
-        self.id = id
-        self.uuid = uuid
-        self.account_id = account_id
-        self.account = account
-        self.answer = answer
-        self.answered = answered
-        self.detail = detail
-        self.next_question = next_question
-        self.pickup = pickup
-        self.question = question
-        self.raw_answer = raw_answer
-        self.study_id = study_id
-        self.study = study
-        self.created = created
-        self.created_by = created_by
-        self.created_by_obj = created_by_obj
-        self.updated = updated
-        self.updated_by = updated_by
-        self.updated_by_obj = updated_by_obj
-
-
-
 class StudyShare(BaseModel):
     """StudyShare."""
     
@@ -7001,6 +7121,9 @@ class System(BaseModel):
     indicator_html = String(description='HTML for the terms of use, privacy policy and indicators of use')
     indicator_md5 = String(description='MD5 sums of the terms of use, privacy policy and indicators of use')
     log_days = Integer(description='Number of days to retain logs for')
+    login_page_banner_html = String(description='Login page banner text')
+    login_page_banner_show_start = DateTime(description='Login page banner text')
+    login_page_banner_show_stop = DateTime(description='Login page banner text')
     passwdqc = String(description='Password controls')
     passwdqc_description = String(description='Password controls')
     phr_bypass_study_oversized_threshold = Boolean(description='Bypass oversized threshold for studies in PHR accounts')
@@ -7017,6 +7140,10 @@ class System(BaseModel):
     twilio_from = String(description='Twilio key, secret and from phone number')
     twilio_pk = String(description='Twilio key, secret and from phone number')
     twilio_sk = String(description='Twilio key, secret and from phone number')
+    ui_json = String(description='System-wide UI settings')
+    updates_html = String(description='Updates text')
+    updates_show_start = DateTime(description='Updates text')
+    updates_show_stop = DateTime(description='Updates text')
     user_settings = DictField(description='Default user settings')
     watchdog_host = String(description='Watch dog host, used if not set in site.conf')
     websocket_domain = String(description='Websocket domain')
@@ -7059,6 +7186,9 @@ class System(BaseModel):
         indicator_html=None,
         indicator_md5=None,
         log_days=None,
+        login_page_banner_html=None,
+        login_page_banner_show_start=None,
+        login_page_banner_show_stop=None,
         passwdqc=None,
         passwdqc_description=None,
         phr_bypass_study_oversized_threshold=None,
@@ -7075,6 +7205,10 @@ class System(BaseModel):
         twilio_from=None,
         twilio_pk=None,
         twilio_sk=None,
+        ui_json=None,
+        updates_html=None,
+        updates_show_start=None,
+        updates_show_stop=None,
         user_settings=None,
         watchdog_host=None,
         websocket_domain=None,
@@ -7113,6 +7247,9 @@ class System(BaseModel):
         self.indicator_html = indicator_html
         self.indicator_md5 = indicator_md5
         self.log_days = log_days
+        self.login_page_banner_html = login_page_banner_html
+        self.login_page_banner_show_start = login_page_banner_show_start
+        self.login_page_banner_show_stop = login_page_banner_show_stop
         self.passwdqc = passwdqc
         self.passwdqc_description = passwdqc_description
         self.phr_bypass_study_oversized_threshold = phr_bypass_study_oversized_threshold
@@ -7129,6 +7266,10 @@ class System(BaseModel):
         self.twilio_from = twilio_from
         self.twilio_pk = twilio_pk
         self.twilio_sk = twilio_sk
+        self.ui_json = ui_json
+        self.updates_html = updates_html
+        self.updates_show_start = updates_show_start
+        self.updates_show_stop = updates_show_stop
         self.user_settings = user_settings
         self.watchdog_host = watchdog_host
         self.websocket_domain = websocket_domain

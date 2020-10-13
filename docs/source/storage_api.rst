@@ -23,7 +23,7 @@ Make sure the current version of `ambra-sdk` is not lower.
 
     >>> from ambra_sdk import STORAGE_VERSION
     >>> print(STORAGE_VERSION)
-    LBL0038 v10.0 2020-08-26
+    LBL0038 v11.0 2020-10-07
 
 A description of all existing methods can be found in the :ref:`Storage API reference<referencies-storage-api>`.
 

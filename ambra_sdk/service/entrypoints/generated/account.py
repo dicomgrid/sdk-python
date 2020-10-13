@@ -227,6 +227,7 @@ class Account:
         password_reset=None,
         role_id=None,
         session_expire=None,
+        set_default_organization=None,
         setting_param=None,
         settings=None,
         user_id=None,
@@ -262,6 +263,7 @@ class Account:
         :param password_reset: Flag if the password needs to be reset. (optional).
         :param role_id: uuid of the users role in the account (optional).
         :param session_expire: Number of minutes before an idle session expires. (optional)
+        :param set_default_organization: A flag to set this account as a default one for the user using user_default_organization Setting. (optional)
         :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
         :param settings: A hash of the account settings that the user can override (optional)
         :param user_id: user_id
@@ -299,6 +301,7 @@ class Account:
            'password_reset': password_reset,
            'role_id': role_id,
            'session_expire': session_expire,
+           'set_default_organization': set_default_organization,
            'settings': settings,
            'user_id': user_id,
            'uuid': uuid,
@@ -315,8 +318,8 @@ class Account:
         errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
-        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the account')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add this user to the account')
+        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the account')
         errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user can not be found')
         query_data = {
             'api': self._api,
@@ -446,8 +449,8 @@ class Account:
         errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
-        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the account')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit this user')
+        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the account')
         errors_mapping[('NO_USER_OVERRIDE', None)] = NoUserOverride('The setting does not allow a user override')
         errors_mapping[('ROLE_NOT_FOUND', None)] = RoleNotFound('The role was not found or is not an account role')
         errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user can not be found or is not a member of this account')

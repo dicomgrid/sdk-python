@@ -97,6 +97,8 @@ DEFAULT_FOREIGN_MODELS = MappingProxyType(
         'sid_user_id': 'User',
         'webhook_id': 'Webhook',
         'linked_destination': 'Destination',
+        'node_connect_id': 'NodeConnect',
+        'proxy_id': 'User',
     }
 )
 

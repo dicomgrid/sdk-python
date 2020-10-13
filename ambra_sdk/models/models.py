@@ -90,7 +90,6 @@ from ambra_sdk.models.generated import StudyNotReady as StudyNotReadyG
 from ambra_sdk.models.generated import StudyPhi as StudyPhiG
 from ambra_sdk.models.generated import StudyPush as StudyPushG
 from ambra_sdk.models.generated import StudyPushStatus as StudyPushStatusG
-from ambra_sdk.models.generated import StudyQuestion as StudyQuestionG
 from ambra_sdk.models.generated import StudyShare as StudyShareG
 from ambra_sdk.models.generated import StudyShareAi as StudyShareAiG
 from ambra_sdk.models.generated import StudyShareRsna as StudyShareRsnaG
@@ -471,10 +470,6 @@ class StudyPush(StudyPushG):
 
 class StudyPushStatus(StudyPushStatusG):
     """StudyPushStatus."""
-
-
-class StudyQuestion(StudyQuestionG):
-    """StudyQuestion."""
 
 
 class StudyShare(StudyShareG):

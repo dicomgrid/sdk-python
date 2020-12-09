@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.customfield &#8212; Ambra-SDK 3.20.7.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.customfield &#8212; Ambra-SDK 3.20.8.0-2 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -101,6 +101,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">account_id</span><span class="p">,</span>
         <span class="n">capture_on_share_code</span><span class="p">,</span>
+        <span class="n">dicom_only</span><span class="p">,</span>
         <span class="n">display_order</span><span class="p">,</span>
         <span class="n">name</span><span class="p">,</span>
         <span class="nb">object</span><span class="p">,</span>
@@ -122,6 +123,7 @@
         <span class="sd">&quot;&quot;&quot;Add.</span>
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        :param capture_on_share_code: Flag if the field should be captured during a share code exchange (only applicable to study fields)</span>
+<span class="sd">        :param dicom_only: Only capture for non-wrapped DICOM uploads during a share code exchange</span>
 <span class="sd">        :param display_order: Integer to order how the fields should be displayed</span>
 <span class="sd">        :param name: Name of the customfield</span>
 <span class="sd">        :param object: The object to associate the customfield with (Study|User_account|Group|Location|Account|Patient|Case|Order|Appointment|Dicomdata)</span>
@@ -143,6 +145,7 @@
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
            <span class="s1">&#39;capture_on_share_code&#39;</span><span class="p">:</span> <span class="n">capture_on_share_code</span><span class="p">,</span>
+           <span class="s1">&#39;dicom_only&#39;</span><span class="p">:</span> <span class="n">dicom_only</span><span class="p">,</span>
            <span class="s1">&#39;dicom_tag&#39;</span><span class="p">:</span> <span class="n">dicom_tag</span><span class="p">,</span>
            <span class="s1">&#39;dicom_tag_ignore_empty&#39;</span><span class="p">:</span> <span class="n">dicom_tag_ignore_empty</span><span class="p">,</span>
            <span class="s1">&#39;display_order&#39;</span><span class="p">:</span> <span class="n">display_order</span><span class="p">,</span>
@@ -189,6 +192,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">uuid</span><span class="p">,</span>
         <span class="n">capture_on_share_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dicom_only</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">dicom_tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">dicom_tag_ignore_empty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">display_order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -208,6 +212,7 @@
         <span class="sd">&quot;&quot;&quot;Set.</span>
 <span class="sd">        :param uuid: uuid of the customfield</span>
 <span class="sd">        :param capture_on_share_code: Flag if the study type field should be captured during a share code exchange (optional)</span>
+<span class="sd">        :param dicom_only: Only capture for non-wrapped DICOM uploads during a share code exchange (optional)</span>
 <span class="sd">        :param dicom_tag: Dicom tag to map this field to. Format should be of form (1234,1234). (only applicable to study fields) (optional)</span>
 <span class="sd">        :param dicom_tag_ignore_empty: Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified) (optional)</span>
 <span class="sd">        :param display_order: Integer to order how the fields should be displayed (optional)</span>
@@ -226,6 +231,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;capture_on_share_code&#39;</span><span class="p">:</span> <span class="n">capture_on_share_code</span><span class="p">,</span>
+           <span class="s1">&#39;dicom_only&#39;</span><span class="p">:</span> <span class="n">dicom_only</span><span class="p">,</span>
            <span class="s1">&#39;dicom_tag&#39;</span><span class="p">:</span> <span class="n">dicom_tag</span><span class="p">,</span>
            <span class="s1">&#39;dicom_tag_ignore_empty&#39;</span><span class="p">:</span> <span class="n">dicom_tag_ignore_empty</span><span class="p">,</span>
            <span class="s1">&#39;display_order&#39;</span><span class="p">:</span> <span class="n">display_order</span><span class="p">,</span>
@@ -380,7 +386,7 @@
 
 
 
-<p class="blurb">version 3.20.7.0-1</p>
+<p class="blurb">version 3.20.8.0-2</p>
 
 
 

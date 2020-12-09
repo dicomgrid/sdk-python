@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Addon methods &#8212; Ambra-SDK 3.20.7.0-1 documentation</title>
+    <title>Addon methods &#8212; Ambra-SDK 3.20.8.0-2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -39,6 +39,18 @@
 <div class="section" id="study">
 <h2>Study<a class="headerlink" href="#study" title="Permalink to this headline">¶</a></h2>
 <p>Study level addon methods.</p>
+<div class="section" id="dicom">
+<h3>dicom<a class="headerlink" href="#dicom" title="Permalink to this headline">¶</a></h3>
+<p>[New in 3.20.8.0]</p>
+<p>Get pydicom specific object from storage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dicom</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">dicom</span><span class="p">(</span>
+          <span class="n">namespace_id</span><span class="o">=</span><span class="n">storage_namespace</span><span class="p">,</span>
+          <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
+          <span class="n">image_uid</span><span class="o">=</span><span class="n">image</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+      <span class="p">)</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="upload-dicom">
 <h3>upload_dicom<a class="headerlink" href="#upload-dicom" title="Permalink to this headline">¶</a></h3>
 <p>This method is for uploading dicom to the some namespace in storage:</p>
@@ -113,7 +125,7 @@
 
 
 
-<p class="blurb">version 3.20.7.0-1</p>
+<p class="blurb">version 3.20.8.0-2</p>
 
 
 
@@ -136,6 +148,7 @@
 <li class="toctree-l1"><a class="reference internal" href="storage_api.html">Storage API</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Addon methods</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#study">Study</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dicom">dicom</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#upload-dicom">upload_dicom</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#upload">upload</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#wait">wait</a></li>

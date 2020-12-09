@@ -9,6 +9,20 @@ Study
 
 Study level addon methods.
 
+dicom
+~~~~~
+
+[New in 3.20.8.0]
+
+Get pydicom specific object from storage::
+
+  dicom = api.Addon.Study.dicom(
+            namespace_id=storage_namespace,
+            study_uid=study_uid,
+            image_uid=image['id'],
+        )
+
+
 upload_dicom
 ~~~~~~~~~~~~
 

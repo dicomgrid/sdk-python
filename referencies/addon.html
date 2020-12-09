@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Addon namespace &#8212; Ambra-SDK 3.20.7.0-1 documentation</title>
+    <title>Addon namespace &#8212; Ambra-SDK 3.20.8.0-2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -42,6 +42,27 @@
 <dt id="ambra_sdk.addon.study.Study">
 <em class="property">class </em><code class="sig-prename descclassname">ambra_sdk.addon.study.</code><code class="sig-name descname">Study</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">api</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study" title="Permalink to this definition">¶</a></dt>
 <dd><p>Study addon namespace.</p>
+<dl class="py method">
+<dt id="ambra_sdk.addon.study.Study.dicom">
+<code class="sig-name descname">dicom</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_version</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'*'</span></em>, <em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pretranscode</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.dicom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.dicom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get dicom.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>namespace_id</strong> – uploading to namespace</p></li>
+<li><p><strong>study_uid</strong> – study_uid</p></li>
+<li><p><strong>image_uid</strong> – image_uid</p></li>
+<li><p><strong>image_version</strong> – image_version</p></li>
+<li><p><strong>engine_fqdn</strong> – fqdn (if None gets namespace fqdn)</p></li>
+<li><p><strong>pretranscode</strong> – get pretranscoded</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>pydicom object</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="ambra_sdk.addon.study.Study.duplicate_and_get">
 <code class="sig-name descname">duplicate_and_get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">uuid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">include_attachments</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">200</span></em>, <em class="sig-param"><span class="n">ws_timeout</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em><span class="sig-paren">)</span> &#x2192; box.box.Box<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.duplicate_and_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.duplicate_and_get" title="Permalink to this definition">¶</a></dt>
@@ -157,7 +178,7 @@
 
 
 
-<p class="blurb">version 3.20.7.0-1</p>
+<p class="blurb">version 3.20.8.0-2</p>
 
 
 

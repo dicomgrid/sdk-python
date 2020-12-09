@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Storage namespace &#8212; Ambra-SDK 3.20.7.0-1 documentation</title>
+    <title>Storage namespace &#8212; Ambra-SDK 3.20.8.0-2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -63,6 +63,32 @@ outside of the original storage namespace</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the vendor-specified graphical             annotations, empty if not implemented for the vendor or generating device.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.storage.image.Image.dicom_payload">
+<code class="sig-name descname">dicom_payload</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_version</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pretranscode</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/image.html#Image.dicom_payload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.image.Image.dicom_payload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets dicom payload.</p>
+<p>URL: {namespace}/{studyUid}/image/{imageUid}/version/{hash}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine_fqdn</strong> – Engine FQDN (Required).</p></li>
+<li><p><strong>namespace</strong> – Namespace (Required).</p></li>
+<li><p><strong>study_uid</strong> – Study uid (Required).</p></li>
+<li><p><strong>image_uid</strong> – Image uid (Required).</p></li>
+<li><p><strong>image_version</strong> – image version (Required).</p></li>
+<li><p><strong>phi_namespace</strong> – A string, set to the UUID
+If set, specifies the phi namespace from which to pull PHI.
+Will overlay the values onto the phiSource.</p></li>
+<li><p><strong>pretranscode</strong> – Get pretranscoded dicom.</p></li>
+<li><p><strong>only_prepare</strong> – Get prepared request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dicom.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -952,7 +978,7 @@ outside of the original storage namespace</p></li>
 
 
 
-<p class="blurb">version 3.20.7.0-1</p>
+<p class="blurb">version 3.20.8.0-2</p>
 
 
 

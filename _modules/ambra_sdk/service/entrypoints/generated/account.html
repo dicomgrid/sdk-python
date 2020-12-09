@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.account &#8212; Ambra-SDK 3.20.7.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.account &#8212; Ambra-SDK 3.20.8.0-2 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -51,6 +51,8 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidFlag</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidInteger</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidJson</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidSetting</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidSettingValue</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidSortField</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidSortOrder</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidType</span>
@@ -191,8 +193,8 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_VANITY&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidVanity</span><span class="p">(</span><span class="s1">&#39;The vanity host name is invalid. The error_subtype holds the invalid hostname&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The object was not found. The error_subtype holds the name of field that triggered the error&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="s1">&#39;ROLE_FOR_NAMESPACE_TYPE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;The role cannot be used for the account&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to modify this record&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="s1">&#39;ROLE_FOR_NAMESPACE_TYPE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;The role cannot be used for the account&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/account/set&#39;</span><span class="p">,</span>
@@ -264,6 +266,7 @@
         <span class="n">set_default_organization</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">setting_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">sso_only</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;User add.</span>
@@ -300,6 +303,7 @@
 <span class="sd">        :param set_default_organization: A flag to set this account as a default one for the user using user_default_organization Setting. (optional)</span>
 <span class="sd">        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
 <span class="sd">        :param settings: A hash of the account settings that the user can override (optional)</span>
+<span class="sd">        :param sso_only: Flag if the user can only login via SSO. (optional).</span>
 <span class="sd">        :param user_id: user_id</span>
 
 <span class="sd">        Notes:</span>
@@ -337,6 +341,7 @@
            <span class="s1">&#39;session_expire&#39;</span><span class="p">:</span> <span class="n">session_expire</span><span class="p">,</span>
            <span class="s1">&#39;set_default_organization&#39;</span><span class="p">:</span> <span class="n">set_default_organization</span><span class="p">,</span>
            <span class="s1">&#39;settings&#39;</span><span class="p">:</span> <span class="n">settings</span><span class="p">,</span>
+           <span class="s1">&#39;sso_only&#39;</span><span class="p">:</span> <span class="n">sso_only</span><span class="p">,</span>
            <span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
@@ -399,6 +404,7 @@
         <span class="n">session_expire</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">setting_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">sso_only</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;User set.</span>
 <span class="sd">        :param user_id: The users uuid</span>
@@ -434,6 +440,7 @@
 <span class="sd">        :param session_expire: Number of minutes before an idle session expires. (optional)</span>
 <span class="sd">        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
 <span class="sd">        :param settings: A hash of the account settings that the user can override (optional)</span>
+<span class="sd">        :param sso_only: Flag if the user can only login via SSO. (optional).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;account_alias&#39;</span><span class="p">:</span> <span class="n">account_alias</span><span class="p">,</span>
@@ -465,6 +472,7 @@
            <span class="s1">&#39;role_id&#39;</span><span class="p">:</span> <span class="n">role_id</span><span class="p">,</span>
            <span class="s1">&#39;session_expire&#39;</span><span class="p">:</span> <span class="n">session_expire</span><span class="p">,</span>
            <span class="s1">&#39;settings&#39;</span><span class="p">:</span> <span class="n">settings</span><span class="p">,</span>
+           <span class="s1">&#39;sso_only&#39;</span><span class="p">:</span> <span class="n">sso_only</span><span class="p">,</span>
            <span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
@@ -775,6 +783,38 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">QueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
     
+<div class="viewcode-block" id="Account.settings_validate"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Account.settings_validate">[docs]</a>    <span class="k">def</span> <span class="nf">settings_validate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">setting_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Settings validate.</span>
+<span class="sd">        :param uuid: The account uuid</span>
+<span class="sd">        :param setting_param: Validate an individual setting. This is an alternative to the settings hash (optional)</span>
+<span class="sd">        :param settings: A hash of the account settings with values to validate (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;settings&#39;</span><span class="p">:</span> <span class="n">settings</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">setting_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">setting_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;setting_&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">setting_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">setting_param_dict</span><span class="p">)</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SETTING&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSetting</span><span class="p">(</span><span class="s1">&#39;An invalid setting was passed. The error_subtype holds the name of the invalid setting&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SETTING_VALUE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSettingValue</span><span class="p">(</span><span class="s1">&#39;An invalid setting value was passed. The error_subtype holds the name of the setting with the invalid value&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The account or namespace can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/account/settings/validate&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">QueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
 <div class="viewcode-block" id="Account.connect"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Account.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">code</span><span class="p">,</span>
@@ -847,7 +887,7 @@
 
 
 
-<p class="blurb">version 3.20.7.0-1</p>
+<p class="blurb">version 3.20.8.0-2</p>
 
 
 

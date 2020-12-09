@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.namespace &#8212; Ambra-SDK 3.20.7.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.namespace &#8212; Ambra-SDK 3.20.8.0-2 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -138,8 +138,10 @@
         <span class="n">must_approve_duplicate_study_uid</span><span class="p">,</span>
         <span class="n">no_dup_share</span><span class="p">,</span>
         <span class="n">pixel_anonymize_color</span><span class="p">,</span>
+        <span class="n">pixel_de_id_by_default</span><span class="p">,</span>
         <span class="n">priority_notifications</span><span class="p">,</span>
         <span class="n">reverse_patient_name</span><span class="p">,</span>
+        <span class="n">show_image_on_upload_page</span><span class="p">,</span>
         <span class="n">single_file_dicom_wrapping</span><span class="p">,</span>
         <span class="n">study_field_flags</span><span class="p">,</span>
         <span class="n">try_update_original_study</span><span class="p">,</span>
@@ -165,12 +167,14 @@
 <span class="sd">        :param must_approve_duplicate_study_uid: Value for the setting</span>
 <span class="sd">        :param no_dup_share: Flag to stop duplicate studies (same study_uid and image count) from getting shared into the namespace</span>
 <span class="sd">        :param pixel_anonymize_color: Value for the setting</span>
+<span class="sd">        :param pixel_de_id_by_default: Pixel de-id tool is set by default when uploading study to this namespace</span>
 <span class="sd">        :param priority_notifications: Value for the setting</span>
 <span class="sd">        :param reverse_patient_name: Value for the setting</span>
+<span class="sd">        :param show_image_on_upload_page: Show computer image with CD on upload page when image is uploading to this namespace</span>
 <span class="sd">        :param single_file_dicom_wrapping: Value for the setting</span>
 <span class="sd">        :param study_field_flags: A JSON hash of study_field_* role values to override the role values for studies in the namespace</span>
 <span class="sd">        :param try_update_original_study: Value for the setting</span>
-<span class="sd">        :param ui_json: Value for the setting</span>
+<span class="sd">        :param ui_json: JSON for UI setting possible options:</span>
 <span class="sd">        :param upload_settings: Value for the setting</span>
 <span class="sd">        :param uuid: The uuid of the namespace</span>
 
@@ -194,8 +198,10 @@
            <span class="s1">&#39;must_approve_duplicate_study_uid&#39;</span><span class="p">:</span> <span class="n">must_approve_duplicate_study_uid</span><span class="p">,</span>
            <span class="s1">&#39;no_dup_share&#39;</span><span class="p">:</span> <span class="n">no_dup_share</span><span class="p">,</span>
            <span class="s1">&#39;pixel_anonymize_color&#39;</span><span class="p">:</span> <span class="n">pixel_anonymize_color</span><span class="p">,</span>
+           <span class="s1">&#39;pixel_de_id_by_default&#39;</span><span class="p">:</span> <span class="n">pixel_de_id_by_default</span><span class="p">,</span>
            <span class="s1">&#39;priority_notifications&#39;</span><span class="p">:</span> <span class="n">priority_notifications</span><span class="p">,</span>
            <span class="s1">&#39;reverse_patient_name&#39;</span><span class="p">:</span> <span class="n">reverse_patient_name</span><span class="p">,</span>
+           <span class="s1">&#39;show_image_on_upload_page&#39;</span><span class="p">:</span> <span class="n">show_image_on_upload_page</span><span class="p">,</span>
            <span class="s1">&#39;single_file_dicom_wrapping&#39;</span><span class="p">:</span> <span class="n">single_file_dicom_wrapping</span><span class="p">,</span>
            <span class="s1">&#39;study_field_flags&#39;</span><span class="p">:</span> <span class="n">study_field_flags</span><span class="p">,</span>
            <span class="s1">&#39;try_update_original_study&#39;</span><span class="p">:</span> <span class="n">try_update_original_study</span><span class="p">,</span>
@@ -680,7 +686,7 @@
 
 
 
-<p class="blurb">version 3.20.7.0-1</p>
+<p class="blurb">version 3.20.8.0-2</p>
 
 
 

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.addon.study &#8212; Ambra-SDK 3.20.7.0-1 documentation</title>
+    <title>ambra_sdk.addon.study &#8212; Ambra-SDK 3.20.8.0-2 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -35,6 +35,7 @@
 <span></span><span class="sd">&quot;&quot;&quot;Study addon namespace.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">suppress</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">monotonic</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
@@ -57,7 +58,7 @@
     <span class="n">attr</span><span class="p">:</span> <span class="n">Any</span>
 
 
-<div class="viewcode-block" id="Study"><a class="viewcode-back" href="../../../referencies/addon.html#ambra_sdk.addon.study.Study">[docs]</a><span class="k">class</span> <span class="nc">Study</span><span class="p">:</span>
+<div class="viewcode-block" id="Study"><a class="viewcode-back" href="../../../referencies/addon.html#ambra_sdk.addon.study.Study">[docs]</a><span class="k">class</span> <span class="nc">Study</span><span class="p">:</span>  <span class="c1"># NOQA:WPS214</span>
     <span class="sd">&quot;&quot;&quot;Study addon namespace.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">):</span>
@@ -82,16 +83,7 @@
 <span class="sd">        :return: uploaded image params</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">engine_fqdn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_cached_fqdns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_cached_fqdns</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="n">engine_fqdn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_fqdns</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">namespace_id</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">engine_fqdn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">engine_fqdn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span> \
-                    <span class="o">.</span><span class="n">Namespace</span> \
-                    <span class="o">.</span><span class="n">engine_fqdn</span><span class="p">(</span><span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">)</span> \
-                    <span class="o">.</span><span class="n">get</span><span class="p">()</span> \
-                    <span class="o">.</span><span class="n">engine_fqdn</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_cached_fqdns</span><span class="p">[</span><span class="n">namespace_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">engine_fqdn</span>
+            <span class="n">engine_fqdn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace_fqdn</span><span class="p">(</span><span class="n">namespace_id</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dicom_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dicom_file</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">Storage</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span>
@@ -277,7 +269,65 @@
             <span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
             <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
             <span class="n">ws_timeout</span><span class="o">=</span><span class="n">ws_timeout</span><span class="p">,</span>
-        <span class="p">)</span></div></div>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Study.dicom"><a class="viewcode-back" href="../../../referencies/addon.html#ambra_sdk.addon.study.Study.dicom">[docs]</a>    <span class="k">def</span> <span class="nf">dicom</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">namespace_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">image_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">image_version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span>
+        <span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pretranscode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get dicom.</span>
+
+<span class="sd">        :param namespace_id: uploading to namespace</span>
+<span class="sd">        :param study_uid: study_uid</span>
+<span class="sd">        :param image_uid: image_uid</span>
+<span class="sd">        :param image_version: image_version</span>
+
+<span class="sd">        :param engine_fqdn: fqdn (if None gets namespace fqdn)</span>
+<span class="sd">        :param pretranscode: get pretranscoded</span>
+
+<span class="sd">        :return: pydicom object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">engine_fqdn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">engine_fqdn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace_fqdn</span><span class="p">(</span><span class="n">namespace_id</span><span class="p">)</span>
+
+        <span class="n">dicom_payload_resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span> \
+            <span class="n">Storage</span><span class="o">.</span> \
+            <span class="n">Image</span><span class="o">.</span> \
+            <span class="n">dicom_payload</span><span class="p">(</span>
+                <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
+                <span class="n">namespace</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
+                <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
+                <span class="n">image_uid</span><span class="o">=</span><span class="n">image_uid</span><span class="p">,</span>
+                <span class="n">image_version</span><span class="o">=</span><span class="n">image_version</span><span class="p">,</span>
+                <span class="n">pretranscode</span><span class="o">=</span><span class="n">pretranscode</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">pydicom</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span>
+            <span class="n">fp</span><span class="o">=</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">dicom_payload_resp</span><span class="o">.</span><span class="n">content</span><span class="p">),</span>
+            <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_namespace_fqdn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">namespace_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get cached fqdn for namespace.</span>
+
+<span class="sd">        :param namespace_id: namespace id</span>
+<span class="sd">        :return: fqdn</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_cached_fqdns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cached_fqdns</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">engine_fqdn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_fqdns</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">namespace_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">engine_fqdn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">engine_fqdn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span> \
+                <span class="o">.</span><span class="n">Namespace</span> \
+                <span class="o">.</span><span class="n">engine_fqdn</span><span class="p">(</span><span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">)</span> \
+                <span class="o">.</span><span class="n">get</span><span class="p">()</span> \
+                <span class="o">.</span><span class="n">engine_fqdn</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cached_fqdns</span><span class="p">[</span><span class="n">namespace_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">engine_fqdn</span>
+        <span class="k">return</span> <span class="n">engine_fqdn</span></div>
 </pre></div>
 
           </div>
@@ -290,7 +340,7 @@
 
 
 
-<p class="blurb">version 3.20.7.0-1</p>
+<p class="blurb">version 3.20.8.0-2</p>
 
 
 

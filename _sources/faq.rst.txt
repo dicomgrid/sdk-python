@@ -20,7 +20,7 @@ Today `ambra-sdk` does not support `bundled calls` where multiple queries can be
 
 This `gist <https://gist.github.com/dyens/488a9c0e2f150865e1658e393121bc52>`_ shows some example of using `bundled calls` api with multithreading
 
-If `bundled calls` opportunity is important for you feel free to create an issue in `GitHub <https://github.com/dicomgrid/sdk-python/issue>`_.
+If `bundled calls` opportunity is important for you feel free to create an issue in `GitHub <https://github.com/dicomgrid/sdk-python/issues>`_.
 
 
 What is the difference between :py:meth:`api.Study.duplicate` and :py:meth:`api.Addon.Study.duplicate_and_get` methods ?

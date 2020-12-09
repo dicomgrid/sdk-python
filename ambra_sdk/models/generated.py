@@ -1135,6 +1135,7 @@ class Brand(BaseModel):
     id = Integer(description='Primary key for internal use')
     uuid = String(description='UUID for external use')
     anonymous_permissions = String(description='The permissions over-ride as a json structure')
+    anonymous_session_expire = Integer(description='Minutes before an idle session expires')
     cd_multi = String(description='The branding elements')
     cd_single = String(description='The branding elements')
     cd_viewer_settings = String(description='The branding elements')
@@ -1180,6 +1181,7 @@ class Brand(BaseModel):
         id=None,
         uuid=None,
         anonymous_permissions=None,
+        anonymous_session_expire=None,
         cd_multi=None,
         cd_single=None,
         cd_viewer_settings=None,
@@ -1221,6 +1223,7 @@ class Brand(BaseModel):
         self.id = id
         self.uuid = uuid
         self.anonymous_permissions = anonymous_permissions
+        self.anonymous_session_expire = anonymous_session_expire
         self.cd_multi = cd_multi
         self.cd_single = cd_single
         self.cd_viewer_settings = cd_viewer_settings
@@ -1848,6 +1851,7 @@ class Customfield(BaseModel):
     account_id = String(description='FK. Associated object and account')
     account = FK(model='Account', description='Associated object and account')
     capture_on_share_code = Boolean(description='Settings')
+    dicom_only = Boolean(description='Settings')
     dicom_tag = String(description='Map to this DICOM tag in storage')
     dicom_tag_ignore_empty = Boolean(description='Do not do the DICOM tag mapping if the field is empty')
     display_order = Integer(description='Order the fields should be displayed in')
@@ -1882,6 +1886,7 @@ class Customfield(BaseModel):
         account_id=None,
         account=None,
         capture_on_share_code=None,
+        dicom_only=None,
         dicom_tag=None,
         dicom_tag_ignore_empty=None,
         display_order=None,
@@ -1912,6 +1917,7 @@ class Customfield(BaseModel):
         self.account_id = account_id
         self.account = account
         self.capture_on_share_code = capture_on_share_code
+        self.dicom_only = dicom_only
         self.dicom_tag = dicom_tag
         self.dicom_tag_ignore_empty = dicom_tag_ignore_empty
         self.display_order = display_order
@@ -4097,6 +4103,7 @@ class Node(BaseModel):
     name = String(description='Name')
     namespace_id = String(description='FK. The associated namespace')
     namespace = FK(model='Namespace', description='The associated namespace')
+    os_type = String(description='OS type of the node, used for harvester only currently')
     performance_data = String(description='as well as a rolling array of maybe 10 minutes worth of CPU, memory, disk and network usage')
     reload_configuration = Boolean(description='Reload configuration')
     serial_no = String(description='The serial number')
@@ -4144,6 +4151,7 @@ class Node(BaseModel):
         name=None,
         namespace_id=None,
         namespace=None,
+        os_type=None,
         performance_data=None,
         reload_configuration=None,
         serial_no=None,
@@ -4187,6 +4195,7 @@ class Node(BaseModel):
         self.name = name
         self.namespace_id = namespace_id
         self.namespace = namespace
+        self.os_type = os_type
         self.performance_data = performance_data
         self.reload_configuration = reload_configuration
         self.serial_no = serial_no
@@ -7142,6 +7151,8 @@ class System(BaseModel):
     twilio_sk = String(description='Twilio key, secret and from phone number')
     ui_json = String(description='System-wide UI settings')
     updates_html = String(description='Updates text')
+    updates_html_version = Integer(description='Updates text')
+    updates_release_notes = String(description='Updates text')
     updates_show_start = DateTime(description='Updates text')
     updates_show_stop = DateTime(description='Updates text')
     user_settings = DictField(description='Default user settings')
@@ -7207,6 +7218,8 @@ class System(BaseModel):
         twilio_sk=None,
         ui_json=None,
         updates_html=None,
+        updates_html_version=None,
+        updates_release_notes=None,
         updates_show_start=None,
         updates_show_stop=None,
         user_settings=None,
@@ -7268,6 +7281,8 @@ class System(BaseModel):
         self.twilio_sk = twilio_sk
         self.ui_json = ui_json
         self.updates_html = updates_html
+        self.updates_html_version = updates_html_version
+        self.updates_release_notes = updates_release_notes
         self.updates_show_start = updates_show_start
         self.updates_show_stop = updates_show_stop
         self.user_settings = user_settings
@@ -7783,6 +7798,7 @@ class UserAccount(BaseModel):
     role = FK(model='Role', description='Role')
     session_expire = Integer(description='Minutes before an idle session expires, this is an override of the account setting')
     settings = DictField(description='Account settings overrides')
+    sso_only = Boolean(description='Flag that the user can only login via SSO')
     user_id = String(description='FK. Mapping between the user and account')
     user = FK(model='User', description='Mapping between the user and account')
     created = DateTime(description='Timestamp when the record was created')
@@ -7832,6 +7848,7 @@ class UserAccount(BaseModel):
         role=None,
         session_expire=None,
         settings=None,
+        sso_only=None,
         user_id=None,
         user=None,
         created=None,
@@ -7877,6 +7894,7 @@ class UserAccount(BaseModel):
         self.role = role
         self.session_expire = session_expire
         self.settings = settings
+        self.sso_only = sso_only
         self.user_id = user_id
         self.user = user
         self.created = created

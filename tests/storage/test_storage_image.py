@@ -76,6 +76,44 @@ class TestStorageImage:
             ).all()
         assert len(list(studies)) == 1
 
+    def test_dicom_payload(self, api, readonly_study, image):
+        """Test dicom payload."""
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+        study_uid = readonly_study.study_uid
+
+        dicom_payload = api.Storage.Image.dicom_payload(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            study_uid=study_uid,
+            image_uid=image['id'],
+            image_version=image['version'],
+        )
+        assert dicom_payload.status_code == 200
+        assert dicom_payload.content
+
+    def test_dicom_payload_pretranscoded(
+        self,
+        api,
+        readonly_study,
+        image,
+    ):
+        """Test pretranscoded dicom payload."""
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+        study_uid = readonly_study.study_uid
+
+        dicom_payload = api.Storage.Image.dicom_payload(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            study_uid=study_uid,
+            image_uid=image['id'],
+            image_version=image['version'],
+            pretranscode=True,
+        )
+        assert dicom_payload.status_code == 200
+        assert dicom_payload.content
+
 
 # This is modify readonly study so this test in external class.
 class TestStorageImageWrap:

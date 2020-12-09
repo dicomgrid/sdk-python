@@ -930,3 +930,27 @@ class NotCustomfieldsPricing(PreconditionFailed):
 
 class AlreadyPending(PreconditionFailed):
     """AlreadyPending."""
+
+
+class InvalidOsType(PreconditionFailed):
+    """InvalidOsType."""
+
+
+class SsoOnly(PreconditionFailed):
+    """SsoOnly."""
+
+
+class NothingToTake(PreconditionFailed):
+    """NothingToTake."""
+
+
+class FdcJwtInvalidPrivateKey(PreconditionFailed):
+    """FdcJwtInvalidPrivateKey."""
+
+
+class SfdcJwtMissingFields(PreconditionFailed):
+    """SfdcJwtMissingFields."""
+
+
+class SfdcJwtNotHash(PreconditionFailed):
+    """SfdcJwtNotHash."""

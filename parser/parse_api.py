@@ -121,7 +121,10 @@ class Api:
         )
 
         self.notes = sorted(self.notes, key=lambda x: x.description)
-        self.errors = sorted(set(self.errors), key=lambda x: x.name)
+        self.errors = sorted(
+            set(self.errors),
+            key=lambda x: x.name + ''.join((i.name if i is not None else 'None' for i in x.subtypes)),
+        )
 
     @property
     def namespace(self):

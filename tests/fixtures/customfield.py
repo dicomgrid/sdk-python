@@ -13,11 +13,12 @@ def add_customfield(api, account):
     """
     customfields = []
 
-    def _add_customfield(
+    def _add_customfield(  # NOQA:WPS211
         required=None,
         capture_on_share_code=None,
         display_order=None,
         wrapped_dicom_only=None,
+        dicom_only=None,
         **kwargs,
     ):
         customfield = api.Customfield.add(
@@ -26,6 +27,7 @@ def add_customfield(api, account):
             capture_on_share_code=capture_on_share_code,
             display_order=display_order,
             wrapped_dicom_only=wrapped_dicom_only,
+            dicom_only=dicom_only,
             **kwargs,
         ).get()
         customfields.append(customfield)

@@ -43,6 +43,7 @@ from ambra_sdk.exceptions.service import NotHash
 from ambra_sdk.exceptions.service import NotPermitted
 from ambra_sdk.exceptions.service import NotReady
 from ambra_sdk.exceptions.service import NotThin
+from ambra_sdk.exceptions.service import NothingToTake
 from ambra_sdk.exceptions.service import PdfFailed
 from ambra_sdk.exceptions.service import Pending
 from ambra_sdk.exceptions.service import PendingMustMatch
@@ -1967,6 +1968,32 @@ class Study:
         query_data = {
             'api': self._api,
             'url': '/study/sync',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
+    def take(
+        self,
+        namespace_id,
+    ):
+        """Take.
+        :param namespace_id: The namespace id to take a study into
+        """
+        request_data = {
+           'namespace_id': namespace_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOTHING_TO_TAKE', None)] = NothingToTake('There is no unshared studies in the source namespace')
+        errors_mapping[('NOT_ENABLED', None)] = NotEnabled('the feature is not enabled check the enable_take_study_feature and take_study_source_namespace account settings')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to take a study in this account')
+        query_data = {
+            'api': self._api,
+            'url': '/study/take',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,

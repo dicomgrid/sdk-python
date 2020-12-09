@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ambra-sdk"
-version = "3.20.7.0-1"
+version = "3.20.8.0-1"
 description = "Ambrahealth python SDK"
 authors = [
 	"Ambrahealth AI team <python-sdk@ambrahealth.com>",

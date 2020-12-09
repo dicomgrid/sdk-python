@@ -9,6 +9,7 @@ from requests.packages.urllib3.util import Retry
 
 from ambra_sdk import __version__
 from ambra_sdk.addon.addon import Addon
+from ambra_sdk.clear_params import clear_params
 from ambra_sdk.exceptions.service import AuthorizationRequired
 from ambra_sdk.exceptions.storage import PermissionDenied
 from ambra_sdk.service.entrypoints import (
@@ -205,6 +206,11 @@ class Api:  # NOQA:WPS214,WPS230
             # Get or create new sid
             request_params['sid'] = self.sid
             kwargs['params'] = request_params
+        logger.info(
+            'Storage get: %s. Params: %s',
+            url,
+            str(clear_params(kwargs.get('params', {}))),
+        )
         return self.storage_session.get(url=url, **kwargs)
 
     def storage_delete(
@@ -226,6 +232,11 @@ class Api:  # NOQA:WPS214,WPS230
             # Delete or create new sid
             request_params['sid'] = self.sid
             kwargs['params'] = request_params
+        logger.info(
+            'Storage delete: %s. Params: %s',
+            url,
+            str(clear_params(kwargs.get('params', {}))),
+        )
         return self.storage_session.delete(url=url, **kwargs)
 
     def storage_post(
@@ -247,6 +258,11 @@ class Api:  # NOQA:WPS214,WPS230
             # Post or create new sid
             request_params['sid'] = self.sid
             kwargs['params'] = request_params
+        logger.info(
+            'Storage post: %s. Params: %s',
+            url,
+            str(clear_params(kwargs.get('params', {}))),
+        )
         return self.storage_session.post(url=url, **kwargs)
 
     def service_full_url(self, url: str) -> str:
@@ -278,6 +294,11 @@ class Api:  # NOQA:WPS214,WPS230
             request_data = kwargs.pop('data')
             request_data['sid'] = self.sid
             kwargs['data'] = request_data
+        logger.info(
+            'Service post: %s. Params: %s',
+            url,
+            str(clear_params(kwargs.get('data', {}))),
+        )
         return self.service_session.post(url=full_url, **kwargs)
 
     @property

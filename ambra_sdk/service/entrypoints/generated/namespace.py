@@ -104,8 +104,10 @@ class Namespace:
         must_approve_duplicate_study_uid,
         no_dup_share,
         pixel_anonymize_color,
+        pixel_de_id_by_default,
         priority_notifications,
         reverse_patient_name,
+        show_image_on_upload_page,
         single_file_dicom_wrapping,
         study_field_flags,
         try_update_original_study,
@@ -131,12 +133,14 @@ class Namespace:
         :param must_approve_duplicate_study_uid: Value for the setting
         :param no_dup_share: Flag to stop duplicate studies (same study_uid and image count) from getting shared into the namespace
         :param pixel_anonymize_color: Value for the setting
+        :param pixel_de_id_by_default: Pixel de-id tool is set by default when uploading study to this namespace
         :param priority_notifications: Value for the setting
         :param reverse_patient_name: Value for the setting
+        :param show_image_on_upload_page: Show computer image with CD on upload page when image is uploading to this namespace
         :param single_file_dicom_wrapping: Value for the setting
         :param study_field_flags: A JSON hash of study_field_* role values to override the role values for studies in the namespace
         :param try_update_original_study: Value for the setting
-        :param ui_json: Value for the setting
+        :param ui_json: JSON for UI setting possible options:
         :param upload_settings: Value for the setting
         :param uuid: The uuid of the namespace
 
@@ -160,8 +164,10 @@ class Namespace:
            'must_approve_duplicate_study_uid': must_approve_duplicate_study_uid,
            'no_dup_share': no_dup_share,
            'pixel_anonymize_color': pixel_anonymize_color,
+           'pixel_de_id_by_default': pixel_de_id_by_default,
            'priority_notifications': priority_notifications,
            'reverse_patient_name': reverse_patient_name,
+           'show_image_on_upload_page': show_image_on_upload_page,
            'single_file_dicom_wrapping': single_file_dicom_wrapping,
            'study_field_flags': study_field_flags,
            'try_update_original_study': try_update_original_study,

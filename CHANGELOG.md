@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [3.20.8.0-1] - 2020-11-18
+### Added
+- Service public api support: LBL0022 v42.0 2020-12-02
+- Service models: LBL0022 v42.0 2020-12-02
+- New method api.Storage.Image.dicom_payload: return dicom payload
+- New method api.Addon.Study.dicom: return pydicom object
+
 ## [3.20.7.0-1] - 2020-10-07
 ### Added
 - Service public api support: LBL0022 v41.0 2020-10-07

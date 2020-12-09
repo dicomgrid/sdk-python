@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from dynaconf import settings
+from pydicom.dataset import FileDataset
 
 
 class TestAddonStudy:
@@ -94,3 +95,29 @@ class TestAddonStudy:
 
         assert duplicated_study.uuid != readonly_study.uuid
         assert duplicated_study.study_uid == readonly_study.study_uid
+
+    def test_dicom(
+        self,
+        api,
+        readonly_study,
+    ):
+        """Test dicom ."""
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+        study_uid = readonly_study.study_uid
+
+        schema = api.Storage.Study.schema(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            study_uid=study_uid,
+        )
+        image = schema.series[0]['images'][0]
+
+        dicom = api.Addon.Study.dicom(
+            namespace_id=storage_namespace,
+            study_uid=study_uid,
+            image_uid=image['id'],
+        )
+        assert isinstance(dicom, FileDataset)
+        assert dicom.StudyInstanceUID == study_uid
+        assert dicom.SOPInstanceUID == image['id']

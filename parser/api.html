@@ -121,6 +121,7 @@
                 <li><a href="#study_timing_event">/study/timing/event</a>
                 <li><a href="#study_timing_log">/study/timing/log</a>
                 <li><a href="#study_sync">/study/sync</a>
+                <li><a href="#study_take">/study/take</a>
             </ul>
             <li><a href="#tag" name="tag-idx">Tag commands</a>
             <ul>
@@ -172,6 +173,7 @@
                 <li><a href="#radreportmacro_delete">/radreportmacro/delete</a>
                 <li><a href="#radreport_pdf">/radreport/pdf</a>
                 <li><a href="#radreport_fax">/radreport/fax</a>
+                <li><a href="#radreport_email">/radreport/email</a>
                 <li><a href="#radreport_template_list">/radreport/template/list</a>
                 <li><a href="#radreport_template_add">/radreport/template/add</a>
                 <li><a href="#radreport_template_set">/radreport/template/set</a>
@@ -321,6 +323,7 @@
                 <li><a href="#account_can_share_list">/account/can/share/list</a>
                 <li><a href="#account_css">/account/css</a>
                 <li><a href="#account_settings">/account/settings</a>
+                <li><a href="#account_settings_validate">/account/settings/validate</a>
                 <li><a href="#account_connect">/account/connect</a>
                 <li><a href="#account_md5_counter">/account/md5/counter</a>
             </ul>
@@ -776,6 +779,14 @@
                 <td>Can they add, edit and remove groups from an account</td>
             </tr>
             <tr>
+                <td>group_clone</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they clone groups in the account</td>
+            </tr>
+            <tr>
                 <td>location_view</td>
                 <td>1</td>
                 <td>0</td>
@@ -790,6 +801,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Can they add, edit and remove locations from an account</td>
+            </tr>
+            <tr>
+                <td>location_clone</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they clone locations in the account</td>
             </tr>
             <tr>
                 <td>role_view</td>
@@ -1310,6 +1329,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Can they merge studies together</td>
+            </tr>
+            <tr>
+                <td>study_take</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they take a study into namespace with <a href="#study_take">/study/take</a></td>
             </tr>
             <tr>
                 <td>
@@ -2062,15 +2089,18 @@
                             view_study_button_action (text) &bull; Action token to trigger when view study button is clicked
                             <div>Possible view study actions:</div>
                             <ul>
-                                <li>browse-study - Open with Study Viewer (default, will use external viewer if configured)</li>
-                                <li>browse-study-new-tab - Open with Study Viewer in New Tab (will use external viewer if configured)</li>
+                                <li>browse-study - Open with Study Viewer</li>
+                                <li>browse-study-new-tab - Open with Study Viewer in New Tab</li>
+                                <li>browse-study-new-window - Open with Study Viewer in New Window</li>
                                 <li>browse-study-ambra - Open with Ambra Study Viewer</li>
                                 <li>browse-study-ambra-new-tab - Open with Ambra Study Viewer in New Tab</li>
+                                <li>browser-study-ambra-new-window - Open with Ambra Study Viewer in New Window</li>
                                 <li>browse-as-related-study - Open as Related Study</li>
                                 <li>browse-study-no-canvas - Open with Simple Viewer</li>
                                 <li>browse-study-webgl - Open with WebGL Viewer</li>
                                 <li>browse-key-images - View Key Images</li>
                                 <li>browse-study-dashboard - View Study Dashboard</li>
+                                <li>browse-study-viewer-report-split - Open Study Viewer with Reporting</li>
                             </ul>
                         </li>
                         <li>
@@ -2078,14 +2108,21 @@
                             <div>Possible view study actions are the same as above setting</div>
                         </li>
                         <li>
-                            default_date_format (text) &bull; Date format to be used for patient portal
+                            default_date_format (string) &bull; Date format to be used for patient portal
                         </li>
                         <li>
-                            view_study_namespace_filter_types (text) &bull; Show selected types of namespaces in the study list namespace
-                            dropdown (comma-delmited list). If none are selected, all types will show. Possible types:
-                            account_id, location_id, group_id, user_id
+                            view_study_namespace_filter_types (array) &bull; Show selected types of namespaces in the study list namespace dropdown. If none are selected, all types will show
+                            <div>Possible options:</div>
+                            <ul>
+                                <li>account_id</li>
+                                <li>location_id</li>
+                                <li>group_id</li>
+                                <li>user_id</li>
+                            </ul>
                         </li>
-                        <li>enable_viewer_v3 (boolean): Use the v3 viewer when launching from the study list</li>
+                        <li>
+                            view_study_namespace_filter_types_role_id (string) &bull; Study list namespace filter role. Namespace type filter applies for users with this role.
+                        </li>
                         <li>
                             mwl_search_filters (array) &bull; Specifies MWL Search dropdown filter options. If none are selected, all filters will show.
                             <div>Possible filter options:</div>
@@ -2100,10 +2137,294 @@
                             </ul>
                         </li>
                         <li>
+                            mwl_must_match_fields (array) &bull; MWL must match fields. User will see a confirmation modal if they're not match.
+                            <div>Possible options:</div>
+                            <ul>
+                                <li>patient_name</li>
+                                <li>patient_sex</li>
+                                <li>patient_birth_date</li>
+                                <li>patientid</li>
+                                <li>accession_number</li>
+                                <li>study_description</li>
+                                <li>modality</li>
+                                <li>referring_physician</li>
+                            </ul>
+                        </li>
+                        <li>
                             study_edit_reason_per_field (boolean) &bull; display one reason field for each edited study field
                         </li>
                         <li>
                             study_oru_report_limit (number) &bull; Only show that number of latest ORU in the Study Reports dropdown. Zero value is for no limit
+                        </li>
+                        <li>
+                            enable_patient_search_in_order_create_form (boolean) &bull; Enable patient search in order create form
+                        </li>
+                        <li>
+                            enable_first_last_in_order_create_form (boolean) &bull; Enable first/last names in order create form
+                        </li>
+                        <li>
+                            enable-order-physicians-predefined-values (boolean) &bull; Enable order physicians predefined values
+                        </li>
+                        <li>
+                            order_referring_physicians (array) &bull; list of predefined values for quick order creation
+                        </li>
+                        <li>
+                            enable-order-descriptions-predefined-values (boolean) &bull; Enable order descriptions predefined values
+                        </li>
+                        <li>
+                            order_descriptions (array) &bull; list of predefined description for quick order creation
+                        </li>
+                        <li>
+                            enable-order-accnum-generation (boolean) &bull; Automatically generate orders accession numbers. You also need to configure a special dictionary.
+                        </li>
+                        <li>
+                            order-default-aetitle (string) &bull; Orders default AE title
+                        </li>
+                        <li>
+                            orders_req_fields (array) &bull; Orders additional required fields. If nothing selected only standart fields are required: Patient Name, Patient ID, AETitle, Modality
+                            <div>Possible options:</div>
+                            <ul>
+                                <li>accession_number</li>
+                                <li>patient_sex</li>
+                                <li>patient_birth_date</li>
+                                <li>referring_physician</li>
+                                <li>requested_procedure_description</li>
+                                <li>scheduled_procedure_step_start_date</li>
+                                <li>scheduled_procedure_step_start_time</li>
+                            </ul>
+                        </li>
+                        <li>
+                            enable-study-reject-predefined-messages (boolean) &bull; Enable study reject predefined messages
+                        </li>
+                        <li>
+                            study_reject_messages (array) &bull; list of predefined messages you can choose rejecting study in activities
+                        </li>
+                        <li>
+                            is_utility_account (boolean) &bull; Makes account as utility. Even if user has no permissions UI elements will be visible but disabled
+                        </li>
+                        <li>
+                            utility_elements_blacklist (array) &bull; ability to disable any UI element in the utility account (ex. upload buttons, tabs, etc)
+                        </li>
+                        <li>
+                            advanced_search (array) &bull; list of fields visible in advanced search. All fields will show if list is empty
+                            <div>Possible options:</div>
+                            <ul>
+                                <li>patient_name</li>
+                                <li>patient_sex</li>
+                                <li>patientid</li>
+                                <li>patient_birth_date</li>
+                                <li>accession_number</li>
+                                <li>study_description</li>
+                                <li>referring_physician</li>
+                                <li>study_status</li>
+                                <li>study_push_status</li>
+                                <li>study_push_status.destination_uuid</li>
+                                <li>date_range</li>
+                                <li>created_range</li>
+                                <li>star</li>
+                                <li>thin</li>
+                                <li>modality</li>
+                                <li>study_uid</li>
+                                <li>uuid</li>
+                                <li>tags</li>
+                                <li>customfield-UUID you can specify any custom field</li>
+                            </ul>
+                        </li>
+                        <li>
+                            internal_notes (string) &bull; any notes administrator can write and save
+                        </li>
+                        <li>
+                            study_list_send_messages (boolean) &bull; enable sending messages from study list
+                        </li>
+                        <li>
+                            activity_list_send_messages (boolean) &bull; enable sending messages from activity list
+                        </li>
+                        <li>
+                            study_messages_to_users (boolean) &bull; Ability to select a user when sending message from the worklist or activities
+                        </li>
+                        <li>
+                            enable_gateway_queue_status (boolean) &bull; Show/hide gateway status
+                        </li>
+                        <li>
+                            show_user_analytics (boolean) &bull; Show "User Analytics" sub tab in Analytics section
+                        </li>
+                        <li>
+                            query_retrieve_form_fields (array) &bull; Query retrieve form fields. All fields will show if nothing is selected
+                            <div>Possible options:</div>
+                            <ul>
+                                <li>patient_name</li>
+                                <li>patient_sex</li>
+                                <li>patientid</li>
+                                <li>patient_dob</li>
+                                <li>study_uid</li>
+                                <li>accession_number</li>
+                                <li>referring_physician</li>
+                                <li>modality</li>
+                                <li>start_datetime</li>
+                                <li>end_datetime</li>
+                                <li>create_study</li>
+                                <li>create_thin</li>
+                            </ul>
+                        </li>
+                        <li>
+                            user_setting_default-user_list_sort_study_list (string) &bull; study list initial sort
+                            <div>Possible options:</div>
+                            <ul>
+                                <li>study_date-asc,study_time-asc</li>
+                                <li>study_date-desc,study_time-desc</li>
+                            </ul>
+                        </li>
+                        <li>
+                            limit_gateway_status_queues (array) &bull; Gateway Status Queues
+                            <div>Possible options:</div>
+                            <ul>
+                                <li>BURN</li>
+                                <li>DOWNLOAD</li>
+                                <li>DOWNLOADTRANSCODE</li>
+                                <li>HL7CLIENT</li>
+                                <li>HL7UPLOAD</li>
+                                <li>MOVE</li>
+                                <li>QUERYCLIENT</li>
+                                <li>RETRIEVECLIENT</li>
+                                <li>STORAGECOMMIT</li>
+                                <li>UPLOAD</li>
+                                <li>UPLOADTRANSCODE</li>
+                            </ul>
+                        </li>
+                        <li>
+                            remove-send-status-icon-after-days (number) &bull; Remove Send Status icon after this amount of days. Send status icon is displayed forever if nothing specified
+                        </li>
+                        <li>
+                            activities-default-sub-tab (string) &bull; Activities default sub tab
+                            <div>Possible options:</div>
+                            <ul>
+                                <li>STUDY_APPROVE</li>
+                                <li>DESTINATION_SEARCH</li>
+                                <li>USER_INVITE</li>
+                                <li>JOIN_REQUEST</li>
+                                <li>STUDY_REQUEST</li>
+                                <li>NODE_CONNECT</li>
+                            </ul>
+                        </li>
+                        <li>
+                            enable-patient-mrn-generation (boolean) &bull; Automatically generate patient MRN numbers. You also need to configure speciial dictionary for this feature
+                        </li>
+                        <li>
+                            worklist-reset-search-login (boolean) &bull; Start user session with empty search criteria
+                        </li>
+                        <li>
+                            separate_non_dicom_upload_form (boolean) &bull;  Separate DICOM and Non-DICOM upload forms
+                        </li>
+                        <li>
+                            study_oru_report_limit (boolean) &bull;  Only show most recent ORU in reports popup
+                        </li>
+                        <li>
+                            enable_orders_link (boolean) &bull;  Enable finding orders in the study list
+                        </li>
+                        <li>
+                            uncheck_send_notification_by_default (boolean) &bull;  Uncheck "Send a notification email to user's email address" checkbox by default
+                        </li>
+                        <li>
+                            patient_default_event_share (boolean) &bull;  Use Event Share = 1 by default when creating Patient via UI
+                        </li>
+                        <li>
+                            show_study_actions_in_user_audit_trail (boolean) &bull;  Show study actions in User's audit trail
+                        </li>
+                        <li>
+                            show_last_login_date_in_user_list (boolean) &bull;  Show date of last login in the user list
+                        </li>
+                        <li>
+                            show_under_approval_reason (boolean) &bull;  Show why the study is under approval
+                        </li>
+                        <li>
+                            study_custom_field_customization (array of objects) &bull;  Study Custom Field color customization
+                            <div>Possible object fields:</div>
+                            <ul>
+                                <li>uuid (string) &bull; uuid of the custom field</li>
+                                <li>color (string) &bull; css color attribute value</li>
+                                <li>forms (array) &bull; array of forms that field customization applied to ("share_form", "upload_form", "edit_form", "study_list")</li>
+                                <li>field-parts (array) &bull; array of field parts to be painted ("label", "value", "border", "input-value")</li>
+                            </ul>
+                        </li>
+                        <li>
+                            require_guest_link_password (boolean) &bull; Require password for a Guest study link
+                        </li>
+                        <li>
+                            enable_study_list_context_menu (boolean) &bull; Show study List Context Menu
+                        </li>
+                        <li>
+                            study_list_context_menu (array) &bull; List of items
+                            <div>Possible options:</div>
+                            <ul>
+                                <li>images</li>
+                                <li>retrieve</li>
+                                <li>edit</li>
+                                <li>download</li>
+                                <li>download_iso</li>
+                                <li>download_viewer</li>
+                                <li>export_csv</li>
+                                <li>study_link</li>
+                                <li>study_audit</li>
+                                <li>reports</li>
+                                <li>send</li>
+                                <li>share</li>
+                                <li>remove_share</li>
+                                <li>change_study_stage</li>
+                                <li>split</li>
+                                <li>delete</li>
+                            </ul>
+                        </li>
+                        <li>
+                            request_study_customfields (array of uuid) &bull; Request Study custom fields (e.g. ["e54f5da0-5287-4688-9783-11de90099b23"])
+                        </li>
+                        <li>
+                            worklist_phi_fields_customization (array of objects) &bull; PHI fields customization
+                            <div>For example:</div>
+                            <pre>
+[{"field":"PatientName","type":"primary"}]
+                            </pre>
+                            <div>Possible field values:</div>
+                            <ul>
+                                <li>PatientName</li>
+                                <li>StudyDescription</li>
+                                <li>PatientSex</li>
+                                <li>PatientBitrhDate</li>
+                                <li>PatientId</li>
+                                <li>Modality</li>
+                                <li>AccessionNumber</li>
+                                <li>ReferringPhysican</li>
+                            </ul>
+                            <div>Possible type values:</div>
+                            <ul>
+                                <li>primary</li>
+                                <li>secondary</li>
+                            </ul>
+                        </li>
+                        <li>
+                            case_days_old_colors (array of objects) &bull; Case Days Old Color
+                            <div>For example:</div>
+                            <pre>
+[{ "days": 10, "color": "white", "background": "black" }]
+                            </pre>
+                            <div>Possible colors:</div>
+                            <ul>
+                                <li>white</li>
+                                <li>silver</li>
+                                <li>gray</li>
+                                <li>black</li>
+                                <li>red</li>
+                                <li>maroon</li>
+                                <li>yellow</li>
+                                <li>olive</li>
+                                <li>lime</li>
+                                <li>green</li>
+                                <li>aqua</li>
+                                <li>teal</li>
+                                <li>blue</li>
+                                <li>navy</li>
+                                <li>fuchsia</li>
+                                <li>purple</li>
+                            </ul>
                         </li>
                     </ul>
                 </td>
@@ -2389,6 +2710,20 @@
                 <td>A CSV list of PHI namespaces to limit the update_phi_hl7 feature too. e.g. <nobr><code>f6b013b3-71be-40c6-b26c-5db6a4a2eada,4fcb78c2-ea21-4975-a318-cf5fc1bdf085</code></nobr>. Alternatively this can be a JSON hash keyed by the PHI namespace uuid with the HL7 message subtype as the value, only messages of the subtype will be applied to the namespace e.g. <nobr><code>{"37b607eb-083e-497f-9923-48119076f62e":"A08","b6465cd6-d39b-4012-ba44-92e4ece81144":"A34"}</code></nobr></td>
             </tr>
             <tr>
+                <td>update_accession_from_orm</td>
+                <td>Text</td>
+                <td></td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Using a field in the HL7 ORM find the studies that match and update their accession number to the HL7 accession number. Configure this via a JSON hash with the following keys
+                    <ul>
+                        <li> hl7_field &bull; The field that contains the matching accession number e.g.<code>OBR_5_2</code>
+                        <li> namespaces &bull; A list of uuid of the the namespaces to search for studies in
+                    </ul>
+            </tr>
+            <tr>
                 <td>update_phi_syngo_match</td>
                 <td>Flag</td>
                 <td>0</td>
@@ -2656,7 +2991,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>Comma separated list of email addresses to send a case_submitted email when a case is submitted. The special values <code>user</code> <code>assigned_admin</code> and <code>assigned_medical</code> will be replaced by the appropriate email address for the case. 
+                <td>Comma separated list of email addresses to send a case_submitted email when a case is submitted. The special values <code>user</code> <code>assigned_admin</code> and <code>assigned_medical</code> will be replaced by the appropriate email address for the case.
             </tr>
             <tr>
                 <td>case_notify_completed</td>
@@ -2666,7 +3001,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>Comma separated list of email addresses to send a case_completed email when a case is completed. The special values <code>user</code> <code>assigned_admin</code> and <code>assigned_medical</code> will be replaced by the appropriate email address for the case. 
+                <td>Comma separated list of email addresses to send a case_completed email when a case is completed. The special values <code>user</code> <code>assigned_admin</code> and <code>assigned_medical</code> will be replaced by the appropriate email address for the case.
             </tr>
             <tr>
                 <td>study_status_tags</td>
@@ -2726,7 +3061,17 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>Comma separated list of study status tags that stops the study status timer.</td>
+                <td>Comma separated list of study status tags that stop the study status timer. This setting is of lower priority than <i>study_status_timer_starting_tags</i></td>
+            </tr>
+            <tr>
+                <td>study_status_timer_starting_tags</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Comma separated list of study status tags that start the study status timer. This setting is of higher priority than <i>study_status_timer_suspensive_tags</i></td>
             </tr>
             <tr>
                 <td>study_status_timer_visible_at_last_status</td>
@@ -2869,6 +3214,16 @@
                 <td>Generate appointments from HL7 ADT messages. The value for this setting is a JSON hash that maps the appointment fields to corresponding HL7 fields. Customfields and Text::Template expressions are supported e.g. <code>{"start_time":"PV1_33","end_time":"PV1_34","customfield-UUID":"{$PV1_35_2} to {$PV1_35_4}"</code>. In addition if the map has a referring_physician key a PHYSICIAN_ALIAS lookup is performed using the value to find the matching user in the account.
             </tr>
             <tr>
+                <td>appointments_from_hl7_siu</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Generate appointments from HL7 SIU messages. The format is the same as for <i>appointments_from_hl7_adt</i> setting.
+            </tr>
+            <tr>
                 <td>users_from_hl7_mfn</td>
                 <td>Text</td>
                 <td></td>
@@ -2897,6 +3252,16 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Generate orders from HL7 ORM messages</td>
+            </tr>
+            <tr>
+                <td>update_order_status_from_hl7</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Update orders from HL7 ORM messages. orders_from_hl7 is also required</td>
             </tr>
             <tr>
                 <td>orders_from_hl7_adt</td>
@@ -3513,6 +3878,16 @@
                 <td>On upload create a new UID for the study if it already exists in the namespace</td>
             </tr>
             <tr>
+                <td>save_original_to_pre_anon_cf</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>For client side anonymization save the original values to any pre_anon_* customfields</td>
+            </tr>
+            <tr>
                 <td>add_patientid_to_hl7_query_retrieve</td>
                 <td>Flag</td>
                 <td>0</td>
@@ -3836,13 +4211,18 @@
             </tr>
             <tr>
                 <td>report_view_phr_delay</td>
-                <td>Number</td>
+                <td>Text</td>
+                <td></td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>0</td>
-                <td>A setting to delay a study report exposure in patient's portal. This can be a delay spec or a JSON object with delay specs by madality (object names are modalities or a special value <i>ALL</i> for default). A delay spec can be a number of minutes to delay or a number of work hours with suffix 'wh'</td>
+                <td>A setting to delay a study report exposure in patient's portal. A delay can be expressed in a number of minutes to delay or a number of work hours with suffix 'wh', possible setting's formats:
+                    <ul>
+                        <li> A delay specified directly as a scalar value
+                        <li> A JSON object with delays by madality. Object fields are modalities or a special value <i>ALL</i> for default. Values are delays.
+                        <li> A delay table. It is a JSON list of conditional delays (JSON objects) with two fields: <i>delay</i> specifies a delay, <i>condition</i> is a condition in format used by customfield's show_when field. Possible condition's parameter types are 'field' and 'customfield'. Conditions are checked sequentially, first match gives the delay.
+                    </ul>
             </tr>
             <tr>
                 <td>account_time_zone</td>
@@ -3867,12 +4247,12 @@
             <tr>
                 <td>study_view_phr_delay</td>
                 <td>Text</td>
+                <td></td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>0</td>
-                <td>A setting to delay studies visibility in patient's portal. This can be a delay spec or a JSON object with delay specs by madality (object names are modalities or a special value <i>ALL</i> for default). A delay spec can be a number of minutes to delay or a number of work hours with suffix 'wh'</td>
+                <td>A setting to delay studies visibility in patient's portal. See format description for <i>report_view_phr_delay</i></td>
             </tr>
             <tr>
                 <td>link_defaults</td>
@@ -4315,12 +4695,21 @@
                         <li> version &bull; Optional version number to be used after DSTU (defaults to 2)
                         <li> full_url &bull; Optional full URL for the Epic endpoint if is not in the standard location.
                         <li> use_iss_host &bull; Flag to substitute the host passed in the iss parameter during the OAuth cycle into the full_url
-                        <li> mrn_field &bull; The name of the identifier field that holds the MRN e.g. <code>urn:oid:1.2.840.114350.1.13.0.1.7.5.737384.0</code>. If the integration supports multiple Epic instances that can be a JSON array of the identifier fields to search for. 
+                        <li> mrn_field &bull; The name of the identifier field that holds the MRN e.g. <code>urn:oid:1.2.840.114350.1.13.0.1.7.5.737384.0</code>. If the integration supports multiple Epic instances that can be a JSON array of the identifier fields to search for.
                         <li> timeout &bull; Optional number of seconds for the timeout on the FHIR call to Epic, defaults to 5
                         <li> upload_namespace_id &bull; UUID of the namespace to upload into. Defaults to the account namespace if not specified
+                        <li> include_first_in_match &bull; Flag to include the first name in the search. Default is last, dob and gender.
                         <li> mrn_search &bull; Search by MRN instead of patient PHI. This field should contain a text template to create the Epic identifier value e.g. <nobr><code>MRN|{$patientid}</code></nobr>
+                        <li> skip_phi_update &bull; Skip the lookup for patient phi to update the study, send the study to activities queue
                         <li> server_oauth_url &bull; Full URL to the Epic endpoint to get the server to server OAuth token from e.g. <code>https://apporchard.epic.com/interconnect-aocurprd-oauth/oauth2/token</code>
                         <li> server_oauth_private_key &bull; The private key to encrypt the JWT token for server OAuth. The public key is registered with Epic. Each setup requires a unique key setup and the the keys can be generated as follows<br><code>openssl genrsa -out privatekey.pem 2048</code><br><code>openssl req -new -x509 -key privatekey.pem -out publickey509.pem -subj '/CN=myapp'</code><br>To convert the private key to a single line for JSON usage run the following command<br><code>jq -sR < privatekey.pem</code>
+                        <li> create_thin_study &bull; Flag to create a thin study for the view_study action if the study does not exist. The account setting accession_number_for_study_uid needs to be on for the study retrieval to work.
+                    </ul>
+                    This integration also supports the following additional workflows that are triggered by the action parameter value sent to the /epic/oauth2 entry point. The supported actions are
+                    <ul>
+                        <li> upload &bull; Trigger the Epic upload workflow
+                        <li> sso_share_phr_workflow &bull; Trigger the account sso_share_phr_workflow workflow
+                        <li> view_study &bull; Launch a viewer for the passed accession_number and namespace_id
                     </ul>
                 </td>
             </tr>
@@ -4348,13 +4737,13 @@
             </tr>
             <tr>
                 <td>epic_prompt_for_anonymize</td>
-                <td>Text</td>
+                <td>Flag</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>Set to 1 to enable the prompt_for_anonymize feature for uploads via the Epic integration. Set to 2 if you want to prompt in the UI bbut only apply the changes server side and save the old data to the pre_anon customfields</td>
+                <td>Enable the prompt_for_anonymize feature for uploads via the Epic integration</td>
             </tr>
             <tr>
                 <td>epic_upload_match</td>
@@ -4817,9 +5206,9 @@
                 <td>A JSON hash to with the information needed for the MPI (master patient index) ORM triggered workflow. Each key is the facility code and the value is a configuration hash with the following KV pairs:
                    <ul>
                         <li> search_namespaces &bull; List of namespace uuid(s) to search for the MRN
-                        <li> search_destinations &bull; List of destination uuid(s) to query retrieve for the MRN if the namespace search do not find any results 
+                        <li> search_destinations &bull; List of destination uuid(s) to query retrieve for the MRN if the namespace search do not find any results
                         <li> share_namespace &bull; UUID of namespace to share the search results into
-                        <li> search_status_customfield &bull; UUID of optional Study customfield to put either "primary" or "secondary" for the search source 
+                        <li> search_status_customfield &bull; UUID of optional Study customfield to put either "primary" or "secondary" for the search source
                         <li> secondary_search &bull; Hash of Flag if a secondary search of namespaces and destinations by patient name and DOB should be run if the primary MRN search does not return any results
                         <li> patient_name &bull; Specify where the patient name is located in the HL7 message, defaults to PID_5
                         <li> patient_birth_date &bull; Specify where the birthdate is located in the HL7 message, defaults to PID_7
@@ -4897,6 +5286,66 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Show messages tied to studies with the same UID in the same account</td>
+            </tr>
+            <tr>
+                <td>duplicate_oru_with_study</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Flag to duplicate Hl7 ORU messages when they duplicate a study between accounts</td>
+            </tr>
+            <tr>
+                <td>enable_take_study_feature</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Flag to enable <a href="#study_take">study take feature</a></td>
+            </tr>
+            <tr>
+                <td>take_study_number_to_take_at_a_time</td>
+                <td>Number</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Number of studies to take by <a href="#study_take">/study/take</a></td>
+            </tr>
+            <tr>
+                <td>take_study_source_namespace</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A namespace UUID from which studies will be taken by <a href="#study_take">/study/take</a></td>
+            </tr>
+            <tr>
+                <td>take_study_dedup_by_field</td>
+                <td>Text</td>
+                <td>study_uid</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Ordinary study field name or a 'customfield-UUID' used to guarantee study uniqueness in <a href="#study_take">/study/take</a> destination namespace</td>
+            </tr>
+            <tr>
+                <td>enable_orders_in_worklist</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Flag to show linked studies in orders tab and linked orders in worklist</td>
             </tr>
         </table>
 
@@ -5108,6 +5557,7 @@
                     WHITELIST_LOCKOUT &bull; Login blocked by the account whitelist<br>
                     BLOCKED &bull; The user is blocked from the system<br>
                     DISABLED &bull; The user is disabled and needs to be /user/enabled to allow access<br>
+                    SSO_ONLY &bull; The user can only login via SSO<br>
                 </td>
             </tr>
             <tr>
@@ -5705,7 +6155,11 @@
                     <i>privacy_md5</i> &bull; MD5 of the accepted privacy policy<br>
                     <i>indicator_md5</i> &bull; MD5 of the accepted indications of use<br>
                     <i>last_login</i> &bull; Timestamp of the last login<br>
-                    <i>ui_json</i> &bull; JSON for UI settings<br>
+                    <i>ui_json</i> &bull; JSON for UI settings. <span>Possible options:</span>
+                    <ui>
+                        <li>show_org_manage_link (boolean) &bull; Show link to manage multiple organizations</li>
+                    </ui>
+                    * <i>advanced_search</i> &bull; (array) Advanced search customization for role. See account level "advanced_search" ui_json param for possible values<br>
                 </td>
             </tr>
             <tr>
@@ -5754,7 +6208,11 @@
                     <i>terms_md5</i> &bull; MD5 of the accepted terms of service<br>
                     <i>privacy_md5</i> &bull; MD5 of the accepted privacy policy<br>
                     <i>indicator_md5</i> &bull; MD5 of the accepted indications of use<br>
-                    <i>ui_json</i> &bull; JSON for UI settings (optional)<br>
+                    <i>ui_json</i> &bull; JSON for UI settings (optional) <span>possible options:</span>
+                    <ui>
+                        <li>show_org_manage_link (boolean) &bull; Show link to manage multiple organizations</li>
+                    </ui>
+                    * <i>advanced_search</i> &bull; (array) Advanced search customization for role. See account level "advanced_search" ui_json param for possible values<br>
                 </td>
             </tr>
             <tr>
@@ -6936,6 +7394,8 @@
                     <i>message_count</i> &bull; Number of messages associated with this study<br>
                     --- The following field is only returned if the customfield_h flag is specified ---<br>
                     <i>customfield_h</i> &bull; A JSON hash of the customfield values keyed by the UUID<br>
+                    --- The following field is only returned if the enable_orders_in_worklist account setting is enabled ---<br>
+                    <i>order_count</i> &bull; Number of orders linked with this study (having the same accession_number). This field is filterable.<br>
                 </td>
             </tr>
             <tr>
@@ -7918,6 +8378,7 @@
                     <i>enable_dicom_tag_customfields</i> &bull; Value for the account flag<br>
                     <i>radreport_branding_from_phi_namespace</i> &bull; Value for the account flag<br>
                     <i>viewer_anon_annotations_clear</i> &bull; Value for the account flag<br>
+                    <i>accession_number_for_study_uid</i> &bull; Value for the account flag<br>
                     <i>no_edit_dicom_tags</i> &bull; If enable_dicom_tag_customfields is on this is a JSON list of the DICOM tags that can not be edited<br>
                     <i>accelerators</i> &bull; A JSON list of accelerator FQDN to check and redirect to if available<br>
                     <i>viewer_config</i> &bull; The viewer configuration JSON<br>
@@ -9044,6 +9505,59 @@
             </tr>
         </table>
         <a href="#study-idx">top</a>
+
+        <p><a name="study_take"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Take studies from <i>take_study_source_namespace</i> namespace. Studies will be shared.</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/take</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>namespace_id</i> &bull; The namespace id to take a study into<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    study_take
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    NOTHING_TO_TAKE &bull; There is no unshared studies in the source namespace<br>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The namespace was not found.<br>
+                    NOT_PERMITTED &bull; You are not permitted to take a study in this account<br>
+                    NOT_ENABLED &bull; the feature is not enabled check the <i>enable_take_study_feature</i> and <i>take_study_source_namespace</i> account settings<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ul>
+                        <li> The feature should be enabled with <i>enable_take_study_feature</i> acount setting and <i>take_study_source_namespace</i> account setting should be set to one of account's namespaces for /study/take to work
+                        <li> The call shares up to <i>take_study_number_to_take_at_a_time</i> studies
+                        <li> The call checks studies for duplicates in the target namespace using study field defined by <i>take_study_dedup_by_field</i> account setting prior to sharing
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
 
         <a name="tag"><h3>Tag commands</h3></a>
 
@@ -10654,6 +11168,7 @@
                 <td>
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     NOT_FOUND &bull; The radreport can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to do this<br>
                     INVALID_PHONE &bull; The fax number is invalid<br>
                     PDF_FAILED &bull; The PDF report failed to generate<br>
                     NO_ATTACHMENT &bull; The radreport does not have an attached report<br>
@@ -10662,6 +11177,58 @@
             <tr>
                 <th>Notes</th>
                 <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#radreport-idx">top</a>
+
+        <p><a name="radreport_email"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Email a radreport</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/radreport/email</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The radreport uuid<br>
+                    <i>email</i> &bull; The email address(es) to send the radreport to<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    radreport_view
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The radreport can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to do this<br>
+                    INVALID_EMAIL &bull; An invalid email address was passed<br>
+                    NO_ATTACHMENT &bull; The radreport does not have an attached report<br>
+                    PDF_FAILED &bull; The PDF report failed to generate<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ul>
+                        <li> The email is sent using the study_radreport template with the radreport attached as a PDF
+                    </ul>
                 </td>
             </tr>
         </table>
@@ -11101,13 +11668,14 @@
                     <i>code</i> &bull; The code<br>
                     <i>settings</i> &bull; JSON hash of settings<br>
                     <i>is_deployed</i> &bull; Flag if the code is deployed<br>
+                    <i>deployments</i> &bull; An array of the customcode deployments, ordered from most recent to earliest. Each object has the fields in the <a href="#customcode_deploy_get">/customcode/deploy/get</a> call.<br>
                     <i>has_zip</i> &bull; Flag if the code has an associated zip file<br>
                 </td>
             </tr>
             <tr>
                 <th>Permission</th>
                 <td>
-                    customcode_view 
+                    customcode_view
                 </td>
             </tr>
             <tr>
@@ -11291,7 +11859,7 @@
             <tr>
                 <th>Permission</th>
                 <td>
-                    customcode_view 
+                    customcode_view
                 </td>
             </tr>
             <tr>
@@ -11341,7 +11909,7 @@
             <tr>
                 <th>Permission</th>
                 <td>
-                    customcode_deploy 
+                    customcode_deploy
                 </td>
             </tr>
             <tr>
@@ -11387,7 +11955,7 @@
             <tr>
                 <th>Permission</th>
                 <td>
-                    customcode_deploy 
+                    customcode_deploy
                 </td>
             </tr>
             <tr>
@@ -11437,7 +12005,7 @@
             <tr>
                 <th>Permission</th>
                 <td>
-                    customcode_view 
+                    customcode_view
                 </td>
             </tr>
             <tr>
@@ -11488,7 +12056,7 @@
             <tr>
                 <th>Permission</th>
                 <td>
-                    customcode_view 
+                    customcode_view
                 </td>
             </tr>
             <tr>
@@ -12481,6 +13049,8 @@
                     * <i>scheduled_procedure_step_description</i> &bull; Step description<br>
                     * <i>mpps_status</i> &bull; The modality performed procedure step (mpps) status<br>
                     * <i>mpps_uid</i> &bull; The UID for the mpps<br>
+                    --- The following field is only returned if the enable_orders_in_worklist account setting is enabled ---<br>
+                    <i>study_count</i> &bull; Number of studies linked with this order (having the same accession_number). This field is filterable.<br>
                 </td>
             </tr>
             <tr>
@@ -13012,7 +13582,7 @@
                 <th>Notes</th>
                 <td>
                     <ul>
-                        <li> If the accession number value is <code>__DG_LOAD_FROM_MRN__</code> and the message has an MRN the accession numbers will be populated with the accession numbers of matching studies 
+                        <li> If the accession number value is <code>__DG_LOAD_FROM_MRN__</code> and the message has an MRN the accession numbers will be populated with the accession numbers of matching studies
                     </ul>
                 </td>
             </tr>
@@ -14192,6 +14762,7 @@
                     <i>uuid</i> &bull; uuid of the node (optional, you can use this to explicitly set the UUID)<br>
                     <i>(account_id|location_id|group_id)</i> &bull; uuid of the account, location or group to link this node to<br>
                     <i>type</i> &bull; Type of node (STORAGE|HARVESTER|ACCELERATOR|CLEARINGHOUSE|VIRTUAL|UTILITY|XDS)<br>
+                    <i>os_type</i> &bull; Node OS type, used with HARVESTER node type only (WINDOWS|MACOS) (optional)<br>
                     <i>accelerator_id</i> &bull; uuid of the accelerator if this is an accelerator node<br>
                     <i>facility_name</i> &bull; Name of the facility it is installed at (optional)<br>
                     <i>facility_zip</i> &bull; Zip code of the facility it is installed at (optional)<br>
@@ -14226,6 +14797,7 @@
                     NOT_PERMITTED &bull; You are not permitted to add a node to this account<br>
                     INVALID_UUID &bull; Invalid uuid format or this uuid is already in use<br>
                     INVALID_TYPE &bull; Invalid type of node<br>
+                    INVALID_OS_TYPE &bull; Invalid OS type of node<br>
                     INVALID_LINKAGE &bull; The linkage is invalid<br>
                 </td>
             </tr>
@@ -14308,7 +14880,10 @@
             <tr>
                 <th>Notes</th>
                 <td>
-                    The configuration hash does not need to be complete. It can include only the items you want to update or the entire set.
+                    <ul>
+                        <li>The configuration hash does not need to be complete. It can include only the items you want to update or the entire set.
+                        <li> Use the value <code>__DELETE__</code> to delete a setting, it will then revert to the account value of the setting
+                    </ul>
                 </td>
             </tr>
         </table>
@@ -14338,6 +14913,7 @@
                     <i>name</i> &bull; Description of the node<br>
                     <i>uuid</i> &bull; uuid of the node<br>
                     <i>type</i> &bull; The type of the node<br>
+                    <i>os_type</i> &bull; Node OS type<br>
                     <i>serial_no</i> &bull; The serial number of the node<br>
                     <i>storage_namespace</i> &bull; The storage namespace the node should harvest to<br>
                     <i>storage_namespace_name</i> &bull; The name of the storage namespace the node should harvest to<br>
@@ -15434,7 +16010,7 @@
                 <td>
                     <ul>
                         <li>A VIRTUAL destination will send HL7 messages directly to the destinations hl7 address and port. It does not currently support study operations.
-                        <li>A LINKED destination allows access to destinations in other namespaces or accounts. It can only be created by a sysadmin and must be attached to a VIRTUAL node. If a /destination/search is run against the LINKED destination the search will be sent to the linked_destination and up to 20 studies will be retrieved and copied back into the LINKED destination namespace. 
+                        <li>A LINKED destination allows access to destinations in other namespaces or accounts. It can only be created by a sysadmin and must be attached to a VIRTUAL node. If a /destination/search is run against the LINKED destination the search will be sent to the linked_destination and up to 20 studies will be retrieved and copied back into the LINKED destination namespace.
                         <li> <a name="cd_burn_info">CD burning information</a>. A JSON hash with the following field(s)
                         <ul>
                             <li> labels_single: A JSON list of template fields for a single study burn. The fields can contain Text::Template expressions like <code>{$patient_name}</code> which will be evaluated with the study data
@@ -15948,6 +16524,8 @@
                                     <li> patientid
                                     <li> study_date
                                     <li> study_description
+                                    <li> patient_age
+                                    <li> patient_birth_date
                                     <li> accession_number
                                     <li> customfield-CUSTOMFIELD_UUID
                                     <li> HL7 field to match in the format hl7_SEGMENT_FIELD e.g. hl7_PID_3 or in the format hl7_SEGMENT_FIELD_COMPONENT e.g. hl7_OBR_5_2
@@ -15956,6 +16534,7 @@
                                 <li> lv_transform - Perform a transformation to the left value before comparing. The available transformations are
                                 <ul>
                                     <li> days_old - How many days between the lv and now
+                                    <li> years_old - How many years between the lv and now
                                 </ul>
                                 <li> op - operator value. The available operators are
                                 <ul>
@@ -16468,6 +17047,7 @@
                     <i>session_expire</i> &bull; Number of minutes before an idle session expires. (optional)<br>
                     <i>max_sessions</i> &bull; Over-ride value for the max number of simultaneous sessions the user can have. (optional).<br>
                     <i>set_default_organization</i> &bull; A flag to set this account as a default one for the user using <i>user_default_organization</i> Setting. (optional)<br>
+                    <i>sso_only</i> &bull; Flag if the user can only login via SSO. (optional).<br>
                     <i>event_share</i> &bull; Notify the user on a share into the account namespace (optional)<br>
                     <i>event_approve</i> &bull; Notify the user on a approval needed into the account namespace (optional)<br>
                     <i>event_upload</i> &bull; Notify the user on an upload into the account namespace (optional)<br>
@@ -16555,6 +17135,7 @@
                     <i>epic_user</i> &bull; Epic user used to map Epic users into Ambra's ones to track activity (optional).<br>
                     <i>session_expire</i> &bull; Number of minutes before an idle session expires. (optional)<br>
                     <i>max_sessions</i> &bull; Over-ride value for the max number of simultaneous sessions the user can have. (optional).<br>
+                    <i>sso_only</i> &bull; Flag if the user can only login via SSO. (optional).<br>
                     <i>event_share</i> &bull; Notify the user on a share into the account namespace (optional)<br>
                     <i>event_approve</i> &bull; Notify the user on a approval needed into the account namespace (optional)<br>
                     <i>event_upload</i> &bull; Notify the user on an upload into the account namespace (optional)<br>
@@ -16610,7 +17191,10 @@
             <tr>
                 <th>Notes</th>
                 <td>
-                    The same account_email can be used for multiple users in an account. It does not have to be unique.
+                    <ul>
+                        <li> The same account_email can be used for multiple users in an account. It does not have to be unique.
+                        <li> Use the value <code>__DELETE__</code> to delete a setting, it will then revert to the account value of the setting
+                    </ul>
                 </td>
             </tr>
         </table>
@@ -16654,6 +17238,7 @@
                     <i>session_expire</i> &bull; Number of minutes before an idle session expires<br>
                     <i>last_login</i> &bull; The users last login date and time<br>
                     <i>max_sessions</i> &bull; Over-ride value for the max number of simultaneous sessions the user can have<br>
+                    <i>sso_only</i> &bull; Flag if the user can only login via SSO<br>
                     <i>event_share</i> &bull; Notify the user on a share into the account namespace <br>
                     <i>event_approve</i> &bull; Notify the user on a approval needed into the account namespace <br>
                     <i>event_upload</i> &bull; Notify the user on an upload into the account namespace <br>
@@ -17082,6 +17667,51 @@
             </tr>
         </table>
         <a href="#account-idx">top</a>
+
+        <p><a name="account_settings_validate"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Validate settings for an account</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/account/settings/validate</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The account uuid<br>
+                    <i>settings</i> &bull; A hash of the <a href="#account-settings">account settings</a> with values to validate (optional)<br>
+                    <i>setting_SETTING_NAME</i> &bull; Validate an individual setting. This is an alternative to the settings hash (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    NOT_FOUND &bull; The account or namespace can not be found<br>
+                    INVALID_SETTING &bull; An invalid setting was passed. The <i>error_subtype</i> holds the name of the invalid setting<br>
+                    INVALID_SETTING_VALUE &bull; An invalid setting value was passed. The <i>error_subtype</i> holds the name of the setting with the invalid value<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ul>
+                        <li> You do not need to pass in all the settings, you can validate a subset of the settings if desired.
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#account-idx">top</a>
+
 
         <p><a name="account_connect"></a>
         <table class="bordered-table">
@@ -18491,6 +19121,7 @@
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
                     <i>sort_by</i> &bull; <a href="#sort">Sorting</a> (optional)<br>
                     <i>strict_account_filter</i> &bull; Flag to apply the account_id to personal activites as well (optional)<br>
+                    <i>study_extra</i> &bull; Flag to return extra study fields (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -18570,6 +19201,7 @@
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The activity uuid<br>
+                    <i>study_extra</i> &bull; Flag to return extra study fields (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -19139,7 +19771,11 @@
                     <i>upload_settings</i> &bull; Value for the setting<br>
                     <i>auto_create_patient</i> &bull; Value for the setting<br>
                     <i>enable_epic_patient_lookup</i> &bull; Value for the setting<br>
-                    <i>ui_json</i> &bull; Value for the setting<br>
+                    <i>ui_json</i> &bull; JSON for UI setting <span>possible options:</span>
+                    <ui>
+                        <li>pixel_de_id_by_default (boolean) &bull; Pixel de-id tool is set by default when uploading study to this namespace</li>
+                        <li>show_image_on_upload_page (boolean)  &bull; Show computer image with CD on upload page when image is uploading to this namespace </li>
+                    </ui>
                     <i>cloud_storage_config</i> &bull; Value for the setting<br>
                     <i>pixel_anonymize_color</i> &bull; Value for the setting<br>
                     <i>priority_notifications</i> &bull; Value for the setting<br>
@@ -19257,6 +19893,7 @@
                     <i>customfields</i> &bull; An array of the custom fields that should be captured during the share process ordered by display_order. Each object has the following <a href="#customfields">fields</a> plus these additional fields. (This is only returned if the share has custom fields). If a sid is passed all custom fields for the namespace will be returned<br>
                     * <i>capture_on_share_code</i> &bull; Should the field be capture on the share code<br>
                     * <i>wrapped_dicom_only</i> &bull; Only capture for wrapped DICOM uploads<br>
+                    * <i>dicom_only</i> &bull; Only capture for non-wrapped DICOM uploads<br>
                     <i>link_parameters</i> &bull; A JSON hash of any additional parameters generated by a link usage (optional)<br>
                     <i>permissions</i> &bull; The namespace permissions<br>
                 </td>
@@ -19377,7 +20014,7 @@
                                 <li> The table is a JSON array, each element is a price item consisting of a condition and a price value (a hash with two keys, <i>price</i> and <i>condition</i>)
                                 <li> The price must be integer number of cents/pennies.
                                 <li> The condition is an logical expression compatible with Customfield's <i>show_when</i> expression.
-                                <li> There can be customfield references in condition. Customfield is referenced with string 'customfield-UUID', where UUID is an actual UUID on customfield object. 
+                                <li> There can be customfield references in condition. Customfield is referenced with string 'customfield-UUID', where UUID is an actual UUID on customfield object.
                                 <li> if <i>sum_price_matches</i> flag is false, table is searched line by line for the first condition match. The price amount from the match is the value to charge.
                                 <li> if <i>sum_price_matches</i> flag is true, all table rows are checked for a match, prices from all matched rows are added up together, and the total is the value charge.
                                 <li> Send an empty array to clear out the pricing rules for the namespace.
@@ -20882,6 +21519,7 @@
                     <i>capture_on_share_code</i> &bull; Flag if the field should be captured during a share code exchange (only applicable to study fields)<br>
                     <i>display_order</i> &bull; Integer to order how the fields should be displayed<br>
                     <i>wrapped_dicom_only</i> &bull; Only capture for wrapped DICOM uploads during a share code exchange<br>
+                    <i>dicom_only</i> &bull; Only capture for non-wrapped DICOM uploads during a share code exchange<br>
                     <i>required</i> &bull; Flag if the field is required<br>
                     <i>options</i> &bull; Additional options in JSON format (optional)<br>
                     <i>hl7_segment</i> &bull; Segment to map this field to in HL7 ORM messages. Valid values are (NTE|PID|PID1|PV1|PV2|OBR|DG1|OBX|CTI|BLG|ORC) (only applicable to study fields) (optional)<br>
@@ -20997,6 +21635,7 @@
                     <i>capture_on_share_code</i> &bull; Flag if the study type field should be captured during a share code exchange (optional)<br>
                     <i>display_order</i> &bull; Integer to order how the fields should be displayed (optional)<br>
                     <i>wrapped_dicom_only</i> &bull; Only capture for wrapped DICOM uploads during a share code exchange (optional)<br>
+                    <i>dicom_only</i> &bull; Only capture for non-wrapped DICOM uploads during a share code exchange (optional)<br>
                     <i>required</i> &bull; Flag if the field is required (optional)<br>
                     <i>options</i> &bull; Additional options in JSON format (optional)<br>
                     <i>hl7_segment</i> &bull; Segment to map this field to in HL7 ORM messages. Valid values are (NTE|PID|PID1|PV1|PV2|OBR|DG1|OBX|CTI|BLG|ORC) (only applicable to study fields) (optional)<br>
@@ -21076,6 +21715,7 @@
                     <i>capture_on_share_code</i> &bull; Flag if the study type field should be captured during a share code exchange<br>
                     <i>display_order</i> &bull; Integer to order how the fields should be displayed<br>
                     <i>wrapped_dicom_only</i> &bull; Flag if only capture for wrapped DICOM uploads during a share code exchange<br>
+                    <i>dicom_only</i> &bull; Flag if only capture for non-wrapped DICOM uploads during a share code exchange<br>
                     <i>required</i> &bull; Flag if the field is required<br>
                     <i>options</i> &bull; Additional options in JSON format<br>
                     <i>hl7_segment</i> &bull; Segment to map this field to in HL7 ORM messages. (only applicable to study fields)<br>
@@ -21379,10 +22019,14 @@
                     INCOMPLETE_FILTER &bull; Both a field and regexp are required<br>
                     INVALID_TRANSFORM_CONDITION &bull; The transform condition is invalid<br>
                     SFDC_NOT_HASH &bull; The SFDC auth value is not a JSON hash<br>
+                    SFDC_JWT_NOT_HASH &bull; The SFDC auth value is not a JSON hash<br>
                     SFDC_MISSING_FIELDS &bull; Fields are missing for the SFDC auth hash<br>
+                    SFDC_JWT_MISSING_FIELDS &bull; Fields are missing for the SFDC auth hash<br>
+                    FDC_JWT_INVALID_PRIVATE_KEY &bull; The private key is invalid
                     CUSTOM_NOT_HASH &bull; The custom auth value is not a JSON hash<br>
                     INVALID_CRON &bull; The cron value is invalid<br>
                     NOT_WITH_CRON &bull; The delay or retry option can not be used for cron events<br>
+
                 </td>
             </tr>
             <tr>
@@ -21430,7 +22074,7 @@
                             <li>STUDY_SPLIT - Called when a study is split
                             <li>HL7_ADD - Called when an HL7 is added to Ambra
                             <li>DESTINATION_SEARCH_RESULTS - Called for the results (/node/found) for a /destination/search query
-                            <li>DESTINATION_FETCH_FAIL - Called when a /destination/retrieve fails 
+                            <li>DESTINATION_FETCH_FAIL - Called when a /destination/retrieve fails
                             <li>WEBHOOK_FAILED - Called when a webhook fails
                             <li>MANUAL - The webhook needs to be manually or programmatically triggered
                             <li>CRON - The webhook is time triggered by the cron value
@@ -21455,11 +22099,11 @@
                         <li> For the STUDY_ANNOTATION event the annotation data is available as <code>annotation.*</code> parameters
                         <li> For the NAMESPACE_AI_* event the namespace data is available as <code>namespace.*</code> parameters, the question data is available as <code>ai_question.*</code> parameters
                         <li> For the DESTINATION_SEARCH_RESULTS event the returned study list is in the <code>destination_search.results</code> field and the count is in the <code>destination_search.count</code> field
-                        <li> For the DESTINATION_FETCH_FAIL event the details are available in the following fields <code>study_fetch.(accession_number|study_uid|patientid|destination_name|destination_uuid)</code> 
+                        <li> For the DESTINATION_FETCH_FAIL event the details are available in the following fields <code>study_fetch.(accession_number|study_uid|patientid|destination_name|destination_uuid)</code>
                         <li> The auth fields is a JSON hash with a single key that describes the type of auth and the value for the key is a hash with the auth details. The following types of auth are supported.
                             <ul>
                                 <li> sfdc - <a href="https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_understanding_username_password_oauth_flow.htm">Salesforce Username-Password OAuth Authentication</a>. The following keys must be in the details hash, client_id, client_secret, username, and password. e.g. <nobr><code>{"sfdc":{"client_id":"3MVG9lK","client_secret":"1955279","username":"testuser@salesforce.com","password":"mypassword1234"}}</code></nobr>. /webhook/get will return the md5 of the password.
-                                <li> sfdc_jwt - <a href="https://help.salesforce.com/articleView?id=remoteaccess_oauth_jwt_flow.htm">Salesforce JWT Authentication</a>. The following keys must be in the details hash iss, sub, aud, private_key, salesforce_url. /webhook/get will return the md5 of the private key 
+                                <li> sfdc_jwt - <a href="https://help.salesforce.com/articleView?id=remoteaccess_oauth_jwt_flow.htm">Salesforce JWT Authentication</a>. The following keys must be in the details hash iss, sub, aud, private_key, salesforce_url. /webhook/get will return the md5 of the private key. To convert the private key to a single line for JSON usage run the following command<br><code>jq -sR < privatekey.pem</code>
                                 <li> token_from_webhook - Get the access_token from the JSON returned from another webhook. Put the uuid of a manual webhook into the webhook_id key of the hash
                                 <li> basic - a hash with username and password keys and values
                                 <li> custom - a hash of keys and values that will be passed in the HTTP header of the webhook e.g. <nobr><code>{"custom":{"name":"test"}}</code></nobr>
@@ -21892,7 +22536,7 @@
                     <i>parameters</i> &bull; JSON array of parameters to add to the redirect URL or return in /namespace/share_code if an upload (optional)<br>
                     <i>meeting_id</i> &bull; UUID of the meeting to associate the link with (optional)<br>
                     <i>anonymize</i> &bull; Anonymization rules to the applied to any STUDY_UPLOAD done with this link. Rules are formatted as per the rules parameter in <a href="#namespace_anonymize">/namespace/anonymize</a>  (optional)<br>
-                    <i>prompt_for_anonymize</i> &bull; Flag to prompt if the anonymization rules should be applied on ingress. If the flag has a value of 2 then the change UI should be displayed but the actual anonymization should not be applied on ingress.<br>
+                    <i>prompt_for_anonymize</i> &bull; Flag to prompt if the anonymization rules should be applied on ingress<br>
                     <i>referer</i> &bull; The link can only be accessed from the specified referer. The referer can be a regexp to match multiple referers (optional)<br>
                     <i>acceptance_required</i> &bull; Flag that acceptance of TOS is required (optional) <br>
                     <i>charge_amount</i> &bull; Amount to charge in pennies before the link can be accessed (optional) <br>
@@ -24706,7 +25350,7 @@
         <a href="#npi-idx">top</a>
 
 
-    <footer>Version: LBL0022 v41.0 2020-10-07</footer>
+    <footer>LBL0022 v42.0 2020-12-02</footer>
     </div>
 </body>
 </html>

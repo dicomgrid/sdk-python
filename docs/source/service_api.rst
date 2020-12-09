@@ -23,7 +23,7 @@ Make sure that the current version of `ambra-sdk` is not lower.
 
    >>> from ambra_sdk import API_VERSION
    >>> print(API_VERSION)
-   LBL0022 v41.0 2020-10-07
+   LBL0022 v42.0 2020-12-02
 
 In `ambra-sdk` all service api methods have the form
 `api.CommandNamespace.command.{get(),all() or first()}`.

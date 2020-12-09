@@ -1,6 +1,7 @@
 """Study addon namespace."""
 
 from contextlib import suppress
+from io import BytesIO
 from pathlib import Path
 from time import monotonic
 from typing import Any, Dict, List, NamedTuple, Optional, Tuple
@@ -23,7 +24,7 @@ class UploadedImageParams(NamedTuple):
     attr: Any
 
 
-class Study:
+class Study:  # NOQA:WPS214
     """Study addon namespace."""
 
     def __init__(self, api):
@@ -48,16 +49,7 @@ class Study:
         :return: uploaded image params
         """
         if engine_fqdn is None:
-            if not getattr(self, '_cached_fqdns', None):
-                self._cached_fqdns: Dict[str, str] = {}
-            engine_fqdn = self._cached_fqdns.get(namespace_id)
-            if engine_fqdn is None:
-                engine_fqdn = self._api \
-                    .Namespace \
-                    .engine_fqdn(namespace_id=namespace_id) \
-                    .get() \
-                    .engine_fqdn
-                self._cached_fqdns[namespace_id] = engine_fqdn
+            engine_fqdn = self._namespace_fqdn(namespace_id)
 
         with open(dicom_path, 'rb') as dicom_file:
             response = self._api.Storage.Image.upload(
@@ -244,3 +236,61 @@ class Study:
             timeout=timeout,
             ws_timeout=ws_timeout,
         )
+
+    def dicom(
+        self,
+        namespace_id: str,
+        study_uid: str,
+        image_uid: str,
+        image_version: str = '*',
+        engine_fqdn: Optional[str] = None,
+        pretranscode: Optional[bool] = None,
+    ):
+        """Get dicom.
+
+        :param namespace_id: uploading to namespace
+        :param study_uid: study_uid
+        :param image_uid: image_uid
+        :param image_version: image_version
+
+        :param engine_fqdn: fqdn (if None gets namespace fqdn)
+        :param pretranscode: get pretranscoded
+
+        :return: pydicom object
+        """
+        if engine_fqdn is None:
+            engine_fqdn = self._namespace_fqdn(namespace_id)
+
+        dicom_payload_resp = self._api. \
+            Storage. \
+            Image. \
+            dicom_payload(
+                engine_fqdn=engine_fqdn,
+                namespace=namespace_id,
+                study_uid=study_uid,
+                image_uid=image_uid,
+                image_version=image_version,
+                pretranscode=pretranscode,
+            )
+        return pydicom.read_file(
+            fp=BytesIO(dicom_payload_resp.content),
+            force=True,
+        )
+
+    def _namespace_fqdn(self, namespace_id: str) -> str:
+        """Get cached fqdn for namespace.
+
+        :param namespace_id: namespace id
+        :return: fqdn
+        """
+        if not getattr(self, '_cached_fqdns', None):
+            self._cached_fqdns: Dict[str, str] = {}
+        engine_fqdn = self._cached_fqdns.get(namespace_id)
+        if engine_fqdn is None:
+            engine_fqdn = self._api \
+                .Namespace \
+                .engine_fqdn(namespace_id=namespace_id) \
+                .get() \
+                .engine_fqdn
+            self._cached_fqdns[namespace_id] = engine_fqdn
+        return engine_fqdn

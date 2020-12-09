@@ -17,6 +17,8 @@ from ambra_sdk.exceptions.service import InvalidField
 from ambra_sdk.exceptions.service import InvalidFlag
 from ambra_sdk.exceptions.service import InvalidInteger
 from ambra_sdk.exceptions.service import InvalidJson
+from ambra_sdk.exceptions.service import InvalidSetting
+from ambra_sdk.exceptions.service import InvalidSettingValue
 from ambra_sdk.exceptions.service import InvalidSortField
 from ambra_sdk.exceptions.service import InvalidSortOrder
 from ambra_sdk.exceptions.service import InvalidType
@@ -157,8 +159,8 @@ class Account:
         errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
         errors_mapping[('INVALID_VANITY', None)] = InvalidVanity('The vanity host name is invalid. The error_subtype holds the invalid hostname')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found. The error_subtype holds the name of field that triggered the error')
-        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the account')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to modify this record')
+        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the account')
         query_data = {
             'api': self._api,
             'url': '/account/set',
@@ -230,6 +232,7 @@ class Account:
         set_default_organization=None,
         setting_param=None,
         settings=None,
+        sso_only=None,
         user_id=None,
     ):
         """User add.
@@ -266,6 +269,7 @@ class Account:
         :param set_default_organization: A flag to set this account as a default one for the user using user_default_organization Setting. (optional)
         :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
         :param settings: A hash of the account settings that the user can override (optional)
+        :param sso_only: Flag if the user can only login via SSO. (optional).
         :param user_id: user_id
 
         Notes:
@@ -303,6 +307,7 @@ class Account:
            'session_expire': session_expire,
            'set_default_organization': set_default_organization,
            'settings': settings,
+           'sso_only': sso_only,
            'user_id': user_id,
            'uuid': uuid,
         }
@@ -365,6 +370,7 @@ class Account:
         session_expire=None,
         setting_param=None,
         settings=None,
+        sso_only=None,
     ):
         """User set.
         :param user_id: The users uuid
@@ -400,6 +406,7 @@ class Account:
         :param session_expire: Number of minutes before an idle session expires. (optional)
         :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
         :param settings: A hash of the account settings that the user can override (optional)
+        :param sso_only: Flag if the user can only login via SSO. (optional).
         """
         request_data = {
            'account_alias': account_alias,
@@ -431,6 +438,7 @@ class Account:
            'role_id': role_id,
            'session_expire': session_expire,
            'settings': settings,
+           'sso_only': sso_only,
            'user_id': user_id,
            'uuid': uuid,
         }
@@ -735,6 +743,38 @@ class Account:
         query_data = {
             'api': self._api,
             'url': '/account/settings',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
+    def settings_validate(
+        self,
+        uuid,
+        setting_param=None,
+        settings=None,
+    ):
+        """Settings validate.
+        :param uuid: The account uuid
+        :param setting_param: Validate an individual setting. This is an alternative to the settings hash (optional)
+        :param settings: A hash of the account settings with values to validate (optional)
+        """
+        request_data = {
+           'settings': settings,
+           'uuid': uuid,
+        }
+        if setting_param is not None:
+            setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
+            request_data.update(setting_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_SETTING', None)] = InvalidSetting('An invalid setting was passed. The error_subtype holds the name of the invalid setting')
+        errors_mapping[('INVALID_SETTING_VALUE', None)] = InvalidSettingValue('An invalid setting value was passed. The error_subtype holds the name of the setting with the invalid value')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or namespace can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/account/settings/validate',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,

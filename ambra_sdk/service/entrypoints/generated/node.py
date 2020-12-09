@@ -18,6 +18,7 @@ from ambra_sdk.exceptions.service import InvalidFilter
 from ambra_sdk.exceptions.service import InvalidJson
 from ambra_sdk.exceptions.service import InvalidLinkage
 from ambra_sdk.exceptions.service import InvalidMetric
+from ambra_sdk.exceptions.service import InvalidOsType
 from ambra_sdk.exceptions.service import InvalidRange
 from ambra_sdk.exceptions.service import InvalidSortField
 from ambra_sdk.exceptions.service import InvalidSortOrder
@@ -178,6 +179,7 @@ class Node:
         group_id=None,
         is_public=None,
         location_id=None,
+        os_type=None,
         uuid=None,
     ):
         """Add.
@@ -196,6 +198,7 @@ class Node:
         :param group_id: group_id
         :param is_public: Flag if the node is public (optional)
         :param location_id: location_id
+        :param os_type: Node OS type, used with HARVESTER node type only (WINDOWS|MACOS) (optional)
         :param uuid: uuid of the node (optional, you can use this to explicitly set the UUID)
 
         Notes:
@@ -216,6 +219,7 @@ class Node:
            'is_public': is_public,
            'location_id': location_id,
            'name': name,
+           'os_type': os_type,
            'type': type,
            'uuid': uuid,
         }
@@ -223,6 +227,7 @@ class Node:
         errors_mapping = {}
         errors_mapping[('ACCOUNT_NOT_FOUND', None)] = AccountNotFound('The account was not found')
         errors_mapping[('INVALID_LINKAGE', None)] = InvalidLinkage('The linkage is invalid')
+        errors_mapping[('INVALID_OS_TYPE', None)] = InvalidOsType('Invalid OS type of node')
         errors_mapping[('INVALID_TYPE', None)] = InvalidType('Invalid type of node')
         errors_mapping[('INVALID_UUID', None)] = InvalidUuid('Invalid uuid format or this uuid is already in use')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')

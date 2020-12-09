@@ -22,6 +22,7 @@ from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import OtherOauth
 from ambra_sdk.exceptions.service import PasswordReset
 from ambra_sdk.exceptions.service import PinExpired
+from ambra_sdk.exceptions.service import SsoOnly
 from ambra_sdk.exceptions.service import ValidationFailed
 from ambra_sdk.exceptions.service import WhitelistLockout
 from ambra_sdk.service.query import QueryO
@@ -79,6 +80,7 @@ class Session:
         errors_mapping[('LOCKOUT', None)] = Lockout('Too many failed attempts')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('PASSWORD_RESET', None)] = PasswordReset('The password needs to be changed')
+        errors_mapping[('SSO_ONLY', None)] = SsoOnly('The user can only login via SSO')
         errors_mapping[('VALIDATION_FAILED', None)] = ValidationFailed('The session validation failed')
         errors_mapping[('WHITELIST_LOCKOUT', None)] = WhitelistLockout('Login blocked by the account whitelist')
         query_data = {

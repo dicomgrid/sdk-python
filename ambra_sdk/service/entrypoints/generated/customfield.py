@@ -67,6 +67,7 @@ class Customfield:
         self,
         account_id,
         capture_on_share_code,
+        dicom_only,
         display_order,
         name,
         object,
@@ -88,6 +89,7 @@ class Customfield:
         """Add.
         :param account_id: uuid of the account
         :param capture_on_share_code: Flag if the field should be captured during a share code exchange (only applicable to study fields)
+        :param dicom_only: Only capture for non-wrapped DICOM uploads during a share code exchange
         :param display_order: Integer to order how the fields should be displayed
         :param name: Name of the customfield
         :param object: The object to associate the customfield with (Study|User_account|Group|Location|Account|Patient|Case|Order|Appointment|Dicomdata)
@@ -109,6 +111,7 @@ class Customfield:
         request_data = {
            'account_id': account_id,
            'capture_on_share_code': capture_on_share_code,
+           'dicom_only': dicom_only,
            'dicom_tag': dicom_tag,
            'dicom_tag_ignore_empty': dicom_tag_ignore_empty,
            'display_order': display_order,
@@ -155,6 +158,7 @@ class Customfield:
         self,
         uuid,
         capture_on_share_code=None,
+        dicom_only=None,
         dicom_tag=None,
         dicom_tag_ignore_empty=None,
         display_order=None,
@@ -174,6 +178,7 @@ class Customfield:
         """Set.
         :param uuid: uuid of the customfield
         :param capture_on_share_code: Flag if the study type field should be captured during a share code exchange (optional)
+        :param dicom_only: Only capture for non-wrapped DICOM uploads during a share code exchange (optional)
         :param dicom_tag: Dicom tag to map this field to. Format should be of form (1234,1234). (only applicable to study fields) (optional)
         :param dicom_tag_ignore_empty: Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified) (optional)
         :param display_order: Integer to order how the fields should be displayed (optional)
@@ -192,6 +197,7 @@ class Customfield:
         """
         request_data = {
            'capture_on_share_code': capture_on_share_code,
+           'dicom_only': dicom_only,
            'dicom_tag': dicom_tag,
            'dicom_tag_ignore_empty': dicom_tag_ignore_empty,
            'display_order': display_order,

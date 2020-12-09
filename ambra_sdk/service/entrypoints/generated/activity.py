@@ -27,14 +27,17 @@ class Activity:
         self,
         account_id,
         strict_account_filter=None,
+        study_extra=None,
     ):
         """List.
         :param account_id: Limit to activities in this account and the personal activities
         :param strict_account_filter: Flag to apply the account_id to personal activites as well (optional)
+        :param study_extra: Flag to return extra study fields (optional)
         """
         request_data = {
            'account_id': account_id,
            'strict_account_filter': strict_account_filter,
+           'study_extra': study_extra,
         }
 	
         errors_mapping = {}
@@ -83,11 +86,14 @@ class Activity:
     def get(
         self,
         uuid,
+        study_extra=None,
     ):
         """Get.
         :param uuid: The activity uuid
+        :param study_extra: Flag to return extra study fields (optional)
         """
         request_data = {
+           'study_extra': study_extra,
            'uuid': uuid,
         }
 	

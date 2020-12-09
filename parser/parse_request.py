@@ -149,6 +149,8 @@ def parse_request_parameter(parameter_str):
         return RequestParameter.sorter()
     else:
         name, description = parameter_str.split('•')
+        # ...
+        name = name.replace('(boolean)', '')
         name = name.strip()
         description = description.strip()
 

@@ -210,3 +210,61 @@ class Image:
         if only_prepare is True:
             return prepared_request
         return prepared_request.execute()
+
+    def dicom_payload(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        study_uid: str,
+        image_uid: str,
+        image_version: str,
+        phi_namespace: Optional[str] = None,
+        pretranscode: Optional[bool] = None,
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
+        """Gets dicom payload.
+
+        URL: {namespace}/{studyUid}/image/{imageUid}/version/{hash}
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param study_uid: Study uid (Required).
+        :param image_uid: Image uid (Required).
+        :param image_version: image version (Required).
+        :param phi_namespace: A string, set to the UUID
+            If set, specifies the phi namespace from which to pull PHI.
+            Will overlay the values onto the phiSource.
+        :param pretranscode: Get pretranscoded dicom.
+        :param only_prepare: Get prepared request.
+
+        :returns: dicom.
+        """
+        pretranscode: int = bool_to_int(  # type: ignore
+            pretranscode,
+        )
+        url_template = '/study/{namespace}/{study_uid}/image/{image_uid}/version/{image_version}'
+
+        url_arg_names = {
+            'engine_fqdn',
+            'namespace',
+            'study_uid',
+            'image_uid',
+            'image_version',
+        }
+        request_arg_names = {'phi_namespace', 'pretranscode'}
+        url, request_data = self._storage.get_url_and_request(
+            url_template,
+            url_arg_names,
+            request_arg_names,
+            locals(),
+        )
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            params=request_data,
+            stream=True,
+        )
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()

@@ -124,7 +124,7 @@ class Link:
     ):
         """Add.
         :param action: Link action (STUDY_LIST|STUDY_VIEW|STUDY_UPLOAD)
-        :param prompt_for_anonymize: Flag to prompt if the anonymization rules should be applied on ingress. If the flag has a value of 2 then the change UI should be displayed but the actual anonymization should not be applied on ingress.
+        :param prompt_for_anonymize: Flag to prompt if the anonymization rules should be applied on ingress
         :param acceptance_required: Flag that acceptance of TOS is required (optional)
         :param account_id: account_id
         :param anonymize: Anonymization rules to the applied to any STUDY_UPLOAD done with this link. Rules are formatted as per the rules parameter in /namespace/anonymize  (optional)

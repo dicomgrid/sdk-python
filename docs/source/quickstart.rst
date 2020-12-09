@@ -31,6 +31,14 @@ To use `ambra-sdk` one needs to know the `url` of `AmbraHealth API` and `SID`.
 
   api = Api.with_sid(url, sid)  # Init API with sid
 
+.. note::
+
+   Usually, URL has a form:
+
+   url = `https://ambrahealth_host/api/v3`
+
+
+
 Another option is to use user credentials (`username` and `password`) and `ambra-sdk` takes care of using  the `sid` for the session::
 
   api = Api.with_creds(url, username, password)

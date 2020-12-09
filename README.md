@@ -24,6 +24,9 @@ from ambra_sdk.models import Study
 from ambra_sdk.service.filtering import Filter, FilterCondition
 from ambra_sdk.service.sorting import Sorter, SortingOrder
 
+# Usually, URL has a form:
+# url = https://ambrahealth_host/api/v3
+# username and password - ambrahealth credentials.
 api = Api.with_creds(url, username, password)
 user_info = api.Session.user().get()
 

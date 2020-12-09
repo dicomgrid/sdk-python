@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-## [3.20.8.0-1] - 2020-11-18
+## [3.20.8.0-2] - 2020-11-18
 ### Added
 - Service public api support: LBL0022 v42.0 2020-12-02
 - Service models: LBL0022 v42.0 2020-12-02

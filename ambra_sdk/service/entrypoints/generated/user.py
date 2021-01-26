@@ -160,6 +160,7 @@ class User:
         show_org_manage_link,
         terms_md5,
         account_id=None,
+        allowed_login_brands=None,
         cc_token=None,
         email=None,
         first=None,
@@ -181,6 +182,7 @@ class User:
             advanced_search - (array) Advanced search customization for role. See account level &#34;advanced_search&#34; ui_json param for possible values
         :param terms_md5: MD5 of the accepted terms of service
         :param account_id: Account id if you are trying to set a user other than yourself (optional)
+        :param allowed_login_brands: A comma separated list of Brand UUIDs that the user is allowed to use when logging in (optional)
         :param cc_token: The credit card token to attach to the users account (optional)
         :param email: Email (optional)
         :param first: First name (optional)
@@ -197,6 +199,7 @@ class User:
         """
         request_data = {
            'account_id': account_id,
+           'allowed_login_brands': allowed_login_brands,
            'cc_token': cc_token,
            'email': email,
            'first': first,
@@ -515,6 +518,7 @@ class User:
         event_approve=None,
         event_case_assignment=None,
         event_harvest=None,
+        event_incoming_study_request=None,
         event_link=None,
         event_link_mine=None,
         event_message=None,
@@ -534,6 +538,7 @@ class User:
         :param event_approve: Notify the user on a approval needed into the namespace (optional)
         :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)
         :param event_harvest: Notify the user on a harvest into the namespace (optional)
+        :param event_incoming_study_request: Notify the user when they get an incoming study request (optional)
         :param event_link: Notify the user when an anonymous link is hit in the namespace (optional)
         :param event_link_mine: Notify the user when an anonymous link created by the user is hit in the namespace (optional)
         :param event_message: Notify the user when a message is sent to the namespace (optional)
@@ -552,6 +557,7 @@ class User:
            'event_approve': event_approve,
            'event_case_assignment': event_case_assignment,
            'event_harvest': event_harvest,
+           'event_incoming_study_request': event_incoming_study_request,
            'event_link': event_link,
            'event_link_mine': event_link_mine,
            'event_message': event_message,
@@ -602,6 +608,24 @@ class User:
         query_data = {
             'api': self._api,
             'url': '/user/token',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
+    def device_clear(
+        self,
+    ):
+        """Device clear.
+        """
+        request_data = {
+        }
+	
+        errors_mapping = {}
+        query_data = {
+            'api': self._api,
+            'url': '/user/device/clear',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,

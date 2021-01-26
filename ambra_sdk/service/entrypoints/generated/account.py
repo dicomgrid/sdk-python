@@ -25,8 +25,10 @@ from ambra_sdk.exceptions.service import InvalidType
 from ambra_sdk.exceptions.service import InvalidVanity
 from ambra_sdk.exceptions.service import MissingFields
 from ambra_sdk.exceptions.service import NoUserOverride
+from ambra_sdk.exceptions.service import NotEnabled
 from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import NotPermitted
+from ambra_sdk.exceptions.service import RoleNamespaceMismatch
 from ambra_sdk.exceptions.service import RoleNotFound
 from ambra_sdk.exceptions.service import TokenFailed
 from ambra_sdk.exceptions.service import UserNotFound
@@ -160,7 +162,7 @@ class Account:
         errors_mapping[('INVALID_VANITY', None)] = InvalidVanity('The vanity host name is invalid. The error_subtype holds the invalid hostname')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found. The error_subtype holds the name of field that triggered the error')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to modify this record')
-        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the account')
+        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for the account')
         query_data = {
             'api': self._api,
             'url': '/account/set',
@@ -209,6 +211,7 @@ class Account:
         event_approve=None,
         event_case_assignment=None,
         event_harvest=None,
+        event_incoming_study_request=None,
         event_join=None,
         event_link=None,
         event_link_mine=None,
@@ -246,6 +249,7 @@ class Account:
         :param event_approve: Notify the user on a approval needed into the account namespace (optional)
         :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)
         :param event_harvest: Notify the user on a harvest into the account namespace (optional)
+        :param event_incoming_study_request: Notify the user when they get an incoming study request (optional)
         :param event_join: Notify the user on a join request for the account (optional)
         :param event_link: Notify the user when an anonymous link is hit in the namespace (optional)
         :param event_link_mine: Notify the user when an anonymous link created by the user is hit in the namespace (optional)
@@ -285,6 +289,7 @@ class Account:
            'event_approve': event_approve,
            'event_case_assignment': event_case_assignment,
            'event_harvest': event_harvest,
+           'event_incoming_study_request': event_incoming_study_request,
            'event_join': event_join,
            'event_link': event_link,
            'event_link_mine': event_link_mine,
@@ -324,7 +329,7 @@ class Account:
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add this user to the account')
-        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the account')
+        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for the account')
         errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user can not be found')
         query_data = {
             'api': self._api,
@@ -348,6 +353,7 @@ class Account:
         event_approve=None,
         event_case_assignment=None,
         event_harvest=None,
+        event_incoming_study_request=None,
         event_join=None,
         event_link=None,
         event_link_mine=None,
@@ -384,6 +390,7 @@ class Account:
         :param event_approve: Notify the user on a approval needed into the account namespace (optional)
         :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)
         :param event_harvest: Notify the user on a harvest into the account namespace (optional)
+        :param event_incoming_study_request: Notify the user when they get an incoming study request (optional)
         :param event_join: Notify the user on a join request for the account (optional)
         :param event_link: Notify the user when an anonymous link is hit in the namespace (optional)
         :param event_link_mine: Notify the user when an anonymous link created by the user is hit in the namespace (optional)
@@ -417,6 +424,7 @@ class Account:
            'event_approve': event_approve,
            'event_case_assignment': event_case_assignment,
            'event_harvest': event_harvest,
+           'event_incoming_study_request': event_incoming_study_request,
            'event_join': event_join,
            'event_link': event_link,
            'event_link_mine': event_link_mine,
@@ -458,8 +466,8 @@ class Account:
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit this user')
-        errors_mapping[('NOT_PERMITTED', 'ROLE_FOR_NAMESPACE_TYPE')] = NotPermitted('The role cannot be used for the account')
         errors_mapping[('NO_USER_OVERRIDE', None)] = NoUserOverride('The setting does not allow a user override')
+        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for the account')
         errors_mapping[('ROLE_NOT_FOUND', None)] = RoleNotFound('The role was not found or is not an account role')
         errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user can not be found or is not a member of this account')
         query_data = {
@@ -835,6 +843,30 @@ class Account:
         query_data = {
             'api': self._api,
             'url': '/account/md5/counter',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
+    def list_requestable(
+        self,
+        namespace_id,
+    ):
+        """List requestable.
+        :param namespace_id: Id of the namespace to receive requested studies into
+        """
+        request_data = {
+           'namespace_id': namespace_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('NOT_ENABLED', None)] = NotEnabled('The study request feature is not enabled')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not allowed to list requestable accounts')
+        query_data = {
+            'api': self._api,
+            'url': '/account/list/requestable',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,

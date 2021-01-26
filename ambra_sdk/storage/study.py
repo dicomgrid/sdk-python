@@ -8,6 +8,7 @@ from box import Box, BoxList
 from requests import Response
 
 from ambra_sdk.exceptions.storage import (
+    Hl7ReportDataNotConvertedToDicom,
     InconsistencyConflict,
     NotFound,
     PermissionDenied,
@@ -1666,6 +1667,7 @@ class Study:
         keep_image_uids: Optional[str] = None,
         color: Optional[str] = None,
         only_prepare: bool = False,
+        x_ambrahealth_job_id: Optional[str] = None,
     ) -> Union[Response, PreparedRequest]:
         """Produce a new study that is a copy of the old, with specified pixel regions obscured.
 
@@ -1685,6 +1687,7 @@ class Study:
         :param color: HTML-formatted color (rrggbb) of
             obscured regions (default is black-and-white checkerboard)
         :param only_prepare: Get prepared request.
+        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument
 
         :returns: Anonymize study response
 
@@ -1715,6 +1718,8 @@ class Study:
         headers = {
             'Content-Type': 'application/json; charset=utf-8',
         }
+        if x_ambrahealth_job_id is not None:
+            headers['X-AmbraHealth-Job-Id'] = x_ambrahealth_job_id
         errors_mapping = {
             412:
             PreconditionFailed(
@@ -1850,6 +1855,68 @@ class Study:
             storage_=self._storage,
             method=StorageMethod.delete,
             url=url,
+            params=request_data,
+        )
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
+
+    def hl7_to_sr(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        study_uid: str,
+        hl7uuid: str,
+        phi_namespace: Optional[str] = None,
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
+        """Hl7 to sr.
+
+        Gets the HL7 report from services, converts to the DICOM SR
+        and uploads to the storage.
+
+        URL: /study/{namespace}/{studyUid}/hl7/{hl7Uuid}/sr?sid={sid}&phi_namespace={phi_namespace}
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param study_uid: Study uid (Required).
+        :param hl7uuid: hl7 report UUID from services to convert to DICOM SR.
+        :param phi_namespace: A string, set to the UUID of the namespace
+            where the file was attached if it was attached to a shared
+            instance of the study outside of the original storage namespace
+        :param only_prepare: Get prepared request.
+
+
+        :returns: hl7_to_sr result
+        """
+        url_template = '/study/{namespace}/{study_uid}/hl7/{hl7uuid}/sr'
+        url_arg_names = {
+            'engine_fqdn',
+            'namespace',
+            'study_uid',
+            'hl7uuid',
+        }
+        request_arg_names = {
+            'phi_namespace',
+        }
+        url, request_data = self._storage.get_url_and_request(
+            url_template,
+            url_arg_names,
+            request_arg_names,
+            locals(),
+        )
+        errors_mapping = {
+            500:
+            Hl7ReportDataNotConvertedToDicom(
+                'If hl7 report data not converted to DICOM.',
+            ),
+        }
+
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            method=StorageMethod.post,
+            url=url,
+            errors_mapping=errors_mapping,
             params=request_data,
         )
         if only_prepare is True:

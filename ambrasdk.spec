@@ -14,12 +14,12 @@
 %define _missing_doc_files_terminate_build 0
 
 %define name    ambra-sdk
-%define version 3.20.8.0
+%define version 3.21.1.0
 
 Summary: Ambra-SDK library
 Name: %{name}
 Version: %{version}
-Release: 2
+Release: 1
 License: Apache-2.0
 Group: dicomgrid
 BuildArch: noarch

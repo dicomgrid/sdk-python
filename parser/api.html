@@ -67,6 +67,7 @@
                 <li><a href="#user_event">/user/event</a>
                 <li><a href="#user_event_set">/user/event/set</a>
                 <li><a href="#user_token">/user/token</a>
+                <li><a href="#user_device_clear">/user/device/clear</a>
                 <li><a href="#user_signature">/user/signature</a>
                 <li><a href="#user_enable">/user/enable</a>
             </ul>
@@ -122,6 +123,9 @@
                 <li><a href="#study_timing_log">/study/timing/log</a>
                 <li><a href="#study_sync">/study/sync</a>
                 <li><a href="#study_take">/study/take</a>
+                <li><a href="#study_request_add">/study/request/add</a>
+                <li><a href="#study_request_get">/study/request/get</a>
+                <li><a href="#study_request_match">/study/request/match</a>
             </ul>
             <li><a href="#tag" name="tag-idx">Tag commands</a>
             <ul>
@@ -326,6 +330,7 @@
                 <li><a href="#account_settings_validate">/account/settings/validate</a>
                 <li><a href="#account_connect">/account/connect</a>
                 <li><a href="#account_md5_counter">/account/md5/counter</a>
+                <li><a href="#account_list_requestable">/account/list/requestable</a>
             </ul>
             <li><a href="#location" name="location-idx">Location commands</a>
             <ul>
@@ -577,6 +582,9 @@
             <li>Multiple filters are AND'ed together
             <li>Custom fields can be filtered by specifying the field as customfield-CUSTOMFIELD_UUID
             <li>A timezone offset in numeric format can be passed in the filter.tz and will be applied to any dates in the filter e.g. <code>filter.tz=-4:00</code>
+            <li>A timezone name from Olson database can be passed in the filter.tz. Deprecated timezones will apply as UTC.
+            <li>Supported date and datetime formats are: YYYY-MM-DD, YYYYMMDD, YYYY-MM-DD hh:mm:ss[.uuuuuu][(+|-)ZZ[:ZZ]]. Timezone offsets are ignored. Server-side timestamps are truncated to seconds before comparison when a filter lacks microseconds part.
+            <li>Timezones apply in this order: current user's time zone, filter.tz parameter, UTC by default.
             <li>A filter can be applied on a secondary table by putting the table names into the parameter e.g. filter.TABLE.FIELD.CONDITION
             <li>Invalid filters will return the following error messages
             <ul>
@@ -1075,6 +1083,14 @@
                 <td>Can they share the study with a NPI number</td>
             </tr>
             <tr>
+                <td>&#8627; study_share_request</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they share the study by a study request</td>
+            </tr>
+            <tr>
                 <td>study_delete</td>
                 <td>0</td>
                 <td>0</td>
@@ -1307,6 +1323,14 @@
                 <td>Can they duplicate studies to another namespace</td>
             </tr>
             <tr>
+                <td>study_duplicate_request</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they duplicate studies by a study requests</td>
+            </tr>
+            <tr>
                 <td>study_manual_route</td>
                 <td>0</td>
                 <td>0</td>
@@ -1337,6 +1361,38 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Can they take a study into namespace with <a href="#study_take">/study/take</a></td>
+            </tr>
+            <tr>
+                <td>study_request_edit</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they create study requests</td>
+            </tr>
+            <tr>
+                <td>study_request_view</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view outgoing study requests</td>
+            </tr>
+            <tr>
+                <td>study_request_view_only_own</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they only view their own study requests</td>
+            </tr>
+            <tr>
+                <td>study_request_view_inbound</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view incoming study requests</td>
             </tr>
             <tr>
                 <td>
@@ -1893,20 +1949,20 @@
                 <td>Can they request access to an org</td>
             </tr>
             <tr>
-                <td>channel_study</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>Can they subscribe to a study channel</td>
-            </tr>
-            <tr>
                 <td>channel_activity</td>
                 <td>1</td>
                 <td>1</td>
                 <td>1</td>
                 <td>0</td>
                 <td>Can they subscribe to an activity channel</td>
+            </tr>
+            <tr>
+                <td>channel_study</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Can they subscribe to a job channel</td>
             </tr>
             <tr>
                 <td>viewer_config</td>
@@ -1939,6 +1995,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Can they ask AI questions for a namespace</td>
+            </tr>
+            <tr>
+                <td>job_view</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Can they view asynchronous job statuses</td>
             </tr>
         </table>
 
@@ -1984,11 +2048,13 @@
                 <th>User<br>override<br>allowed</th>
                 <th>Namespace<br>override<br>allowed</th>
                 <th>Node<br>override<br>allowed</th>
+                <th>Role<br>override<br>allowed</th>
                 <th>Description</th>
             </tr>
             <tr>
                 <td>show_hl7_report_physician_alias_regexp</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2004,11 +2070,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Update the study source for every notification</td>
             </tr>
             <tr>
                 <td>allow_phr_upload</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2024,6 +2092,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Enable credit card processing for the account</td>
             </tr>
             <tr>
@@ -2034,11 +2103,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>The paypal account email for credit card processing</td>
             </tr>
             <tr>
                 <td>request_join_on_vanity_registration</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2054,6 +2125,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Comma-delimited list of customfield uuids to show on vanity registration page</td>
             </tr>
             <tr>
@@ -2061,6 +2133,7 @@
                 <td>Text</td>
                 <td></td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2073,6 +2146,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>JSON structure to control the application UI:
                     <ul>
@@ -2310,7 +2384,7 @@
                             enable-patient-mrn-generation (boolean) &bull; Automatically generate patient MRN numbers. You also need to configure speciial dictionary for this feature
                         </li>
                         <li>
-                            worklist-reset-search-login (boolean) &bull; Start user session with empty search criteria
+                            worklist_reset_search_login (boolean) &bull; Start user session with empty search criteria
                         </li>
                         <li>
                             separate_non_dicom_upload_form (boolean) &bull;  Separate DICOM and Non-DICOM upload forms
@@ -2426,6 +2500,21 @@
                                 <li>purple</li>
                             </ul>
                         </li>
+                        <li>
+                            enable_epic_find_order (boolean) &bull; Enable separate FHIR patient lookup button in activities
+                        </li>
+                        <li>
+                            fhir_search_filters (array) &bull; Configure FHIR lookup search by fields. All fields available if nothing selected
+                            <div>Possible options:</div>
+                            <ul>
+                                <li>accession_number</li>
+                                <li>patientid</li>
+                                <li>patient_name</li>
+                            </ul>
+                        </li>
+                        <li>
+                            split_save_approve_activity (boolean) &bull; Split Save and Approve button into two buttons in activities
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -2434,6 +2523,7 @@
                 <td>Text</td>
                 <td></td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2447,6 +2537,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>The HTML to display for the training manual link</td>
             </tr>
             <tr>
@@ -2454,6 +2545,7 @@
                 <td>Text</td>
                 <td></td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2467,6 +2559,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>The HTML to display for the "other" manual link</td>
             </tr>
             <tr>
@@ -2474,6 +2567,7 @@
                 <td>Text</td>
                 <td></td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2487,6 +2581,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>A JSON hash of the links to display on the home page</td>
             </tr>
             <tr>
@@ -2496,6 +2591,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>Enable dicom wrapping support on uploading</td>
             </tr>
@@ -2507,6 +2603,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Enable dicom wrapping support on uploading if no DICOM is detected</td>
             </tr>
             <tr>
@@ -2516,6 +2613,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>Limit DICOM wrapping on upload to a single file</td>
             </tr>
@@ -2527,6 +2625,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Disable dicom wrapping support on uploading for mobile devices</td>
             </tr>
             <tr>
@@ -2536,6 +2635,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>Enable multipart uploading</td>
             </tr>
@@ -2547,6 +2647,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Allow Drag-n-Drop in the web uploader</td>
             </tr>
             <tr>
@@ -2557,12 +2658,14 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Enable the dicom de-identification tool on uploading</td>
             </tr>
             <tr>
                 <td>dicom_deidentification_at_ingress</td>
                 <td>Flag</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2577,12 +2680,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Enable dicomdir scanning on uploading</td>
             </tr>
             <tr>
                 <td>from_email_address</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2597,11 +2702,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Use this display name in emails for email sent from the account.</td>
             </tr>
             <tr>
                 <td>enable_v2_viewer</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2617,6 +2724,7 @@
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Use the version 3 proviewer for this account</td>
             </tr>
             <tr>
@@ -2627,11 +2735,13 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Auto create patients from approved studies</td>
             </tr>
             <tr>
                 <td>auto_update_patient_studies</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2647,11 +2757,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Require that the patient primary phone and email address be unique</td>
             </tr>
             <tr>
                 <td>anonymize_at_ingress</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2667,11 +2779,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Limit the HL7 driven query retrieve to the gateway that received the HL7 message</td>
             </tr>
             <tr>
                 <td>include_mapped_custom_fields_from_storage_ns</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2687,11 +2801,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Include DICOM mapped custom fields from the last share namespace when updating the PHI in storage</td>
             </tr>
             <tr>
                 <td>update_phi_hl7</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2707,6 +2823,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>A CSV list of PHI namespaces to limit the update_phi_hl7 feature too. e.g. <nobr><code>f6b013b3-71be-40c6-b26c-5db6a4a2eada,4fcb78c2-ea21-4975-a318-cf5fc1bdf085</code></nobr>. Alternatively this can be a JSON hash keyed by the PHI namespace uuid with the HL7 message subtype as the value, only messages of the subtype will be applied to the namespace e.g. <nobr><code>{"37b607eb-083e-497f-9923-48119076f62e":"A08","b6465cd6-d39b-4012-ba44-92e4ece81144":"A34"}</code></nobr></td>
             </tr>
             <tr>
@@ -2714,6 +2831,7 @@
                 <td>Text</td>
                 <td></td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2731,11 +2849,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Update the PHI from Syngo patient match ORM messages</td>
             </tr>
             <tr>
                 <td>upload_event_on_study_sync</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2751,12 +2871,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>What action to take when the logo is clicked</td>
             </tr>
             <tr>
                 <td>viewer3_config</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2768,6 +2890,7 @@
                 <td>Flag</td>
                 <td>1</td>
                 <td>0</td>
+                <td>1</td>
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
@@ -2781,6 +2904,7 @@
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Enable the print feature on the viewer</td>
             </tr>
             <tr>
@@ -2789,6 +2913,7 @@
                 <td>1</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>Enable the export feature on the viewer</td>
@@ -2801,6 +2926,7 @@
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Diagnostic quality viewing</td>
             </tr>
             <tr>
@@ -2809,6 +2935,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>Diagnostic quality viewing in all modes including tools</td>
@@ -2821,6 +2948,7 @@
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Preload diagnostic images in the viewer</td>
             </tr>
             <tr>
@@ -2829,6 +2957,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>Flag to enable multi planar reconstruction in the viewer</td>
@@ -2841,6 +2970,7 @@
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Capture extra annotation information</td>
             </tr>
             <tr>
@@ -2849,6 +2979,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>Customize the default size of circle and square drop shapes</td>
@@ -2861,6 +2992,7 @@
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Link the series</td>
             </tr>
             <tr>
@@ -2871,6 +3003,7 @@
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Flag to enable viewing each image as a series</td>
             </tr>
             <tr>
@@ -2878,6 +3011,7 @@
                 <td>Number</td>
                 <td>0</td>
                 <td>0</td>
+                <td>1</td>
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
@@ -2891,6 +3025,7 @@
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Should the "Go to Study Page" link display in the viewer</td>
             </tr>
             <tr>
@@ -2899,6 +3034,7 @@
                 <td></td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>Optional URL for the "Go to Study Page" link in the viewer</td>
@@ -2911,6 +3047,7 @@
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Show a dialog explaining diagnostic usage when opening the viewer</td>
             </tr>
             <tr>
@@ -2919,6 +3056,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>Only priors currently in the worklist will be displayed as thumbnails in the viewer</td>
@@ -2931,12 +3069,14 @@
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Have the viewer look for available accelerators</td>
             </tr>
             <tr>
                 <td>enable_viewer_toggle_annotations</td>
                 <td>Flag</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2951,12 +3091,14 @@
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>The default mouse tool in the viewer</td>
             </tr>
             <tr>
                 <td>auto_transcode</td>
                 <td>Flag</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2971,12 +3113,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Comma separated list of modalities to preemptively transcode data for</td>
             </tr>
             <tr>
                 <td>case_status_tags</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2991,12 +3135,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Comma separated list of email addresses to send a case_submitted email when a case is submitted. The special values <code>user</code> <code>assigned_admin</code> and <code>assigned_medical</code> will be replaced by the appropriate email address for the case.
             </tr>
             <tr>
                 <td>case_notify_completed</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3011,12 +3157,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Comma separated list of study status tags</td>
             </tr>
             <tr>
                 <td>study_status_mutex_tags</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3031,12 +3179,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Comma separated list of study status tags that allow the user to have only one locked study in the stage</td>
             </tr>
             <tr>
                 <td>study_status_role_tags</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3051,12 +3201,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>A JSON hash. The keys are study status tags and the values are a list of the attributes attached to the tag</td>
             </tr>
             <tr>
                 <td>study_status_timer_suspensive_tags</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3071,11 +3223,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Comma separated list of study status tags that start the study status timer. This setting is of higher priority than <i>study_status_timer_suspensive_tags</i></td>
             </tr>
             <tr>
                 <td>study_status_timer_visible_at_last_status</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3091,11 +3245,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>When sharing a study from the account or attaching a new report use the account mail template instead of the destination template</td>
             </tr>
             <tr>
                 <td>study_share_email_confirm</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3111,6 +3267,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>URL to take the user to on logout</td>
             </tr>
             <tr>
@@ -3121,11 +3278,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Consolidate JPEGS when wrapping them</td>
             </tr>
             <tr>
                 <td>enable_masshiway</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3141,11 +3300,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>The default list view. Accepts: namespace ids, 'USER_NAMESPACE' and 'FILTER-*' (*  for a filter ID)</td>
             </tr>
             <tr>
                 <td>enable_dicom_tag_customfields</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3161,12 +3322,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Generate patients from HL7 ORM messages using the email address in the HL7 field specified in this setting. Use the notation specified in <a href="#hl7_transform_add">/hl7/transform/add</a> e.g. <code>PID_13_4</code>. Optionally you can pass a JSON hash formatted as per the patients_from_hl7_adt setting</td>
             </tr>
             <tr>
                 <td>patients_from_hl7_conditions</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3181,6 +3344,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Generate patients from HL7 ADT messages. The value for this setting is a JSON hash that maps the Patient fields to corresponding HL7 fields. Customfields and Text::Template expressions are supported e.g. <code>{"birth_date":"PID_7","last":"PID_5_1","email":"PID_13_4","first":"PID_5_2","mobile_phone":"PID_13_1","sex":"PID_8", "customfield-UUID":"{$PV1_35_2} to {$PV1_35_4}"}</code></td>
             </tr>
             <tr>
@@ -3191,11 +3355,33 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>A condition to generate patients from HL7 ADT messages. Use the notation specified for conditions in <a href="#hl7_transform_add">/hl7/transform/add</a></td>
+            </tr>
+            <tr>
+                <td>patients_from_hl7_siu</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Generate patients from HL7 SIU S12 messages. The setting is formatted as per the patients_from_hl7_adt setting.</td>
+            </tr>
+            <tr>
+                <td>patients_from_hl7_siu_conditions
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A condition to generate patients from HL7 SIU S12 messages. Use the notation specified for conditions in <a href="#hl7_transform_add">/hl7/transform/add</a></td>
             </tr>
             <tr>
                 <td>update_patients_from_hl7</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3211,6 +3397,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Generate appointments from HL7 ADT messages. The value for this setting is a JSON hash that maps the appointment fields to corresponding HL7 fields. Customfields and Text::Template expressions are supported e.g. <code>{"start_time":"PV1_33","end_time":"PV1_34","customfield-UUID":"{$PV1_35_2} to {$PV1_35_4}"</code>. In addition if the map has a referring_physician key a PHYSICIAN_ALIAS lookup is performed using the value to find the matching user in the account.
             </tr>
             <tr>
@@ -3221,12 +3408,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Generate appointments from HL7 SIU messages. The format is the same as for <i>appointments_from_hl7_adt</i> setting.
             </tr>
             <tr>
                 <td>users_from_hl7_mfn</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3251,11 +3440,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Generate orders from HL7 ORM messages</td>
             </tr>
             <tr>
                 <td>update_order_status_from_hl7</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3271,11 +3462,23 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Generate orders from HL7 ADT messages</td>
+            </tr>
+            <tr>
+                <td>reload_hl7_customfields_on_phi_update</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Re-load custom fields when study is edited</td>
             </tr>
             <tr>
                 <td>allow_multiple_use_of_orders</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3291,11 +3494,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>When using the filter feature in the /link/* API return only the first study created if multiple studies match the filter</td>
             </tr>
             <tr>
                 <td>enable_order_lookup_in_approval</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3311,11 +3516,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Enable tracking and display of the study push status for the account</td>
             </tr>
             <tr>
                 <td>show_study_copy_push_status</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3331,6 +3538,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Enable display of the study push status from all study versions with the same UID in the account</td>
             </tr>
             <tr>
@@ -3341,11 +3549,13 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Define patient name as last^first instead of first^last</td>
             </tr>
             <tr>
                 <td>enable_click_to_filter</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3361,11 +3571,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Show the customfields last on the study search dialog</td>
             </tr>
             <tr>
                 <td>auto_wrap_images</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3381,11 +3593,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Re-encode MP4 DICOM</td>
             </tr>
             <tr>
                 <td>render_wrapped_pdf</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3401,11 +3615,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Convert AVI to viewer format</td>
             </tr>
             <tr>
                 <td>render_wrapped_video</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3421,11 +3637,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>CSS for SR rendering>
             </tr>
             <tr>
                 <td>upload_one_study</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3441,11 +3659,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Send the study ORU with an embedded link instead of the ORM for the destination_hl7_orm routing action and the /study/send/hl7 action</td>
             </tr>
             <tr>
                 <td>radreport_branding_from_phi_namespace</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3461,11 +3681,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Clear out the annotations created by an anonymous viewer</td>
             </tr>
             <tr>
                 <td>viewer_enable_tap_navigation</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3481,6 +3703,7 @@
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Hide the viewer thumbnails by default</td>
             </tr>
             <tr>
@@ -3489,6 +3712,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>Hide the viewer datetime on the thumbnails by default</td>
@@ -3501,6 +3725,7 @@
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Hide the viewer annotation ruler</td>
             </tr>
             <tr>
@@ -3511,11 +3736,13 @@
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Hide the viewer thumbnails by default</td>
             </tr>
             <tr>
                 <td>viewer_show_std_dev</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3531,11 +3758,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>A JSON list of DICOM tags to be used for the OTHER_INGRESS_TAGS anonymization metafield</td>
             </tr>
             <tr>
                 <td>use_other_ingress_tags_server_side</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3551,11 +3780,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>A JSON hash of location names and session_expire values for the account</td>
             </tr>
             <tr>
                 <td>sso_share_phr_workflow</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3571,6 +3802,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>JSON hash to configure the SSO PHR sharing workflow. The hash can contain the following keys
                     <ul>
                         <li> create_patient - flag to create a patient record
@@ -3578,6 +3810,7 @@
                         <li> search_for_studies - A JSON array of the destination uuid(s) to search using the create_study and copy_to the users namespace parameters
                         <li> accession_number - Specify the name of the assertion attribute to add the accession number to the study search
                         <li> blocked_emails - A JSON array of email addresses to block from this workflow. Use this to block system assigned dummy email addresses that would result in multiple patients accessing others patients PHI
+                        <li> source_namespace - The uuid of the namespace to share the studies from if the user is not a patient. The default is the account namespace.
                     </ul>
                 </td>
             </tr>
@@ -3589,11 +3822,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>JSON hash to configure the SSO second opinion workflow. The hash must contain a key called namespace_id with the value the UUID of the second opinion namespace. An optional key called data_map contains a hash of field names and the SAML attribute to lookup for the field name, this information will be passed to the UI to populate the second opinion form. e.g. <code>{"data_map":{"customfield-83873415-38ab-4100-9a83-235664771cd3":"validated","date_of_birth":"dob"},"namespace_id":"2433468e-96e5-452d-b1e1-b91551425dd8"}</code></td>
             </tr>
             <tr>
                 <td>add_oru_report_to_study</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3609,11 +3844,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Create a thin study from the ORU if the ORU does not match any existing studies</td>
             </tr>
             <tr>
                 <td>create_thin_study_from_orm</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3629,6 +3866,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Get the study uid for the create_thin_study_from_oru or create_thin_study_from_orm feature from this hl7 field .e.g. <code>OBX_5_1</code></td>
             </tr>
             <tr>
@@ -3639,11 +3877,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>A JSON hash that has field names for the /study/add command as the keys and the values are the HL7 field specification to get the value from e.g. <code>{"referring_physician":"OBX_5_1"}</code>. This map will be applied to thin studies created via the create_thin_study_from_oru or create_thin_study_from_orm settings to futher populate the thin study with values from the HL7
             </tr>
             <tr>
                 <td>accession_number_for_study_uid</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3659,6 +3899,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Ignore a blank or empty accession number from storage</td>
             </tr>
             <tr>
@@ -3669,11 +3910,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>A JSON array to specify the "stat" studies filter for the account. The first element is a customfield UUID and the second element is the "stat" value</td>
             </tr>
             <tr>
                 <td>refresh_data_on_reshare</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3689,12 +3932,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Enable the study status timer feature</td>
             </tr>
             <tr>
                 <td>max_link_studies</td>
                 <td>Text</td>
                 <td>100</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3709,11 +3954,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Update the study status in all versions of the study</td>
             </tr>
             <tr>
                 <td>athena_subscribe_orders</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3750,6 +3997,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>The UUID of the namespace that will invoke the Athena unsolicited orders workflow.
                     This extends the /study/find/order API to search for the patient in Athena for studies in the namespace.
                     The patient_name for the search must have both a first and last name and the study birth date must match the birth date in Athena.
@@ -3760,6 +4008,7 @@
                 <td>athena_orders_filter</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3775,11 +4024,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Authenticate against both the account_password and user password when logging in using an account_alias</td>
             </tr>
             <tr>
                 <td>welcome_password_reset_token_ttl</td>
                 <td>Number</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3792,9 +4043,10 @@
                 <td>Text</td>
                 <td></td>
                 <td>0</td>
+                <td>1</td>
                 <td>0</td>
                 <td>0</td>
-                <td>0</td>
+                <td>1</td>
                 <td>Restrict logins to the specified network or IP address e.g. 195.114.80/24,38.32.26.106/32 A CSV list can be used to specify multiple networks. This is only applied to users who solely belong to the account</td>
             </tr>
             <tr>
@@ -3805,11 +4057,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Restrict external links access to the specified network or IP address. Further documentations is in the <a href="link_external.html">External links</a> page.
             </tr>
             <tr>
                 <td>load_ack_as_hl7</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3825,11 +4079,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Modify the /user/invite behavior to automatically add the user to the account if they are already on the system</td>
             </tr>
             <tr>
                 <td>invite_ttl</td>
                 <td>Number</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3845,6 +4101,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Check for a duplicate study on upload</td>
             </tr>
             <tr>
@@ -3854,6 +4111,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>Disable upload of a duplicate study by uid across account</td>
             </tr>
@@ -3865,6 +4123,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Require approval of a study if the same study_uid already exists in the namespace</td>
             </tr>
             <tr>
@@ -3874,6 +4133,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>On upload create a new UID for the study if it already exists in the namespace</td>
             </tr>
@@ -3885,6 +4145,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>For client side anonymization save the original values to any pre_anon_* customfields</td>
             </tr>
             <tr>
@@ -3895,6 +4156,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>Add the MRN to the query retrieve triggered via a HL7 message</td>
             </tr>
             <tr>
@@ -3905,11 +4167,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Maximum number of studies to match against an HL7 message</td>
             </tr>
             <tr>
                 <td>include_adt_in_study_find_order</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3925,11 +4189,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Include orders created in Ambra through the API when search for orders in /study/find/order</td>
             </tr>
             <tr>
                 <td>use_namespace_name_on_upload_request</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3945,6 +4211,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Require the user confirm that they are authorized to upload the study</td>
             </tr>
             <tr>
@@ -3955,11 +4222,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>The JSON for color coding studies based on a timer</td>
             </tr>
             <tr>
                 <td>enable_patient_portal</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -3975,6 +4244,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Make a patient portal publicly visible</td>
             </tr>
             <tr>
@@ -3985,11 +4255,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Require a MRN when searching for patients in the portal</td>
             </tr>
             <tr>
                 <td>enable_thin_retrieve_in_patient_portal</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4005,11 +4277,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Ignore MRN on thin retrieve</td>
             </tr>
             <tr>
                 <td>allow_portal_pin_to_dup_addresses</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4025,6 +4299,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>A regular expression to hide matching email addresses from the patient portal access screen</td>
             </tr>
             <tr>
@@ -4035,11 +4310,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>The uuid of a link that will be duplicated and emailed when a patient shares a study via email. The link must be a STUDY_VIEW link and have a study_id which will be replaced by the shared study id</td>
             </tr>
             <tr>
                 <td>suppress_new_patient_share_event</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4055,11 +4332,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Suppress all emails to the patients</td>
             </tr>
             <tr>
                 <td>suppress_new_report_event_in_phr_for_patients</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4071,6 +4350,7 @@
                 <td>study_search_modifiers</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4087,12 +4367,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Require a reason for a PHI update</td>
             </tr>
             <tr>
                 <td>radreport_sign</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4107,12 +4389,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>The specification string for a passwdqc check against proposed passwords for account users</td>
             </tr>
             <tr>
                 <td>passwd_regexp</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4127,6 +4411,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>Match HL7 message to studies by both the accession number and the MRN (patientid - (0010,0020))</td>
             </tr>
             <tr>
@@ -4137,11 +4422,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>Match HL7 message to studies by both the accession number and the patientid_other value (0010,1000) </td>
             </tr>
             <tr>
                 <td>mwl_search_is_cfind</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4157,11 +4444,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Exclude orders with a matching study for /order/sps/find MWL queries</td>
             </tr>
             <tr>
                 <td>force_download_of_attachments</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4177,11 +4466,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Show radreports on all versions of the study</td>
             </tr>
             <tr>
                 <td>enable_radreport_attestation</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4197,11 +4488,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Disable the CSRF cookie for /link/redirect</td>
             </tr>
             <tr>
                 <td>disable_link_session</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4217,16 +4510,18 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>A setting to delay a study report exposure in patient's portal. A delay can be expressed in a number of minutes to delay or a number of work hours with suffix 'wh', possible setting's formats:
                     <ul>
                         <li> A delay specified directly as a scalar value
-                        <li> A JSON object with delays by madality. Object fields are modalities or a special value <i>ALL</i> for default. Values are delays.
+                        <li> A JSON object with delays by modality. Object fields are modalities or a special value <i>ALL</i> for default. Values are delays.
                         <li> A delay table. It is a JSON list of conditional delays (JSON objects) with two fields: <i>delay</i> specifies a delay, <i>condition</i> is a condition in format used by customfield's show_when field. Possible condition's parameter types are 'field' and 'customfield'. Conditions are checked sequentially, first match gives the delay.
                     </ul>
             </tr>
             <tr>
                 <td>account_time_zone</td>
                 <td>Text</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4242,12 +4537,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>A JSON list of lists which makes up a matrix 7 by 24 of work hours for the account. 1s mark work hours, 0s mark non-work hours, tailing zeroes are optional. The first index is for day of week (0 means monday), the second is for day hour (0 means 00:00-01:00am). </td>
             </tr>
             <tr>
                 <td>study_view_phr_delay</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4262,6 +4559,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>A JSON hash of the default link add values for the UI</td>
             </tr>
             <tr>
@@ -4272,12 +4570,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>A JSON hash of the upload settings</td>
             </tr>
             <tr>
                 <td>hl7_fetch_filter</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4292,11 +4592,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>A JSON hash mapping the value in MSH_3 or MSH_5 to another account uuid. The hash key is an HL7 message field, the value can be an account uuid or a hash with acount_id and node_id(optional) keys. The HL7 message will be attached to the mapped account and a node will be replaced with the given one. The special hash key <code>_HL7_FIELD_</code> can be used to set a different place to get the value .e.g. <code>MSH_6_1</code>  This can only be set by a sysadmin or support user</td>
             </tr>
             <tr>
                 <td>report_csv_download_concat</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4312,11 +4614,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>JSON array of the field names that should be synced across all copies of the study in the account e.g. <code>["patient_name","patientid","customfield-UUID"]</code></td>
             </tr>
             <tr>
                 <td>batch_encode_cine</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4332,11 +4636,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Storage setting for DICOM encapsulated PDF's</td>
             </tr>
             <tr>
                 <td>compress_audio_recordings</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4352,11 +4658,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Upload hold time in storage. This is used if the namespace doesn't have an explicit hold time</td>
             </tr>
             <tr>
                 <td>namespace_child_study_defaults</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4372,12 +4680,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Compress audio in the browser before uploading</td>
             </tr>
             <tr>
                 <td>study_search_require_regexp</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4392,12 +4702,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>A JSON hash of regexp to apply to the /destination/search and /destination/search/mwl calls. The keys are the field names and the values are the regexp e.g. <code>{"patient_name":"/^\\\w{3}/"}</code>
             </tr>
             <tr>
                 <td>query_retrieve_require_regexp_mwl</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4412,11 +4724,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Minimal number of search criteria for /destination/search Default is 1</code>
             </tr>
             <tr>
                 <td>enable_drchrono</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4432,12 +4746,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Do not sync customfields with the load_dicom_tag flag enabled back to the storage DICOM</td>
             </tr>
             <tr>
                 <td>auto_fill_patient_in_activity</td>
                 <td>Flag</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4452,11 +4768,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>A JSON hash that specifies the message type as the key and the hl7 field/subfield as the value. The base64 encoded report will be extracted from message as per these specs and be attached as a report to the associated studies e.g. <code>{"ORU":"OBX-12_5_5"}</code></td>
             </tr>
             <tr>
                 <td>upload_select_none</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4472,6 +4790,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Limit access to /link/external to the specific referer. The referer can be a regexp to match multiple referers</td>
             </tr>
             <tr>
@@ -4482,11 +4801,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>IP address whitelist to apply to the /link/external call. Further documentation <a href="link_external.html">here</a>
             </tr>
             <tr>
                 <td>link_external_whitelist_all_links</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4502,11 +4823,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Stick anonymous users to links via the email_address so they can edit annotations etc. over multiple sessions </td>
             </tr>
             <tr>
                 <td>audit_failed_logins</td>
                 <td>Number</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4522,6 +4845,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Attach the users signature to the radreport</td>
             </tr>
             <tr>
@@ -4529,6 +4853,7 @@
                 <td>Flag</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4542,6 +4867,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>A JSON list of sending_facility values to limit node queries for /order/sps/find too.</td>
             </tr>
             <tr>
@@ -4552,12 +4878,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>A filter expression to limit node queries for /order/sps/find e.g. <code>filter.order_sps.modality.equals=MR</code>
             </tr>
             <tr>
                 <td>mrn_qr</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4573,6 +4901,8 @@
                         <li> webhook_match &bull; The uuid of the webhook to call if the study and ORM match. The type of the webhook needs to be 'MANUAL'.
                         <li> webhook_no_match &bull; The uuid of the webhook to call if the study and ORM do not match. The type of the webhook needs to be 'MANUAL'.
                         <li> only_once &bull; Set this flag to 1 if you want this run only on the first order
+                        <li> start_datetime &bull; DICOM start date time stamp to bound the search (optional)
+                        <li> end_datetime &bull; DICOM end date time stamp to bound the search (optional)
                         <li> siu &bull; A JSON hash if appointment SIU messages should be included in the workflow. The following keys and values are supported:
                         <ul>
                             <li> procedure_date &bull; The HL7 field that holds the scheduled procedure date and time e.g. <code>SCH_11_4</code>
@@ -4587,6 +4917,7 @@
                 <td>search_qr</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4611,6 +4942,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>
                     A JSON hash to configure a routing delay for an HL7 message. The keys and values in the hash are as follows:
                     <ul>
@@ -4628,12 +4960,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Sync up the SAML roles and assignments when the user is provisioned. Do not sync up on subsequent logins and the SAML role attribute is not required</td>
             </tr>
             <tr>
                 <td>external_viewer</td>
                 <td>Text</td>
                 <td> </td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4663,12 +4997,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Do not use the external viewer for studies viewed via a link by an anonymous user</td>
             </tr>
             <tr>
                 <td>limit_oru_by_storage_namespace</td>
                 <td>Text</td>
                 <td> </td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4681,6 +5017,7 @@
                 <td>epic_patient_lookup_info</td>
                 <td>Text</td>
                 <td> </td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4704,12 +5041,15 @@
                         <li> server_oauth_url &bull; Full URL to the Epic endpoint to get the server to server OAuth token from e.g. <code>https://apporchard.epic.com/interconnect-aocurprd-oauth/oauth2/token</code>
                         <li> server_oauth_private_key &bull; The private key to encrypt the JWT token for server OAuth. The public key is registered with Epic. Each setup requires a unique key setup and the the keys can be generated as follows<br><code>openssl genrsa -out privatekey.pem 2048</code><br><code>openssl req -new -x509 -key privatekey.pem -out publickey509.pem -subj '/CN=myapp'</code><br>To convert the private key to a single line for JSON usage run the following command<br><code>jq -sR < privatekey.pem</code>
                         <li> create_thin_study &bull; Flag to create a thin study for the view_study action if the study does not exist. The account setting accession_number_for_study_uid needs to be on for the study retrieval to work.
+                        <li> include_priors &bull; Flag to include priors for anonymous user links created by the view_study action
+                        <li> link_user &bull; UUID of the user to create the anonymous links with
                     </ul>
                     This integration also supports the following additional workflows that are triggered by the action parameter value sent to the /epic/oauth2 entry point. The supported actions are
                     <ul>
                         <li> upload &bull; Trigger the Epic upload workflow
                         <li> sso_share_phr_workflow &bull; Trigger the account sso_share_phr_workflow workflow
-                        <li> view_study &bull; Launch a viewer for the passed accession_number and namespace_id
+                        <li> view_study &bull; Launch a viewer for the passed accession_number or study_uid and namespace_id. Additional the mrn (patID) and the accession_number needs to passed if the create_thin_study option is enabled
+                        <li> view_patient &bull; Launch a study list for the passed mrn (or patID)
                     </ul>
                 </td>
             </tr>
@@ -4717,6 +5057,7 @@
                 <td>epic_name_format</td>
                 <td>Text</td>
                 <td> </td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4733,11 +5074,13 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Enable the Epic patient lookup for the account or namespace</td>
             </tr>
             <tr>
                 <td>epic_prompt_for_anonymize</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4753,6 +5096,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>
                     Enable the upload_match feature on links to restrict studies can that be uploaded. This field should be in the same format as the upload_match link field. The regular expressions can contain the special tags _LAST_,_FIRST_,_DOB_, _MRN_ or _SEX_  which will be replaced with the data from Epic. For example to restrict uploads to studies that match the patients last name and date of birth use the following setting <code>{"(0010,0030)":"/^_DOB_$/","(0010,0010)":"/_LAST_/"}</code>
                 </td>
@@ -4761,6 +5105,7 @@
                 <td>cerner_patient_lookup_info</td>
                 <td>Text</td>
                 <td> </td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -4783,6 +5128,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Enable charging for accessing a link</td>
             </tr>
             <tr>
@@ -4792,6 +5138,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
@@ -4803,6 +5150,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
             <tr>
@@ -4812,6 +5160,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
@@ -4823,6 +5172,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
             <tr>
@@ -4832,6 +5182,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
@@ -4843,6 +5194,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
             <tr>
@@ -4852,6 +5204,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
@@ -4863,6 +5216,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
             <tr>
@@ -4872,6 +5226,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
@@ -4883,6 +5238,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
             <tr>
@@ -4892,6 +5248,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
@@ -4903,6 +5260,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
             <tr>
@@ -4912,6 +5270,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
@@ -4923,6 +5282,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
             <tr>
@@ -4932,6 +5292,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
@@ -4943,6 +5304,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
             <tr>
@@ -4952,6 +5314,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
@@ -4963,6 +5326,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
             <tr>
@@ -4972,6 +5336,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
@@ -4983,6 +5348,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
             <tr>
@@ -4992,6 +5358,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
@@ -5003,6 +5370,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Settings for the AI question</td>
             </tr>
             <tr>
@@ -5013,11 +5381,13 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>A JSON list of enabled namespace AI questions</td>
             </tr>
             <tr>
                 <td>apply_settings_to_owned_phr</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -5033,11 +5403,13 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Configuration for the cloud storage provider</td>
             </tr>
             <tr>
                 <td>enable_doximity_auth</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -5053,11 +5425,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Enable Google login for the account vanity(s)</td>
             </tr>
             <tr>
                 <td>enable_recaptcha</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -5073,11 +5447,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Supress the FS separator at the end of HL7 template messages</td>
             </tr>
             <tr>
                 <td>no_default_study_date_time</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -5093,6 +5469,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>In a smart search try parse the value as a DOB</td>
             </tr>
             <tr>
@@ -5103,11 +5480,24 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Only show this account if accessing it via a vanity URL</td>
+            </tr>
+            <tr>
+                <td>require_pin_to_view</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Hide this account when user did not login with 2FA</td>
             </tr>
             <tr>
                 <td>sync_user_login_to_account_login</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -5123,6 +5513,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Include this account in global purging rules</td>
             </tr>
             <tr>
@@ -5133,12 +5524,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Account override for the helpscout beacon id</td>
             </tr>
             <tr>
                 <td>sendgrid_key</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -5153,6 +5546,7 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Set the background color for pixel anonymization</td>
             </tr>
             <tr>
@@ -5162,6 +5556,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>Prioritize notifications on the storage queue for the account or namespace</td>
             </tr>
@@ -5173,11 +5568,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>User accounts will be disabled after this number of days</td>
             </tr>
             <tr>
                 <td>see_all_destination_search_in_activity</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -5193,12 +5590,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Support multiple Pingone connections for the account</td>
             </tr>
             <tr>
                 <td>mpi_config</td>
                 <td>Text</td>
                 <td></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -5225,11 +5624,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>UUID of the account that is allowed to perform MPI queries into this account</td>
             </tr>
             <tr>
                 <td>study_download_no_reports</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -5245,11 +5646,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>JSON array of fields to form a group by key for local pushes' statuses. The only allowed value for now is "destination_address"</td>
             </tr>
             <tr>
                 <td>set_phantom_on_reload</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -5265,11 +5668,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Condense email notifications for destination searhes initiated from a bundle</td>
             </tr>
             <tr>
                 <td>disable_sticky_phi</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -5285,11 +5690,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Show messages tied to studies with the same UID in the same account</td>
             </tr>
             <tr>
                 <td>duplicate_oru_with_study</td>
                 <td>Flag</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -5305,12 +5712,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Flag to enable <a href="#study_take">study take feature</a></td>
             </tr>
             <tr>
                 <td>take_study_number_to_take_at_a_time</td>
                 <td>Number</td>
                 <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -5325,12 +5734,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>A namespace UUID from which studies will be taken by <a href="#study_take">/study/take</a></td>
             </tr>
             <tr>
                 <td>take_study_dedup_by_field</td>
                 <td>Text</td>
                 <td>study_uid</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -5345,7 +5756,29 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
                 <td>Flag to show linked studies in orders tab and linked orders in worklist</td>
+            </tr>
+            <tr>
+                <td>study_requestable_accounts</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A JSON list of account UUIDs that are allowed to request studies from. This can only be set by a sysadmin</td>
+            </tr>
+            <tr>
+                <td>study_requestable_namespaces</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A comma separated list of namespace UUIDs that the requested account is allowed to share/duplicate studies from by request.</td>
             </tr>
         </table>
 
@@ -5526,6 +5959,7 @@
                     <i>new_password</i> &bull; Change the password or account password to this. (optional)<br>
                     <i>validate_session</i> &bull; If you would like to validate an existing session rather than create a new one pass in the sid of the session to valid in this parameter. It will check if the session is still valid and the credentials are for the session. (optional)<br>
                     <i>location</i> &bull; Login location. (optional)<br>
+                    <i>remember_device</i> &bull; Remember the device as trusted. (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -5557,6 +5991,7 @@
                     WHITELIST_LOCKOUT &bull; Login blocked by the account whitelist<br>
                     BLOCKED &bull; The user is blocked from the system<br>
                     DISABLED &bull; The user is disabled and needs to be /user/enabled to allow access<br>
+                    BRAND_NOT_ALLOWED &bull; The user is limited to some brands to login with allowed_login_brands setting<br>
                     SSO_ONLY &bull; The user can only login via SSO<br>
                 </td>
             </tr>
@@ -5576,6 +6011,7 @@
                         <li> If the user has an account_password the password will be checked against that, if not it will be checked against the user's password
                         <li> At login the user is assigned a session_expire value that is either the system default of 3 hours or the first specific user account session override or the lowest value of all accounts the user is a member of. If a location is passed it will override the session_expire with the value from the login_location account setting. Likewise a brand session_expire will override any other value.
                         <li> If a validate_session succeeds a SESSION_VALIDATED event is written to the users audit log.
+                        <li> <i>remember_device</i> parameter enables "Remember this device" feature used to suppress second authentication factor (PIN) on next login. The device_id HTTP cookie will be set on subsequent <a href="#session_pin">/session/pin</a> call and the device that calls /session/pin will be remembered. Both cookie and IP address should match for PIN step to be skipped. Cookie is set for 30 days. Number of trusted devices is limited to five, the most old ones are evicted when a new device is remembered.
                     </ol>
                 </td>
             </tr>
@@ -6150,15 +6586,17 @@
                     <i>share_description</i> &bull; The share description of the user<br>
                     <i>time_zone</i> &bull; The users time zone abbreviation<br>
                     <i>pin_required</i> &bull; Flag to require a PIN for every login<br>
+                    <i>allowed_login_brands</i> &bull; A comma separated list of Brand UUIDs that the user is allowed to use when logging in<br>
                     <i>npi</i> &bull; NPI number<br>
                     <i>terms_md5</i> &bull; MD5 of the accepted terms of service<br>
                     <i>privacy_md5</i> &bull; MD5 of the accepted privacy policy<br>
                     <i>indicator_md5</i> &bull; MD5 of the accepted indications of use<br>
                     <i>last_login</i> &bull; Timestamp of the last login<br>
+                    <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request<br>
                     <i>ui_json</i> &bull; JSON for UI settings. <span>Possible options:</span>
-                    <ui>
+                    <ul>
                         <li>show_org_manage_link (boolean) &bull; Show link to manage multiple organizations</li>
-                    </ui>
+                    </ul>
                     * <i>advanced_search</i> &bull; (array) Advanced search customization for role. See account level "advanced_search" ui_json param for possible values<br>
                 </td>
             </tr>
@@ -6205,6 +6643,7 @@
                     <i>cc_token</i> &bull; The credit card token to attach to the users account (optional)<br>
                     <i>time_zone</i> &bull; The users time zone name as per https://www.postgresql.org/docs/9.1/static/view-pg-timezone-names.html (optional)<br>
                     <i>pin_required</i> &bull; Flag to require a PIN for every login (optional)<br>
+                    <i>allowed_login_brands</i> &bull; A comma separated list of Brand UUIDs that the user is allowed to use when logging in (optional)<br>
                     <i>terms_md5</i> &bull; MD5 of the accepted terms of service<br>
                     <i>privacy_md5</i> &bull; MD5 of the accepted privacy policy<br>
                     <i>indicator_md5</i> &bull; MD5 of the accepted indications of use<br>
@@ -6241,6 +6680,7 @@
                         <li> The call must be a POST
                         <li> If you are trying to set a user other than yourself you must have user_edit permissions in the account and the user must only be in your account.
                         <li> You can not change the password, email or cc_token or MD5 of acceptances of another user. Any changes will be ignored.
+                        <li> Only sysadmins and support users are allowed to change <i>allowed_login_brands</i>. An ordinary cannot change allowed_login_brands even for himself.
                         <li> If a time_zone is set it will take precedence over any time zone passed in filter.tz. This allows a distributed organization to ensure that everyone is looking at the same data.
                     </ol>
                 </td>
@@ -6682,7 +7122,7 @@
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
-
+                    <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -6736,6 +7176,7 @@
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
+                    <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -6805,6 +7246,42 @@
             </tr>
         </table>
         <a href="#user-idx">top</a>
+
+        <p><a name="user_device_clear"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Forget all trusted (remembered) devices for the user</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/user/device/clear</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#user-idx">top</a>
+
 
         <p><a name="user_signature"></a>
         <table class="bordered-table">
@@ -6943,6 +7420,7 @@
                     <i>destination_ae_title</i> &bull; The destination aetitle (optional)<br>
                     <i>source_ae_title</i> &bull; The source aetitle (optional)<br>
                     <i>node_id</i> &bull; If this is a thin study the gateway UUID to retrieve it from can be specified (optional)<br>
+                    <i>message</i> &bull; An upload message (optional)<br>
                     <i>customfield-(CUSTOMFIELD_UUID|DICOM_TAG)</i> &bull; Custom field(s), see notes in /study/add (optional)<br>
                 </td>
             </tr>
@@ -6980,6 +7458,7 @@
                         <li> If the node configuration has do_local_push set to true then routing rules will be run to create any push job(s) to send the study to other locations attached to the node. The detail field in /node/ping will contain use_cache for these push jobs.
                         <li> A customfield either be a defined customfield or an arbitrary DICOM tag if the account setting enable_dicom_tag_customfields is on. For a defined customfield pass the UUID for a DICOM tag pass the tag in (XXXX,XXXX) format.
                         <li> If this is a thin study the study_uid does not need to be and should not be passed in
+                        <li> The upload message is accessible in STUDY_UPLOAD_SUCCESS and STUDY_UPLOAD_FAIL webhooks through study_upload.message substitution
                     </ul>
                 </td>
             </tr>
@@ -7356,6 +7835,7 @@
                     <i>is_frozen</i> &bull; Is the study frozen<br>
                     <i>is_being_retrieved</i> &bull; Is this a thin study in the process of being retrieved<br>
                     <i>has_external_viewer</i> &bull; A flag if the study has an external viewer option<br>
+                    <i>accelerators</i> &bull; A JSON list of accelerator FQDN the study may be on (only returned if the probe_for_accelerator flag is on)<br>
                     <i>viewer_link</i> &bull; Link to the study viewer. If the account has SAML SSO the link will be to the SSO entry point, if not it will be a direct link.<br>
                     <i>hl7</i> &bull; An array of the hl7 objects associated with this study. Each object has the following fields or is the complete record from /hl7/get if the full_hl7 flag is passed<br>
                     * <i>uuid</i> &bull; Id of the object<br>
@@ -7449,6 +7929,7 @@
                     <i>&#8627; study_share_user</i> &bull; The permission flag setting<br>
                     <i>&#8627; study_share_rsna</i> &bull; The permission flag setting<br>
                     <i>&#8627; study_share_npi</i> &bull; The permission flag setting<br>
+                    <i>&#8627; study_share_request</i> &bull; The permission flag setting<br>
                     <i>study_push</i> &bull; The permission flag setting<br>
                     <i>study_delete</i> &bull; The permission flag setting<br>
                     <i>study_approve</i> &bull; The permission flag setting<br>
@@ -7880,7 +8361,7 @@
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(uuid || study_uid && storage_namespace && phi_namespace)</i> &bull; The study uuid or the storage triplet if you want a future share<br>
-                    <i>(account_id|location_id|group_id|user_id|share_code|email|masshiway|rsna|npi)</i> &bull; uuid of the account, location, group, user or share code, email address(es), RSNA, NPI or masshiway recipient to share this study with<br>
+                    <i>(account_id|location_id|group_id|user_id|share_code|email|masshiway|rsna|npi|study_request_id)</i> &bull; uuid of the account, location, group, user, study request or share code, email address(es), RSNA, NPI or masshiway recipient to share this study with<br>
                     <i>message</i> &bull; Message to the recipient (optional)<br>
                     <i>integration_key</i> &bull; Integration key to tag the share with (optional)<br>
                     <i>charge_authorized</i> &bull; Flag that the sender authorized charging for this share (optional)<br>
@@ -7906,6 +8387,8 @@
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     NOT_FOUND &bull; The study or share object can not be found. The <i>error_subtype</i> holds a the name of the key that can not be found<br>
                     NOT_PERMITTED &bull; You are not permitted to share this study<br>
+                    NOT_MATCHED &bull; This study does not match the study request criteria<br>
+                    REQUEST_CLOSED &bull; The study request is closed<br>
                     INVALID_PARAMETERS &bull; Only pass a account_id or a location_id or a group_id or a user_id or a share code or an email<br>
                     INVALID_EMAIL &bull; An invalid email was passed for an email share<br>
                     INVALID_NPI &bull; An invalid NPI was passed for a NPI share<br>
@@ -7915,6 +8398,7 @@
                     SHARE_FAILED &bull; The share failed. The <i>error_subtype</i> holds one of the following conditions.<br>
                     <ul>
                         <li> SAME - The study can't be shared into the same namespace
+                        <li> NO_DESTINATION - The study can't be shared with a deleted object
                         <li> DECLINED - The charge card was declined
                         <li> NO_CARD - The user does not have a card on file
                         <li> NO_CHARGE_MODALITY - The charge modality is required if charge_authorized is set and the charging is by modality
@@ -8380,7 +8864,7 @@
                     <i>viewer_anon_annotations_clear</i> &bull; Value for the account flag<br>
                     <i>accession_number_for_study_uid</i> &bull; Value for the account flag<br>
                     <i>no_edit_dicom_tags</i> &bull; If enable_dicom_tag_customfields is on this is a JSON list of the DICOM tags that can not be edited<br>
-                    <i>accelerators</i> &bull; A JSON list of accelerator FQDN to check and redirect to if available<br>
+                    <i>accelerators</i> &bull; A JSON list of accelerator FQDN the study may be on (only returned if the probe_for_accelerator flag is on)<br>
                     <i>viewer_config</i> &bull; The viewer configuration JSON<br>
                 </td>
             </tr>
@@ -8424,7 +8908,7 @@
                     <i>account_config</i> &bull; The account viewer3_config setting<br>
                     <i>role_config</i> &bull; The role viewer3_config settings<br>
                     <i>user_config</i> &bull; The user viewer3_confing settings<br>
-                    <i>accelerators</i> &bull; A JSON list of accelerator FQDN to check and redirect to if available (optional)<br>
+                    <i>accelerators</i> &bull; A JSON list of accelerator FQDN the study may be on (only returned if the probe_for_accelerator flag is on)<br>
                     <i>settings</i> &bull; JSON hash of the requested settings (optional)<br>
                     The rest of the fields are the same as <a href="#user_get">/user/get</a><br>
                 </td>
@@ -8634,7 +9118,7 @@
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study id<br>
-                    <i>namespace_id</i> &bull; The namespace id to duplicate it to<br>
+                    <i>(namespace_id|study_request_id)</i> &bull; The namespace or study request id to duplicate it to<br>
                     <i>include_attachments</i> &bull; Also duplicate attachments<br>
                     <i>overwrite</i> &bull; Flag if you want to overwrite an existing study in the destination namespace<br>
                 </td>
@@ -8648,7 +9132,7 @@
             <tr>
                 <th>Permission</th>
                 <td>
-                    study_duplicate for the study and study_upload for the destination namespace
+                    study_duplicate for the study and study_upload for the destination namespace. study_duplicate_request is required additionally when duplicating by request
                 </td>
             </tr>
             <tr>
@@ -8659,6 +9143,9 @@
                     NOT_PERMITTED &bull; You are not permitted to duplicate the study to this namespace<br>
                     ALREADY_EXISTS  &bull; The study already exists in the destination namespace<br>
                     FAILED &bull; The storage call failed to run<br>
+                    NOT_MATCHED &bull; This study does not match the study request criteria<br>
+                    REQUEST_CLOSED &bull; The study request is closed<br>
+                    NO_DESTINATION &bull; The study can't be duplicated to a deleted object's namespace<br>
                 </td>
             </tr>
             <tr>
@@ -9557,6 +10044,163 @@
             </tr>
         </table>
         <a href="#study-idx">top</a>
+
+        <p><a name="study_request_add"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Reuest studies from one of <i>study_request_accounts</i> accounts. Studies will be shared or duplicated.</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/request/add</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>namespace_id</i> &bull; The namespace id requested studies to put (share or duplicate) into<br>
+                    <i>comments</i> &bull; Free form request comments<br>
+                    <i>account_id</i> &bull; The account id to send the study request to<br>
+                    <i>patientid</i> &bull; The MRN a study should match (optional)<br>
+                    <i>patient_first_name</i> &bull;  The patient first name a study should match<br>
+                    <i>patient_last_name</i> &bull;  The patient last name a study should match<br>
+                    <i>patient_sex</i> &bull;  The patient sex a study should match<br>
+                    <i>patient_birth_date</i> &bull;  The patient date of birth a study should match<br>
+                    <i>modality</i> &bull; The modality a study should match (optional)<br>
+                    <i>study_date_start</i> &bull; The DICOM date that a study date should be greater or equal to (optional)<br>
+                    <i>study_date_end</i> &bull; The DICOM date that a study date should be less or equal to (optional)<br>
+                    <i>study_description</i> &bull; The string a study description should partially match (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    study_request_edit
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    ALREADY &bull; An active (pending or in progress) study request with the same study criteria and the same namespace/account combination already exists<br>
+                    NOT_FOUND &bull; The namespace or account was not found.<br>
+                    NOT_PERMITTED &bull; You are not permitted to request a study into this namespace<br>
+                    NOT_ENABLED &bull; the feature is not enabled. Check the <i>study_request_accounts</i> account settings<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ul>
+                        <li> The feature should be enabled with <i>study_request_accounts</i>
+                        <li> Users with the <i>incoming_study_request</i> notification turned on in the requested account will be notified of the incoming study request
+                        <li> The call checks studies for duplicates in the target namespace using study field defined by <i>take_study_dedup_by_field</i> account setting prior to sharing
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_request_get"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get the study_request</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/request/get</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The study request uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>uuid</i> &bull; The study request uuid<br>
+                    <i>comments</i> &bull; Free form request comments<br>
+                    <i>study_request_status</i> &bull; Status of the study request. 'N' - pending, 'I' - in progress, 'R' - rejected, 'C' - closed<br>
+                    <i>patientid</i> &bull; The MRN a study should match<br>
+                    <i>patient_first_name</i> &bull;  The patient first name a study should match<br>
+                    <i>patient_last_name</i> &bull;  The patient last name a study should match<br>
+                    <i>patient_sex</i> &bull;  The patient sex a study should match<br>
+                    <i>patient_birth_date</i> &bull;  The patient date of birth a study should match<br>
+                    <i>modality</i> &bull; The modality a study should match<br>
+                    <i>study_date_start</i> &bull; The DICOM date that a study date should be greater or equal to<br>
+                    <i>study_date_end</i> &bull; The DICOM date that a study date should be less or equal to<br>
+                    <i>study_description</i> &bull; The string a study description should partially match<br>
+                    --- The following fields are only returned if the user has study_request_view permission in the requesting account ---<br>
+                    <i>requested_account_id</i> &bull; The account id that the study request is sent to<br>
+                    <i>namespace_id</i> &bull; Id of the namespace a study will be received into<br>
+                    --- The following fields are only returned if the user has study_request_view_inbound permission in the requested account ---<br>
+                    <i>requesting_account_id</i> &bull; Id of the account that the study request was received from<br>
+                    <i>requesting_account_name</i> &bull; Name of the account that the study request was received from<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    NOT_FOUND &bull; The study request was not found<br>
+                    NOT_PERMITTED &bull; You are not permitted to access this study request<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#activity-idx">top</a>
+
+        <p><a name="study_request_match"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get matching studies for the request</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/request/match</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>study_request_id</i> &bull; The study request uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>studies</i> &bull; An array of the studies that are mathing request's criteria and the user has <i>study_share_request</i> or <i>study_duplicate_request</i> access permission. Each object holds the same fields as the <a href="#study_get">/study/get</a> call<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    NOT_FOUND &bull; The study request was not found<br>
+                    REQUEST_CLOSED &bull; The request is not active (pending or in progress)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#activity-idx">top</a>
 
 
         <a name="tag"><h3>Tag commands</h3></a>
@@ -13050,7 +13694,7 @@
                     * <i>mpps_status</i> &bull; The modality performed procedure step (mpps) status<br>
                     * <i>mpps_uid</i> &bull; The UID for the mpps<br>
                     --- The following field is only returned if the enable_orders_in_worklist account setting is enabled ---<br>
-                    <i>study_count</i> &bull; Number of studies linked with this order (having the same accession_number). This field is filterable.<br>
+                    <i>studies</i> &bull; An array of study ids linked with this order (having the same accession_number).<br>
                 </td>
             </tr>
             <tr>
@@ -13218,6 +13862,9 @@
             <tr>
                 <th>Notes</th>
                 <td>
+                    <ul>
+                        <li>There is additional filter field 'study_count'
+                    </ul>
                 </td>
             </tr>
         </table>
@@ -15946,6 +16593,8 @@
                     <i>name</i> &bull; Name of the destination<br>
                     <i>type</i> &bull; Type of the destination either DICOM, FOLDER, ACCELERATOR,VIRTUAL, BURNER, XDS, LINKED or UPLOADER. Defaults to DICOM (optional)<br>
                     <i>linked_destination</i> &bull; uuid of the destination for LINKED destinations<br>
+                    <i>linked_qr_to_referred_account</i> &bull; A flag to create resultant studies in the linked destination's account (not the account of LINKED destination where the search was initiated). Meaningful for LINKED destinations only (opional)<br>
+                    <i>linked_qr_activity_in_referred_account</i> &bull; A flag to create DESTINATION_SEARCH activities in the linked destination's account. Meaningful for LINKED destinations only (opional)<br>
                     <i>path</i> &bull; Path of the folder for a FOLDER type of destination (required if FOLDER type)<br>
                     <i>aetitle</i> &bull; Aetitle of the destination (required if DICOM type)<br>
                     <i>address</i> &bull; Address of the destination (required if DICOM type)<br>
@@ -15970,6 +16619,7 @@
                     <i>sort_order</i> &bull; Integer value for sorting (optional)<br>
                     <i>hl7_fetch_filter</i> &bull; A transform condition expression (see /transform/add for format) to match against the HL7 message. Only fire a query retrieve if the message matches the condition (optional)
                     <i>manual_push_roles</i> &bull; A comma separated list of role uuids, a user is required to have one of them to manually push to this destination (optional)<br>
+                    <i>ui_json</i> &bull; JSON for UI settings (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -16063,6 +16713,9 @@
                     <i>sort_order</i> &bull; Integer value for sorting (optional)<br>
                     <i>hl7_fetch_filter</i> &bull; A transform condition expression (see /transform/add for format) to match against the HL7 message. Only fire a query retrieve if the message matches the condition (optional)
                     <i>manual_push_roles</i> &bull; A comma separated list of role uuids, a user is required to have one of them to manually push to this destination (optional)<br>
+                    <i>linked_qr_to_referred_account</i> &bull; A flag to create resultant studies in the linked destination's account (not the account of LINKED destination where the search was initiated). Meaningful for LINKED destinations only (opional)<br>
+                    <i>linked_qr_activity_in_referred_account</i> &bull; A flag to create DESTINATION_SEARCH activities in the linked destination's account. Meaningful for LINKED destinations only (opional)<br>
+                    <i>ui_json</i> &bull; JSON for UI settings (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -16151,6 +16804,9 @@
                     <i>hl7_fetch_filter</i> &bull; A transform condition expression (see /transform/add for format) to match against the HL7 message. Only fire a query retrieve if the message matches the condition
                     <i>linked_destination</i> &bull; uuid of the linked destination if this is a LINKED type destination<br>
                     <i>manual_push_roles</i> &bull; A comma separated list of role uuids, a user is required to have one of them to manually push to this destination<br>
+                    <i>linked_qr_to_referred_account</i> &bull; A flag to create resultant studies in the linked destination's account (not the account of LINKED destination where the search was initiated). Meaningful for LINKED destinations only<br>
+                    <i>linked_qr_activity_in_referred_account</i> &bull; A flag to create DESTINATION_SEARCH activities in the linked destination's account. Meaningful for LINKED destinations only<br>
+                    <i>ui_json</i> &bull; JSON for UI settings<br>
                 </td>
             </tr>
             <tr>
@@ -16239,7 +16895,10 @@
                     <i>push_to</i> &bull; uuid of a destination to push the retrieved studies to (optional)<br>
                     <i>create_thin</i> &bull; The maximum number of thin studies to create from this search instead of creating an activity for the search results (optional)<br>
                     <i>create_study</i> &bull; The maximum number of studies to retrieve from this search instead of creating an activity for the search results (optional)<br>
+                    <i>share_email</i> &bull; Email to share retrieved studies with on subsequent <a href="#destination_retrieve">/destination/retrieve</a> (optional)<br>
                     <i>bundle_id</i> &bull; An integral number Used internally to track searches initiated from a single bundle (optional)<br>
+                    <i>message</i> &bull; A message to display when studies are found (optional)<br>
+                    <i>customfield-(CUSTOMFIELD_UUID)</i> &bull; Custom field(s) will be set for the resultant studies after <a href="#destination_retrieve">/destination/retrieve</a> call (optional)<br>
                     -- The rest of the fields are used for the search --<br>
                     <i>study_uid</i> &bull; Study uid to find (optional)<br>
                     <i>patient_name</i> &bull; Patient name to find (optional)<br>
@@ -16283,7 +16942,7 @@
                 <th>Notes</th>
                 <td>
                     <ul>
-                        <li> start_datetime and end_datetime support underscore token substitutions. Tokens available: __TODAY__, __YESTERDAY__. Both take users' time zone into account.
+                        <li> start_datetime and end_datetime support underscore token substitutions. Tokens available: __TODAY__, __YESTERDAY__, __N_DAYS_AGO__. Both take users' time zone into account.
                     </ul>
                 </td>
             </tr>
@@ -16305,6 +16964,7 @@
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>activity_id</i> &bull; uuid of the DESTINATION_SEARCH activity to retrieve from<br>
+                    <i>message</i> &bull; A message to display when studies are retrieved (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -16932,7 +17592,7 @@
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
                     INVALID_INTEGER &bull; An invalid integer was passed. The <i>error_subtype</i> holds the name of the invalid integer<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
-                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the account<br>
+                    ROLE_NAMESPACE_MISMATCH, subtype INCOMPATIBLE_ROLE, data contains role_id and namespace_id &bull; The role cannot be used for the account<br>
                 </td>
             </tr>
             <tr>
@@ -17066,6 +17726,7 @@
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
+                    <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request (optional)<br>
                     <i>settings</i> &bull; A hash of the <a href="#account-settings">account settings</a> that the user can override (optional)<br>
                     <i>setting_SETTING_NAME</i> &bull; Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)<br>
                 </td>
@@ -17095,7 +17756,8 @@
                     DUPLICATE_NAME &bull; The account_login is already in use<br>
                     BAD_PASSWORD &bull; Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can't be one of your last three passwords<br>
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
-                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the account<br>
+                    ROLE_NAMESPACE_MISMATCH, subtype INCOMPATIBLE_ROLE, data contains role_id and namespace_id &bull; The role cannot be used for the account<br>
+                    ROLE_NAMESPACE_MISMATCH, subtype GLOBAL_USER_WITH_RESTRICTED_ROLE, data contains role_id, namespace_id and user_id &bull; They are adding a global user with a role restricted to group/location and there is a group/location in the account<br>
                 </td>
             </tr>
             <tr>
@@ -17154,6 +17816,7 @@
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
+                    <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request (optional)<br>
                     <i>customfield-CUSTOMFIELD_UUID</i> &bull; Custom field(s) (optional)<br>
                     <i>settings</i> &bull; A hash of the <a href="#account-settings">account settings</a> that the user can override (optional)<br>
                     <i>setting_SETTING_NAME</i> &bull; Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)<br>
@@ -17185,7 +17848,8 @@
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
                     CAN_NOT_PROMOTE &bull; A user can not switch themselves to an admin role if they are currently not in an admin role<br>
                     NO_USER_OVERRIDE &bull; The setting does not allow a user override<br>
-                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the account<br>
+                    ROLE_NAMESPACE_MISMATCH, subtype INCOMPATIBLE_ROLE, data contains role_id and namespace_id &bull; The role cannot be used for the account<br>
+                    ROLE_NAMESPACE_MISMATCH, subtype GLOBAL_USER_WITH_RESTRICTED_ROLE, data contains role_id, namespace_id and user_id &bull; They are making the user global with a role restricted to group/location and there is a group/location in the account<br>
                 </td>
             </tr>
             <tr>
@@ -17257,6 +17921,7 @@
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
+                    <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request<br>
                     <i>groups</i> &bull; An array of the accounts groups the user is a member of<br>
                     <i>locations</i> &bull; An array of the accounts locations the user is a member of. Both of these contain the following fields.<br>
                     * <i>uuid</i> &bull; uuid of the group/location<br>
@@ -17800,6 +18465,56 @@
         </table>
         <a href="#account-idx">top</a>
 
+        <p><a name="account_list_requestable"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>List the accounts that are allowed to be requested for a study</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/account/list/requestable</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>namespace_id</i> &bull; Id of the namespace to receive requested studies into<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>accounts</i> &bull; An array of the accounts.  Each object holds the following fields: uuid, name<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    study_request_edit<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    NOT_FOUND &bull; The namespace can not be found<br>
+                    NOT_PERMITTED &bull; You are not allowed to list requestable accounts<br>
+                    NOT_ENABLED &bull; The study request feature is not enabled<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ul>
+                        <li><i>study_request_accounts</i> account setting should be set for this endpoint to function
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#account-idx">top</a>
+
+
         <a name="location"><h3>Location commands</h3></a>
 
         <p><a name="location_list"></a>
@@ -17908,7 +18623,8 @@
                     DUP_SHARE_CODE &bull; The share code is already used<br>
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
-                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the location<br>
+                    ROLE_NAMESPACE_MISMATCH, subtype INCOMPATIBLE_ROLE, data contains role_id and namespace_id &bull; The role cannot be used for a location<br>
+                    ROLE_NAMESPACE_MISMATCH, subtype GLOBAL_USER_WITH_RESTRICTED_ROLE, data contains role_id and user_id &bull; You are adding the location to the account with a global user with restricted role<br>
                 </td>
             </tr>
             <tr>
@@ -17971,7 +18687,7 @@
                     DUP_SHARE_CODE &bull; The share code is already used<br>
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
-                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the location<br>
+                    ROLE_NAMESPACE_MISMATCH, subtype INCOMPATIBLE_ROLE, data contains role_id and namespace_id &bull; The role cannot be used for locations<br>
                 </td>
             </tr>
             <tr>
@@ -18124,6 +18840,7 @@
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
+                    <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request (optional)<br>
                     <i>no_physician_alias_share</i> &bull; Flag to exclude this location from a physician alias share (optional)<br>
                 </td>
             </tr>
@@ -18145,7 +18862,7 @@
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     NOT_FOUND &bull; The location can not be found<br>
                     NOT_PERMITTED &bull; You are not permitted to edit the location<br>
-                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the location<br>
+                    ROLE_NAMESPACE_MISMATCH, subtype INCOMPATIBLE_ROLE, data contains role_id and namespace_id &bull; The role cannot be used for locations<br>
                     USER_NOT_FOUND &bull; The user was not found or is not in the account<br>
                     ROLE_NOT_FOUND &bull; The role was not found or is not in the account<br>
                     INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
@@ -18251,6 +18968,7 @@
                     * <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds<br>
                     * <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails<br>
                     * <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user<br>
+                    * <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request<br>
                     * <i>no_physician_alias_share</i> &bull; Flag to exclude this location from a physician alias share<br>
                 </td>
             </tr>
@@ -18384,7 +19102,8 @@
                     DUP_SHARE_CODE &bull; The share code is already used<br>
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
-                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the group<br>
+                    ROLE_NAMESPACE_MISMATCH, subtype INCOMPATIBLE_ROLE, data contains role_id and namespace_id &bull; The role cannot be used for a group<br>
+                    ROLE_NAMESPACE_MISMATCH, subtype GLOBAL_USER_WITH_RESTRICTED_ROLE, data contains role_id and user_id &bull; You are adding the group to the account with a global user with restricted role<br>
                 </td>
             </tr>
             <tr>
@@ -18447,7 +19166,7 @@
                     DUP_SHARE_CODE &bull; The share code is already used<br>
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
-                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the group<br>
+                    ROLE_NAMESPACE_MISMATCH, subtype INCOMPATIBLE_ROLE, data contains role_id and namespace_id &bull; The role cannot be used for groups<br>
                 </td>
             </tr>
             <tr>
@@ -18600,6 +19319,7 @@
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
+                    <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request (optional)<br>
                     <i>no_physician_alias_share</i> &bull; Flag to exclude this group from a physician alias share (optional)<br>
                 </td>
             </tr>
@@ -18621,7 +19341,7 @@
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     NOT_FOUND &bull; The group can not be found<br>
                     NOT_PERMITTED &bull; You are not permitted to edit the group<br>
-                    NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE &bull; The role cannot be used for the group<br>
+                    ROLE_NAMESPACE_MISMATCH, subtype INCOMPATIBLE_ROLE, data contains role_id and namespace_id &bull; The role cannot be used for groups<br>
                     USER_NOT_FOUND &bull; The user was not found or is not in the account<br>
                     ROLE_NOT_FOUND &bull; The role was not found or is not in the account<br>
                     INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
@@ -18727,6 +19447,7 @@
                     * <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds<br>
                     * <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails<br>
                     * <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user<br>
+                    * <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request<br>
                     * <i>no_physician_alias_share</i> &bull; Flag to exclude this group from a physician alias share<br>
                 </td>
             </tr>
@@ -18824,6 +19545,8 @@
                     <i>for_location</i> &bull; A flag that the role can be used in a location, default is on (optional)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>permissions</i> &bull; A hash of the role <a href="#permissions">permissions</a> (optional)<br>
+                    <i>settings</i> &bull; A hash of the <a href="#account-settings">role settings</a> (optional)<br>
+                    <i>setting_SETTING_NAME</i> &bull; Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -18881,6 +19604,8 @@
                     <i>for_location</i> &bull; A flag that the role can be used in a location (optional)<br>
                     <i>permissions</i> &bull; A hash of the role <a href="#permissions">permissions</a> (optional)<br>
                     <i>permission_PERMISSION_NAME</i> &bull; Set an individual permission. This is an alternative to the permissions hash for easier use in the API tester (optional)<br>
+                    <i>settings</i> &bull; A hash of the <a href="#account-settings">role settings</a> (optional)<br>
+                    <i>setting_SETTING_NAME</i> &bull; Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -19250,13 +19975,45 @@
                             <li><i>locations</i> &bull; An array of locations specified in the invitation. Each item is a hash with <i>name</i> and <i>role_name</i>
                             <li><i>groups</i> &bull; An array of groups specified in the invitation. Each item is a hash with <i>name</i> and <i>role_name</i>
                         </ul>
-
                         <li>NODE_CONNECT- A user has requested to connect the public node
                         <ul>
                             <li><i>node_id</i> &bull; Id of the node they have requested to connect<br>
                             <li><i>node_name</i> &bull; Name of the node they have requested to connect<br>
                             <li><i>account_id</i> &bull; Id of the account the request came from<br>
                             <li><i>account_name</i> &bull; Name of the account the request came from<br>
+                        </ul>
+                        <li>STUDY_REQUEST_INBOUND - An incoming study request
+                        <ul>
+                            <li><i>study_request_id</i> &bull; Id of the incoming study request<br>
+                            <li><i>status</i> &bull; Status of the study request<br>
+                            <li><i>account_id</i> &bull; Id of the account that requests a study<br>
+                            <li><i>account_name</i> &bull; Name of the account that requests a study<br>
+                            <li><i>patientid</i> &bull; The MRN they want a study to match<br>
+                            <li><i>patient_first_name</i> &bull;  The patient first name they want a study to match<br>
+                            <li><i>patient_last_name</i> &bull;  The patient last name they want a study to match<br>
+                            <li><i>patient_sex</i> &bull;  The patient sex they want a study to match<br>
+                            <li><i>patient_birth_date</i> &bull;  The patient date of birth they want a study to match<br>
+                            <li><i>modality</i> &bull; The modality a study should match<br>
+                            <li><i>study_date_start</i> &bull; The DICOM date that a study date should be greater or equal to<br>
+                            <li><i>study_date_end</i> &bull; The DICOM date that a study date should be less or equal to<br>
+                            <li><i>study_description</i> &bull; The string a study description should partially match<br>
+
+                        </ul>
+                        <li>STUDY_REQUEST_OUTBOUND - An outgoing study request
+                        <ul>
+                            <li><i>study_request_id</i> &bull; Id of the study request<br>
+                            <li><i>status</i> &bull; Status of the study request<br>
+                            <li><i>account_id</i> &bull; Id of the account the request is sent to<br>
+                            <li><i>account_name</i> &bull; Name of the account the request is sent to<br>
+                            <li><i>patientid</i> &bull; The MRN a study should match<br>
+                            <li><i>patient_first_name</i> &bull;  The patient first name a study should match<br>
+                            <li><i>patient_last_name</i> &bull;  The patient last name a study should match<br>
+                            <li><i>patient_sex</i> &bull;  The patient sex a study should match<br>
+                            <li><i>patient_birth_date</i> &bull;  The patient date of birth a study should match<br>
+                            <li><i>modality</i> &bull; The modality a study should match<br>
+                            <li><i>study_date_start</i> &bull; The DICOM date that a study date should be greater or equal to<br>
+                            <li><i>study_date_end</i> &bull; The DICOM date that a study date should be less or equal to<br>
+                            <li><i>study_description</i> &bull; The string a study description should partially match<br>
                         </ul>
                     </ul>
                 </td>
@@ -19713,6 +20470,7 @@
                     <i>&#8627; study_share_user</i> &bull; The permission flag setting<br>
                     <i>&#8627; study_share_rsna</i> &bull; The permission flag setting<br>
                     <i>&#8627; study_share_npi</i> &bull; The permission flag setting<br>
+                    <i>&#8627; study_share_request</i> &bull; The permission flag setting<br>
                     <i>study_push</i> &bull; The permission flag setting<br>
                     <i>study_delete</i> &bull; The permission flag setting<br>
                     <i>study_approve</i> &bull; The permission flag setting<br>
@@ -20271,6 +21029,7 @@
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
+                    <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -20293,6 +21052,7 @@
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
+                    <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request<br>
                 </td>
             </tr>
             <tr>
@@ -21532,6 +22292,7 @@
                     <i>load_dicom_tag</i> &bull; Flag to load the current value from the study into this field. (only applicable if a dicom_tag is specified) (optional)<br>
                     <i>dicom_tag_ignore_empty</i> &bull; Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified) (optional)<br>
                     <i>load_from_sr</i> &bull; Load the value from the structured reports in the study (only applicable to study fields) .(optional)<br>
+                    <i>field_flag</i> &bull; Default customfield flag (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -21586,6 +22347,7 @@
                             <li> show_when - A hash keyed by uuid of other customfield(s), the hash value is an array of values. If the referenced customfield has a value that is in the array of values this field should be shown. If it doesn't this field should be hidden.
                             <li> admin_only - Only show customfield to administrators (only applies to User_account customfields)
                             <li> hint_as_help_text - Make the hint appear below the field input
+                            <li> forbid_future_dates - Make the customfield accept only today and days in the past. User time zone is considered.
                             <li> search_source - The data source for a search field. The available options are:
                             <ul>
                                 <li> athena_providers &bull; Search Athena for the provider
@@ -21610,6 +22372,7 @@
                         <li> If you would like the second or more value of the traverse keys use the special tag <code>_INSTANCE_N_</code> where N is the number to select as the first element in the array e.g. <code>["_INSTANCE_2_","Summary","EDD from LMP"]</code>
                         <li> DICOM tags must be uppercase e.g. <code>(0020,002D)</code>
                         <li> If a customfield is named _DATA_FIELD_fieldname the value will be loaded from the named database field e.g. <code>_DATA_FIELD_integration_key</code>
+                        <li> Customfield default flag is overridable with <i>study_field_customfield_UUID</i> role permissions and <i>study_field_flags</i> namespace setting
                     </ul>
                 </td>
             </tr>
@@ -21648,6 +22411,7 @@
                     <i>load_dicom_tag</i> &bull; Flag to load the current value from the study into this field. (only applicable if a dicom_tag is specified) (optional)<br>
                     <i>dicom_tag_ignore_empty</i> &bull; Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified) (optional)<br>
                     <i>load_from_sr</i> &bull; Load the value from the structured reports in the study. (only applicable to study fields) .(optional)<br>
+                    <i>field_flag</i> &bull; Default customfield flag (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -21728,6 +22492,7 @@
                     <i>load_dicom_tag</i> &bull; Flag to load the current value from the study into this field. (only applicable if a dicom_tag is specified)<br>
                     <i>dicom_tag_ignore_empty</i> &bull; Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified)<br>
                     <i>load_from_sr</i> &bull; Load the value from the structured reports in the study<br>
+                    <i>field_flag</i> &bull; Default customfield flag<br>
                 </td>
             </tr>
             <tr>
@@ -22075,6 +22840,7 @@
                             <li>HL7_ADD - Called when an HL7 is added to Ambra
                             <li>DESTINATION_SEARCH_RESULTS - Called for the results (/node/found) for a /destination/search query
                             <li>DESTINATION_FETCH_FAIL - Called when a /destination/retrieve fails
+                            <li>DESTINATION_FETCH_SUCCESS - Called when a /destination/retrieve succeeds
                             <li>WEBHOOK_FAILED - Called when a webhook fails
                             <li>MANUAL - The webhook needs to be manually or programmatically triggered
                             <li>CRON - The webhook is time triggered by the cron value
@@ -22088,18 +22854,19 @@
                         <li> The filter_field can be a customfield in the <code>customfield-CUSTOMFIELD_UUID</code> format
                         <li> If the event is STUDY_RADREPORT both the study.* and radreport.* fields will be available for use
                         <li> If the event is STUDY_REPORT or STUDY_REPORT_REMOVE and the filter_field is S-attachment_mime_type the mime type of the attachment will be filtered against the filter regular expression
-                        <li> If the event is STUDY_HL7 or HL7_ADDand the filter_field is S-hl7_type the HL7 message type will be filtered against the filter regular expression. The fields in the HL7 message that triggered the webhook are also for use in the webhook e.g. hl7.uuid
+                        <li> If the event is STUDY_HL7 or HL7_ADD and the filter_field is S-hl7_type the HL7 message type will be filtered against the filter regular expression. The fields in the HL7 object related to the Hl7 message that triggered the webhook are also for use in the webhook e.g. hl7.uuid. Hl7 message fields are accessible through hl7.hash prefix e.g. hl7.hash.PID_5
                         <li> If the event is STUDY_HL7 or HL7_ADD and the filter_field is S-hl7_transform_condition the filter_field_regexp should be a transform condition expression to match against the HL7 message. See /hl7/transform/add for the format for the transform condition format.
                         <li> A <a href="#filter">filter</a> expression can be passed in the filter_field_regexp if the filter_field is S-list_filter. The filter will be evaluated against the study allowing fine grained and multi-field filtering e.g. <code>filter.phi_namespace.equals=UUID&filter.study_push_status.equals=S</code>
                         <li> If multiple filter expressions are required pass JSON arrays to both the filter_field and filter_regexp fields. The webhook will only run if all the filter conditions are satisfied.
                         <li> If the once flag is set the webhook is only run one time (after the flag is set) for a specific study. If by_uid or by_accession_number flag is specified as well the exclusion is expanded to include studies with the same study_uid or accession_number
                         <li> For the WEBHOOK_FAILED event the parameter values from the failed webhook will be available for use as well as the webhook.* values e.g. webhook.name, webhook.last_error etc.
+                        <li> For the ROUTE_RULE event the <a href="#study_manual_route">/study/manual/route</a> parameter values will be available for use trough parameters.* fields
                         <li> For the STUDY_UPLOAD_START and STUDY_UPLOAD_END event the parameters passed to /webhook/event are available in the webhook_event.* fields e.g. webhook_event.study_count, webhook_event.integration_key, webhook_event.namespace_id, webhook_event.share_code. These fields can also be used in the filter_field to filter the webhook.
                         <li> For the STUDY_UPLOAD_LINK event and other events for session created via a study upload link the following additional parameters are available: link_usage.client_email, link_usage.client_address also the user who is associated with or created the link is available via the <code>user_account.*</code> parameters
                         <li> For the STUDY_ANNOTATION event the annotation data is available as <code>annotation.*</code> parameters
                         <li> For the NAMESPACE_AI_* event the namespace data is available as <code>namespace.*</code> parameters, the question data is available as <code>ai_question.*</code> parameters
                         <li> For the DESTINATION_SEARCH_RESULTS event the returned study list is in the <code>destination_search.results</code> field and the count is in the <code>destination_search.count</code> field
-                        <li> For the DESTINATION_FETCH_FAIL event the details are available in the following fields <code>study_fetch.(accession_number|study_uid|patientid|destination_name|destination_uuid)</code>
+                        <li> For the DESTINATION_FETCH_FAIL and DESTINATION_FETCH_SUCCESS events the details are available in the following fields <code>study_fetch.(accession_number|study_uid|patientid|destination_name|destination_uuid)</code>
                         <li> The auth fields is a JSON hash with a single key that describes the type of auth and the value for the key is a hash with the auth details. The following types of auth are supported.
                             <ul>
                                 <li> sfdc - <a href="https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_understanding_username_password_oauth_flow.htm">Salesforce Username-Password OAuth Authentication</a>. The following keys must be in the details hash, client_id, client_secret, username, and password. e.g. <nobr><code>{"sfdc":{"client_id":"3MVG9lK","client_secret":"1955279","username":"testuser@salesforce.com","password":"mypassword1234"}}</code></nobr>. /webhook/get will return the md5 of the password.
@@ -25350,7 +26117,7 @@
         <a href="#npi-idx">top</a>
 
 
-    <footer>LBL0022 v42.0 2020-12-02</footer>
+    <footer>LBL0022 v44.0 2021-02-24</footer>
     </div>
 </body>
 </html>

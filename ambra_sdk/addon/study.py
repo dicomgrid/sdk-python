@@ -1,16 +1,22 @@
 """Study addon namespace."""
 
+import uuid as uuid_lib
 from contextlib import suppress
 from io import BytesIO
 from pathlib import Path
 from time import monotonic
-from typing import Any, Dict, List, NamedTuple, Optional, Tuple
+from typing import Any, Dict, List, Mapping, NamedTuple, Optional, Tuple, Union
 
 import pydicom
 from box import Box
 
-from ambra_sdk.exceptions.service import NotFound
+from ambra_sdk.exceptions.service import (
+    NotFound,
+    NotPermitted,
+    PreconditionFailed,
+)
 from ambra_sdk.models import Study as StudyModel
+from ambra_sdk.service.query import QueryO
 from ambra_sdk.service.ws import WSManager
 
 
@@ -128,7 +134,7 @@ class Study:  # NOQA:WPS214
         self,
         study_uid: str,
         namespace_id: str,
-        timeout: int,
+        timeout: float,
         ws_timeout: int,
     ) -> Box:
         """Wait study in namespace.
@@ -172,11 +178,81 @@ class Study:  # NOQA:WPS214
             raise TimeoutError
         return study
 
+    def wait_job(
+        self,
+        job_id: str,
+        namespace_id: str,
+        timeout: float,
+        ws_timeout: int,
+    ):
+        """Wait job.
+
+        :param job_id: job id
+        :param namespace_id: job namespace_id
+        :param timeout: time for waiting new study
+        :param ws_timeout: time for waiting in socket
+
+        :raises TimeoutError: if job not ready by timeout
+        :raises RuntimeError: Bad answer from ws
+        """
+        errors_mapping: Mapping[  # NOQA:WPS234
+            Union[Tuple[str, Optional[str]], str],
+            PreconditionFailed,
+        ] = {
+            ('NOT_FOUND', None): NotFound('The job can not be found'),
+            ('NOT_PERMITTED', None): NotPermitted(
+                'The user is not permitted to access this job',
+            ),
+        }
+        request_data = {
+            'id': job_id,
+        }
+        get_job_query = QueryO(
+            api=self._api,
+            url='/job/get',
+            request_data=request_data,
+            errors_mapping=errors_mapping,
+            required_sid=True,
+        )
+
+        ws_url = self._api.ws_url
+        ws_manager = WSManager(ws_url)
+        start = monotonic()
+
+        # K. Pustovalov: job channel have form job.namespace
+        channel_name = 'job.{namespace_id}'.format(namespace_id=namespace_id)
+        sid = self._api.sid
+
+        job_is_ready = False
+        with ws_manager.channel(sid, channel_name) as ws:
+            while True:
+                if monotonic() - start >= timeout:
+                    break
+                with suppress(NotFound):
+                    job_status = get_job_query.get()
+                    if job_status['state'] != 'DONE':
+                        raise RuntimeError(  # NOQA:WPS220
+                            'Unknown job status {job_status}'.format(
+                                job_status=job_status['state'],
+                            ),
+                        )
+                    job_is_ready = True
+                    break
+                with suppress(TimeoutError):
+                    ws.wait_for_event(
+                        channel_name,
+                        sid,
+                        'DONE',
+                        timeout=ws_timeout,
+                    )
+        if job_is_ready is False:
+            raise TimeoutError
+
     def upload_and_get(
         self,
         study_dir: Path,
         namespace_id: str,
-        timeout: int = 200,
+        timeout: float = 200.0,
         ws_timeout: int = 5,
     ) -> Box:
         """Upload study to namespace.
@@ -204,7 +280,7 @@ class Study:  # NOQA:WPS214
         uuid: str,
         namespace_id: str,
         include_attachments: bool = False,
-        timeout: int = 200,
+        timeout: float = 200.0,
         ws_timeout: int = 5,
     ) -> Box:
         """Duplicate study to namespace.
@@ -275,6 +351,134 @@ class Study:  # NOQA:WPS214
         return pydicom.read_file(
             fp=BytesIO(dicom_payload_resp.content),
             force=True,
+        )
+
+    def anonymize_and_wait(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        study_uid: str,
+        region: Dict[str, Any],
+        to_namespace: Optional[str] = None,
+        new_study_uid: Optional[str] = None,
+        keep_image_uids: Optional[str] = None,
+        color: Optional[str] = None,
+        only_prepare: bool = False,
+        x_ambrahealth_job_id: Optional[str] = None,
+        timeout: float = 200.0,
+        ws_timeout: int = 5,
+    ) -> str:
+        """Start anonymization and wait when it completed.
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param study_uid: Study uid (Required).
+        :param region: Region (Required).
+        :param to_namespace: The storage namespace
+            into which the new study should be
+            placed (default same as original).
+        :param new_study_uid: The Study Instance UID of
+            the new study (default is randomly generated).
+        :param keep_image_uids: Should SOP Instance UIDs
+            of modified copies be same as originals? (default is false)
+        :param color: HTML-formatted color (rrggbb) of
+            obscured regions (default is black-and-white checkerboard)
+        :param only_prepare: Get prepared request.
+        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument
+        :param timeout: waiting timeout
+        :param ws_timeout: waiting from ws timeout
+
+        :returns: new study uid
+        """
+        if x_ambrahealth_job_id is None:
+            x_ambrahealth_job_id = str(uuid_lib.uuid4())
+        anonymize = self._api.Storage.Study.anonymize(
+            engine_fqdn,
+            namespace,
+            study_uid,
+            region,
+            to_namespace,
+            new_study_uid,
+            keep_image_uids,
+            color,
+            only_prepare,
+            x_ambrahealth_job_id,
+        )
+        anonymized_study_uid: str = anonymize.text
+
+        # A. Matveev: job namespace is initial namespace
+        self.wait_job(
+            job_id=x_ambrahealth_job_id,
+            namespace_id=namespace,
+            timeout=timeout,
+            ws_timeout=ws_timeout,
+        )
+        return anonymized_study_uid
+
+    def anonymize_and_get(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        study_uid: str,
+        region: Dict[str, Any],
+        to_namespace: Optional[str] = None,
+        new_study_uid: Optional[str] = None,
+        keep_image_uids: Optional[str] = None,
+        color: Optional[str] = None,
+        only_prepare: bool = False,
+        x_ambrahealth_job_id: Optional[str] = None,
+        timeout: float = 200.0,
+        ws_timeout: int = 5,
+    ) -> Box:
+        """Start anonymization wait and get anonymized study.
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param study_uid: Study uid (Required).
+        :param region: Region (Required).
+        :param to_namespace: The storage namespace
+            into which the new study should be
+            placed (default same as original).
+        :param new_study_uid: The Study Instance UID of
+            the new study (default is randomly generated).
+        :param keep_image_uids: Should SOP Instance UIDs
+            of modified copies be same as originals? (default is false)
+        :param color: HTML-formatted color (rrggbb) of
+            obscured regions (default is black-and-white checkerboard)
+        :param only_prepare: Get prepared request.
+        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument
+        :param timeout: waiting timeout
+        :param ws_timeout: waiting from ws timeout
+
+        :raises TimeoutError: if job or study not ready by timeout
+        :returns: new study
+        """
+        start = monotonic()
+        new_study_uid = self.anonymize_and_wait(
+            engine_fqdn,
+            namespace,
+            study_uid,
+            region,
+            to_namespace,
+            new_study_uid,
+            keep_image_uids,
+            color,
+            only_prepare,
+            x_ambrahealth_job_id,
+            timeout,
+            ws_timeout,
+        )
+        spend_time = monotonic() - start
+        rest_timeout = timeout - spend_time
+
+        if rest_timeout <= 0:
+            raise TimeoutError
+        new_namespace = to_namespace if to_namespace is not None else namespace
+        return self.wait(
+            study_uid=new_study_uid,
+            namespace_id=new_namespace,
+            timeout=rest_timeout,
+            ws_timeout=ws_timeout,
         )
 
     def _namespace_fqdn(self, namespace_id: str) -> str:

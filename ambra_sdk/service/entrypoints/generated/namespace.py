@@ -410,6 +410,7 @@ class Namespace:
         event_approve=None,
         event_case_assignment=None,
         event_harvest=None,
+        event_incoming_study_request=None,
         event_link=None,
         event_link_mine=None,
         event_message=None,
@@ -429,6 +430,7 @@ class Namespace:
         :param event_approve: Notify the user on a approval needed into the namespace (optional)
         :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)
         :param event_harvest: Notify the user on a harvest into the namespace (optional)
+        :param event_incoming_study_request: Notify the user when they get an incoming study request (optional)
         :param event_link: Notify the user when an anonymous link is hit in the namespace (optional)
         :param event_link_mine: Notify the user when an anonymous link created by the user is hit in the namespace (optional)
         :param event_message: Notify the user when a message is sent to the namespace (optional)
@@ -447,6 +449,7 @@ class Namespace:
            'event_approve': event_approve,
            'event_case_assignment': event_case_assignment,
            'event_harvest': event_harvest,
+           'event_incoming_study_request': event_incoming_study_request,
            'event_link': event_link,
            'event_link_mine': event_link_mine,
            'event_message': event_message,

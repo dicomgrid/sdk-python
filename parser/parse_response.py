@@ -20,6 +20,8 @@ DOC_FIELDS = {
     'DESTINATION_SEARCH - Result of a destination search',
     'USER_INVITE- An invitation to join the account to user has being sent to a user',
     'NODE_CONNECT- A user has requested to connect the public node',
+    'STUDY_REQUEST_INBOUND - An incoming study request',
+    'STUDY_REQUEST_OUTBOUND - An outgoing study request',
     '* Epoch time of the event',
     '* LOCKOUT if the login failed due to the lockout or PRIMARY if the login failed due to invalid credentials',
     '* The vanity of the event',

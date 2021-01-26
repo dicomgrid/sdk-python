@@ -1,3 +1,4 @@
+import inspect
 from pathlib import Path
 
 from dynaconf import settings
@@ -121,3 +122,116 @@ class TestAddonStudy:
         assert isinstance(dicom, FileDataset)
         assert dicom.StudyInstanceUID == study_uid
         assert dicom.SOPInstanceUID == image['id']
+
+    def test_anonymize_and_wait_signature(self, api):
+        """Test anonymize_and_wait signature."""
+        anonymize_and_wait_s = inspect.signature(
+            api.Addon.Study.anonymize_and_wait,
+        )
+        anonymize_s = inspect.signature(api.Storage.Study.anonymize)
+        assert set(anonymize_and_wait_s.parameters) - \
+            {'timeout', 'ws_timeout'} == set(anonymize_s.parameters)
+
+    def test_anonymize_and_wait(
+        self,
+        api,
+        readonly_study,
+        auto_remove,
+        storage_auto_remove,
+    ):
+        """Test anonymize_and_wait."""
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+        study_uid = readonly_study.study_uid
+        series_uid = '1.2.840.113619.2.278.3.2831165743.908.1345078604.948'
+
+        region = {
+            'series': {
+                series_uid: {
+                    'regions': [
+                        {
+                            'x': 10,
+                            'y': 10,
+                            'width': 30,
+                            'height': 40,
+                        },
+                    ],
+                },
+            },
+        }
+        new_study_uid = api.Addon.Study.anonymize_and_wait(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            to_namespace=storage_namespace,
+            study_uid=study_uid,
+            region=region,
+            color='121197149',
+        )
+        assert new_study_uid != study_uid
+
+        storage_auto_remove(
+            engine_fqdn,
+            storage_namespace,
+            new_study_uid,
+        )
+
+        new_study = api.Addon.Study.wait(
+            study_uid=new_study_uid,
+            namespace_id=storage_namespace,
+            timeout=settings.API['upload_study_timeout'],
+            ws_timeout=settings.API['ws_timeout'],
+        )
+        auto_remove(new_study)
+
+    def test_anonymize_and_get_signature(self, api):
+        """Test anonymize_and_get signature."""
+        anonymize_and_get_s = inspect.signature(
+            api.Addon.Study.anonymize_and_get,
+        )
+        anonymize_s = inspect.signature(api.Storage.Study.anonymize)
+        assert set(anonymize_and_get_s.parameters) - \
+            {'timeout', 'ws_timeout'} == set(anonymize_s.parameters)
+
+    def test_anonymize_and_get(
+        self,
+        api,
+        readonly_study,
+        auto_remove,
+        storage_auto_remove,
+    ):
+        """Test anonymize_and_get."""
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+        study_uid = readonly_study.study_uid
+        series_uid = '1.2.840.113619.2.278.3.2831165743.908.1345078604.948'
+
+        region = {
+            'series': {
+                series_uid: {
+                    'regions': [
+                        {
+                            'x': 10,
+                            'y': 10,
+                            'width': 30,
+                            'height': 40,
+                        },
+                    ],
+                },
+            },
+        }
+        new_study = api.Addon.Study.anonymize_and_get(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            to_namespace=storage_namespace,
+            study_uid=study_uid,
+            region=region,
+            color='121197149',
+        )
+        assert new_study.study_uid != study_uid
+
+        storage_auto_remove(
+            engine_fqdn,
+            storage_namespace,
+            new_study.study_uid,
+        )
+        auto_remove(new_study)

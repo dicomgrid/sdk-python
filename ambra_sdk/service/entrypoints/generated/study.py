@@ -32,6 +32,7 @@ from ambra_sdk.exceptions.service import Locked
 from ambra_sdk.exceptions.service import MissingFields
 from ambra_sdk.exceptions.service import MissingInfo
 from ambra_sdk.exceptions.service import NamespaceNotFound
+from ambra_sdk.exceptions.service import NoDestination
 from ambra_sdk.exceptions.service import NoFreshArchive
 from ambra_sdk.exceptions.service import NoHl7Support
 from ambra_sdk.exceptions.service import NoQueryDestination
@@ -40,6 +41,7 @@ from ambra_sdk.exceptions.service import NotAvailable
 from ambra_sdk.exceptions.service import NotEnabled
 from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import NotHash
+from ambra_sdk.exceptions.service import NotMatched
 from ambra_sdk.exceptions.service import NotPermitted
 from ambra_sdk.exceptions.service import NotReady
 from ambra_sdk.exceptions.service import NotThin
@@ -50,6 +52,7 @@ from ambra_sdk.exceptions.service import PendingMustMatch
 from ambra_sdk.exceptions.service import Phantom
 from ambra_sdk.exceptions.service import RecentNamespaceSplit
 from ambra_sdk.exceptions.service import ReportError
+from ambra_sdk.exceptions.service import RequestClosed
 from ambra_sdk.exceptions.service import Retrieve
 from ambra_sdk.exceptions.service import RouteNotMatched
 from ambra_sdk.exceptions.service import Running
@@ -84,6 +87,7 @@ class Study:
         image_count=None,
         integration_key=None,
         medical_record_locator=None,
+        message=None,
         modality=None,
         node_id=None,
         patient_additional_history=None,
@@ -127,6 +131,7 @@ class Study:
         :param image_count: Images in the study (optional)
         :param integration_key: Integration key for the study (optional)
         :param medical_record_locator: DICOM tag (0010,1090) (optional)
+        :param message: An upload message (optional)
         :param modality: DICOM tag (0008,0060) (optional)
         :param node_id: If this is a thin study the gateway UUID to retrieve it from can be specified (optional)
         :param patient_additional_history: DICOM tag (0010,21B0) (optional)
@@ -173,6 +178,7 @@ class Study:
            'image_count': image_count,
            'integration_key': integration_key,
            'medical_record_locator': medical_record_locator,
+           'message': message,
            'modality': modality,
            'node_id': node_id,
            'patient_additional_history': patient_additional_history,
@@ -902,6 +908,7 @@ class Study:
         rsna=None,
         share_code=None,
         storage_namespace=None,
+        study_request_id=None,
         study_uid=None,
         user_id=None,
         uuid=None,
@@ -922,12 +929,13 @@ class Study:
         :param rsna: rsna
         :param share_code: share_code
         :param storage_namespace: storage_namespace
+        :param study_request_id: study_request_id
         :param study_uid: study_uid
         :param user_id: user_id
         :param uuid: uuid
 
         Notes:
-        (account_id OR location_id OR group_id OR user_id OR share_code OR email OR masshiway OR rsna OR npi) - uuid of the account, location, group, user or share code, email address(es), RSNA, NPI or masshiway recipient to share this study with
+        (account_id OR location_id OR group_id OR user_id OR share_code OR email OR masshiway OR rsna OR npi OR study_request_id) - uuid of the account, location, group, user, study request or share code, email address(es), RSNA, NPI or masshiway recipient to share this study with
         (uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet if you want a future share
         """
         request_data = {
@@ -945,6 +953,7 @@ class Study:
            'rsna': rsna,
            'share_code': share_code,
            'storage_namespace': storage_namespace,
+           'study_request_id': study_request_id,
            'study_uid': study_uid,
            'user_id': user_id,
            'uuid': uuid,
@@ -961,9 +970,12 @@ class Study:
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The study or share object can not be found. The error_subtype holds a the name of the key that can not be found')
         errors_mapping[('NOT_HASH', None)] = NotHash('The field is not a JSON hash. The error_subtype holds the name of the field')
+        errors_mapping[('NOT_MATCHED', None)] = NotMatched('This study does not match the study request criteria')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to share this study')
         errors_mapping[('PHANTOM', None)] = Phantom('This is a phantom study')
+        errors_mapping[('REQUEST_CLOSED', None)] = RequestClosed('The study request is closed')
         errors_mapping[('SHARE_FAILED', 'SAME')] = ShareFailed('The study can&#39;t be shared into the same namespace')
+        errors_mapping[('SHARE_FAILED', 'NO_DESTINATION')] = ShareFailed('The study can&#39;t be shared with a deleted object')
         errors_mapping[('SHARE_FAILED', 'DECLINED')] = ShareFailed('The charge card was declined')
         errors_mapping[('SHARE_FAILED', 'NO_CARD')] = ShareFailed('The user does not have a card on file')
         errors_mapping[('SHARE_FAILED', 'NO_CHARGE_MODALITY')] = ShareFailed('The charge modality is required if charge_authorized is set and the charging is by modality')
@@ -1419,20 +1431,26 @@ class Study:
     def duplicate(
         self,
         include_attachments,
-        namespace_id,
         uuid,
+        namespace_id=None,
         overwrite=None,
+        study_request_id=None,
     ):
         """Duplicate.
         :param include_attachments: Also duplicate attachments
-        :param namespace_id: The namespace id to duplicate it to
         :param uuid: The study id
+        :param namespace_id: namespace_id
         :param overwrite: Flag if you want to overwrite an existing study in the destination namespace
+        :param study_request_id: study_request_id
+
+        Notes:
+        (namespace_id OR study_request_id) - The namespace or study request id to duplicate it to
         """
         request_data = {
            'include_attachments': include_attachments,
            'namespace_id': namespace_id,
            'overwrite': overwrite,
+           'study_request_id': study_request_id,
            'uuid': uuid,
         }
 	
@@ -1441,7 +1459,10 @@ class Study:
         errors_mapping[('FAILED', None)] = Failed('The storage call failed to run')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The study or namespace was not found.')
+        errors_mapping[('NOT_MATCHED', None)] = NotMatched('This study does not match the study request criteria')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to duplicate the study to this namespace')
+        errors_mapping[('NO_DESTINATION', None)] = NoDestination('The study can&#39;t be duplicated to a deleted object&#39;s namespace')
+        errors_mapping[('REQUEST_CLOSED', None)] = RequestClosed('The study request is closed')
         query_data = {
             'api': self._api,
             'url': '/study/duplicate',
@@ -1994,6 +2015,110 @@ class Study:
         query_data = {
             'api': self._api,
             'url': '/study/take',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
+    def request_add(
+        self,
+        account_id,
+        comments,
+        namespace_id,
+        patient_birth_date,
+        patient_first_name,
+        patient_last_name,
+        patient_sex,
+        modality=None,
+        patientid=None,
+        study_date_end=None,
+        study_date_start=None,
+        study_description=None,
+    ):
+        """Request add.
+        :param account_id: The account id to send the study request to
+        :param comments: Free form request comments
+        :param namespace_id: The namespace id requested studies to put (share or duplicate) into
+        :param patient_birth_date: The patient date of birth a study should match
+        :param patient_first_name: The patient first name a study should match
+        :param patient_last_name: The patient last name a study should match
+        :param patient_sex: The patient sex a study should match
+        :param modality: The modality a study should match (optional)
+        :param patientid: The MRN a study should match (optional)
+        :param study_date_end: The DICOM date that a study date should be less or equal to (optional)
+        :param study_date_start: The DICOM date that a study date should be greater or equal to (optional)
+        :param study_description: The string a study description should partially match (optional)
+        """
+        request_data = {
+           'account_id': account_id,
+           'comments': comments,
+           'modality': modality,
+           'namespace_id': namespace_id,
+           'patient_birth_date': patient_birth_date,
+           'patient_first_name': patient_first_name,
+           'patient_last_name': patient_last_name,
+           'patient_sex': patient_sex,
+           'patientid': patientid,
+           'study_date_end': study_date_end,
+           'study_date_start': study_date_start,
+           'study_description': study_description,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('ALREADY', None)] = Already('An active (pending or in progress) study request with the same study criteria and the same namespace/account combination already exists')
+        errors_mapping[('NOT_ENABLED', None)] = NotEnabled('the feature is not enabled. Check the study_request_accounts account settings')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace or account was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to request a study into this namespace')
+        query_data = {
+            'api': self._api,
+            'url': '/study/request/add',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
+    def request_get(
+        self,
+        uuid,
+    ):
+        """Request get.
+        :param uuid: The study request uuid
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study request was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to access this study request')
+        query_data = {
+            'api': self._api,
+            'url': '/study/request/get',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
+    def request_match(
+        self,
+        study_request_id,
+    ):
+        """Request match.
+        :param study_request_id: The study request uuid
+        """
+        request_data = {
+           'study_request_id': study_request_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study request was not found')
+        errors_mapping[('REQUEST_CLOSED', None)] = RequestClosed('The request is not active (pending or in progress)')
+        query_data = {
+            'api': self._api,
+            'url': '/study/request/match',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,

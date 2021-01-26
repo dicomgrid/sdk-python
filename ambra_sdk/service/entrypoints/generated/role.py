@@ -66,6 +66,8 @@ class Role:
         for_group=None,
         for_location=None,
         permissions=None,
+        setting_param=None,
+        settings=None,
     ):
         """Add.
         :param account_id: uuid of the account
@@ -74,6 +76,8 @@ class Role:
         :param for_group: A flag that the role can be used in a group, default is on (optional)
         :param for_location: A flag that the role can be used in a location, default is on (optional)
         :param permissions: A hash of the role permissions (optional)
+        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param settings: A hash of the role settings (optional)
         """
         request_data = {
            'account_id': account_id,
@@ -82,7 +86,11 @@ class Role:
            'for_location': for_location,
            'name': name,
            'permissions': permissions,
+           'settings': settings,
         }
+        if setting_param is not None:
+            setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
+            request_data.update(setting_param_dict)
 	
         errors_mapping = {}
         errors_mapping[('ACCOUNT_NOT_FOUND', None)] = AccountNotFound('The account was not found')
@@ -110,6 +118,8 @@ class Role:
         name=None,
         permission_param=None,
         permissions=None,
+        setting_param=None,
+        settings=None,
     ):
         """Set.
         :param uuid: The role uuid
@@ -120,6 +130,8 @@ class Role:
         :param name: Name of the role (optional)
         :param permission_param: Set an individual permission. This is an alternative to the permissions hash for easier use in the API tester (optional)
         :param permissions: A hash of the role permissions (optional)
+        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param settings: A hash of the role settings (optional)
         """
         request_data = {
            'description': description,
@@ -128,11 +140,15 @@ class Role:
            'for_location': for_location,
            'name': name,
            'permissions': permissions,
+           'settings': settings,
            'uuid': uuid,
         }
         if permission_param is not None:
             permission_param_dict = {'{prefix}{k}'.format(prefix='permission_', k=k): v for k,v in permission_param.items()}
             request_data.update(permission_param_dict)
+        if setting_param is not None:
+            setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
+            request_data.update(setting_param_dict)
 	
         errors_mapping = {}
         errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')

@@ -954,3 +954,23 @@ class SfdcJwtMissingFields(PreconditionFailed):
 
 class SfdcJwtNotHash(PreconditionFailed):
     """SfdcJwtNotHash."""
+
+
+class RoleNamespaceMismatch(PreconditionFailed):
+    """RoleNamespaceMismatch."""
+
+
+class BrandNotAllowed(PreconditionFailed):
+    """BrandNotAllowed."""
+
+
+class NoDestination(PreconditionFailed):
+    """NoDestination."""
+
+
+class NotMatched(PreconditionFailed):
+    """NotMatched."""
+
+
+class RequestClosed(PreconditionFailed):
+    """RequestClosed."""

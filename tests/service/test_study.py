@@ -1,4 +1,7 @@
+from datetime import datetime, timedelta
+
 import pytest
+import pytz
 from dynaconf import settings
 
 from ambra_sdk.exceptions.service import MissingFields
@@ -222,3 +225,28 @@ class TestStudy:
         """
         with pytest.raises(MissingFields):
             api.Study.set(study_uid='abc', study_description='reason').get()
+
+    def test_study_filtering_with_dt(
+        self,
+        api,
+        readonly_study,
+    ):
+        """Test study filtering with dt."""
+        created_dt = datetime.strptime(
+            # Hack for timezone format
+            readonly_study.created + '00',  # NOQA:WPS336
+            '%Y-%m-%d %H:%M:%S.%f%z',
+        )
+        # we use tzinfo, but shift dt from utc
+        created_dt = created_dt.replace(tzinfo=None) - timedelta(hours=3)
+        created_dt = pytz.timezone('Europe/Moscow').localize(created_dt)
+        study = api.Study.list() \
+            .filter_by(
+                Filter(
+                    'created',
+                    FilterCondition.equals,
+                    created_dt,
+                ),
+        ) \
+            .first()
+        assert study

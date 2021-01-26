@@ -76,6 +76,7 @@ class Customfield:
         wrapped_dicom_only,
         dicom_tag=None,
         dicom_tag_ignore_empty=None,
+        field_flag=None,
         hl7_component=None,
         hl7_field=None,
         hl7_segment=None,
@@ -98,6 +99,7 @@ class Customfield:
         :param wrapped_dicom_only: Only capture for wrapped DICOM uploads during a share code exchange
         :param dicom_tag: DICOM tag to map this field to. Format should be of form (1234,1234). (only applicable to study fields) (optional)
         :param dicom_tag_ignore_empty: Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified) (optional)
+        :param field_flag: Default customfield flag (optional)
         :param hl7_component: Component number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)
         :param hl7_field: Segment field number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)
         :param hl7_segment: Segment to map this field to in HL7 ORM messages. Valid values are (NTE|PID|PID1|PV1|PV2|OBR|DG1|OBX|CTI|BLG|ORC) (only applicable to study fields) (optional)
@@ -115,6 +117,7 @@ class Customfield:
            'dicom_tag': dicom_tag,
            'dicom_tag_ignore_empty': dicom_tag_ignore_empty,
            'display_order': display_order,
+           'field_flag': field_flag,
            'hl7_component': hl7_component,
            'hl7_field': hl7_field,
            'hl7_segment': hl7_segment,
@@ -162,6 +165,7 @@ class Customfield:
         dicom_tag=None,
         dicom_tag_ignore_empty=None,
         display_order=None,
+        field_flag=None,
         hl7_component=None,
         hl7_field=None,
         hl7_segment=None,
@@ -182,6 +186,7 @@ class Customfield:
         :param dicom_tag: Dicom tag to map this field to. Format should be of form (1234,1234). (only applicable to study fields) (optional)
         :param dicom_tag_ignore_empty: Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified) (optional)
         :param display_order: Integer to order how the fields should be displayed (optional)
+        :param field_flag: Default customfield flag (optional)
         :param hl7_component: Component number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)
         :param hl7_field: Segment field number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)
         :param hl7_segment: Segment to map this field to in HL7 ORM messages. Valid values are (NTE|PID|PID1|PV1|PV2|OBR|DG1|OBX|CTI|BLG|ORC) (only applicable to study fields) (optional)
@@ -201,6 +206,7 @@ class Customfield:
            'dicom_tag': dicom_tag,
            'dicom_tag_ignore_empty': dicom_tag_ignore_empty,
            'display_order': display_order,
+           'field_flag': field_flag,
            'hl7_component': hl7_component,
            'hl7_field': hl7_field,
            'hl7_segment': hl7_segment,

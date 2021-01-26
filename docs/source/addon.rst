@@ -85,3 +85,53 @@ This method calls :py:meth:`api.Study.duplicate` async method and waits for new 
       uuid=some_study.uuid,
       namespace_id=to_namespace_id,
   )
+
+
+wait_job
+~~~~~~~~
+
+[New in 3.21.1.0]
+
+Wait for a job done (for example storage anonymization job)::
+
+  api.Addon.Study.wait_job(
+      job_id,
+      namespace_id,
+      timeout=10,
+  )
+
+
+
+anonymize_and_wait
+~~~~~~~~~~~~~~~~~~
+
+[New in 3.21.1.0]
+
+Start anonymization and wait for completion::
+
+  api.Addon.Study.anonymize_and_wait(
+      engine_fqdn,
+      namespace,
+      study_uid,
+      region,
+      namespace_id,
+      timeout=10,
+  )
+
+
+anonymize_and_get
+~~~~~~~~~~~~~~~~~
+
+[New in 3.21.1.0]
+
+Start anonymization and get anonymized study::
+
+  anonymized_study = api.Addon.Study.anonymize_and_get(
+      engine_fqdn,
+      namespace,
+      study_uid,
+      region,
+      namespace_id,
+      timeout=10,
+  )
+

@@ -31,7 +31,6 @@ class ErrorParameter:
             self.subtypes = subtypes
         self.subtypes = sorted(self.subtypes, key=lambda x: str(x))
 
-
     def exception_name(self):
         return ''.join(part.capitalize() for part in self.name.split('_'))
 
@@ -59,7 +58,11 @@ ERROR_PARAMETERS_STRING_MAP = {
         'The share failed. The error_subtype holds one of the following conditions.',
         subtypes=[
             ErrorSubtype(
-                'SAME', 'The study can\'t be shared into the same namespace'
+                'SAME', 'The study can\'t be shared into the same namespace',
+            ),
+
+            ErrorSubtype(
+                'NO_DESTINATION', 'The study can\'t be shared with a deleted object',
             ),
             ErrorSubtype('DECLINED', 'The charge card was declined'),
             ErrorSubtype('NO_CARD', 'The user does not have a card on file'),
@@ -73,36 +76,103 @@ ERROR_PARAMETERS_STRING_MAP = {
             ),
         ]
     ),
-    'NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE • The role cannot be used for the account':
+    'ROLE_NAMESPACE_MISMATCH, subtype INCOMPATIBLE_ROLE, data contains role_id and namespace_id • The role cannot be used for the account':
     ErrorParameter(
-        'NOT_PERMITTED',
-        'The role cannot be used for the account',
+        'ROLE_NAMESPACE_MISMATCH',
+        'Role namespace mismatch',
         subtypes=[
             ErrorSubtype(
-                'ROLE_FOR_NAMESPACE_TYPE',
-                'The role cannot be used for the account'
+                'INCOMPATIBLE_ROLE',
+                'The role cannot be used for the account',
             ),
         ],
     ),
-    'NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE • The role cannot be used for the group':
+    'ROLE_NAMESPACE_MISMATCH, subtype GLOBAL_USER_WITH_RESTRICTED_ROLE, data contains role_id, namespace_id and user_id • They are making the user global with a role restricted to group/location and there is a group/location in the account':
     ErrorParameter(
-        'NOT_PERMITTED',
-        'The role cannot be used for the group',
+        'ROLE_NAMESPACE_MISMATCH',
+        'Role namespace mismatch',
         subtypes=[
             ErrorSubtype(
-                'ROLE_FOR_NAMESPACE_TYPE',
-                'The role cannot be used for the group'
+                'GLOBAL_USER_WITH_RESTRICTED_ROLE',
+                'They are adding a global user with a role restricted to group/location and there is a group/location in the account',
             ),
         ],
     ),
-    'NOT_PERMITTED, subtype ROLE_FOR_NAMESPACE_TYPE • The role cannot be used for the location':
+    'ROLE_NAMESPACE_MISMATCH, subtype GLOBAL_USER_WITH_RESTRICTED_ROLE, data contains role_id, namespace_id and user_id • They are adding a global user with a role restricted to group/location and there is a group/location in the account':
     ErrorParameter(
-        'NOT_PERMITTED',
-        'The role cannot be used for the location',
+        'ROLE_NAMESPACE_MISMATCH',
+        'Role namespace mismatch',
         subtypes=[
             ErrorSubtype(
-                'ROLE_FOR_NAMESPACE_TYPE',
-                'The role cannot be used for the location'
+                'GLOBAL_USER_WITH_RESTRICTED_ROLE',
+                'They are adding a global user with a role restricted to group/location and there is a group/location in the account',
+            ),
+        ],
+    ),
+
+    'ROLE_NAMESPACE_MISMATCH, subtype GLOBAL_USER_WITH_RESTRICTED_ROLE, data contains role_id and user_id • You are adding the group to the account with a global user with restricted role':
+    ErrorParameter(
+        'ROLE_NAMESPACE_MISMATCH',
+        'Role namespace mismatch',
+        subtypes=[
+            ErrorSubtype(
+                'GLOBAL_USER_WITH_RESTRICTED_ROLE',
+                'You are adding the group to the account with a global user with restricted role',
+            ),
+        ],
+    ),
+    'ROLE_NAMESPACE_MISMATCH, subtype INCOMPATIBLE_ROLE, data contains role_id and namespace_id • The role cannot be used for a location':
+    ErrorParameter(
+        'ROLE_NAMESPACE_MISMATCH',
+        'Role namespace mismatch',
+        subtypes=[
+            ErrorSubtype(
+                'INCOMPATIBLE_ROLE',
+                'The role cannot be used for the location',
+            ),
+        ],
+    ),
+    'ROLE_NAMESPACE_MISMATCH, subtype INCOMPATIBLE_ROLE, data contains role_id and namespace_id • The role cannot be used for locations':
+    ErrorParameter(
+        'ROLE_NAMESPACE_MISMATCH',
+        'Role namespace mismatch',
+        subtypes=[
+            ErrorSubtype(
+                'INCOMPATIBLE_ROLE',
+                'The role cannot be used for locations',
+            ),
+        ],
+    ),
+    'ROLE_NAMESPACE_MISMATCH, subtype GLOBAL_USER_WITH_RESTRICTED_ROLE, data contains role_id and user_id • You are adding the location to the account with a global user with restricted role':
+    ErrorParameter(
+        'ROLE_NAMESPACE_MISMATCH',
+        'Role namespace mismatch',
+        subtypes=[
+            ErrorSubtype(
+                'GLOBAL_USER_WITH_RESTRICTED_ROLE',
+                'You are adding the location to the account with a global user with restricted role',
+            ),
+        ],
+    ),
+    'ROLE_NAMESPACE_MISMATCH, subtype INCOMPATIBLE_ROLE, data contains role_id and namespace_id • The role cannot be used for a group':
+    ErrorParameter(
+        'ROLE_NAMESPACE_MISMATCH',
+        'Role namespace mismatch',
+        subtypes=[
+            ErrorSubtype(
+                'INCOMPATIBLE_ROLE',
+                'The role cannot be used for a group',
+            ),
+        ],
+    ),
+    'ROLE_NAMESPACE_MISMATCH, subtype INCOMPATIBLE_ROLE, data contains role_id and namespace_id • The role cannot be used for groups':
+    ErrorParameter(
+        'ROLE_NAMESPACE_MISMATCH',
+        'Role namespace mismatch',
+        subtypes=[
+            ErrorSubtype(
+                'INCOMPATIBLE_ROLE',
+                'The role cannot be used for groups',
             ),
         ],
     ),
@@ -110,6 +180,7 @@ ERROR_PARAMETERS_STRING_MAP = {
 
 BAD_ERROR_PARAMETERS_STRING = {
     'SAME - The study can\'t be shared into the same namespace',
+    'NO_DESTINATION - The study can\'t be shared with a deleted object',
     'DECLINED - The charge card was declined',
     'NO_CARD - The user does not have a card on file',
     'NO_CHARGE_MODALITY - The charge modality is required if charge_authorized is set and the charging is by modality',
@@ -125,7 +196,10 @@ BAD_ERROR_PARAMETERS_STRING = {
 def parse_error_parameter(parameter_str):
     if parameter_str in ERROR_PARAMETERS_STRING_MAP:
         return ERROR_PARAMETERS_STRING_MAP[parameter_str]
-    name, description = parameter_str.split('•')
+    try:
+        name, description = parameter_str.split('•')
+    except ValueError as exc:
+        raise RuntimeError('Can not parse %s' % parameter_str) from exc
     name = name.strip()
     description = description.strip()
     return ErrorParameter(name, description)

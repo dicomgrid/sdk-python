@@ -5,6 +5,7 @@ import pytest
 from dynaconf import settings
 
 from ambra_sdk.exceptions.storage import (
+    AmbraResponseException,
     NotFound,
     PermissionDenied,
     UnprocessableEntity,
@@ -770,6 +771,24 @@ class TestStorageStudy:
             study_uid=study_uid,
         )
         assert cache.status_code in {200, 202}
+
+    def test_hl7_to_sr(self, api, readonly_study):
+        """Test hl7 to sr.
+
+        We test only exceution (we have no hl7)
+        Also this method return 500 at some reasons..
+        """
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+        study_uid = readonly_study.study_uid
+
+        with pytest.raises(AmbraResponseException):
+            api.Storage.Study.hl7_to_sr(
+                engine_fqdn=engine_fqdn,
+                namespace=storage_namespace,
+                study_uid=study_uid,
+                hl7uuid='123',
+            )
 
     def test_retry_storage_with_new_sid(self, api, readonly_study):
         """Test retry storage request with new sid.

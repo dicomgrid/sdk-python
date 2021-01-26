@@ -1,3 +1,4 @@
+from functools import wraps
 from typing import Any, Dict
 
 from box import Box, BoxList
@@ -61,6 +62,7 @@ class StudyBox(Box):
 class Study(GStudy):
     """Study namespace."""
 
+    @wraps(GStudy.get)
     def get(self, *args, **kwargs):
         """Get method.
 
@@ -72,6 +74,7 @@ class Study(GStudy):
         query.return_constructor = StudyBox
         return query
 
+    @wraps(GStudy.list)  # NOQA:WPS125
     def list(self, *args, **kwargs):  # NOQA:A003,WPS125
         """List method.
 

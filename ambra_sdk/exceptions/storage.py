@@ -99,3 +99,17 @@ class UnprocessableEntity(AmbraResponseException):
         if description is None:
             description = 'Request body is empty.'
         super().__init__(code, description)
+
+
+class Hl7ReportDataNotConvertedToDicom(AmbraResponseException):
+    """Hl7ReportDataNotConvertedToDicom."""
+
+    def __init__(self, description=None):
+        """Init.
+
+        :param description: response description
+        """
+        code = 500
+        if description is None:
+            description = 'If hl7 report data not converted to DICOM.'
+        super().__init__(code, description)

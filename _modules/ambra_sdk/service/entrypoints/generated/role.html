@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.role &#8212; Ambra-SDK 3.20.8.0-2 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.role &#8212; Ambra-SDK 3.21.1.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -100,6 +100,8 @@
         <span class="n">for_group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">for_location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">permissions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">setting_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
 <span class="sd">        :param account_id: uuid of the account</span>
@@ -108,6 +110,8 @@
 <span class="sd">        :param for_group: A flag that the role can be used in a group, default is on (optional)</span>
 <span class="sd">        :param for_location: A flag that the role can be used in a location, default is on (optional)</span>
 <span class="sd">        :param permissions: A hash of the role permissions (optional)</span>
+<span class="sd">        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
+<span class="sd">        :param settings: A hash of the role settings (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
@@ -116,7 +120,11 @@
            <span class="s1">&#39;for_location&#39;</span><span class="p">:</span> <span class="n">for_location</span><span class="p">,</span>
            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
            <span class="s1">&#39;permissions&#39;</span><span class="p">:</span> <span class="n">permissions</span><span class="p">,</span>
+           <span class="s1">&#39;settings&#39;</span><span class="p">:</span> <span class="n">settings</span><span class="p">,</span>
         <span class="p">}</span>
+        <span class="k">if</span> <span class="n">setting_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">setting_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;setting_&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">setting_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">setting_param_dict</span><span class="p">)</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ACCOUNT_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">AccountNotFound</span><span class="p">(</span><span class="s1">&#39;The account was not found&#39;</span><span class="p">)</span>
@@ -144,6 +152,8 @@
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">permission_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">permissions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">setting_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
 <span class="sd">        :param uuid: The role uuid</span>
@@ -154,6 +164,8 @@
 <span class="sd">        :param name: Name of the role (optional)</span>
 <span class="sd">        :param permission_param: Set an individual permission. This is an alternative to the permissions hash for easier use in the API tester (optional)</span>
 <span class="sd">        :param permissions: A hash of the role permissions (optional)</span>
+<span class="sd">        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
+<span class="sd">        :param settings: A hash of the role settings (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
@@ -162,11 +174,15 @@
            <span class="s1">&#39;for_location&#39;</span><span class="p">:</span> <span class="n">for_location</span><span class="p">,</span>
            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
            <span class="s1">&#39;permissions&#39;</span><span class="p">:</span> <span class="n">permissions</span><span class="p">,</span>
+           <span class="s1">&#39;settings&#39;</span><span class="p">:</span> <span class="n">settings</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="n">permission_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">permission_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;permission_&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">permission_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
             <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">permission_param_dict</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">setting_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">setting_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;setting_&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">setting_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">setting_param_dict</span><span class="p">)</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
@@ -292,7 +308,7 @@
 
 
 
-<p class="blurb">version 3.20.8.0-2</p>
+<p class="blurb">version 3.21.1.0-1</p>
 
 
 

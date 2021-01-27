@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Addon namespace &#8212; Ambra-SDK 3.20.8.0-2 documentation</title>
+    <title>Addon namespace &#8212; Ambra-SDK 3.21.1.0-1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -43,6 +43,73 @@
 <em class="property">class </em><code class="sig-prename descclassname">ambra_sdk.addon.study.</code><code class="sig-name descname">Study</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">api</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study" title="Permalink to this definition">¶</a></dt>
 <dd><p>Study addon namespace.</p>
 <dl class="py method">
+<dt id="ambra_sdk.addon.study.Study.anonymize_and_get">
+<code class="sig-name descname">anonymize_and_get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">region</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">to_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">new_study_uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">keep_image_uids</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">color</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">x_ambrahealth_job_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">200.0</span></em>, <em class="sig-param"><span class="n">ws_timeout</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em><span class="sig-paren">)</span> &#x2192; box.box.Box<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.anonymize_and_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.anonymize_and_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start anonymization wait and get anonymized study.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine_fqdn</strong> – Engine FQDN (Required).</p></li>
+<li><p><strong>namespace</strong> – Namespace (Required).</p></li>
+<li><p><strong>study_uid</strong> – Study uid (Required).</p></li>
+<li><p><strong>region</strong> – Region (Required).</p></li>
+<li><p><strong>to_namespace</strong> – The storage namespace
+into which the new study should be
+placed (default same as original).</p></li>
+<li><p><strong>new_study_uid</strong> – The Study Instance UID of
+the new study (default is randomly generated).</p></li>
+<li><p><strong>keep_image_uids</strong> – Should SOP Instance UIDs
+of modified copies be same as originals? (default is false)</p></li>
+<li><p><strong>color</strong> – HTML-formatted color (rrggbb) of
+obscured regions (default is black-and-white checkerboard)</p></li>
+<li><p><strong>only_prepare</strong> – Get prepared request.</p></li>
+<li><p><strong>x_ambrahealth_job_id</strong> – X-AmbraHealth-Job-Id headers argument</p></li>
+<li><p><strong>timeout</strong> – waiting timeout</p></li>
+<li><p><strong>ws_timeout</strong> – waiting from ws timeout</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TimeoutError</strong> – if job or study not ready by timeout</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>new study</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.addon.study.Study.anonymize_and_wait">
+<code class="sig-name descname">anonymize_and_wait</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">region</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">to_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">new_study_uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">keep_image_uids</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">color</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">x_ambrahealth_job_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">200.0</span></em>, <em class="sig-param"><span class="n">ws_timeout</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.anonymize_and_wait"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.anonymize_and_wait" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start anonymization and wait when it completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine_fqdn</strong> – Engine FQDN (Required).</p></li>
+<li><p><strong>namespace</strong> – Namespace (Required).</p></li>
+<li><p><strong>study_uid</strong> – Study uid (Required).</p></li>
+<li><p><strong>region</strong> – Region (Required).</p></li>
+<li><p><strong>to_namespace</strong> – The storage namespace
+into which the new study should be
+placed (default same as original).</p></li>
+<li><p><strong>new_study_uid</strong> – The Study Instance UID of
+the new study (default is randomly generated).</p></li>
+<li><p><strong>keep_image_uids</strong> – Should SOP Instance UIDs
+of modified copies be same as originals? (default is false)</p></li>
+<li><p><strong>color</strong> – HTML-formatted color (rrggbb) of
+obscured regions (default is black-and-white checkerboard)</p></li>
+<li><p><strong>only_prepare</strong> – Get prepared request.</p></li>
+<li><p><strong>x_ambrahealth_job_id</strong> – X-AmbraHealth-Job-Id headers argument</p></li>
+<li><p><strong>timeout</strong> – waiting timeout</p></li>
+<li><p><strong>ws_timeout</strong> – waiting from ws timeout</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new study uid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="ambra_sdk.addon.study.Study.dicom">
 <code class="sig-name descname">dicom</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_version</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'*'</span></em>, <em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pretranscode</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.dicom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.dicom" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get dicom.</p>
@@ -65,7 +132,7 @@
 
 <dl class="py method">
 <dt id="ambra_sdk.addon.study.Study.duplicate_and_get">
-<code class="sig-name descname">duplicate_and_get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">uuid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">include_attachments</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">200</span></em>, <em class="sig-param"><span class="n">ws_timeout</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em><span class="sig-paren">)</span> &#x2192; box.box.Box<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.duplicate_and_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.duplicate_and_get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">duplicate_and_get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">uuid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">include_attachments</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">200.0</span></em>, <em class="sig-param"><span class="n">ws_timeout</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em><span class="sig-paren">)</span> &#x2192; box.box.Box<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.duplicate_and_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.duplicate_and_get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Duplicate study to namespace.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -105,7 +172,7 @@
 
 <dl class="py method">
 <dt id="ambra_sdk.addon.study.Study.upload_and_get">
-<code class="sig-name descname">upload_and_get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">study_dir</span><span class="p">:</span> <span class="n">pathlib.Path</span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">200</span></em>, <em class="sig-param"><span class="n">ws_timeout</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em><span class="sig-paren">)</span> &#x2192; box.box.Box<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.upload_and_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.upload_and_get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">upload_and_get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">study_dir</span><span class="p">:</span> <span class="n">pathlib.Path</span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">200.0</span></em>, <em class="sig-param"><span class="n">ws_timeout</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em><span class="sig-paren">)</span> &#x2192; box.box.Box<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.upload_and_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.upload_and_get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upload study to namespace.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -142,7 +209,7 @@
 
 <dl class="py method">
 <dt id="ambra_sdk.addon.study.Study.wait">
-<code class="sig-name descname">wait</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">ws_timeout</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; box.box.Box<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.wait"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.wait" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">wait</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">ws_timeout</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; box.box.Box<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.wait"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.wait" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wait study in namespace.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -158,6 +225,28 @@
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Study box object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.addon.study.Study.wait_job">
+<code class="sig-name descname">wait_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">job_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">ws_timeout</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.wait_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.wait_job" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait job.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_id</strong> – job id</p></li>
+<li><p><strong>namespace_id</strong> – job namespace_id</p></li>
+<li><p><strong>timeout</strong> – time for waiting new study</p></li>
+<li><p><strong>ws_timeout</strong> – time for waiting in socket</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TimeoutError</strong> – if job not ready by timeout</p></li>
+<li><p><strong>RuntimeError</strong> – Bad answer from ws</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -178,7 +267,7 @@
 
 
 
-<p class="blurb">version 3.20.8.0-2</p>
+<p class="blurb">version 3.21.1.0-1</p>
 
 
 

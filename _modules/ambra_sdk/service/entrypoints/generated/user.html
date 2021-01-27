@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.user &#8212; Ambra-SDK 3.20.8.0-2 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.user &#8212; Ambra-SDK 3.21.1.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -194,6 +194,7 @@
         <span class="n">show_org_manage_link</span><span class="p">,</span>
         <span class="n">terms_md5</span><span class="p">,</span>
         <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">allowed_login_brands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">cc_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">first</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -215,6 +216,7 @@
 <span class="sd">            advanced_search - (array) Advanced search customization for role. See account level &amp;#34;advanced_search&amp;#34; ui_json param for possible values</span>
 <span class="sd">        :param terms_md5: MD5 of the accepted terms of service</span>
 <span class="sd">        :param account_id: Account id if you are trying to set a user other than yourself (optional)</span>
+<span class="sd">        :param allowed_login_brands: A comma separated list of Brand UUIDs that the user is allowed to use when logging in (optional)</span>
 <span class="sd">        :param cc_token: The credit card token to attach to the users account (optional)</span>
 <span class="sd">        :param email: Email (optional)</span>
 <span class="sd">        :param first: First name (optional)</span>
@@ -231,6 +233,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;allowed_login_brands&#39;</span><span class="p">:</span> <span class="n">allowed_login_brands</span><span class="p">,</span>
            <span class="s1">&#39;cc_token&#39;</span><span class="p">:</span> <span class="n">cc_token</span><span class="p">,</span>
            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
            <span class="s1">&#39;first&#39;</span><span class="p">:</span> <span class="n">first</span><span class="p">,</span>
@@ -549,6 +552,7 @@
         <span class="n">event_approve</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_case_assignment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_harvest</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_incoming_study_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_link</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_link_mine</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -568,6 +572,7 @@
 <span class="sd">        :param event_approve: Notify the user on a approval needed into the namespace (optional)</span>
 <span class="sd">        :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)</span>
 <span class="sd">        :param event_harvest: Notify the user on a harvest into the namespace (optional)</span>
+<span class="sd">        :param event_incoming_study_request: Notify the user when they get an incoming study request (optional)</span>
 <span class="sd">        :param event_link: Notify the user when an anonymous link is hit in the namespace (optional)</span>
 <span class="sd">        :param event_link_mine: Notify the user when an anonymous link created by the user is hit in the namespace (optional)</span>
 <span class="sd">        :param event_message: Notify the user when a message is sent to the namespace (optional)</span>
@@ -586,6 +591,7 @@
            <span class="s1">&#39;event_approve&#39;</span><span class="p">:</span> <span class="n">event_approve</span><span class="p">,</span>
            <span class="s1">&#39;event_case_assignment&#39;</span><span class="p">:</span> <span class="n">event_case_assignment</span><span class="p">,</span>
            <span class="s1">&#39;event_harvest&#39;</span><span class="p">:</span> <span class="n">event_harvest</span><span class="p">,</span>
+           <span class="s1">&#39;event_incoming_study_request&#39;</span><span class="p">:</span> <span class="n">event_incoming_study_request</span><span class="p">,</span>
            <span class="s1">&#39;event_link&#39;</span><span class="p">:</span> <span class="n">event_link</span><span class="p">,</span>
            <span class="s1">&#39;event_link_mine&#39;</span><span class="p">:</span> <span class="n">event_link_mine</span><span class="p">,</span>
            <span class="s1">&#39;event_message&#39;</span><span class="p">:</span> <span class="n">event_message</span><span class="p">,</span>
@@ -636,6 +642,24 @@
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/user/token&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">QueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="User.device_clear"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.User.device_clear">[docs]</a>    <span class="k">def</span> <span class="nf">device_clear</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Device clear.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/user/device/clear&#39;</span><span class="p">,</span>
             <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
             <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
             <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
@@ -702,7 +726,7 @@
 
 
 
-<p class="blurb">version 3.20.8.0-2</p>
+<p class="blurb">version 3.21.1.0-1</p>
 
 
 

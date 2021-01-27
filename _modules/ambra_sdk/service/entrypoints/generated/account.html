@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.account &#8212; Ambra-SDK 3.20.8.0-2 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.account &#8212; Ambra-SDK 3.21.1.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -59,8 +59,10 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidVanity</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">MissingFields</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NoUserOverride</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotEnabled</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotPermitted</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">RoleNamespaceMismatch</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">RoleNotFound</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">TokenFailed</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">UserNotFound</span>
@@ -194,7 +196,7 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_VANITY&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidVanity</span><span class="p">(</span><span class="s1">&#39;The vanity host name is invalid. The error_subtype holds the invalid hostname&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The object was not found. The error_subtype holds the name of field that triggered the error&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to modify this record&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="s1">&#39;ROLE_FOR_NAMESPACE_TYPE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;The role cannot be used for the account&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ROLE_NAMESPACE_MISMATCH&#39;</span><span class="p">,</span> <span class="s1">&#39;INCOMPATIBLE_ROLE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">RoleNamespaceMismatch</span><span class="p">(</span><span class="s1">&#39;The role cannot be used for the account&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/account/set&#39;</span><span class="p">,</span>
@@ -243,6 +245,7 @@
         <span class="n">event_approve</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_case_assignment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_harvest</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_incoming_study_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_join</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_link</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_link_mine</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -280,6 +283,7 @@
 <span class="sd">        :param event_approve: Notify the user on a approval needed into the account namespace (optional)</span>
 <span class="sd">        :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)</span>
 <span class="sd">        :param event_harvest: Notify the user on a harvest into the account namespace (optional)</span>
+<span class="sd">        :param event_incoming_study_request: Notify the user when they get an incoming study request (optional)</span>
 <span class="sd">        :param event_join: Notify the user on a join request for the account (optional)</span>
 <span class="sd">        :param event_link: Notify the user when an anonymous link is hit in the namespace (optional)</span>
 <span class="sd">        :param event_link_mine: Notify the user when an anonymous link created by the user is hit in the namespace (optional)</span>
@@ -319,6 +323,7 @@
            <span class="s1">&#39;event_approve&#39;</span><span class="p">:</span> <span class="n">event_approve</span><span class="p">,</span>
            <span class="s1">&#39;event_case_assignment&#39;</span><span class="p">:</span> <span class="n">event_case_assignment</span><span class="p">,</span>
            <span class="s1">&#39;event_harvest&#39;</span><span class="p">:</span> <span class="n">event_harvest</span><span class="p">,</span>
+           <span class="s1">&#39;event_incoming_study_request&#39;</span><span class="p">:</span> <span class="n">event_incoming_study_request</span><span class="p">,</span>
            <span class="s1">&#39;event_join&#39;</span><span class="p">:</span> <span class="n">event_join</span><span class="p">,</span>
            <span class="s1">&#39;event_link&#39;</span><span class="p">:</span> <span class="n">event_link</span><span class="p">,</span>
            <span class="s1">&#39;event_link_mine&#39;</span><span class="p">:</span> <span class="n">event_link_mine</span><span class="p">,</span>
@@ -358,7 +363,7 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The account can not be found&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to add this user to the account&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="s1">&#39;ROLE_FOR_NAMESPACE_TYPE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;The role cannot be used for the account&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ROLE_NAMESPACE_MISMATCH&#39;</span><span class="p">,</span> <span class="s1">&#39;INCOMPATIBLE_ROLE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">RoleNamespaceMismatch</span><span class="p">(</span><span class="s1">&#39;The role cannot be used for the account&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;USER_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">UserNotFound</span><span class="p">(</span><span class="s1">&#39;The user can not be found&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
@@ -382,6 +387,7 @@
         <span class="n">event_approve</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_case_assignment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_harvest</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_incoming_study_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_join</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_link</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_link_mine</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -418,6 +424,7 @@
 <span class="sd">        :param event_approve: Notify the user on a approval needed into the account namespace (optional)</span>
 <span class="sd">        :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)</span>
 <span class="sd">        :param event_harvest: Notify the user on a harvest into the account namespace (optional)</span>
+<span class="sd">        :param event_incoming_study_request: Notify the user when they get an incoming study request (optional)</span>
 <span class="sd">        :param event_join: Notify the user on a join request for the account (optional)</span>
 <span class="sd">        :param event_link: Notify the user when an anonymous link is hit in the namespace (optional)</span>
 <span class="sd">        :param event_link_mine: Notify the user when an anonymous link created by the user is hit in the namespace (optional)</span>
@@ -451,6 +458,7 @@
            <span class="s1">&#39;event_approve&#39;</span><span class="p">:</span> <span class="n">event_approve</span><span class="p">,</span>
            <span class="s1">&#39;event_case_assignment&#39;</span><span class="p">:</span> <span class="n">event_case_assignment</span><span class="p">,</span>
            <span class="s1">&#39;event_harvest&#39;</span><span class="p">:</span> <span class="n">event_harvest</span><span class="p">,</span>
+           <span class="s1">&#39;event_incoming_study_request&#39;</span><span class="p">:</span> <span class="n">event_incoming_study_request</span><span class="p">,</span>
            <span class="s1">&#39;event_join&#39;</span><span class="p">:</span> <span class="n">event_join</span><span class="p">,</span>
            <span class="s1">&#39;event_link&#39;</span><span class="p">:</span> <span class="n">event_link</span><span class="p">,</span>
            <span class="s1">&#39;event_link_mine&#39;</span><span class="p">:</span> <span class="n">event_link_mine</span><span class="p">,</span>
@@ -492,8 +500,8 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The account can not be found&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to edit this user&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="s1">&#39;ROLE_FOR_NAMESPACE_TYPE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;The role cannot be used for the account&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NO_USER_OVERRIDE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NoUserOverride</span><span class="p">(</span><span class="s1">&#39;The setting does not allow a user override&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ROLE_NAMESPACE_MISMATCH&#39;</span><span class="p">,</span> <span class="s1">&#39;INCOMPATIBLE_ROLE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">RoleNamespaceMismatch</span><span class="p">(</span><span class="s1">&#39;The role cannot be used for the account&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ROLE_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">RoleNotFound</span><span class="p">(</span><span class="s1">&#39;The role was not found or is not an account role&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;USER_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">UserNotFound</span><span class="p">(</span><span class="s1">&#39;The user can not be found or is not a member of this account&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -875,6 +883,30 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">QueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
     
+<div class="viewcode-block" id="Account.list_requestable"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Account.list_requestable">[docs]</a>    <span class="k">def</span> <span class="nf">list_requestable</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">namespace_id</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List requestable.</span>
+<span class="sd">        :param namespace_id: Id of the namespace to receive requested studies into</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_ENABLED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotEnabled</span><span class="p">(</span><span class="s1">&#39;The study request feature is not enabled&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The namespace can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not allowed to list requestable accounts&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/account/list/requestable&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">QueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
 </pre></div>
 
           </div>
@@ -887,7 +919,7 @@
 
 
 
-<p class="blurb">version 3.20.8.0-2</p>
+<p class="blurb">version 3.21.1.0-1</p>
 
 
 

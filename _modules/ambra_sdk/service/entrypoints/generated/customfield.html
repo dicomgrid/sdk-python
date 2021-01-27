@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.customfield &#8212; Ambra-SDK 3.20.8.0-2 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.customfield &#8212; Ambra-SDK 3.21.1.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -110,6 +110,7 @@
         <span class="n">wrapped_dicom_only</span><span class="p">,</span>
         <span class="n">dicom_tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">dicom_tag_ignore_empty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">field_flag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">hl7_component</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">hl7_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">hl7_segment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -132,6 +133,7 @@
 <span class="sd">        :param wrapped_dicom_only: Only capture for wrapped DICOM uploads during a share code exchange</span>
 <span class="sd">        :param dicom_tag: DICOM tag to map this field to. Format should be of form (1234,1234). (only applicable to study fields) (optional)</span>
 <span class="sd">        :param dicom_tag_ignore_empty: Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified) (optional)</span>
+<span class="sd">        :param field_flag: Default customfield flag (optional)</span>
 <span class="sd">        :param hl7_component: Component number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)</span>
 <span class="sd">        :param hl7_field: Segment field number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)</span>
 <span class="sd">        :param hl7_segment: Segment to map this field to in HL7 ORM messages. Valid values are (NTE|PID|PID1|PV1|PV2|OBR|DG1|OBX|CTI|BLG|ORC) (only applicable to study fields) (optional)</span>
@@ -149,6 +151,7 @@
            <span class="s1">&#39;dicom_tag&#39;</span><span class="p">:</span> <span class="n">dicom_tag</span><span class="p">,</span>
            <span class="s1">&#39;dicom_tag_ignore_empty&#39;</span><span class="p">:</span> <span class="n">dicom_tag_ignore_empty</span><span class="p">,</span>
            <span class="s1">&#39;display_order&#39;</span><span class="p">:</span> <span class="n">display_order</span><span class="p">,</span>
+           <span class="s1">&#39;field_flag&#39;</span><span class="p">:</span> <span class="n">field_flag</span><span class="p">,</span>
            <span class="s1">&#39;hl7_component&#39;</span><span class="p">:</span> <span class="n">hl7_component</span><span class="p">,</span>
            <span class="s1">&#39;hl7_field&#39;</span><span class="p">:</span> <span class="n">hl7_field</span><span class="p">,</span>
            <span class="s1">&#39;hl7_segment&#39;</span><span class="p">:</span> <span class="n">hl7_segment</span><span class="p">,</span>
@@ -196,6 +199,7 @@
         <span class="n">dicom_tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">dicom_tag_ignore_empty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">display_order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">field_flag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">hl7_component</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">hl7_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">hl7_segment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -216,6 +220,7 @@
 <span class="sd">        :param dicom_tag: Dicom tag to map this field to. Format should be of form (1234,1234). (only applicable to study fields) (optional)</span>
 <span class="sd">        :param dicom_tag_ignore_empty: Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified) (optional)</span>
 <span class="sd">        :param display_order: Integer to order how the fields should be displayed (optional)</span>
+<span class="sd">        :param field_flag: Default customfield flag (optional)</span>
 <span class="sd">        :param hl7_component: Component number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)</span>
 <span class="sd">        :param hl7_field: Segment field number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)</span>
 <span class="sd">        :param hl7_segment: Segment to map this field to in HL7 ORM messages. Valid values are (NTE|PID|PID1|PV1|PV2|OBR|DG1|OBX|CTI|BLG|ORC) (only applicable to study fields) (optional)</span>
@@ -235,6 +240,7 @@
            <span class="s1">&#39;dicom_tag&#39;</span><span class="p">:</span> <span class="n">dicom_tag</span><span class="p">,</span>
            <span class="s1">&#39;dicom_tag_ignore_empty&#39;</span><span class="p">:</span> <span class="n">dicom_tag_ignore_empty</span><span class="p">,</span>
            <span class="s1">&#39;display_order&#39;</span><span class="p">:</span> <span class="n">display_order</span><span class="p">,</span>
+           <span class="s1">&#39;field_flag&#39;</span><span class="p">:</span> <span class="n">field_flag</span><span class="p">,</span>
            <span class="s1">&#39;hl7_component&#39;</span><span class="p">:</span> <span class="n">hl7_component</span><span class="p">,</span>
            <span class="s1">&#39;hl7_field&#39;</span><span class="p">:</span> <span class="n">hl7_field</span><span class="p">,</span>
            <span class="s1">&#39;hl7_segment&#39;</span><span class="p">:</span> <span class="n">hl7_segment</span><span class="p">,</span>
@@ -386,7 +392,7 @@
 
 
 
-<p class="blurb">version 3.20.8.0-2</p>
+<p class="blurb">version 3.21.1.0-1</p>
 
 
 

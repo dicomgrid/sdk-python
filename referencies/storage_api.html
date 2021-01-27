@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Storage namespace &#8212; Ambra-SDK 3.20.8.0-2 documentation</title>
+    <title>Storage namespace &#8212; Ambra-SDK 3.21.1.0-1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -147,7 +147,7 @@ Will overlay the values onto the phiSource.</p></li>
 <dd><p>Storage Study.</p>
 <dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.anonymize">
-<code class="sig-name descname">anonymize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">region</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">to_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">new_study_uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">keep_image_uids</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">color</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.anonymize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.anonymize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">anonymize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">region</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">to_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">new_study_uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">keep_image_uids</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">color</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">x_ambrahealth_job_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.anonymize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.anonymize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Produce a new study that is a copy of the old, with specified pixel regions obscured.</p>
 <p>URL: /study/{namespace}/{studyUid}/anonymize</p>
 <dl class="field-list simple">
@@ -167,6 +167,7 @@ of modified copies be same as originals? (default is false)</p></li>
 <li><p><strong>color</strong> – HTML-formatted color (rrggbb) of
 obscured regions (default is black-and-white checkerboard)</p></li>
 <li><p><strong>only_prepare</strong> – Get prepared request.</p></li>
+<li><p><strong>x_ambrahealth_job_id</strong> – X-AmbraHealth-Job-Id headers argument</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -558,6 +559,32 @@ The viewer app can be retrieved separately via /download/viewer</p></li>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>study image frame response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.storage.study.Study.hl7_to_sr">
+<code class="sig-name descname">hl7_to_sr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">hl7uuid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study.html#Study.hl7_to_sr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.hl7_to_sr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hl7 to sr.</p>
+<p>Gets the HL7 report from services, converts to the DICOM SR
+and uploads to the storage.</p>
+<p>URL: /study/{namespace}/{studyUid}/hl7/{hl7Uuid}/sr?sid={sid}&amp;phi_namespace={phi_namespace}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine_fqdn</strong> – Engine FQDN (Required).</p></li>
+<li><p><strong>namespace</strong> – Namespace (Required).</p></li>
+<li><p><strong>study_uid</strong> – Study uid (Required).</p></li>
+<li><p><strong>hl7uuid</strong> – hl7 report UUID from services to convert to DICOM SR.</p></li>
+<li><p><strong>phi_namespace</strong> – A string, set to the UUID of the namespace
+where the file was attached if it was attached to a shared
+instance of the study outside of the original storage namespace</p></li>
+<li><p><strong>only_prepare</strong> – Get prepared request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>hl7_to_sr result</p>
 </dd>
 </dl>
 </dd></dl>
@@ -978,7 +1005,7 @@ outside of the original storage namespace</p></li>
 
 
 
-<p class="blurb">version 3.20.8.0-2</p>
+<p class="blurb">version 3.21.1.0-1</p>
 
 
 

@@ -275,6 +275,7 @@ class Dictionary:
         add_if_no_match=None,
         approve_if_match=None,
         delay=None,
+        global_counter=None,
         namespace_id=None,
         run_once=None,
         sequence=None,
@@ -287,6 +288,7 @@ class Dictionary:
         :param add_if_no_match: Flag to add the lookup and replace values to the dictionary if no match occurs (optional)
         :param approve_if_match: Approve the object if there was a match (optional)
         :param delay: An integer number of seconds to delay the dictionary application (optional)
+        :param global_counter: A flag if you want the counter to run against the account namespace instead of the object namespace (optional)
         :param namespace_id: namespace_id
         :param run_once: Flag to make dictionary apply only once per object (optional)
         :param sequence: An integer value. Attachments are processed from low number to high number (optional)
@@ -301,6 +303,7 @@ class Dictionary:
            'add_if_no_match': add_if_no_match,
            'approve_if_match': approve_if_match,
            'delay': delay,
+           'global_counter': global_counter,
            'namespace_id': namespace_id,
            'run_once': run_once,
            'sequence': sequence,
@@ -328,6 +331,7 @@ class Dictionary:
         add_if_no_match=None,
         approve_if_match=None,
         delay=None,
+        global_counter=None,
         run_once=None,
         sequence=None,
         skip_if_lookup_unchanged=None,
@@ -338,6 +342,7 @@ class Dictionary:
         :param add_if_no_match: Flag to add the lookup and replace values to the dictionary if no match occurs (optional)
         :param approve_if_match: Approve the object if there was a match (optional)
         :param delay: An integer number of seconds to delay the dictionary application (optional)
+        :param global_counter: A flag if you want the counter to run against the account namespace instead of the object namespace (optional)
         :param run_once: Flag to make dictionary apply only once per object (optional)
         :param sequence: An integer value. Attachments are processed from low number to high number (optional)
         :param skip_if_lookup_unchanged: Flag to skip the lookup if the lookup field(s) are un-changed (optional)
@@ -347,6 +352,7 @@ class Dictionary:
            'add_if_no_match': add_if_no_match,
            'approve_if_match': approve_if_match,
            'delay': delay,
+           'global_counter': global_counter,
            'run_once': run_once,
            'sequence': sequence,
            'skip_if_lookup_unchanged': skip_if_lookup_unchanged,

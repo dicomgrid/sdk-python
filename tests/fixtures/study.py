@@ -88,7 +88,7 @@ def upload_study(
     uploaded_studies = []
 
     def _upload_study(study_dir):
-        new_study = api.Addon.Study.upload_and_get(
+        new_study = api.Addon.Study.upload_dir_and_get(
             study_dir=study_dir,
             namespace_id=account.account.namespace_id,
             timeout=settings.API['upload_study_timeout'],
@@ -126,7 +126,7 @@ def readonly_study(
         .parents[1] \
         .joinpath('dicoms', 'read_only')
 
-    study = api.Addon.Study.upload_and_get(
+    study = api.Addon.Study.upload_dir_and_get(
         study_dir=study_dir,
         namespace_id=account.account.namespace_id,
         timeout=settings.API['upload_study_timeout'],
@@ -161,7 +161,7 @@ def readonly_study2(
         .parents[1] \
         .joinpath('dicoms', 'read_only2')
 
-    study = api.Addon.Study.upload_and_get(
+    study = api.Addon.Study.upload_dir_and_get(
         study_dir=study_dir,
         namespace_id=account.account.namespace_id,
         timeout=settings.API['upload_study_timeout'],
@@ -194,7 +194,7 @@ def multi_series_study(
         .parents[1] \
         .joinpath('dicoms', 'multi_series')
 
-    study = api.Addon.Study.upload_and_get(
+    study = api.Addon.Study.upload_dir_and_get(
         study_dir=study_dir,
         namespace_id=account.account.namespace_id,
         timeout=settings.API['upload_study_timeout'],

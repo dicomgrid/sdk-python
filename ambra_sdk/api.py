@@ -1,7 +1,7 @@
 """Ambra storage and service API."""
 
 import logging
-from typing import Callable, NamedTuple, Optional
+from typing import Callable, Dict, NamedTuple, Optional
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -12,6 +12,7 @@ from ambra_sdk.addon.addon import Addon
 from ambra_sdk.clear_params import clear_params
 from ambra_sdk.exceptions.service import AuthorizationRequired
 from ambra_sdk.exceptions.storage import PermissionDenied
+from ambra_sdk.request_args import RequestArgs
 from ambra_sdk.service.entrypoints import (
     Account,
     Activity,
@@ -79,6 +80,7 @@ class Api:  # NOQA:WPS214,WPS230
         password: Optional[str] = None,
         sid: Optional[str] = None,
         client_name: str = DEFAULT_SDK_CLIENT_NAME,
+        special_headers_for_login: Optional[Dict[str, str]] = None,
     ):
         """Init api.
 
@@ -87,15 +89,19 @@ class Api:  # NOQA:WPS214,WPS230
         :param username: username credential
         :param password: password credential
         :param client_name: user defined client name
+        :param special_headers_for_login: special headers for login
         """
         self._api_url: str = url
         self._creds: Optional[Credentials] = None
         self._sid: Optional[str] = sid
         self._client_name = client_name
+        self._special_headers_for_login = special_headers_for_login
         self._default_headers = {
             'SDK-CLIENT-NAME': client_name,
             'SDK-VERSION': __version__,
         }
+        self._storage_default_headers: Dict[str, str] = {}
+        self._service_default_headers: Dict[str, str] = {}
         if username is not None and password is not None:
             self._creds = Credentials(username=username, password=password)
         self._service_session: Optional[requests.Session] = None
@@ -111,6 +117,21 @@ class Api:  # NOQA:WPS214,WPS230
 
         # prepare ws
         self.ws_url = '{url}/channel/websocket'.format(url=url)
+
+    @property
+    def default_headers(self):
+        """Default headers."""  # NOQA:D401
+        return self._default_headers  # NOQA:DAR201
+
+    @property
+    def service_default_headers(self):
+        """Service default headers."""
+        return self._service_default_headers  # NOQA:DAR201
+
+    @property
+    def storage_default_headers(self):
+        """Storage default headers."""
+        return self._storage_default_headers  # NOQA:DAR201
 
     @classmethod
     def with_sid(
@@ -140,6 +161,7 @@ class Api:  # NOQA:WPS214,WPS230
         username: str,
         password: str,
         client_name: str = DEFAULT_SDK_CLIENT_NAME,
+        special_headers_for_login: Optional[Dict[str, str]] = None,
     ) -> 'Api':
         """Create Api with (username, password) credentials.
 
@@ -147,6 +169,7 @@ class Api:  # NOQA:WPS214,WPS230
         :param username: username credential
         :param password: password credential
         :param client_name: user defined client name
+        :param special_headers_for_login: special headers for login
 
         :return: Api
         """
@@ -155,6 +178,7 @@ class Api:  # NOQA:WPS214,WPS230
             username=username,
             password=password,
             client_name=client_name,
+            special_headers_for_login=special_headers_for_login,
         )
 
     @property
@@ -170,6 +194,7 @@ class Api:  # NOQA:WPS214,WPS230
             self._service_session.mount('http://', adapter)
             self._service_session.mount('https://', adapter)
             self._service_session.headers.update(self._default_headers)
+            self._service_session.headers.update(self._service_default_headers)
         return self._service_session
 
     @property
@@ -185,6 +210,7 @@ class Api:  # NOQA:WPS214,WPS230
             self._storage_session.mount('http://', adapter)
             self._storage_session.mount('https://', adapter)
             self._storage_session.headers.update(self._default_headers)
+            self._storage_session.headers.update(self._storage_default_headers)
         return self._storage_session
 
     def storage_get(
@@ -276,6 +302,32 @@ class Api:  # NOQA:WPS214,WPS230
             entrypoint_url=url,
         )
 
+    def service_request(
+        self,
+        request_args: RequestArgs,
+        required_sid: bool,
+    ) -> requests.Response:
+        """Post data to url.
+
+        :param request_args: request args
+        :param required_sid: is this method required sid
+        :return: response
+        """
+        if required_sid is True:
+            request_data = request_args.data or {}
+            request_data['sid'] = self.sid
+            request_args.data = request_data  # NOQA:WPS110
+        logger.info(
+            'Service post: %s. Params: %s',
+            request_args.url,
+            str(clear_params(request_args.data)),
+        )
+        return self.service_session.request(
+            method=request_args.method,
+            url=request_args.url,
+            **request_args.dict_optional_args(),
+        )
+
     def service_post(
         self,
         url: str,
@@ -290,16 +342,15 @@ class Api:  # NOQA:WPS214,WPS230
         :return: response
         """
         full_url = self.service_full_url(url)
-        if required_sid is True:
-            request_data = kwargs.pop('data')
-            request_data['sid'] = self.sid
-            kwargs['data'] = request_data
-        logger.info(
-            'Service post: %s. Params: %s',
-            url,
-            str(clear_params(kwargs.get('data', {}))),
+        request_args = RequestArgs(
+            method='POST',
+            url=full_url,
+            **kwargs,
         )
-        return self.service_session.post(url=full_url, **kwargs)
+        return self.service_request(
+            request_args=request_args,
+            required_sid=required_sid,
+        )
 
     @property
     def sid(self) -> str:
@@ -327,6 +378,7 @@ class Api:  # NOQA:WPS214,WPS230
         new_sid: str = self.Session.get_sid(
             self._creds.username,
             self._creds.password,
+            special_headers_for_login=self._special_headers_for_login,
         )
         self._sid = new_sid
         return new_sid

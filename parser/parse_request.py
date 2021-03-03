@@ -64,6 +64,9 @@ BAD_REQUEST_PARAMETERS_FIELDS = {
     'filter.*=>Filter field(s) as per the /study/list to specify the study(s) to construct the link for',
     'The include_priors link option value can be passed as a key',
     'Any additional fields will the saved in the study audit trail and the following fields email_address, redirect_url, integration_key and skip_email_prompt will be available in /namespace/share_code if this is an upload link',
+    'show_org_manage_link (boolean) • Show link to manage multiple organizations',
+    'advanced_search (array) • Advanced search customization for role. See account level "advanced_search" ui_json param for possible values',
+    'enable_v3_viewer (boolean) • If set, enables ProViewer for PHR account',
 }
 
 REQUEST_PARAMETERS_STRING_MAP = {
@@ -136,6 +139,23 @@ REQUEST_PARAMETERS_STRING_MAP = {
         optional=True,
     ),
 
+    '-- The following fields are used for the activity retrieve workflow --':
+    RequestGroupParametersDoc(
+        'The following fields are used for the activity retrieve workflow: activity_id, message',
+    ),
+
+    '-- The following fields are used for the study request workflow --':
+    RequestGroupParametersDoc(
+        'The following fields are used for the study request workflow: study_request_found_id, send_method',
+    ),
+
+    'ui_json • JSON for UI settings (optional) possible options:':
+    RequestParameter(
+        RequestParameterType.Usual,
+        'ui_json',
+        'JSON for UI settings (optional)',
+        optional=True,
+    ),
 }
 
 
@@ -148,7 +168,10 @@ def parse_request_parameter(parameter_str):
     elif parameter_str == 'sort_by • Sorting (optional)':
         return RequestParameter.sorter()
     else:
-        name, description = parameter_str.split('•')
+        try:
+            name, description = parameter_str.split('•')
+        except ValueError:
+            raise ValueError(parameter_str)
         # ...
         name = name.replace('(boolean)', '')
         name = name.strip()

@@ -4,6 +4,7 @@ from typing import Any, Callable, Dict, Generic, Optional
 
 from box import Box
 
+from ambra_sdk.request_args import RequestArgs
 from ambra_sdk.service.filtering import WithFilter
 from ambra_sdk.service.only import WithOnly
 from ambra_sdk.service.response import (
@@ -40,7 +41,11 @@ class Query(Generic[RETURN_TYPE]):
         """
         self._api = api
         self.url = url
-        self.request_data = request_data
+        self.request_args = RequestArgs(
+            method='POST',
+            url=self._api.service_full_url(url),
+            data=request_data,
+        )
         self._required_sid = required_sid
         self._errors_mapping = errors_mapping
         self.return_constructor = return_constructor
@@ -72,10 +77,9 @@ class Query(Generic[RETURN_TYPE]):
 
         :return: response object
         """
-        response = self._api.service_post(
-            url=self.url,
+        response = self._api.service_request(
+            request_args=self.request_args,
             required_sid=self._required_sid,
-            data=self.request_data,
         )
         response = check_response(response, self._errors_mapping)
         response_json = response.json()
@@ -146,7 +150,7 @@ class QueryP(Query):
             self._api,
             self.url,
             self._required_sid,
-            self.request_data,
+            self.request_args,
             self._errors_mapping,
             self._paginated_field,
             self._rows_in_page,

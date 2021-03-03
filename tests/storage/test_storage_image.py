@@ -135,3 +135,46 @@ class TestStorageImageWrap:
             )
 
             assert wrap.status_code == 202
+
+    def test_wrap_with_filename(self, api, readonly_study):
+        """Test wrap method.
+
+        Upload file with filename
+        """
+        image_path = Path(__file__) \
+            .parents[1] \
+            .joinpath('images', 'logo.png')
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+
+        with open(image_path, 'rb') as opened_file:
+            wrap = api.Storage.Image.wrap(
+                engine_fqdn=engine_fqdn,
+                namespace=storage_namespace,
+                opened_file=('filename', opened_file),
+            )
+
+            assert wrap.status_code == 202
+
+    def test_wrap_with_filename_and_content_type(
+        self,
+        api,
+        readonly_study,
+    ):
+        """Test wrap method.
+
+        Upload file with filename and contenttype
+        """
+        image_path = Path(__file__) \
+            .parents[1] \
+            .joinpath('images', 'logo.png')
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+
+        with open(image_path, 'rb') as opened_file:
+            wrap = api.Storage.Image.wrap(
+                engine_fqdn=engine_fqdn,
+                namespace=storage_namespace,
+                opened_file=('filename', opened_file, 'application/json'),
+            )
+            assert wrap.status_code == 202

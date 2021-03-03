@@ -582,6 +582,9 @@
             <li>Multiple filters are AND'ed together
             <li>Custom fields can be filtered by specifying the field as customfield-CUSTOMFIELD_UUID
             <li>A timezone offset in numeric format can be passed in the filter.tz and will be applied to any dates in the filter e.g. <code>filter.tz=-4:00</code>
+            <li>A timezone name from Olson database can be passed in the filter.tz. Deprecated timezones will apply as UTC.
+            <li>Supported date and datetime formats are: YYYY-MM-DD, YYYYMMDD, YYYY-MM-DD hh:mm:ss[.uuuuuu][(+|-)ZZ[:ZZ]]. Timezone offsets are ignored. Server-side timestamps are truncated to seconds before comparison when a filter lacks microseconds part.
+            <li>Timezones apply in this order: current user's time zone, filter.tz parameter, UTC by default.
             <li>A filter can be applied on a secondary table by putting the table names into the parameter e.g. filter.TABLE.FIELD.CONDITION
             <li>Invalid filters will return the following error messages
             <ul>
@@ -3807,6 +3810,7 @@
                         <li> search_for_studies - A JSON array of the destination uuid(s) to search using the create_study and copy_to the users namespace parameters
                         <li> accession_number - Specify the name of the assertion attribute to add the accession number to the study search
                         <li> blocked_emails - A JSON array of email addresses to block from this workflow. Use this to block system assigned dummy email addresses that would result in multiple patients accessing others patients PHI
+                        <li> source_namespace - The uuid of the namespace to share the studies from if the user is not a patient. The default is the account namespace.
                     </ul>
                 </td>
             </tr>
@@ -4897,6 +4901,8 @@
                         <li> webhook_match &bull; The uuid of the webhook to call if the study and ORM match. The type of the webhook needs to be 'MANUAL'.
                         <li> webhook_no_match &bull; The uuid of the webhook to call if the study and ORM do not match. The type of the webhook needs to be 'MANUAL'.
                         <li> only_once &bull; Set this flag to 1 if you want this run only on the first order
+                        <li> start_datetime &bull; DICOM start date time stamp to bound the search (optional)
+                        <li> end_datetime &bull; DICOM end date time stamp to bound the search (optional)
                         <li> siu &bull; A JSON hash if appointment SIU messages should be included in the workflow. The following keys and values are supported:
                         <ul>
                             <li> procedure_date &bull; The HL7 field that holds the scheduled procedure date and time e.g. <code>SCH_11_4</code>
@@ -5036,12 +5042,14 @@
                         <li> server_oauth_private_key &bull; The private key to encrypt the JWT token for server OAuth. The public key is registered with Epic. Each setup requires a unique key setup and the the keys can be generated as follows<br><code>openssl genrsa -out privatekey.pem 2048</code><br><code>openssl req -new -x509 -key privatekey.pem -out publickey509.pem -subj '/CN=myapp'</code><br>To convert the private key to a single line for JSON usage run the following command<br><code>jq -sR < privatekey.pem</code>
                         <li> create_thin_study &bull; Flag to create a thin study for the view_study action if the study does not exist. The account setting accession_number_for_study_uid needs to be on for the study retrieval to work.
                         <li> include_priors &bull; Flag to include priors for anonymous user links created by the view_study action
+                        <li> link_user &bull; UUID of the user to create the anonymous links with
                     </ul>
                     This integration also supports the following additional workflows that are triggered by the action parameter value sent to the /epic/oauth2 entry point. The supported actions are
                     <ul>
                         <li> upload &bull; Trigger the Epic upload workflow
                         <li> sso_share_phr_workflow &bull; Trigger the account sso_share_phr_workflow workflow
-                        <li> view_study &bull; Launch a viewer for the passed accession_number or study_uid and namespace_id. Additional the mrn and the accession_number needs to passed if the create_thin_study option is enabled
+                        <li> view_study &bull; Launch a viewer for the passed accession_number or study_uid and namespace_id. Additional the mrn (patID) and the accession_number needs to passed if the create_thin_study option is enabled
+                        <li> view_patient &bull; Launch a study list for the passed mrn (or patID)
                     </ul>
                 </td>
             </tr>
@@ -5474,6 +5482,17 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Only show this account if accessing it via a vanity URL</td>
+            </tr>
+            <tr>
+                <td>require_pin_to_view</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Hide this account when user did not login with 2FA</td>
             </tr>
             <tr>
                 <td>sync_user_login_to_account_login</td>
@@ -7816,6 +7835,7 @@
                     <i>is_frozen</i> &bull; Is the study frozen<br>
                     <i>is_being_retrieved</i> &bull; Is this a thin study in the process of being retrieved<br>
                     <i>has_external_viewer</i> &bull; A flag if the study has an external viewer option<br>
+                    <i>accelerators</i> &bull; A JSON list of accelerator FQDN the study may be on (only returned if the probe_for_accelerator flag is on)<br>
                     <i>viewer_link</i> &bull; Link to the study viewer. If the account has SAML SSO the link will be to the SSO entry point, if not it will be a direct link.<br>
                     <i>hl7</i> &bull; An array of the hl7 objects associated with this study. Each object has the following fields or is the complete record from /hl7/get if the full_hl7 flag is passed<br>
                     * <i>uuid</i> &bull; Id of the object<br>
@@ -8844,7 +8864,7 @@
                     <i>viewer_anon_annotations_clear</i> &bull; Value for the account flag<br>
                     <i>accession_number_for_study_uid</i> &bull; Value for the account flag<br>
                     <i>no_edit_dicom_tags</i> &bull; If enable_dicom_tag_customfields is on this is a JSON list of the DICOM tags that can not be edited<br>
-                    <i>accelerators</i> &bull; A JSON list of accelerator FQDN to check and redirect to if available<br>
+                    <i>accelerators</i> &bull; A JSON list of accelerator FQDN the study may be on (only returned if the probe_for_accelerator flag is on)<br>
                     <i>viewer_config</i> &bull; The viewer configuration JSON<br>
                 </td>
             </tr>
@@ -8888,7 +8908,7 @@
                     <i>account_config</i> &bull; The account viewer3_config setting<br>
                     <i>role_config</i> &bull; The role viewer3_config settings<br>
                     <i>user_config</i> &bull; The user viewer3_confing settings<br>
-                    <i>accelerators</i> &bull; A JSON list of accelerator FQDN to check and redirect to if available (optional)<br>
+                    <i>accelerators</i> &bull; A JSON list of accelerator FQDN the study may be on (only returned if the probe_for_accelerator flag is on)<br>
                     <i>settings</i> &bull; JSON hash of the requested settings (optional)<br>
                     The rest of the fields are the same as <a href="#user_get">/user/get</a><br>
                 </td>
@@ -16878,6 +16898,7 @@
                     <i>share_email</i> &bull; Email to share retrieved studies with on subsequent <a href="#destination_retrieve">/destination/retrieve</a> (optional)<br>
                     <i>bundle_id</i> &bull; An integral number Used internally to track searches initiated from a single bundle (optional)<br>
                     <i>message</i> &bull; A message to display when studies are found (optional)<br>
+                    <i>customfield-(CUSTOMFIELD_UUID)</i> &bull; Custom field(s) will be set for the resultant studies after <a href="#destination_retrieve">/destination/retrieve</a> call (optional)<br>
                     -- The rest of the fields are used for the search --<br>
                     <i>study_uid</i> &bull; Study uid to find (optional)<br>
                     <i>patient_name</i> &bull; Patient name to find (optional)<br>
@@ -16921,7 +16942,7 @@
                 <th>Notes</th>
                 <td>
                     <ul>
-                        <li> start_datetime and end_datetime support underscore token substitutions. Tokens available: __TODAY__, __YESTERDAY__. Both take users' time zone into account.
+                        <li> start_datetime and end_datetime support underscore token substitutions. Tokens available: __TODAY__, __YESTERDAY__, __N_DAYS_AGO__. Both take users' time zone into account.
                     </ul>
                 </td>
             </tr>
@@ -26096,7 +26117,7 @@
         <a href="#npi-idx">top</a>
 
 
-    <footer>LBL0022 v43.0 2021-01-13</footer>
+    <footer>LBL0022 v44.0 2021-02-24</footer>
     </div>
 </body>
 </html>

@@ -106,7 +106,7 @@ class TestStorageStudy:
         study_dir = Path(__file__) \
             .parents[1] \
             .joinpath('dicoms', 'anonymize')
-        study = api.Addon.Study.upload_and_get(
+        study = api.Addon.Study.upload_dir_and_get(
             study_dir=study_dir,
             namespace_id=account.account.namespace_id,
             timeout=settings.API['upload_study_timeout'],
@@ -137,7 +137,7 @@ class TestStorageStudy:
         study_dir = Path(__file__) \
             .parents[1] \
             .joinpath('dicoms', 'anonymize')
-        study = api.Addon.Study.upload_and_get(
+        study = api.Addon.Study.upload_dir_and_get(
             study_dir=study_dir,
             namespace_id=account.account.namespace_id,
             timeout=settings.API['upload_study_timeout'],
@@ -189,7 +189,7 @@ class TestStorageStudy:
         study_dir = Path(__file__) \
             .parents[1] \
             .joinpath('dicoms', 'anonymize')
-        study = api.Addon.Study.upload_and_get(
+        study = api.Addon.Study.upload_dir_and_get(
             study_dir=study_dir,
             namespace_id=account.account.namespace_id,
             timeout=settings.API['upload_study_timeout'],
@@ -587,7 +587,7 @@ class TestStorageStudy:
             .parents[1] \
             .joinpath('dicoms', 'splitted', '1')
 
-        study1 = api.Addon.Study.upload_and_get(
+        study1 = api.Addon.Study.upload_dir_and_get(
             study_dir=study_dir1,
             namespace_id=account.account.namespace_id,
             timeout=settings.API['upload_study_timeout'],
@@ -600,7 +600,7 @@ class TestStorageStudy:
             .parents[1] \
             .joinpath('dicoms', 'splitted', '2')
 
-        study2 = api.Addon.Study.upload_and_get(
+        study2 = api.Addon.Study.upload_dir_and_get(
             study_dir=study_dir2,
             namespace_id=account.account.namespace_id,
             timeout=settings.API['upload_study_timeout'],

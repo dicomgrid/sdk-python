@@ -2,7 +2,9 @@
 
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, NamedTuple, Union
+from typing import Any, List, NamedTuple, Union
+
+from ambra_sdk.request_args import RequestArgs
 
 
 class FilterCondition(Enum):
@@ -32,7 +34,7 @@ class Filter(NamedTuple):
 class WithFilter:
     """With Filter mixin."""
 
-    request_data: Dict
+    request_args: RequestArgs
 
     def filter_by(self, filter_obj: Filter):
         """Filter by filter.
@@ -87,13 +89,15 @@ class WithFilter:
                 raise ValueError('Wrong timezone')
 
             offset_str = '{hh:+03}:{mm:02}'.format(hh=int(hh), mm=int(mm))
-            filter_tz = self.request_data.get(timezone_key, None)
+            request_data = self.request_args.data or {}
+            filter_tz = request_data.get(timezone_key, None)
             if filter_tz is not None and offset_str != filter_tz:
                 raise ValueError(
                     'Use one timezone for all datetimes in requtest',
                 )
-            self.request_data[timezone_key] = offset_str
+            request_data[timezone_key] = offset_str
             value = filter_obj.value.replace(tzinfo=None)  # NOQA:WPS110
+            self.request_args.data = request_data  # NOQA:WPS110
 
         self._add_filter(
             field_name=filter_obj.field_name,
@@ -107,7 +111,9 @@ class WithFilter:
         filter_condition: FilterCondition,
         value: Any,  # NOQA:WPS110
     ):
-        self.request_data['filter.{filter_name}.{filter_condition}'.format(
+        request_data = self.request_args.data or {}
+        request_data['filter.{filter_name}.{filter_condition}'.format(
             filter_name=field_name,
             filter_condition=filter_condition.value,
         )] = str(value)
+        self.request_args.data = request_data  # NOQA:WPS110

@@ -1,7 +1,6 @@
 """Storage image namespace."""
 
 import os
-from io import BufferedReader
 from typing import Optional, Set, Union
 
 from box import Box
@@ -14,6 +13,7 @@ from ambra_sdk.exceptions.storage import (
 )
 from ambra_sdk.storage.bool_to_int import bool_to_int
 from ambra_sdk.storage.request import PreparedRequest, StorageMethod
+from ambra_sdk.types import RequestsFileType
 
 
 class Image:
@@ -30,7 +30,7 @@ class Image:
         self,
         engine_fqdn: str,
         namespace: str,
-        opened_file: BufferedReader,
+        opened_file: RequestsFileType,
         use_box: bool = True,
         only_prepare: bool = False,
     ) -> Union[Box, Response, PreparedRequest]:
@@ -40,7 +40,10 @@ class Image:
 
         :param engine_fqdn: Engine FQDN (Required).
         :param namespace: Namespace (Required).
-        :param opened_file: Opened file (Required).
+        :param opened_file: Opened file (like in requests) (Required).
+            File object, or may be 2-tuples (filename, fileobj),
+            3-tuples (filename, fileobj, contentype) or
+            4-tuples (filename, fileobj, contentype, custom_headers).
         :param use_box: Use box for response.
         :param only_prepare: Get prepared request.
 
@@ -74,7 +77,7 @@ class Image:
         self,
         engine_fqdn: str,
         namespace: str,
-        opened_file: BufferedReader,
+        opened_file: RequestsFileType,
         tags: Optional[str] = None,
         render_wrapped_pdf: Optional[bool] = None,
         only_prepare: bool = False,
@@ -86,7 +89,12 @@ class Image:
         :param engine_fqdn: Engine FQDN (Required).
         :param namespace: Namespace (Required).
         :param tags: Any DICOM tags to be overwrite or added should be provided as a form-data field.
-        :param opened_file: The multipart file to be uploaded should be provided as a form-data field.
+        :param opened_file: The multipart file to be uploaded should be
+            provided as a form-data field.
+            File object, or may be 2-tuples (filename, fileobj),
+            3-tuples (filename, fileobj, contentype) or
+            4-tuples (filename, fileobj, contentype, custom_headers).
+
         :param render_wrapped_pdf: An integer value of either 0 or 1.
         :param only_prepare: Get prepared request.
 
@@ -104,7 +112,11 @@ class Image:
             request_arg_names,
             locals(),
         )
-        file_size = os.fstat(opened_file.fileno()).st_size
+        if isinstance(opened_file, tuple):
+            fp = opened_file[1]
+        else:
+            fp = opened_file
+        file_size = os.fstat(fp.fileno()).st_size
         files = {
             'file': opened_file,
         }

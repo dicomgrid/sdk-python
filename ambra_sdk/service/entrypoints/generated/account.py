@@ -7,6 +7,7 @@ from ambra_sdk.exceptions.service import AlreadyExists
 from ambra_sdk.exceptions.service import BadPassword
 from ambra_sdk.exceptions.service import ByNotFound
 from ambra_sdk.exceptions.service import CanNotPromote
+from ambra_sdk.exceptions.service import CaptchaFailed
 from ambra_sdk.exceptions.service import DupShareCode
 from ambra_sdk.exceptions.service import DuplicateName
 from ambra_sdk.exceptions.service import DuplicateVanity
@@ -861,12 +862,39 @@ class Account:
         }
 	
         errors_mapping = {}
-        errors_mapping[('NOT_ENABLED', None)] = NotEnabled('The study request feature is not enabled')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace can not be found')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not allowed to list requestable accounts')
         query_data = {
             'api': self._api,
             'url': '/account/list/requestable',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
+    def radreport_email_authorize(
+        self,
+        captcha_response,
+        uuid,
+    ):
+        """Radreport email authorize.
+        :param captcha_response: A solved captcha
+        :param uuid: The account id
+        """
+        request_data = {
+           'captcha_response': captcha_response,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('CAPTCHA_FAILED', None)] = CaptchaFailed('The captcha is not solved')
+        errors_mapping[('NOT_ENABLED', None)] = NotEnabled('The feature of sending radreports out is not enabled for the account')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not the account&#39;s sysadmin')
+        query_data = {
+            'api': self._api,
+            'url': '/account/radreport/email/authorize',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,

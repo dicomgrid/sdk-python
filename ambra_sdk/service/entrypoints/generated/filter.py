@@ -56,13 +56,16 @@ class Filter:
         configuration,
         name,
         type,
+        account_id=None,
     ):
         """Add.
         :param configuration: The configuration as a JSON data structure
         :param name: The name of the filter
         :param type: The type of the filter
+        :param account_id: The account id to link this filter with (optional)
         """
         request_data = {
+           'account_id': account_id,
            'configuration': configuration,
            'name': name,
            'type': type,
@@ -103,17 +106,20 @@ class Filter:
     def set(
         self,
         uuid,
+        account_id=None,
         configuration=None,
         name=None,
         type=None,
     ):
         """Set.
         :param uuid: The filter uuid
+        :param account_id: The account id to link this filter with (optional)
         :param configuration: The configuration as a JSON data structure (optional)
         :param name: The name of the filter (optional)
         :param type: The type of the filter (optional)
         """
         request_data = {
+           'account_id': account_id,
            'configuration': configuration,
            'name': name,
            'type': type,

@@ -2029,8 +2029,8 @@ class Study:
         patient_birth_date,
         patient_first_name,
         patient_last_name,
-        patient_sex,
         modality=None,
+        patient_sex=None,
         patientid=None,
         study_date_end=None,
         study_date_start=None,
@@ -2043,8 +2043,8 @@ class Study:
         :param patient_birth_date: The patient date of birth a study should match
         :param patient_first_name: The patient first name a study should match
         :param patient_last_name: The patient last name a study should match
-        :param patient_sex: The patient sex a study should match
         :param modality: The modality a study should match (optional)
+        :param patient_sex: The patient sex a study should match (optional)
         :param patientid: The MRN a study should match (optional)
         :param study_date_end: The DICOM date that a study date should be less or equal to (optional)
         :param study_date_start: The DICOM date that a study date should be greater or equal to (optional)
@@ -2067,7 +2067,6 @@ class Study:
 	
         errors_mapping = {}
         errors_mapping[('ALREADY', None)] = Already('An active (pending or in progress) study request with the same study criteria and the same namespace/account combination already exists')
-        errors_mapping[('NOT_ENABLED', None)] = NotEnabled('the feature is not enabled. Check the study_request_accounts account settings')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace or account was not found.')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to request a study into this namespace')
         query_data = {

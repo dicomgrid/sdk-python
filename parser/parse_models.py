@@ -139,6 +139,8 @@ FOREIGN_MODELS = MappingProxyType(
         'DestinationSearch': {
             'copy_to': 'Namespace',
             'push_to': 'Destination',
+            'distributing_destination_id': 'DestinationDistributed',
+            'study_request_id': 'StudyRequest',
         },
         'NamespaceChildren': {
             'child_id': 'SelfField',
@@ -148,6 +150,8 @@ FOREIGN_MODELS = MappingProxyType(
         },
         'Message': {
             'parent_id': 'Message',
+            'study_request_id': 'StudyRequest',
+            'study_request_namespace_id': 'Namespace',
         },
         'DictionaryRun': {
             'dictionary_attach_id': 'DictionaryAttach',
@@ -155,7 +159,31 @@ FOREIGN_MODELS = MappingProxyType(
         'StudyPushStatus': {
             'copy_src_phi_namespace': 'Namespace',
         },
-    }
+        'DestinationDistributed': {
+            'child_id': 'DestinationDistributed',
+            'parent_id': 'DestinationDistributed',
+        },
+        'Study': {
+            'created_for': 'User',
+        },
+        'StudyDeleted': {
+            'created_for': 'User',
+        },
+        'StudyFetch': {
+            'distributing_destination_id': 'DestinationDistributed',
+        },
+        'StudyHl7': {
+            'distributing_destination_id': 'DestinationDistributed',
+        },
+        'StudyRequetsFound': {
+            'destination_search_id': 'DestinationSearch',
+        },
+        'StudyRequestFound': {
+            'destination_search_id': 'DestinationSearch',
+            'study_fetch_id': 'StudyFetch',
+            'study_request_id': 'StudyRequest',
+        },
+    },
 )
 
 

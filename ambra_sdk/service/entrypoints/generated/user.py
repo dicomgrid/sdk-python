@@ -157,7 +157,6 @@ class User:
         self,
         indicator_md5,
         privacy_md5,
-        show_org_manage_link,
         terms_md5,
         account_id=None,
         allowed_login_brands=None,
@@ -178,8 +177,6 @@ class User:
         """Set.
         :param indicator_md5: MD5 of the accepted indications of use
         :param privacy_md5: MD5 of the accepted privacy policy
-        :param show_org_manage_link: Show link to manage multiple organizations:
-            advanced_search - (array) Advanced search customization for role. See account level &#34;advanced_search&#34; ui_json param for possible values
         :param terms_md5: MD5 of the accepted terms of service
         :param account_id: Account id if you are trying to set a user other than yourself (optional)
         :param allowed_login_brands: A comma separated list of Brand UUIDs that the user is allowed to use when logging in (optional)
@@ -194,7 +191,7 @@ class User:
         :param share_code: The share code of the user (optional)
         :param share_description: The share description of the user (optional)
         :param time_zone: The users time zone name as per https://www.postgresql.org/docs/9.1/static/view-pg-timezone-names.html (optional)
-        :param ui_json: JSON for UI settings (optional) possible options:
+        :param ui_json: JSON for UI settings (optional)
         :param uuid: The users uuid (optional). Uses the session user if not passed
         """
         request_data = {
@@ -212,7 +209,6 @@ class User:
            'privacy_md5': privacy_md5,
            'share_code': share_code,
            'share_description': share_description,
-           'show_org_manage_link': show_org_manage_link,
            'terms_md5': terms_md5,
            'time_zone': time_zone,
            'ui_json': ui_json,

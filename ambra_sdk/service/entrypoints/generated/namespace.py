@@ -110,6 +110,7 @@ class Namespace:
         show_image_on_upload_page,
         single_file_dicom_wrapping,
         study_field_flags,
+        study_size_soft_threshold_per_user,
         try_update_original_study,
         ui_json,
         upload_settings,
@@ -139,6 +140,7 @@ class Namespace:
         :param show_image_on_upload_page: Show computer image with CD on upload page when image is uploading to this namespace
         :param single_file_dicom_wrapping: Value for the setting
         :param study_field_flags: A JSON hash of study_field_* role values to override the role values for studies in the namespace
+        :param study_size_soft_threshold_per_user: A threshold for studies size per user. An email (by study_quota_exceeded template) will be sent when this limit is exceeded by a user. A JSON hash of study_field_* role values to override the role values for studies in the namespace
         :param try_update_original_study: Value for the setting
         :param ui_json: JSON for UI setting possible options:
         :param upload_settings: Value for the setting
@@ -170,6 +172,7 @@ class Namespace:
            'show_image_on_upload_page': show_image_on_upload_page,
            'single_file_dicom_wrapping': single_file_dicom_wrapping,
            'study_field_flags': study_field_flags,
+           'study_size_soft_threshold_per_user': study_size_soft_threshold_per_user,
            'try_update_original_study': try_update_original_study,
            'ui_json': ui_json,
            'upload_settings': upload_settings,

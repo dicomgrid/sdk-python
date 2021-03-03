@@ -57,6 +57,7 @@ class Message:
         parent_id=None,
         share_code=None,
         study_id=None,
+        study_request_id=None,
         subject=None,
         user_id=None,
     ):
@@ -70,11 +71,12 @@ class Message:
         :param parent_id: The uuid of the parent message (optional)
         :param share_code: share_code
         :param study_id: study_id
+        :param study_request_id: study_request_id
         :param subject: The subject of the message (optional)
         :param user_id: user_id
 
         Notes:
-        (namespace_id OR user_id OR group_id OR location_id OR account_id OR email OR share_code OR study_id) - The namespace, entity, email, share code or study to send the message to
+        (namespace_id OR user_id OR group_id OR location_id OR account_id OR email OR share_code OR study_id OR study_request_id) - The namespace, entity, email, share code, study or study request to send the message to
         """
         request_data = {
            'account_id': account_id,
@@ -86,6 +88,7 @@ class Message:
            'parent_id': parent_id,
            'share_code': share_code,
            'study_id': study_id,
+           'study_request_id': study_request_id,
            'subject': subject,
            'user_id': user_id,
         }

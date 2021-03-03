@@ -974,3 +974,11 @@ class NotMatched(PreconditionFailed):
 
 class RequestClosed(PreconditionFailed):
     """RequestClosed."""
+
+
+class InvalidDistributedDestination(PreconditionFailed):
+    """InvalidDistributedDestination."""
+
+
+class InvalidWebhookSetup(PreconditionFailed):
+    """InvalidWebhookSetup."""

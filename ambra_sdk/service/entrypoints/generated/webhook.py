@@ -15,6 +15,7 @@ from ambra_sdk.exceptions.service import InvalidMethod
 from ambra_sdk.exceptions.service import InvalidRegexp
 from ambra_sdk.exceptions.service import InvalidTransformCondition
 from ambra_sdk.exceptions.service import InvalidType
+from ambra_sdk.exceptions.service import InvalidWebhookSetup
 from ambra_sdk.exceptions.service import MissingFields
 from ambra_sdk.exceptions.service import NodeNotFound
 from ambra_sdk.exceptions.service import NotFound
@@ -87,7 +88,7 @@ class Webhook:
         """Add.
         :param account_id: uuid of the account
         :param event: Event to call it on (See the notes for the available events)
-        :param method: Method to call it with (POST|GET|POST_JSON|PUT)
+        :param method: Method to call it with (POST|GET|POST_JSON|PUT|GET_JSON)
         :param name: Name of the webhook
         :param url: URL to call
         :param auth: A JSON hash with the authentication details (optional)
@@ -322,6 +323,34 @@ class Webhook:
         query_data = {
             'api': self._api,
             'url': '/webhook/trigger',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
+    def run(
+        self,
+        study_id,
+        uuid,
+    ):
+        """Run.
+        :param study_id: uuid of the study to run the webhook for
+        :param uuid: uuid of the webhook
+        """
+        request_data = {
+           'study_id': study_id,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_WEBHOOK_SETUP', None)] = InvalidWebhookSetup('The webhook must be a MANUAL webhook with no delay or retry options enabled')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The webhook or study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to run the webhook')
+        query_data = {
+            'api': self._api,
+            'url': '/webhook/run',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,

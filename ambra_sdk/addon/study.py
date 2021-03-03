@@ -2,32 +2,20 @@
 
 import uuid as uuid_lib
 from contextlib import suppress
-from io import BytesIO
+from itertools import chain
 from pathlib import Path
 from time import monotonic
-from typing import Any, Dict, List, Mapping, NamedTuple, Optional, Tuple, Union
+from typing import Any, Dict, Iterator, List, Optional, Tuple
 
 import pydicom
 from box import Box
 
-from ambra_sdk.exceptions.service import (
-    NotFound,
-    NotPermitted,
-    PreconditionFailed,
-)
+from ambra_sdk import ADDON_DOCS_URL
+from ambra_sdk.addon.dicom import UploadedImageParams
+from ambra_sdk.deprecated import deprecated
+from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.models import Study as StudyModel
-from ambra_sdk.service.query import QueryO
 from ambra_sdk.service.ws import WSManager
-
-
-class UploadedImageParams(NamedTuple):
-    """Image object."""
-
-    study_uid: str
-    image_uid: str
-    image_version: str
-    namespace: str
-    attr: Any
 
 
 class Study:  # NOQA:WPS214
@@ -40,43 +28,13 @@ class Study:  # NOQA:WPS214
         """
         self._api = api
 
-    def upload_dicom(
+    def upload_dir(
         self,
-        dicom_path: Path,
-        namespace_id: str,
-        engine_fqdn: Optional[str] = None,
-    ) -> UploadedImageParams:
-        """Upload dicom to namespace.
-
-        :param dicom_path: path to dicom
-        :param namespace_id: uploading to namespace
-        :param engine_fqdn: fqdn (if None gets namespace fqdn)
-
-        :return: uploaded image params
-        """
-        if engine_fqdn is None:
-            engine_fqdn = self._namespace_fqdn(namespace_id)
-
-        with open(dicom_path, 'rb') as dicom_file:
-            response = self._api.Storage.Image.upload(
-                engine_fqdn=engine_fqdn,
-                namespace=namespace_id,
-                opened_file=dicom_file,
-            )
-            return UploadedImageParams(
-                study_uid=response.study_uid,
-                image_uid=response.image_uid,
-                image_version=response.image_version,
-                namespace=response.namespace,
-                attr=response.attr,
-            )
-
-    def upload(
-        self,
+        *,
         study_dir: Path,
         namespace_id: str,
     ) -> Tuple[str, List[UploadedImageParams]]:
-        """Upload study to namespace.
+        """Upload study to namespace from path.
 
         :param study_dir: path to study dir
         :param namespace_id: uploading to namespace
@@ -87,13 +45,35 @@ class Study:  # NOQA:WPS214
         if not study_dir.is_dir():
             raise ValueError('study_dir is not directory')
 
+        return self.upload_paths(
+            dicom_paths=study_dir.glob('**/*.dcm'),
+            namespace_id=namespace_id,
+        )
+
+    def upload_paths(
+        self,
+        *,
+        dicom_paths: Iterator[Path],
+        namespace_id: str,
+    ) -> Tuple[str, List[UploadedImageParams]]:
+        """Upload study to namespace from dicoms iteartor.
+
+        :param dicom_paths: iterator of dicom paths
+        :param namespace_id: uploading to namespace
+
+        :raises ValueError: Study dir is not directory
+        :return: list of image params
+        """
         images_params = []
 
-        first_dicom = next(study_dir.glob('**/*.dcm'), None)
-        if first_dicom is None:
-            raise ValueError('study_dir is empty')
+        first_dicom_path = next(dicom_paths, None)
+        if first_dicom_path is None:
+            raise ValueError('Dicoms iterator is empty')
 
-        ds = pydicom.dcmread(str(first_dicom))
+        # In pydicom we can pass file path object
+        # But in AI we use old version of pydicom.
+        # For this version we can pass only fp or str.
+        ds = pydicom.dcmread(fp=str(first_dicom_path))
         patient_name = ds.PatientName
         study_uid = ds.StudyInstanceUID
         study_time = ds.StudyTime
@@ -113,25 +93,30 @@ class Study:  # NOQA:WPS214
         uuid: str = response_data.uuid
 
         # upload images
-        for dicom_path in study_dir.glob('**/*.dcm'):
-            images_params.append(
-                self.upload_dicom(
-                    dicom_path,
-                    namespace_id,
-                    engine_fqdn,
-                ),
-            )
+        for dicom_path in chain((first_dicom_path,), dicom_paths):
+            with dicom_path.open(mode='rb') as dicom:
+                images_params.append(
+                    self._api.Addon.Dicom.upload(
+                        dicom_file=dicom,
+                        namespace_id=namespace_id,
+                        engine_fqdn=engine_fqdn,
+                    ),
+                )
+
         # then sync data
         # In api.html sync method have not uuid param...
         # So we use this hardcode:
         request = self._api.Study.sync(image_count=1)
-        request.request_data['uuid'] = uuid  # NOQA:WPS437
+        request_data = request.request_args.data or {}
+        request_data['uuid'] = uuid  # NOQA:WPS437
+        request.request_args.data = request_data  # NOQA:WPS110
         request.get()
 
         return uuid, images_params
 
     def wait(
         self,
+        *,
         study_uid: str,
         namespace_id: str,
         timeout: float,
@@ -178,84 +163,15 @@ class Study:  # NOQA:WPS214
             raise TimeoutError
         return study
 
-    def wait_job(
+    def upload_dir_and_get(
         self,
-        job_id: str,
-        namespace_id: str,
-        timeout: float,
-        ws_timeout: int,
-    ):
-        """Wait job.
-
-        :param job_id: job id
-        :param namespace_id: job namespace_id
-        :param timeout: time for waiting new study
-        :param ws_timeout: time for waiting in socket
-
-        :raises TimeoutError: if job not ready by timeout
-        :raises RuntimeError: Bad answer from ws
-        """
-        errors_mapping: Mapping[  # NOQA:WPS234
-            Union[Tuple[str, Optional[str]], str],
-            PreconditionFailed,
-        ] = {
-            ('NOT_FOUND', None): NotFound('The job can not be found'),
-            ('NOT_PERMITTED', None): NotPermitted(
-                'The user is not permitted to access this job',
-            ),
-        }
-        request_data = {
-            'id': job_id,
-        }
-        get_job_query = QueryO(
-            api=self._api,
-            url='/job/get',
-            request_data=request_data,
-            errors_mapping=errors_mapping,
-            required_sid=True,
-        )
-
-        ws_url = self._api.ws_url
-        ws_manager = WSManager(ws_url)
-        start = monotonic()
-
-        # K. Pustovalov: job channel have form job.namespace
-        channel_name = 'job.{namespace_id}'.format(namespace_id=namespace_id)
-        sid = self._api.sid
-
-        job_is_ready = False
-        with ws_manager.channel(sid, channel_name) as ws:
-            while True:
-                if monotonic() - start >= timeout:
-                    break
-                with suppress(NotFound):
-                    job_status = get_job_query.get()
-                    if job_status['state'] != 'DONE':
-                        raise RuntimeError(  # NOQA:WPS220
-                            'Unknown job status {job_status}'.format(
-                                job_status=job_status['state'],
-                            ),
-                        )
-                    job_is_ready = True
-                    break
-                with suppress(TimeoutError):
-                    ws.wait_for_event(
-                        channel_name,
-                        sid,
-                        'DONE',
-                        timeout=ws_timeout,
-                    )
-        if job_is_ready is False:
-            raise TimeoutError
-
-    def upload_and_get(
-        self,
+        *,
         study_dir: Path,
         namespace_id: str,
         timeout: float = 200.0,
         ws_timeout: int = 5,
     ) -> Box:
-        """Upload study to namespace.
+        """Upload study from dir and get.
 
         :param study_dir: path to study dir
         :param namespace_id: uploading to namespace
@@ -263,10 +179,40 @@ class Study:  # NOQA:WPS214
         :param ws_timeout: time for waiting in socket
         :return: Study box object
         """
-        uuid, images_params = self.upload(
-            study_dir,
-            namespace_id,
+        uuid, images_params = self.upload_dir(
+            study_dir=study_dir,
+            namespace_id=namespace_id,
         )
+
+        study_uid = images_params[0].study_uid
+        return self.wait(
+            study_uid=study_uid,
+            namespace_id=namespace_id,
+            timeout=timeout,
+            ws_timeout=ws_timeout,
+        )
+
+    def upload_paths_and_get(
+        self,
+        *,
+        dicom_paths: Iterator[Path],
+        namespace_id: str,
+        timeout: float = 200.0,
+        ws_timeout: int = 5,
+    ) -> Box:
+        """Upload study from dir and get.
+
+        :param dicom_paths: iterator of dicom paths
+        :param namespace_id: uploading to namespace
+        :param timeout: time for waiting new study
+        :param ws_timeout: time for waiting in socket
+        :return: Study box object
+        """
+        uuid, images_params = self.upload_paths(
+            dicom_paths=dicom_paths,
+            namespace_id=namespace_id,
+        )
+
         study_uid = images_params[0].study_uid
         return self.wait(
             study_uid=study_uid,
@@ -311,46 +257,6 @@ class Study:  # NOQA:WPS214
             namespace_id=namespace_id,
             timeout=timeout,
             ws_timeout=ws_timeout,
-        )
-
-    def dicom(
-        self,
-        namespace_id: str,
-        study_uid: str,
-        image_uid: str,
-        image_version: str = '*',
-        engine_fqdn: Optional[str] = None,
-        pretranscode: Optional[bool] = None,
-    ):
-        """Get dicom.
-
-        :param namespace_id: uploading to namespace
-        :param study_uid: study_uid
-        :param image_uid: image_uid
-        :param image_version: image_version
-
-        :param engine_fqdn: fqdn (if None gets namespace fqdn)
-        :param pretranscode: get pretranscoded
-
-        :return: pydicom object
-        """
-        if engine_fqdn is None:
-            engine_fqdn = self._namespace_fqdn(namespace_id)
-
-        dicom_payload_resp = self._api. \
-            Storage. \
-            Image. \
-            dicom_payload(
-                engine_fqdn=engine_fqdn,
-                namespace=namespace_id,
-                study_uid=study_uid,
-                image_uid=image_uid,
-                image_version=image_version,
-                pretranscode=pretranscode,
-            )
-        return pydicom.read_file(
-            fp=BytesIO(dicom_payload_resp.content),
-            force=True,
         )
 
     def anonymize_and_wait(
@@ -407,7 +313,7 @@ class Study:  # NOQA:WPS214
         anonymized_study_uid: str = anonymize.text
 
         # A. Matveev: job namespace is initial namespace
-        self.wait_job(
+        self._api.Addon.Job.wait(
             job_id=x_ambrahealth_job_id,
             namespace_id=namespace,
             timeout=timeout,
@@ -481,20 +387,145 @@ class Study:  # NOQA:WPS214
             ws_timeout=ws_timeout,
         )
 
-    def _namespace_fqdn(self, namespace_id: str) -> str:
-        """Get cached fqdn for namespace.
+    @deprecated(
+        (
+            'Use api.Addon.Job.wait: '
+            '{addon_docs_url}#job-wait'
+        ).format(addon_docs_url=ADDON_DOCS_URL),
+    )
+    def wait_job(
+        self,
+        job_id: str,
+        namespace_id: str,
+        timeout: float,
+        ws_timeout: int,
+    ):
+        """Wait job.
 
-        :param namespace_id: namespace id
-        :return: fqdn
+        :param job_id: job id
+        :param namespace_id: job namespace_id
+        :param timeout: time for waiting new study
+        :param ws_timeout: time for waiting in socket
         """
-        if not getattr(self, '_cached_fqdns', None):
-            self._cached_fqdns: Dict[str, str] = {}
-        engine_fqdn = self._cached_fqdns.get(namespace_id)
-        if engine_fqdn is None:
-            engine_fqdn = self._api \
-                .Namespace \
-                .engine_fqdn(namespace_id=namespace_id) \
-                .get() \
-                .engine_fqdn
-            self._cached_fqdns[namespace_id] = engine_fqdn
-        return engine_fqdn
+        self._api.Addon.Job.wait(
+            job_id=job_id,
+            namespace_id=namespace_id,
+            timeout=timeout,
+            ws_timeout=ws_timeout,
+        )
+
+    @deprecated(
+        (
+            'Use api.Addon.Dicom.get: '
+            '{addon_docs_url}#dicom-get'
+        ).format(addon_docs_url=ADDON_DOCS_URL),
+    )
+    def dicom(
+        self,
+        namespace_id: str,
+        study_uid: str,
+        image_uid: str,
+        image_version: str = '*',
+        engine_fqdn: Optional[str] = None,
+        pretranscode: Optional[bool] = None,
+    ):
+        """Get dicom.
+
+        :param namespace_id: uploading to namespace
+        :param study_uid: study_uid
+        :param image_uid: image_uid
+        :param image_version: image_version
+
+        :param engine_fqdn: fqdn (if None gets namespace fqdn)
+        :param pretranscode: get pretranscoded
+
+        :return: pydicom object
+        """
+        return self._api.Addon.Dicom.get(
+            namespace_id=namespace_id,
+            study_uid=study_uid,
+            image_uid=image_uid,
+            image_version=image_version,
+            engine_fqdn=engine_fqdn,
+            pretranscode=pretranscode,
+        )
+
+    @deprecated(
+        (
+            'Use api.Addon.Dicom.upload_from_path: '
+            '{addon_docs_url}#dicom-upload-from-path'
+        ).format(addon_docs_url=ADDON_DOCS_URL),
+    )
+    def upload_dicom(
+        self,
+        dicom_path: Path,
+        namespace_id: str,
+        engine_fqdn: Optional[str] = None,
+    ) -> UploadedImageParams:
+        """Upload dicom to namespace.
+
+        :param dicom_path: path to dicom
+        :param namespace_id: uploading to namespace
+        :param engine_fqdn: fqdn (if None gets namespace fqdn)
+
+        :return: uploaded image params
+        """
+        image_params: UploadedImageParams = self._api \
+            .Addon.Dicom.upload_from_path(
+                dicom_path=dicom_path,
+                namespace_id=namespace_id,
+                engine_fqdn=engine_fqdn,
+            )
+        return image_params  # NOQA:WPS331
+
+    @deprecated(
+        (
+            'Use api.Addon.Study.upload_dir: '
+            '{addon_docs_url}#study-upload-dir'
+        ).format(addon_docs_url=ADDON_DOCS_URL),
+    )
+    def upload(
+        self,
+        *,
+        study_dir: Path,
+        namespace_id: str,
+    ) -> Tuple[str, List[UploadedImageParams]]:
+        """Upload study to namespace from path.
+
+        :param study_dir: path to study dir
+        :param namespace_id: uploading to namespace
+
+        :return: list of image params
+        """
+        return self.upload_dir(
+            study_dir=study_dir,
+            namespace_id=namespace_id,
+        )
+
+    @deprecated(
+        (
+            'Use api.Addon.Study.upload_dir_and_get: '
+            '{addon_docs_url}#study-upload-dir-and-get'
+        ).format(addon_docs_url=ADDON_DOCS_URL),
+    )
+    def upload_and_get(
+        self,
+        study_dir: Path,
+        namespace_id: str,
+        timeout: float = 200.0,
+        ws_timeout: int = 5,
+    ) -> Box:
+        """Upload study from and get.
+
+        :param study_dir: path to study dir
+        :param namespace_id: uploading to namespace
+        :param timeout: time for waiting new study
+        :param ws_timeout: time for waiting in socket
+        :return: Study box object
+        """
+        return self.upload_dir_and_get(
+            study_dir=study_dir,
+            namespace_id=namespace_id,
+            timeout=timeout,
+            ws_timeout=ws_timeout,
+        )

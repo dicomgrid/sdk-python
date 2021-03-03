@@ -3,7 +3,6 @@
 from typing import (
     Any,
     Callable,
-    Dict,
     Generic,
     Mapping,
     Optional,
@@ -21,6 +20,7 @@ from ambra_sdk.exceptions.service import (
     MethodNotAllowed,
     PreconditionFailed,
 )
+from ambra_sdk.request_args import RequestArgs
 
 RETURN_TYPE = TypeVar('RETURN_TYPE')
 ERROR_MAPPING = Mapping[
@@ -37,7 +37,7 @@ class IterableResponse(Generic[RETURN_TYPE]):
         api,
         url: str,
         required_sid: bool,
-        request_data: Dict[str, Any],
+        request_args: RequestArgs,
         errors_mapping: ERROR_MAPPING,
         pagination_field: str,
         rows_in_page: int,
@@ -48,7 +48,7 @@ class IterableResponse(Generic[RETURN_TYPE]):
         :param api: api
         :param url: url
         :param required_sid: require_sid
-        :param request_data: data for request
+        :param request_args: request args
         :param errors_mapping: map of error name and exception
         :param pagination_field: field for pagination
         :param rows_in_page: number of rows in page
@@ -57,7 +57,7 @@ class IterableResponse(Generic[RETURN_TYPE]):
         self._api = api
         self._url = url
         self._required_sid = required_sid
-        self._request_data = request_data
+        self._request_args = request_args
         self._errors_mapping = errors_mapping
         self._pagination_field = pagination_field
         self._rows_in_page = rows_in_page
@@ -152,22 +152,23 @@ class IterableResponse(Generic[RETURN_TYPE]):
 
     def _prepare_data(self):
         """Prepare data for request."""
-        self._request_data['page.rows'] = self._rows_in_page
+        request_data = self._request_args.data or {}
+        request_data['page.rows'] = self._rows_in_page
         if self._current_row:
-            self._request_data['page.number'] =  \
+            request_data['page.number'] =  \
                 self._current_row // self._rows_in_page + 1
         else:
             # Page number starts from 0
             page_number = self._min_row // self._rows_in_page
             # But for request page number starts from 1
-            self._request_data['page.number'] = page_number + 1
+            request_data['page.number'] = page_number + 1
             self._current_row = self._rows_in_page * page_number
+        self._request_args.data = request_data  # NOQA:WPS110
 
     def _get_response(self):
-        response = self._api.service_post(
-            url=self._url,
+        response = self._api.service_request(
             required_sid=self._required_sid,
-            data=self._request_data,
+            request_args=self._request_args,
         )
         return check_response(response, self._errors_mapping)
 

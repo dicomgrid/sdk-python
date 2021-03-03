@@ -66,6 +66,7 @@ class Customfield:
     def add(
         self,
         account_id,
+        capture_on_destination_search,
         capture_on_share_code,
         dicom_only,
         display_order,
@@ -89,6 +90,7 @@ class Customfield:
     ):
         """Add.
         :param account_id: uuid of the account
+        :param capture_on_destination_search: Flag if the field should be captured during query retrieve on /destination/search call (only applicable to study fields)
         :param capture_on_share_code: Flag if the field should be captured during a share code exchange (only applicable to study fields)
         :param dicom_only: Only capture for non-wrapped DICOM uploads during a share code exchange
         :param display_order: Integer to order how the fields should be displayed
@@ -112,6 +114,7 @@ class Customfield:
         """
         request_data = {
            'account_id': account_id,
+           'capture_on_destination_search': capture_on_destination_search,
            'capture_on_share_code': capture_on_share_code,
            'dicom_only': dicom_only,
            'dicom_tag': dicom_tag,
@@ -160,6 +163,7 @@ class Customfield:
     def set(
         self,
         uuid,
+        capture_on_destination_search=None,
         capture_on_share_code=None,
         dicom_only=None,
         dicom_tag=None,
@@ -181,6 +185,7 @@ class Customfield:
     ):
         """Set.
         :param uuid: uuid of the customfield
+        :param capture_on_destination_search: Flag if the field should be captured during query retrieve on /destination/search call (optional)
         :param capture_on_share_code: Flag if the study type field should be captured during a share code exchange (optional)
         :param dicom_only: Only capture for non-wrapped DICOM uploads during a share code exchange (optional)
         :param dicom_tag: Dicom tag to map this field to. Format should be of form (1234,1234). (only applicable to study fields) (optional)
@@ -201,6 +206,7 @@ class Customfield:
         :param wrapped_dicom_only: Only capture for wrapped DICOM uploads during a share code exchange (optional)
         """
         request_data = {
+           'capture_on_destination_search': capture_on_destination_search,
            'capture_on_share_code': capture_on_share_code,
            'dicom_only': dicom_only,
            'dicom_tag': dicom_tag,

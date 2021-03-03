@@ -19,6 +19,7 @@ def add_customfield(api, account):
         display_order=None,
         wrapped_dicom_only=None,
         dicom_only=None,
+        capture_on_destination_search=None,
         **kwargs,
     ):
         customfield = api.Customfield.add(
@@ -28,6 +29,7 @@ def add_customfield(api, account):
             display_order=display_order,
             wrapped_dicom_only=wrapped_dicom_only,
             dicom_only=dicom_only,
+            capture_on_destination_search=capture_on_destination_search,
             **kwargs,
         ).get()
         customfields.append(customfield)

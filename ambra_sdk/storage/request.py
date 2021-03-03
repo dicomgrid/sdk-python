@@ -1,11 +1,11 @@
 from enum import Enum
-from io import BufferedReader
 from typing import TYPE_CHECKING, Any, Dict, Mapping, NamedTuple, Optional
 
 from requests import Response
 
 from ambra_sdk.exceptions.storage import AmbraResponseException
 from ambra_sdk.storage.response import check_response
+from ambra_sdk.types import RequestsFileType
 
 if TYPE_CHECKING:
     from ambra_sdk.storage.storage import Storage  # NOQA:WPS433
@@ -31,7 +31,7 @@ class PreparedRequest(NamedTuple):
     # Mapping type is covariant is covariant type
     errors_mapping: Optional[Mapping[int, AmbraResponseException]] = None
     params: Optional[Dict[str, Any]] = None  # NOQA:WPS110
-    files: Optional[Dict[str, BufferedReader]] = None
+    files: Optional[Dict[str, RequestsFileType]] = None
     headers: Optional[Dict[str, str]] = None
     data: Optional[Any] = None  # NOQA:WPS110
     stream: Optional[bool] = None

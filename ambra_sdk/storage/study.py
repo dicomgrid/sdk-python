@@ -1,7 +1,6 @@
 """Storage study namespace."""
 
 import json
-from io import BufferedReader
 from typing import Any, Dict, Optional, Set, Union
 
 from box import Box, BoxList
@@ -18,6 +17,7 @@ from ambra_sdk.exceptions.storage import (
 )
 from ambra_sdk.storage.bool_to_int import bool_to_int
 from ambra_sdk.storage.request import PreparedRequest, StorageMethod
+from ambra_sdk.types import RequestsFileType
 
 
 def validate_size_x_string(size_str: str):
@@ -1209,7 +1209,7 @@ class Study:
         engine_fqdn: str,
         namespace: str,
         study_uid: str,
-        opened_file: BufferedReader,
+        opened_file: RequestsFileType,
         phi_namespace: Optional[str] = None,
         wrap_images: Optional[bool] = None,
         wrap_html_as_pdf: Optional[bool] = None,
@@ -1225,7 +1225,10 @@ class Study:
         :param engine_fqdn: Engine FQDN (Required).
         :param namespace: Namespace (Required).
         :param study_uid: Study uid (Required).
-        :param opened_file: Opened file (Required).
+        :param opened_file: Opened file (like in requests) (Required).
+            File object, or may be 2-tuples (filename, fileobj),
+            3-tuples (filename, fileobj, contentype) or
+            4-tuples (filename, fileobj, contentype, custom_headers).
         :param phi_namespace: A string, set to the UUID of
              the namespace where the file was attached if it
              was attached to a shared instance of the study
@@ -1325,6 +1328,9 @@ class Study:
         include_wrapped_dicoms: Optional[bool] = None,
         stop_on_failure: Optional[bool] = None,
         exclude_viewer: Optional[bool] = None,
+        v3: Optional[bool] = None,
+        roche_directory: Optional[bool] = None,
+        flat_directory: Optional[bool] = None,
         only_prepare: bool = False,
     ) -> Union[Response, PreparedRequest]:
         """Downloads a study ZIP file.
@@ -1351,6 +1357,12 @@ class Study:
         :param exclude_viewer: If "1", viewer app will not be
             included in the "iso", "osx", and "win" bundle.
             The viewer app can be retrieved separately via /download/viewer
+        :param v3: If "1", viewer app will be pro viewer, and format/content
+            will support pro viewer.
+        :param roche_directory: If "1", .dcm files will be organized into
+            StudyDate-ClinicalTrialTimePointID/Modality/SeriesTime-SeriesDescription/ folders (instead of SER000X/ folders).
+        :param flat_directory: If "1", .dcm files will be flatly named
+            IMG0001-IMG{image count}, and not be organized into SER folder.
         :param only_prepare: Get prepared request.
 
         :raises ValueError: Wrong bundle value
@@ -1365,6 +1377,9 @@ class Study:
         )
         stop_on_failure: int = bool_to_int(stop_on_failure)  # type: ignore
         exclude_viewer: int = bool_to_int(exclude_viewer)  # type: ignore
+        v3: int = bool_to_int(v3)  # type: ignore
+        roche_directory: int = bool_to_int(roche_directory)  # type: ignore
+        flat_directory: int = bool_to_int(flat_directory)  # type: ignore
 
         url_template = '/study/{namespace}/{study_uid}/download'
         url_arg_names = {
@@ -1381,6 +1396,9 @@ class Study:
             'include_wrapped_dicoms',
             'stop_on_failure',
             'exclude_viewer',
+            'v3',
+            'roche_directory',
+            'flat_directory',
         }
         url, request_data = self._storage.get_url_and_request(
             url_template,

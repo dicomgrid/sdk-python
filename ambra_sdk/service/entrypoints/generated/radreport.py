@@ -14,6 +14,7 @@ from ambra_sdk.exceptions.service import InvalidSortField
 from ambra_sdk.exceptions.service import InvalidSortOrder
 from ambra_sdk.exceptions.service import MissingFields
 from ambra_sdk.exceptions.service import NoAttachment
+from ambra_sdk.exceptions.service import NotEnabled
 from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import NotPermitted
 from ambra_sdk.exceptions.service import NotSysadminOrSupport
@@ -260,6 +261,7 @@ class Radreport:
         errors_mapping = {}
         errors_mapping[('INVALID_PHONE', None)] = InvalidPhone('The fax number is invalid')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_ENABLED', None)] = NotEnabled('The radreport mailing out is not enabled for the account')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The radreport can not be found')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         errors_mapping[('NO_ATTACHMENT', None)] = NoAttachment('The radreport does not have an attached report')
@@ -290,6 +292,7 @@ class Radreport:
         errors_mapping = {}
         errors_mapping[('INVALID_EMAIL', None)] = InvalidEmail('An invalid email address was passed')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_ENABLED', None)] = NotEnabled('The radreport mailing out is not enabled for the account')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The radreport can not be found')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         errors_mapping[('NO_ATTACHMENT', None)] = NoAttachment('The radreport does not have an attached report')

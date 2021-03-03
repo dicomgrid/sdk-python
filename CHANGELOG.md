@@ -5,6 +5,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [3.21.2.0-1] - 2021-02-24
+### Added
+- api.Addon.Dicom.upload method
+- api.Addon.Study.upload_dir method
+- api.Addon.Study.upload_paths method
+- api.Addon.Study.upload_dir_and_get method
+- api.Addon.Study.upload_paths_and_get method
+- api.Addon.Addon.Job.wait method
+- api.Addon.Dicom.get method
+- Session level setup headers default_headers
+- Session level setup headers service_default_headers
+- Session level setup headers storage_default_headers
+- special_headers_for_login in api constructor
+
+### Changed
+- api.Addon.Study.upload_dicom method deprecated
+- api.Addon.Study.upload method deprecated
+- api.Addon.Study.upload_and_get method deprecated
+- api.Addon.Study.wait_job method deprecated
+- api.Addon.Study.dicom method deprecated
+- Query.requst_params -> Query.request_args You can modify request arguments for specific service call
+
 ## [3.21.1.0-1] - 2021-01-13
 ### Added
 - Service public api support: LBL0022 v44.0 2021-02-24

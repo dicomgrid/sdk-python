@@ -44,7 +44,6 @@ class Session:
         email=None,
         location=None,
         new_password=None,
-        remember_device=None,
         validate_session=None,
         vanity=None,
     ):
@@ -56,7 +55,6 @@ class Session:
         :param email: email
         :param location: Login location. (optional)
         :param new_password: Change the password or account password to this. (optional)
-        :param remember_device: Remember the device as trusted. (optional)
         :param validate_session: If you would like to validate an existing session rather than create a new one pass in the sid of the session to valid in this parameter. It will check if the session is still valid and the credentials are for the session. (optional)
         :param vanity: The account vanity name. (optional)
 
@@ -71,7 +69,6 @@ class Session:
            'login': login,
            'new_password': new_password,
            'password': password,
-           'remember_device': remember_device,
            'validate_session': validate_session,
            'vanity': vanity,
         }
@@ -295,12 +292,15 @@ class Session:
     def pin(
         self,
         pin,
+        remember_device=None,
     ):
         """Pin.
         :param pin: The PIN
+        :param remember_device: Remember the device as trusted. (optional)
         """
         request_data = {
            'pin': pin,
+           'remember_device': remember_device,
         }
 	
         errors_mapping = {}

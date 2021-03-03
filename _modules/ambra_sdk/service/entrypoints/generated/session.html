@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.session &#8212; Ambra-SDK 3.21.1.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.session &#8212; Ambra-SDK 3.21.2.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -78,7 +78,6 @@
         <span class="n">email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">new_password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">remember_device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">validate_session</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">vanity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
@@ -90,7 +89,6 @@
 <span class="sd">        :param email: email</span>
 <span class="sd">        :param location: Login location. (optional)</span>
 <span class="sd">        :param new_password: Change the password or account password to this. (optional)</span>
-<span class="sd">        :param remember_device: Remember the device as trusted. (optional)</span>
 <span class="sd">        :param validate_session: If you would like to validate an existing session rather than create a new one pass in the sid of the session to valid in this parameter. It will check if the session is still valid and the credentials are for the session. (optional)</span>
 <span class="sd">        :param vanity: The account vanity name. (optional)</span>
 
@@ -105,7 +103,6 @@
            <span class="s1">&#39;login&#39;</span><span class="p">:</span> <span class="n">login</span><span class="p">,</span>
            <span class="s1">&#39;new_password&#39;</span><span class="p">:</span> <span class="n">new_password</span><span class="p">,</span>
            <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
-           <span class="s1">&#39;remember_device&#39;</span><span class="p">:</span> <span class="n">remember_device</span><span class="p">,</span>
            <span class="s1">&#39;validate_session&#39;</span><span class="p">:</span> <span class="n">validate_session</span><span class="p">,</span>
            <span class="s1">&#39;vanity&#39;</span><span class="p">:</span> <span class="n">vanity</span><span class="p">,</span>
         <span class="p">}</span>
@@ -329,12 +326,15 @@
 <div class="viewcode-block" id="Session.pin"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Session.pin">[docs]</a>    <span class="k">def</span> <span class="nf">pin</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">pin</span><span class="p">,</span>
+        <span class="n">remember_device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Pin.</span>
 <span class="sd">        :param pin: The PIN</span>
+<span class="sd">        :param remember_device: Remember the device as trusted. (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;pin&#39;</span><span class="p">:</span> <span class="n">pin</span><span class="p">,</span>
+           <span class="s1">&#39;remember_device&#39;</span><span class="p">:</span> <span class="n">remember_device</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -383,7 +383,7 @@
 
 
 
-<p class="blurb">version 3.21.1.0-1</p>
+<p class="blurb">version 3.21.2.0-1</p>
 
 
 

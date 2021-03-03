@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.destination &#8212; Ambra-SDK 3.21.1.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.destination &#8212; Ambra-SDK 3.21.2.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -42,6 +42,7 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InsufficientCriteria</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidCdBurnInfo</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidCondition</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidDistributedDestination</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidField</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidFlag</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidGatewayType</span>
@@ -115,6 +116,7 @@
         <span class="n">account_id</span><span class="p">,</span>
         <span class="n">address</span><span class="p">,</span>
         <span class="n">aetitle</span><span class="p">,</span>
+        <span class="n">distributed_destinations</span><span class="p">,</span>
         <span class="n">linked_destination</span><span class="p">,</span>
         <span class="n">linked_qr_activity_in_referred_account</span><span class="p">,</span>
         <span class="n">linked_qr_to_referred_account</span><span class="p">,</span>
@@ -125,6 +127,7 @@
         <span class="n">c_echo_interval</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">c_echo_schedule</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">can_mwl_search</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">can_push_hl7</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">can_query_retrieve</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">can_retrieve_thin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">can_search</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -149,6 +152,7 @@
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        :param address: Address of the destination (required if DICOM type)</span>
 <span class="sd">        :param aetitle: Aetitle of the destination (required if DICOM type)</span>
+<span class="sd">        :param distributed_destinations: A JSON array of destination ids. This list will be used to process requests in round robin manner. Meaningful for DISTRIBUTING destination type only (opional)</span>
 <span class="sd">        :param linked_destination: uuid of the destination for LINKED destinations</span>
 <span class="sd">        :param linked_qr_activity_in_referred_account: A flag to create DESTINATION_SEARCH activities in the linked destination&amp;#39;s account. Meaningful for LINKED destinations only (opional)</span>
 <span class="sd">        :param linked_qr_to_referred_account: A flag to create resultant studies in the linked destination&amp;#39;s account (not the account of LINKED destination where the search was initiated). Meaningful for LINKED destinations only (opional)</span>
@@ -159,6 +163,7 @@
 <span class="sd">        :param c_echo_interval: Interval in seconds to C echo the destination (optional)</span>
 <span class="sd">        :param c_echo_schedule: C echo schedule (optional)</span>
 <span class="sd">        :param can_mwl_search: Can this destination support searching a modality work list (optional)</span>
+<span class="sd">        :param can_push_hl7: Can this destination support pushong Hl7 messages (optional)</span>
 <span class="sd">        :param can_query_retrieve: Can this destination support query retrieve from HL7 messages (optional)</span>
 <span class="sd">        :param can_retrieve_thin: Can this destination support retrieving thin studies (optional)</span>
 <span class="sd">        :param can_search: Can this destination support searching (optional)</span>
@@ -176,7 +181,7 @@
 <span class="sd">        :param sort_order: Integer value for sorting (optional)</span>
 <span class="sd">        :param sqlch_psh_if_img_unchg: Squelch pushes to the destination if the image count has not changed and the push is by a routing rule (optional)</span>
 <span class="sd">        :param sqlch_psh_if_route_hl7: Squelch pushes to the destination if the push was generated by HL7 triggered routing (optional)</span>
-<span class="sd">        :param type: Type of the destination either DICOM, FOLDER, ACCELERATOR,VIRTUAL, BURNER, XDS, LINKED or UPLOADER. Defaults to DICOM (optional)</span>
+<span class="sd">        :param type: Type of the destination either DICOM, FOLDER, ACCELERATOR,VIRTUAL, BURNER, XDS, LINKED, DISTRIBUTING or UPLOADER. Defaults to DICOM (optional)</span>
 <span class="sd">        :param ui_json: JSON for UI settings (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -186,6 +191,7 @@
            <span class="s1">&#39;c_echo_interval&#39;</span><span class="p">:</span> <span class="n">c_echo_interval</span><span class="p">,</span>
            <span class="s1">&#39;c_echo_schedule&#39;</span><span class="p">:</span> <span class="n">c_echo_schedule</span><span class="p">,</span>
            <span class="s1">&#39;can_mwl_search&#39;</span><span class="p">:</span> <span class="n">can_mwl_search</span><span class="p">,</span>
+           <span class="s1">&#39;can_push_hl7&#39;</span><span class="p">:</span> <span class="n">can_push_hl7</span><span class="p">,</span>
            <span class="s1">&#39;can_query_retrieve&#39;</span><span class="p">:</span> <span class="n">can_query_retrieve</span><span class="p">,</span>
            <span class="s1">&#39;can_retrieve_thin&#39;</span><span class="p">:</span> <span class="n">can_retrieve_thin</span><span class="p">,</span>
            <span class="s1">&#39;can_search&#39;</span><span class="p">:</span> <span class="n">can_search</span><span class="p">,</span>
@@ -193,6 +199,7 @@
            <span class="s1">&#39;cd_burn_name&#39;</span><span class="p">:</span> <span class="n">cd_burn_name</span><span class="p">,</span>
            <span class="s1">&#39;cd_burn_priority&#39;</span><span class="p">:</span> <span class="n">cd_burn_priority</span><span class="p">,</span>
            <span class="s1">&#39;default_query_retrieve_level&#39;</span><span class="p">:</span> <span class="n">default_query_retrieve_level</span><span class="p">,</span>
+           <span class="s1">&#39;distributed_destinations&#39;</span><span class="p">:</span> <span class="n">distributed_destinations</span><span class="p">,</span>
            <span class="s1">&#39;fire_webhooks&#39;</span><span class="p">:</span> <span class="n">fire_webhooks</span><span class="p">,</span>
            <span class="s1">&#39;gateway_settings&#39;</span><span class="p">:</span> <span class="n">gateway_settings</span><span class="p">,</span>
            <span class="s1">&#39;hl7_address&#39;</span><span class="p">:</span> <span class="n">hl7_address</span><span class="p">,</span>
@@ -217,11 +224,12 @@
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;DUP_AETITLE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">DupAetitle</span><span class="p">(</span><span class="s1">&#39;Duplicate aetitle. All destinations for the same node must have a unique aetitle&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CD_BURN_INFO&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCdBurnInfo</span><span class="p">(</span><span class="s1">&#39;Invalid cd_burn_info. The error_subtype holds more detail&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_DISTRIBUTED_DESTINATION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidDistributedDestination</span><span class="p">(</span><span class="s1">&#39;distributed_destinations configuration is invalid&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FLAG&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidFlag</span><span class="p">(</span><span class="s1">&#39;An invalid flag was passed. The error_subtype holds the name of the invalid flag&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_GATEWAY_TYPE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidGatewayType</span><span class="p">(</span><span class="s1">&#39;The type is wrong for the gateway it is getting attached to&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_INTEGER&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidInteger</span><span class="p">(</span><span class="s1">&#39;An invalid integer was passed. The error_subtype holds the name of the invalid integer&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_NODE_TYPE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidNodeType</span><span class="p">(</span><span class="s1">&#39;The node type is invalid for this type of destination&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_NODE_TYPE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidNodeType</span><span class="p">(</span><span class="s1">&#39;The node is not a harvester&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_NODE_TYPE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidNodeType</span><span class="p">(</span><span class="s1">&#39;The node type is invalid for this type of destination&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SCHEDULE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSchedule</span><span class="p">(</span><span class="s1">&#39;The schedule is invalid. The error_subtype holds the error detail&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_TYPE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidType</span><span class="p">(</span><span class="s1">&#39;An invalid type was passed&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_VALUE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidValue</span><span class="p">(</span><span class="s1">&#39;An invalid value was passed. The error_subtype holds the value&#39;</span><span class="p">)</span>
@@ -241,6 +249,7 @@
     
 <div class="viewcode-block" id="Destination.set"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Destination.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
+        <span class="n">distributed_destinations</span><span class="p">,</span>
         <span class="n">linked_qr_activity_in_referred_account</span><span class="p">,</span>
         <span class="n">linked_qr_to_referred_account</span><span class="p">,</span>
         <span class="n">uuid</span><span class="p">,</span>
@@ -249,6 +258,7 @@
         <span class="n">c_echo_interval</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">c_echo_schedule</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">can_mwl_search</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">can_push_hl7</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">can_query_retrieve</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">can_retrieve_thin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">can_search</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -273,6 +283,7 @@
         <span class="n">ui_json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
+<span class="sd">        :param distributed_destinations: A JSON array of destination ids. This list will be used to process requests in round robin manner. Meaningful for DISTRIBUTING destination type only (opional)</span>
 <span class="sd">        :param linked_qr_activity_in_referred_account: A flag to create DESTINATION_SEARCH activities in the linked destination&amp;#39;s account. Meaningful for LINKED destinations only (opional)</span>
 <span class="sd">        :param linked_qr_to_referred_account: A flag to create resultant studies in the linked destination&amp;#39;s account (not the account of LINKED destination where the search was initiated). Meaningful for LINKED destinations only (opional)</span>
 <span class="sd">        :param uuid: uuid of the destination</span>
@@ -281,6 +292,7 @@
 <span class="sd">        :param c_echo_interval: Interval in seconds to C echo the destination (optional)</span>
 <span class="sd">        :param c_echo_schedule: C echo schedule (optional)</span>
 <span class="sd">        :param can_mwl_search: Can this destination support searching a modality work list (optional)</span>
+<span class="sd">        :param can_push_hl7: Can this destination support pushong Hl7 messages (optional)</span>
 <span class="sd">        :param can_query_retrieve: Can this destination support query retrieve from HL7 messages (optional)</span>
 <span class="sd">        :param can_retrieve_thin: Can this destination support retrieving thin studies (optional)</span>
 <span class="sd">        :param can_search: Can this destination support searching (optional)</span>
@@ -310,6 +322,7 @@
            <span class="s1">&#39;c_echo_interval&#39;</span><span class="p">:</span> <span class="n">c_echo_interval</span><span class="p">,</span>
            <span class="s1">&#39;c_echo_schedule&#39;</span><span class="p">:</span> <span class="n">c_echo_schedule</span><span class="p">,</span>
            <span class="s1">&#39;can_mwl_search&#39;</span><span class="p">:</span> <span class="n">can_mwl_search</span><span class="p">,</span>
+           <span class="s1">&#39;can_push_hl7&#39;</span><span class="p">:</span> <span class="n">can_push_hl7</span><span class="p">,</span>
            <span class="s1">&#39;can_query_retrieve&#39;</span><span class="p">:</span> <span class="n">can_query_retrieve</span><span class="p">,</span>
            <span class="s1">&#39;can_retrieve_thin&#39;</span><span class="p">:</span> <span class="n">can_retrieve_thin</span><span class="p">,</span>
            <span class="s1">&#39;can_search&#39;</span><span class="p">:</span> <span class="n">can_search</span><span class="p">,</span>
@@ -317,6 +330,7 @@
            <span class="s1">&#39;cd_burn_name&#39;</span><span class="p">:</span> <span class="n">cd_burn_name</span><span class="p">,</span>
            <span class="s1">&#39;cd_burn_priority&#39;</span><span class="p">:</span> <span class="n">cd_burn_priority</span><span class="p">,</span>
            <span class="s1">&#39;default_query_retrieve_level&#39;</span><span class="p">:</span> <span class="n">default_query_retrieve_level</span><span class="p">,</span>
+           <span class="s1">&#39;distributed_destinations&#39;</span><span class="p">:</span> <span class="n">distributed_destinations</span><span class="p">,</span>
            <span class="s1">&#39;fire_webhooks&#39;</span><span class="p">:</span> <span class="n">fire_webhooks</span><span class="p">,</span>
            <span class="s1">&#39;gateway_settings&#39;</span><span class="p">:</span> <span class="n">gateway_settings</span><span class="p">,</span>
            <span class="s1">&#39;hl7_address&#39;</span><span class="p">:</span> <span class="n">hl7_address</span><span class="p">,</span>
@@ -340,6 +354,7 @@
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;DUP_AETITLE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">DupAetitle</span><span class="p">(</span><span class="s1">&#39;Duplicate aetitle. All destinations for the same node must have a unique aetitle&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CD_BURN_INFO&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCdBurnInfo</span><span class="p">(</span><span class="s1">&#39;Invalid cd_burn_info. The error_subtype holds more detail&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_DISTRIBUTED_DESTINATION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidDistributedDestination</span><span class="p">(</span><span class="s1">&#39;distributed_destinations configuration is invalid&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FLAG&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidFlag</span><span class="p">(</span><span class="s1">&#39;An invalid flag was passed. The error_subtype holds the name of the invalid flag&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_INTEGER&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidInteger</span><span class="p">(</span><span class="s1">&#39;An invalid integer was passed. The error_subtype holds the name of the invalid integer&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_NODE_TYPE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidNodeType</span><span class="p">(</span><span class="s1">&#39;The node is not a harvester&#39;</span><span class="p">)</span>
@@ -430,6 +445,7 @@
         <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">share_email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">start_datetime</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">study_request_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Search.</span>
@@ -455,6 +471,7 @@
 <span class="sd">        :param serial_no: serial_no</span>
 <span class="sd">        :param share_email: Email to share retrieved studies with on subsequent /destination/retrieve (optional)</span>
 <span class="sd">        :param start_datetime: DICOM start date time stamp to bound the search (optional)</span>
+<span class="sd">        :param study_request_id: uuid of a study request (optional)</span>
 <span class="sd">        :param study_uid: Study uid to find (optional)</span>
 
 <span class="sd">        Notes:</span>
@@ -482,6 +499,7 @@
            <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
            <span class="s1">&#39;share_email&#39;</span><span class="p">:</span> <span class="n">share_email</span><span class="p">,</span>
            <span class="s1">&#39;start_datetime&#39;</span><span class="p">:</span> <span class="n">start_datetime</span><span class="p">,</span>
+           <span class="s1">&#39;study_request_id&#39;</span><span class="p">:</span> <span class="n">study_request_id</span><span class="p">,</span>
            <span class="s1">&#39;study_uid&#39;</span><span class="p">:</span> <span class="n">study_uid</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
@@ -492,7 +510,7 @@
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INSUFFICIENT_CRITERIA&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InsufficientCriteria</span><span class="p">(</span><span class="s1">&#39;Not enough search fields are populated&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The destination or namespace can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The destination, namespace or study request can not be found&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to search the destination&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_SUPPORTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotSupported</span><span class="p">(</span><span class="s1">&#39;The destination does not support searching a destination&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -507,15 +525,25 @@
 <div class="viewcode-block" id="Destination.retrieve"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Destination.retrieve">[docs]</a>    <span class="k">def</span> <span class="nf">retrieve</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">activity_id</span><span class="p">,</span>
+        <span class="n">send_method</span><span class="p">,</span>
+        <span class="n">study_request_found_id</span><span class="p">,</span>
         <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve.</span>
 <span class="sd">        :param activity_id: uuid of the DESTINATION_SEARCH activity to retrieve from</span>
+<span class="sd">        :param send_method: The method to send a study as a study request response (share|duplicate)</span>
+<span class="sd">        :param study_request_found_id: UUID of a study request search results to retrieve and send as study request response</span>
 <span class="sd">        :param message: A message to display when studies are retrieved (optional)</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">        The following fields are used for the activity retrieve workflow: activity_id, message</span>
+<span class="sd">        The following fields are used for the study request workflow: study_request_found_id, send_method</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;activity_id&#39;</span><span class="p">:</span> <span class="n">activity_id</span><span class="p">,</span>
            <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
+           <span class="s1">&#39;send_method&#39;</span><span class="p">:</span> <span class="n">send_method</span><span class="p">,</span>
+           <span class="s1">&#39;study_request_found_id&#39;</span><span class="p">:</span> <span class="n">study_request_found_id</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -595,7 +623,7 @@
 
 
 
-<p class="blurb">version 3.21.1.0-1</p>
+<p class="blurb">version 3.21.2.0-1</p>
 
 
 

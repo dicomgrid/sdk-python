@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.user &#8212; Ambra-SDK 3.21.1.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.user &#8212; Ambra-SDK 3.21.2.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -191,7 +191,6 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">indicator_md5</span><span class="p">,</span>
         <span class="n">privacy_md5</span><span class="p">,</span>
-        <span class="n">show_org_manage_link</span><span class="p">,</span>
         <span class="n">terms_md5</span><span class="p">,</span>
         <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">allowed_login_brands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -212,8 +211,6 @@
         <span class="sd">&quot;&quot;&quot;Set.</span>
 <span class="sd">        :param indicator_md5: MD5 of the accepted indications of use</span>
 <span class="sd">        :param privacy_md5: MD5 of the accepted privacy policy</span>
-<span class="sd">        :param show_org_manage_link: Show link to manage multiple organizations:</span>
-<span class="sd">            advanced_search - (array) Advanced search customization for role. See account level &amp;#34;advanced_search&amp;#34; ui_json param for possible values</span>
 <span class="sd">        :param terms_md5: MD5 of the accepted terms of service</span>
 <span class="sd">        :param account_id: Account id if you are trying to set a user other than yourself (optional)</span>
 <span class="sd">        :param allowed_login_brands: A comma separated list of Brand UUIDs that the user is allowed to use when logging in (optional)</span>
@@ -228,7 +225,7 @@
 <span class="sd">        :param share_code: The share code of the user (optional)</span>
 <span class="sd">        :param share_description: The share description of the user (optional)</span>
 <span class="sd">        :param time_zone: The users time zone name as per https://www.postgresql.org/docs/9.1/static/view-pg-timezone-names.html (optional)</span>
-<span class="sd">        :param ui_json: JSON for UI settings (optional) possible options:</span>
+<span class="sd">        :param ui_json: JSON for UI settings (optional)</span>
 <span class="sd">        :param uuid: The users uuid (optional). Uses the session user if not passed</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -246,7 +243,6 @@
            <span class="s1">&#39;privacy_md5&#39;</span><span class="p">:</span> <span class="n">privacy_md5</span><span class="p">,</span>
            <span class="s1">&#39;share_code&#39;</span><span class="p">:</span> <span class="n">share_code</span><span class="p">,</span>
            <span class="s1">&#39;share_description&#39;</span><span class="p">:</span> <span class="n">share_description</span><span class="p">,</span>
-           <span class="s1">&#39;show_org_manage_link&#39;</span><span class="p">:</span> <span class="n">show_org_manage_link</span><span class="p">,</span>
            <span class="s1">&#39;terms_md5&#39;</span><span class="p">:</span> <span class="n">terms_md5</span><span class="p">,</span>
            <span class="s1">&#39;time_zone&#39;</span><span class="p">:</span> <span class="n">time_zone</span><span class="p">,</span>
            <span class="s1">&#39;ui_json&#39;</span><span class="p">:</span> <span class="n">ui_json</span><span class="p">,</span>
@@ -726,7 +722,7 @@
 
 
 
-<p class="blurb">version 3.21.1.0-1</p>
+<p class="blurb">version 3.21.2.0-1</p>
 
 
 

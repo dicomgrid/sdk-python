@@ -49,7 +49,7 @@ Inspect your `query` object to get information about request::
 
   query_object.url
   query_object.full_url
-  query_object.request_data
+  query_object.request_argks
 
 Execute this query using `first()` or `all()` method (`api.Study.list()` is query for request multiple results)::
 
@@ -272,6 +272,35 @@ The example below shows how to do this::
   some_method_url = api.Study.list().full_url
   api.service_session.mount(some_method_url, adapter)
 
+
+Headers
+^^^^^^^
+
+You can setup some default headers for service session
+(using `service_default_headers` property) or for both service and storage sesssions
+(using `default_headers` property)::
+
+  api.default_headers['Golbal-header'] = 'value'
+  api.service_default_headers['Service-pecific-header'] = 'value'
+
+You can setup headers for some special requests::
+
+  query = api.User.get()
+  query.request_args.headers = {'Special-request-header': 'value'}
+  user = query.get()
+
+For setup headers for login call (get new sid) you can use `special_headers_for_login`::
+
+  api = Api.with_creds(
+      url,
+      username,
+      password,
+      special_headers_for_login = {
+          'Special-header-for-login': 'value',
+      },
+  )
+
+ 
 
 .. _`add a method in the study namespace`: https://uat.dicomgrid.com/api/v3/api.html#study_add
 

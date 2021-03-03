@@ -23,7 +23,7 @@ Make sure the current version of `ambra-sdk` is not lower.
 
     >>> from ambra_sdk import STORAGE_VERSION
     >>> print(STORAGE_VERSION)
-    LBL0038 v13.0 2021-01-13
+    LBL0038 v14.0 2021-02-24
 
 A description of all existing methods can be found in the :ref:`Storage API reference<referencies-storage-api>`.
 
@@ -165,6 +165,16 @@ The example below shows how to do this::
   
   api.storage_session.mount(some_method_url, adapter)
 
+
+Headers
+^^^^^^^
+
+You can setup some default headers for storage session
+(using `storage_default_headers` property) or for both service and storage sesssions
+(using `default_headers` property)::
+
+  api.default_headers['Golbal-header'] = 'value'
+  api.storage_default_headers['Storage-pecific-header'] = 'value'
 
 
 .. _`AmbraHealth storage API`: https://uat.dicomgrid.com/api/v3/storage/storage_api.html

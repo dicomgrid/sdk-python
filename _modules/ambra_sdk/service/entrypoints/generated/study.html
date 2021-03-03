@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.study &#8212; Ambra-SDK 3.21.1.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.study &#8212; Ambra-SDK 3.21.2.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -2063,8 +2063,8 @@
         <span class="n">patient_birth_date</span><span class="p">,</span>
         <span class="n">patient_first_name</span><span class="p">,</span>
         <span class="n">patient_last_name</span><span class="p">,</span>
-        <span class="n">patient_sex</span><span class="p">,</span>
         <span class="n">modality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">patient_sex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">patientid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">study_date_end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">study_date_start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -2077,8 +2077,8 @@
 <span class="sd">        :param patient_birth_date: The patient date of birth a study should match</span>
 <span class="sd">        :param patient_first_name: The patient first name a study should match</span>
 <span class="sd">        :param patient_last_name: The patient last name a study should match</span>
-<span class="sd">        :param patient_sex: The patient sex a study should match</span>
 <span class="sd">        :param modality: The modality a study should match (optional)</span>
+<span class="sd">        :param patient_sex: The patient sex a study should match (optional)</span>
 <span class="sd">        :param patientid: The MRN a study should match (optional)</span>
 <span class="sd">        :param study_date_end: The DICOM date that a study date should be less or equal to (optional)</span>
 <span class="sd">        :param study_date_start: The DICOM date that a study date should be greater or equal to (optional)</span>
@@ -2101,7 +2101,6 @@
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ALREADY&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Already</span><span class="p">(</span><span class="s1">&#39;An active (pending or in progress) study request with the same study criteria and the same namespace/account combination already exists&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_ENABLED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotEnabled</span><span class="p">(</span><span class="s1">&#39;the feature is not enabled. Check the study_request_accounts account settings&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The namespace or account was not found.&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to request a study into this namespace&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -2171,7 +2170,7 @@
 
 
 
-<p class="blurb">version 3.21.1.0-1</p>
+<p class="blurb">version 3.21.2.0-1</p>
 
 
 

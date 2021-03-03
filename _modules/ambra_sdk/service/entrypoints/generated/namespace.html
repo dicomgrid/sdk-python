@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.namespace &#8212; Ambra-SDK 3.21.1.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.namespace &#8212; Ambra-SDK 3.21.2.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -144,6 +144,7 @@
         <span class="n">show_image_on_upload_page</span><span class="p">,</span>
         <span class="n">single_file_dicom_wrapping</span><span class="p">,</span>
         <span class="n">study_field_flags</span><span class="p">,</span>
+        <span class="n">study_size_soft_threshold_per_user</span><span class="p">,</span>
         <span class="n">try_update_original_study</span><span class="p">,</span>
         <span class="n">ui_json</span><span class="p">,</span>
         <span class="n">upload_settings</span><span class="p">,</span>
@@ -173,6 +174,7 @@
 <span class="sd">        :param show_image_on_upload_page: Show computer image with CD on upload page when image is uploading to this namespace</span>
 <span class="sd">        :param single_file_dicom_wrapping: Value for the setting</span>
 <span class="sd">        :param study_field_flags: A JSON hash of study_field_* role values to override the role values for studies in the namespace</span>
+<span class="sd">        :param study_size_soft_threshold_per_user: A threshold for studies size per user. An email (by study_quota_exceeded template) will be sent when this limit is exceeded by a user. A JSON hash of study_field_* role values to override the role values for studies in the namespace</span>
 <span class="sd">        :param try_update_original_study: Value for the setting</span>
 <span class="sd">        :param ui_json: JSON for UI setting possible options:</span>
 <span class="sd">        :param upload_settings: Value for the setting</span>
@@ -204,6 +206,7 @@
            <span class="s1">&#39;show_image_on_upload_page&#39;</span><span class="p">:</span> <span class="n">show_image_on_upload_page</span><span class="p">,</span>
            <span class="s1">&#39;single_file_dicom_wrapping&#39;</span><span class="p">:</span> <span class="n">single_file_dicom_wrapping</span><span class="p">,</span>
            <span class="s1">&#39;study_field_flags&#39;</span><span class="p">:</span> <span class="n">study_field_flags</span><span class="p">,</span>
+           <span class="s1">&#39;study_size_soft_threshold_per_user&#39;</span><span class="p">:</span> <span class="n">study_size_soft_threshold_per_user</span><span class="p">,</span>
            <span class="s1">&#39;try_update_original_study&#39;</span><span class="p">:</span> <span class="n">try_update_original_study</span><span class="p">,</span>
            <span class="s1">&#39;ui_json&#39;</span><span class="p">:</span> <span class="n">ui_json</span><span class="p">,</span>
            <span class="s1">&#39;upload_settings&#39;</span><span class="p">:</span> <span class="n">upload_settings</span><span class="p">,</span>
@@ -689,7 +692,7 @@
 
 
 
-<p class="blurb">version 3.21.1.0-1</p>
+<p class="blurb">version 3.21.2.0-1</p>
 
 
 

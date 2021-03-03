@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Addon namespace &#8212; Ambra-SDK 3.21.1.0-1 documentation</title>
+    <title>Addon namespace &#8212; Ambra-SDK 3.21.2.0-1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -152,8 +152,8 @@ obscured regions (default is black-and-white checkerboard)</p></li>
 
 <dl class="py method">
 <dt id="ambra_sdk.addon.study.Study.upload">
-<code class="sig-name descname">upload</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">study_dir</span><span class="p">:</span> <span class="n">pathlib.Path</span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>List<span class="p">[</span>ambra_sdk.addon.study.UploadedImageParams<span class="p">]</span><span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.upload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.upload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Upload study to namespace.</p>
+<code class="sig-name descname">upload</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">study_dir</span><span class="p">:</span> <span class="n">pathlib.Path</span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>List<span class="p">[</span>ambra_sdk.addon.dicom.UploadedImageParams<span class="p">]</span><span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.upload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.upload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload study to namespace from path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -161,11 +161,8 @@ obscured regions (default is black-and-white checkerboard)</p></li>
 <li><p><strong>namespace_id</strong> – uploading to namespace</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>ValueError</strong> – Study dir is not directory</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>list of image params</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of image params</p>
 </dd>
 </dl>
 </dd></dl>
@@ -173,7 +170,7 @@ obscured regions (default is black-and-white checkerboard)</p></li>
 <dl class="py method">
 <dt id="ambra_sdk.addon.study.Study.upload_and_get">
 <code class="sig-name descname">upload_and_get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">study_dir</span><span class="p">:</span> <span class="n">pathlib.Path</span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">200.0</span></em>, <em class="sig-param"><span class="n">ws_timeout</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em><span class="sig-paren">)</span> &#x2192; box.box.Box<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.upload_and_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.upload_and_get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Upload study to namespace.</p>
+<dd><p>Upload study from and get.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -191,7 +188,7 @@ obscured regions (default is black-and-white checkerboard)</p></li>
 
 <dl class="py method">
 <dt id="ambra_sdk.addon.study.Study.upload_dicom">
-<code class="sig-name descname">upload_dicom</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dicom_path</span><span class="p">:</span> <span class="n">pathlib.Path</span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; ambra_sdk.addon.study.UploadedImageParams<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.upload_dicom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.upload_dicom" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">upload_dicom</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dicom_path</span><span class="p">:</span> <span class="n">pathlib.Path</span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; ambra_sdk.addon.dicom.UploadedImageParams<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.upload_dicom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.upload_dicom" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upload dicom to namespace.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -208,8 +205,86 @@ obscured regions (default is black-and-white checkerboard)</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt id="ambra_sdk.addon.study.Study.upload_dir">
+<code class="sig-name descname">upload_dir</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">study_dir</span><span class="p">:</span> <span class="n">pathlib.Path</span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>List<span class="p">[</span>ambra_sdk.addon.dicom.UploadedImageParams<span class="p">]</span><span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.upload_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.upload_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload study to namespace from path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>study_dir</strong> – path to study dir</p></li>
+<li><p><strong>namespace_id</strong> – uploading to namespace</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Study dir is not directory</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of image params</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.addon.study.Study.upload_dir_and_get">
+<code class="sig-name descname">upload_dir_and_get</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">study_dir</span><span class="p">:</span> <span class="n">pathlib.Path</span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">200.0</span></em>, <em class="sig-param"><span class="n">ws_timeout</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em><span class="sig-paren">)</span> &#x2192; box.box.Box<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.upload_dir_and_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.upload_dir_and_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload study from dir and get.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>study_dir</strong> – path to study dir</p></li>
+<li><p><strong>namespace_id</strong> – uploading to namespace</p></li>
+<li><p><strong>timeout</strong> – time for waiting new study</p></li>
+<li><p><strong>ws_timeout</strong> – time for waiting in socket</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Study box object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.addon.study.Study.upload_paths">
+<code class="sig-name descname">upload_paths</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">dicom_paths</span><span class="p">:</span> <span class="n">Iterator<span class="p">[</span>pathlib.Path<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>List<span class="p">[</span>ambra_sdk.addon.dicom.UploadedImageParams<span class="p">]</span><span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.upload_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.upload_paths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload study to namespace from dicoms iteartor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dicom_paths</strong> – iterator of dicom paths</p></li>
+<li><p><strong>namespace_id</strong> – uploading to namespace</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Study dir is not directory</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of image params</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.addon.study.Study.upload_paths_and_get">
+<code class="sig-name descname">upload_paths_and_get</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">dicom_paths</span><span class="p">:</span> <span class="n">Iterator<span class="p">[</span>pathlib.Path<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">200.0</span></em>, <em class="sig-param"><span class="n">ws_timeout</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em><span class="sig-paren">)</span> &#x2192; box.box.Box<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.upload_paths_and_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.upload_paths_and_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload study from dir and get.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dicom_paths</strong> – iterator of dicom paths</p></li>
+<li><p><strong>namespace_id</strong> – uploading to namespace</p></li>
+<li><p><strong>timeout</strong> – time for waiting new study</p></li>
+<li><p><strong>ws_timeout</strong> – time for waiting in socket</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Study box object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="ambra_sdk.addon.study.Study.wait">
-<code class="sig-name descname">wait</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">ws_timeout</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; box.box.Box<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.wait"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.wait" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">wait</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">ws_timeout</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; box.box.Box<a class="reference internal" href="../_modules/ambra_sdk/addon/study.html#Study.wait"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.addon.study.Study.wait" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wait study in namespace.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -242,12 +317,6 @@ obscured regions (default is black-and-white checkerboard)</p></li>
 <li><p><strong>ws_timeout</strong> – time for waiting in socket</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>TimeoutError</strong> – if job not ready by timeout</p></li>
-<li><p><strong>RuntimeError</strong> – Bad answer from ws</p></li>
-</ul>
-</dd>
 </dl>
 </dd></dl>
 
@@ -267,7 +336,7 @@ obscured regions (default is black-and-white checkerboard)</p></li>
 
 
 
-<p class="blurb">version 3.21.1.0-1</p>
+<p class="blurb">version 3.21.2.0-1</p>
 
 
 

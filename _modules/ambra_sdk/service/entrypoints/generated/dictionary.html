@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.dictionary &#8212; Ambra-SDK 3.21.1.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.dictionary &#8212; Ambra-SDK 3.21.2.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -309,6 +309,7 @@
         <span class="n">add_if_no_match</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">approve_if_match</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">delay</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">global_counter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">namespace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">run_once</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">sequence</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -321,6 +322,7 @@
 <span class="sd">        :param add_if_no_match: Flag to add the lookup and replace values to the dictionary if no match occurs (optional)</span>
 <span class="sd">        :param approve_if_match: Approve the object if there was a match (optional)</span>
 <span class="sd">        :param delay: An integer number of seconds to delay the dictionary application (optional)</span>
+<span class="sd">        :param global_counter: A flag if you want the counter to run against the account namespace instead of the object namespace (optional)</span>
 <span class="sd">        :param namespace_id: namespace_id</span>
 <span class="sd">        :param run_once: Flag to make dictionary apply only once per object (optional)</span>
 <span class="sd">        :param sequence: An integer value. Attachments are processed from low number to high number (optional)</span>
@@ -335,6 +337,7 @@
            <span class="s1">&#39;add_if_no_match&#39;</span><span class="p">:</span> <span class="n">add_if_no_match</span><span class="p">,</span>
            <span class="s1">&#39;approve_if_match&#39;</span><span class="p">:</span> <span class="n">approve_if_match</span><span class="p">,</span>
            <span class="s1">&#39;delay&#39;</span><span class="p">:</span> <span class="n">delay</span><span class="p">,</span>
+           <span class="s1">&#39;global_counter&#39;</span><span class="p">:</span> <span class="n">global_counter</span><span class="p">,</span>
            <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
            <span class="s1">&#39;run_once&#39;</span><span class="p">:</span> <span class="n">run_once</span><span class="p">,</span>
            <span class="s1">&#39;sequence&#39;</span><span class="p">:</span> <span class="n">sequence</span><span class="p">,</span>
@@ -362,6 +365,7 @@
         <span class="n">add_if_no_match</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">approve_if_match</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">delay</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">global_counter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">run_once</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">sequence</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">skip_if_lookup_unchanged</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -372,6 +376,7 @@
 <span class="sd">        :param add_if_no_match: Flag to add the lookup and replace values to the dictionary if no match occurs (optional)</span>
 <span class="sd">        :param approve_if_match: Approve the object if there was a match (optional)</span>
 <span class="sd">        :param delay: An integer number of seconds to delay the dictionary application (optional)</span>
+<span class="sd">        :param global_counter: A flag if you want the counter to run against the account namespace instead of the object namespace (optional)</span>
 <span class="sd">        :param run_once: Flag to make dictionary apply only once per object (optional)</span>
 <span class="sd">        :param sequence: An integer value. Attachments are processed from low number to high number (optional)</span>
 <span class="sd">        :param skip_if_lookup_unchanged: Flag to skip the lookup if the lookup field(s) are un-changed (optional)</span>
@@ -381,6 +386,7 @@
            <span class="s1">&#39;add_if_no_match&#39;</span><span class="p">:</span> <span class="n">add_if_no_match</span><span class="p">,</span>
            <span class="s1">&#39;approve_if_match&#39;</span><span class="p">:</span> <span class="n">approve_if_match</span><span class="p">,</span>
            <span class="s1">&#39;delay&#39;</span><span class="p">:</span> <span class="n">delay</span><span class="p">,</span>
+           <span class="s1">&#39;global_counter&#39;</span><span class="p">:</span> <span class="n">global_counter</span><span class="p">,</span>
            <span class="s1">&#39;run_once&#39;</span><span class="p">:</span> <span class="n">run_once</span><span class="p">,</span>
            <span class="s1">&#39;sequence&#39;</span><span class="p">:</span> <span class="n">sequence</span><span class="p">,</span>
            <span class="s1">&#39;skip_if_lookup_unchanged&#39;</span><span class="p">:</span> <span class="n">skip_if_lookup_unchanged</span><span class="p">,</span>
@@ -437,7 +443,7 @@
 
 
 
-<p class="blurb">version 3.21.1.0-1</p>
+<p class="blurb">version 3.21.2.0-1</p>
 
 
 

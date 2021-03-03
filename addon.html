@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Addon methods &#8212; Ambra-SDK 3.21.1.0-1 documentation</title>
+    <title>Addon methods &#8212; Ambra-SDK 3.21.2.0-1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -39,43 +39,45 @@
 <div class="section" id="study">
 <h2>Study<a class="headerlink" href="#study" title="Permalink to this headline">¶</a></h2>
 <p>Study level addon methods.</p>
-<div class="section" id="dicom">
-<h3>dicom<a class="headerlink" href="#dicom" title="Permalink to this headline">¶</a></h3>
-<p>[New in 3.20.8.0]</p>
-<p>Get pydicom specific object from storage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dicom</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">dicom</span><span class="p">(</span>
-          <span class="n">namespace_id</span><span class="o">=</span><span class="n">storage_namespace</span><span class="p">,</span>
-          <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
-          <span class="n">image_uid</span><span class="o">=</span><span class="n">image</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
-      <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="upload-dicom">
-<h3>upload_dicom<a class="headerlink" href="#upload-dicom" title="Permalink to this headline">¶</a></h3>
-<p>This method is for uploading dicom to the some namespace in storage:</p>
+<div class="section" id="upload-dir">
+<span id="study-upload-dir"></span><h3>upload_dir<a class="headerlink" href="#upload-dir" title="Permalink to this headline">¶</a></h3>
+<p>[New in 3.21.2.0]</p>
+<p>This method for uploading study directory to some namespace in storage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
-<span class="n">dicom_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">study_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 
-<span class="n">image_params</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">upload_dicom</span><span class="p">(</span>
-    <span class="n">dicom_path</span><span class="p">,</span>
-    <span class="n">namespace_id</span><span class="p">,</span>
+<span class="n">study_uid</span><span class="p">,</span> <span class="n">image_params</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">upload_dir</span><span class="p">(</span>
+    <span class="n">study_dir</span><span class="o">=</span><span class="n">study_dir</span><span class="p">,</span>
+    <span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>This method gets <cite>engine_fqdn</cite> from the service API for a specific namespace_id and then uploads dicom to the storage using <code class="xref py py-meth docutils literal notranslate"><span class="pre">api.Storage.Image.upload()</span></code> method.</p>
 </div>
-<div class="section" id="upload">
-<h3>upload<a class="headerlink" href="#upload" title="Permalink to this headline">¶</a></h3>
-<p>This method creates a new <cite>thin</cite> study, uploads all dicom files (<cite>**/*.dcm</cite>) from a specific study path to storage, and calls sync for this study:</p>
+<div class="section" id="upload-paths">
+<h3>upload_paths<a class="headerlink" href="#upload-paths" title="Permalink to this headline">¶</a></h3>
+<p>[New in 3.21.2.0]</p>
+<p>This method for uploading study using dicoms paths:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
-<span class="n">study_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">study_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 
-<span class="n">study_uuid</span><span class="p">,</span> <span class="n">image_params</span>  <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span>
-    <span class="n">study_path</span><span class="p">,</span>
-    <span class="n">namespace_id</span><span class="p">,</span>
+<span class="n">study_uid</span><span class="p">,</span> <span class="n">image_params</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">upload_paths</span><span class="p">(</span>
+    <span class="n">dicom_paths</span><span class="o">=</span><span class="n">study_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;**/*.dcm&#39;</span><span class="p">),</span>
+    <span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>It can be useful if you would like to use some user specific dicom path iterator.
+For example, tqdm progress bar usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="n">study_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="n">study_uid</span><span class="p">,</span> <span class="n">image_params</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">upload_paths</span><span class="p">(</span>
+    <span class="n">dicom_paths</span><span class="o">=</span><span class="nb">iter</span><span class="p">(</span><span class="n">tqdm</span><span class="p">(</span><span class="n">study_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;**/*.dcm&#39;</span><span class="p">))),</span>
+    <span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -83,7 +85,7 @@
 <div class="section" id="wait">
 <h3>wait<a class="headerlink" href="#wait" title="Permalink to this headline">¶</a></h3>
 <p>Wait for a new study (not phantom) in namespace:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">new_study</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">study</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span>
     <span class="n">study_uid</span><span class="p">,</span>
     <span class="n">namespace_id</span><span class="p">,</span>
     <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
@@ -91,11 +93,31 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="upload-and-get">
-<h3>upload_and_get<a class="headerlink" href="#upload-and-get" title="Permalink to this headline">¶</a></h3>
-<p>Upload dicoms from specific study dir using <code class="xref py py-meth docutils literal notranslate"><span class="pre">api.Addon.Study.upload()</span></code> method and wait for this object to appear in <cite>v3services</cite>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">new_study</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">upload_and_get</span><span class="p">(</span>
+<div class="section" id="upload-dir-and-get">
+<span id="study-upload-dir-and-get"></span><h3>upload_dir_and_get<a class="headerlink" href="#upload-dir-and-get" title="Permalink to this headline">¶</a></h3>
+<p>[New in 3.21.2.0]</p>
+<p>Upload dicoms from specific study dir using <code class="xref py py-meth docutils literal notranslate"><span class="pre">api.Addon.Study.upload_dir()</span></code> method and wait for this object to appear in <cite>v3services</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">study_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="n">new_study</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">upload_dir_and_get</span><span class="p">(</span>
     <span class="n">study_dir</span><span class="o">=</span><span class="n">study_dir</span><span class="p">,</span>
+    <span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="upload-paths-and-get">
+<h3>upload_paths_and_get<a class="headerlink" href="#upload-paths-and-get" title="Permalink to this headline">¶</a></h3>
+<p>[New in 3.21.2.0]</p>
+<p>Upload dicoms from paths iterator using <code class="xref py py-meth docutils literal notranslate"><span class="pre">api.Addon.Study.upload_paths()</span></code> method and wait for this object to appear in <cite>v3services</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">study_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="n">new_study</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">upload_dir_and_get</span><span class="p">(</span>
+    <span class="n">dicom_paths</span><span class="o">=</span><span class="n">study_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;**/*.dcm&#39;</span><span class="p">),</span>
     <span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
@@ -107,18 +129,6 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">duplicated_study</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">duplicate_and_get</span><span class="p">(</span>
     <span class="n">uuid</span><span class="o">=</span><span class="n">some_study</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
     <span class="n">namespace_id</span><span class="o">=</span><span class="n">to_namespace_id</span><span class="p">,</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="wait-job">
-<h3>wait_job<a class="headerlink" href="#wait-job" title="Permalink to this headline">¶</a></h3>
-<p>[New in 3.21.1.0]</p>
-<p>Wait for a job done (for example storage anonymization job):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">wait_job</span><span class="p">(</span>
-    <span class="n">job_id</span><span class="p">,</span>
-    <span class="n">namespace_id</span><span class="p">,</span>
-    <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -153,6 +163,154 @@
 </pre></div>
 </div>
 </div>
+<div class="section" id="wait-job-deprecated">
+<h3>wait_job [DEPRECATED]<a class="headerlink" href="#wait-job-deprecated" title="Permalink to this headline">¶</a></h3>
+<p>[New in 3.21.1.0]
+[DEPRECATED in 3.21.2.0]</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Instead of this use <a class="reference internal" href="#job-wait"><span class="std std-ref">wait</span></a> method.</p>
+</div>
+<p>Wait for a job done (for example storage anonymization job):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">wait_job</span><span class="p">(</span>
+    <span class="n">job_id</span><span class="p">,</span>
+    <span class="n">namespace_id</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dicom-deprecated">
+<h3>dicom [DEPRECATED]<a class="headerlink" href="#dicom-deprecated" title="Permalink to this headline">¶</a></h3>
+<p>[New in 3.20.8.0]
+[DEPRECATED in 3.21.2.0]</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Instead of this use <a class="reference internal" href="#dicom-get"><span class="std std-ref">get</span></a> method.</p>
+</div>
+<p>Get pydicom specific object from storage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dicom</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">dicom</span><span class="p">(</span>
+          <span class="n">namespace_id</span><span class="o">=</span><span class="n">storage_namespace</span><span class="p">,</span>
+          <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
+          <span class="n">image_uid</span><span class="o">=</span><span class="n">image</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+      <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="upload-dicom-deprecated">
+<h3>upload_dicom [DEPRECATED]<a class="headerlink" href="#upload-dicom-deprecated" title="Permalink to this headline">¶</a></h3>
+<p>[DEPRECATED in 3.21.2.0]</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Instead of this use <a class="reference internal" href="#dicom-upload-from-path"><span class="std std-ref">upload_from_path</span></a> method.</p>
+</div>
+<p>This method is for uploading dicom to the some namespace in storage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">dicom_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="n">image_params</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">upload_dicom</span><span class="p">(</span>
+    <span class="n">dicom_path</span><span class="p">,</span>
+    <span class="n">namespace_id</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This method gets <cite>engine_fqdn</cite> from the service API for a specific namespace_id and then uploads dicom to the storage using <code class="xref py py-meth docutils literal notranslate"><span class="pre">api.Storage.Image.upload()</span></code> method.</p>
+</div>
+<div class="section" id="upload-deprecated">
+<h3>upload [DEPRECATED]<a class="headerlink" href="#upload-deprecated" title="Permalink to this headline">¶</a></h3>
+<p>[DEPRECATED in 3.21.2.0]</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Instead of this use <a class="reference internal" href="#study-upload-dir"><span class="std std-ref">upload_dir</span></a> method.</p>
+</div>
+<p>This method creates a new <cite>thin</cite> study, uploads all dicom files (<cite>**/*.dcm</cite>) from a specific study path to storage, and calls sync for this study:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">study_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="n">study_uuid</span><span class="p">,</span> <span class="n">image_params</span>  <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span>
+    <span class="n">study_path</span><span class="p">,</span>
+    <span class="n">namespace_id</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="upload-and-get-deprecated">
+<h3>upload_and_get [DEPRECATED]<a class="headerlink" href="#upload-and-get-deprecated" title="Permalink to this headline">¶</a></h3>
+<p>[DEPRECATED in 3.21.2.0]</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Instead of this use <a class="reference internal" href="#study-upload-dir-and-get"><span class="std std-ref">upload_dir_and_get</span></a> method.</p>
+</div>
+<p>Upload dicoms from specific study dir using <code class="xref py py-meth docutils literal notranslate"><span class="pre">api.Addon.Study.upload()</span></code> method and wait for this object to appear in <cite>v3services</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">new_study</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">upload_and_get</span><span class="p">(</span>
+    <span class="n">study_dir</span><span class="o">=</span><span class="n">study_dir</span><span class="p">,</span>
+    <span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="job">
+<h2>Job<a class="headerlink" href="#job" title="Permalink to this headline">¶</a></h2>
+<p>Job level addon methods.</p>
+<div class="section" id="job-wait">
+<span id="id1"></span><h3>wait<a class="headerlink" href="#job-wait" title="Permalink to this headline">¶</a></h3>
+<p>[New in 3.21.2.0]</p>
+<p>Wait for storage job done (for example storage anonymization job):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Job</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span>
+    <span class="n">job_id</span><span class="o">=</span><span class="n">job_id</span><span class="p">,</span>
+    <span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">ws_timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="dicom">
+<h2>Dicom<a class="headerlink" href="#dicom" title="Permalink to this headline">¶</a></h2>
+<p>Dicom level addon methods.</p>
+<div class="section" id="get">
+<span id="dicom-get"></span><h3>get<a class="headerlink" href="#get" title="Permalink to this headline">¶</a></h3>
+<p>[New in 3.21.2.0]</p>
+<p>Get pydicom specific object from storage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dicom</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Dicom</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+          <span class="n">namespace_id</span><span class="o">=</span><span class="n">storage_namespace</span><span class="p">,</span>
+          <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
+          <span class="n">image_uid</span><span class="o">=</span><span class="n">image</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+      <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="upload">
+<h3>upload<a class="headerlink" href="#upload" title="Permalink to this headline">¶</a></h3>
+<p>[New in 3.21.2.0]</p>
+<p>Upload dicom file to storage namespace:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;dicom.dcm&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dicom_file</span><span class="p">:</span>
+    <span class="n">uploaded_image_params</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Dicom</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span>
+        <span class="n">dicom_file</span><span class="o">=</span><span class="n">dicom_file</span><span class="p">,</span>
+        <span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="upload-from-path">
+<span id="dicom-upload-from-path"></span><h3>upload_from_path<a class="headerlink" href="#upload-from-path" title="Permalink to this headline">¶</a></h3>
+<p>[New in 3.21.2.0]</p>
+<p>Upload dicom from path to storage namespace:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">dicom_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">..</span><span class="p">)</span>
+
+<span class="n">uploaded_image_params</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Dicom</span><span class="o">.</span><span class="n">upload_from_path</span><span class="p">(</span>
+    <span class="n">dicom_path</span><span class="o">=</span><span class="n">dicom_path</span><span class="p">,</span>
+    <span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
@@ -167,7 +325,7 @@
 
 
 
-<p class="blurb">version 3.21.1.0-1</p>
+<p class="blurb">version 3.21.2.0-1</p>
 
 
 
@@ -190,15 +348,29 @@
 <li class="toctree-l1"><a class="reference internal" href="storage_api.html">Storage API</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Addon methods</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#study">Study</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#dicom">dicom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#upload-dicom">upload_dicom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#upload">upload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upload-dir">upload_dir</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upload-paths">upload_paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#wait">wait</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#upload-and-get">upload_and_get</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upload-dir-and-get">upload_dir_and_get</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upload-paths-and-get">upload_paths_and_get</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#duplicate-and-get">duplicate_and_get</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#wait-job">wait_job</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#anonymize-and-wait">anonymize_and_wait</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#anonymize-and-get">anonymize_and_get</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wait-job-deprecated">wait_job [DEPRECATED]</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dicom-deprecated">dicom [DEPRECATED]</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upload-dicom-deprecated">upload_dicom [DEPRECATED]</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upload-deprecated">upload [DEPRECATED]</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upload-and-get-deprecated">upload_and_get [DEPRECATED]</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#job">Job</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#job-wait">wait</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dicom">Dicom</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#get">get</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upload">upload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upload-from-path">upload_from_path</a></li>
 </ul>
 </li>
 </ul>

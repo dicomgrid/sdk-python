@@ -71,9 +71,6 @@ class Case:
         :param customfield_param: Custom field(s) (optional)
         :param name: case name (optional)
         :param submitted: Flag if the case is submitted (optional)
-
-        Notes:
-        The rest of the fields can not be set by the case owner
         """
         request_data = {
            'assigned_admin_id': assigned_admin_id,

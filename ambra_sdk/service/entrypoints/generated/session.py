@@ -13,6 +13,7 @@ from ambra_sdk.exceptions.service import InvalidCode
 from ambra_sdk.exceptions.service import InvalidCredentials
 from ambra_sdk.exceptions.service import InvalidPin
 from ambra_sdk.exceptions.service import InvalidSid
+from ambra_sdk.exceptions.service import InvalidSignature
 from ambra_sdk.exceptions.service import InvalidUrl
 from ambra_sdk.exceptions.service import InvalidVendor
 from ambra_sdk.exceptions.service import Lockout
@@ -20,6 +21,7 @@ from ambra_sdk.exceptions.service import MissingFields
 from ambra_sdk.exceptions.service import MissingInformation
 from ambra_sdk.exceptions.service import NoOauth
 from ambra_sdk.exceptions.service import NotFound
+from ambra_sdk.exceptions.service import OnlyOne
 from ambra_sdk.exceptions.service import OtherOauth
 from ambra_sdk.exceptions.service import PasswordReset
 from ambra_sdk.exceptions.service import PinExpired
@@ -38,28 +40,27 @@ class Session:
     def login(
         self,
         login,
-        password,
         account_login=None,
         account_name=None,
         email=None,
         location=None,
         new_password=None,
+        password=None,
+        use_pkey=None,
         validate_session=None,
         vanity=None,
     ):
         """Login.
         :param login: The user account_login or email address
-        :param password: The password
         :param account_login: account_login
         :param account_name: account_name
         :param email: email
         :param location: Login location. (optional)
         :param new_password: Change the password or account password to this. (optional)
+        :param password: password
+        :param use_pkey: use_pkey
         :param validate_session: If you would like to validate an existing session rather than create a new one pass in the sid of the session to valid in this parameter. It will check if the session is still valid and the credentials are for the session. (optional)
         :param vanity: The account vanity name. (optional)
-
-        Notes:
-        email OR account_name AND account_login - The users email address or the account name and account_login (DEPRECIATED - Use login and vanity)
         """
         request_data = {
            'account_login': account_login,
@@ -69,6 +70,7 @@ class Session:
            'login': login,
            'new_password': new_password,
            'password': password,
+           'use_pkey': use_pkey,
            'validate_session': validate_session,
            'vanity': vanity,
         }
@@ -81,6 +83,7 @@ class Session:
         errors_mapping[('INVALID_CREDENTIALS', None)] = InvalidCredentials('Invalid user name or password.')
         errors_mapping[('LOCKOUT', None)] = Lockout('Too many failed attempts')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('ONLY_ONE', None)] = OnlyOne('You can pass either the password or use_pkey flag, not both')
         errors_mapping[('PASSWORD_RESET', None)] = PasswordReset('The password needs to be changed')
         errors_mapping[('SSO_ONLY', None)] = SsoOnly('The user can only login via SSO')
         errors_mapping[('VALIDATION_FAILED', None)] = ValidationFailed('The session validation failed')
@@ -123,9 +126,6 @@ class Session:
         """Permissions.
         :param account_id: account_id
         :param namespace_id: namespace_id
-
-        Notes:
-        (account_id OR namespace_id) - Either the account or namespaces to get the users permissions for
         """
         request_data = {
            'account_id': account_id,
@@ -311,6 +311,30 @@ class Session:
         query_data = {
             'api': self._api,
             'url': '/session/pin',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
+    def sign(
+        self,
+        signature,
+    ):
+        """Sign.
+        :param signature: The Base64-encoded signature
+        """
+        request_data = {
+           'signature': signature,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_SID', None)] = InvalidSid('Invalid sid')
+        errors_mapping[('INVALID_SIGNATURE', None)] = InvalidSignature('Invalid signature')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        query_data = {
+            'api': self._api,
+            'url': '/session/sign',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,

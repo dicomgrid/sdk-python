@@ -982,3 +982,19 @@ class InvalidDistributedDestination(PreconditionFailed):
 
 class InvalidWebhookSetup(PreconditionFailed):
     """InvalidWebhookSetup."""
+
+
+class InvalidConfig(PreconditionFailed):
+    """InvalidConfig."""
+
+
+class SiteNotAllowed(PreconditionFailed):
+    """SiteNotAllowed."""
+
+
+class InvalidSignature(PreconditionFailed):
+    """InvalidSignature."""
+
+
+class OnlyOne(PreconditionFailed):
+    """OnlyOne."""

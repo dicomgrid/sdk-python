@@ -168,6 +168,7 @@ class User:
         old_password=None,
         password=None,
         pin_required=None,
+        public_key=None,
         share_code=None,
         share_description=None,
         time_zone=None,
@@ -188,10 +189,15 @@ class User:
         :param old_password: Previous user password (optional)
         :param password: User password (optional)
         :param pin_required: Flag to require a PIN for every login (optional)
+        :param public_key: A public key for public key authentication (optional)
         :param share_code: The share code of the user (optional)
         :param share_description: The share description of the user (optional)
         :param time_zone: The users time zone name as per https://www.postgresql.org/docs/9.1/static/view-pg-timezone-names.html (optional)
-        :param ui_json: JSON for UI settings (optional)
+        :param ui_json: JSON for UI settings (optional) possible options:
+
+show_org_manage_link (boolean) Show link to manage multiple organizations
+advanced_search (array) Advanced search customization for role. See account level &#34;advanced_search&#34; ui_json param for possible values
+enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         :param uuid: The users uuid (optional). Uses the session user if not passed
         """
         request_data = {
@@ -207,6 +213,7 @@ class User:
            'password': password,
            'pin_required': pin_required,
            'privacy_md5': privacy_md5,
+           'public_key': public_key,
            'share_code': share_code,
            'share_description': share_description,
            'terms_md5': terms_md5,

@@ -66,17 +66,14 @@ class Customfield:
     def add(
         self,
         account_id,
-        capture_on_destination_search,
-        capture_on_share_code,
-        dicom_only,
-        display_order,
         name,
         object,
-        required,
-        type,
-        wrapped_dicom_only,
+        capture_on_destination_search=None,
+        capture_on_share_code=None,
+        dicom_only=None,
         dicom_tag=None,
         dicom_tag_ignore_empty=None,
+        display_order=None,
         field_flag=None,
         hl7_component=None,
         hl7_field=None,
@@ -87,23 +84,23 @@ class Customfield:
         load_hl7_filter=None,
         options=None,
         other_dicom_tags=None,
+        required=None,
+        type=None,
+        wrapped_dicom_only=None,
     ):
         """Add.
         :param account_id: uuid of the account
-        :param capture_on_destination_search: Flag if the field should be captured during query retrieve on /destination/search call (only applicable to study fields)
-        :param capture_on_share_code: Flag if the field should be captured during a share code exchange (only applicable to study fields)
-        :param dicom_only: Only capture for non-wrapped DICOM uploads during a share code exchange
-        :param display_order: Integer to order how the fields should be displayed
         :param name: Name of the customfield
-        :param object: The object to associate the customfield with (Study|User_account|Group|Location|Account|Patient|Case|Order|Appointment|Dicomdata)
-        :param required: Flag if the field is required
-        :param type: Type of the custom field (text|number|date|memo|select|multiselect|radio|checkbox|search)
-        :param wrapped_dicom_only: Only capture for wrapped DICOM uploads during a share code exchange
+        :param object: The object to associate the customfield with (Study|User_account|Group|Location|Account|Patient|Case|Order|Appointment|Dicomdata|Scanner)
+        :param capture_on_destination_search: Flag if the field should be captured during query retrieve on /destination/search call (only applicable to study fields) (optional)
+        :param capture_on_share_code: Flag if the field should be captured during a share code exchange (only applicable to study fields) (optional)
+        :param dicom_only: Only capture for non-wrapped DICOM uploads during a share code exchange (optional)
         :param dicom_tag: DICOM tag to map this field to. Format should be of form (1234,1234). (only applicable to study fields) (optional)
         :param dicom_tag_ignore_empty: Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified) (optional)
+        :param display_order: Integer to order how the fields should be displayed (optional)
         :param field_flag: Default customfield flag (optional)
-        :param hl7_component: Component number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)
-        :param hl7_field: Segment field number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)
+        :param hl7_component: Component number to map this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)
+        :param hl7_field: Segment field number to map this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)
         :param hl7_segment: Segment to map this field to in HL7 ORM messages. Valid values are (NTE|PID|PID1|PV1|PV2|OBR|DG1|OBX|CTI|BLG|ORC) (only applicable to study fields) (optional)
         :param load_dicom_tag: Flag to load the current value from the study into this field. (only applicable if a dicom_tag is specified) (optional)
         :param load_from_sr: Load the value from the structured reports in the study (only applicable to study fields) .(optional)
@@ -111,6 +108,9 @@ class Customfield:
         :param load_hl7_filter: Filter token for the load_hl7 option (only applicable to study fields) (optional)
         :param options: Additional options in JSON format (optional)
         :param other_dicom_tags: JSON array of other DICOM tags to map this field to. (only applicable to study fields) (optional)
+        :param required: Flag if the field is required (optional)
+        :param type: Type of the custom field (text|number|date|memo|select|multiselect|radio|checkbox|search) (optional)
+        :param wrapped_dicom_only: Only capture for wrapped DICOM uploads during a share code exchange (optional)
         """
         request_data = {
            'account_id': account_id,
@@ -192,8 +192,8 @@ class Customfield:
         :param dicom_tag_ignore_empty: Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified) (optional)
         :param display_order: Integer to order how the fields should be displayed (optional)
         :param field_flag: Default customfield flag (optional)
-        :param hl7_component: Component number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)
-        :param hl7_field: Segment field number to map  this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)
+        :param hl7_component: Component number to map this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)
+        :param hl7_field: Segment field number to map this field to in HL7 ORM messages. Valid values are 1 to 64. (only applicable to study fields) (optional)
         :param hl7_segment: Segment to map this field to in HL7 ORM messages. Valid values are (NTE|PID|PID1|PV1|PV2|OBR|DG1|OBX|CTI|BLG|ORC) (only applicable to study fields) (optional)
         :param load_dicom_tag: Flag to load the current value from the study into this field. (only applicable if a dicom_tag is specified) (optional)
         :param load_from_sr: Load the value from the structured reports in the study. (only applicable to study fields) .(optional)

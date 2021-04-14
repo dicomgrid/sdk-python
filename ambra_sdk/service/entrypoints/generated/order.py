@@ -367,9 +367,6 @@ class Order:
         :param account_id: The account uuid if sid authentication is used
         :param node_id: node_id
         :param serial_no: serial_no
-
-        Notes:
-        (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number
         """
         request_data = {
            'account_id': account_id,

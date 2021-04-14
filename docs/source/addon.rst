@@ -271,6 +271,28 @@ Wait for storage job done (for example storage anonymization job)::
   )
 
 
+wait_completion
+~~~~~~~~~~~~~~~
+
+[New in 3.21.3.0]
+
+Execute storage method and wait this job. This is a anonymize and wait example::
+
+  anonymized_study_uid = api.Addon.Job.wait_completion(
+      api.Storage.Study.anonymize,
+      engine_fqdn=engine_fqdn,
+      namespace=namespace,
+      study_uid=study_uid,
+      region=region,
+      to_namespace=to_namespace,
+      new_study_uid=new_study_uid,
+      keep_image_uids=keep_image_uids,
+      color=color,
+      only_prepare=only_prepare,
+  )
+ 
+
+
 Dicom
 ^^^^^
 

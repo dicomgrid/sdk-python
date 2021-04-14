@@ -5,6 +5,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+
+## [3.21.3.0-1] - 2021-04-07
+### Added
+- Service public api support: LBL0022 v45.0 2021-04-07
+- Service models: LBL0022 v45.0 2021-04-07
+- Storage public api support: LBL0038 v14.0 2021-02-24
+- api.Addon.Addon.Job.wait_completion method
+- Job support for api.Storage.Study.delete_images
+- Job support for api.Storage.Study.post_attachemnt
+- Job support for api.Storage.Study.delete_attachemnt
+- Job support for api.Storage.Study.merge
+- Job support for api.Storage.Study.anonymize
+- Job support for api.Storage.Study.clone
+- Job support for api.Storage.Image.upload
+- Job support for api.Storage.Image.wrap
+
 ## [3.21.2.0-1] - 2021-02-24
 ### Added
 - api.Addon.Dicom.upload method

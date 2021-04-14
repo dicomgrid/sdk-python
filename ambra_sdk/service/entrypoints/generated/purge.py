@@ -71,6 +71,7 @@ class Purge:
         minors=None,
         modalities=None,
         namespaces=None,
+        object=None,
         owned_phr=None,
         shared_from_phr=None,
         skinny=None,
@@ -90,6 +91,7 @@ class Purge:
         :param minors: Apply this rule to minors - flag (optional)
         :param modalities: A JSON array of modalities to limit the rule to (optional)
         :param namespaces: A JSON array of namespace uuid to limit the rule to (optional)
+        :param object: The object to be purged, Study by default (Study|Hl7) (optional)
         :param owned_phr: Apply this rule to owned PHR namespaces - flag (optional)
         :param shared_from_phr: If a study was shared from a PHR namespace delete the copy in the PHR namespace as well - flag (optional)
         :param skinny: Make the studies skinny rather than deleting - flag (optional)
@@ -109,6 +111,7 @@ class Purge:
            'modalities': modalities,
            'name': name,
            'namespaces': namespaces,
+           'object': object,
            'owned_phr': owned_phr,
            'shared_from_phr': shared_from_phr,
            'skinny': skinny,
@@ -266,19 +269,19 @@ class Purge:
         self,
         dry_run,
         account_id=None,
+        object=None,
         rule_id=None,
     ):
         """Run.
         :param dry_run: Do a dry run of the rule - flag
         :param account_id: account_id
+        :param object: Limit purging to this object only (optional)
         :param rule_id: rule_id
-
-        Notes:
-        (rule_id OR account_id) - Id of the purge rule or the account id if all purge rules should be run
         """
         request_data = {
            'account_id': account_id,
            'dry_run': dry_run,
+           'object': object,
            'rule_id': rule_id,
         }
 	

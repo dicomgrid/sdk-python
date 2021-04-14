@@ -36,13 +36,13 @@ class Training:
     def done(
         self,
         account_id,
-        additional_parameters,
         form_number,
+        additional_parameters=None,
     ):
         """Done.
         :param account_id: Id of the account the training is for
-        :param additional_parameters: All additional parameters will be logged as part of the TRAINING_DONE user audit event
         :param form_number: The formstack id of the form
+        :param additional_parameters: Additional parameters will be logged as part of the TRAINING_DONE user audit event
         """
         request_data = {
            'account_id': account_id,

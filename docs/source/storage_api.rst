@@ -174,7 +174,7 @@ You can setup some default headers for storage session
 (using `default_headers` property)::
 
   api.default_headers['Golbal-header'] = 'value'
-  api.storage_default_headers['Storage-pecific-header'] = 'value'
+  api.storage_default_headers['Storage-specific-header'] = 'value'
 
 
 .. _`AmbraHealth storage API`: https://uat.dicomgrid.com/api/v3/storage/storage_api.html

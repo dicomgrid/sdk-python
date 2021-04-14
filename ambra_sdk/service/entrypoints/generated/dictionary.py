@@ -294,9 +294,6 @@ class Dictionary:
         :param sequence: An integer value. Attachments are processed from low number to high number (optional)
         :param skip_if_lookup_unchanged: Flag to skip the lookup if the lookup field(s) are un-changed (optional)
         :param skip_if_replace_has_value: Flag to skip the lookup if the replace field already has a value (optional)
-
-        Notes:
-        (account_id OR namespace_id) - uuid of the account or namespace to the dictionary to
         """
         request_data = {
            'account_id': account_id,

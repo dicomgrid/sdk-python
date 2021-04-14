@@ -29,9 +29,6 @@ class Dicomdata:
         :param dicom_tags: A JSON list of the DICOM tags to return (optional)
         :param namespace_id: namespace_id
         :param study_id: study_id
-
-        Notes:
-        (study_id OR namespace_id) - uuid of the study or namespace to search
         """
         request_data = {
            'dicom_tags': dicom_tags,

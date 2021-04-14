@@ -142,7 +142,6 @@ class Customcode:
         }
 	
         errors_mapping = {}
-        errors_mapping[('NOT_FOUND', None)] = NotFound('Not found')
         query_data = {
             'api': self._api,
             'url': '/customcode/zip',
@@ -290,9 +289,6 @@ class Customcode:
         """Deploy list.
         :param customcode_id: customcode_id
         :param namespace_id: namespace_id
-
-        Notes:
-        (namespace_id OR customcode_id) - uuid of either the namespace or customcode to show the deployments for
         """
         request_data = {
            'customcode_id': customcode_id,

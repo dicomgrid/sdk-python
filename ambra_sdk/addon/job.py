@@ -1,5 +1,6 @@
 """Job addon namespace."""
 
+import uuid as uuid_lib
 from contextlib import suppress
 from time import monotonic
 from typing import Mapping, Optional, Tuple, Union
@@ -12,6 +13,10 @@ from ambra_sdk.exceptions.service import (
 from ambra_sdk.service.query import QueryO
 from ambra_sdk.service.ws import WSManager
 
+ERRORS_MAPPING_KEY_TYPE = Union[Tuple[str, Optional[str]], str]
+
+ERRORS_MAPPING_TYPE = Mapping[ERRORS_MAPPING_KEY_TYPE, PreconditionFailed]
+
 
 class Job:
     """Job addon namespace."""
@@ -22,6 +27,40 @@ class Job:
         :param api: base api
         """
         self._api = api
+
+    def wait_completion(
+        self,
+        method,
+        *,
+        timeout: float = 200.0,
+        ws_timeout: int = 5,
+        **kwargs,
+    ):
+        """Wait completion.
+
+        Execute some storage method and wait it
+        :param method: method
+        :param timeout: timeout
+        :param ws_timeout: websocket interval
+        :param kwargs: method kwargs
+        :return: method result
+        """
+        # Namespace is required in kwargs
+        namespace = kwargs['namespace']
+        x_ambrahealth_job_id = kwargs.get('x_ambrahealth_job_id', None)
+
+        if x_ambrahealth_job_id is None:
+            x_ambrahealth_job_id = str(uuid_lib.uuid4())
+        kwargs['x_ambrahealth_job_id'] = x_ambrahealth_job_id
+        method_result = method(**kwargs)
+        # A. Matveev: job namespace is initial namespace
+        self.wait(
+            job_id=x_ambrahealth_job_id,
+            namespace_id=namespace,
+            timeout=timeout,
+            ws_timeout=ws_timeout,
+        )
+        return method_result
 
     def wait(
         self,
@@ -41,14 +80,11 @@ class Job:
         :raises TimeoutError: if job not ready by timeout
         :raises RuntimeError: Bad answer from ws
         """
-        errors_mapping: Mapping[  # NOQA:WPS234
-            Union[Tuple[str, Optional[str]], str],
-            PreconditionFailed,
-        ] = {
-            ('NOT_FOUND', None): NotFound('The job can not be found'),
-            ('NOT_PERMITTED', None): NotPermitted(
-                'The user is not permitted to access this job',
-            ),
+        errors_mapping: ERRORS_MAPPING_TYPE = {
+            ('NOT_FOUND', None):
+            NotFound('The job can not be found'),
+            ('NOT_PERMITTED', None):
+            NotPermitted('The user is not permitted to access this job'),
         }
         request_data = {
             'id': job_id,

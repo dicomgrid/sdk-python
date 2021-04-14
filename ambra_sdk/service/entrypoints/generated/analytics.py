@@ -24,26 +24,31 @@ class Analytics:
         count,
         period,
         account_id=None,
+        customfield_param=None,
         end_date=None,
+        modality=None,
         namespace_id=None,
     ):
         """Study.
         :param count: The number of periods to get
         :param period: The time period (day|week|month|year)
         :param account_id: account_id
+        :param customfield_param: Filter analytics by a subset of study customfields (optional)
         :param end_date: The end date, default is today if not passed (optional)
+        :param modality: Filter analytics by modality (optional)
         :param namespace_id: namespace_id
-
-        Notes:
-        (account_id OR namespace_id) - The account or namespace to get the analytics for
         """
         request_data = {
            'account_id': account_id,
            'count': count,
            'end_date': end_date,
+           'modality': modality,
            'namespace_id': namespace_id,
            'period': period,
         }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
 	
         errors_mapping = {}
         errors_mapping[('INVALID_COUNT', None)] = InvalidCount('Invalid or excessive count value')
@@ -149,14 +154,16 @@ class Analytics:
         count,
         period,
         end_date=None,
+        end_time=None,
         namespace_id=None,
         user_id=None,
     ):
         """User.
         :param account_id: The account id
         :param count: The number of periods to get
-        :param period: The time period (day|week|month|year)
-        :param end_date: The end date, default is today if not passed (optional)
+        :param period: The time period (hour|day|week|month|year)
+        :param end_date: The end date, for backwards compatibility (optional)
+        :param end_time: The end date and time, default is now if not passed (optional)
         :param namespace_id: Namespace filter (optional)
         :param user_id: User filter (optional)
         """
@@ -164,6 +171,7 @@ class Analytics:
            'account_id': account_id,
            'count': count,
            'end_date': end_date,
+           'end_time': end_time,
            'namespace_id': namespace_id,
            'period': period,
            'user_id': user_id,

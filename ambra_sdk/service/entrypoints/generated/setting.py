@@ -20,7 +20,7 @@ class Setting:
         user_id=None,
     ):
         """Set.
-        :param key: The key to store the value under. If the key name begins with temp it is only available for the session.
+        :param key: The key to store the value under. If the key name begins with temp_ it is only available for the session.
         :param value: The value to store
         :param user_id: A sysadmin user can set the value for a specific user (optional)
         """

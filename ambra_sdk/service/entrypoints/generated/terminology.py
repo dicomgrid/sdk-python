@@ -31,9 +31,6 @@ class Terminology:
         :param storage_namespace: storage_namespace
         :param study_uid: study_uid
         :param vanity: vanity
-
-        Notes:
-        (account_id OR vanity OR study_uid AND storage_namespace AND phi_namespace) - The uuid or vanity name of the account or study triplet to apply any account overrides for (optional)
         """
         request_data = {
            'account_id': account_id,
@@ -73,9 +70,6 @@ class Terminology:
         :param study_uid: study_uid
         :param tags: A comma separated list of the terminology tags to look up (optional)
         :param vanity: vanity
-
-        Notes:
-        (account_id OR vanity OR study_uid AND storage_namespace AND phi_namespace) - The uuid or vanity name of the account or study triplet to apply any account overrides for (optional)
         """
         request_data = {
            'account_id': account_id,
@@ -148,9 +142,6 @@ class Terminology:
         :param tags: A comma separated list of the terminology tags to look up
         :param account_id: account_id
         :param vanity: vanity
-
-        Notes:
-        (account_id OR vanity) - The uuid or vanity name of the account to apply any account overrides for (optional)
         """
         request_data = {
            'account_id': account_id,
@@ -180,9 +171,6 @@ class Terminology:
         :param lng: The language code
         :param account_id: account_id
         :param vanity: vanity
-
-        Notes:
-        (account_id OR vanity) - The uuid or vanity name of the account to apply any account overrides for (optional)
         """
         request_data = {
            'account_id': account_id,

@@ -43,10 +43,10 @@ class Node:
     
     def list(
         self,
-        account_id,
+        account_id=None,
     ):
         """List.
-        :param account_id: uuid of the account
+        :param account_id: uuid of the account (optional)
         """
         request_data = {
            'account_id': account_id,
@@ -200,9 +200,6 @@ class Node:
         :param location_id: location_id
         :param os_type: Node OS type, used with HARVESTER node type only (WINDOWS|MACOS) (optional)
         :param uuid: uuid of the node (optional, you can use this to explicitly set the UUID)
-
-        Notes:
-        (account_id OR location_id OR group_id) - uuid of the account, location or group to link this node to
         """
         request_data = {
            'accelerator_id': accelerator_id,
@@ -297,9 +294,6 @@ class Node:
         :param settings: A hash of the account settings that the node can override (optional)
         :param storage_namespace: Namespace uuid to attach the node to. This requires a sysadmin sid and must be within the same account (optional)
         :param warning_email: Email address(es) to send warning notices (optional)
-
-        Notes:
-        (sid OR serial_no) - The session id or serial number of the node
         """
         request_data = {
            'category': category,
@@ -356,9 +350,6 @@ class Node:
         """Get.
         :param uuid: The node id
         :param serial_no: serial_no
-
-        Notes:
-        (sid OR serial_no) - The session id or serial number of the node
         """
         request_data = {
            'serial_no': serial_no,
@@ -636,29 +627,32 @@ class Node:
         self,
         search_id,
         serial_no,
-        studies,
         uuid,
+        status=None,
+        studies=None,
     ):
         """Found.
         :param search_id: The id of the search request
         :param serial_no: The serial number of the node
-        :param studies: A JSON array of the studies found. Each object has the following fields:
-            study_uid - The study_uid
-            study_date - The study date
-            accession_number - The accession number
-            referring_physician - The referring physician
-            patient_name - Patient name
-            patientid - Patient ID
-            patient_sex - Gender
-            patient_birth_date - Birth date
-            study_description - Study description
-            modality - Modality
-            result_fields - A JSON structure with the answers for the requested result_fields in /destination/search (optional)
         :param uuid: The node id
+        :param status: Status code of the job, S by default (S|F) - Success, failure (optional)
+        :param studies: A JSON array of the studies found. Each object has the following fields (optional)
+          * study_uid The study_uid
+          * study_date The study date
+          * accession_number The accession number
+          * referring_physician The referring physician
+          * patient_name Patient name
+          * patientid Patient ID
+          * patient_sex Gender 
+          * patient_birth_date Birth date
+          * study_description Study description
+          * modality Modality
+          * result_fields A JSON structure with the answers for the requested result_fields in /destination/search (optional)
         """
         request_data = {
            'search_id': search_id,
            'serial_no': serial_no,
+           'status': status,
            'studies': studies,
            'uuid': uuid,
         }
@@ -666,6 +660,7 @@ class Node:
         errors_mapping = {}
         errors_mapping[('ALREADY_DONE', None)] = AlreadyDone('The search has already had results returned against it')
         errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('INVALID_STATUS', None)] = InvalidStatus('An invalid status was passed')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The node or search can not be found')
         query_data = {
@@ -679,34 +674,38 @@ class Node:
     
     def found_mwl(
         self,
-        orders,
         search_id,
         serial_no,
         uuid,
+        orders=None,
+        status=None,
     ):
         """Found mwl.
-        :param orders: A JSON array of the orders found. Each object has the following fields:
-            patient_name - Patient name
-            patientid - Patient id
-            accession_number - Accession number
-            patient_sex - Gender
-            patient_birth_date - Birth date
-            order_number - Order number
-            order_date - Order date
         :param search_id: The id of the search request
         :param serial_no: The serial number of the node
         :param uuid: The node id
+        :param orders: A JSON array of the orders found. Each object has the following fields (optional)
+          * patient_name Patient name
+          * patientid Patient id 
+          * accession_number Accession number 
+          * patient_sex Gender 
+          * patient_birth_date Birth date
+          * order_number Order number 
+          * order_date Order date
+        :param status: Status code of the job, S by default (S|F) - Success, failure (optional)
         """
         request_data = {
            'orders': orders,
            'search_id': search_id,
            'serial_no': serial_no,
+           'status': status,
            'uuid': uuid,
         }
 	
         errors_mapping = {}
         errors_mapping[('ALREADY_DONE', None)] = AlreadyDone('The search has already had results returned against it')
         errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('INVALID_STATUS', None)] = InvalidStatus('An invalid status was passed')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The node or search can not be found')
         query_data = {
@@ -858,9 +857,6 @@ class Node:
         """Performance get.
         :param uuid: The node id
         :param serial_no: serial_no
-
-        Notes:
-        (sid OR serial_no) - The session id or serial number of the node
         """
         request_data = {
            'serial_no': serial_no,
@@ -934,9 +930,6 @@ class Node:
         """Progress list.
         :param destination_id: destination_id
         :param node_id: node_id
-
-        Notes:
-        (node_id OR destination_id) - The node or destination id
         """
         request_data = {
            'destination_id': destination_id,

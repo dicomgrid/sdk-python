@@ -110,10 +110,6 @@ class Hl7:
         :param storage_namespace: storage_namespace
         :param study_id: study_id
         :param study_uid: study_uid
-
-        Notes:
-        (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number
-        (study_id OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet (optional)
         """
         request_data = {
            'node_id': node_id,

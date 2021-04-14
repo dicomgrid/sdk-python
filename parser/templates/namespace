@@ -53,13 +53,11 @@ class {{ namespace }}:
 	
         errors_mapping = {}
 	{%- for error in api.errors %}
-	    {%- for subtype in error.subtypes %}
-	        {%- if subtype is none %}
+	    {%- if error.subtype is none %}
         errors_mapping[('{{ error.name }}', None)] = {{ error.exception_name() }}('{{error.description}}')
-	        {%- else %}
-        errors_mapping[('{{ error.name }}', '{{ subtype.name }}')] = {{ error.exception_name() }}('{{subtype.description}}')
-		{%- endif %}
-	    {%- endfor %}
+	    {%- else %}
+        errors_mapping[('{{ error.name }}', '{{ error.subtype }}')] = {{ error.exception_name() }}('{{error.description}}')
+	    {%- endif %}
 	{%- endfor %}
         query_data = {
             'api': self._api,

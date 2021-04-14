@@ -1,6 +1,5 @@
 """Study addon namespace."""
 
-import uuid as uuid_lib
 from contextlib import suppress
 from itertools import chain
 from pathlib import Path
@@ -87,13 +86,12 @@ class Study:  # NOQA:WPS214
             patient_name=patient_name,
             storage_namespace=namespace_id,
             phi_namespace=namespace_id,
-            thin=None,
         ).get()
         engine_fqdn = response_data.engine_fqdn
         uuid: str = response_data.uuid
 
         # upload images
-        for dicom_path in chain((first_dicom_path,), dicom_paths):
+        for dicom_path in chain((first_dicom_path, ), dicom_paths):
             with dicom_path.open(mode='rb') as dicom:
                 images_params.append(
                     self._api.Addon.Dicom.upload(
@@ -269,8 +267,8 @@ class Study:  # NOQA:WPS214
         new_study_uid: Optional[str] = None,
         keep_image_uids: Optional[str] = None,
         color: Optional[str] = None,
-        only_prepare: bool = False,
         x_ambrahealth_job_id: Optional[str] = None,
+        only_prepare: bool = False,
         timeout: float = 200.0,
         ws_timeout: int = 5,
     ) -> str:
@@ -289,37 +287,28 @@ class Study:  # NOQA:WPS214
             of modified copies be same as originals? (default is false)
         :param color: HTML-formatted color (rrggbb) of
             obscured regions (default is black-and-white checkerboard)
-        :param only_prepare: Get prepared request.
         :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument
+        :param only_prepare: Get prepared request.
         :param timeout: waiting timeout
         :param ws_timeout: waiting from ws timeout
 
         :returns: new study uid
         """
-        if x_ambrahealth_job_id is None:
-            x_ambrahealth_job_id = str(uuid_lib.uuid4())
-        anonymize = self._api.Storage.Study.anonymize(
-            engine_fqdn,
-            namespace,
-            study_uid,
-            region,
-            to_namespace,
-            new_study_uid,
-            keep_image_uids,
-            color,
-            only_prepare,
-            x_ambrahealth_job_id,
+        anonymize = self._api.Addon.Job.wait_completion(
+            self._api.Storage.Study.anonymize,
+            engine_fqdn=engine_fqdn,
+            namespace=namespace,
+            study_uid=study_uid,
+            region=region,
+            to_namespace=to_namespace,
+            new_study_uid=new_study_uid,
+            keep_image_uids=keep_image_uids,
+            color=color,
+            only_prepare=only_prepare,
+            x_ambrahealth_job_id=x_ambrahealth_job_id,
         )
         anonymized_study_uid: str = anonymize.text
-
-        # A. Matveev: job namespace is initial namespace
-        self._api.Addon.Job.wait(
-            job_id=x_ambrahealth_job_id,
-            namespace_id=namespace,
-            timeout=timeout,
-            ws_timeout=ws_timeout,
-        )
-        return anonymized_study_uid
+        return anonymized_study_uid  # NOQA:WPS331
 
     def anonymize_and_get(
         self,
@@ -331,8 +320,8 @@ class Study:  # NOQA:WPS214
         new_study_uid: Optional[str] = None,
         keep_image_uids: Optional[str] = None,
         color: Optional[str] = None,
-        only_prepare: bool = False,
         x_ambrahealth_job_id: Optional[str] = None,
+        only_prepare: bool = False,
         timeout: float = 200.0,
         ws_timeout: int = 5,
     ) -> Box:
@@ -351,8 +340,8 @@ class Study:  # NOQA:WPS214
             of modified copies be same as originals? (default is false)
         :param color: HTML-formatted color (rrggbb) of
             obscured regions (default is black-and-white checkerboard)
-        :param only_prepare: Get prepared request.
         :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument
+        :param only_prepare: Get prepared request.
         :param timeout: waiting timeout
         :param ws_timeout: waiting from ws timeout
 
@@ -360,20 +349,20 @@ class Study:  # NOQA:WPS214
         :returns: new study
         """
         start = monotonic()
-        new_study_uid = self.anonymize_and_wait(
-            engine_fqdn,
-            namespace,
-            study_uid,
-            region,
-            to_namespace,
-            new_study_uid,
-            keep_image_uids,
-            color,
-            only_prepare,
-            x_ambrahealth_job_id,
-            timeout,
-            ws_timeout,
+        anonymize = self._api.Addon.Job.wait_completion(
+            self._api.Storage.Study.anonymize,
+            engine_fqdn=engine_fqdn,
+            namespace=namespace,
+            study_uid=study_uid,
+            region=region,
+            to_namespace=to_namespace,
+            new_study_uid=new_study_uid,
+            keep_image_uids=keep_image_uids,
+            color=color,
+            only_prepare=only_prepare,
+            x_ambrahealth_job_id=x_ambrahealth_job_id,
         )
+        anonymized_study_uid: str = anonymize.text
         spend_time = monotonic() - start
         rest_timeout = timeout - spend_time
 
@@ -381,17 +370,16 @@ class Study:  # NOQA:WPS214
             raise TimeoutError
         new_namespace = to_namespace if to_namespace is not None else namespace
         return self.wait(
-            study_uid=new_study_uid,
+            study_uid=anonymized_study_uid,
             namespace_id=new_namespace,
             timeout=rest_timeout,
             ws_timeout=ws_timeout,
         )
 
     @deprecated(
-        (
-            'Use api.Addon.Job.wait: '
-            '{addon_docs_url}#job-wait'
-        ).format(addon_docs_url=ADDON_DOCS_URL),
+        'Use api.Addon.Job.wait: {addon_docs_url}#job-wait'.format(
+            addon_docs_url=ADDON_DOCS_URL,
+        ),
     )
     def wait_job(
         self,
@@ -415,10 +403,9 @@ class Study:  # NOQA:WPS214
         )
 
     @deprecated(
-        (
-            'Use api.Addon.Dicom.get: '
-            '{addon_docs_url}#dicom-get'
-        ).format(addon_docs_url=ADDON_DOCS_URL),
+        'Use api.Addon.Dicom.get: {addon_docs_url}#dicom-get'.format(
+            addon_docs_url=ADDON_DOCS_URL,
+        ),
     )
     def dicom(
         self,
@@ -451,10 +438,10 @@ class Study:  # NOQA:WPS214
         )
 
     @deprecated(
-        (
-            'Use api.Addon.Dicom.upload_from_path: '
-            '{addon_docs_url}#dicom-upload-from-path'
-        ).format(addon_docs_url=ADDON_DOCS_URL),
+        'Use api.Addon.Dicom.upload_from_path: '
+        '{addon_docs_url}#dicom-upload-from-path'.format(
+            addon_docs_url=ADDON_DOCS_URL,
+        ),
     )
     def upload_dicom(
         self,
@@ -479,10 +466,10 @@ class Study:  # NOQA:WPS214
         return image_params  # NOQA:WPS331
 
     @deprecated(
-        (
-            'Use api.Addon.Study.upload_dir: '
-            '{addon_docs_url}#study-upload-dir'
-        ).format(addon_docs_url=ADDON_DOCS_URL),
+        'Use api.Addon.Study.upload_dir: '
+        '{addon_docs_url}#study-upload-dir'.format(
+            addon_docs_url=ADDON_DOCS_URL,
+        ),
     )
     def upload(
         self,
@@ -503,10 +490,10 @@ class Study:  # NOQA:WPS214
         )
 
     @deprecated(
-        (
-            'Use api.Addon.Study.upload_dir_and_get: '
-            '{addon_docs_url}#study-upload-dir-and-get'
-        ).format(addon_docs_url=ADDON_DOCS_URL),
+        'Use api.Addon.Study.upload_dir_and_get: '
+        '{addon_docs_url}#study-upload-dir-and-get'.format(
+            addon_docs_url=ADDON_DOCS_URL,
+        ),
     )
     def upload_and_get(
         self,

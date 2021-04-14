@@ -51,7 +51,6 @@ class Report:
         }
 	
         errors_mapping = {}
-        errors_mapping[('NOT_FOUND', None)] = NotFound('Not found')
         query_data = {
             'api': self._api,
             'url': '/report/zip',

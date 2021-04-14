@@ -2,7 +2,12 @@
 
 from enum import Enum, auto
 from typing import List, NamedTuple, Optional
+
+from bs4 import BeautifulSoup
+from bs4.element import NavigableString, Tag
+
 from ambra_sdk.pythonize import PARAMS
+import re
 
 
 class RequestParameterType(Enum):
@@ -42,10 +47,14 @@ class RequestParameter:
         self.parameter_type = parameter_type
         self.name = name
         self.pythonic_name = PARAMS.get(name, name)
+        if description:
+            description = description \
+                .replace('•', '') \
+                .replace('  ', ' ') \
+                .strip()
         self.description = description
         self.optional = optional
-        self.multiline = False
-        self.multiliple_prefix=multiple_prefix
+        self.multiliple_prefix = multiple_prefix
 
     def __hash__(self):
         return hash((self.name, self.parameter_type))
@@ -60,243 +69,143 @@ class RequestGroupParametersDoc:
         self.description = description
 
 
-BAD_REQUEST_PARAMETERS_FIELDS = {
-    'filter.*=>Filter field(s) as per the /study/list to specify the study(s) to construct the link for',
-    'The include_priors link option value can be passed as a key',
-    'Any additional fields will the saved in the study audit trail and the following fields email_address, redirect_url, integration_key and skip_email_prompt will be available in /namespace/share_code if this is an upload link',
-    'show_org_manage_link (boolean) • Show link to manage multiple organizations',
-    'advanced_search (array) • Advanced search customization for role. See account level "advanced_search" ui_json param for possible values',
-    'enable_v3_viewer (boolean) • If set, enables ProViewer for PHR account',
-}
+def parse_params_html(bs, html):
+    prev = None
+    desc = []
 
-REQUEST_PARAMETERS_STRING_MAP = {
-    'v • A JSON hash with the following keys pairs. The JSON must be encrypted and base64 encoded':
-    RequestParameter(
-        RequestParameterType.Usual,
-        'v',
-        """
-        A JSON hash with the following keys pairs. The JSON must be encrypted and base64 encoded:
-        filter.*=>Filter field(s) as per the /study/list to specify the study(s) to construct the link for.
-        The include_priors link option value can be passed as a key.
-        Any additional fields will the saved in the study audit trail and the following fields email_address, redirect_url, integration_key and skip_email_prompt will be available in /namespace/share_code if this is an upload link .""",
-        optional=True,
-    ),
-    # TODO: Can be fixed in new versions of api
-    'dicom_tags A JSON list of the DICOM tags to return (optional)':
-    RequestParameter(
-        RequestParameterType.Usual,
-        'dicom_tags',
-        'A JSON list of the DICOM tags to return (optional)',
-        optional=True,
-    ),
-    'key • The key to store the value under. If the key name begins with temp_ it is only available for the session.':
-    RequestParameter(
-        RequestParameterType.Usual,
-        'key',
-        'The key to store the value under. If the key name begins with temp it is only available for the session.',
-        optional=False,
-    ),
-    'The rest of the parameters are logged to a message in the bucket':
-    RequestParameter(
-        RequestParameterType.Multiple,
-        'logged_params',
-        'Dict of parameters. They are logged to a message in the bucket',
-        optional=False,
-    ),
-    'And all the ai_* settings':
-    RequestParameter(
-        RequestParameterType.Multiple,
-        'ai_settings',
-        'Dict of ai settings',
-        optional=False,
-    ),
-    'All additional parameters will be logged as part of the TRAINING_DONE user audit event':
-    RequestParameter(
-        RequestParameterType.Multiple,
-        'additional_parameters',
-        'All additional parameters will be logged as part of the TRAINING_DONE user audit event',
-        optional=False,
-    ),
-    'The rest of the fields can not be set by the case owner':
-    RequestGroupParametersDoc(
-        'The rest of the fields can not be set by the case owner',
-    ),
-    '-- The rest of the fields are used for the search --':
-    RequestGroupParametersDoc(
-        'The rest of the fields are used for the search',
-    ),
-    '------ The following account settings can be over-ridden in the namespace ------':
-    RequestGroupParametersDoc(
-        'The following account settings can be over-ridden in the namespace',
-    ),
+    first_arg = True
+    name = None
 
-    # study.duplicate overwrite is actually optional
-    'overwrite • Flag if you want to overwrite an existing study in the destination namespace':
-    RequestParameter(
-        RequestParameterType.Usual,
-        'overwrite',
-        'Flag if you want to overwrite an existing study in the destination namespace',
-        optional=True,
-    ),
+    for el in html.contents:
+        if el.name == 'div' and el['class'] and 'comment' in el['class']:
+            continue
+        if prev is None:
+            prev = el
+        if prev == '\n' and el.name == 'i':
+            # not first arg
+            if first_arg is False:
+                arg_name = name.strip()
+                arg_desc = ''.join(
+                    i.text if isinstance(i, Tag) else str(i) for i in desc
+                ).strip()
+                yield arg_name, arg_desc
+                desc = []
 
-    '-- The following fields are used for the activity retrieve workflow --':
-    RequestGroupParametersDoc(
-        'The following fields are used for the activity retrieve workflow: activity_id, message',
-    ),
+            name = el.text
+            first_arg = False
+        else:
+            desc.append(el)
+        prev = el
 
-    '-- The following fields are used for the study request workflow --':
-    RequestGroupParametersDoc(
-        'The following fields are used for the study request workflow: study_request_found_id, send_method',
-    ),
-
-    'ui_json • JSON for UI settings (optional) possible options:':
-    RequestParameter(
-        RequestParameterType.Usual,
-        'ui_json',
-        'JSON for UI settings (optional)',
-        optional=True,
-    ),
-}
+    # print last arg
+    if name is not None:
+        arg_name = name.strip()
+        arg_desc = ''.join(
+            i.text if isinstance(i, Tag) else str(i) for i in desc
+        ).strip()
+        yield arg_name, arg_desc
+        desc = []
 
 
-def parse_request_parameter(parameter_str):
-    parameter_str = parameter_str.strip()
-    if parameter_str.startswith('filter.'):
-        return RequestParameter.filtrator()
-    elif parameter_str.startswith('page.'):
-        return RequestParameter.paginator()
-    elif parameter_str == 'sort_by • Sorting (optional)':
-        return RequestParameter.sorter()
-    else:
-        try:
-            name, description = parameter_str.split('•')
-        except ValueError:
-            raise ValueError(parameter_str)
-        # ...
-        name = name.replace('(boolean)', '')
-        name = name.strip()
-        description = description.strip()
+single_or_re = re.compile(r'[^\|]\|[^\|]')
+single_and_re = re.compile(r'[^\&]\&[^\&]')
 
-        optional = False
-        if 'optional' in description:
-            optional = True
 
-        # multiple field line Node.set::setting_SETTING_NAME
-        if any(i.isupper() for i in name):
-            optional = True
-            if 'customfield-' in name:
-                multi_prefix = 'customfield-'
-                field_name = 'customfield_param'
-            else:
-                prefix = name.split('_')[0]
-                multi_prefix = '{prefix}_'.format(prefix=prefix)
-                field_name = '{prefix}_param'.format(prefix=prefix)
-            return RequestParameter(
+def param_from_name_and_desc(name, desc):
+    if name == 'filter.*':
+        return [RequestParameter.filtrator()]
+    if name == 'page.*':
+        return [RequestParameter.paginator()]
+    if name == 'sort_by':
+        return [RequestParameter.sorter()]
+
+    assert '--' not in desc, 'Maybe comment'
+    assert 'The follwing' not in desc, 'Maybe comment'
+
+    if '**' in name:
+        assert name[-2:] == '**'
+        arg_name = name[:-2]
+        optional = True
+        return [
+            RequestParameter(
+                RequestParameterType.Multiple,
+                arg_name,
+                desc,
+                optional,
+            )
+        ]
+
+
+    # form like customfield-{DESC}
+    if any(i.isupper() for i in name):
+        assert '{' in name, name
+        assert '}' in name, name
+
+    if '{' in name or '}' in name:
+        assert '{' in name
+        assert '}' in name
+
+        b_index = name.index('{')
+        assert b_index != 0
+        assert name[b_index - 1] != ' '
+        multi_prefix = name.split('{')[0]
+        field_name = '{pref}param'.format(
+            pref=multi_prefix.replace('-', '_'),
+        )
+        optional = True
+        return [
+            RequestParameter(
                 RequestParameterType.Multiple,
                 field_name,
-                description,
+                desc,
                 optional,
                 multiple_prefix=multi_prefix,
             )
-        else:
-            return RequestParameter(
-                RequestParameterType.Usual,
-                name,
-                description,
-                optional,
-            )
+        ]
 
+    # Special form for multiparams (sid || node.... &&)
+    if '(' in name or ')' in name:
+        assert '(' in name
+        assert ')' in name
+        assert name[0] == '('
+        assert name[-1] == ')'
+        assert not single_or_re.findall(name)
+        assert not single_and_re.findall(name)
 
-def parse_combinated_request_parameter(parameter_str):
-    if not ('|' in parameter_str or '&' in parameter_str):
-        raise ValueError('Not combined parameter')
-    params = []
-    # Append documentation for group of params
-    group_doc = parameter_str \
-        .replace('||', ' OR ') \
-        .replace('|', ' OR ') \
-        .replace('&&', ' AND ') \
-        .replace('&', ' AND ') \
-        .replace('  ', ' ') \
-        .replace('•', '-')
+        params = set()
+        for p_str in name[1:-1].split('&&'):
+            for arg_name in p_str.split('||'):
+                arg_name = arg_name.strip()
+                optional = True
+                params.add(
+                    RequestParameter(
+                        RequestParameterType.Usual,
+                        arg_name,
+                        arg_name,
+                        optional,
+                    )
+                )
+        return list(params)
 
-    params.append(RequestGroupParametersDoc(group_doc))
-    if 'customfield-' in parameter_str:
-        _, description = parameter_str.split('•')
-        description = description.strip()
+    if not desc.startswith('•'):
+        raise ValueError(name + ' ' + desc)
+    if 'optional' in desc:
+        optional = True
+    else:
         optional = False
-        if 'optional' in description:
-            optional = True
-
-        multi_prefix = 'customfield-'
-        field_name = 'customfield_param'
-        param = RequestParameter(
-            RequestParameterType.Multiple,
-            field_name,
-            description,
+    return [
+        RequestParameter(
+            RequestParameterType.Usual,
+            name,
+            desc,
             optional,
-            multiple_prefix=multi_prefix,
         )
-        params.append(param)
-        return params
-
-    parameter_str = parameter_str.split('•')[0]
-    param_names = []
-    # split by '&' because both usage '&' and '&&'
-    for p_str in parameter_str.split(')')[0].strip('(').split('&'):
-        # split by '|' because both usage '|' and '||'
-        param_names.extend([i.strip() for i in p_str.split('|')])
-    param_names = list(set([i for i in param_names if i != '']))
-    for param_name in param_names:
-        params.append(
-            RequestParameter(
-                RequestParameterType.Usual,
-                param_name,
-                param_name,
-                True,
-            ),
-        )
-    return params
+    ]
 
 
-def parse_request_parameters(parameters_str):
+def parse_request_parameters(bs, html):
     request_params = []
-    for parameter_str in parameters_str.split('\n'):
-        parameter_str = parameter_str.strip()
-        if parameter_str == '':
-            continue
-        if parameter_str in BAD_REQUEST_PARAMETERS_FIELDS:
-            continue
+    for name, desc in parse_params_html(bs, html):
+        request_params.extend(param_from_name_and_desc(name, desc))
 
-        # Its description of array fields
-        if parameter_str.startswith('*'):
-            p_param = request_params.pop()
-            parameter_str = parameter_str \
-                .replace('*', '') \
-                .replace('•', '-') \
-                .strip()
-            sep = ':' if p_param.multiline is False else ''
-            desc = '{p_desc}{sep}\n            {n_desc}'.format(
-                sep=sep,
-                p_desc=p_param.description, n_desc=parameter_str
-            )
-            p_param.description = desc
-            p_param.multiline = True
-            request_params.append(p_param)
-            continue
-
-        # Special cases
-        if parameter_str in REQUEST_PARAMETERS_STRING_MAP:
-            param = REQUEST_PARAMETERS_STRING_MAP[parameter_str]
-            request_params.append(param)
-            continue
-
-        first_part = parameter_str.split('•')[0]
-        if '|' in first_part or '&' in first_part :
-            request_params.extend(
-                parse_combinated_request_parameter(parameter_str)
-            )
-            continue
-        param = parse_request_parameter(parameter_str)
-        request_params.append(param)
-    return list(set(request_params))
+    return request_params

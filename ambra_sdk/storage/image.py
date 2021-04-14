@@ -32,6 +32,7 @@ class Image:
         namespace: str,
         opened_file: RequestsFileType,
         use_box: bool = True,
+        x_ambrahealth_job_id: Optional[str] = None,
         only_prepare: bool = False,
     ) -> Union[Box, Response, PreparedRequest]:
         """Upload image to a namespace.
@@ -45,6 +46,7 @@ class Image:
             3-tuples (filename, fileobj, contentype) or
             4-tuples (filename, fileobj, contentype, custom_headers).
         :param use_box: Use box for response.
+        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument
         :param only_prepare: Get prepared request.
 
         :returns: image object attributes
@@ -58,11 +60,15 @@ class Image:
             request_arg_names,
             locals(),
         )
+        headers = {}
+        if x_ambrahealth_job_id is not None:
+            headers['X-AmbraHealth-Job-Id'] = x_ambrahealth_job_id
         prepared_request = PreparedRequest(
             storage_=self._storage,
             method=StorageMethod.post,
             url=url,
             params=request_data,
+            headers=headers,
             data=opened_file,
         )
         if only_prepare is True:
@@ -80,6 +86,7 @@ class Image:
         opened_file: RequestsFileType,
         tags: Optional[str] = None,
         render_wrapped_pdf: Optional[bool] = None,
+        x_ambrahealth_job_id: Optional[str] = None,
         only_prepare: bool = False,
     ) -> Union[Response, PreparedRequest]:
         """Upload a non DICOM image.
@@ -96,6 +103,7 @@ class Image:
             4-tuples (filename, fileobj, contentype, custom_headers).
 
         :param render_wrapped_pdf: An integer value of either 0 or 1.
+        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument
         :param only_prepare: Get prepared request.
 
         :returns: image object attributes
@@ -121,6 +129,9 @@ class Image:
             'file': opened_file,
         }
         headers = {'X-File-Size': str(file_size)}
+
+        if x_ambrahealth_job_id is not None:
+            headers['X-AmbraHealth-Job-Id'] = x_ambrahealth_job_id
 
         errors_mapping = {
             403:

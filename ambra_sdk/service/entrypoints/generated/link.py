@@ -59,9 +59,6 @@ class Link:
         :param account_id: account_id
         :param study_id: study_id
         :param user_id: user_id
-
-        Notes:
-        (study_id OR user_id OR account_id) - uuid of the study, user or account to get the links for
         """
         request_data = {
            'account_id': account_id,
@@ -104,6 +101,7 @@ class Link:
         max_hits=None,
         meeting_id=None,
         message=None,
+        mfm_page=None,
         minutes_alive=None,
         mobile_phone=None,
         namespace_id=None,
@@ -127,7 +125,7 @@ class Link:
         :param prompt_for_anonymize: Flag to prompt if the anonymization rules should be applied on ingress
         :param acceptance_required: Flag that acceptance of TOS is required (optional)
         :param account_id: account_id
-        :param anonymize: Anonymization rules to the applied to any STUDY_UPLOAD done with this link. Rules are formatted as per the rules parameter in /namespace/anonymize  (optional)
+        :param anonymize: Anonymization rules to the applied to any STUDY_UPLOAD done with this link. Rules are formatted as per the rules parameter in /namespace/anonymize (optional)
         :param charge_amount: Amount to charge in pennies before the link can be accessed (optional)
         :param charge_currency: Charge currency (optional)
         :param charge_description: Charge description (optional)
@@ -137,6 +135,7 @@ class Link:
         :param max_hits: The maximum number of times the link can be used (optional)
         :param meeting_id: UUID of the meeting to associate the link with (optional)
         :param message: Message to include in the email (optional)
+        :param mfm_page: Flag to launch the MFM page instead of the viewer (optional)
         :param minutes_alive: The maximum number of minutes the link will be alive for (optional)
         :param mobile_phone: Send the link to this phone number (optional)
         :param namespace_id: namespace_id
@@ -154,9 +153,6 @@ class Link:
         :param upload_match: A JSON hash of DICOM tags and regular expressions they must match uploaded against this link (optional)
         :param upload_study_customfields: A JSON hash of customfields that will be mapped to a study on study upload. A key is a customfield UUID, a value is a value for the field (optional)
         :param use_share_code: Flag to use the namespace share code settings for a STUDY_UPLOAD (optional)
-
-        Notes:
-        (study_id OR filter AND account_id OR namespace_id) - uuid of the study or a JSON hash of the study filter expression and the account_id or namespace_id if the action is STUDY_UPLOAD
         """
         request_data = {
            'acceptance_required': acceptance_required,
@@ -172,6 +168,7 @@ class Link:
            'max_hits': max_hits,
            'meeting_id': meeting_id,
            'message': message,
+           'mfm_page': mfm_page,
            'minutes_alive': minutes_alive,
            'mobile_phone': mobile_phone,
            'namespace_id': namespace_id,
@@ -235,6 +232,7 @@ class Link:
         is_meeting,
         max_hits,
         message,
+        mfm_page,
         minutes_alive,
         mobile_phone,
         namespace_id,
@@ -274,6 +272,7 @@ class Link:
         :param is_meeting: Flag if the link is for a meeting
         :param max_hits: The maximum number of times the link can be used
         :param message: Message to include in the email
+        :param mfm_page: Flag to launch the MFM page instead of the viewer
         :param minutes_alive: The maximum number of minutes the link will be alive for
         :param mobile_phone: Cellular phone number the link was sent to
         :param namespace_id: Id of the namespace for upload links
@@ -284,7 +283,7 @@ class Link:
         :param password_max_attempts: The maximum number of failed password attempt
         :param pin_auth: An account member email and PIN authentication is required
         :param prompt_for_anonymize: Flag to prompt if the anonymization rules should be applied on ingress
-        :param redirect_url: URL for the /link/redirect API  which will take you directly to the study viewer or uploader
+        :param redirect_url: URL for the /link/redirect API which will take you directly to the study viewer or uploader
         :param referer: The link can only be accessed from the specified referer
         :param share_on_view: Flag to share the study with the email after it is viewed
         :param skip_email_prompt: Skip the prompt for email step
@@ -313,6 +312,7 @@ class Link:
            'is_meeting': is_meeting,
            'max_hits': max_hits,
            'message': message,
+           'mfm_page': mfm_page,
            'minutes_alive': minutes_alive,
            'mobile_phone': mobile_phone,
            'namespace_id': namespace_id,
@@ -383,9 +383,6 @@ class Link:
         :param link_charge_id: The uuid of the prior charge against this link (optional)
         :param pin: pin
         :param uuid: uuid
-
-        Notes:
-        (uuid OR pin) - Id or PIN of the link
         """
         request_data = {
            'link_charge_id': link_charge_id,
@@ -423,9 +420,6 @@ class Link:
         :param password: Password if needed (optional)
         :param pin: pin
         :param uuid: uuid
-
-        Notes:
-        (uuid OR pin) - Id or PIN of the link
         """
         request_data = {
            'email_address': email_address,
@@ -466,9 +460,6 @@ class Link:
         :param password: Password if needed (optional)
         :param pin: pin
         :param uuid: uuid
-
-        Notes:
-        (uuid OR pin) - Id or PIN of the link
         """
         request_data = {
            'link_charge_id': link_charge_id,
@@ -499,15 +490,15 @@ class Link:
     def external(
         self,
         u,
-        v=None,
+        v,
     ):
         """External.
         :param u: The uuid of the user_account record to create the guest link as
-        :param v: 
-        A JSON hash with the following keys pairs. The JSON must be encrypted and base64 encoded:
-        filter.*=&gt;Filter field(s) as per the /study/list to specify the study(s) to construct the link for.
-        The include_priors link option value can be passed as a key.
-        Any additional fields will the saved in the study audit trail and the following fields email_address, redirect_url, integration_key and skip_email_prompt will be available in /namespace/share_code if this is an upload link .
+        :param v: A JSON hash with the following keys pairs. The JSON must be encrypted and base64 encoded
+
+ filter.*=&gt;Filter field(s) as per the /study/list to specify the study(s) to construct the link for
+             The include_priors link option value can be passed as a key
+             Any additional fields will the saved in the study audit trail and the following fields email_address, redirect_url, integration_key and skip_email_prompt will be available in /namespace/share_code if this is an upload link
         """
         request_data = {
            'u': u,

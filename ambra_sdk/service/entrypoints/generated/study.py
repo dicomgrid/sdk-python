@@ -20,6 +20,7 @@ from ambra_sdk.exceptions.service import InvalidDelay
 from ambra_sdk.exceptions.service import InvalidEmail
 from ambra_sdk.exceptions.service import InvalidField
 from ambra_sdk.exceptions.service import InvalidFlag
+from ambra_sdk.exceptions.service import InvalidInteger
 from ambra_sdk.exceptions.service import InvalidJson
 from ambra_sdk.exceptions.service import InvalidNpi
 from ambra_sdk.exceptions.service import InvalidParameters
@@ -79,7 +80,6 @@ class Study:
     
     def add(
         self,
-        thin,
         accession_number=None,
         attachment_count=None,
         customfield_param=None,
@@ -87,7 +87,6 @@ class Study:
         image_count=None,
         integration_key=None,
         medical_record_locator=None,
-        message=None,
         modality=None,
         node_id=None,
         patient_additional_history=None,
@@ -120,10 +119,10 @@ class Study:
         study_description=None,
         study_time=None,
         study_uid=None,
+        thin=None,
         uuid=None,
     ):
         """Add.
-        :param thin: Flag to add this as a thin study
         :param accession_number: DICOM tag (0008,0050) (optional)
         :param attachment_count: Attachment count (optional)
         :param customfield_param: Custom field(s), see notes in /study/add (optional)
@@ -131,7 +130,6 @@ class Study:
         :param image_count: Images in the study (optional)
         :param integration_key: Integration key for the study (optional)
         :param medical_record_locator: DICOM tag (0010,1090) (optional)
-        :param message: An upload message (optional)
         :param modality: DICOM tag (0008,0060) (optional)
         :param node_id: If this is a thin study the gateway UUID to retrieve it from can be specified (optional)
         :param patient_additional_history: DICOM tag (0010,21B0) (optional)
@@ -164,12 +162,8 @@ class Study:
         :param study_description: DICOM tag (0008,1030) (optional)
         :param study_time: DICOM tag (0008,0030) (optional)
         :param study_uid: study_uid
+        :param thin: Flag to add this as a thin study (optional)
         :param uuid: uuid
-
-        Notes:
-        (sid OR uuid AND serial_no) - Either the sid or the node id and serial number
-        (study_uid OR study_uid AND storage_namespace AND phi_namespace) - The study uid if node authentication or the storage triplet if sid authentication
-        customfield-(CUSTOMFIELD_UUID OR DICOM_TAG) - Custom field(s), see notes in /study/add (optional)
         """
         request_data = {
            'accession_number': accession_number,
@@ -178,7 +172,6 @@ class Study:
            'image_count': image_count,
            'integration_key': integration_key,
            'medical_record_locator': medical_record_locator,
-           'message': message,
            'modality': modality,
            'node_id': node_id,
            'patient_additional_history': patient_additional_history,
@@ -222,6 +215,8 @@ class Study:
         errors_mapping[('ALREADY_EXISTS', None)] = AlreadyExists('The study already exists. The error_subtype holds the uuid of the study and error_data holds the data from the /study/get call')
         errors_mapping[('INVALID_CREDENTIALS', None)] = InvalidCredentials('The sid or node credentials are invalid')
         errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('INVALID_INTEGER', None)] = InvalidInteger('An invalid integer was passed. The error_subtype holds the name of the invalid integer')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NAMESPACE_NOT_FOUND', None)] = NamespaceNotFound('The namespace was not found')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The error_subtype holds the name of the key for the object that can not be found')
@@ -270,6 +265,7 @@ class Study:
         patientid_other=None,
         phi_namespace=None,
         referring_physician=None,
+        seconds_to_ingest=None,
         serial_no=None,
         source_ae_title=None,
         storage_namespace=None,
@@ -315,6 +311,7 @@ class Study:
         :param patientid_other: DICOM tag (0010,1000) (optional)
         :param phi_namespace: phi_namespace
         :param referring_physician: DICOM tag (0008,0090) (optional)
+        :param seconds_to_ingest: Flag to re-calculate the seconds_to_ingest metric (optional)
         :param serial_no: serial_no
         :param source_ae_title: The source aetitle (optional)
         :param storage_namespace: storage_namespace
@@ -325,11 +322,6 @@ class Study:
         :param study_uid: study_uid
         :param use_upload_permission: Flag to use the upload permissions for the permissions check (optional)
         :param uuid: uuid
-
-        Notes:
-        (sid OR uuid AND serial_no) - Either the sid or the node id and serial number
-        (study_id OR study_uid OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study if sid authentication or the study_uid if node authentication or the storage triplet if you want a future set
-        customfield-(CUSTOMFIELD_UUID OR DICOM_TAG) - Custom field(s), see notes in /study/add (optional)
         """
         request_data = {
            'accession_number': accession_number,
@@ -364,6 +356,7 @@ class Study:
            'patientid_other': patientid_other,
            'phi_namespace': phi_namespace,
            'referring_physician': referring_physician,
+           'seconds_to_ingest': seconds_to_ingest,
            'serial_no': serial_no,
            'source_ae_title': source_ae_title,
            'storage_namespace': storage_namespace,
@@ -411,10 +404,6 @@ class Study:
         :param storage_namespace: storage_namespace
         :param study_uid: study_uid
         :param uuid: uuid
-
-        Notes:
-        (sid OR node_id AND serial_no) - Either the sid or the node id and serial number
-        (uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet
         """
         request_data = {
            'node_id': node_id,
@@ -569,10 +558,6 @@ class Study:
         :param storage_namespace: storage_namespace
         :param study_uid: study_uid
         :param uuid: uuid
-
-        Notes:
-        (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number
-        (uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet
         """
         request_data = {
            'customfield_h': customfield_h,
@@ -640,9 +625,6 @@ class Study:
         :param storage_namespace: storage_namespace
         :param study_uid: study_uid
         :param uuid: uuid
-
-        Notes:
-        (uuid OR study_uid AND storage_namespace AND phi_namespace OR study_uid AND account_id) - The study uuid, the storage triplet, or the study uid and account id
         """
         request_data = {
            'account_id': account_id,
@@ -750,7 +732,6 @@ class Study:
         }
 	
         errors_mapping = {}
-        errors_mapping[('NOT_FOUND', None)] = NotFound('Not found')
         query_data = {
             'api': self._api,
             'url': '/study/pdf/hl7',
@@ -933,10 +914,6 @@ class Study:
         :param study_uid: study_uid
         :param user_id: user_id
         :param uuid: uuid
-
-        Notes:
-        (account_id OR location_id OR group_id OR user_id OR share_code OR email OR masshiway OR rsna OR npi OR study_request_id) - uuid of the account, location, group, user, study request or share code, email address(es), RSNA, NPI or masshiway recipient to share this study with
-        (uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet if you want a future share
         """
         request_data = {
            'account_id': account_id,
@@ -974,12 +951,12 @@ class Study:
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to share this study')
         errors_mapping[('PHANTOM', None)] = Phantom('This is a phantom study')
         errors_mapping[('REQUEST_CLOSED', None)] = RequestClosed('The study request is closed')
-        errors_mapping[('SHARE_FAILED', 'SAME')] = ShareFailed('The study can&#39;t be shared into the same namespace')
-        errors_mapping[('SHARE_FAILED', 'NO_DESTINATION')] = ShareFailed('The study can&#39;t be shared with a deleted object')
-        errors_mapping[('SHARE_FAILED', 'DECLINED')] = ShareFailed('The charge card was declined')
-        errors_mapping[('SHARE_FAILED', 'NO_CARD')] = ShareFailed('The user does not have a card on file')
-        errors_mapping[('SHARE_FAILED', 'NO_CHARGE_MODALITY')] = ShareFailed('The charge modality is required if charge_authorized is set and the charging is by modality')
-        errors_mapping[('SHARE_FAILED', 'NO_DUP_SHARE')] = ShareFailed('The destination namespace has the no_dup_share flag turned on and this study is a duplicate of an existing study in the namespace')
+        errors_mapping[('SHARE_FAILED', 'DECLINED')] = ShareFailed('The charge card was declined.')
+        errors_mapping[('SHARE_FAILED', 'NO_CARD')] = ShareFailed('The user does not have a card on file.')
+        errors_mapping[('SHARE_FAILED', 'NO_CHARGE_MODALITY')] = ShareFailed('The charge modality is required if charge_authorized is set and the charging is by modality.')
+        errors_mapping[('SHARE_FAILED', 'NO_DESTINATION')] = ShareFailed('The study can&#39;t be shared with a deleted object.')
+        errors_mapping[('SHARE_FAILED', 'NO_DUP_SHARE')] = ShareFailed('The destination namespace has the no_dup_share flag turned on and this study is a duplicate of an existing study in the namespace.')
+        errors_mapping[('SHARE_FAILED', 'SAME')] = ShareFailed('The study can&#39;t be shared into the same namespace.')
         query_data = {
             'api': self._api,
             'url': '/study/share',
@@ -1005,9 +982,6 @@ class Study:
         :param location_id: location_id
         :param user_id: user_id
         :param user_invite_share_id: user_invite_share_id
-
-        Notes:
-        (account_id OR location_id OR group_id OR user_id OR user_invite_share_id) - uuid of the account, location, group, user or user invitation to stop sharing this study with
         """
         request_data = {
            'account_id': account_id,
@@ -1262,9 +1236,6 @@ class Study:
         :param storage_namespace: storage_namespace
         :param study_id: study_id
         :param study_uid: study_uid
-
-        Notes:
-        (study_id OR study_uid AND storage_namespace AND phi_namespace) - Either the study uuid or the storage triplet
         """
         request_data = {
            'phi_namespace': phi_namespace,
@@ -1299,9 +1270,6 @@ class Study:
         :param storage_namespace: storage_namespace
         :param study_id: study_id
         :param study_uid: study_uid
-
-        Notes:
-        (study_id OR study_uid AND storage_namespace AND phi_namespace) - Either the study uuid or the storage triplet
         """
         request_data = {
            'phi_namespace': phi_namespace,
@@ -1430,21 +1398,18 @@ class Study:
     
     def duplicate(
         self,
-        include_attachments,
         uuid,
+        include_attachments=None,
         namespace_id=None,
         overwrite=None,
         study_request_id=None,
     ):
         """Duplicate.
-        :param include_attachments: Also duplicate attachments
         :param uuid: The study id
+        :param include_attachments: Also duplicate attachments (optional)
         :param namespace_id: namespace_id
-        :param overwrite: Flag if you want to overwrite an existing study in the destination namespace
+        :param overwrite: Flag if you want to overwrite an existing study in the destination namespace (optional)
         :param study_request_id: study_request_id
-
-        Notes:
-        (namespace_id OR study_request_id) - The namespace or study request id to duplicate it to
         """
         request_data = {
            'include_attachments': include_attachments,
@@ -1581,9 +1546,6 @@ class Study:
         :param accession_number: accession_number
         :param patient_name: patient_name
         :param patientid: patientid
-
-        Notes:
-        (accession_number OR patientid OR patient_name) - The full or partial accession number, MRN or patient name to search by. If none are passed the studies accession number will be used (optional)
         """
         request_data = {
            'accession_number': accession_number,
@@ -1897,9 +1859,6 @@ class Study:
         :param node_id: node_id
         :param serial_no: serial_no
         :param size: The number of bytes associated with the event (optional)
-
-        Notes:
-        (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number
         """
         request_data = {
            'event': event,
@@ -1966,10 +1925,6 @@ class Study:
         :param storage_namespace: storage_namespace
         :param study_id: study_id
         :param study_uid: study_uid
-
-        Notes:
-        (sid OR node_id AND serial_no) - Either the sid or the node id and serial number
-        (study_id OR study_uid AND storage_namespace AND phi_namespace) - The study id or the study_uid/storage_namespace/phi_namespace triplet
         """
         request_data = {
            'image_count': image_count,

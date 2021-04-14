@@ -23,7 +23,7 @@ Make sure that the current version of `ambra-sdk` is not lower.
 
    >>> from ambra_sdk import API_VERSION
    >>> print(API_VERSION)
-   LBL0022 v44.0 2021-02-24
+   LBL0022 v45.0 2021-04-07
 
 In `ambra-sdk` all service api methods have the form
 `api.CommandNamespace.command.{get(),all() or first()}`.
@@ -49,7 +49,7 @@ Inspect your `query` object to get information about request::
 
   query_object.url
   query_object.full_url
-  query_object.request_argks
+  query_object.request_args
 
 Execute this query using `first()` or `all()` method (`api.Study.list()` is query for request multiple results)::
 

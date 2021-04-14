@@ -73,6 +73,7 @@ class Webhook:
         auth=None,
         by_accession_number=None,
         by_uid=None,
+        by_webhook_event=None,
         cron=None,
         delay=None,
         filter_field=None,
@@ -94,9 +95,10 @@ class Webhook:
         :param auth: A JSON hash with the authentication details (optional)
         :param by_accession_number: Flag to expand the once search to include studies with the same accession_number (optional)
         :param by_uid: Flag to expand the once search to include studies with the same study_uid (optional)
+        :param by_webhook_event: Flag to fire WEBHOOK_FAILED once at final unsuccessful try of a failing webhook (optional)
         :param cron: Cron timing string for CRON events e.g 0 9 * * mon-fri(optional)
         :param delay: Number of seconds to delay running this webhook for after it is triggered (optional)
-        :param filter_field: Name of the study field to filter on (optional)
+        :param filter_field: Name of the study field (by default) or another object&#39;s field (should have prefix like &#34;webhook.&#34;) to filter on (optional)
         :param filter_regexp: Regular expression to match the value of the filter_field against (optional)
         :param max_age: Ignore studies that are more than this number of days old based on the study_date (optional)
         :param node_id: uuid of the node to proxy the webhook through (optional)
@@ -111,6 +113,7 @@ class Webhook:
            'auth': auth,
            'by_accession_number': by_accession_number,
            'by_uid': by_uid,
+           'by_webhook_event': by_webhook_event,
            'cron': cron,
            'delay': delay,
            'event': event,
@@ -167,6 +170,7 @@ class Webhook:
         auth=None,
         by_accession_number=None,
         by_uid=None,
+        by_webhook_event=None,
         cron=None,
         delay=None,
         event=None,
@@ -188,6 +192,7 @@ class Webhook:
         :param auth: A JSON hash with the authentication details (optional)
         :param by_accession_number: Flag to expand the once search to include studies with the same accession_number (optional)
         :param by_uid: Flag to expand the once search to include studies with the same study_uid (optional)
+        :param by_webhook_event: Flag to fire WEBHOOK_FAILED once at final unsuccessful try of a failing webhook (optional)
         :param cron: Cron timing string for CRON events (optional)
         :param delay: Number of seconds to delay running this webhook for after it is triggered (optional)
         :param event: Event to call it on (optional see add command for options)
@@ -208,6 +213,7 @@ class Webhook:
            'auth': auth,
            'by_accession_number': by_accession_number,
            'by_uid': by_uid,
+           'by_webhook_event': by_webhook_event,
            'cron': cron,
            'delay': delay,
            'event': event,
@@ -371,9 +377,6 @@ class Webhook:
         :param namespace_id: namespace_id
         :param share_code: share_code
         :param study_count: The number of studies associated with the event (optional)
-
-        Notes:
-        (namespace_id OR share_code) - The namespace or share code for the event
         """
         request_data = {
            'integration_key': integration_key,

@@ -234,7 +234,6 @@ class Radreport:
         }
 	
         errors_mapping = {}
-        errors_mapping[('NOT_FOUND', None)] = NotFound('Not found')
         query_data = {
             'api': self._api,
             'url': '/radreport/pdf',

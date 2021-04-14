@@ -124,7 +124,8 @@ class Location:
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found. The error_subtype holds the name of field that triggered the error')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add a location to the account')
-        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for the location')
+        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'GLOBAL_USER_WITH_RESTRICTED_ROLE')] = RoleNamespaceMismatch('You are adding the location to the account with a global user with restricted role, data contains role_id and user_id')
+        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for a location, data contains role_id and namespace_id')
         query_data = {
             'api': self._api,
             'url': '/location/add',
@@ -196,7 +197,7 @@ class Location:
         errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found. The error_subtype holds the name of field that triggered the error')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the location')
-        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for locations')
+        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for locations, data contains role_id and namespace_id')
         query_data = {
             'api': self._api,
             'url': '/location/set',
@@ -291,7 +292,7 @@ class Location:
         :param event_link_mine: Notify the user when an anonymous link created by the user is hit in the namespace (optional)
         :param event_message: Notify the user when a message is sent to the location namespace (optional)
         :param event_new_report: Notify the user when a report is attached in the location namespace (optional)
-        :param event_node: Notify the user when a location  node sends an event (optional)
+        :param event_node: Notify the user when a location node sends an event (optional)
         :param event_report_remove: Notify the user when a report is removed in the location namespace (optional)
         :param event_share: Notify the user on a share into the location namespace (optional)
         :param event_status_change: Notify the user when the status of a study is changed (optional)
@@ -331,7 +332,7 @@ class Location:
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The location can not be found')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the location')
-        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for locations')
+        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for locations, data contains role_id and namespace_id')
         errors_mapping[('ROLE_NOT_FOUND', None)] = RoleNotFound('The role was not found or is not in the account')
         errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user was not found or is not in the account')
         query_data = {

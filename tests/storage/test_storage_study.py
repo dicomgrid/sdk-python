@@ -212,9 +212,7 @@ class TestStorageStudy:
             study_uid=study_uid,
         )
         request_body = ','.join(
-            [
-                i['id'] for i in schema.series[0]['images']
-            ],
+            [i['id'] for i in schema.series[0]['images']],
         )
 
         delete_images = api.Storage.Study.delete_images(
@@ -818,3 +816,25 @@ class TestStorageStudy:
                 namespace='abra',
                 study_uid='kadabra',
             )
+
+    def test_clone(self, api, readonly_study, auto_remove):
+        """Test clone method."""
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+        study_uid = readonly_study.study_uid
+
+        clone = api.Storage.Study.clone(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            study_uid=study_uid,
+        )
+        assert clone.status_code in {200, 202}
+        new_study_uid = clone.text
+        new_study = api.Addon.Study.wait(
+            study_uid=new_study_uid,
+            namespace_id=storage_namespace,
+            timeout=settings.API['upload_study_timeout'],
+            ws_timeout=settings.API['ws_timeout'],
+        )
+        assert new_study
+        auto_remove(new_study)

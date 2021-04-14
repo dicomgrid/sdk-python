@@ -106,9 +106,6 @@ class Route:
         :param other_namespaces: A comma separated list of the uuid of other namespaces to apply this rule to (optional)
         :param schedule: Route schedule in JSON format (optional)
         :param suspended: This rule is suspended and not applied - flag (optional)
-
-        Notes:
-        (account_id OR group_id OR location_id OR namespace_id) - uuid of the account, group or location or namespace the route is linked with
         """
         request_data = {
            'account_id': account_id,

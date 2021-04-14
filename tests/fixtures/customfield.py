@@ -14,22 +14,10 @@ def add_customfield(api, account):
     customfields = []
 
     def _add_customfield(  # NOQA:WPS211
-        required=None,
-        capture_on_share_code=None,
-        display_order=None,
-        wrapped_dicom_only=None,
-        dicom_only=None,
-        capture_on_destination_search=None,
         **kwargs,
     ):
         customfield = api.Customfield.add(
             account_id=account.account.uuid,
-            required=required,
-            capture_on_share_code=capture_on_share_code,
-            display_order=display_order,
-            wrapped_dicom_only=wrapped_dicom_only,
-            dicom_only=dicom_only,
-            capture_on_destination_search=capture_on_destination_search,
             **kwargs,
         ).get()
         customfields.append(customfield)

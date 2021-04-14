@@ -73,8 +73,8 @@ class Account:
     
     def set(
         self,
-        can_request,
         uuid,
+        can_request=None,
         css=None,
         customfield_param=None,
         hl7_template=None,
@@ -98,8 +98,8 @@ class Account:
         vendor=None,
     ):
         """Set.
-        :param can_request: Flag if user can request to join the account
         :param uuid: The account uuid
+        :param can_request: Flag if user can request to join the account (optional)
         :param css: Custom CSS for the account (optional)
         :param customfield_param: Custom field(s) (optional)
         :param hl7_template: The HL7 reporting template for the account (optional)
@@ -163,7 +163,7 @@ class Account:
         errors_mapping[('INVALID_VANITY', None)] = InvalidVanity('The vanity host name is invalid. The error_subtype holds the invalid hostname')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found. The error_subtype holds the name of field that triggered the error')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to modify this record')
-        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for the account')
+        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for the account, data contains role_id and namespace_id')
         query_data = {
             'api': self._api,
             'url': '/account/set',
@@ -229,6 +229,7 @@ class Account:
         event_upload=None,
         event_upload_fail=None,
         global_param=None,
+        global_role_id=None,
         max_sessions=None,
         password_reset=None,
         role_id=None,
@@ -267,6 +268,7 @@ class Account:
         :param event_upload: Notify the user on an upload into the account namespace (optional)
         :param event_upload_fail: Notify the user on a failed upload into the account namespace (optional)
         :param global_param: Flag if this is a global user (optional).
+        :param global_role_id: uuid of a role to be used in groups and locations when the global user is added to them, this role overrides groups&#39;/locations&#39; default roles (optional).
         :param max_sessions: Over-ride value for the max number of simultaneous sessions the user can have. (optional).
         :param password_reset: Flag if the password needs to be reset. (optional).
         :param role_id: uuid of the users role in the account (optional).
@@ -276,9 +278,6 @@ class Account:
         :param settings: A hash of the account settings that the user can override (optional)
         :param sso_only: Flag if the user can only login via SSO. (optional).
         :param user_id: user_id
-
-        Notes:
-        (email OR user_id) - The email address or uuid of the user to add
         """
         request_data = {
            'account_alias': account_alias,
@@ -307,6 +306,7 @@ class Account:
            'event_upload': event_upload,
            'event_upload_fail': event_upload_fail,
            'global': global_param,
+           'global_role_id': global_role_id,
            'max_sessions': max_sessions,
            'password_reset': password_reset,
            'role_id': role_id,
@@ -330,7 +330,8 @@ class Account:
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add this user to the account')
-        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for the account')
+        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'GLOBAL_USER_WITH_RESTRICTED_ROLE')] = RoleNamespaceMismatch('They are adding a global user with a role restricted to group/location and there is a group/location in the account, data contains role_id, namespace_id and user_id')
+        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for the account, data contains role_id and namespace_id')
         errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user can not be found')
         query_data = {
             'api': self._api,
@@ -371,6 +372,7 @@ class Account:
         event_upload=None,
         event_upload_fail=None,
         global_param=None,
+        global_role_id=None,
         max_sessions=None,
         password_reset=None,
         role_id=None,
@@ -408,6 +410,7 @@ class Account:
         :param event_upload: Notify the user on an upload into the account namespace (optional)
         :param event_upload_fail: Notify the user on a failed upload into the account namespace (optional)
         :param global_param: Flag if this is a global user. (optional).
+        :param global_role_id: uuid of a role to be used in groups and locations when the global user is added to them, this role overrides groups&#39;/locations&#39; default roles (optional).
         :param max_sessions: Over-ride value for the max number of simultaneous sessions the user can have. (optional).
         :param password_reset: Flag if the password needs to be reset. (optional).
         :param role_id: uuid of the users role in the account (optional).
@@ -442,6 +445,7 @@ class Account:
            'event_upload': event_upload,
            'event_upload_fail': event_upload_fail,
            'global': global_param,
+           'global_role_id': global_role_id,
            'max_sessions': max_sessions,
            'password_reset': password_reset,
            'role_id': role_id,
@@ -468,7 +472,8 @@ class Account:
         errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit this user')
         errors_mapping[('NO_USER_OVERRIDE', None)] = NoUserOverride('The setting does not allow a user override')
-        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for the account')
+        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'GLOBAL_USER_WITH_RESTRICTED_ROLE')] = RoleNamespaceMismatch('They are making the user global with a role restricted to group/location and there is a group/location in the account, data contains role_id, namespace_id and user_id.')
+        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for the account, data contains role_id and namespace_id')
         errors_mapping[('ROLE_NOT_FOUND', None)] = RoleNotFound('The role was not found or is not an account role')
         errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user can not be found or is not a member of this account')
         query_data = {
@@ -702,9 +707,6 @@ class Account:
         """Css.
         :param account_id: account_id
         :param vanity: vanity
-
-        Notes:
-        (account_id OR vanity) - The account_id or vanity name to get the css for (optional)
         """
         request_data = {
            'account_id': account_id,
@@ -735,9 +737,6 @@ class Account:
         :param namespace_id: Apply overrides for the namespace (optional)
         :param settings: A comma delimited list of the settings to return (optional)
         :param vanity: vanity
-
-        Notes:
-        (account_id OR vanity) - The account_id or vanity name to get the settings for
         """
         request_data = {
            'account_id': account_id,
@@ -829,9 +828,6 @@ class Account:
         :param uuid: UUID of the account (only needed for sid authentication)
         :param node_id: node_id
         :param serial_no: serial_no
-
-        Notes:
-        (sid OR node_id AND serial_no) - Either a sid or the node id and serial number
         """
         request_data = {
            'md5': md5,

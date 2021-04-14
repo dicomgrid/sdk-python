@@ -31,6 +31,7 @@ class Accelerator(BaseModel):
     global_field = Boolean(description='Is it a global accelerator')
     name = String(description='Name')
     push_shared_studies = Boolean(description='Push shared studies to the accelerator')
+    retention_days = Integer(description='Retention days')
     serial_no = String(description='The serial number')
     upgrade = Boolean(description='Version and upgrade flag')
     version = String(description='Version and upgrade flag')
@@ -54,6 +55,7 @@ class Accelerator(BaseModel):
         global_field=None,
         name=None,
         push_shared_studies=None,
+        retention_days=None,
         serial_no=None,
         upgrade=None,
         version=None,
@@ -73,6 +75,7 @@ class Accelerator(BaseModel):
         self.global_field = global_field
         self.name = name
         self.push_shared_studies = push_shared_studies
+        self.retention_days = retention_days
         self.serial_no = serial_no
         self.upgrade = upgrade
         self.version = version
@@ -2265,6 +2268,7 @@ class DestinationSearch(BaseModel):
     
     id = Integer(description='Primary key for internal use')
     uuid = String(description='UUID for external use')
+    anonymize = String(description='The associated anonymization rules')
     asked_by = String(description='FK. This is the id of the destination search that requested the asking_node search')
     asked_by_obj = FK(model='User', description='This is the id of the destination search that requested the asking_node search')
     asking_node = String(description='FK. Pass the results of this back to this node')
@@ -2280,12 +2284,11 @@ class DestinationSearch(BaseModel):
     distributing_destination_id = String(description='FK. The distributing destination that initiated the search')
     distributing_destination = FK(model='DestinationDistributed', description='The distributing destination that initiated the search')
     extra = String(description='Extra data for speciality workflows like MPI')
-    future_edit = JsonB(description='Custom fields to apply to retrieved studies')
     hl7_id = String(description='FK. The search was triggered by this HL7 message')
     hl7 = FK(model='Hl7', description='The search was triggered by this HL7 message')
     linked_destination_id = String(description='FK. The linked destination that initiated the search')
     linked_destination = FK(model='Destination', description='The linked destination that initiated the search')
-    message = String(description='Message')
+    message = String(description='Message. Depreciated. To be deleted after 2021-04 release')
     node_id = String(description='FK. The node to use')
     node = FK(model='Node', description='The node to use')
     payload = String(description='The search payload')
@@ -2315,6 +2318,7 @@ class DestinationSearch(BaseModel):
 	*,
         id=None,
         uuid=None,
+        anonymize=None,
         asked_by=None,
         asked_by_obj=None,
         asking_node=None,
@@ -2330,7 +2334,6 @@ class DestinationSearch(BaseModel):
         distributing_destination_id=None,
         distributing_destination=None,
         extra=None,
-        future_edit=None,
         hl7_id=None,
         hl7=None,
         linked_destination_id=None,
@@ -2361,6 +2364,7 @@ class DestinationSearch(BaseModel):
     ):
         self.id = id
         self.uuid = uuid
+        self.anonymize = anonymize
         self.asked_by = asked_by
         self.asked_by_obj = asked_by_obj
         self.asking_node = asking_node
@@ -2376,7 +2380,6 @@ class DestinationSearch(BaseModel):
         self.distributing_destination_id = distributing_destination_id
         self.distributing_destination = distributing_destination
         self.extra = extra
-        self.future_edit = future_edit
         self.hl7_id = hl7_id
         self.hl7 = hl7
         self.linked_destination_id = linked_destination_id
@@ -2972,6 +2975,9 @@ class Group(BaseModel):
     namespace = FK(model='Namespace', description='The namespace')
     role_id = String(description='FK. Default role id')
     role = FK(model='Role', description='Default role id')
+    site_id = String(description='FK. Associated trial site')
+    site = FK(model='Site', description='Associated trial site')
+    site_qualified = Boolean(description='Associated trial site')
     created = DateTime(description='Timestamp when the record was created')
     created_by = String(description='FK. ID of the user who created the record')
     created_by_obj = FK(model='User', description='ID of the user who created the record')
@@ -2993,6 +2999,9 @@ class Group(BaseModel):
         namespace=None,
         role_id=None,
         role=None,
+        site_id=None,
+        site=None,
+        site_qualified=None,
         created=None,
         created_by=None,
         created_by_obj=None,
@@ -3010,6 +3019,9 @@ class Group(BaseModel):
         self.namespace = namespace
         self.role_id = role_id
         self.role = role
+        self.site_id = site_id
+        self.site = site
+        self.site_qualified = site_qualified
         self.created = created
         self.created_by = created_by
         self.created_by_obj = created_by_obj
@@ -3352,6 +3364,7 @@ class Link(BaseModel):
     include_priors = Boolean(description='Include priors')
     max_hits = Integer(description='The maximum number of times the link can be used')
     message = String(description='Mobile phone used to send additional message to')
+    mfm_page = Boolean(description='Should they go to the MFM page')
     minutes_alive = Integer(description='The number of minutes the link will be alive for')
     mobile_phone = String(description='Mobile phone used to send additional message to')
     namespace_id = String(description='FK. The study the link is for or the filter expression or the namespace for an upload action')
@@ -3401,6 +3414,7 @@ class Link(BaseModel):
         include_priors=None,
         max_hits=None,
         message=None,
+        mfm_page=None,
         minutes_alive=None,
         mobile_phone=None,
         namespace_id=None,
@@ -3446,6 +3460,7 @@ class Link(BaseModel):
         self.include_priors = include_priors
         self.max_hits = max_hits
         self.message = message
+        self.mfm_page = mfm_page
         self.minutes_alive = minutes_alive
         self.mobile_phone = mobile_phone
         self.namespace_id = namespace_id
@@ -4908,8 +4923,8 @@ class Purge(BaseModel):
     
     id = Integer(description='Primary key for internal use')
     uuid = String(description='UUID for external use')
-    account_id = String(description='FK. The associated account')
-    account = FK(model='Account', description='The associated account')
+    account_id = String(description='FK. The associated object and account')
+    account = FK(model='Account', description='The associated object and account')
     adults = Boolean(description='Include adults  in this rule')
     archive = Boolean(description='Flag to make it a thin, archive or skinny study')
     days_old = Integer(description='Age of the studies to purge and how to calculate the purge')
@@ -4920,6 +4935,7 @@ class Purge(BaseModel):
     modalities = String(description='The modalities to limit the rule to as a JSON array')
     name = String(description='Name')
     namespaces = String(description='The namespaces to limit the rule to as a JSON array')
+    object = String(description='The associated object and account')
     owned_phr = Boolean(description='Include owned PHR namespaces in the rule')
     shared_from_phr = Boolean(description='If a study was shared from a PHR delete the copy in the PHR as well')
     skinny = Boolean(description='Flag to make it a thin, archive or skinny study')
@@ -4951,6 +4967,7 @@ class Purge(BaseModel):
         modalities=None,
         name=None,
         namespaces=None,
+        object=None,
         owned_phr=None,
         shared_from_phr=None,
         skinny=None,
@@ -4978,6 +4995,7 @@ class Purge(BaseModel):
         self.modalities = modalities
         self.name = name
         self.namespaces = namespaces
+        self.object = object
         self.owned_phr = owned_phr
         self.shared_from_phr = shared_from_phr
         self.skinny = skinny
@@ -5683,6 +5701,123 @@ class Rsync(BaseModel):
 
 
 
+class Scanner(BaseModel):
+    """Scanner."""
+    
+    id = Integer(description='Primary key for internal use')
+    uuid = String(description='UUID for external use')
+    account_id = String(description='FK. The associated account')
+    account = FK(model='Account', description='The associated account')
+    customfields = DictField(description='Custom fields')
+    manufacturer = String(description='The scanner manufacturer')
+    modality = String(description='Scanner modality')
+    model = String(description='The model')
+    name = String(description='Name')
+    serial_no = String(description='The serial number')
+    site_id = String(description='FK. The site owning the scanner')
+    site = FK(model='Site', description='The site owning the scanner')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+    updated = DateTime(description='Timestamp when the record was last updated')
+    updated_by = String(description='FK. ID of the user who updated the record')
+    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        uuid=None,
+        account_id=None,
+        account=None,
+        customfields=None,
+        manufacturer=None,
+        modality=None,
+        model=None,
+        name=None,
+        serial_no=None,
+        site_id=None,
+        site=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+        updated=None,
+        updated_by=None,
+        updated_by_obj=None,
+    ):
+        self.id = id
+        self.uuid = uuid
+        self.account_id = account_id
+        self.account = account
+        self.customfields = customfields
+        self.manufacturer = manufacturer
+        self.modality = modality
+        self.model = model
+        self.name = name
+        self.serial_no = serial_no
+        self.site_id = site_id
+        self.site = site
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+        self.updated = updated
+        self.updated_by = updated_by
+        self.updated_by_obj = updated_by_obj
+
+
+
+class ScannerValidated(BaseModel):
+    """ScannerValidated."""
+    
+    id = Integer(description='Primary key for internal use')
+    uuid = String(description='UUID for external use')
+    group_id = String(description='FK. Mapping betwee the scanner and group')
+    group = FK(model='Group', description='Mapping betwee the scanner and group')
+    scanner_id = String(description='FK. Mapping betwee the scanner and group')
+    scanner = FK(model='Scanner', description='Mapping betwee the scanner and group')
+    study_uid = String(description='The study_uid that validated the scanner')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+    updated = DateTime(description='Timestamp when the record was last updated')
+    updated_by = String(description='FK. ID of the user who updated the record')
+    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        uuid=None,
+        group_id=None,
+        group=None,
+        scanner_id=None,
+        scanner=None,
+        study_uid=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+        updated=None,
+        updated_by=None,
+        updated_by_obj=None,
+    ):
+        self.id = id
+        self.uuid = uuid
+        self.group_id = group_id
+        self.group = group
+        self.scanner_id = scanner_id
+        self.scanner = scanner
+        self.study_uid = study_uid
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+        self.updated = updated
+        self.updated_by = updated_by
+        self.updated_by_obj = updated_by_obj
+
+
+
 class Setting(BaseModel):
     """Setting."""
     
@@ -5722,6 +5857,66 @@ class Setting(BaseModel):
         self.user_id = user_id
         self.user = user
         self.value = value
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+        self.updated = updated
+        self.updated_by = updated_by
+        self.updated_by_obj = updated_by_obj
+
+
+
+class Site(BaseModel):
+    """Site."""
+    
+    id = Integer(description='Primary key for internal use')
+    uuid = String(description='UUID for external use')
+    account_id = String(description='FK. The associated account')
+    account = FK(model='Account', description='The associated account')
+    city = String(description='Location fields')
+    name = String(description='Name')
+    site_id = String(description='FK. The associated site in case this one is a satellite site')
+    site = FK(model='Site', description='The associated site in case this one is a satellite site')
+    state = String(description='Location fields')
+    zip = String(description='Location fields')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+    updated = DateTime(description='Timestamp when the record was last updated')
+    updated_by = String(description='FK. ID of the user who updated the record')
+    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        uuid=None,
+        account_id=None,
+        account=None,
+        city=None,
+        name=None,
+        site_id=None,
+        site=None,
+        state=None,
+        zip=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+        updated=None,
+        updated_by=None,
+        updated_by_obj=None,
+    ):
+        self.id = id
+        self.uuid = uuid
+        self.account_id = account_id
+        self.account = account
+        self.city = city
+        self.name = name
+        self.site_id = site_id
+        self.site = site
+        self.state = state
+        self.zip = zip
         self.created = created
         self.created_by = created_by
         self.created_by_obj = created_by_obj
@@ -5846,6 +6041,7 @@ class Study(BaseModel):
     phi_namespace = String(description='FK. The PHI namespace. This controls the study visibility')
     phi_namespace_obj = FK(model='Namespace', description='The PHI namespace. This controls the study visibility')
     referring_physician = String(description='This is the MRN')
+    seconds_to_ingest = Integer(description='The number of seconds it took to ingest the study. -1 if we don&#39;t have enough data to calculate this')
     shared_from = String(description='FK. Id of the study this was originally shared from')
     shared_from_obj = FK(model='StudyShare', description='Id of the study this was originally shared from')
     size = Integer(description='This is the MRN')
@@ -5918,6 +6114,7 @@ class Study(BaseModel):
         phi_namespace=None,
         phi_namespace_obj=None,
         referring_physician=None,
+        seconds_to_ingest=None,
         shared_from=None,
         shared_from_obj=None,
         size=None,
@@ -5986,6 +6183,7 @@ class Study(BaseModel):
         self.phi_namespace = phi_namespace
         self.phi_namespace_obj = phi_namespace_obj
         self.referring_physician = referring_physician
+        self.seconds_to_ingest = seconds_to_ingest
         self.shared_from = shared_from
         self.shared_from_obj = shared_from_obj
         self.size = size
@@ -6016,8 +6214,10 @@ class StudyAnalytics(BaseModel):
     id = Integer(description='Primary key for internal use')
     account_id = String(description='FK. The primary keys')
     account = FK(model='Account', description='The primary keys')
+    customfields = DictField(description='The primary keys')
     day = Date(description='The day')
     login = Integer(description='Login')
+    modality = String(description='The primary keys')
     namespace_id = String(description='FK. The primary keys')
     namespace = FK(model='Namespace', description='The primary keys')
     study_approve = Integer(description='Study approved')
@@ -6042,8 +6242,10 @@ class StudyAnalytics(BaseModel):
         id=None,
         account_id=None,
         account=None,
+        customfields=None,
         day=None,
         login=None,
+        modality=None,
         namespace_id=None,
         namespace=None,
         study_approve=None,
@@ -6064,8 +6266,10 @@ class StudyAnalytics(BaseModel):
         self.id = id
         self.account_id = account_id
         self.account = account
+        self.customfields = customfields
         self.day = day
         self.login = login
+        self.modality = modality
         self.namespace_id = namespace_id
         self.namespace = namespace
         self.study_approve = study_approve
@@ -6332,6 +6536,7 @@ class StudyDeleted(BaseModel):
     phi_namespace = String(description='FK. ')
     phi_namespace_obj = FK(model='Namespace', description='')
     referring_physician = String(description='')
+    seconds_to_ingest = Integer(description='')
     shared_from = String(description='FK. ')
     shared_from_obj = FK(model='StudyShare', description='')
     size = Integer(description='')
@@ -6407,6 +6612,7 @@ class StudyDeleted(BaseModel):
         phi_namespace=None,
         phi_namespace_obj=None,
         referring_physician=None,
+        seconds_to_ingest=None,
         shared_from=None,
         shared_from_obj=None,
         size=None,
@@ -6478,6 +6684,7 @@ class StudyDeleted(BaseModel):
         self.phi_namespace = phi_namespace
         self.phi_namespace_obj = phi_namespace_obj
         self.referring_physician = referring_physician
+        self.seconds_to_ingest = seconds_to_ingest
         self.shared_from = shared_from
         self.shared_from_obj = shared_from_obj
         self.size = size
@@ -6508,12 +6715,13 @@ class StudyFetch(BaseModel):
     id = Integer(description='Primary key for internal use')
     uuid = String(description='UUID for external use')
     accession_number = String(description='The accession number to fetch')
+    customfields = DictField(description='Custom fields to be applied to the fetched study')
     destination_id = String(description='FK. The destination')
     destination = FK(model='Destination', description='The destination')
     distributing_destination_id = String(description='FK. The distributing destination that initiated the fetch')
     distributing_destination = FK(model='DestinationDistributed', description='The distributing destination that initiated the fetch')
     end_datetime = String(description='Extra data to scope the fetch down further')
-    message = String(description='Message')
+    message = String(description='Message. Depreciated. To be deleted after 2021-04 release')
     node_id = String(description='FK. The node to use')
     node = FK(model='Node', description='The node to use')
     patientid = String(description='Extra data to scope the fetch down further')
@@ -6538,6 +6746,7 @@ class StudyFetch(BaseModel):
         id=None,
         uuid=None,
         accession_number=None,
+        customfields=None,
         destination_id=None,
         destination=None,
         distributing_destination_id=None,
@@ -6564,6 +6773,7 @@ class StudyFetch(BaseModel):
         self.id = id
         self.uuid = uuid
         self.accession_number = accession_number
+        self.customfields = customfields
         self.destination_id = destination_id
         self.destination = destination
         self.distributing_destination_id = distributing_destination_id
@@ -7282,6 +7492,42 @@ class StudyShareRsna(BaseModel):
         self.updated = updated
         self.updated_by = updated_by
         self.updated_by_obj = updated_by_obj
+
+
+
+class StudySplit(BaseModel):
+    """StudySplit."""
+    
+    id = Integer(description='Primary key for internal use')
+    new_study_id = String(description='FK. Id of the study split')
+    new_study = FK(model='Study', description='Id of the study split')
+    study_id = String(description='FK. Primary key for internal use')
+    study = FK(model='Study', description='Primary key for internal use')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        new_study_id=None,
+        new_study=None,
+        study_id=None,
+        study=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+    ):
+        self.id = id
+        self.new_study_id = new_study_id
+        self.new_study = new_study
+        self.study_id = study_id
+        self.study = study
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
 
 
 
@@ -8009,6 +8255,7 @@ class User(BaseModel):
     uuid = String(description='UUID for external use')
     access_token = String(description='Stripe access token')
     allowed_login_brands = String(description='A list of brands user can login from')
+    app_password = String(description='Password')
     billing = Boolean(description='Are they a billing person')
     blocked = Boolean(description='Is a the user blocked from the system')
     disabled = Boolean(description='Is a the user disabled from the system')
@@ -8043,6 +8290,7 @@ class User(BaseModel):
     password = String(description='Password')
     pin_required = Boolean(description='Is a PIN required for login')
     privacy_md5 = String(description='MD5 sums of the accepted terms of use, privacy policy and indicators of use')
+    public_key = String(description='Public key for authentication')
     refresh_token = String(description='OAuth id and refresh token')
     signature = String(description='Signature image (base64)')
     support = Boolean(description='Are they a support person')
@@ -8066,6 +8314,7 @@ class User(BaseModel):
         uuid=None,
         access_token=None,
         allowed_login_brands=None,
+        app_password=None,
         billing=None,
         blocked=None,
         disabled=None,
@@ -8100,6 +8349,7 @@ class User(BaseModel):
         password=None,
         pin_required=None,
         privacy_md5=None,
+        public_key=None,
         refresh_token=None,
         signature=None,
         support=None,
@@ -8119,6 +8369,7 @@ class User(BaseModel):
         self.uuid = uuid
         self.access_token = access_token
         self.allowed_login_brands = allowed_login_brands
+        self.app_password = app_password
         self.billing = billing
         self.blocked = blocked
         self.disabled = disabled
@@ -8153,6 +8404,7 @@ class User(BaseModel):
         self.password = password
         self.pin_required = pin_required
         self.privacy_md5 = privacy_md5
+        self.public_key = public_key
         self.refresh_token = refresh_token
         self.signature = signature
         self.support = support
@@ -8203,6 +8455,8 @@ class UserAccount(BaseModel):
     event_upload = Boolean(description='The event flags')
     event_upload_fail = Boolean(description='The event flags')
     global_field = Boolean(description='This user is automatically added to every group and location in the account')
+    global_role_id = String(description='FK. This role is used as a namespace role if defined')
+    global_role = FK(model='Role', description='This role is used as a namespace role if defined')
     last_reset = DateTime(description='Time the password was last reset')
     max_sessions = Integer(description='Override for the max number of sessions a user can have')
     password_reset = Boolean(description='Flag to reset the password')
@@ -8254,6 +8508,8 @@ class UserAccount(BaseModel):
         event_upload=None,
         event_upload_fail=None,
         global_field=None,
+        global_role_id=None,
+        global_role=None,
         last_reset=None,
         max_sessions=None,
         password_reset=None,
@@ -8301,6 +8557,8 @@ class UserAccount(BaseModel):
         self.event_upload = event_upload
         self.event_upload_fail = event_upload_fail
         self.global_field = global_field
+        self.global_role_id = global_role_id
+        self.global_role = global_role
         self.last_reset = last_reset
         self.max_sessions = max_sessions
         self.password_reset = password_reset
@@ -8326,13 +8584,14 @@ class UserAnalytics(BaseModel):
     id = Integer(description='Primary key for internal use')
     account_id = String(description='FK. The primary keys')
     account = FK(model='Account', description='The primary keys')
-    day = Date(description='The day')
+    day = Date(description='The day and time')
     namespace_id = String(description='FK. The primary keys')
     namespace = FK(model='Namespace', description='The primary keys')
     study_approve = Integer(description='The metrics')
     study_reject = Integer(description='The metrics')
     study_upload_epic = Integer(description='The metrics')
     study_view = Integer(description='The metrics')
+    time = DateTime(description='The day and time')
     user_id = String(description='FK. The primary keys')
     user = FK(model='User', description='The primary keys')
 
@@ -8350,6 +8609,7 @@ class UserAnalytics(BaseModel):
         study_reject=None,
         study_upload_epic=None,
         study_view=None,
+        time=None,
         user_id=None,
         user=None,
     ):
@@ -8363,6 +8623,7 @@ class UserAnalytics(BaseModel):
         self.study_reject = study_reject
         self.study_upload_epic = study_upload_epic
         self.study_view = study_view
+        self.time = time
         self.user_id = user_id
         self.user = user
 
@@ -8752,6 +9013,57 @@ class UserLocation(BaseModel):
 
 
 
+class UserSite(BaseModel):
+    """UserSite."""
+    
+    id = Integer(description='Primary key for internal use')
+    uuid = String(description='UUID for external use')
+    role_name = String(description='Role will be mapped to a study account role by name')
+    site_id = String(description='FK. Mapping between the user and site')
+    site = FK(model='Site', description='Mapping between the user and site')
+    user_id = String(description='FK. Mapping between the user and site')
+    user = FK(model='User', description='Mapping between the user and site')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+    updated = DateTime(description='Timestamp when the record was last updated')
+    updated_by = String(description='FK. ID of the user who updated the record')
+    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        uuid=None,
+        role_name=None,
+        site_id=None,
+        site=None,
+        user_id=None,
+        user=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+        updated=None,
+        updated_by=None,
+        updated_by_obj=None,
+    ):
+        self.id = id
+        self.uuid = uuid
+        self.role_name = role_name
+        self.site_id = site_id
+        self.site = site
+        self.user_id = user_id
+        self.user = user
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+        self.updated = updated
+        self.updated_by = updated_by
+        self.updated_by_obj = updated_by_obj
+
+
+
 class Validate(BaseModel):
     """Validate."""
     
@@ -8810,6 +9122,7 @@ class Webhook(BaseModel):
     auth = String(description='The webhook auth')
     by_accession_number = Boolean(description='Expand the once to check by accession_number as well')
     by_uid = Boolean(description='Expand the once to check by study_uid as well')
+    by_webhook_event = Boolean(description='Apply the once to a webhook event for the WEBHOOK_FAILED')
     cron = String(description='Cron string for a cron type of webhook')
     delay = Integer(description='Number of seconds to delay running this webhook after it is triggered')
     event = String(description='The event to trigger the webhook for')
@@ -8847,6 +9160,7 @@ class Webhook(BaseModel):
         auth=None,
         by_accession_number=None,
         by_uid=None,
+        by_webhook_event=None,
         cron=None,
         delay=None,
         event=None,
@@ -8880,6 +9194,7 @@ class Webhook(BaseModel):
         self.auth = auth
         self.by_accession_number = by_accession_number
         self.by_uid = by_uid
+        self.by_webhook_event = by_webhook_event
         self.cron = cron
         self.delay = delay
         self.event = event

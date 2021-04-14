@@ -56,10 +56,6 @@ class Namespace:
         :param study_id: study_id
         :param study_uid: study_uid
         :param uuid: uuid
-
-        Notes:
-        (namespace_id OR study_id OR study_uid AND storage_namespace AND phi_namespace) The uuid of the namespace or study or the study_uid/storage_namespace/phi_namespace triplet
-        (sid OR uuid AND serial_no) - Either the sid or the node id and serial number
         """
         request_data = {
            'namespace_id': namespace_id,
@@ -87,67 +83,63 @@ class Namespace:
     
     def settings(
         self,
-        ai_settings,
-        allow_drag_and_drop_in_study_uploader,
-        auto_create_patient,
-        auto_enable_dicom_wrapping,
-        cloud_storage_config,
-        disable_duplicate_study_upload,
-        disable_mobile_dicom_wrapping,
-        enable_dicom_deidentification,
-        enable_dicom_wrapping,
-        enable_epic_patient_lookup,
-        enable_multipart_uploader,
-        enable_namespace_ai_questions,
-        force_new_study_on_upload,
-        link_defaults,
-        must_approve_duplicate_study_uid,
-        no_dup_share,
-        pixel_anonymize_color,
-        pixel_de_id_by_default,
-        priority_notifications,
-        reverse_patient_name,
-        show_image_on_upload_page,
-        single_file_dicom_wrapping,
-        study_field_flags,
-        study_size_soft_threshold_per_user,
-        try_update_original_study,
-        ui_json,
-        upload_settings,
         uuid,
+        allow_drag_and_drop_in_study_uploader=None,
+        auto_create_patient=None,
+        auto_enable_dicom_wrapping=None,
+        cloud_storage_config=None,
+        disable_duplicate_study_upload=None,
+        disable_mobile_dicom_wrapping=None,
+        enable_dicom_deidentification=None,
+        enable_dicom_wrapping=None,
+        enable_epic_patient_lookup=None,
+        enable_multipart_uploader=None,
+        enable_namespace_ai_questions=None,
+        force_new_study_on_upload=None,
+        link_defaults=None,
+        must_approve_duplicate_study_uid=None,
+        no_dup_share=None,
+        pixel_anonymize_color=None,
+        priority_notifications=None,
+        reverse_patient_name=None,
+        settings=None,
+        single_file_dicom_wrapping=None,
+        study_field_flags=None,
+        study_size_soft_threshold_per_user=None,
+        try_update_original_study=None,
+        ui_json=None,
+        upload_settings=None,
     ):
         """Settings.
-        :param ai_settings: Dict of ai settings
-        :param allow_drag_and_drop_in_study_uploader: Value for the setting
-        :param auto_create_patient: Value for the setting
-        :param auto_enable_dicom_wrapping: Value for the setting
-        :param cloud_storage_config: Value for the setting
-        :param disable_duplicate_study_upload: Value for the setting
-        :param disable_mobile_dicom_wrapping: Value for the setting
-        :param enable_dicom_deidentification: Value for the setting
-        :param enable_dicom_wrapping: Value for the setting
-        :param enable_epic_patient_lookup: Value for the setting
-        :param enable_multipart_uploader: Value for the setting
-        :param enable_namespace_ai_questions: Value for the setting
-        :param force_new_study_on_upload: Value for the setting
-        :param link_defaults: Value for the setting
-        :param must_approve_duplicate_study_uid: Value for the setting
-        :param no_dup_share: Flag to stop duplicate studies (same study_uid and image count) from getting shared into the namespace
-        :param pixel_anonymize_color: Value for the setting
-        :param pixel_de_id_by_default: Pixel de-id tool is set by default when uploading study to this namespace
-        :param priority_notifications: Value for the setting
-        :param reverse_patient_name: Value for the setting
-        :param show_image_on_upload_page: Show computer image with CD on upload page when image is uploading to this namespace
-        :param single_file_dicom_wrapping: Value for the setting
-        :param study_field_flags: A JSON hash of study_field_* role values to override the role values for studies in the namespace
-        :param study_size_soft_threshold_per_user: A threshold for studies size per user. An email (by study_quota_exceeded template) will be sent when this limit is exceeded by a user. A JSON hash of study_field_* role values to override the role values for studies in the namespace
-        :param try_update_original_study: Value for the setting
-        :param ui_json: JSON for UI setting possible options:
-        :param upload_settings: Value for the setting
         :param uuid: The uuid of the namespace
+        :param allow_drag_and_drop_in_study_uploader: Value for the setting (optional)
+        :param auto_create_patient: Value for the setting (optional)
+        :param auto_enable_dicom_wrapping: Value for the setting (optional)
+        :param cloud_storage_config: Value for the setting (optional)
+        :param disable_duplicate_study_upload: Value for the setting (optional)
+        :param disable_mobile_dicom_wrapping: Value for the setting (optional)
+        :param enable_dicom_deidentification: Value for the setting (optional)
+        :param enable_dicom_wrapping: Value for the setting (optional)
+        :param enable_epic_patient_lookup: Value for the setting (optional)
+        :param enable_multipart_uploader: Value for the setting (optional)
+        :param enable_namespace_ai_questions: Value for the setting (optional)
+        :param force_new_study_on_upload: Value for the setting (optional)
+        :param link_defaults: Value for the setting (optional)
+        :param must_approve_duplicate_study_uid: Value for the setting (optional)
+        :param no_dup_share: Flag to stop duplicate studies (same study_uid and image count) from getting shared into the namespace (optional)
+        :param pixel_anonymize_color: Value for the setting (optional)
+        :param priority_notifications: Value for the setting (optional)
+        :param reverse_patient_name: Value for the setting (optional)
+        :param settings: Other settings
+        :param single_file_dicom_wrapping: Value for the setting (optional)
+        :param study_field_flags: A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)
+        :param study_size_soft_threshold_per_user: A threshold for studies size per user. An email (by study_quota_exceeded template) will be sent when this limit is exceeded by a user. A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)
+        :param try_update_original_study: Value for the setting (optional)
+        :param ui_json: JSON for UI setting (optional) possible options:
 
-        Notes:
-        The following account settings can be over-ridden in the namespace
+pixel_de_id_by_default (boolean) Pixel de-id tool is set by default when uploading study to this namespace
+show_image_on_upload_page (boolean)  Show computer image with CD on upload page when image is uploading to this namespace
+        :param upload_settings: Value for the setting (optional)
         """
         request_data = {
            'allow_drag_and_drop_in_study_uploader': allow_drag_and_drop_in_study_uploader,
@@ -166,10 +158,8 @@ class Namespace:
            'must_approve_duplicate_study_uid': must_approve_duplicate_study_uid,
            'no_dup_share': no_dup_share,
            'pixel_anonymize_color': pixel_anonymize_color,
-           'pixel_de_id_by_default': pixel_de_id_by_default,
            'priority_notifications': priority_notifications,
            'reverse_patient_name': reverse_patient_name,
-           'show_image_on_upload_page': show_image_on_upload_page,
            'single_file_dicom_wrapping': single_file_dicom_wrapping,
            'study_field_flags': study_field_flags,
            'study_size_soft_threshold_per_user': study_size_soft_threshold_per_user,
@@ -178,9 +168,9 @@ class Namespace:
            'upload_settings': upload_settings,
            'uuid': uuid,
         }
-        if ai_settings is not None:
-            ai_settings_dict = {'{prefix}{k}'.format(prefix='', k=k): v for k,v in ai_settings.items()}
-            request_data.update(ai_settings_dict)
+        if settings is not None:
+            settings_dict = {'{prefix}{k}'.format(prefix='', k=k): v for k,v in settings.items()}
+            request_data.update(settings_dict)
 	
         errors_mapping = {}
         errors_mapping[('INVALID_SETTING', None)] = InvalidSetting('An invalid setting was passed. The error_subtype holds the name of the invalid setting')
@@ -208,10 +198,6 @@ class Namespace:
         :param serial_no: serial_no
         :param share_code: share_code
         :param uuid: uuid
-
-        Notes:
-        (share_code OR namespace_id) - The share code or namespace id
-        (sid OR uuid AND serial_no) - Either the sid or the node id and serial number (optional)
         """
         request_data = {
            'namespace_id': namespace_id,
@@ -529,9 +515,6 @@ class Namespace:
         :param storage_namespace: storage_namespace
         :param study_id: study_id
         :param study_uid: study_uid
-
-        Notes:
-        (namespace_id OR study_id OR study_uid AND storage_namespace AND phi_namespace) - The uuid of the namespace or study or the study_uid/storage_namespace/phi_namespace triplet
         """
         request_data = {
            'namespace_id': namespace_id,

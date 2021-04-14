@@ -162,18 +162,18 @@ class Audit:
     def log(
         self,
         bucket,
-        logged_params,
+        rest_params=None,
     ):
         """Log.
         :param bucket: Name of the bucket to log to
-        :param logged_params: Dict of parameters. They are logged to a message in the bucket
+        :param rest_params: Parameters are logged to a message in the bucket
         """
         request_data = {
            'bucket': bucket,
         }
-        if logged_params is not None:
-            logged_params_dict = {'{prefix}{k}'.format(prefix='', k=k): v for k,v in logged_params.items()}
-            request_data.update(logged_params_dict)
+        if rest_params is not None:
+            rest_params_dict = {'{prefix}{k}'.format(prefix='', k=k): v for k,v in rest_params.items()}
+            request_data.update(rest_params_dict)
 	
         errors_mapping = {}
         errors_mapping[('INVALID_BUCKET', None)] = InvalidBucket('The bucket name can only contain A-z characters and must be between 4 and 16 characters long')

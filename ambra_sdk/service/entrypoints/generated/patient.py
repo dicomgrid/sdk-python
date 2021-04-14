@@ -64,9 +64,6 @@ class Patient:
         :param name: name
         :param sex: Gender (optional)
         :param study_id: Id of the study to create a patient from (optional)
-
-        Notes:
-        (name OR first AND last) - Patient name as either full name or first and last (optional if study_id is used)
         """
         request_data = {
            'account_id': account_id,
@@ -162,9 +159,6 @@ class Patient:
         :param last: last
         :param mobile_phone: Mobile phone number (optional)
         :param name: name
-
-        Notes:
-        (name OR first AND last) - Patient name as either full name or first and last
         """
         request_data = {
            'alt_email': alt_email,

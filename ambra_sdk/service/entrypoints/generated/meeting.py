@@ -31,9 +31,6 @@ class Meeting:
         :param storage_namespace: storage_namespace
         :param study_id: study_id
         :param study_uid: study_uid
-
-        Notes:
-        (study_id OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study or the storage triplet
         """
         request_data = {
            'name': name,

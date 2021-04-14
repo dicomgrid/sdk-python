@@ -240,6 +240,7 @@ class Study:
         namespace: str,
         study_uid: str,
         image_uid: str,
+        x_ambrahealth_job_id: Optional[str] = None,
         only_prepare: bool = False,
     ) -> Union[Response, PreparedRequest]:
         """Deletes a single image from a study.
@@ -256,6 +257,7 @@ class Study:
         :param namespace: Namespace (Required).
         :param study_uid: Study uid (Required).
         :param image_uid: Image uid (Required).
+        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument
         :param only_prepare: Get prepared request.
 
         :returns: Delete image response
@@ -275,17 +277,18 @@ class Study:
             locals(),
         )
         errors_mapping = {
-            404:
-            NotFound(
-                'Image does not exists.',
-            ),
+            404: NotFound('Image does not exists.'),
         }
+        headers = {}
+        if x_ambrahealth_job_id is not None:
+            headers['X-AmbraHealth-Job-Id'] = x_ambrahealth_job_id
         prepared_request = PreparedRequest(
             storage_=self._storage,
             method=StorageMethod.delete,
             url=url,
             errors_mapping=errors_mapping,
             params=request_data,
+            headers=headers,
         )
         if only_prepare is True:
             return prepared_request
@@ -330,14 +333,8 @@ class Study:
             locals(),
         )
         errors_mapping = {
-            404:
-            NotFound(
-                'Study does not exist.',
-            ),
-            422:
-            UnprocessableEntity(
-                'Request body is empty.',
-            ),
+            404: NotFound('Study does not exist.'),
+            422: UnprocessableEntity('Request body is empty.'),
         }
         prepared_request = PreparedRequest(
             storage_=self._storage,
@@ -1216,6 +1213,7 @@ class Study:
         return_html: Optional[bool] = None,
         synchronous_wrap: Optional[bool] = None,
         static_ids: Optional[bool] = None,
+        x_ambrahealth_job_id: Optional[str] = None,
         only_prepare: bool = False,
     ) -> Union[Response, PreparedRequest]:
         """Posts an attachment to a study.
@@ -1253,6 +1251,7 @@ class Study:
         :param return_html: An integer of value 1 or 0. Return results as
             Content Type text html, instead of
             application json (required for certain browsers)
+        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument
         :param only_prepare: Get prepared request.
 
         :returns: posts attachments response
@@ -1304,11 +1303,15 @@ class Study:
             request_arg_names,
             locals(),
         )
+        headers = {}
+        if x_ambrahealth_job_id is not None:
+            headers['X-AmbraHealth-Job-Id'] = x_ambrahealth_job_id
         prepared_request = PreparedRequest(
             storage_=self._storage,
             method=StorageMethod.post,
             url=url,
             params=request_data,
+            headers=headers,
             files=files,
         )
         if only_prepare is True:
@@ -1434,6 +1437,7 @@ class Study:
         attachment_id: str,
         hash_arg: str,
         phi_namespace: Optional[str] = None,
+        x_ambrahealth_job_id: Optional[str] = None,
         only_prepare: bool = False,
     ) -> Union[Response, PreparedRequest]:
         """Deletes a study attachment.
@@ -1451,6 +1455,7 @@ class Study:
         :param phi_namespace: A string, set to the UUID of the
             namespace where the file was attached if it was
             attached to a shared instance of the study outside of the original storage namespace
+        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument
         :param only_prepare: Get prepared request.
 
         :returns: Delete attachemnt response
@@ -1470,11 +1475,15 @@ class Study:
             request_arg_names,
             locals(),
         )
+        headers = {}
+        if x_ambrahealth_job_id is not None:
+            headers['X-AmbraHealth-Job-Id'] = x_ambrahealth_job_id
         prepared_request = PreparedRequest(
             storage_=self._storage,
             method=StorageMethod.delete,
             url=url,
             params=request_data,
+            headers=headers,
         )
         if only_prepare is True:
             return prepared_request
@@ -1610,6 +1619,7 @@ class Study:
         secondary_study_uid: str,
         delete_secondary_study: Optional[bool] = None,
         series_uids: Optional[str] = None,
+        x_ambrahealth_job_id: Optional[str] = None,
         only_prepare: bool = False,
     ) -> Union[Response, PreparedRequest]:
         """Merge studies.
@@ -1628,6 +1638,7 @@ class Study:
         :param series_uids: A list of one or more comma-separated
             Series Instance UIDs, used to filter images merged
             from secondary study.
+        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument
         :param only_prepare: Get prepared request.
 
         :returns: Actually empty response
@@ -1663,12 +1674,16 @@ class Study:
         errors_mapping = {
             500: permission_denied,
         }
+        headers = {}
+        if x_ambrahealth_job_id is not None:
+            headers['X-AmbraHealth-Job-Id'] = x_ambrahealth_job_id
         prepared_request = PreparedRequest(
             storage_=self._storage,
             method=StorageMethod.get,
             url=url,
             errors_mapping=errors_mapping,
             params=request_data,
+            headers=headers,
         )
         if only_prepare is True:
             return prepared_request
@@ -1684,8 +1699,8 @@ class Study:
         new_study_uid: Optional[str] = None,
         keep_image_uids: Optional[str] = None,
         color: Optional[str] = None,
-        only_prepare: bool = False,
         x_ambrahealth_job_id: Optional[str] = None,
+        only_prepare: bool = False,
     ) -> Union[Response, PreparedRequest]:
         """Produce a new study that is a copy of the old, with specified pixel regions obscured.
 
@@ -1704,8 +1719,8 @@ class Study:
             of modified copies be same as originals? (default is false)
         :param color: HTML-formatted color (rrggbb) of
             obscured regions (default is black-and-white checkerboard)
-        :param only_prepare: Get prepared request.
         :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument
+        :param only_prepare: Get prepared request.
 
         :returns: Anonymize study response
 
@@ -1936,6 +1951,75 @@ class Study:
             url=url,
             errors_mapping=errors_mapping,
             params=request_data,
+        )
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
+
+    def clone(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        study_uid: str,
+        phi_namespace: Optional[str] = None,
+        new_image_uids: Optional[bool] = None,
+        new_series_uids: Optional[bool] = None,
+        x_ambrahealth_job_id: Optional[str] = None,
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
+        """Clone.
+
+        Clones the specified study into new study with new study uid,
+        and generates new series uid and image uids if it's requested.
+
+        URL: /study/{namespace}/{studyUid}/clone?sid={sid}&phi_namespace={phi_namespace}&new_image_uids={true/false}&new_series_uids={true/false}
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param study_uid: Study uid (Required).
+        :param phi_namespace: A string, set to the UUID of the namespace
+            where the file was attached if it was attached to a shared
+            instance of the study outside of the original storage namespace
+        :param new_image_uids: true/false, whether to generate for study new image uids.
+        :param new_series_uids: true/false, whether to generate for study new series uids.
+        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument
+        :param only_prepare: Get prepared request.
+
+        :return: new study uid
+        """
+        if new_image_uids is not None:
+            new_image_uids: str = 'true' if new_image_uids else 'false'  # type: ignore
+
+        if new_series_uids is not None:
+            new_series_uids: str = 'true' if new_series_uids else 'false'  # type: ignore
+
+        url_template = '/study/{namespace}/{study_uid}/clone'
+        url_arg_names = {
+            'engine_fqdn',
+            'namespace',
+            'study_uid',
+        }
+        request_arg_names = {
+            'phi_namespace',
+            'new_image_uids',
+            'new_series_uids',
+        }
+        url, request_data = self._storage.get_url_and_request(
+            url_template,
+            url_arg_names,
+            request_arg_names,
+            locals(),
+        )
+        headers = {}
+        if x_ambrahealth_job_id is not None:
+            headers['X-AmbraHealth-Job-Id'] = x_ambrahealth_job_id
+        prepared_request = PreparedRequest(
+            storage_=self._storage,
+            # This method is POST !
+            method=StorageMethod.post,
+            url=url,
+            params=request_data,
+            headers=headers,
         )
         if only_prepare is True:
             return prepared_request

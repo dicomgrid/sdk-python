@@ -102,6 +102,9 @@ DEFAULT_FOREIGN_MODELS = MappingProxyType(
         'proxy_id': 'User',
         'inbound_activity_id': 'Activity',
         'outbound_activity_id': 'Activity',
+        'site_id': 'Site',
+        'scanner_id': 'Scanner',
+        'global_role_id': 'Role',
     }
 )
 

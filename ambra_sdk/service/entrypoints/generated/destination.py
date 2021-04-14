@@ -10,10 +10,12 @@ from ambra_sdk.exceptions.service import InvalidCdBurnInfo
 from ambra_sdk.exceptions.service import InvalidCondition
 from ambra_sdk.exceptions.service import InvalidDistributedDestination
 from ambra_sdk.exceptions.service import InvalidField
+from ambra_sdk.exceptions.service import InvalidFieldName
 from ambra_sdk.exceptions.service import InvalidFlag
 from ambra_sdk.exceptions.service import InvalidGatewayType
 from ambra_sdk.exceptions.service import InvalidInteger
 from ambra_sdk.exceptions.service import InvalidNodeType
+from ambra_sdk.exceptions.service import InvalidRegexp
 from ambra_sdk.exceptions.service import InvalidSchedule
 from ambra_sdk.exceptions.service import InvalidSortField
 from ambra_sdk.exceptions.service import InvalidSortOrder
@@ -47,9 +49,6 @@ class Destination:
         :param uuid: uuid of the destination
         :param node_id: node_id
         :param serial_no: serial_no
-
-        Notes:
-        (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number
         """
         request_data = {
            'account_id': account_id,
@@ -391,13 +390,14 @@ class Destination:
         self,
         uuid,
         accession_number=None,
+        anonymize=None,
+        anonymize_param=None,
         bundle_id=None,
         copy_to=None,
         create_study=None,
         create_thin=None,
         customfield_param=None,
         end_datetime=None,
-        message=None,
         modality=None,
         node_id=None,
         patient_birth_date=None,
@@ -417,13 +417,14 @@ class Destination:
         """Search.
         :param uuid: uuid of the destination
         :param accession_number: Accession number to find (optional)
+        :param anonymize: A JSON hash of anonymization rules to apply to retrieved studies (optional)
+        :param anonymize_param: The anonymization rules breakdown. This overrides the anonymize parameter if passed (optional)
         :param bundle_id: An integral number Used internally to track searches initiated from a single bundle (optional)
         :param copy_to: uuid of a namespace to copy the retrieved or create_thin studies into (optional)
         :param create_study: The maximum number of studies to retrieve from this search instead of creating an activity for the search results (optional)
         :param create_thin: The maximum number of thin studies to create from this search instead of creating an activity for the search results (optional)
         :param customfield_param: Custom field(s) will be set for the resultant studies after /destination/retrieve call (optional)
         :param end_datetime: DICOM end date time stamp to bound the search (optional)
-        :param message: A message to display when studies are found (optional)
         :param modality: Modality (optional)
         :param node_id: node_id
         :param patient_birth_date: Birth date to find (optional)
@@ -439,19 +440,15 @@ class Destination:
         :param start_datetime: DICOM start date time stamp to bound the search (optional)
         :param study_request_id: uuid of a study request (optional)
         :param study_uid: Study uid to find (optional)
-
-        Notes:
-        (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number
-        The rest of the fields are used for the search
         """
         request_data = {
            'accession_number': accession_number,
+           'anonymize': anonymize,
            'bundle_id': bundle_id,
            'copy_to': copy_to,
            'create_study': create_study,
            'create_thin': create_thin,
            'end_datetime': end_datetime,
-           'message': message,
            'modality': modality,
            'node_id': node_id,
            'patient_birth_date': patient_birth_date,
@@ -469,12 +466,17 @@ class Destination:
            'study_uid': study_uid,
            'uuid': uuid,
         }
+        if anonymize_param is not None:
+            anonymize_param_dict = {'{prefix}{k}'.format(prefix='anonymize_', k=k): v for k,v in anonymize_param.items()}
+            request_data.update(anonymize_param_dict)
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
             request_data.update(customfield_param_dict)
 	
         errors_mapping = {}
         errors_mapping[('INSUFFICIENT_CRITERIA', None)] = InsufficientCriteria('Not enough search fields are populated')
+        errors_mapping[('INVALID_FIELD_NAME', None)] = InvalidFieldName('The field cannot be used in anonymization rules. The error_subtype holds the invalid field name.')
+        errors_mapping[('INVALID_REGEXP', None)] = InvalidRegexp('Invalid anonymization rule regular expression. The error_subtype holds the invalid regexp.')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The destination, namespace or study request can not be found')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to search the destination')
@@ -493,24 +495,22 @@ class Destination:
         activity_id,
         send_method,
         study_request_found_id,
-        message=None,
+        customfield_param=None,
     ):
         """Retrieve.
         :param activity_id: uuid of the DESTINATION_SEARCH activity to retrieve from
         :param send_method: The method to send a study as a study request response (share|duplicate)
         :param study_request_found_id: UUID of a study request search results to retrieve and send as study request response
-        :param message: A message to display when studies are retrieved (optional)
-
-        Notes:
-        The following fields are used for the activity retrieve workflow: activity_id, message
-        The following fields are used for the study request workflow: study_request_found_id, send_method
+        :param customfield_param: Custom field(s) will be set for the study retrieved (optional)
         """
         request_data = {
            'activity_id': activity_id,
-           'message': message,
            'send_method': send_method,
            'study_request_found_id': study_request_found_id,
         }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
 	
         errors_mapping = {}
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
@@ -546,9 +546,6 @@ class Destination:
         :param patient_name: Patient name to find (optional)
         :param patient_sex: Gender to find (optional)
         :param patientid: Patient id to find (optional)
-
-        Notes:
-        The rest of the fields are used for the search
         """
         request_data = {
            'accession_number': accession_number,

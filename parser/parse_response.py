@@ -5,12 +5,13 @@ from typing import List, NamedTuple, Optional, Union
 
 
 class LinkedParams:
-    def __init__(self, link_url: str, deep: int=1):
+
+    def __init__(self, link_url: str, deep: int = 1):
         self.link = link_url
         self.deep = deep
 
     def __repr__(self):
-        return 'Link: {link}'.format(link = self.link)
+        return 'Link: {link}'.format(link=self.link)
 
 
 DOC_FIELDS = {
@@ -30,29 +31,38 @@ DOC_FIELDS = {
 }
 
 LINKED_FIELDS = {
-    'The rest of the fields are the same as /user/get': LinkedParams('user/get'),
-    'The permissions for the user in this account': LinkedParams('permission_params'),
-    '* The rest of the fields are the optional search parameters in either the /destination/search or the /destination/search/mwl call': LinkedParams('union[/destination/search,/destination/search/mwl]', deep=2),
-    'The fields from /meeting/get': LinkedParams('/meeting/get'),
+    'The rest of the fields are the same as /user/get':
+    LinkedParams('user/get'),
+    'The permissions for the user in this account':
+    LinkedParams('permission_params'),
+    '* The rest of the fields are the optional search parameters in either the /destination/search or the /destination/search/mwl call':
+    LinkedParams('union[/destination/search,/destination/search/mwl]', deep=2),
+    'The fields from /meeting/get':
+    LinkedParams('/meeting/get'),
 }
 
 FIX_FIELDS_MAP = {
     # TODO: fixed in new api
-    'comments • An array of the study comments, order from most recent too earliest. This is only returned if the user has the study_comment_view permissions. Each object has the fields in': 
+    'comments • An array of the study comments, order from most recent too earliest. This is only returned if the user has the study_comment_view permissions. Each object has the fields in':
     'comments • An array of the study comments, order from most recent too earliest. This is only returned if the user has the study_comment_view permissions. Each object has the fields in the /study/comment/get call.',
     # TODO: fixed in new api
-    'second_opinion_share Flag if this is a  second opinion workflow (optional)': 'second_opinion_share • Flag if this is a  second opinion workflow (optional)',
+    'second_opinion_share Flag if this is a  second opinion workflow (optional)':
+    'second_opinion_share • Flag if this is a  second opinion workflow (optional)',
     # TODO: fixed in new api
-    'second_opinion_config JSON configuration for the second opinion workflow (optional)': 'second_opinion_config • JSON configuration for the second opinion workflow (optional)',
+    'second_opinion_config JSON configuration for the second opinion workflow (optional)':
+    'second_opinion_config • JSON configuration for the second opinion workflow (optional)',
     # TODO: fixed in new api
-    'second_opinion_case The second opinion case. The fields are per /case/get (optional)': 'second_opinion_case • The second opinion case. The fields are per /case/get (optional)',
+    'second_opinion_case The second opinion case. The fields are per /case/get (optional)':
+    'second_opinion_case • The second opinion case. The fields are per /case/get (optional)',
     # TODO: fixed in new api
-    'second_opinion_share Flag to enable/disable the second opinion workflow for the share': 'second_opinion_share • Flag to enable/disable the second opinion workflow for the share',
+    'second_opinion_share Flag to enable/disable the second opinion workflow for the share':
+    'second_opinion_share • Flag to enable/disable the second opinion workflow for the share',
     # TODO: fixed in new api
-    'second_opinion_config JSON configuration for the second opinion workflow': 'second_opinion_config • JSON configuration for the second opinion workflow',
+    'second_opinion_config JSON configuration for the second opinion workflow':
+    'second_opinion_config • JSON configuration for the second opinion workflow',
     # TODO: fixed in new api
-    'object The object this is applied against': 'object • The object this is applied against',
-
+    'object The object this is applied against':
+    'object • The object this is applied against',
 }
 
 BAD_FIELDS = {
@@ -68,39 +78,48 @@ RETURN_REDIRECT = {
     'This link logs the user into a PHR account with any associated studies shared into it',
 }
 
+
 class Redirect:
+
     def __init__(self, description: str):
         self.descritpion = description
 
+
 RETURN_STREAM = {
-    'Streams back the PDF report': 'pdf',
-    'Streams back the zip file': 'zip',
-    'A CSS file': 'css',
-    'The data in i18next format': 'i18next',
-    'A binary stream of the zipped data with a content type of application/zip': 'zip',
+    'Streams back the PDF report':
+    'pdf',
+    'Streams back the zip file':
+    'zip',
+    'A CSS file':
+    'css',
+    'The data in i18next format':
+    'i18next',
+    'A binary stream of the zipped data with a content type of application/zip':
+    'zip',
 }
 
 
 class Stream:
+
     def __init__(self, description: str, stream_format: str):
         self.descritpion = description
-        self.stream_format: stream_format
+        self.stream_format = stream_format
 
 
 class ResponseParameter:
 
     def __init__(
-        self,
-        name: Optional[str],
-        description: Optional[str],
-        deep: int = 0
+        self, name: Optional[str], description: Optional[str], deep: int = 0
     ):
         self.name = name
         self.description = description
-        self.schema: List['ResponseParameter'] = []
+        self.schema: List[Union['ResponseParameter', LinkedParams]] = []
         self.deep = deep
 
-    def add_to_schema(self, parameter: Union['ResponseParameter', LinkedParams]):
+    def add_to_schema(
+        self,
+        parameter: Union['ResponseParameter', LinkedParams],
+    ):
         self.schema.append(parameter)
 
     @property
@@ -112,19 +131,18 @@ class ResponseParameter:
 
     def __repr__(self):
         if self.schema:
-            schema_str = '\n'.join(
-                [str(rparam) for rparam in self.schema],
-            )
+            schema_str = '\n'.join([str(rparam) for rparam in self.schema], )
             return '''{name}: {description}\n{schema}'''.format(
-            name=self.name,
-            description=self.description,
-            schema=schema_str,
-        )
+                name=self.name,
+                description=self.description,
+                schema=schema_str,
+            )
         return '{space}{name}: {description}'.format(
             space=self.deep * ' ',
             name=self.name,
             description=self.description
         )
+
 
 class ResponseGroupParametersDoc:
 
@@ -146,6 +164,7 @@ def parse_response_parameter(parameter_str):
     name = name.replace('*', '').replace('↳', '').strip()
     return ResponseParameter(name, description, deep)
 
+
 def parse_response_parameters(parameters_str):
 
     current_deep = 0
@@ -164,7 +183,7 @@ def parse_response_parameters(parameters_str):
         if parameter_str in FIX_FIELDS_MAP:
             parameter_str = FIX_FIELDS_MAP[parameter_str]
 
-        if parameter_str.startswith('---') or parameter_str in DOC_FIELDS:
+        if parameter_str.startswith('--') or parameter_str in DOC_FIELDS:
             doc_parameter = ResponseGroupParametersDoc(parameter_str)
             root.add_to_schema(doc_parameter)
             continue
@@ -173,11 +192,9 @@ def parse_response_parameters(parameters_str):
             assert len(root.schema) == 0
             return Redirect(parameter_str)
 
-
         if parameter_str in RETURN_STREAM:
             assert len(root.schema) == 0
             return Stream(parameter_str, RETURN_STREAM[parameter_str])
-
 
         new_parameter = parse_response_parameter(parameter_str)
         deep = new_parameter.deep

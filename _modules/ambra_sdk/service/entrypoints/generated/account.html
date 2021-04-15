@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.account &#8212; Ambra-SDK 3.21.2.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.account &#8212; Ambra-SDK 3.21.3.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -107,8 +107,8 @@
     
 <div class="viewcode-block" id="Account.set"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Account.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">can_request</span><span class="p">,</span>
         <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">can_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">css</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">customfield_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">hl7_template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -132,8 +132,8 @@
         <span class="n">vendor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
-<span class="sd">        :param can_request: Flag if user can request to join the account</span>
 <span class="sd">        :param uuid: The account uuid</span>
+<span class="sd">        :param can_request: Flag if user can request to join the account (optional)</span>
 <span class="sd">        :param css: Custom CSS for the account (optional)</span>
 <span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
 <span class="sd">        :param hl7_template: The HL7 reporting template for the account (optional)</span>
@@ -197,7 +197,7 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_VANITY&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidVanity</span><span class="p">(</span><span class="s1">&#39;The vanity host name is invalid. The error_subtype holds the invalid hostname&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The object was not found. The error_subtype holds the name of field that triggered the error&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to modify this record&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ROLE_NAMESPACE_MISMATCH&#39;</span><span class="p">,</span> <span class="s1">&#39;INCOMPATIBLE_ROLE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">RoleNamespaceMismatch</span><span class="p">(</span><span class="s1">&#39;The role cannot be used for the account&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ROLE_NAMESPACE_MISMATCH&#39;</span><span class="p">,</span> <span class="s1">&#39;INCOMPATIBLE_ROLE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">RoleNamespaceMismatch</span><span class="p">(</span><span class="s1">&#39;The role cannot be used for the account, data contains role_id and namespace_id&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/account/set&#39;</span><span class="p">,</span>
@@ -263,6 +263,7 @@
         <span class="n">event_upload</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_upload_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">global_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">global_role_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">max_sessions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">password_reset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">role_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -301,6 +302,7 @@
 <span class="sd">        :param event_upload: Notify the user on an upload into the account namespace (optional)</span>
 <span class="sd">        :param event_upload_fail: Notify the user on a failed upload into the account namespace (optional)</span>
 <span class="sd">        :param global_param: Flag if this is a global user (optional).</span>
+<span class="sd">        :param global_role_id: uuid of a role to be used in groups and locations when the global user is added to them, this role overrides groups&amp;#39;/locations&amp;#39; default roles (optional).</span>
 <span class="sd">        :param max_sessions: Over-ride value for the max number of simultaneous sessions the user can have. (optional).</span>
 <span class="sd">        :param password_reset: Flag if the password needs to be reset. (optional).</span>
 <span class="sd">        :param role_id: uuid of the users role in the account (optional).</span>
@@ -310,9 +312,6 @@
 <span class="sd">        :param settings: A hash of the account settings that the user can override (optional)</span>
 <span class="sd">        :param sso_only: Flag if the user can only login via SSO. (optional).</span>
 <span class="sd">        :param user_id: user_id</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (email OR user_id) - The email address or uuid of the user to add</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;account_alias&#39;</span><span class="p">:</span> <span class="n">account_alias</span><span class="p">,</span>
@@ -341,6 +340,7 @@
            <span class="s1">&#39;event_upload&#39;</span><span class="p">:</span> <span class="n">event_upload</span><span class="p">,</span>
            <span class="s1">&#39;event_upload_fail&#39;</span><span class="p">:</span> <span class="n">event_upload_fail</span><span class="p">,</span>
            <span class="s1">&#39;global&#39;</span><span class="p">:</span> <span class="n">global_param</span><span class="p">,</span>
+           <span class="s1">&#39;global_role_id&#39;</span><span class="p">:</span> <span class="n">global_role_id</span><span class="p">,</span>
            <span class="s1">&#39;max_sessions&#39;</span><span class="p">:</span> <span class="n">max_sessions</span><span class="p">,</span>
            <span class="s1">&#39;password_reset&#39;</span><span class="p">:</span> <span class="n">password_reset</span><span class="p">,</span>
            <span class="s1">&#39;role_id&#39;</span><span class="p">:</span> <span class="n">role_id</span><span class="p">,</span>
@@ -364,7 +364,8 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The account can not be found&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to add this user to the account&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ROLE_NAMESPACE_MISMATCH&#39;</span><span class="p">,</span> <span class="s1">&#39;INCOMPATIBLE_ROLE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">RoleNamespaceMismatch</span><span class="p">(</span><span class="s1">&#39;The role cannot be used for the account&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ROLE_NAMESPACE_MISMATCH&#39;</span><span class="p">,</span> <span class="s1">&#39;GLOBAL_USER_WITH_RESTRICTED_ROLE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">RoleNamespaceMismatch</span><span class="p">(</span><span class="s1">&#39;They are adding a global user with a role restricted to group/location and there is a group/location in the account, data contains role_id, namespace_id and user_id&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ROLE_NAMESPACE_MISMATCH&#39;</span><span class="p">,</span> <span class="s1">&#39;INCOMPATIBLE_ROLE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">RoleNamespaceMismatch</span><span class="p">(</span><span class="s1">&#39;The role cannot be used for the account, data contains role_id and namespace_id&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;USER_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">UserNotFound</span><span class="p">(</span><span class="s1">&#39;The user can not be found&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
@@ -405,6 +406,7 @@
         <span class="n">event_upload</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_upload_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">global_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">global_role_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">max_sessions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">password_reset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">role_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -442,6 +444,7 @@
 <span class="sd">        :param event_upload: Notify the user on an upload into the account namespace (optional)</span>
 <span class="sd">        :param event_upload_fail: Notify the user on a failed upload into the account namespace (optional)</span>
 <span class="sd">        :param global_param: Flag if this is a global user. (optional).</span>
+<span class="sd">        :param global_role_id: uuid of a role to be used in groups and locations when the global user is added to them, this role overrides groups&amp;#39;/locations&amp;#39; default roles (optional).</span>
 <span class="sd">        :param max_sessions: Over-ride value for the max number of simultaneous sessions the user can have. (optional).</span>
 <span class="sd">        :param password_reset: Flag if the password needs to be reset. (optional).</span>
 <span class="sd">        :param role_id: uuid of the users role in the account (optional).</span>
@@ -476,6 +479,7 @@
            <span class="s1">&#39;event_upload&#39;</span><span class="p">:</span> <span class="n">event_upload</span><span class="p">,</span>
            <span class="s1">&#39;event_upload_fail&#39;</span><span class="p">:</span> <span class="n">event_upload_fail</span><span class="p">,</span>
            <span class="s1">&#39;global&#39;</span><span class="p">:</span> <span class="n">global_param</span><span class="p">,</span>
+           <span class="s1">&#39;global_role_id&#39;</span><span class="p">:</span> <span class="n">global_role_id</span><span class="p">,</span>
            <span class="s1">&#39;max_sessions&#39;</span><span class="p">:</span> <span class="n">max_sessions</span><span class="p">,</span>
            <span class="s1">&#39;password_reset&#39;</span><span class="p">:</span> <span class="n">password_reset</span><span class="p">,</span>
            <span class="s1">&#39;role_id&#39;</span><span class="p">:</span> <span class="n">role_id</span><span class="p">,</span>
@@ -502,7 +506,8 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The account can not be found&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to edit this user&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NO_USER_OVERRIDE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NoUserOverride</span><span class="p">(</span><span class="s1">&#39;The setting does not allow a user override&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ROLE_NAMESPACE_MISMATCH&#39;</span><span class="p">,</span> <span class="s1">&#39;INCOMPATIBLE_ROLE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">RoleNamespaceMismatch</span><span class="p">(</span><span class="s1">&#39;The role cannot be used for the account&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ROLE_NAMESPACE_MISMATCH&#39;</span><span class="p">,</span> <span class="s1">&#39;GLOBAL_USER_WITH_RESTRICTED_ROLE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">RoleNamespaceMismatch</span><span class="p">(</span><span class="s1">&#39;They are making the user global with a role restricted to group/location and there is a group/location in the account, data contains role_id, namespace_id and user_id.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ROLE_NAMESPACE_MISMATCH&#39;</span><span class="p">,</span> <span class="s1">&#39;INCOMPATIBLE_ROLE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">RoleNamespaceMismatch</span><span class="p">(</span><span class="s1">&#39;The role cannot be used for the account, data contains role_id and namespace_id&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ROLE_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">RoleNotFound</span><span class="p">(</span><span class="s1">&#39;The role was not found or is not an account role&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;USER_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">UserNotFound</span><span class="p">(</span><span class="s1">&#39;The user can not be found or is not a member of this account&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -736,9 +741,6 @@
         <span class="sd">&quot;&quot;&quot;Css.</span>
 <span class="sd">        :param account_id: account_id</span>
 <span class="sd">        :param vanity: vanity</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (account_id OR vanity) - The account_id or vanity name to get the css for (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
@@ -769,9 +771,6 @@
 <span class="sd">        :param namespace_id: Apply overrides for the namespace (optional)</span>
 <span class="sd">        :param settings: A comma delimited list of the settings to return (optional)</span>
 <span class="sd">        :param vanity: vanity</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (account_id OR vanity) - The account_id or vanity name to get the settings for</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
@@ -863,9 +862,6 @@
 <span class="sd">        :param uuid: UUID of the account (only needed for sid authentication)</span>
 <span class="sd">        :param node_id: node_id</span>
 <span class="sd">        :param serial_no: serial_no</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (sid OR node_id AND serial_no) - Either a sid or the node id and serial number</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;md5&#39;</span><span class="p">:</span> <span class="n">md5</span><span class="p">,</span>
@@ -947,7 +943,7 @@
 
 
 
-<p class="blurb">version 3.21.2.0-1</p>
+<p class="blurb">version 3.21.3.0-1</p>
 
 
 

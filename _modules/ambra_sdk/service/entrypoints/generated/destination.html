@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.destination &#8212; Ambra-SDK 3.21.2.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.destination &#8212; Ambra-SDK 3.21.3.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -44,10 +44,12 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidCondition</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidDistributedDestination</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidField</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidFieldName</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidFlag</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidGatewayType</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidInteger</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidNodeType</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidRegexp</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidSchedule</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidSortField</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidSortOrder</span>
@@ -81,9 +83,6 @@
 <span class="sd">        :param uuid: uuid of the destination</span>
 <span class="sd">        :param node_id: node_id</span>
 <span class="sd">        :param serial_no: serial_no</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
@@ -425,13 +424,14 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">uuid</span><span class="p">,</span>
         <span class="n">accession_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">anonymize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">anonymize_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">bundle_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">copy_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">create_study</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">create_thin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">customfield_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">end_datetime</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">modality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">node_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">patient_birth_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -451,13 +451,14 @@
         <span class="sd">&quot;&quot;&quot;Search.</span>
 <span class="sd">        :param uuid: uuid of the destination</span>
 <span class="sd">        :param accession_number: Accession number to find (optional)</span>
+<span class="sd">        :param anonymize: A JSON hash of anonymization rules to apply to retrieved studies (optional)</span>
+<span class="sd">        :param anonymize_param: The anonymization rules breakdown. This overrides the anonymize parameter if passed (optional)</span>
 <span class="sd">        :param bundle_id: An integral number Used internally to track searches initiated from a single bundle (optional)</span>
 <span class="sd">        :param copy_to: uuid of a namespace to copy the retrieved or create_thin studies into (optional)</span>
 <span class="sd">        :param create_study: The maximum number of studies to retrieve from this search instead of creating an activity for the search results (optional)</span>
 <span class="sd">        :param create_thin: The maximum number of thin studies to create from this search instead of creating an activity for the search results (optional)</span>
 <span class="sd">        :param customfield_param: Custom field(s) will be set for the resultant studies after /destination/retrieve call (optional)</span>
 <span class="sd">        :param end_datetime: DICOM end date time stamp to bound the search (optional)</span>
-<span class="sd">        :param message: A message to display when studies are found (optional)</span>
 <span class="sd">        :param modality: Modality (optional)</span>
 <span class="sd">        :param node_id: node_id</span>
 <span class="sd">        :param patient_birth_date: Birth date to find (optional)</span>
@@ -473,19 +474,15 @@
 <span class="sd">        :param start_datetime: DICOM start date time stamp to bound the search (optional)</span>
 <span class="sd">        :param study_request_id: uuid of a study request (optional)</span>
 <span class="sd">        :param study_uid: Study uid to find (optional)</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number</span>
-<span class="sd">        The rest of the fields are used for the search</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;accession_number&#39;</span><span class="p">:</span> <span class="n">accession_number</span><span class="p">,</span>
+           <span class="s1">&#39;anonymize&#39;</span><span class="p">:</span> <span class="n">anonymize</span><span class="p">,</span>
            <span class="s1">&#39;bundle_id&#39;</span><span class="p">:</span> <span class="n">bundle_id</span><span class="p">,</span>
            <span class="s1">&#39;copy_to&#39;</span><span class="p">:</span> <span class="n">copy_to</span><span class="p">,</span>
            <span class="s1">&#39;create_study&#39;</span><span class="p">:</span> <span class="n">create_study</span><span class="p">,</span>
            <span class="s1">&#39;create_thin&#39;</span><span class="p">:</span> <span class="n">create_thin</span><span class="p">,</span>
            <span class="s1">&#39;end_datetime&#39;</span><span class="p">:</span> <span class="n">end_datetime</span><span class="p">,</span>
-           <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
            <span class="s1">&#39;modality&#39;</span><span class="p">:</span> <span class="n">modality</span><span class="p">,</span>
            <span class="s1">&#39;node_id&#39;</span><span class="p">:</span> <span class="n">node_id</span><span class="p">,</span>
            <span class="s1">&#39;patient_birth_date&#39;</span><span class="p">:</span> <span class="n">patient_birth_date</span><span class="p">,</span>
@@ -503,12 +500,17 @@
            <span class="s1">&#39;study_uid&#39;</span><span class="p">:</span> <span class="n">study_uid</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
+        <span class="k">if</span> <span class="n">anonymize_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">anonymize_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;anonymize_&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">anonymize_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">anonymize_param_dict</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">customfield_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">customfield_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
             <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">customfield_param_dict</span><span class="p">)</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INSUFFICIENT_CRITERIA&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InsufficientCriteria</span><span class="p">(</span><span class="s1">&#39;Not enough search fields are populated&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FIELD_NAME&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidFieldName</span><span class="p">(</span><span class="s1">&#39;The field cannot be used in anonymization rules. The error_subtype holds the invalid field name.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_REGEXP&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidRegexp</span><span class="p">(</span><span class="s1">&#39;Invalid anonymization rule regular expression. The error_subtype holds the invalid regexp.&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The destination, namespace or study request can not be found&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to search the destination&#39;</span><span class="p">)</span>
@@ -527,24 +529,22 @@
         <span class="n">activity_id</span><span class="p">,</span>
         <span class="n">send_method</span><span class="p">,</span>
         <span class="n">study_request_found_id</span><span class="p">,</span>
-        <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">customfield_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve.</span>
 <span class="sd">        :param activity_id: uuid of the DESTINATION_SEARCH activity to retrieve from</span>
 <span class="sd">        :param send_method: The method to send a study as a study request response (share|duplicate)</span>
 <span class="sd">        :param study_request_found_id: UUID of a study request search results to retrieve and send as study request response</span>
-<span class="sd">        :param message: A message to display when studies are retrieved (optional)</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        The following fields are used for the activity retrieve workflow: activity_id, message</span>
-<span class="sd">        The following fields are used for the study request workflow: study_request_found_id, send_method</span>
+<span class="sd">        :param customfield_param: Custom field(s) will be set for the study retrieved (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;activity_id&#39;</span><span class="p">:</span> <span class="n">activity_id</span><span class="p">,</span>
-           <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
            <span class="s1">&#39;send_method&#39;</span><span class="p">:</span> <span class="n">send_method</span><span class="p">,</span>
            <span class="s1">&#39;study_request_found_id&#39;</span><span class="p">:</span> <span class="n">study_request_found_id</span><span class="p">,</span>
         <span class="p">}</span>
+        <span class="k">if</span> <span class="n">customfield_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">customfield_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">customfield_param_dict</span><span class="p">)</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
@@ -580,9 +580,6 @@
 <span class="sd">        :param patient_name: Patient name to find (optional)</span>
 <span class="sd">        :param patient_sex: Gender to find (optional)</span>
 <span class="sd">        :param patientid: Patient id to find (optional)</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        The rest of the fields are used for the search</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;accession_number&#39;</span><span class="p">:</span> <span class="n">accession_number</span><span class="p">,</span>
@@ -623,7 +620,7 @@
 
 
 
-<p class="blurb">version 3.21.2.0-1</p>
+<p class="blurb">version 3.21.3.0-1</p>
 
 
 

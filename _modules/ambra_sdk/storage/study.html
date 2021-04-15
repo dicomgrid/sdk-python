@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.storage.study &#8212; Ambra-SDK 3.21.2.0-1 documentation</title>
+    <title>ambra_sdk.storage.study &#8212; Ambra-SDK 3.21.3.0-1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -274,6 +274,7 @@
         <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">image_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">x_ambrahealth_job_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Deletes a single image from a study.</span>
@@ -290,6 +291,7 @@
 <span class="sd">        :param namespace: Namespace (Required).</span>
 <span class="sd">        :param study_uid: Study uid (Required).</span>
 <span class="sd">        :param image_uid: Image uid (Required).</span>
+<span class="sd">        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument</span>
 <span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: Delete image response</span>
@@ -309,17 +311,18 @@
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="mi">404</span><span class="p">:</span>
-            <span class="n">NotFound</span><span class="p">(</span>
-                <span class="s1">&#39;Image does not exists.&#39;</span><span class="p">,</span>
-            <span class="p">),</span>
+            <span class="mi">404</span><span class="p">:</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;Image does not exists.&#39;</span><span class="p">),</span>
         <span class="p">}</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">x_ambrahealth_job_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;X-AmbraHealth-Job-Id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_ambrahealth_job_id</span>
         <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
             <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span>
             <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
             <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">prepared_request</span>
@@ -364,14 +367,8 @@
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="mi">404</span><span class="p">:</span>
-            <span class="n">NotFound</span><span class="p">(</span>
-                <span class="s1">&#39;Study does not exist.&#39;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="mi">422</span><span class="p">:</span>
-            <span class="n">UnprocessableEntity</span><span class="p">(</span>
-                <span class="s1">&#39;Request body is empty.&#39;</span><span class="p">,</span>
-            <span class="p">),</span>
+            <span class="mi">404</span><span class="p">:</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;Study does not exist.&#39;</span><span class="p">),</span>
+            <span class="mi">422</span><span class="p">:</span> <span class="n">UnprocessableEntity</span><span class="p">(</span><span class="s1">&#39;Request body is empty.&#39;</span><span class="p">),</span>
         <span class="p">}</span>
         <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
             <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
@@ -1250,6 +1247,7 @@
         <span class="n">return_html</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">synchronous_wrap</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">static_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">x_ambrahealth_job_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Posts an attachment to a study.</span>
@@ -1287,6 +1285,7 @@
 <span class="sd">        :param return_html: An integer of value 1 or 0. Return results as</span>
 <span class="sd">            Content Type text html, instead of</span>
 <span class="sd">            application json (required for certain browsers)</span>
+<span class="sd">        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument</span>
 <span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: posts attachments response</span>
@@ -1338,11 +1337,15 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">x_ambrahealth_job_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;X-AmbraHealth-Job-Id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_ambrahealth_job_id</span>
         <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
             <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">post</span><span class="p">,</span>
             <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
             <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
@@ -1468,6 +1471,7 @@
         <span class="n">attachment_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">hash_arg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">x_ambrahealth_job_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Deletes a study attachment.</span>
@@ -1485,6 +1489,7 @@
 <span class="sd">        :param phi_namespace: A string, set to the UUID of the</span>
 <span class="sd">            namespace where the file was attached if it was</span>
 <span class="sd">            attached to a shared instance of the study outside of the original storage namespace</span>
+<span class="sd">        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument</span>
 <span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: Delete attachemnt response</span>
@@ -1504,11 +1509,15 @@
             <span class="n">request_arg_names</span><span class="p">,</span>
             <span class="nb">locals</span><span class="p">(),</span>
         <span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">x_ambrahealth_job_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;X-AmbraHealth-Job-Id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_ambrahealth_job_id</span>
         <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
             <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span>
             <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">prepared_request</span>
@@ -1644,6 +1653,7 @@
         <span class="n">secondary_study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">delete_secondary_study</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">series_uids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">x_ambrahealth_job_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Merge studies.</span>
@@ -1662,6 +1672,7 @@
 <span class="sd">        :param series_uids: A list of one or more comma-separated</span>
 <span class="sd">            Series Instance UIDs, used to filter images merged</span>
 <span class="sd">            from secondary study.</span>
+<span class="sd">        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument</span>
 <span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: Actually empty response</span>
@@ -1697,12 +1708,16 @@
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{</span>
             <span class="mi">500</span><span class="p">:</span> <span class="n">permission_denied</span><span class="p">,</span>
         <span class="p">}</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">x_ambrahealth_job_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;X-AmbraHealth-Job-Id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_ambrahealth_job_id</span>
         <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
             <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
             <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
             <span class="n">errors_mapping</span><span class="o">=</span><span class="n">errors_mapping</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">prepared_request</span>
@@ -1718,8 +1733,8 @@
         <span class="n">new_study_uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">keep_image_uids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">x_ambrahealth_job_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Produce a new study that is a copy of the old, with specified pixel regions obscured.</span>
 
@@ -1738,8 +1753,8 @@
 <span class="sd">            of modified copies be same as originals? (default is false)</span>
 <span class="sd">        :param color: HTML-formatted color (rrggbb) of</span>
 <span class="sd">            obscured regions (default is black-and-white checkerboard)</span>
-<span class="sd">        :param only_prepare: Get prepared request.</span>
 <span class="sd">        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: Anonymize study response</span>
 
@@ -1973,6 +1988,75 @@
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Study.clone"><a class="viewcode-back" href="../../../referencies/storage_api.html#ambra_sdk.storage.study.Study.clone">[docs]</a>    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">engine_fqdn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">new_image_uids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">new_series_uids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">x_ambrahealth_job_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Clone.</span>
+
+<span class="sd">        Clones the specified study into new study with new study uid,</span>
+<span class="sd">        and generates new series uid and image uids if it&#39;s requested.</span>
+
+<span class="sd">        URL: /study/{namespace}/{studyUid}/clone?sid={sid}&amp;phi_namespace={phi_namespace}&amp;new_image_uids={true/false}&amp;new_series_uids={true/false}</span>
+
+<span class="sd">        :param engine_fqdn: Engine FQDN (Required).</span>
+<span class="sd">        :param namespace: Namespace (Required).</span>
+<span class="sd">        :param study_uid: Study uid (Required).</span>
+<span class="sd">        :param phi_namespace: A string, set to the UUID of the namespace</span>
+<span class="sd">            where the file was attached if it was attached to a shared</span>
+<span class="sd">            instance of the study outside of the original storage namespace</span>
+<span class="sd">        :param new_image_uids: true/false, whether to generate for study new image uids.</span>
+<span class="sd">        :param new_series_uids: true/false, whether to generate for study new series uids.</span>
+<span class="sd">        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
+
+<span class="sd">        :return: new study uid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_image_uids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_image_uids</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span> <span class="k">if</span> <span class="n">new_image_uids</span> <span class="k">else</span> <span class="s1">&#39;false&#39;</span>  <span class="c1"># type: ignore</span>
+
+        <span class="k">if</span> <span class="n">new_series_uids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_series_uids</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span> <span class="k">if</span> <span class="n">new_series_uids</span> <span class="k">else</span> <span class="s1">&#39;false&#39;</span>  <span class="c1"># type: ignore</span>
+
+        <span class="n">url_template</span> <span class="o">=</span> <span class="s1">&#39;/study/</span><span class="si">{namespace}</span><span class="s1">/</span><span class="si">{study_uid}</span><span class="s1">/clone&#39;</span>
+        <span class="n">url_arg_names</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;engine_fqdn&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;namespace&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;study_uid&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">request_arg_names</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;phi_namespace&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;new_image_uids&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;new_series_uids&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">url</span><span class="p">,</span> <span class="n">request_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get_url_and_request</span><span class="p">(</span>
+            <span class="n">url_template</span><span class="p">,</span>
+            <span class="n">url_arg_names</span><span class="p">,</span>
+            <span class="n">request_arg_names</span><span class="p">,</span>
+            <span class="nb">locals</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">x_ambrahealth_job_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;X-AmbraHealth-Job-Id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_ambrahealth_job_id</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">(</span>
+            <span class="n">storage_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span>
+            <span class="c1"># This method is POST !</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">StorageMethod</span><span class="o">.</span><span class="n">post</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">request_data</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
         <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div></div>
 </pre></div>
 
@@ -1986,7 +2070,7 @@
 
 
 
-<p class="blurb">version 3.21.2.0-1</p>
+<p class="blurb">version 3.21.3.0-1</p>
 
 
 

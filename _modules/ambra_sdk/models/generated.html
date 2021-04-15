@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.models.generated &#8212; Ambra-SDK 3.21.2.0-1 documentation</title>
+    <title>ambra_sdk.models.generated &#8212; Ambra-SDK 3.21.3.0-1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -65,6 +65,7 @@
     <span class="n">global_field</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Is it a global accelerator&#39;</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
     <span class="n">push_shared_studies</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Push shared studies to the accelerator&#39;</span><span class="p">)</span>
+    <span class="n">retention_days</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Retention days&#39;</span><span class="p">)</span>
     <span class="n">serial_no</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The serial number&#39;</span><span class="p">)</span>
     <span class="n">upgrade</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Version and upgrade flag&#39;</span><span class="p">)</span>
     <span class="n">version</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Version and upgrade flag&#39;</span><span class="p">)</span>
@@ -88,6 +89,7 @@
         <span class="n">global_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">push_shared_studies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">retention_days</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">upgrade</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -107,6 +109,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">global_field</span> <span class="o">=</span> <span class="n">global_field</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">push_shared_studies</span> <span class="o">=</span> <span class="n">push_shared_studies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">retention_days</span> <span class="o">=</span> <span class="n">retention_days</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">serial_no</span> <span class="o">=</span> <span class="n">serial_no</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">upgrade</span> <span class="o">=</span> <span class="n">upgrade</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
@@ -2299,6 +2302,7 @@
     
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
     <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
+    <span class="n">anonymize</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated anonymization rules&#39;</span><span class="p">)</span>
     <span class="n">asked_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. This is the id of the destination search that requested the asking_node search&#39;</span><span class="p">)</span>
     <span class="n">asked_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;This is the id of the destination search that requested the asking_node search&#39;</span><span class="p">)</span>
     <span class="n">asking_node</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Pass the results of this back to this node&#39;</span><span class="p">)</span>
@@ -2314,12 +2318,11 @@
     <span class="n">distributing_destination_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The distributing destination that initiated the search&#39;</span><span class="p">)</span>
     <span class="n">distributing_destination</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;DestinationDistributed&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The distributing destination that initiated the search&#39;</span><span class="p">)</span>
     <span class="n">extra</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Extra data for speciality workflows like MPI&#39;</span><span class="p">)</span>
-    <span class="n">future_edit</span> <span class="o">=</span> <span class="n">JsonB</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Custom fields to apply to retrieved studies&#39;</span><span class="p">)</span>
     <span class="n">hl7_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The search was triggered by this HL7 message&#39;</span><span class="p">)</span>
     <span class="n">hl7</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Hl7&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The search was triggered by this HL7 message&#39;</span><span class="p">)</span>
     <span class="n">linked_destination_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The linked destination that initiated the search&#39;</span><span class="p">)</span>
     <span class="n">linked_destination</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Destination&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The linked destination that initiated the search&#39;</span><span class="p">)</span>
-    <span class="n">message</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Message&#39;</span><span class="p">)</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Message. Depreciated. To be deleted after 2021-04 release&#39;</span><span class="p">)</span>
     <span class="n">node_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The node to use&#39;</span><span class="p">)</span>
     <span class="n">node</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Node&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The node to use&#39;</span><span class="p">)</span>
     <span class="n">payload</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The search payload&#39;</span><span class="p">)</span>
@@ -2349,6 +2352,7 @@
 	<span class="o">*</span><span class="p">,</span>
         <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">anonymize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">asked_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">asked_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">asking_node</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -2364,7 +2368,6 @@
         <span class="n">distributing_destination_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">distributing_destination</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">extra</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">future_edit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">hl7_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">hl7</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">linked_destination_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -2395,6 +2398,7 @@
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">anonymize</span> <span class="o">=</span> <span class="n">anonymize</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">asked_by</span> <span class="o">=</span> <span class="n">asked_by</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">asked_by_obj</span> <span class="o">=</span> <span class="n">asked_by_obj</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">asking_node</span> <span class="o">=</span> <span class="n">asking_node</span>
@@ -2410,7 +2414,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">distributing_destination_id</span> <span class="o">=</span> <span class="n">distributing_destination_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">distributing_destination</span> <span class="o">=</span> <span class="n">distributing_destination</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">extra</span> <span class="o">=</span> <span class="n">extra</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">future_edit</span> <span class="o">=</span> <span class="n">future_edit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hl7_id</span> <span class="o">=</span> <span class="n">hl7_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hl7</span> <span class="o">=</span> <span class="n">hl7</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">linked_destination_id</span> <span class="o">=</span> <span class="n">linked_destination_id</span>
@@ -3006,6 +3009,9 @@
     <span class="n">namespace</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Namespace&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The namespace&#39;</span><span class="p">)</span>
     <span class="n">role_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Default role id&#39;</span><span class="p">)</span>
     <span class="n">role</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Role&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Default role id&#39;</span><span class="p">)</span>
+    <span class="n">site_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Associated trial site&#39;</span><span class="p">)</span>
+    <span class="n">site</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Site&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Associated trial site&#39;</span><span class="p">)</span>
+    <span class="n">site_qualified</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Associated trial site&#39;</span><span class="p">)</span>
     <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
     <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
     <span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who created the record&#39;</span><span class="p">)</span>
@@ -3027,6 +3033,9 @@
         <span class="n">namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">role_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">role</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">site_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">site</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">created_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -3044,6 +3053,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="n">namespace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">role_id</span> <span class="o">=</span> <span class="n">role_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">role</span> <span class="o">=</span> <span class="n">role</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site_id</span> <span class="o">=</span> <span class="n">site_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">site</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site_qualified</span> <span class="o">=</span> <span class="n">site_qualified</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
@@ -3386,6 +3398,7 @@
     <span class="n">include_priors</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Include priors&#39;</span><span class="p">)</span>
     <span class="n">max_hits</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The maximum number of times the link can be used&#39;</span><span class="p">)</span>
     <span class="n">message</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Mobile phone used to send additional message to&#39;</span><span class="p">)</span>
+    <span class="n">mfm_page</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Should they go to the MFM page&#39;</span><span class="p">)</span>
     <span class="n">minutes_alive</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The number of minutes the link will be alive for&#39;</span><span class="p">)</span>
     <span class="n">mobile_phone</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Mobile phone used to send additional message to&#39;</span><span class="p">)</span>
     <span class="n">namespace_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The study the link is for or the filter expression or the namespace for an upload action&#39;</span><span class="p">)</span>
@@ -3435,6 +3448,7 @@
         <span class="n">include_priors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">max_hits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">mfm_page</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">minutes_alive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">mobile_phone</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">namespace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -3480,6 +3494,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">include_priors</span> <span class="o">=</span> <span class="n">include_priors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_hits</span> <span class="o">=</span> <span class="n">max_hits</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mfm_page</span> <span class="o">=</span> <span class="n">mfm_page</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">minutes_alive</span> <span class="o">=</span> <span class="n">minutes_alive</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mobile_phone</span> <span class="o">=</span> <span class="n">mobile_phone</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">namespace_id</span> <span class="o">=</span> <span class="n">namespace_id</span>
@@ -4942,8 +4957,8 @@
     
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
     <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
-    <span class="n">account_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The associated account&#39;</span><span class="p">)</span>
-    <span class="n">account</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Account&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated account&#39;</span><span class="p">)</span>
+    <span class="n">account_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The associated object and account&#39;</span><span class="p">)</span>
+    <span class="n">account</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Account&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated object and account&#39;</span><span class="p">)</span>
     <span class="n">adults</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Include adults  in this rule&#39;</span><span class="p">)</span>
     <span class="n">archive</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Flag to make it a thin, archive or skinny study&#39;</span><span class="p">)</span>
     <span class="n">days_old</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Age of the studies to purge and how to calculate the purge&#39;</span><span class="p">)</span>
@@ -4954,6 +4969,7 @@
     <span class="n">modalities</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The modalities to limit the rule to as a JSON array&#39;</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
     <span class="n">namespaces</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The namespaces to limit the rule to as a JSON array&#39;</span><span class="p">)</span>
+    <span class="nb">object</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated object and account&#39;</span><span class="p">)</span>
     <span class="n">owned_phr</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Include owned PHR namespaces in the rule&#39;</span><span class="p">)</span>
     <span class="n">shared_from_phr</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;If a study was shared from a PHR delete the copy in the PHR as well&#39;</span><span class="p">)</span>
     <span class="n">skinny</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Flag to make it a thin, archive or skinny study&#39;</span><span class="p">)</span>
@@ -4985,6 +5001,7 @@
         <span class="n">modalities</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">namespaces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="nb">object</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">owned_phr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">shared_from_phr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">skinny</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -5012,6 +5029,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">modalities</span> <span class="o">=</span> <span class="n">modalities</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span> <span class="o">=</span> <span class="n">namespaces</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="o">=</span> <span class="nb">object</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">owned_phr</span> <span class="o">=</span> <span class="n">owned_phr</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shared_from_phr</span> <span class="o">=</span> <span class="n">shared_from_phr</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">skinny</span> <span class="o">=</span> <span class="n">skinny</span>
@@ -5717,6 +5735,123 @@
 
 
 
+<div class="viewcode-block" id="Scanner"><a class="viewcode-back" href="../../../referencies/models.html#ambra_sdk.models.generated.Scanner">[docs]</a><span class="k">class</span> <span class="nc">Scanner</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Scanner.&quot;&quot;&quot;</span>
+    
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
+    <span class="n">account_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The associated account&#39;</span><span class="p">)</span>
+    <span class="n">account</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Account&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated account&#39;</span><span class="p">)</span>
+    <span class="n">customfields</span> <span class="o">=</span> <span class="n">DictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Custom fields&#39;</span><span class="p">)</span>
+    <span class="n">manufacturer</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The scanner manufacturer&#39;</span><span class="p">)</span>
+    <span class="n">modality</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Scanner modality&#39;</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The model&#39;</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
+    <span class="n">serial_no</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The serial number&#39;</span><span class="p">)</span>
+    <span class="n">site_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The site owning the scanner&#39;</span><span class="p">)</span>
+    <span class="n">site</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Site&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The site owning the scanner&#39;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">updated</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was last updated&#39;</span><span class="p">)</span>
+    <span class="n">updated_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who updated the record&#39;</span><span class="p">)</span>
+    <span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who updated the record&#39;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">account</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">customfields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">manufacturer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">modality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">site_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">site</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">account_id</span> <span class="o">=</span> <span class="n">account_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">account</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">customfields</span> <span class="o">=</span> <span class="n">customfields</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manufacturer</span> <span class="o">=</span> <span class="n">manufacturer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modality</span> <span class="o">=</span> <span class="n">modality</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">serial_no</span> <span class="o">=</span> <span class="n">serial_no</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site_id</span> <span class="o">=</span> <span class="n">site_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">site</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated</span> <span class="o">=</span> <span class="n">updated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">updated_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">updated_by_obj</span></div>
+
+
+
+<div class="viewcode-block" id="ScannerValidated"><a class="viewcode-back" href="../../../referencies/models.html#ambra_sdk.models.generated.ScannerValidated">[docs]</a><span class="k">class</span> <span class="nc">ScannerValidated</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;ScannerValidated.&quot;&quot;&quot;</span>
+    
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
+    <span class="n">group_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Mapping betwee the scanner and group&#39;</span><span class="p">)</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Mapping betwee the scanner and group&#39;</span><span class="p">)</span>
+    <span class="n">scanner_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Mapping betwee the scanner and group&#39;</span><span class="p">)</span>
+    <span class="n">scanner</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Scanner&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Mapping betwee the scanner and group&#39;</span><span class="p">)</span>
+    <span class="n">study_uid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The study_uid that validated the scanner&#39;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">updated</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was last updated&#39;</span><span class="p">)</span>
+    <span class="n">updated_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who updated the record&#39;</span><span class="p">)</span>
+    <span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who updated the record&#39;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">group_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">scanner_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">scanner</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_id</span> <span class="o">=</span> <span class="n">group_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">group</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scanner_id</span> <span class="o">=</span> <span class="n">scanner_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span> <span class="o">=</span> <span class="n">scanner</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">study_uid</span> <span class="o">=</span> <span class="n">study_uid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated</span> <span class="o">=</span> <span class="n">updated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">updated_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">updated_by_obj</span></div>
+
+
+
 <div class="viewcode-block" id="Setting"><a class="viewcode-back" href="../../../referencies/models.html#ambra_sdk.models.generated.Setting">[docs]</a><span class="k">class</span> <span class="nc">Setting</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Setting.&quot;&quot;&quot;</span>
     
@@ -5756,6 +5891,66 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated</span> <span class="o">=</span> <span class="n">updated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">updated_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">updated_by_obj</span></div>
+
+
+
+<div class="viewcode-block" id="Site"><a class="viewcode-back" href="../../../referencies/models.html#ambra_sdk.models.generated.Site">[docs]</a><span class="k">class</span> <span class="nc">Site</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Site.&quot;&quot;&quot;</span>
+    
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
+    <span class="n">account_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The associated account&#39;</span><span class="p">)</span>
+    <span class="n">account</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Account&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated account&#39;</span><span class="p">)</span>
+    <span class="n">city</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Location fields&#39;</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
+    <span class="n">site_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The associated site in case this one is a satellite site&#39;</span><span class="p">)</span>
+    <span class="n">site</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Site&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated site in case this one is a satellite site&#39;</span><span class="p">)</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Location fields&#39;</span><span class="p">)</span>
+    <span class="nb">zip</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Location fields&#39;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">updated</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was last updated&#39;</span><span class="p">)</span>
+    <span class="n">updated_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who updated the record&#39;</span><span class="p">)</span>
+    <span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who updated the record&#39;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">account</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">city</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">site_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">site</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="nb">zip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">account_id</span> <span class="o">=</span> <span class="n">account_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">account</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="n">city</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site_id</span> <span class="o">=</span> <span class="n">site_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">site</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zip</span> <span class="o">=</span> <span class="nb">zip</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
@@ -5880,6 +6075,7 @@
     <span class="n">phi_namespace</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The PHI namespace. This controls the study visibility&#39;</span><span class="p">)</span>
     <span class="n">phi_namespace_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Namespace&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The PHI namespace. This controls the study visibility&#39;</span><span class="p">)</span>
     <span class="n">referring_physician</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;This is the MRN&#39;</span><span class="p">)</span>
+    <span class="n">seconds_to_ingest</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The number of seconds it took to ingest the study. -1 if we don&amp;#39;t have enough data to calculate this&#39;</span><span class="p">)</span>
     <span class="n">shared_from</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Id of the study this was originally shared from&#39;</span><span class="p">)</span>
     <span class="n">shared_from_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;StudyShare&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Id of the study this was originally shared from&#39;</span><span class="p">)</span>
     <span class="n">size</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;This is the MRN&#39;</span><span class="p">)</span>
@@ -5952,6 +6148,7 @@
         <span class="n">phi_namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">phi_namespace_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">referring_physician</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">seconds_to_ingest</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">shared_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">shared_from_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -6020,6 +6217,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">phi_namespace</span> <span class="o">=</span> <span class="n">phi_namespace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phi_namespace_obj</span> <span class="o">=</span> <span class="n">phi_namespace_obj</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">referring_physician</span> <span class="o">=</span> <span class="n">referring_physician</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seconds_to_ingest</span> <span class="o">=</span> <span class="n">seconds_to_ingest</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shared_from</span> <span class="o">=</span> <span class="n">shared_from</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shared_from_obj</span> <span class="o">=</span> <span class="n">shared_from_obj</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
@@ -6050,8 +6248,10 @@
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
     <span class="n">account_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The primary keys&#39;</span><span class="p">)</span>
     <span class="n">account</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Account&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The primary keys&#39;</span><span class="p">)</span>
+    <span class="n">customfields</span> <span class="o">=</span> <span class="n">DictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The primary keys&#39;</span><span class="p">)</span>
     <span class="n">day</span> <span class="o">=</span> <span class="n">Date</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The day&#39;</span><span class="p">)</span>
     <span class="n">login</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Login&#39;</span><span class="p">)</span>
+    <span class="n">modality</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The primary keys&#39;</span><span class="p">)</span>
     <span class="n">namespace_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The primary keys&#39;</span><span class="p">)</span>
     <span class="n">namespace</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Namespace&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The primary keys&#39;</span><span class="p">)</span>
     <span class="n">study_approve</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Study approved&#39;</span><span class="p">)</span>
@@ -6076,8 +6276,10 @@
         <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">account</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">customfields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">day</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">login</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">modality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">namespace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">study_approve</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -6098,8 +6300,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">account_id</span> <span class="o">=</span> <span class="n">account_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">account</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">customfields</span> <span class="o">=</span> <span class="n">customfields</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">day</span> <span class="o">=</span> <span class="n">day</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">login</span> <span class="o">=</span> <span class="n">login</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modality</span> <span class="o">=</span> <span class="n">modality</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">namespace_id</span> <span class="o">=</span> <span class="n">namespace_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="n">namespace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">study_approve</span> <span class="o">=</span> <span class="n">study_approve</span>
@@ -6366,6 +6570,7 @@
     <span class="n">phi_namespace</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. &#39;</span><span class="p">)</span>
     <span class="n">phi_namespace_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Namespace&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
     <span class="n">referring_physician</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">seconds_to_ingest</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
     <span class="n">shared_from</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. &#39;</span><span class="p">)</span>
     <span class="n">shared_from_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;StudyShare&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
     <span class="n">size</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
@@ -6441,6 +6646,7 @@
         <span class="n">phi_namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">phi_namespace_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">referring_physician</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">seconds_to_ingest</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">shared_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">shared_from_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -6512,6 +6718,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">phi_namespace</span> <span class="o">=</span> <span class="n">phi_namespace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phi_namespace_obj</span> <span class="o">=</span> <span class="n">phi_namespace_obj</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">referring_physician</span> <span class="o">=</span> <span class="n">referring_physician</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seconds_to_ingest</span> <span class="o">=</span> <span class="n">seconds_to_ingest</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shared_from</span> <span class="o">=</span> <span class="n">shared_from</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shared_from_obj</span> <span class="o">=</span> <span class="n">shared_from_obj</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
@@ -6542,12 +6749,13 @@
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
     <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
     <span class="n">accession_number</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The accession number to fetch&#39;</span><span class="p">)</span>
+    <span class="n">customfields</span> <span class="o">=</span> <span class="n">DictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Custom fields to be applied to the fetched study&#39;</span><span class="p">)</span>
     <span class="n">destination_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The destination&#39;</span><span class="p">)</span>
     <span class="n">destination</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Destination&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The destination&#39;</span><span class="p">)</span>
     <span class="n">distributing_destination_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The distributing destination that initiated the fetch&#39;</span><span class="p">)</span>
     <span class="n">distributing_destination</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;DestinationDistributed&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The distributing destination that initiated the fetch&#39;</span><span class="p">)</span>
     <span class="n">end_datetime</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Extra data to scope the fetch down further&#39;</span><span class="p">)</span>
-    <span class="n">message</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Message&#39;</span><span class="p">)</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Message. Depreciated. To be deleted after 2021-04 release&#39;</span><span class="p">)</span>
     <span class="n">node_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The node to use&#39;</span><span class="p">)</span>
     <span class="n">node</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Node&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The node to use&#39;</span><span class="p">)</span>
     <span class="n">patientid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Extra data to scope the fetch down further&#39;</span><span class="p">)</span>
@@ -6572,6 +6780,7 @@
         <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">accession_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">customfields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">destination_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">destination</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">distributing_destination_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -6598,6 +6807,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">accession_number</span> <span class="o">=</span> <span class="n">accession_number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">customfields</span> <span class="o">=</span> <span class="n">customfields</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">destination_id</span> <span class="o">=</span> <span class="n">destination_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">destination</span> <span class="o">=</span> <span class="n">destination</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">distributing_destination_id</span> <span class="o">=</span> <span class="n">distributing_destination_id</span>
@@ -7316,6 +7526,42 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">updated</span> <span class="o">=</span> <span class="n">updated</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">updated_by</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">updated_by_obj</span></div>
+
+
+
+<div class="viewcode-block" id="StudySplit"><a class="viewcode-back" href="../../../referencies/models.html#ambra_sdk.models.generated.StudySplit">[docs]</a><span class="k">class</span> <span class="nc">StudySplit</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;StudySplit.&quot;&quot;&quot;</span>
+    
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">new_study_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Id of the study split&#39;</span><span class="p">)</span>
+    <span class="n">new_study</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Study&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Id of the study split&#39;</span><span class="p">)</span>
+    <span class="n">study_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">study</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Study&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who created the record&#39;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">new_study_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">new_study</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">study_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">study</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_study_id</span> <span class="o">=</span> <span class="n">new_study_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_study</span> <span class="o">=</span> <span class="n">new_study</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">study_id</span> <span class="o">=</span> <span class="n">study_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">study</span> <span class="o">=</span> <span class="n">study</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span></div>
 
 
 
@@ -8043,6 +8289,7 @@
     <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
     <span class="n">access_token</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Stripe access token&#39;</span><span class="p">)</span>
     <span class="n">allowed_login_brands</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of brands user can login from&#39;</span><span class="p">)</span>
+    <span class="n">app_password</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Password&#39;</span><span class="p">)</span>
     <span class="n">billing</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Are they a billing person&#39;</span><span class="p">)</span>
     <span class="n">blocked</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Is a the user blocked from the system&#39;</span><span class="p">)</span>
     <span class="n">disabled</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Is a the user disabled from the system&#39;</span><span class="p">)</span>
@@ -8077,6 +8324,7 @@
     <span class="n">password</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Password&#39;</span><span class="p">)</span>
     <span class="n">pin_required</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Is a PIN required for login&#39;</span><span class="p">)</span>
     <span class="n">privacy_md5</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;MD5 sums of the accepted terms of use, privacy policy and indicators of use&#39;</span><span class="p">)</span>
+    <span class="n">public_key</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Public key for authentication&#39;</span><span class="p">)</span>
     <span class="n">refresh_token</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;OAuth id and refresh token&#39;</span><span class="p">)</span>
     <span class="n">signature</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Signature image (base64)&#39;</span><span class="p">)</span>
     <span class="n">support</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Are they a support person&#39;</span><span class="p">)</span>
@@ -8100,6 +8348,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">access_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">allowed_login_brands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">app_password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">billing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">blocked</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">disabled</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -8134,6 +8383,7 @@
         <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">pin_required</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">privacy_md5</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">public_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">refresh_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">signature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -8153,6 +8403,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">access_token</span> <span class="o">=</span> <span class="n">access_token</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">allowed_login_brands</span> <span class="o">=</span> <span class="n">allowed_login_brands</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app_password</span> <span class="o">=</span> <span class="n">app_password</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">billing</span> <span class="o">=</span> <span class="n">billing</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blocked</span> <span class="o">=</span> <span class="n">blocked</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="n">disabled</span>
@@ -8187,6 +8438,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pin_required</span> <span class="o">=</span> <span class="n">pin_required</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">privacy_md5</span> <span class="o">=</span> <span class="n">privacy_md5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">public_key</span> <span class="o">=</span> <span class="n">public_key</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refresh_token</span> <span class="o">=</span> <span class="n">refresh_token</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">signature</span> <span class="o">=</span> <span class="n">signature</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">support</span> <span class="o">=</span> <span class="n">support</span>
@@ -8237,6 +8489,8 @@
     <span class="n">event_upload</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_upload_fail</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">global_field</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;This user is automatically added to every group and location in the account&#39;</span><span class="p">)</span>
+    <span class="n">global_role_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. This role is used as a namespace role if defined&#39;</span><span class="p">)</span>
+    <span class="n">global_role</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Role&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;This role is used as a namespace role if defined&#39;</span><span class="p">)</span>
     <span class="n">last_reset</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Time the password was last reset&#39;</span><span class="p">)</span>
     <span class="n">max_sessions</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Override for the max number of sessions a user can have&#39;</span><span class="p">)</span>
     <span class="n">password_reset</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Flag to reset the password&#39;</span><span class="p">)</span>
@@ -8288,6 +8542,8 @@
         <span class="n">event_upload</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_upload_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">global_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">global_role_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">global_role</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">last_reset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">max_sessions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">password_reset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -8335,6 +8591,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">event_upload</span> <span class="o">=</span> <span class="n">event_upload</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_upload_fail</span> <span class="o">=</span> <span class="n">event_upload_fail</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">global_field</span> <span class="o">=</span> <span class="n">global_field</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_role_id</span> <span class="o">=</span> <span class="n">global_role_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_role</span> <span class="o">=</span> <span class="n">global_role</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_reset</span> <span class="o">=</span> <span class="n">last_reset</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_sessions</span> <span class="o">=</span> <span class="n">max_sessions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">password_reset</span> <span class="o">=</span> <span class="n">password_reset</span>
@@ -8360,13 +8618,14 @@
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
     <span class="n">account_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The primary keys&#39;</span><span class="p">)</span>
     <span class="n">account</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Account&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The primary keys&#39;</span><span class="p">)</span>
-    <span class="n">day</span> <span class="o">=</span> <span class="n">Date</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The day&#39;</span><span class="p">)</span>
+    <span class="n">day</span> <span class="o">=</span> <span class="n">Date</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The day and time&#39;</span><span class="p">)</span>
     <span class="n">namespace_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The primary keys&#39;</span><span class="p">)</span>
     <span class="n">namespace</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Namespace&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The primary keys&#39;</span><span class="p">)</span>
     <span class="n">study_approve</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The metrics&#39;</span><span class="p">)</span>
     <span class="n">study_reject</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The metrics&#39;</span><span class="p">)</span>
     <span class="n">study_upload_epic</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The metrics&#39;</span><span class="p">)</span>
     <span class="n">study_view</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The metrics&#39;</span><span class="p">)</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The day and time&#39;</span><span class="p">)</span>
     <span class="n">user_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The primary keys&#39;</span><span class="p">)</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The primary keys&#39;</span><span class="p">)</span>
 
@@ -8384,6 +8643,7 @@
         <span class="n">study_reject</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">study_upload_epic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">study_view</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
@@ -8397,6 +8657,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">study_reject</span> <span class="o">=</span> <span class="n">study_reject</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">study_upload_epic</span> <span class="o">=</span> <span class="n">study_upload_epic</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">study_view</span> <span class="o">=</span> <span class="n">study_view</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">time</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span></div>
 
@@ -8786,6 +9047,57 @@
 
 
 
+<div class="viewcode-block" id="UserSite"><a class="viewcode-back" href="../../../referencies/models.html#ambra_sdk.models.generated.UserSite">[docs]</a><span class="k">class</span> <span class="nc">UserSite</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;UserSite.&quot;&quot;&quot;</span>
+    
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
+    <span class="n">role_name</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Role will be mapped to a study account role by name&#39;</span><span class="p">)</span>
+    <span class="n">site_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Mapping between the user and site&#39;</span><span class="p">)</span>
+    <span class="n">site</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Site&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Mapping between the user and site&#39;</span><span class="p">)</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Mapping between the user and site&#39;</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Mapping between the user and site&#39;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">updated</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was last updated&#39;</span><span class="p">)</span>
+    <span class="n">updated_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who updated the record&#39;</span><span class="p">)</span>
+    <span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who updated the record&#39;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">role_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">site_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">site</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">role_name</span> <span class="o">=</span> <span class="n">role_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site_id</span> <span class="o">=</span> <span class="n">site_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">site</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated</span> <span class="o">=</span> <span class="n">updated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">updated_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">updated_by_obj</span></div>
+
+
+
 <div class="viewcode-block" id="Validate"><a class="viewcode-back" href="../../../referencies/models.html#ambra_sdk.models.generated.Validate">[docs]</a><span class="k">class</span> <span class="nc">Validate</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Validate.&quot;&quot;&quot;</span>
     
@@ -8844,6 +9156,7 @@
     <span class="n">auth</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The webhook auth&#39;</span><span class="p">)</span>
     <span class="n">by_accession_number</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Expand the once to check by accession_number as well&#39;</span><span class="p">)</span>
     <span class="n">by_uid</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Expand the once to check by study_uid as well&#39;</span><span class="p">)</span>
+    <span class="n">by_webhook_event</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Apply the once to a webhook event for the WEBHOOK_FAILED&#39;</span><span class="p">)</span>
     <span class="n">cron</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Cron string for a cron type of webhook&#39;</span><span class="p">)</span>
     <span class="n">delay</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Number of seconds to delay running this webhook after it is triggered&#39;</span><span class="p">)</span>
     <span class="n">event</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event to trigger the webhook for&#39;</span><span class="p">)</span>
@@ -8881,6 +9194,7 @@
         <span class="n">auth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">by_accession_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">by_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">by_webhook_event</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">cron</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">delay</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -8914,6 +9228,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">auth</span> <span class="o">=</span> <span class="n">auth</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">by_accession_number</span> <span class="o">=</span> <span class="n">by_accession_number</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">by_uid</span> <span class="o">=</span> <span class="n">by_uid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">by_webhook_event</span> <span class="o">=</span> <span class="n">by_webhook_event</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cron</span> <span class="o">=</span> <span class="n">cron</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="n">delay</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event</span> <span class="o">=</span> <span class="n">event</span>
@@ -9064,7 +9379,7 @@
 
 
 
-<p class="blurb">version 3.21.2.0-1</p>
+<p class="blurb">version 3.21.3.0-1</p>
 
 
 

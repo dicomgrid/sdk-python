@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.analytics &#8212; Ambra-SDK 3.21.2.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.analytics &#8212; Ambra-SDK 3.21.3.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -58,26 +58,31 @@
         <span class="n">count</span><span class="p">,</span>
         <span class="n">period</span><span class="p">,</span>
         <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">customfield_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">modality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">namespace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Study.</span>
 <span class="sd">        :param count: The number of periods to get</span>
 <span class="sd">        :param period: The time period (day|week|month|year)</span>
 <span class="sd">        :param account_id: account_id</span>
+<span class="sd">        :param customfield_param: Filter analytics by a subset of study customfields (optional)</span>
 <span class="sd">        :param end_date: The end date, default is today if not passed (optional)</span>
+<span class="sd">        :param modality: Filter analytics by modality (optional)</span>
 <span class="sd">        :param namespace_id: namespace_id</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (account_id OR namespace_id) - The account or namespace to get the analytics for</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
            <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span>
            <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="n">end_date</span><span class="p">,</span>
+           <span class="s1">&#39;modality&#39;</span><span class="p">:</span> <span class="n">modality</span><span class="p">,</span>
            <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
            <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="n">period</span><span class="p">,</span>
         <span class="p">}</span>
+        <span class="k">if</span> <span class="n">customfield_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">customfield_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">customfield_param_dict</span><span class="p">)</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_COUNT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCount</span><span class="p">(</span><span class="s1">&#39;Invalid or excessive count value&#39;</span><span class="p">)</span>
@@ -183,14 +188,16 @@
         <span class="n">count</span><span class="p">,</span>
         <span class="n">period</span><span class="p">,</span>
         <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">end_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">namespace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;User.</span>
 <span class="sd">        :param account_id: The account id</span>
 <span class="sd">        :param count: The number of periods to get</span>
-<span class="sd">        :param period: The time period (day|week|month|year)</span>
-<span class="sd">        :param end_date: The end date, default is today if not passed (optional)</span>
+<span class="sd">        :param period: The time period (hour|day|week|month|year)</span>
+<span class="sd">        :param end_date: The end date, for backwards compatibility (optional)</span>
+<span class="sd">        :param end_time: The end date and time, default is now if not passed (optional)</span>
 <span class="sd">        :param namespace_id: Namespace filter (optional)</span>
 <span class="sd">        :param user_id: User filter (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -198,6 +205,7 @@
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
            <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span>
            <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="n">end_date</span><span class="p">,</span>
+           <span class="s1">&#39;end_time&#39;</span><span class="p">:</span> <span class="n">end_time</span><span class="p">,</span>
            <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
            <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="n">period</span><span class="p">,</span>
            <span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
@@ -231,7 +239,7 @@
 
 
 
-<p class="blurb">version 3.21.2.0-1</p>
+<p class="blurb">version 3.21.3.0-1</p>
 
 
 

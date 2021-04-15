@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.webhook &#8212; Ambra-SDK 3.21.2.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.webhook &#8212; Ambra-SDK 3.21.3.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -107,6 +107,7 @@
         <span class="n">auth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">by_accession_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">by_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">by_webhook_event</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">cron</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">delay</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">filter_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -128,9 +129,10 @@
 <span class="sd">        :param auth: A JSON hash with the authentication details (optional)</span>
 <span class="sd">        :param by_accession_number: Flag to expand the once search to include studies with the same accession_number (optional)</span>
 <span class="sd">        :param by_uid: Flag to expand the once search to include studies with the same study_uid (optional)</span>
+<span class="sd">        :param by_webhook_event: Flag to fire WEBHOOK_FAILED once at final unsuccessful try of a failing webhook (optional)</span>
 <span class="sd">        :param cron: Cron timing string for CRON events e.g 0 9 * * mon-fri(optional)</span>
 <span class="sd">        :param delay: Number of seconds to delay running this webhook for after it is triggered (optional)</span>
-<span class="sd">        :param filter_field: Name of the study field to filter on (optional)</span>
+<span class="sd">        :param filter_field: Name of the study field (by default) or another object&amp;#39;s field (should have prefix like &amp;#34;webhook.&amp;#34;) to filter on (optional)</span>
 <span class="sd">        :param filter_regexp: Regular expression to match the value of the filter_field against (optional)</span>
 <span class="sd">        :param max_age: Ignore studies that are more than this number of days old based on the study_date (optional)</span>
 <span class="sd">        :param node_id: uuid of the node to proxy the webhook through (optional)</span>
@@ -145,6 +147,7 @@
            <span class="s1">&#39;auth&#39;</span><span class="p">:</span> <span class="n">auth</span><span class="p">,</span>
            <span class="s1">&#39;by_accession_number&#39;</span><span class="p">:</span> <span class="n">by_accession_number</span><span class="p">,</span>
            <span class="s1">&#39;by_uid&#39;</span><span class="p">:</span> <span class="n">by_uid</span><span class="p">,</span>
+           <span class="s1">&#39;by_webhook_event&#39;</span><span class="p">:</span> <span class="n">by_webhook_event</span><span class="p">,</span>
            <span class="s1">&#39;cron&#39;</span><span class="p">:</span> <span class="n">cron</span><span class="p">,</span>
            <span class="s1">&#39;delay&#39;</span><span class="p">:</span> <span class="n">delay</span><span class="p">,</span>
            <span class="s1">&#39;event&#39;</span><span class="p">:</span> <span class="n">event</span><span class="p">,</span>
@@ -201,6 +204,7 @@
         <span class="n">auth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">by_accession_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">by_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">by_webhook_event</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">cron</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">delay</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -222,6 +226,7 @@
 <span class="sd">        :param auth: A JSON hash with the authentication details (optional)</span>
 <span class="sd">        :param by_accession_number: Flag to expand the once search to include studies with the same accession_number (optional)</span>
 <span class="sd">        :param by_uid: Flag to expand the once search to include studies with the same study_uid (optional)</span>
+<span class="sd">        :param by_webhook_event: Flag to fire WEBHOOK_FAILED once at final unsuccessful try of a failing webhook (optional)</span>
 <span class="sd">        :param cron: Cron timing string for CRON events (optional)</span>
 <span class="sd">        :param delay: Number of seconds to delay running this webhook for after it is triggered (optional)</span>
 <span class="sd">        :param event: Event to call it on (optional see add command for options)</span>
@@ -242,6 +247,7 @@
            <span class="s1">&#39;auth&#39;</span><span class="p">:</span> <span class="n">auth</span><span class="p">,</span>
            <span class="s1">&#39;by_accession_number&#39;</span><span class="p">:</span> <span class="n">by_accession_number</span><span class="p">,</span>
            <span class="s1">&#39;by_uid&#39;</span><span class="p">:</span> <span class="n">by_uid</span><span class="p">,</span>
+           <span class="s1">&#39;by_webhook_event&#39;</span><span class="p">:</span> <span class="n">by_webhook_event</span><span class="p">,</span>
            <span class="s1">&#39;cron&#39;</span><span class="p">:</span> <span class="n">cron</span><span class="p">,</span>
            <span class="s1">&#39;delay&#39;</span><span class="p">:</span> <span class="n">delay</span><span class="p">,</span>
            <span class="s1">&#39;event&#39;</span><span class="p">:</span> <span class="n">event</span><span class="p">,</span>
@@ -405,9 +411,6 @@
 <span class="sd">        :param namespace_id: namespace_id</span>
 <span class="sd">        :param share_code: share_code</span>
 <span class="sd">        :param study_count: The number of studies associated with the event (optional)</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (namespace_id OR share_code) - The namespace or share code for the event</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;integration_key&#39;</span><span class="p">:</span> <span class="n">integration_key</span><span class="p">,</span>
@@ -480,7 +483,7 @@
 
 
 
-<p class="blurb">version 3.21.2.0-1</p>
+<p class="blurb">version 3.21.3.0-1</p>
 
 
 

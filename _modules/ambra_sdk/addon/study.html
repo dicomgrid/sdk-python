@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.addon.study &#8212; Ambra-SDK 3.21.2.0-1 documentation</title>
+    <title>ambra_sdk.addon.study &#8212; Ambra-SDK 3.21.3.0-1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -34,7 +34,6 @@
   <h1>Source code for ambra_sdk.addon.study</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Study addon namespace.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">uuid</span> <span class="k">as</span> <span class="nn">uuid_lib</span>
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">suppress</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
@@ -121,13 +120,12 @@
             <span class="n">patient_name</span><span class="o">=</span><span class="n">patient_name</span><span class="p">,</span>
             <span class="n">storage_namespace</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
             <span class="n">phi_namespace</span><span class="o">=</span><span class="n">namespace_id</span><span class="p">,</span>
-            <span class="n">thin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="n">engine_fqdn</span> <span class="o">=</span> <span class="n">response_data</span><span class="o">.</span><span class="n">engine_fqdn</span>
         <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">response_data</span><span class="o">.</span><span class="n">uuid</span>
 
         <span class="c1"># upload images</span>
-        <span class="k">for</span> <span class="n">dicom_path</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">((</span><span class="n">first_dicom_path</span><span class="p">,),</span> <span class="n">dicom_paths</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">dicom_path</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">((</span><span class="n">first_dicom_path</span><span class="p">,</span> <span class="p">),</span> <span class="n">dicom_paths</span><span class="p">):</span>
             <span class="k">with</span> <span class="n">dicom_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dicom</span><span class="p">:</span>
                 <span class="n">images_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Dicom</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span>
@@ -303,8 +301,8 @@
         <span class="n">new_study_uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">keep_image_uids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">x_ambrahealth_job_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">200.0</span><span class="p">,</span>
         <span class="n">ws_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -323,37 +321,28 @@
 <span class="sd">            of modified copies be same as originals? (default is false)</span>
 <span class="sd">        :param color: HTML-formatted color (rrggbb) of</span>
 <span class="sd">            obscured regions (default is black-and-white checkerboard)</span>
-<span class="sd">        :param only_prepare: Get prepared request.</span>
 <span class="sd">        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 <span class="sd">        :param timeout: waiting timeout</span>
 <span class="sd">        :param ws_timeout: waiting from ws timeout</span>
 
 <span class="sd">        :returns: new study uid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">x_ambrahealth_job_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">x_ambrahealth_job_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid_lib</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
-        <span class="n">anonymize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">Storage</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">anonymize</span><span class="p">(</span>
-            <span class="n">engine_fqdn</span><span class="p">,</span>
-            <span class="n">namespace</span><span class="p">,</span>
-            <span class="n">study_uid</span><span class="p">,</span>
-            <span class="n">region</span><span class="p">,</span>
-            <span class="n">to_namespace</span><span class="p">,</span>
-            <span class="n">new_study_uid</span><span class="p">,</span>
-            <span class="n">keep_image_uids</span><span class="p">,</span>
-            <span class="n">color</span><span class="p">,</span>
-            <span class="n">only_prepare</span><span class="p">,</span>
-            <span class="n">x_ambrahealth_job_id</span><span class="p">,</span>
+        <span class="n">anonymize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Job</span><span class="o">.</span><span class="n">wait_completion</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">Storage</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">anonymize</span><span class="p">,</span>
+            <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
+            <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
+            <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
+            <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+            <span class="n">to_namespace</span><span class="o">=</span><span class="n">to_namespace</span><span class="p">,</span>
+            <span class="n">new_study_uid</span><span class="o">=</span><span class="n">new_study_uid</span><span class="p">,</span>
+            <span class="n">keep_image_uids</span><span class="o">=</span><span class="n">keep_image_uids</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+            <span class="n">only_prepare</span><span class="o">=</span><span class="n">only_prepare</span><span class="p">,</span>
+            <span class="n">x_ambrahealth_job_id</span><span class="o">=</span><span class="n">x_ambrahealth_job_id</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">anonymized_study_uid</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">anonymize</span><span class="o">.</span><span class="n">text</span>
-
-        <span class="c1"># A. Matveev: job namespace is initial namespace</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Job</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span>
-            <span class="n">job_id</span><span class="o">=</span><span class="n">x_ambrahealth_job_id</span><span class="p">,</span>
-            <span class="n">namespace_id</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
-            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">ws_timeout</span><span class="o">=</span><span class="n">ws_timeout</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">anonymized_study_uid</span></div>
+        <span class="k">return</span> <span class="n">anonymized_study_uid</span>  <span class="c1"># NOQA:WPS331</span></div>
 
 <div class="viewcode-block" id="Study.anonymize_and_get"><a class="viewcode-back" href="../../../referencies/addon.html#ambra_sdk.addon.study.Study.anonymize_and_get">[docs]</a>    <span class="k">def</span> <span class="nf">anonymize_and_get</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -365,8 +354,8 @@
         <span class="n">new_study_uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">keep_image_uids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">x_ambrahealth_job_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">200.0</span><span class="p">,</span>
         <span class="n">ws_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Box</span><span class="p">:</span>
@@ -385,8 +374,8 @@
 <span class="sd">            of modified copies be same as originals? (default is false)</span>
 <span class="sd">        :param color: HTML-formatted color (rrggbb) of</span>
 <span class="sd">            obscured regions (default is black-and-white checkerboard)</span>
-<span class="sd">        :param only_prepare: Get prepared request.</span>
 <span class="sd">        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
 <span class="sd">        :param timeout: waiting timeout</span>
 <span class="sd">        :param ws_timeout: waiting from ws timeout</span>
 
@@ -394,20 +383,20 @@
 <span class="sd">        :returns: new study</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">start</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
-        <span class="n">new_study_uid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">anonymize_and_wait</span><span class="p">(</span>
-            <span class="n">engine_fqdn</span><span class="p">,</span>
-            <span class="n">namespace</span><span class="p">,</span>
-            <span class="n">study_uid</span><span class="p">,</span>
-            <span class="n">region</span><span class="p">,</span>
-            <span class="n">to_namespace</span><span class="p">,</span>
-            <span class="n">new_study_uid</span><span class="p">,</span>
-            <span class="n">keep_image_uids</span><span class="p">,</span>
-            <span class="n">color</span><span class="p">,</span>
-            <span class="n">only_prepare</span><span class="p">,</span>
-            <span class="n">x_ambrahealth_job_id</span><span class="p">,</span>
-            <span class="n">timeout</span><span class="p">,</span>
-            <span class="n">ws_timeout</span><span class="p">,</span>
+        <span class="n">anonymize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">Addon</span><span class="o">.</span><span class="n">Job</span><span class="o">.</span><span class="n">wait_completion</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">Storage</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">anonymize</span><span class="p">,</span>
+            <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
+            <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
+            <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
+            <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+            <span class="n">to_namespace</span><span class="o">=</span><span class="n">to_namespace</span><span class="p">,</span>
+            <span class="n">new_study_uid</span><span class="o">=</span><span class="n">new_study_uid</span><span class="p">,</span>
+            <span class="n">keep_image_uids</span><span class="o">=</span><span class="n">keep_image_uids</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+            <span class="n">only_prepare</span><span class="o">=</span><span class="n">only_prepare</span><span class="p">,</span>
+            <span class="n">x_ambrahealth_job_id</span><span class="o">=</span><span class="n">x_ambrahealth_job_id</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="n">anonymized_study_uid</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">anonymize</span><span class="o">.</span><span class="n">text</span>
         <span class="n">spend_time</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
         <span class="n">rest_timeout</span> <span class="o">=</span> <span class="n">timeout</span> <span class="o">-</span> <span class="n">spend_time</span>
 
@@ -415,17 +404,16 @@
             <span class="k">raise</span> <span class="ne">TimeoutError</span>
         <span class="n">new_namespace</span> <span class="o">=</span> <span class="n">to_namespace</span> <span class="k">if</span> <span class="n">to_namespace</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">namespace</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span>
-            <span class="n">study_uid</span><span class="o">=</span><span class="n">new_study_uid</span><span class="p">,</span>
+            <span class="n">study_uid</span><span class="o">=</span><span class="n">anonymized_study_uid</span><span class="p">,</span>
             <span class="n">namespace_id</span><span class="o">=</span><span class="n">new_namespace</span><span class="p">,</span>
             <span class="n">timeout</span><span class="o">=</span><span class="n">rest_timeout</span><span class="p">,</span>
             <span class="n">ws_timeout</span><span class="o">=</span><span class="n">ws_timeout</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Study.wait_job"><a class="viewcode-back" href="../../../referencies/addon.html#ambra_sdk.addon.study.Study.wait_job">[docs]</a>    <span class="nd">@deprecated</span><span class="p">(</span>
-        <span class="p">(</span>
-            <span class="s1">&#39;Use api.Addon.Job.wait: &#39;</span>
-            <span class="s1">&#39;</span><span class="si">{addon_docs_url}</span><span class="s1">#job-wait&#39;</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addon_docs_url</span><span class="o">=</span><span class="n">ADDON_DOCS_URL</span><span class="p">),</span>
+        <span class="s1">&#39;Use api.Addon.Job.wait: </span><span class="si">{addon_docs_url}</span><span class="s1">#job-wait&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">addon_docs_url</span><span class="o">=</span><span class="n">ADDON_DOCS_URL</span><span class="p">,</span>
+        <span class="p">),</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">wait_job</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -449,10 +437,9 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Study.dicom"><a class="viewcode-back" href="../../../referencies/addon.html#ambra_sdk.addon.study.Study.dicom">[docs]</a>    <span class="nd">@deprecated</span><span class="p">(</span>
-        <span class="p">(</span>
-            <span class="s1">&#39;Use api.Addon.Dicom.get: &#39;</span>
-            <span class="s1">&#39;</span><span class="si">{addon_docs_url}</span><span class="s1">#dicom-get&#39;</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addon_docs_url</span><span class="o">=</span><span class="n">ADDON_DOCS_URL</span><span class="p">),</span>
+        <span class="s1">&#39;Use api.Addon.Dicom.get: </span><span class="si">{addon_docs_url}</span><span class="s1">#dicom-get&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">addon_docs_url</span><span class="o">=</span><span class="n">ADDON_DOCS_URL</span><span class="p">,</span>
+        <span class="p">),</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">dicom</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -485,10 +472,10 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Study.upload_dicom"><a class="viewcode-back" href="../../../referencies/addon.html#ambra_sdk.addon.study.Study.upload_dicom">[docs]</a>    <span class="nd">@deprecated</span><span class="p">(</span>
-        <span class="p">(</span>
-            <span class="s1">&#39;Use api.Addon.Dicom.upload_from_path: &#39;</span>
-            <span class="s1">&#39;</span><span class="si">{addon_docs_url}</span><span class="s1">#dicom-upload-from-path&#39;</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addon_docs_url</span><span class="o">=</span><span class="n">ADDON_DOCS_URL</span><span class="p">),</span>
+        <span class="s1">&#39;Use api.Addon.Dicom.upload_from_path: &#39;</span>
+        <span class="s1">&#39;</span><span class="si">{addon_docs_url}</span><span class="s1">#dicom-upload-from-path&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">addon_docs_url</span><span class="o">=</span><span class="n">ADDON_DOCS_URL</span><span class="p">,</span>
+        <span class="p">),</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">upload_dicom</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -513,10 +500,10 @@
         <span class="k">return</span> <span class="n">image_params</span>  <span class="c1"># NOQA:WPS331</span></div>
 
 <div class="viewcode-block" id="Study.upload"><a class="viewcode-back" href="../../../referencies/addon.html#ambra_sdk.addon.study.Study.upload">[docs]</a>    <span class="nd">@deprecated</span><span class="p">(</span>
-        <span class="p">(</span>
-            <span class="s1">&#39;Use api.Addon.Study.upload_dir: &#39;</span>
-            <span class="s1">&#39;</span><span class="si">{addon_docs_url}</span><span class="s1">#study-upload-dir&#39;</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addon_docs_url</span><span class="o">=</span><span class="n">ADDON_DOCS_URL</span><span class="p">),</span>
+        <span class="s1">&#39;Use api.Addon.Study.upload_dir: &#39;</span>
+        <span class="s1">&#39;</span><span class="si">{addon_docs_url}</span><span class="s1">#study-upload-dir&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">addon_docs_url</span><span class="o">=</span><span class="n">ADDON_DOCS_URL</span><span class="p">,</span>
+        <span class="p">),</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">upload</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -537,10 +524,10 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Study.upload_and_get"><a class="viewcode-back" href="../../../referencies/addon.html#ambra_sdk.addon.study.Study.upload_and_get">[docs]</a>    <span class="nd">@deprecated</span><span class="p">(</span>
-        <span class="p">(</span>
-            <span class="s1">&#39;Use api.Addon.Study.upload_dir_and_get: &#39;</span>
-            <span class="s1">&#39;</span><span class="si">{addon_docs_url}</span><span class="s1">#study-upload-dir-and-get&#39;</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addon_docs_url</span><span class="o">=</span><span class="n">ADDON_DOCS_URL</span><span class="p">),</span>
+        <span class="s1">&#39;Use api.Addon.Study.upload_dir_and_get: &#39;</span>
+        <span class="s1">&#39;</span><span class="si">{addon_docs_url}</span><span class="s1">#study-upload-dir-and-get&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">addon_docs_url</span><span class="o">=</span><span class="n">ADDON_DOCS_URL</span><span class="p">,</span>
+        <span class="p">),</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">upload_and_get</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -575,7 +562,7 @@
 
 
 
-<p class="blurb">version 3.21.2.0-1</p>
+<p class="blurb">version 3.21.3.0-1</p>
 
 
 

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.node &#8212; Ambra-SDK 3.21.2.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.node &#8212; Ambra-SDK 3.21.3.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -77,10 +77,10 @@
     
 <div class="viewcode-block" id="Node.list"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Node.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">account_id</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
-<span class="sd">        :param account_id: uuid of the account</span>
+<span class="sd">        :param account_id: uuid of the account (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
@@ -234,9 +234,6 @@
 <span class="sd">        :param location_id: location_id</span>
 <span class="sd">        :param os_type: Node OS type, used with HARVESTER node type only (WINDOWS|MACOS) (optional)</span>
 <span class="sd">        :param uuid: uuid of the node (optional, you can use this to explicitly set the UUID)</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (account_id OR location_id OR group_id) - uuid of the account, location or group to link this node to</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;accelerator_id&#39;</span><span class="p">:</span> <span class="n">accelerator_id</span><span class="p">,</span>
@@ -331,9 +328,6 @@
 <span class="sd">        :param settings: A hash of the account settings that the node can override (optional)</span>
 <span class="sd">        :param storage_namespace: Namespace uuid to attach the node to. This requires a sysadmin sid and must be within the same account (optional)</span>
 <span class="sd">        :param warning_email: Email address(es) to send warning notices (optional)</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (sid OR serial_no) - The session id or serial number of the node</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
@@ -390,9 +384,6 @@
         <span class="sd">&quot;&quot;&quot;Get.</span>
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        :param serial_no: serial_no</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (sid OR serial_no) - The session id or serial number of the node</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
@@ -670,29 +661,32 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">search_id</span><span class="p">,</span>
         <span class="n">serial_no</span><span class="p">,</span>
-        <span class="n">studies</span><span class="p">,</span>
         <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">studies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Found.</span>
 <span class="sd">        :param search_id: The id of the search request</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
-<span class="sd">        :param studies: A JSON array of the studies found. Each object has the following fields:</span>
-<span class="sd">            study_uid - The study_uid</span>
-<span class="sd">            study_date - The study date</span>
-<span class="sd">            accession_number - The accession number</span>
-<span class="sd">            referring_physician - The referring physician</span>
-<span class="sd">            patient_name - Patient name</span>
-<span class="sd">            patientid - Patient ID</span>
-<span class="sd">            patient_sex - Gender</span>
-<span class="sd">            patient_birth_date - Birth date</span>
-<span class="sd">            study_description - Study description</span>
-<span class="sd">            modality - Modality</span>
-<span class="sd">            result_fields - A JSON structure with the answers for the requested result_fields in /destination/search (optional)</span>
 <span class="sd">        :param uuid: The node id</span>
+<span class="sd">        :param status: Status code of the job, S by default (S|F) - Success, failure (optional)</span>
+<span class="sd">        :param studies: A JSON array of the studies found. Each object has the following fields (optional)</span>
+<span class="sd">          * study_uid The study_uid</span>
+<span class="sd">          * study_date The study date</span>
+<span class="sd">          * accession_number The accession number</span>
+<span class="sd">          * referring_physician The referring physician</span>
+<span class="sd">          * patient_name Patient name</span>
+<span class="sd">          * patientid Patient ID</span>
+<span class="sd">          * patient_sex Gender </span>
+<span class="sd">          * patient_birth_date Birth date</span>
+<span class="sd">          * study_description Study description</span>
+<span class="sd">          * modality Modality</span>
+<span class="sd">          * result_fields A JSON structure with the answers for the requested result_fields in /destination/search (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;search_id&#39;</span><span class="p">:</span> <span class="n">search_id</span><span class="p">,</span>
            <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n">status</span><span class="p">,</span>
            <span class="s1">&#39;studies&#39;</span><span class="p">:</span> <span class="n">studies</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
@@ -700,6 +694,7 @@
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ALREADY_DONE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">AlreadyDone</span><span class="p">(</span><span class="s1">&#39;The search has already had results returned against it&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_STATUS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidStatus</span><span class="p">(</span><span class="s1">&#39;An invalid status was passed&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node or search can not be found&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -713,34 +708,38 @@
     
 <div class="viewcode-block" id="Node.found_mwl"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Node.found_mwl">[docs]</a>    <span class="k">def</span> <span class="nf">found_mwl</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">orders</span><span class="p">,</span>
         <span class="n">search_id</span><span class="p">,</span>
         <span class="n">serial_no</span><span class="p">,</span>
         <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">orders</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Found mwl.</span>
-<span class="sd">        :param orders: A JSON array of the orders found. Each object has the following fields:</span>
-<span class="sd">            patient_name - Patient name</span>
-<span class="sd">            patientid - Patient id</span>
-<span class="sd">            accession_number - Accession number</span>
-<span class="sd">            patient_sex - Gender</span>
-<span class="sd">            patient_birth_date - Birth date</span>
-<span class="sd">            order_number - Order number</span>
-<span class="sd">            order_date - Order date</span>
 <span class="sd">        :param search_id: The id of the search request</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param uuid: The node id</span>
+<span class="sd">        :param orders: A JSON array of the orders found. Each object has the following fields (optional)</span>
+<span class="sd">          * patient_name Patient name</span>
+<span class="sd">          * patientid Patient id </span>
+<span class="sd">          * accession_number Accession number </span>
+<span class="sd">          * patient_sex Gender </span>
+<span class="sd">          * patient_birth_date Birth date</span>
+<span class="sd">          * order_number Order number </span>
+<span class="sd">          * order_date Order date</span>
+<span class="sd">        :param status: Status code of the job, S by default (S|F) - Success, failure (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;orders&#39;</span><span class="p">:</span> <span class="n">orders</span><span class="p">,</span>
            <span class="s1">&#39;search_id&#39;</span><span class="p">:</span> <span class="n">search_id</span><span class="p">,</span>
            <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n">status</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ALREADY_DONE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">AlreadyDone</span><span class="p">(</span><span class="s1">&#39;The search has already had results returned against it&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_STATUS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidStatus</span><span class="p">(</span><span class="s1">&#39;An invalid status was passed&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node or search can not be found&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -892,9 +891,6 @@
         <span class="sd">&quot;&quot;&quot;Performance get.</span>
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        :param serial_no: serial_no</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (sid OR serial_no) - The session id or serial number of the node</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
@@ -968,9 +964,6 @@
         <span class="sd">&quot;&quot;&quot;Progress list.</span>
 <span class="sd">        :param destination_id: destination_id</span>
 <span class="sd">        :param node_id: node_id</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (node_id OR destination_id) - The node or destination id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;destination_id&#39;</span><span class="p">:</span> <span class="n">destination_id</span><span class="p">,</span>
@@ -1032,7 +1025,7 @@
 
 
 
-<p class="blurb">version 3.21.2.0-1</p>
+<p class="blurb">version 3.21.3.0-1</p>
 
 
 

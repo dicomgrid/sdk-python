@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.study &#8212; Ambra-SDK 3.21.2.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.study &#8212; Ambra-SDK 3.21.3.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -54,6 +54,7 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidEmail</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidField</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidFlag</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidInteger</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidJson</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidNpi</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidParameters</span>
@@ -113,7 +114,6 @@
     
 <div class="viewcode-block" id="Study.add"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Study.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">thin</span><span class="p">,</span>
         <span class="n">accession_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">attachment_count</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">customfield_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -121,7 +121,6 @@
         <span class="n">image_count</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">integration_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">medical_record_locator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">modality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">node_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">patient_additional_history</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -154,10 +153,10 @@
         <span class="n">study_description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">study_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">thin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
-<span class="sd">        :param thin: Flag to add this as a thin study</span>
 <span class="sd">        :param accession_number: DICOM tag (0008,0050) (optional)</span>
 <span class="sd">        :param attachment_count: Attachment count (optional)</span>
 <span class="sd">        :param customfield_param: Custom field(s), see notes in /study/add (optional)</span>
@@ -165,7 +164,6 @@
 <span class="sd">        :param image_count: Images in the study (optional)</span>
 <span class="sd">        :param integration_key: Integration key for the study (optional)</span>
 <span class="sd">        :param medical_record_locator: DICOM tag (0010,1090) (optional)</span>
-<span class="sd">        :param message: An upload message (optional)</span>
 <span class="sd">        :param modality: DICOM tag (0008,0060) (optional)</span>
 <span class="sd">        :param node_id: If this is a thin study the gateway UUID to retrieve it from can be specified (optional)</span>
 <span class="sd">        :param patient_additional_history: DICOM tag (0010,21B0) (optional)</span>
@@ -198,12 +196,8 @@
 <span class="sd">        :param study_description: DICOM tag (0008,1030) (optional)</span>
 <span class="sd">        :param study_time: DICOM tag (0008,0030) (optional)</span>
 <span class="sd">        :param study_uid: study_uid</span>
+<span class="sd">        :param thin: Flag to add this as a thin study (optional)</span>
 <span class="sd">        :param uuid: uuid</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (sid OR uuid AND serial_no) - Either the sid or the node id and serial number</span>
-<span class="sd">        (study_uid OR study_uid AND storage_namespace AND phi_namespace) - The study uid if node authentication or the storage triplet if sid authentication</span>
-<span class="sd">        customfield-(CUSTOMFIELD_UUID OR DICOM_TAG) - Custom field(s), see notes in /study/add (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;accession_number&#39;</span><span class="p">:</span> <span class="n">accession_number</span><span class="p">,</span>
@@ -212,7 +206,6 @@
            <span class="s1">&#39;image_count&#39;</span><span class="p">:</span> <span class="n">image_count</span><span class="p">,</span>
            <span class="s1">&#39;integration_key&#39;</span><span class="p">:</span> <span class="n">integration_key</span><span class="p">,</span>
            <span class="s1">&#39;medical_record_locator&#39;</span><span class="p">:</span> <span class="n">medical_record_locator</span><span class="p">,</span>
-           <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
            <span class="s1">&#39;modality&#39;</span><span class="p">:</span> <span class="n">modality</span><span class="p">,</span>
            <span class="s1">&#39;node_id&#39;</span><span class="p">:</span> <span class="n">node_id</span><span class="p">,</span>
            <span class="s1">&#39;patient_additional_history&#39;</span><span class="p">:</span> <span class="n">patient_additional_history</span><span class="p">,</span>
@@ -256,6 +249,8 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ALREADY_EXISTS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">AlreadyExists</span><span class="p">(</span><span class="s1">&#39;The study already exists. The error_subtype holds the uuid of the study and error_data holds the data from the /study/get call&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CREDENTIALS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCredentials</span><span class="p">(</span><span class="s1">&#39;The sid or node credentials are invalid&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CUSTOMFIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCustomfield</span><span class="p">(</span><span class="s1">&#39;Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FLAG&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidFlag</span><span class="p">(</span><span class="s1">&#39;An invalid flag was passed. The error_subtype holds the name of the invalid flag&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_INTEGER&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidInteger</span><span class="p">(</span><span class="s1">&#39;An invalid integer was passed. The error_subtype holds the name of the invalid integer&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NAMESPACE_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NamespaceNotFound</span><span class="p">(</span><span class="s1">&#39;The namespace was not found&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The error_subtype holds the name of the key for the object that can not be found&#39;</span><span class="p">)</span>
@@ -304,6 +299,7 @@
         <span class="n">patientid_other</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">phi_namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">referring_physician</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">seconds_to_ingest</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">source_ae_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">storage_namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -349,6 +345,7 @@
 <span class="sd">        :param patientid_other: DICOM tag (0010,1000) (optional)</span>
 <span class="sd">        :param phi_namespace: phi_namespace</span>
 <span class="sd">        :param referring_physician: DICOM tag (0008,0090) (optional)</span>
+<span class="sd">        :param seconds_to_ingest: Flag to re-calculate the seconds_to_ingest metric (optional)</span>
 <span class="sd">        :param serial_no: serial_no</span>
 <span class="sd">        :param source_ae_title: The source aetitle (optional)</span>
 <span class="sd">        :param storage_namespace: storage_namespace</span>
@@ -359,11 +356,6 @@
 <span class="sd">        :param study_uid: study_uid</span>
 <span class="sd">        :param use_upload_permission: Flag to use the upload permissions for the permissions check (optional)</span>
 <span class="sd">        :param uuid: uuid</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (sid OR uuid AND serial_no) - Either the sid or the node id and serial number</span>
-<span class="sd">        (study_id OR study_uid OR study_uid AND storage_namespace AND phi_namespace) The uuid of the study if sid authentication or the study_uid if node authentication or the storage triplet if you want a future set</span>
-<span class="sd">        customfield-(CUSTOMFIELD_UUID OR DICOM_TAG) - Custom field(s), see notes in /study/add (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;accession_number&#39;</span><span class="p">:</span> <span class="n">accession_number</span><span class="p">,</span>
@@ -398,6 +390,7 @@
            <span class="s1">&#39;patientid_other&#39;</span><span class="p">:</span> <span class="n">patientid_other</span><span class="p">,</span>
            <span class="s1">&#39;phi_namespace&#39;</span><span class="p">:</span> <span class="n">phi_namespace</span><span class="p">,</span>
            <span class="s1">&#39;referring_physician&#39;</span><span class="p">:</span> <span class="n">referring_physician</span><span class="p">,</span>
+           <span class="s1">&#39;seconds_to_ingest&#39;</span><span class="p">:</span> <span class="n">seconds_to_ingest</span><span class="p">,</span>
            <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
            <span class="s1">&#39;source_ae_title&#39;</span><span class="p">:</span> <span class="n">source_ae_title</span><span class="p">,</span>
            <span class="s1">&#39;storage_namespace&#39;</span><span class="p">:</span> <span class="n">storage_namespace</span><span class="p">,</span>
@@ -445,10 +438,6 @@
 <span class="sd">        :param storage_namespace: storage_namespace</span>
 <span class="sd">        :param study_uid: study_uid</span>
 <span class="sd">        :param uuid: uuid</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (sid OR node_id AND serial_no) - Either the sid or the node id and serial number</span>
-<span class="sd">        (uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;node_id&#39;</span><span class="p">:</span> <span class="n">node_id</span><span class="p">,</span>
@@ -603,10 +592,6 @@
 <span class="sd">        :param storage_namespace: storage_namespace</span>
 <span class="sd">        :param study_uid: study_uid</span>
 <span class="sd">        :param uuid: uuid</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number</span>
-<span class="sd">        (uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;customfield_h&#39;</span><span class="p">:</span> <span class="n">customfield_h</span><span class="p">,</span>
@@ -674,9 +659,6 @@
 <span class="sd">        :param storage_namespace: storage_namespace</span>
 <span class="sd">        :param study_uid: study_uid</span>
 <span class="sd">        :param uuid: uuid</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (uuid OR study_uid AND storage_namespace AND phi_namespace OR study_uid AND account_id) - The study uuid, the storage triplet, or the study uid and account id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
@@ -784,7 +766,6 @@
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;Not found&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/study/pdf/hl7&#39;</span><span class="p">,</span>
@@ -967,10 +948,6 @@
 <span class="sd">        :param study_uid: study_uid</span>
 <span class="sd">        :param user_id: user_id</span>
 <span class="sd">        :param uuid: uuid</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (account_id OR location_id OR group_id OR user_id OR share_code OR email OR masshiway OR rsna OR npi OR study_request_id) - uuid of the account, location, group, user, study request or share code, email address(es), RSNA, NPI or masshiway recipient to share this study with</span>
-<span class="sd">        (uuid OR study_uid AND storage_namespace AND phi_namespace) - The study uuid or the storage triplet if you want a future share</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
@@ -1008,12 +985,12 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to share this study&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;PHANTOM&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Phantom</span><span class="p">(</span><span class="s1">&#39;This is a phantom study&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;REQUEST_CLOSED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">RequestClosed</span><span class="p">(</span><span class="s1">&#39;The study request is closed&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;SHARE_FAILED&#39;</span><span class="p">,</span> <span class="s1">&#39;SAME&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ShareFailed</span><span class="p">(</span><span class="s1">&#39;The study can&amp;#39;t be shared into the same namespace&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;SHARE_FAILED&#39;</span><span class="p">,</span> <span class="s1">&#39;NO_DESTINATION&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ShareFailed</span><span class="p">(</span><span class="s1">&#39;The study can&amp;#39;t be shared with a deleted object&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;SHARE_FAILED&#39;</span><span class="p">,</span> <span class="s1">&#39;DECLINED&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ShareFailed</span><span class="p">(</span><span class="s1">&#39;The charge card was declined&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;SHARE_FAILED&#39;</span><span class="p">,</span> <span class="s1">&#39;NO_CARD&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ShareFailed</span><span class="p">(</span><span class="s1">&#39;The user does not have a card on file&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;SHARE_FAILED&#39;</span><span class="p">,</span> <span class="s1">&#39;NO_CHARGE_MODALITY&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ShareFailed</span><span class="p">(</span><span class="s1">&#39;The charge modality is required if charge_authorized is set and the charging is by modality&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;SHARE_FAILED&#39;</span><span class="p">,</span> <span class="s1">&#39;NO_DUP_SHARE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ShareFailed</span><span class="p">(</span><span class="s1">&#39;The destination namespace has the no_dup_share flag turned on and this study is a duplicate of an existing study in the namespace&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;SHARE_FAILED&#39;</span><span class="p">,</span> <span class="s1">&#39;DECLINED&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ShareFailed</span><span class="p">(</span><span class="s1">&#39;The charge card was declined.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;SHARE_FAILED&#39;</span><span class="p">,</span> <span class="s1">&#39;NO_CARD&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ShareFailed</span><span class="p">(</span><span class="s1">&#39;The user does not have a card on file.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;SHARE_FAILED&#39;</span><span class="p">,</span> <span class="s1">&#39;NO_CHARGE_MODALITY&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ShareFailed</span><span class="p">(</span><span class="s1">&#39;The charge modality is required if charge_authorized is set and the charging is by modality.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;SHARE_FAILED&#39;</span><span class="p">,</span> <span class="s1">&#39;NO_DESTINATION&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ShareFailed</span><span class="p">(</span><span class="s1">&#39;The study can&amp;#39;t be shared with a deleted object.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;SHARE_FAILED&#39;</span><span class="p">,</span> <span class="s1">&#39;NO_DUP_SHARE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ShareFailed</span><span class="p">(</span><span class="s1">&#39;The destination namespace has the no_dup_share flag turned on and this study is a duplicate of an existing study in the namespace.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;SHARE_FAILED&#39;</span><span class="p">,</span> <span class="s1">&#39;SAME&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ShareFailed</span><span class="p">(</span><span class="s1">&#39;The study can&amp;#39;t be shared into the same namespace.&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/study/share&#39;</span><span class="p">,</span>
@@ -1039,9 +1016,6 @@
 <span class="sd">        :param location_id: location_id</span>
 <span class="sd">        :param user_id: user_id</span>
 <span class="sd">        :param user_invite_share_id: user_invite_share_id</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (account_id OR location_id OR group_id OR user_id OR user_invite_share_id) - uuid of the account, location, group, user or user invitation to stop sharing this study with</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
@@ -1296,9 +1270,6 @@
 <span class="sd">        :param storage_namespace: storage_namespace</span>
 <span class="sd">        :param study_id: study_id</span>
 <span class="sd">        :param study_uid: study_uid</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (study_id OR study_uid AND storage_namespace AND phi_namespace) - Either the study uuid or the storage triplet</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;phi_namespace&#39;</span><span class="p">:</span> <span class="n">phi_namespace</span><span class="p">,</span>
@@ -1333,9 +1304,6 @@
 <span class="sd">        :param storage_namespace: storage_namespace</span>
 <span class="sd">        :param study_id: study_id</span>
 <span class="sd">        :param study_uid: study_uid</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (study_id OR study_uid AND storage_namespace AND phi_namespace) - Either the study uuid or the storage triplet</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;phi_namespace&#39;</span><span class="p">:</span> <span class="n">phi_namespace</span><span class="p">,</span>
@@ -1464,21 +1432,18 @@
     
 <div class="viewcode-block" id="Study.duplicate"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Study.duplicate">[docs]</a>    <span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">include_attachments</span><span class="p">,</span>
         <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">include_attachments</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">namespace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">overwrite</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">study_request_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Duplicate.</span>
-<span class="sd">        :param include_attachments: Also duplicate attachments</span>
 <span class="sd">        :param uuid: The study id</span>
+<span class="sd">        :param include_attachments: Also duplicate attachments (optional)</span>
 <span class="sd">        :param namespace_id: namespace_id</span>
-<span class="sd">        :param overwrite: Flag if you want to overwrite an existing study in the destination namespace</span>
+<span class="sd">        :param overwrite: Flag if you want to overwrite an existing study in the destination namespace (optional)</span>
 <span class="sd">        :param study_request_id: study_request_id</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (namespace_id OR study_request_id) - The namespace or study request id to duplicate it to</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;include_attachments&#39;</span><span class="p">:</span> <span class="n">include_attachments</span><span class="p">,</span>
@@ -1615,9 +1580,6 @@
 <span class="sd">        :param accession_number: accession_number</span>
 <span class="sd">        :param patient_name: patient_name</span>
 <span class="sd">        :param patientid: patientid</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (accession_number OR patientid OR patient_name) - The full or partial accession number, MRN or patient name to search by. If none are passed the studies accession number will be used (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;accession_number&#39;</span><span class="p">:</span> <span class="n">accession_number</span><span class="p">,</span>
@@ -1931,9 +1893,6 @@
 <span class="sd">        :param node_id: node_id</span>
 <span class="sd">        :param serial_no: serial_no</span>
 <span class="sd">        :param size: The number of bytes associated with the event (optional)</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (sid OR node_id AND serial_no) - Either the sid or the node uuid and serial number</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;event&#39;</span><span class="p">:</span> <span class="n">event</span><span class="p">,</span>
@@ -2000,10 +1959,6 @@
 <span class="sd">        :param storage_namespace: storage_namespace</span>
 <span class="sd">        :param study_id: study_id</span>
 <span class="sd">        :param study_uid: study_uid</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">        (sid OR node_id AND serial_no) - Either the sid or the node id and serial number</span>
-<span class="sd">        (study_id OR study_uid AND storage_namespace AND phi_namespace) - The study id or the study_uid/storage_namespace/phi_namespace triplet</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;image_count&#39;</span><span class="p">:</span> <span class="n">image_count</span><span class="p">,</span>
@@ -2170,7 +2125,7 @@
 
 
 
-<p class="blurb">version 3.21.2.0-1</p>
+<p class="blurb">version 3.21.3.0-1</p>
 
 
 

@@ -84,6 +84,7 @@ class Namespace:
     def settings(
         self,
         uuid,
+        ai_settings=None,
         allow_drag_and_drop_in_study_uploader=None,
         auto_create_patient=None,
         auto_enable_dicom_wrapping=None,
@@ -102,7 +103,6 @@ class Namespace:
         pixel_anonymize_color=None,
         priority_notifications=None,
         reverse_patient_name=None,
-        settings=None,
         single_file_dicom_wrapping=None,
         study_field_flags=None,
         study_size_soft_threshold_per_user=None,
@@ -112,6 +112,7 @@ class Namespace:
     ):
         """Settings.
         :param uuid: The uuid of the namespace
+        :param ai_settings: Other AI settings
         :param allow_drag_and_drop_in_study_uploader: Value for the setting (optional)
         :param auto_create_patient: Value for the setting (optional)
         :param auto_enable_dicom_wrapping: Value for the setting (optional)
@@ -130,7 +131,6 @@ class Namespace:
         :param pixel_anonymize_color: Value for the setting (optional)
         :param priority_notifications: Value for the setting (optional)
         :param reverse_patient_name: Value for the setting (optional)
-        :param settings: Other settings
         :param single_file_dicom_wrapping: Value for the setting (optional)
         :param study_field_flags: A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)
         :param study_size_soft_threshold_per_user: A threshold for studies size per user. An email (by study_quota_exceeded template) will be sent when this limit is exceeded by a user. A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)
@@ -168,9 +168,9 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
            'upload_settings': upload_settings,
            'uuid': uuid,
         }
-        if settings is not None:
-            settings_dict = {'{prefix}{k}'.format(prefix='', k=k): v for k,v in settings.items()}
-            request_data.update(settings_dict)
+        if ai_settings is not None:
+            ai_settings_dict = {'{prefix}{k}'.format(prefix='', k=k): v for k,v in ai_settings.items()}
+            request_data.update(ai_settings_dict)
 	
         errors_mapping = {}
         errors_mapping[('INVALID_SETTING', None)] = InvalidSetting('An invalid setting was passed. The error_subtype holds the name of the invalid setting')

@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [3.21.3.0-2] - 2021-04-16
+### Fixed
+- api.Namespace.settings settings -> ai_settings
+
 
 ## [3.21.3.0-1] - 2021-04-07
 ### Added

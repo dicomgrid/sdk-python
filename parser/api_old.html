@@ -47,6 +47,7 @@
                 <li><a href="#session_oauth">/session/oauth</a>
                 <li><a href="#session_oauth_token">/session/oauth/token</a>
                 <li><a href="#session_pin">/session/pin</a>
+                <li><a href="#session_sign">/session/sign</a>
                 <li><a href="#session_ttl">/session/ttl</a>
             </ul>
             <li><a href="#user" name="user-idx">User commands</a>
@@ -315,7 +316,6 @@
                 <li><a href="#account_list">/account/list</a>
                 <li><a href="#account_set">/account/set</a>
                 <li><a href="#account_get">/account/get</a>
-                <li><a href="#account_delete">/account/delete</a>
                 <li><a href="#account_user_add">/account/user/add</a>
                 <li><a href="#account_user_set">/account/user/set</a>
                 <li><a href="#account_user_get">/account/user/get</a>
@@ -354,6 +354,7 @@
                 <li><a href="#group_user_add">/group/user/add</a>
                 <li><a href="#group_user_delete">/group/user/delete</a>
                 <li><a href="#group_user_list">/group/user/list</a>
+                <li><a href="#group_scanner_validate">/group/scanner/validate</a>
             </ul>
             <li><a href="#role" name="role-idx">Role commands</a>
             <ul>
@@ -536,6 +537,26 @@
             <li><a href="#npi" name="npi-idx">NPI commands</a>
             <ul>
                 <li><a href="#npi_find">/npi/find</a>
+            </ul>
+            <li><a href="#site" name="site-idx">Site commands</a>
+            <ul>
+                <li><a href="#site_list">/site/list</a>
+                <li><a href="#site_add">/site/add</a>
+                <li><a href="#site_set">/site/set</a>
+                <li><a href="#site_get">/site/get</a>
+                <li><a href="#site_delete">/site/delete</a>
+                <li><a href="#site_user_add">/site/user/add</a>
+                <li><a href="#site_user_set">/site/user/set</a>
+                <li><a href="#site_user_list">/site/user/list</a>
+                <li><a href="#site_user_delete">/site/user/delete</a>
+            </ul>
+            <li><a href="#scanner" name="scanner-idx">Scanner commands</a>
+            <ul>
+                <li><a href="#scanner_list">/scanner/list</a>
+                <li><a href="#scanner_add">/scanner/add</a>
+                <li><a href="#scanner_set">/scanner/set</a>
+                <li><a href="#scanner_get">/scanner/get</a>
+                <li><a href="#scanner_delete">/scanner/delete</a>
             </ul>
         </ol>
 
@@ -1750,6 +1771,14 @@
                 <td>Can edit annotations on a study</td>
             </tr>
             <tr>
+                <td>annotation_edit_only_own</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Can they only edit their annotations on a study</td>
+            </tr>
+            <tr>
                 <td>meeting_view</td>
                 <td>1</td>
                 <td>1</td>
@@ -2012,6 +2041,102 @@
                 <td>1</td>
                 <td>1</td>
                 <td>Can they view asynchronous job statuses</td>
+            </tr>
+            <tr>
+                <td>site_add</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add sites to the account</td>
+            </tr>
+            <tr>
+                <td>site_edit>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they edit sites in the account</td>
+            </tr>
+            <tr>
+                <td>site_view</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view sites in the account</td>
+            </tr>
+            <tr>
+                <td>site_delete</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they delete sites from the account</td>
+            </tr>
+            <tr>
+                <td>scanner_add</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add scanners</td>
+            </tr>
+            <tr>
+                <td>scanner_edit</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they edit scanners</td>
+            </tr>
+            <tr>
+                <td>scanner_view</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view scanners</td>
+            </tr>
+            <tr>
+                <td>scanner_delete</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they delete scanners</td>
+            </tr>
+            <tr>
+                <td>site_user_add</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add users to site contact lists</td>
+            </tr>
+            <tr>
+                <td>site_user_edit</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they edit users in site contact lists</td>
+            </tr>
+            <tr>
+                <td>site_user_view</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view site contact lists</td>
+            </tr>
+            <tr>
+                <td>site_user_delete</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they delete users from site contact lists</td>
             </tr>
         </table>
 
@@ -4791,6 +4916,17 @@
                 <td>0</td>
                 <td>A JSON hash that specifies the message type as the key and the hl7 field/subfield as the value. The base64 encoded report will be extracted from message as per these specs and be attached as a report to the associated studies e.g. <code>{"ORU":"OBX-12_5_5"}</code></td>
             </tr>
+              <tr>
+                <td>hl7_use_attachment_file_name</td>
+                <td>Text</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>A string which indicates the field and subfield of the HL7 OBX segment with an attachment that defines the attachment file name; e.g. <code>OBX_3_3</code> would indicated the third field and third subfield. If a file name is not found in the indicated field, if the filename contains disallowed characters or its greater than 64 characters in length we instead use a default naming convention: <code>hl7_report_${id}.pdf</code>. If the setting is undefined or a zero length string we don't look for a filename and just use the default naming template (this is he default for this setting).</td>
+            </tr>          
             <tr>
                 <td>upload_select_none</td>
                 <td>Flag</td>
@@ -4902,6 +5038,32 @@
                 <td>A filter expression to limit node queries for /order/sps/find e.g. <code>filter.order_sps.modality.equals=MR</code>
             </tr>
             <tr>
+                <td>siu_push</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>
+                    A JSON hash to configure a SIU push workflow. 
+                    A SIU^12 message will schedule the patient studies in the destination namespace to be pushed to the destination. 
+                    A SIU^15 message will cancel the scheduled push.
+                    A maximum of 10 studies will be pushed.
+                    The keys and values in the hash are as follows:
+                    <ul>
+                        <li> transform &bull; A transform condition expression (see /transform/add for format) to match against the HL7 SIU messages. If the message matches the workflow is triggered.
+                        <li> mrn &bull; The HL7 field that holds the MRN(s) to push studies for e.g. <code>PID_4</code>
+                        <li> procedure_date &bull; The HL7 field that holds the scheduled procedure date and time e.g. <code>SCH_11_4</code>
+                        <li> minutes_before &bull; The number of minute before the procedure date the siu_push workflow should be run
+                        <li> destination_field &bull; The HL7 field that holds the destination value e.g. <code>PV1_3_1</code>
+                        <li> destination_map &bull; A JSON hash that maps the value from the destination_field to a destination UUID e.g. <code>{"ABC": "DESTINATION_UUID"}</code>
+                        <li> cancel_field &bull; The HL7 field that holds the value to link a S15 cancel message with the S12 appointment message e.g. <code>SCH_2</code>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
                 <td>mrn_qr</td>
                 <td>Text</td>
                 <td></td>
@@ -4923,6 +5085,7 @@
                         <li> only_once &bull; Set this flag to 1 if you want this run only on the first order
                         <li> start_datetime &bull; DICOM start date time stamp to bound the search (optional)
                         <li> end_datetime &bull; DICOM end date time stamp to bound the search (optional)
+                        <li> squelch &bull; The number of minutes to squelch repeated queries for the patient and destination. (optional)
                         <li> siu &bull; A JSON hash if appointment SIU messages should be included in the workflow. The following keys and values are supported:
                         <ul>
                             <li> procedure_date &bull; The HL7 field that holds the scheduled procedure date and time e.g. <code>SCH_11_4</code>
@@ -5823,6 +5986,28 @@
                 <td>0</td>
                 <td>Flag to associate Hl7 messages with a study using an accession number of another study which the study is split from</td>
             </tr>
+            <tr>
+                <td>require_site_id_for_groups</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Flag to require site_id attribute to be set for groups in the account. <i>site_id</i> must be set on group creation and edits when the flag is set</td>
+            </tr>
+            <tr>
+                <td>linked_study_accounts</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A comma separated list of account UUIDs allowed to create groups linked to sites from the account this setting belongs to</td>
+            </tr>
         </table>
 
         <a name="ai-questions"><h3>Study AI questions</h3></a>
@@ -6003,7 +6188,7 @@
                     <i>(email || account_name && account_login)</i> &bull; The users email address or the account name and account_login (DEPRECIATED - Use login and vanity)<br>
                     <i>login</i> &bull; The user account_login or email address<br>
                     <i>vanity</i> &bull; The account vanity name. (optional)<br>
-                    <i>password</i> &bull; The password<br>
+                    <i>(password || use_pkey)</i> &bull; The password for password authentication or a flag to use public key authentication<br>
                     <i>new_password</i> &bull; Change the password or account password to this. (optional)<br>
                     <i>validate_session</i> &bull; If you would like to validate an existing session rather than create a new one pass in the sid of the session to valid in this parameter. It will check if the session is still valid and the credentials are for the session. (optional)<br>
                     <i>location</i> &bull; Login location. (optional)<br>
@@ -6019,6 +6204,7 @@
                     <i>training_todo</i> &bull; Flag if the user is required to do training<br>
                     <i>pin_required</i> &bull; Flag if a PIN is required to validate this session<br>
                     <i>pin_via</i> &bull; How was the PIN sent, the options are TOKEN,EMAIL or SMS<br>
+                    <i>sign_required</i> &bull; Flag if a signature is required to validate this session<br>
                     <i>terms_md5</i> &bull; MD5 of the accepted terms of service<br>
                     <i>privacy_md5</i> &bull; MD5 of the accepted privacy policy<br>
                     <i>indicator_md5</i> &bull; MD5 of the accepted indications of use<br>
@@ -6040,6 +6226,7 @@
                     DISABLED &bull; The user is disabled and needs to be /user/enabled to allow access<br>
                     BRAND_NOT_ALLOWED &bull; The user is limited to some brands to login with allowed_login_brands setting<br>
                     SSO_ONLY &bull; The user can only login via SSO<br>
+                    ONLY_ONE &bull; You can pass either the password or use_pkey flag, not both<br>
                 </td>
             </tr>
             <tr>
@@ -6437,6 +6624,50 @@
         </table>
         <a href="#session-idx">top</a>
 
+        <p><a name="session_sign"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Validate the session using a public key</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/session/sign</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id<br>
+                    <i>signature</i> &bull; The Base64-encoded signature<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    INVALID_SID &bull; Invalid sid<br>
+                    INVALID_SIGNATURE &bull; Invalid signature<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ul>
+                        <li> The session is invalidated when invalid signature is provided
+                        <li> Other API calls that require a sid will return a 401 until the session which requires a signature is validated
+                        <li> The signature is calculated for a message consisting of the following parts joined by null character: user email, the current sid (binary form), the user's public key (DER form of the SubjectPublicKeyInfo structure) and the 'sha256' string. The signature should be calculated using the user public key's algorithm with the SHA-256 hashing algorithm.
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#session-idx">top</a>
+
         <p><a name="session_ttl"></a>
         <table class="bordered-table">
             <tr>
@@ -6641,6 +6872,7 @@
                     <i>indicator_md5</i> &bull; MD5 of the accepted indications of use<br>
                     <i>last_login</i> &bull; Timestamp of the last login<br>
                     <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request<br>
+                    <i>public_key</i> &bull; A public key for public key authentication<br>
                     <i>ui_json</i> &bull; JSON for UI settings. <span>Possible options:</span>
                     <ul>
                         <li>show_org_manage_link (boolean) &bull; Show link to manage multiple organizations</li>
@@ -6696,6 +6928,7 @@
                     <i>terms_md5</i> &bull; MD5 of the accepted terms of service<br>
                     <i>privacy_md5</i> &bull; MD5 of the accepted privacy policy<br>
                     <i>indicator_md5</i> &bull; MD5 of the accepted indications of use<br>
+                    <i>public_key</i> &bull; A public key for public key authentication (optional)<br>
                     <i>ui_json</i> &bull; JSON for UI settings (optional) <span>possible options:</span>
                     <ul>
                         <li>show_org_manage_link (boolean) &bull; Show link to manage multiple organizations</li>
@@ -6732,6 +6965,7 @@
                         <li> You can not change the password, email or cc_token or MD5 of acceptances of another user. Any changes will be ignored.
                         <li> Only sysadmins and support users are allowed to change <i>allowed_login_brands</i>. An ordinary cannot change allowed_login_brands even for himself.
                         <li> If a time_zone is set it will take precedence over any time zone passed in filter.tz. This allows a distributed organization to ensure that everyone is looking at the same data.
+                        <li> The public key should be in RFC7468 sec.13 format. The SubjectPublicKeyInfo structure defined in RFC5280 sec.A.1 is used through the session validation process.
                     </ol>
                 </td>
             </tr>
@@ -7467,7 +7701,6 @@
                     <i>destination_ae_title</i> &bull; The destination aetitle (optional)<br>
                     <i>source_ae_title</i> &bull; The source aetitle (optional)<br>
                     <i>node_id</i> &bull; If this is a thin study the gateway UUID to retrieve it from can be specified (optional)<br>
-                    <i>message</i> &bull; An upload message (optional)<br>
                     <i>customfield-{CUSTOMFIELD_UUID|DICOM_TAG}</i> &bull; Custom field(s), see notes in /study/add (optional)<br>
                 </td>
             </tr>
@@ -7489,6 +7722,8 @@
                 <th>Errors</th>
                 <td>
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    INVALID_INTEGER &bull; An invalid integer was passed. The <i>error_subtype</i> holds the name of the invalid integer<br>
+                    INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
                     INVALID_CREDENTIALS &bull; The sid or node credentials are invalid<br>
                     ALREADY_EXISTS &bull; The study already exists. The <i>error_subtype</i> holds the uuid of the study and <i>error_data</i> holds the data from the <a href="#study_get">/study/get</a> call<br>
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
@@ -7505,7 +7740,6 @@
                         <li> If the node configuration has do_local_push set to true then routing rules will be run to create any push job(s) to send the study to other locations attached to the node. The detail field in /node/ping will contain use_cache for these push jobs.
                         <li> A customfield either be a defined customfield or an arbitrary DICOM tag if the account setting enable_dicom_tag_customfields is on. For a defined customfield pass the UUID for a DICOM tag pass the tag in (XXXX,XXXX) format.
                         <li> If this is a thin study the study_uid does not need to be and should not be passed in
-                        <li> The upload message is accessible in STUDY_UPLOAD_SUCCESS and STUDY_UPLOAD_FAIL webhooks through study_upload.message substitution
                     </ul>
                 </td>
             </tr>
@@ -7564,6 +7798,7 @@
                     <i>customfield-{CUSTOMFIELD_UUID|DICOM_TAG}</i> &bull; Custom field(s), see notes in /study/add (optional)<br>
                     <i>use_upload_permission</i> &bull; Flag to use the upload permissions for the permissions check (optional)<br>
                     <i>find_order_uuid</i> &bull; UUID of the search record used to modify the study (optional)<br>
+                    <i>seconds_to_ingest</i> &bull; Flag to re-calculate the seconds_to_ingest metric (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -7876,6 +8111,7 @@
                     <i>is_frozen</i> &bull; Is the study frozen<br>
                     <i>is_being_retrieved</i> &bull; Is this a thin study in the process of being retrieved<br>
                     <i>has_external_viewer</i> &bull; A flag if the study has an external viewer option<br>
+                    <i>seconds_to_ingest</i> &bull; The number of seconds it took to ingest the study. Blank if the study was ingested before this feature was added, -1 if we don't have enough data to calculate this<br>
                     <i>accelerators</i> &bull; A JSON list of accelerator FQDN the study may be on (only returned if the probe_for_accelerator flag is on)<br>
                     <i>viewer_link</i> &bull; Link to the study viewer. If the account has SAML SSO the link will be to the SSO entry point, if not it will be a direct link.<br>
                     <i>hl7</i> &bull; An array of the hl7 objects associated with this study. Each object has the following fields or is the complete record from /hl7/get if the full_hl7 flag is passed<br>
@@ -7908,6 +8144,9 @@
                     <i>created_by_name</i> &bull; Name of the user who created the study<br>
                     <i>created_by_email</i> &bull; Email of the user who created the study<br>
                     <i>created_by_mobile_phone</i> &bull; Mobile phone number of the user who created the study<br>
+                    <i>created_by_type</i> &bull; Type of user who created the study<br>
+                    <i>created_for_name</i> &bull; Name of the user who the study was created for<br>
+                    <i>created_for_type</i> &bull; Type of user the study was created for<br>
                     <i>hipaa_name</i> &bull; HIPAA compliant version of the patient name<br>
                     <i>first_name</i> &bull; Patient first name<br>
                     <i>last_name</i> &bull; Patient last name<br>
@@ -8603,6 +8842,9 @@
             <tr>
                 <th>Notes</th>
                 <td>
+                    <ul>
+                        <li>If there is a customfield called <code>approved_by_name</code> in the account then it will be populated with the current user's name
+                    </ul>
                 </td>
             </tr>
         </table>
@@ -8948,6 +9190,8 @@
                     <i>user_config</i> &bull; The user viewer3_confing settings<br>
                     <i>accelerators</i> &bull; A JSON list of accelerator FQDN the study may be on (only returned if the probe_for_accelerator flag is on)<br>
                     <i>enable_dicom_tag_customfields</i> &bull; Value for the account flag<br>
+                    <i>accession_number_for_study_uid</i> &bull; Value for the account flag<br>
+                    <i>viewer_study_page_link_visible</i> &bull; Value for the account flag with any brand override applied<br>
                     <i>no_edit_dicom_tags</i> &bull; If enable_dicom_tag_customfields is on this is a JSON list of the DICOM tags that can not be edited<br>
                     <i>settings</i> &bull; JSON hash of the requested settings (optional)<br>
                     The rest of the fields are the same as <a href="#user_get">/user/get</a><br>
@@ -10509,7 +10753,7 @@
             <tr>
                 <th>Permission</th>
                 <td>
-                    annotation_edit and annotation ownership
+                    annotation_edit and annotation ownership or annotation_edit_only_own reset
                 </td>
             </tr>
             <tr>
@@ -10608,7 +10852,7 @@
             <tr>
                 <th>Permission</th>
                 <td>
-                    annotation_edit and annotation ownership
+                    annotation_edit and annotation ownership or annotation_edit_only_own reset
                 </td>
             </tr>
             <tr>
@@ -15689,6 +15933,8 @@
                     * <i>aetitle</i> &bull; The ae title to send to (if the destination is DICOM)<br>
                     * <i>address</i> &bull; The destination address (if the destination is DICOM)<br>
                     * <i>port</i> &bull; The destination port (if the destination is DICOM)<br>
+                    * <i>created_at</i> &bull; Timestamp when the push job was created (if the destination is DICOM)<br>
+                    * <i>created_by_name</i> &bull; Name of the user who created the push job (if the destination is DICOM)<br>
                     * <i>path</i> &bull; The destination path (if the destination is FOLDER)<br>
                     * <i>bundle</i> &bull; The bundle type (if the destination is FOLDER)<br>
                     * <i>detail</i> &bull; Any additional detail from the <a href="#study_cmove">/study/cmove</a> or "use_cache" if local routing is required or "is_auto" if this was created by routing rules<br>
@@ -16097,7 +16343,8 @@
                     <i>uuid</i> &bull; The node id<br>
                     <i>serial_no</i> &bull; The serial number of the node<br>
                     <i>search_id</i> &bull; The id of the search request<br>
-                    <i>studies</i> &bull; A JSON array of the studies found. Each object has the following fields<br>
+                    <i>status</i> &bull; Status code of the job, S by default (S|F) - Success, failure (optional)<br>
+                    <i>studies</i> &bull; A JSON array of the studies found. Each object has the following fields (optional)<br>
                     * <i>study_uid</i> &bull; The study_uid<br>
                     * <i>study_date</i> &bull; The study date<br>
                     * <i>accession_number</i> &bull; The accession number<br>
@@ -16124,6 +16371,7 @@
                     NOT_FOUND &bull; The node or search can not be found<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
                     ALREADY_DONE &bull; The search has already had results returned against it<br>
+                    INVALID_STATUS &bull; An invalid status was passed<br>
                 </td>
             </tr>
             <tr>
@@ -16150,7 +16398,8 @@
                     <i>uuid</i> &bull; The node id<br>
                     <i>serial_no</i> &bull; The serial number of the node<br>
                     <i>search_id</i> &bull; The id of the search request<br>
-                    <i>orders</i> &bull; A JSON array of the orders found. Each object has the following fields<br>
+                    <i>status</i> &bull; Status code of the job, S by default (S|F) - Success, failure (optional)<br>
+                    <i>orders</i> &bull; A JSON array of the orders found. Each object has the following fields (optional)<br>
                     * <i>patient_name</i> &bull; Patient name<br>
                     * <i>patientid</i> &bull; Patient id <br>
                     * <i>accession_number</i> &bull; Accession number <br>
@@ -16173,6 +16422,7 @@
                     NOT_FOUND &bull; The node or search can not be found<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
                     ALREADY_DONE &bull; The search has already had results returned against it<br>
+                    INVALID_STATUS &bull; An invalid status was passed<br>
                 </td>
             </tr>
             <tr>
@@ -16952,8 +17202,9 @@
                     <i>create_study</i> &bull; The maximum number of studies to retrieve from this search instead of creating an activity for the search results (optional)<br>
                     <i>share_email</i> &bull; Email to share retrieved studies with on subsequent <a href="#destination_retrieve">/destination/retrieve</a> (optional)<br>
                     <i>bundle_id</i> &bull; An integral number Used internally to track searches initiated from a single bundle (optional)<br>
-                    <i>message</i> &bull; A message to display when studies are found (optional)<br>
                     <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) will be set for the resultant studies after <a href="#destination_retrieve">/destination/retrieve</a> call (optional)<br>
+                    <i>anonymize</i> &bull; A JSON hash of <a href="#namespace_anonymize">anonymization rules</a> to apply to retrieved studies (optional)<br>
+                    <i>anonymize_{STUDY_FIELD}</i> &bull; The anonymization rules breakdown. This overrides the anonymize parameter if passed (optional)<br>
                     <div class="comment">-- The rest of the fields are used for the search --</div>
                     <i>study_uid</i> &bull; Study uid to find (optional)<br>
                     <i>patient_name</i> &bull; Patient name to find (optional)<br>
@@ -16990,6 +17241,8 @@
                     NOT_FOUND &bull; The destination, namespace or study request can not be found<br>
                     NOT_PERMITTED &bull; You are not permitted to search the destination<br>
                     NOT_SUPPORTED &bull; The destination does not support searching a destination<br>
+                    INVALID_FIELD_NAME &bull; The field cannot be used in anonymization rules. The <i>error_subtype</i> holds the invalid field name.<br>
+                    INVALID_REGEXP &bull; Invalid anonymization rule regular expression. The <i>error_subtype</i> holds the invalid regexp.<br>
                     INSUFFICIENT_CRITERIA &bull; Not enough search fields are populated<br>
                 </td>
             </tr>
@@ -17021,7 +17274,7 @@
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <div class="comment">-- The following fields are used for the activity retrieve workflow --</div>
                     <i>activity_id</i> &bull; uuid of the DESTINATION_SEARCH activity to retrieve from<br>
-                    <i>message</i> &bull; A message to display when studies are retrieved (optional)<br>
+                    <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) will be set for the study retrieved (optional)<br>
                     <div class="comment">-- The following fields are used for the study request workflow --</div>
                     <i>study_request_found_id</i> &bull; UUID of a study request search results to retrieve and send as study request response<br>
                     <i>send_method</i> &bull; The method to send a study as a study request response (share|duplicate)<br>
@@ -17049,6 +17302,9 @@
             <tr>
                 <th>Notes</th>
                 <td>
+                    <ul>
+                        <li> The customfields provided through the call parameters will override (per customfield) the customfields passed to the prior <a href="#destination_search">/destination/search</a> call
+                    </ul>
                 </td>
             </tr>
         </table>
@@ -19184,6 +19440,7 @@
                     <i>search_threshold</i> &bull; The number of studies record in the namespace to switch the UI from list to search mode (optional)<br>
                     <i>role_id</i> &bull; Id for the default role for the group (optional)<br>
                     <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
+                    <i>site_id</i> &bull; The associated site id. Required in case require_site_id_for_groups account setting is set (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -19213,6 +19470,7 @@
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
                     ROLE_NAMESPACE_MISMATCH (INCOMPATIBLE_ROLE) &bull; The role cannot be used for a group, data contains role_id and namespace_id<br>
                     ROLE_NAMESPACE_MISMATCH (GLOBAL_USER_WITH_RESTRICTED_ROLE) &bull; You are adding the group to the account with a global user with restricted role, data contains role_id and user_id<br>
+                    SITE_NOT_ALLOWED &bull; The account is not listed in the site account's linked_study_accounts setting
                 </td>
             </tr>
             <tr>
@@ -19252,6 +19510,8 @@
                     <i>search_threshold</i> &bull; The number of studies record in the namespace to switch the UI from list to search mode (optional)<br>
                     <i>role_id</i> &bull; Id for the default role for the group (optional)<br>
                     <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
+                    <i>site_id</i> &bull; The associated site id. Required in case require_site_id_for_groups account setting is set (optional)<br>
+                    <i>site_qualified</i> &bull; Flag if the site is qualified for the trial (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -19276,6 +19536,7 @@
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
                     ROLE_NAMESPACE_MISMATCH (INCOMPATIBLE_ROLE) &bull; The role cannot be used for groups, data contains role_id and namespace_id<br>
+                    SITE_NOT_ALLOWED &bull; The account is not listed in the site account's linked_study_accounts setting
                 </td>
             </tr>
             <tr>
@@ -19325,6 +19586,14 @@
                     <i>role_id</i> &bull; Id of the default role for the group<br>
                     <i>role_name</i> &bull; Name of the default role for the group<br>
                     <i>customfields</i> &bull; An array of the custom fields associated with this group. Each object has the following <a href="#customfields">fields</a> (This is only returned if the group has custom fields)<br>
+                    <div class="comment">-- The following fields are returned when there is a site association for the group --</div>
+                    <i>site_id</i> &bull; The associated site id<br>
+                    <i>site_name</i> &bull; The associated site name<br>
+                    <i>site_qualified</i> &bull; Flag if the site is qualified for the trial<br>
+                    <i>scanners_validated</i> &bull; An array of the scanners validated for the group. Each object has the following fields.<br>
+                    * <i>uuid</i> &bull; Scanner Id<br>
+                    * <i>name</i> &bull; Scanner name<br>
+                    * <i>study_uid</i> &bull; The study UID used in the process of scanner validation for the group<br>
                 </td>
             </tr>
             <tr>
@@ -19572,6 +19841,55 @@
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     NOT_FOUND &bull; The group can not be found<br>
                     NOT_PERMITTED &bull; You are not permitted list the group<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#group-idx">top</a>
+
+        <p><a name="group_scanner_validate"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Validate scanners in the group</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/group/scanner/validate</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The group id<br>
+                    <i>scanner_id</i> &bull; The scanner id<br>
+                    <i>study_uid</i> &bull; The study uid used to validate the scaner. Required when validating (optional)<br>
+                    <i>invalidate</i> &bull; Flag  if the scaner is being invalidated <br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    scanner_validate
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The group or scanner was not found. The <i>error_subtype</i> holds the type of field not found<br>
+                    NOT_PERMITTED &bull; You are not permitted to validate scanners<br>
+                    ALREADY &bull; The scanner is already validated/invalidated<br>
                 </td>
             </tr>
             <tr>
@@ -21744,6 +22062,8 @@
                     <i>period</i> &bull; The time period (day|week|month|year)<br>
                     <i>count</i> &bull; The number of periods to get<br>
                     <i>end_date</i> &bull; The end date, default is today if not passed (optional)<br>
+                    <i>modality</i> &bull; Filter analytics by modality (optional)<br>
+                    <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Filter analytics by a subset of study customfields (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -22061,6 +22381,7 @@
             </tr>
             <tr>
                 <th>Errors</th>
+                    INVALID_CONFIG &bull; The configuration is invalid
                 <td>
                 </td>
             </tr>
@@ -22152,6 +22473,7 @@
                 <td>
                     NOT_FOUND &bull; The filter can not be found<br>
                     NOT_PERMITTED &bull; You are not the owner of the filter<br>
+                    INVALID_CONFIG &bull; The configuration is invalid
                 </td>
             </tr>
             <tr>
@@ -22389,7 +22711,7 @@
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>name</i> &bull; Name of the customfield<br>
-                    <i>object</i> &bull; The object to associate the customfield with (Study|User_account|Group|Location|Account|Patient|Case|Order|Appointment|Dicomdata)<br>
+                    <i>object</i> &bull; The object to associate the customfield with (Study|User_account|Group|Location|Account|Patient|Case|Order|Appointment|Dicomdata|Scanner)<br>
                     <i>type</i> &bull; Type of the custom field (text|number|date|memo|select|multiselect|radio|checkbox|search) (optional)<br>
                     <i>capture_on_share_code</i> &bull; Flag if the field should be captured during a share code exchange (only applicable to study fields) (optional)<br>
                     <i>capture_on_destination_search</i> &bull; Flag if the field should be captured during query retrieve on /destination/search call (only applicable to study fields) (optional)<br>
@@ -22861,11 +23183,12 @@
                     <i>parameters</i> &bull; A JSON object of the parameter names and values (optional)<br>
                     <i>retry</i> &bull; Retry the webhook if it fails (optional)<br>
                     <i>sid_user_id</i> &bull; UUID of the user to generate a sid as (optional)<br>
-                    <i>filter_field</i> &bull; Name of the study field to filter on (optional)<br>
+                    <i>filter_field</i> &bull; Name of the study field (by default) or another object's field (should have prefix like "webhook.") to filter on (optional)<br>
                     <i>filter_regexp</i> &bull; Regular expression to match the value of the filter_field against (optional)<br>
                     <i>once</i> &bull; Flag that this webhook should only be run once for a specific study (optional)<br>
                     <i>by_uid</i> &bull; Flag to expand the once search to include studies with the same study_uid (optional)<br>
                     <i>by_accession_number</i> &bull; Flag to expand the once search to include studies with the same accession_number (optional)<br>
+                    <i>by_webhook_event</i> &bull; Flag to fire WEBHOOK_FAILED once at final unsuccessful try of a failing webhook (optional)<br>
                     <i>delay</i> &bull; Number of seconds to delay running this webhook for after it is triggered (optional)<br>
                     <i>max_age</i> &bull; Ignore studies that are more than this number of days old based on the study_date (optional)<br>
                     <i>auth</i> &bull; A JSON hash with the authentication details (optional)<br>
@@ -22923,6 +23246,7 @@
                         <li> GET_JSON will send a GET request with JSON data (type application/json).
                         <li> If the parameter value is of the form study.field where field is a field in /study/get the value will be set to the value of that field for the triggering study. e.g. name=>study.patient_name
                         <li> If the parameter value is of the form study.customfield-CUSTOMFIELD_UUID it will be set to the customfield value of the triggering study.
+                        <li> If the parameter hash is of the form <code>{"_REPLACE_WITH_JSON_":"study.FIELD_NAME"}</code> the parameters will be replaced with a JSON evaluated of the value of the named field
                         <li> The available events are:
                         <ul>
                             <li>STUDY_SYNC - Called when a study is fully stored in the system
@@ -22943,6 +23267,7 @@
                             <li>STUDY_RADREPORT - Called when a rad report is attached to a study
                             <li>STUDY_THIN_FAIL - Called when a thin study fails to retrieve
                             <li>STUDY_VIEW - Called when a study is viewed
+                            <li>STUDY_DOWNLOAD - Called when the the study is downloaded
                             <li>STUDY_HL7 - Called when an HL7 message is attached to the study
                             <li>STUDY_FIRST_IMAGE - Called when the first image(s) for the study hit storage
                             <li>STUDY_DUPLICATE_UPLOAD - Called when a study is re-uploaded
@@ -22966,7 +23291,8 @@
                             <li>MANUAL - The webhook needs to be manually or programmatically triggered
                             <li>CRON - The webhook is time triggered by the cron value
                             <li>STUDY_DEID_FAIL - Called for a study when the storage fails to de-identify it
-                            <li>STUDY_IMAGE_COUNT - Called when image count for a study changes
+                            <li>STUDY_IMAGE_COUNT - Called when image count for a study changes, not called for new studies
+                            <li>STUDY_COPY - Called when an study is successfully copied into a namespace
                         </ul>
                         <li> For the STUDY_PUSH_STATUS event the destination fields are available as destination.field and the push status as study_push.status for the letter status or study_push.success for a 1/0 flag where 0 is success and 1 is failed
                         <li> For the STUDY_UPLOAD_FAIL event the reason the upload failed is available in the study.failed_upload_reason field
@@ -22978,17 +23304,18 @@
                         <li> If the event is STUDY_REPORT or STUDY_REPORT_REMOVE and the filter_field is S-attachment_mime_type the mime type of the attachment will be filtered against the filter regular expression
                         <li> If the event is STUDY_HL7 or HL7_ADD and the filter_field is S-hl7_type the HL7 message type will be filtered against the filter regular expression. The fields in the HL7 object related to the Hl7 message that triggered the webhook are also for use in the webhook e.g. hl7.uuid. Hl7 message fields are accessible through hl7.hash prefix e.g. hl7.hash.PID_5
                         <li> If the event is STUDY_HL7 or HL7_ADD and the filter_field is S-hl7_transform_condition the filter_field_regexp should be a transform condition expression to match against the HL7 message. See /hl7/transform/add for the format for the transform condition format.
-                        <li> A <a href="#filter">filter</a> expression can be passed in the filter_field_regexp if the filter_field is S-list_filter. The filter will be evaluated against the study allowing fine grained and multi-field filtering e.g. <code>filter.phi_namespace.equals=UUID&filter.study_push_status.equals=S</code>
+                        <li> A <a href="#filter">filter</a> expression can be passed in the filter_field_regexp if the filter_field is S-list_filter (for studies) or OBJECT_TYPE.S-list_filter (for other objects). The filter will be evaluated against the object allowing fine grained and multi-field filtering e.g. <code>filter.phi_namespace.equals=UUID&filter.study_push_status.equals=S</code>
                         <li> If multiple filter expressions are required pass JSON arrays to both the filter_field and filter_regexp fields. The webhook will only run if all the filter conditions are satisfied.
                         <li> If the once flag is set the webhook is only run one time (after the flag is set) for a specific study. If by_uid or by_accession_number flag is specified as well the exclusion is expanded to include studies with the same study_uid or accession_number
+                        <li> If the once flag is set with the additional by_webhook_event then the webhook is only run once after a series of retries of a failing webhook (and also in case no retries enabled).
                         <li> For the WEBHOOK_FAILED event the parameter values from the failed webhook will be available for use as well as the webhook.* values e.g. webhook.name, webhook.last_error etc.
-                        <li> For the ROUTE_RULE event the <a href="#study_manual_route">/study/manual/route</a> parameter values will be available for use trough parameters.* fields
+                        <li> For the ROUTE_RULE event the <a href="#study_manual_route">/study/manual/route</a> parameter values will be available for use through parameters.* fields
                         <li> For the STUDY_UPLOAD_START and STUDY_UPLOAD_END event the parameters passed to /webhook/event are available in the webhook_event.* fields e.g. webhook_event.study_count, webhook_event.integration_key, webhook_event.namespace_id, webhook_event.share_code. These fields can also be used in the filter_field to filter the webhook.
-                        <li> For the STUDY_UPLOAD_LINK event and other events for session created via a study upload link the following additional parameters are available: link_usage.client_email, link_usage.client_address also the user who is associated with or created the link is available via the <code>user_account.*</code> parameters
+                        <li> For the STUDY_UPLOAD_LINK event and other events for session created via a study upload link the following additional parameters are available: link_usage.client_email, link_usage.client_address, link_usage.link_id, link_usage.account_id also the user who is associated with or created the link is available via the <code>user_account.*</code> parameters
                         <li> For the STUDY_ANNOTATION event the annotation data is available as <code>annotation.*</code> parameters
                         <li> For the NAMESPACE_AI_* event the namespace data is available as <code>namespace.*</code> parameters, the question data is available as <code>ai_question.*</code> parameters
-                        <li> For the DESTINATION_SEARCH_RESULTS event the returned study list is in the <code>destination_search.results</code> field and the count is in the <code>destination_search.count</code> field
-                        <li> For the DESTINATION_FETCH_FAIL and DESTINATION_FETCH_SUCCESS events the details are available in the following fields <code>study_fetch.(accession_number|study_uid|patientid|destination_name|destination_uuid)</code>
+                        <li> For the DESTINATION_SEARCH_RESULTS event the returned study list is in the <code>destination_search.results</code> field and the count is in the <code>destination_search.count</code> field, customfields passed to <a href="#destination_search">/destination/search</a> are in the <code>destination_search.customfield-*</code> fields.
+                        <li> For the DESTINATION_FETCH_FAIL and DESTINATION_FETCH_SUCCESS events the details are available in the following fields <code>study_fetch.(accession_number|study_uid|patientid|destination_name|destination_uuid|customfield-*)</code> and study.* fields for the DESTINATION_FETCH_SUCCESS event
                         <li> The auth fields is a JSON hash with a single key that describes the type of auth and the value for the key is a hash with the auth details. The following types of auth are supported.
                             <ul>
                                 <li> sfdc - <a href="https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_understanding_username_password_oauth_flow.htm">Salesforce Username-Password OAuth Authentication</a>. The following keys must be in the details hash, client_id, client_secret, username, and password. e.g. <nobr><code>{"sfdc":{"client_id":"3MVG9lK","client_secret":"1955279","username":"testuser@salesforce.com","password":"mypassword1234"}}</code></nobr>. /webhook/get will return the md5 of the password.
@@ -23032,6 +23359,7 @@
                     <i>once</i> &bull; Flag that this webhook should only be run once for a specific study (optional)<br>
                     <i>by_uid</i> &bull; Flag to expand the once search to include studies with the same study_uid (optional)<br>
                     <i>by_accession_number</i> &bull; Flag to expand the once search to include studies with the same accession_number (optional)<br>
+                    <i>by_webhook_event</i> &bull; Flag to fire WEBHOOK_FAILED once at final unsuccessful try of a failing webhook (optional)<br>
                     <i>delay</i> &bull; Number of seconds to delay running this webhook for after it is triggered (optional)<br>
                     <i>max_age</i> &bull; Ignore studies that are more than this number of days old based on the study_date (optional)<br>
                     <i>auth</i> &bull; A JSON hash with the authentication details (optional)<br>
@@ -23117,6 +23445,7 @@
                     <i>once</i> &bull; Flag that this webhook should only be run once for a specific study<br>
                     <i>by_uid</i> &bull; Flag to expand the once search to include studies with the same study_uid<br>
                     <i>by_accession_number</i> &bull; Flag to expand the once search to include studies with the same accession_number<br>
+                    <i>by_webhook_event</i> &bull; Flag to fire WEBHOOK_FAILED once at final unsuccessful try of a failing webhook<br>
                     <i>last_error</i> &bull; Error text from the last time this webhook failed<br>
                     <i>delay</i> &bull; Number of seconds to delay running this webhook for after it is triggered<br>
                     <i>max_age</i> &bull; Ignore studies that are more than this number of days old based on the study_date<br>
@@ -23480,6 +23809,7 @@
                     <i>prompt_for_anonymize</i> &bull; Flag to prompt if the anonymization rules should be applied on ingress<br>
                     <i>referer</i> &bull; The link can only be accessed from the specified referer. The referer can be a regexp to match multiple referers (optional)<br>
                     <i>acceptance_required</i> &bull; Flag that acceptance of TOS is required (optional) <br>
+                    <i>mfm_page</i> &bull; Flag to launch the MFM page instead of the viewer (optional) <br>
                     <i>charge_amount</i> &bull; Amount to charge in pennies before the link can be accessed (optional) <br>
                     <i>charge_currency</i> &bull; Charge currency (optional) <br>
                     <i>charge_description</i> &bull; Charge description (optional) <br>
@@ -23584,6 +23914,7 @@
                     <i>prompt_for_anonymize</i> &bull; Flag to prompt if the anonymization rules should be applied on ingress<br>
                     <i>referer</i> &bull; The link can only be accessed from the specified referer<br>
                     <i>acceptance_required</i> &bull; Flag that acceptance of TOS is required<br>
+                    <i>mfm_page</i> &bull; Flag to launch the MFM page instead of the viewer<br>
                     <i>charge_amount</i> &bull; Amount to charge in pennies before the link can be accessed<br>
                     <i>charge_currency</i> &bull; Charge currency<br>
                     <i>charge_description</i> &bull; Charge description<br>
@@ -24179,6 +24510,7 @@
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>name</i> &bull; Name of the purge rule<br>
                     <i>account_id</i> &bull; uuid of the account the rule is for<br>
+                    <i>object</i> &bull; The object to be purged, Study by default (Study|Hl7) (optional)<br>
                     <i>days_old</i> &bull; Studies greater than or equal to these days old will be purged<br>
                     <i>days_old_how</i> &bull; How should the days old value be calculated using the 'U'pdated, 'C'reated or 'S'tudy date<br>
                     <i>namespaces</i> &bull; A JSON array of namespace uuid to limit the rule to (optional)<br>
@@ -24238,6 +24570,7 @@
                         <li> A coverpage must exists for the PHI namespace before a skinny study will be generated
                         <li> A purge rule can only be made global by a sysadmin and the site needs to have global purge rule support enabled
                         <li> The definition of minor is "was the study created before they were 21 years old"
+                        <li> The following parameters are applicable to Hl7 objects: account_id, name, days_old, object, suspended, max_deletes and global
                     </ul>
                 </td>
             </tr>
@@ -24333,6 +24666,7 @@
                 <td>
                     <i>status</i> &bull; OK<br>
                     <i>account_id</i> &bull; uuid of the account the rule is for<br>
+                    <i>object</i> &bull; The object to be purged<br>
                     <i>name</i> &bull; Name of the purge rule<br>
                     <i>days_old</i> &bull; Studies greater than or equal to these days old will be purged<br>
                     <i>days_old_how</i> &bull; How should the days old value be calculated using the 'U'pdated, 'C'reated or 'S'tudy date<br>
@@ -24434,6 +24768,7 @@
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>(rule_id || account_id)</i> &bull; Id of the purge rule or the account id if all purge rules should be run<br>
+                    <i>object</i> &bull; Limit purging to this object only (optional)<br>
                     <i>dry_run</i> &bull; Do a dry run of the rule - flag<br>
                 </td>
             </tr>
@@ -25192,6 +25527,7 @@
                         <li> Once a dictionary is attached it will be checked every time a record in the account or namespace is created or edited
                         <li> If a dictionary is attached to an account it will be applied to all the namespaces in the account
                         <li> The add_if_no_match logic is not triggered if any of the skip conditions are true or the replace field is empty
+                        <li> If there is a customfield called <code>approved_by_name</code> in the account then it will be populated with 'System' string for the Study in event of auto approval (the approve_if_match flag)
                     </ul>
                 </td>
             </tr>
@@ -26291,8 +26627,717 @@
         </table>
         <a href="#npi-idx">top</a>
 
+        <a name="site"><h3>Site commands</h3></a>
 
-    <footer>LBL0022 v44.0 2021-02-24</footer>
+        <p><a name="site_list"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get a list of the sites in the account</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/site/list</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>account_id</i> &bull; uuid of the account<br>
+                    <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
+                    <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
+                    <i>sort_by</i> &bull; <a href="#sort">Sorting</a> (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>page</i> &bull; The pagination status hash<br>
+                    <i>sites</i> &bull; An array of the sites. Each object holds the same fields as the <a href="#site_get">/site/get</a> call<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    site_view
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The account can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to view sites in this account<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#site-idx">top</a>
+
+        <p><a name="site_add"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Add a site</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/site/add</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>account_id</i> &bull; uuid of the account to add them to<br>
+                    <i>name</i> &bull; The sites name<br>
+                    <i>site_id</i> &bull; The site to attach them to as a satellite site (optional)<br>
+                    <i>state</i> &bull; The state code of the site (optional)<br>
+                    <i>zip</i> &bull; The zip code of the site (optional)<br>
+                    <i>city</i> &bull; The city the site is located in (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>uuid</i> &bull; The uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    site_add
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The object was not found. The <i>error_subtype</i> holds the type of object not found<br>
+                    NOT_PERMITTED &bull; You are not permitted to add a site to the account<br>
+                    DIFFERENT_ACCOUNTS &bull; The site and satellite sites are from different accounts<br>
+                    NESTED_SATELLITE_SITE &bull; The satellite site has its satellite sites<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#site-idx">top</a>
+
+        <p><a name="site_set"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Edit a site</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/site/set</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The site uuid<br>
+                    <i>name</i> &bull; The sites name (optional)<br>
+                    <i>site_id</i> &bull; The site to attach them to as a satellite site (optional)<br>
+                    <i>state</i> &bull; The state code of the site (optional)<br>
+                    <i>zip</i> &bull; The zip code of the site (optional)<br>
+                    <i>city</i> &bull; The city the site is located in (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    site_edit
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    NOT_FOUND &bull; The site can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to edit the site<br>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    DIFFERENT_ACCOUNTS &bull; The site and satellite sites are from different accounts<br>
+                    NESTED_SATELLITE_SITE &bull; The satellite site has its satellite sites<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#site-idx">top</a>
+
+        <p><a name="site_get"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get a site</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/site/get</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The site uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>uuid</i> &bull; The site uuid<br>
+                    <i>name</i> &bull; The sites name<br>
+                    <i>site_id</i> &bull; The site to attach them to as a satellite site<br>
+                    <i>state</i> &bull; The state code of the site<br>
+                    <i>zip</i> &bull; The zip code of the site<br>
+                    <i>city</i> &bull; The city the site is located in<br>
+                    <i>account_id</i> &bull; UUID of the account<br>
+                    <i>satellite_sites</i> &bull; An array of the satellite sites. Each object has the following fields.<br>
+                    * <i>uuid</i> &bull; Site Id<br>
+                    * <i>name</i> &bull; Site name<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    site_view
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The site can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to view this site<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#site-idx">top</a>
+
+        <p><a name="site_delete"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Delete a site</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/site/delete</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The site uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    site_delete
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The site can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to delete the site<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#site-idx">top</a>
+
+        <p><a name="site_user_add"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Add a user to a site contact list</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/site/user/add</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The group id<br>
+                    <i>(user_id || email)</i> &bull; Id or email of the user<br>
+                    <i>role_name</i> &bull; The role name that should be used for the user in groups<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    site_user_add
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The site can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to add users to the site<br>
+                    USER_NOT_FOUND &bull; The user was not found<br>
+                    NOT_MEMBER &bull; The user is not in the account<br>
+                    ALREADY_EXISTS &bull; The user is in the contact list already<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#site-idx">top</a>
+
+        <p><a name="site_user_set"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Edit a site contact list record</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/site/user/set</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The site id<br>
+                    <i>(user_id || email)</i> &bull; Id or email of the user<br>
+                    <i>role_name</i> &bull; The role name that should be used for the user in groups (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    site_user_edit
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The site can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to edit users in the site<br>
+                    USER_NOT_FOUND &bull; The user was not found in the contact list<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#site-idx">top</a>
+
+        <p><a name="site_user_list"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>List the users in a site contact list</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/site/user/list</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The site id<br>
+                    <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
+                    <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
+                    <i>sort_by</i> &bull; <a href="#sort">Sorting</a> (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>page</i> &bull; The pagination status hash<br>
+                    <i>users</i> &bull; An array of the users.  Each object holds the following fields<br>
+                    * <i>user_id</i> &bull; The user id<br>
+                    * <i>user_name</i> &bull; The user name<br>
+                    * <i>user_email</i> &bull; The user email<br>
+                    * <i>role_name</i> &bull; The users role name<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    site_user_view
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The site can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted list the site contact list<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#site-idx">top</a>
+
+        <p><a name="site_user_delete"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Remove a user from a site contact list</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/site/user/delete</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The site id<br>
+                    <i>user_id</i> &bull; Id of the user<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    site_user_delete
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The site can not be found<br>
+                    USER_NOT_FOUND &bull; The user can not be found in the contact list<br>
+                    NOT_PERMITTED &bull; You are not permitted to delete users from the contact list<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#site-idx">top</a>
+
+        <a name="scanner"><h3>Scanner commands</h3></a>
+
+        <p><a name="scanner_list"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get a list of the scanners in the account</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/scanner/list</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>account_id</i> &bull; uuid of the account<br>
+                    <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
+                    <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
+                    <i>sort_by</i> &bull; <a href="#sort">Sorting</a> (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>page</i> &bull; The pagination status hash<br>
+                    <i>scanners</i> &bull; An array of the scanners. Each object holds the same fields as the <a href="#scanner_get">/scanner/get</a> call<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    scanner_view
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The account can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to view scanners in this account<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#scanner-idx">top</a>
+
+        <p><a name="scanner_add"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Add a scanner</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/scanner/add</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>site_id</i> &bull; Id of the site to add them to<br>
+                    <i>name</i> &bull; Name of the scanner<br>
+                    <i>modality</i> &bull; Modality (optional)<br>
+                    <i>serial_no</i> &bull; The serial number of the scanner (optional)<br>
+                    <i>manufacturer</i> &bull; The manufacturer of the scanner (optional)<br>
+                    <i>model</i> &bull; The scanner model (optional)<br>
+                    <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>uuid</i> &bull; The uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    scanner_add
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The object was not found. The <i>error_subtype</i> holds the type of object not found<br>
+                    NOT_PERMITTED &bull; You are not permitted to add a scanner to the account<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#scanner-idx">top</a>
+
+        <p><a name="scanner_set"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Edit a scanner</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/scanner/set</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The scanner uuid<br>
+                    <i>name</i> &bull; Name of the scanner (optional)<br>
+                    <i>modality</i> &bull; Modality (optional)<br>
+                    <i>serial_no</i> &bull; The serial number of the scanner (optional)<br>
+                    <i>manufacturer</i> &bull; The manufacturer of the scanner (optional)<br>
+                    <i>model</i> &bull; The scanner model (optional)<br>
+                    <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    scanner_edit
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    NOT_FOUND &bull; The scanner can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to edit the scanner<br>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#scaner-idx">top</a>
+
+        <p><a name="scanner_get"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get a scanner</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/scanner/get</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The scanner uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>uuid</i> &bull; The scanner uuid<br>
+                    <i>name</i> &bull; The scanner name<br>
+                    <i>modality</i> &bull; The scanner modality<br>
+                    <i>serial_no</i> &bull; The serial number of the scanner<br>
+                    <i>manufacturer</i> &bull; The manufacturer of the scanner<br>
+                    <i>model</i> &bull; The scanner model<br>
+                    <i>customfields</i> &bull; An array of the custom fields associated with this scanner. Each object has the following <a href="#customfields">fields</a> (This is only returned if the scanner has custom fields)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    scanner_view
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The scanner can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to view the scaner<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#scanner-idx">top</a>
+
+        <p><a name="scanner_delete"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Delete a scanner</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/scanner/delete</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The scanner uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    scanner_delete
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The scanner can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to delete the scanner<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#scanner-idx">top</a>
+
+
+
+    <footer>LBL0022 v45.0 2021-04-07</footer>
     </div>
 </body>
 </html>

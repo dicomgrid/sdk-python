@@ -10,4 +10,4 @@ def test_models_version():
 
 
 def test_storage_version():
-    assert STORAGE_VERSION == 'LBL0038 v14.0 2021-02-24'
+    assert STORAGE_VERSION == 'LBL0038 v15.0 2021-05-19'

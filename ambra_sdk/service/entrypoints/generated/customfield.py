@@ -109,7 +109,7 @@ class Customfield:
         :param options: Additional options in JSON format (optional)
         :param other_dicom_tags: JSON array of other DICOM tags to map this field to. (only applicable to study fields) (optional)
         :param required: Flag if the field is required (optional)
-        :param type: Type of the custom field (text|number|date|memo|select|multiselect|radio|checkbox|search) (optional)
+        :param type: Type of the custom field (text|number|date|memo|select|multiselect|radio|checkbox|search|bool) (optional)
         :param wrapped_dicom_only: Only capture for wrapped DICOM uploads during a share code exchange (optional)
         """
         request_data = {

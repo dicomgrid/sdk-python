@@ -38,12 +38,19 @@ class MethodNotAllowed(AmbraResponseException):
 class PreconditionFailed(AmbraResponseException):
     """Precondition failed."""
 
-    def __init__(self, description=None, error_subtype=None, error_data=None):
+    def __init__(
+        self,
+        error_type=None,
+        error_subtype=None,
+        error_data=None,
+        description=None,
+    ):
         """Init.
 
-        :param description: response description
+        :param error_type: error type
         :param error_subtype: error subtype
         :param error_data: error data
+        :param description: response description
         """
         code = 412
         if description is None:
@@ -55,15 +62,23 @@ class PreconditionFailed(AmbraResponseException):
                 'The optional error_data field can hold additional error data.'
             )
         super().__init__(code, description)
+        self.error_type = error_type
         self.error_subtype = error_subtype
         self.error_data = error_data
 
-    def set_additional_info(self, error_subtype, error_data):
+    def set_additional_info(
+        self,
+        error_type,
+        error_subtype,
+        error_data,
+    ):
         """Set additional error info.
 
+        :param error_type: error type
         :param error_subtype: error subtype
         :param error_data: error data
         """
+        self.error_type = error_type
         self.error_subtype = error_subtype
         self.error_data = error_data
 
@@ -74,10 +89,12 @@ class PreconditionFailed(AmbraResponseException):
         """
         return (
             '{description}.\n'
+            'Error type: {error_type}\n'
             'Error subtype: {error_subtype}\n'
             'Error data: {error_data}\n'
         ).format(
             description=self.description,
+            error_type=self.error_type,
             error_subtype=self.error_subtype,
             error_data=self.error_data,
         )
@@ -998,3 +1015,11 @@ class InvalidSignature(PreconditionFailed):
 
 class OnlyOne(PreconditionFailed):
     """OnlyOne."""
+
+
+class ConflictingStatus(PreconditionFailed):
+    """ConflictingStatus."""
+
+
+class NoUserPubkey(PreconditionFailed):
+    """NoUserPubkey."""

@@ -1,7 +1,7 @@
 """Storage image namespace."""
 
 import os
-from typing import Optional, Set, Union
+from typing import Optional, Union
 
 from box import Box
 from requests import Response
@@ -31,6 +31,7 @@ class Image:
         engine_fqdn: str,
         namespace: str,
         opened_file: RequestsFileType,
+        study_uid: Optional[str] = None,
         use_box: bool = True,
         x_ambrahealth_job_id: Optional[str] = None,
         only_prepare: bool = False,
@@ -45,6 +46,7 @@ class Image:
             File object, or may be 2-tuples (filename, fileobj),
             3-tuples (filename, fileobj, contentype) or
             4-tuples (filename, fileobj, contentype, custom_headers).
+        :param study_uid: study uid
         :param use_box: Use box for response.
         :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument
         :param only_prepare: Get prepared request.
@@ -53,7 +55,9 @@ class Image:
         """
         url_template = '/namespace/{namespace}/image'
         url_arg_names = {'engine_fqdn', 'namespace'}
-        request_arg_names: Set[str] = set()
+        request_arg_names = {
+            'study_uid',
+        }
         url, request_data = self._storage.get_url_and_request(
             url_template,
             url_arg_names,
@@ -113,7 +117,10 @@ class Image:
         )
         url_template = '/namespace/{namespace}/wrap'
         url_arg_names = {'engine_fqdn', 'namespace'}
-        request_arg_names: Set[str] = set()
+        request_arg_names = {
+            'tags',
+            'render_wrapped_pdf',
+        }
         url, request_data = self._storage.get_url_and_request(
             url_template,
             url_arg_names,
@@ -240,9 +247,11 @@ class Image:
         namespace: str,
         study_uid: str,
         image_uid: str,
+        # In external api this is a hash parameter
         image_version: str,
         phi_namespace: Optional[str] = None,
         pretranscode: Optional[bool] = None,
+        transfer_syntax: Optional[str] = None,
         only_prepare: bool = False,
     ) -> Union[Response, PreparedRequest]:
         """Gets dicom payload.
@@ -258,6 +267,7 @@ class Image:
             If set, specifies the phi namespace from which to pull PHI.
             Will overlay the values onto the phiSource.
         :param pretranscode: Get pretranscoded dicom.
+        :param transfer_syntax: Transfer syntax.
         :param only_prepare: Get prepared request.
 
         :returns: dicom.
@@ -274,7 +284,11 @@ class Image:
             'image_uid',
             'image_version',
         }
-        request_arg_names = {'phi_namespace', 'pretranscode'}
+        request_arg_names = {
+            'phi_namespace',
+            'pretranscode',
+            'transfer_syntax',
+        }
         url, request_data = self._storage.get_url_and_request(
             url_template,
             url_arg_names,

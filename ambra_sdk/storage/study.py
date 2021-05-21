@@ -353,7 +353,6 @@ class Study:
         engine_fqdn: str,
         namespace: str,
         study_uid: str,
-        image_uid: str,
         images_only: Optional[bool] = None,
         attachments_only: Optional[bool] = None,
         count_files: Optional[bool] = None,
@@ -367,7 +366,6 @@ class Study:
         :param engine_fqdn: Engine FQDN (Required).
         :param namespace: Namespace (Required).
         :param study_uid: Study uid (Required).
-        :param image_uid: Image uid (Required).
         :param images_only: an integer, zero or 1, returns the number
             of images in the study with superseded images by way of study update not counted.
         :param attachments_only: an integer, zero or 1, returns
@@ -410,7 +408,7 @@ class Study:
         engine_fqdn: str,
         namespace: str,
         study_uid: str,
-        phi_namespace: str,
+        phi_namespace: Optional[str] = None,
         use_box: bool = True,
         only_prepare: bool = False,
     ) -> Union[Box, Response, PreparedRequest]:
@@ -632,7 +630,7 @@ class Study:
         image_uid: str,
         image_version: str,
         frame_number: int,
-        depth: int = 8,
+        depth: Optional[int] = None,
         phi_namespace: Optional[str] = None,
         only_prepare: bool = False,
     ) -> Union[Response, PreparedRequest]:
@@ -657,7 +655,7 @@ class Study:
 
         :returns: Thumbnail object
         """
-        if depth not in {8, 16}:
+        if depth is not None and depth not in {8, 16}:
             raise ValueError('Depth must be in (8, 16)')
 
         url_template = '/study/{namespace}/{study_uid}/image/{image_uid}/version/{image_version}/frame/{frame_number}/thumbnail'
@@ -695,7 +693,7 @@ class Study:
         image_version: str,
         frame_number: int,
         phi_namespace: Optional[str] = None,
-        depth: int = 8,
+        depth: Optional[int] = None,
         size: Optional[str] = None,
         only_prepare: bool = False,
     ) -> Union[Response, PreparedRequest]:
@@ -722,7 +720,7 @@ class Study:
 
         :returns: Diagnostic image object
         """
-        if depth not in {8, 16}:
+        if depth is not None and depth not in {8, 16}:
             raise ValueError('Depth must be in (8, 16)')
 
         validate_size(size)
@@ -763,8 +761,8 @@ class Study:
         # TODO: frame number format
         frame_number: str,
         phi_namespace: Optional[str] = None,
-        depth: int = 8,
-        quality: float = 0.9,
+        depth: Optional[int] = None,
+        quality: Optional[float] = None,
         size: Optional[str] = None,
         only_prepare: bool = False,
     ) -> Union[Response, PreparedRequest]:
@@ -788,7 +786,7 @@ class Study:
 
         :returns: study image frame response
         """
-        if depth not in {8, 16}:
+        if depth is not None and depth not in {8, 16}:
             raise ValueError('Depth must be in (8, 16)')
         validate_size(size)
 
@@ -833,7 +831,7 @@ class Study:
         image_version: str,
         frame_number: str,
         phi_namespace: Optional[str] = None,
-        depth: int = 8,
+        depth: Optional[int] = None,
         size: Optional[str] = None,
         only_prepare: bool = False,
     ) -> Union[Response, PreparedRequest]:
@@ -856,7 +854,7 @@ class Study:
 
         :returns: study image frame response
         """
-        if depth not in {8, 16}:
+        if depth is not None and depth not in {8, 16}:
             raise ValueError('Depth must be in (8, 16)')
         validate_size(size)
 
@@ -954,8 +952,10 @@ class Study:
         image_uid: str,
         image_version: str,
         phi_namespace: Optional[str] = None,
-        exclude_unnamed: Optional[str] = None,
-        all_dicom_values: Optional[str] = None,
+        exclude_unnamed: Optional[bool] = None,
+        all_dicom_values: Optional[bool] = None,
+        groups: Optional[str] = None,
+        include_tags: Optional[str] = None,
         use_box: bool = True,
         only_prepare: bool = False,
     ) -> Union[ImageJsonBox, Response, PreparedRequest]:
@@ -972,18 +972,20 @@ class Study:
             the namespace where the file was attached if it
             was attached to a shared instance of the study
             outside of the original storage namespace
-        :param exclude_unnamed: A string containing "1"
-            or "0" (default 0). When "1", private tags
+        :param exclude_unnamed: When True, private tags
             (with "name": "?") are not included
-        :param all_dicom_values: A string containing "1"
-            or "0" (default 0). When "1", all values from
+        :param all_dicom_values: When True all values from
             a multi-value DICOM tag will be returned, separated
             by "\". Otherwise, only the first value is returned
+        :param groups: groups
+        :param include_tags: include_tags
         :param use_box: Use box for response.
         :param only_prepare: Get prepared request.
 
         :returns: DICOM attributes object
         """
+        all_dicom_values: int = bool_to_int(all_dicom_values)  # type: ignore
+        exclude_unnamed: int = bool_to_int(exclude_unnamed)  # type: ignore
         url_template = '/study/{namespace}/{study_uid}/image/{image_uid}/version/{image_version}/json'
         url_arg_names = {
             'engine_fqdn',
@@ -996,6 +998,8 @@ class Study:
             'phi_namespace',
             'exclude_unnamed',
             'all_dicom_values',
+            'groups',
+            'include_tags',
         }
         url, request_data = self._storage.get_url_and_request(
             url_template,
@@ -1023,9 +1027,9 @@ class Study:
         study_uid: str,
         phi_namespace: Optional[str] = None,
         groups: Optional[str] = None,
+        all_dicom_values: Optional[bool] = None,
         include_tags: Optional[str] = None,
-        exclude_unnamed: Optional[str] = None,
-        all_dicom_values: Optional[str] = None,
+        exclude_unnamed: Optional[bool] = None,
         series_uid: Optional[str] = None,
         use_box: bool = True,
         only_prepare: bool = False,
@@ -1045,17 +1049,16 @@ class Study:
             client to filter tags to only those in a certain
             set of top-level DICOM groups. Comma-separated list
             of decimal values, or hex values preceeded with "0x".
-        :param include_tags: Comma-separated list of top-level DICOM tags
-            to include. Format: 00080018,00080020 Nested tags
-            (00081111:00080550) only filter at the top level, everything
-            is included within the sequence
-        :param exclude_unnamed: A string containing "1" or "0"
-            (default 0). When "1", private tags (with "name": "?")
-            are not included
         :param all_dicom_values: A string containing "1" or "0"
             (default 0). When "1", all values from a multi-value
             DICOM tag will be returned, separated by "\".
             Otherwise, only the first value is returned
+        :param include_tags: Comma-separated list of top-level DICOM tags
+            to include. Format: 00080018,00080020 Nested tags
+            (00081111:00080550) only filter at the top level, everything
+            is included within the sequence
+        :param exclude_unnamed: If True private tags (with "name": "?")
+            are not included
         :param series_uid: A string containing a Series Instance UID.
             If specified, the results will only include DICOM tags
             from images from the specified series
@@ -1064,6 +1067,8 @@ class Study:
 
         :returns: DICOM attributes object
         """
+        all_dicom_values: int = bool_to_int(all_dicom_values)  # type: ignore
+        exclude_unnamed: int = bool_to_int(exclude_unnamed)  # type: ignore
         url_template = '/study/{namespace}/{study_uid}/json'
         url_arg_names = {
             'engine_fqdn',
@@ -1074,9 +1079,9 @@ class Study:
         request_arg_names = {
             'phi_namespace',
             'groups',
+            'all_dicom_values',
             'include_tags',
             'exclude_unnamed',
-            'all_dicom_values',
             'series_uid',
         }
         url, request_data = self._storage.get_url_and_request(
@@ -1106,11 +1111,13 @@ class Study:
         attachment_id: str,
         version: str,
         phi_namespace: Optional[str] = None,
+        file_name: Optional[str] = None,
         only_prepare: bool = False,
     ) -> Union[Response, PreparedRequest]:
         """Gets the selected attachment.
 
         URL: /study/{namespace}/{studyUid}/attachment/{attachmentId}/version/{version}?sid={sid}&phi_namespace={phi_namespace}
+        URL: /study/{namespace}/{studyUid}/attachment/{attachmentId}/version/{version}/{filename}?sid={sid}&phi_namespace={phi_namespace}
 
         :param engine_fqdn: Engine FQDN (Required).
         :param namespace: Namespace (Required).
@@ -1121,11 +1128,11 @@ class Study:
             the namespace where the file was attached if it
             was attached to a shared instance of the study
             outside of the original storage namespace
+        :param file_name: filename
         :param only_prepare: Get prepared request.
 
         :returns: attachments response
         """
-        url_template = '/study/{namespace}/{study_uid}/attachment/{attachment_id}/version/{version}'
         url_arg_names = {
             'engine_fqdn',
             'namespace',
@@ -1133,6 +1140,11 @@ class Study:
             'attachment_id',
             'version',
         }
+        if file_name is not None:
+            url_template = '/study/{namespace}/{study_uid}/attachment/{attachment_id}/version/{version}/{file_name}'
+            url_arg_names.add('file_name')
+        else:
+            url_template = '/study/{namespace}/{study_uid}/attachment/{attachment_id}/version/{version}'
         request_arg_names = {'phi_namespace'}
         url, request_data = self._storage.get_url_and_request(
             url_template,
@@ -1156,7 +1168,7 @@ class Study:
         engine_fqdn: str,
         namespace: str,
         study_uid: str,
-        file_name: str,
+        file_name: Optional[str] = None,
         phi_namespace: Optional[str] = None,
         only_prepare: bool = False,
     ) -> Union[Response, PreparedRequest]:
@@ -1176,13 +1188,17 @@ class Study:
 
         :returns: latest attachment response
         """
-        url_template = '/study/{namespace}/{study_uid}/attachment/{file_name}'
         url_arg_names = {
             'engine_fqdn',
             'namespace',
             'study_uid',
-            'file_name',
         }
+        if file_name is not None:
+            url_template = '/study/{namespace}/{study_uid}/attachment/latest/{file_name}'
+            url_arg_names.add('file_name')
+        else:
+            url_template = '/study/{namespace}/{study_uid}/attachment/latest'
+
         request_arg_names = {'phi_namespace'}
         url, request_data = self._storage.get_url_and_request(
             url_template,
@@ -1324,6 +1340,8 @@ class Study:
         engine_fqdn: str,
         namespace: str,
         study_uid: str,
+        # In external api it is optional. But this call drops with 500 error
+        # if bundle is None.
         bundle: str,
         phi_namespace: Optional[str] = None,
         series_uid: Optional[str] = None,
@@ -1334,6 +1352,7 @@ class Study:
         v3: Optional[bool] = None,
         roche_directory: Optional[bool] = None,
         flat_directory: Optional[bool] = None,
+        transfer_syntax: Optional[bool] = None,
         only_prepare: bool = False,
     ) -> Union[Response, PreparedRequest]:
         """Downloads a study ZIP file.
@@ -1366,6 +1385,7 @@ class Study:
             StudyDate-ClinicalTrialTimePointID/Modality/SeriesTime-SeriesDescription/ folders (instead of SER000X/ folders).
         :param flat_directory: If "1", .dcm files will be flatly named
             IMG0001-IMG{image count}, and not be organized into SER folder.
+        :param transfer_syntax: transfer syntax
         :param only_prepare: Get prepared request.
 
         :raises ValueError: Wrong bundle value
@@ -1402,6 +1422,7 @@ class Study:
             'v3',
             'roche_directory',
             'flat_directory',
+            'transfer_syntax',
         }
         url, request_data = self._storage.get_url_and_request(
             url_template,
@@ -1616,6 +1637,8 @@ class Study:
         engine_fqdn: str,
         namespace: str,
         study_uid: str,
+        # In external api it is optional. But this call drops with 400 error if
+        # secondary_study_uid is None.
         secondary_study_uid: str,
         delete_secondary_study: Optional[bool] = None,
         series_uids: Optional[str] = None,
@@ -1689,17 +1712,22 @@ class Study:
             return prepared_request
         return prepared_request.execute()
 
+    # Nicholas Byers dg1572443133:
+    # with is_ai=true, you should expect the tag (0012,0063)
+    # De-Identification Method to then read "SYSTEM" (instead of "MANUAL")
     def anonymize(
         self,
         engine_fqdn: str,
         namespace: str,
         study_uid: str,
         region: Dict[str, Any],
+        phi_namespace: Optional[str] = None,
         to_namespace: Optional[str] = None,
         new_study_uid: Optional[str] = None,
         keep_image_uids: Optional[str] = None,
         color: Optional[str] = None,
         x_ambrahealth_job_id: Optional[str] = None,
+        is_ai: bool = False,
         only_prepare: bool = False,
     ) -> Union[Response, PreparedRequest]:
         """Produce a new study that is a copy of the old, with specified pixel regions obscured.
@@ -1710,6 +1738,7 @@ class Study:
         :param namespace: Namespace (Required).
         :param study_uid: Study uid (Required).
         :param region: Region (Required).
+        :param phi_namespace: phi namespace
         :param to_namespace: The storage namespace
             into which the new study should be
             placed (default same as original).
@@ -1720,6 +1749,7 @@ class Study:
         :param color: HTML-formatted color (rrggbb) of
             obscured regions (default is black-and-white checkerboard)
         :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument
+        :param is_ai: This is request from ai stack flag
         :param only_prepare: Get prepared request.
 
         :returns: Anonymize study response
@@ -1729,6 +1759,7 @@ class Study:
         or instance level; but only the highest matching level
         containing a regions field will be used.
         """
+        is_ai: Optional[str] = 'true' if is_ai else None  # type: ignore
         url_template = '/study/{namespace}/{study_uid}/anonymize'
         url_arg_names = {
             'engine_fqdn',
@@ -1737,10 +1768,12 @@ class Study:
         }
 
         request_arg_names = {
+            'phi_namespace',
             'to_namespace',
             'new_study_uid',
             'keep_image_uids',
             'color',
+            'is_ai',
         }
         url, request_data = self._storage.get_url_and_request(
             url_template,
@@ -1778,6 +1811,7 @@ class Study:
         namespace: str,
         study_uid: str,
         region: Dict[str, Any],
+        phi_namespace: Optional[str] = None,
         to_namespace: Optional[str] = None,
         new_study_uid: Optional[str] = None,
         keep_image_uids: Optional[str] = None,
@@ -1791,6 +1825,7 @@ class Study:
         :param namespace: Namespace (Required).
         :param study_uid: Study uid (Required).
         :param region: Region (Required).
+        :param phi_namespace: phi namespace
         :param to_namespace: The storage namespace into
             which the new study should be placed
             (default: same as original).
@@ -1821,6 +1856,7 @@ class Study:
         }
 
         request_arg_names = {
+            'phi_namespace',
             'to_namespace',
             'new_study_uid',
             'keep_image_uids',
@@ -1969,7 +2005,7 @@ class Study:
     ) -> Union[Response, PreparedRequest]:
         """Clone.
 
-        Clones the specified study into new study with new study uid,
+        Clones the specified study into new study_uid into the same namespace
         and generates new series uid and image uids if it's requested.
 
         URL: /study/{namespace}/{studyUid}/clone?sid={sid}&phi_namespace={phi_namespace}&new_image_uids={true/false}&new_series_uids={true/false}

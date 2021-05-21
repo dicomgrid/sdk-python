@@ -103,6 +103,7 @@ class Appointment:
         start_time,
         user_id,
         uuid,
+        status=None,
     ):
         """Set.
         :param customfields: An array of the custom fields associated with this appointment. Each object has the following fields (This is only returned if the group has custom fields)
@@ -111,12 +112,14 @@ class Appointment:
         :param start_time: Start date and time of the appointment
         :param user_id: Id of the user
         :param uuid: The appointment uuid
+        :param status: Status of the appointment (A|C|D) - Active, Cancelled, Discontinued (optional)
         """
         request_data = {
            'customfields': customfields,
            'description': description,
            'end_time': end_time,
            'start_time': start_time,
+           'status': status,
            'user_id': user_id,
            'uuid': uuid,
         }

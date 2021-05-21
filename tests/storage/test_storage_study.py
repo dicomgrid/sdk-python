@@ -239,7 +239,7 @@ class TestStorageStudy:
                 request_body='',
             )
 
-    def test_count(self, api, readonly_study, image):
+    def test_count(self, api, readonly_study):
         """Test count method."""
         engine_fqdn = readonly_study.engine_fqdn
         storage_namespace = readonly_study.storage_namespace
@@ -249,7 +249,6 @@ class TestStorageStudy:
             engine_fqdn=engine_fqdn,
             namespace=storage_namespace,
             study_uid=study_uid,
-            image_uid=image['id'],
         )
         assert count
 
@@ -258,13 +257,11 @@ class TestStorageStudy:
         engine_fqdn = readonly_study.engine_fqdn
         storage_namespace = readonly_study.storage_namespace
         study_uid = readonly_study.study_uid
-        phi_namespace = readonly_study.phi_namespace
 
         tag = api.Storage.Study.tag(
             engine_fqdn=engine_fqdn,
             namespace=storage_namespace,
             study_uid=study_uid,
-            phi_namespace=phi_namespace,
         )
         assert tag
 
@@ -474,7 +471,6 @@ class TestStorageStudy:
             engine_fqdn=engine_fqdn,
             namespace=storage_namespace,
             study_uid=study_uid,
-            file_name='latest',
         )
         assert latest.status_code == 200
 

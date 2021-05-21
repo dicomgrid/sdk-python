@@ -563,6 +563,7 @@ class Analytics(BaseModel):
     """Analytics."""
     
     id = Integer(description='Primary key for internal use')
+    clickhouse_last_id = Integer(description='The id of the last audit job processed')
     last_id = Integer(description='The id of the last audit job processed')
     created = DateTime(description='Timestamp when the record was created')
     created_by = String(description='FK. ID of the user who created the record')
@@ -576,6 +577,7 @@ class Analytics(BaseModel):
         self,
 	*,
         id=None,
+        clickhouse_last_id=None,
         last_id=None,
         created=None,
         created_by=None,
@@ -585,6 +587,7 @@ class Analytics(BaseModel):
         updated_by_obj=None,
     ):
         self.id = id
+        self.clickhouse_last_id = clickhouse_last_id
         self.last_id = last_id
         self.created = created
         self.created_by = created_by
@@ -668,9 +671,11 @@ class Appointment(BaseModel):
     customfields = DictField(description='Custom fields')
     description = String(description='Description')
     end_time = DateTime(description='Time range')
+    external_id = String(description='Filler/Placer Appointment ID or other id')
     patient_id = String(description='FK. The associated patient')
     patient = FK(model='Patient', description='The associated patient')
     start_time = DateTime(description='Time range')
+    status = String(description='Status of the Appointment - Active/Cancelled/Discontinued')
     user_id = String(description='FK. The associated user')
     user = FK(model='User', description='The associated user')
     created = DateTime(description='Timestamp when the record was created')
@@ -691,9 +696,11 @@ class Appointment(BaseModel):
         customfields=None,
         description=None,
         end_time=None,
+        external_id=None,
         patient_id=None,
         patient=None,
         start_time=None,
+        status=None,
         user_id=None,
         user=None,
         created=None,
@@ -710,9 +717,11 @@ class Appointment(BaseModel):
         self.customfields = customfields
         self.description = description
         self.end_time = end_time
+        self.external_id = external_id
         self.patient_id = patient_id
         self.patient = patient
         self.start_time = start_time
+        self.status = status
         self.user_id = user_id
         self.user = user
         self.created = created
@@ -2284,6 +2293,7 @@ class DestinationSearch(BaseModel):
     distributing_destination_id = String(description='FK. The distributing destination that initiated the search')
     distributing_destination = FK(model='DestinationDistributed', description='The distributing destination that initiated the search')
     extra = String(description='Extra data for speciality workflows like MPI')
+    gateway_anonymization = Integer(description='Flag to run anonymization on the gateway side')
     hl7_id = String(description='FK. The search was triggered by this HL7 message')
     hl7 = FK(model='Hl7', description='The search was triggered by this HL7 message')
     linked_destination_id = String(description='FK. The linked destination that initiated the search')
@@ -2334,6 +2344,7 @@ class DestinationSearch(BaseModel):
         distributing_destination_id=None,
         distributing_destination=None,
         extra=None,
+        gateway_anonymization=None,
         hl7_id=None,
         hl7=None,
         linked_destination_id=None,
@@ -2380,6 +2391,7 @@ class DestinationSearch(BaseModel):
         self.distributing_destination_id = distributing_destination_id
         self.distributing_destination = distributing_destination
         self.extra = extra
+        self.gateway_anonymization = gateway_anonymization
         self.hl7_id = hl7_id
         self.hl7 = hl7
         self.linked_destination_id = linked_destination_id
@@ -5772,10 +5784,10 @@ class ScannerValidated(BaseModel):
     
     id = Integer(description='Primary key for internal use')
     uuid = String(description='UUID for external use')
-    group_id = String(description='FK. Mapping betwee the scanner and group')
-    group = FK(model='Group', description='Mapping betwee the scanner and group')
-    scanner_id = String(description='FK. Mapping betwee the scanner and group')
-    scanner = FK(model='Scanner', description='Mapping betwee the scanner and group')
+    group_id = String(description='FK. Mapping between the scanner and group')
+    group = FK(model='Group', description='Mapping between the scanner and group')
+    scanner_id = String(description='FK. Mapping between the scanner and group')
+    scanner = FK(model='Scanner', description='Mapping between the scanner and group')
     study_uid = String(description='The study_uid that validated the scanner')
     created = DateTime(description='Timestamp when the record was created')
     created_by = String(description='FK. ID of the user who created the record')
@@ -5874,6 +5886,7 @@ class Site(BaseModel):
     account_id = String(description='FK. The associated account')
     account = FK(model='Account', description='The associated account')
     city = String(description='Location fields')
+    inactive = Boolean(description='Inactive flag to hide a site from lists')
     name = String(description='Name')
     site_id = String(description='FK. The associated site in case this one is a satellite site')
     site = FK(model='Site', description='The associated site in case this one is a satellite site')
@@ -5895,6 +5908,7 @@ class Site(BaseModel):
         account_id=None,
         account=None,
         city=None,
+        inactive=None,
         name=None,
         site_id=None,
         site=None,
@@ -5912,6 +5926,7 @@ class Site(BaseModel):
         self.account_id = account_id
         self.account = account
         self.city = city
+        self.inactive = inactive
         self.name = name
         self.site_id = site_id
         self.site = site
@@ -6715,6 +6730,7 @@ class StudyFetch(BaseModel):
     id = Integer(description='Primary key for internal use')
     uuid = String(description='UUID for external use')
     accession_number = String(description='The accession number to fetch')
+    anonymize = String(description='The associated anonymization rules')
     customfields = DictField(description='Custom fields to be applied to the fetched study')
     destination_id = String(description='FK. The destination')
     destination = FK(model='Destination', description='The destination')
@@ -6746,6 +6762,7 @@ class StudyFetch(BaseModel):
         id=None,
         uuid=None,
         accession_number=None,
+        anonymize=None,
         customfields=None,
         destination_id=None,
         destination=None,
@@ -6773,6 +6790,7 @@ class StudyFetch(BaseModel):
         self.id = id
         self.uuid = uuid
         self.accession_number = accession_number
+        self.anonymize = anonymize
         self.customfields = customfields
         self.destination_id = destination_id
         self.destination = destination
@@ -7718,9 +7736,12 @@ class System(BaseModel):
     aws_pk = String(description='AWS information')
     aws_region = String(description='AWS information')
     aws_sk = String(description='AWS information')
+    box_client_id = String(description='Box information')
+    box_client_secret = String(description='Box information')
     cache = Boolean(description='Cache new studies images')
     captcha_pk = String(description='Captcha public key')
     captcha_sk = String(description='Captcha secret key')
+    clickhouse_version = Integer(description='ClickHouse scheme version')
     database_version = Integer(description='Database version')
     drchrono_client_id = String(description='Drchrono information')
     drchrono_client_secret = String(description='Drchrono information')
@@ -7788,9 +7809,12 @@ class System(BaseModel):
         aws_pk=None,
         aws_region=None,
         aws_sk=None,
+        box_client_id=None,
+        box_client_secret=None,
         cache=None,
         captcha_pk=None,
         captcha_sk=None,
+        clickhouse_version=None,
         database_version=None,
         drchrono_client_id=None,
         drchrono_client_secret=None,
@@ -7854,9 +7878,12 @@ class System(BaseModel):
         self.aws_pk = aws_pk
         self.aws_region = aws_region
         self.aws_sk = aws_sk
+        self.box_client_id = box_client_id
+        self.box_client_secret = box_client_secret
         self.cache = cache
         self.captcha_pk = captcha_pk
         self.captcha_sk = captcha_sk
+        self.clickhouse_version = clickhouse_version
         self.database_version = database_version
         self.drchrono_client_id = drchrono_client_id
         self.drchrono_client_secret = drchrono_client_secret

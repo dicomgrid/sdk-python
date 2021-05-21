@@ -71,6 +71,8 @@
                 <li><a href="#user_device_clear">/user/device/clear</a>
                 <li><a href="#user_signature">/user/signature</a>
                 <li><a href="#user_enable">/user/enable</a>
+                <li><a href="#user_pubkey_list">/user/pubkey/list</a>
+                <li><a href="#user_pubkey_get">/user/pubkey/get</a>
             </ul>
             <li><a href="#study" name="study-idx">Study commands</a>
             <ul>
@@ -280,6 +282,7 @@
                 <li><a href="#node_configuration">/node/configuration</a>
                 <li><a href="#node_delete">/node/delete</a>
                 <li><a href="#node_study_queued">/node/study/queued</a>
+                <li><a href="#node_study_anonymized">/node/study/anonymized</a>
                 <li><a href="#node_found">/node/found</a>
                 <li><a href="#node_found_mwl">/node/found/mwl</a>
                 <li><a href="#node_event">/node/event</a>
@@ -3543,7 +3546,11 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>Generate appointments from HL7 SIU messages. The format is the same as for <i>appointments_from_hl7_adt</i> setting.
+                <td>Generate appointments from HL7 SIU messages. The setting is a JSON hash in the same format as for <i>appointments_from_hl7_adt</i> setting but with additional keys:
+                <ul>
+                    <li> KEY &bull; The list of fields to use for appointment identification. By default user_id, start_time and end_time are used (optional)
+                    <li> EVENTS &bull; The list of SIU events to handle. Supported events are S12 through S17. S12 handler is enabled by default when there is no EVENTS key in the setting (optional)
+                </ul>
             </tr>
             <tr>
                 <td>users_from_hl7_mfn</td>
@@ -4914,7 +4921,15 @@
                 <td>0</td>
                 <td>1</td>
                 <td>0</td>
-                <td>A JSON hash that specifies the message type as the key and the hl7 field/subfield as the value. The base64 encoded report will be extracted from message as per these specs and be attached as a report to the associated studies e.g. <code>{"ORU":"OBX-12_5_5"}</code></td>
+                <td>
+                    A JSON hash that specifies the message type as the key and directions to extract the report as the value. The base64 encoded report will be extracted from message and be linked with the associated studies.
+                    SR and attachment types of reports are supported. Possible values for the JSON hash are the hl7 field/subfield as string (for pdf attachment reports only) or an object with the following keys (both report types are supported):
+                    <ul>
+                        <li> report_type &bull; <i>SR</i> - for structured reports, <i>attachment</i> (by default) - for pdf attachments, requires the <i>field</i> key additionally (SR|attachment)
+                        <li> field &bull; Hl7 field/subfield to extract for the <i>attachment</i> report type. E.g. <code>OBX-12_5_5</code>
+                    </ul>
+                    Examples: <code>{"ORU":"OBX-12_5_5"}</code>, <code>{"ORU":{"report_type":"SR"}}</code>, <code>{"ORU":{"report_type":"attachment", "field": "OBX-12_5_5"}}</code>
+                </td>
             </tr>
               <tr>
                 <td>hl7_use_attachment_file_name</td>
@@ -5047,8 +5062,8 @@
                 <td>0</td>
                 <td>0</td>
                 <td>
-                    A JSON hash to configure a SIU push workflow. 
-                    A SIU^12 message will schedule the patient studies in the destination namespace to be pushed to the destination. 
+                    A JSON hash to configure a SIU push workflow.
+                    A SIU^12 message will schedule the patient studies in the destination namespace to be pushed to the destination.
                     A SIU^15 message will cancel the scheduled push.
                     A maximum of 10 studies will be pushed.
                     The keys and values in the hash are as follows:
@@ -5405,6 +5420,17 @@
             </tr>
             <tr>
                 <td>detect_phi_in_study_images_google_dlp</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Settings for the AI question</td>
+            </tr>
+            <tr>
+                <td>ai_classify_hemorrhage_in_study_images</td>
                 <td>Text</td>
                 <td></td>
                 <td>0</td>
@@ -6152,6 +6178,11 @@
                 <td>categorize_phi_in_study_images_google_vision_then_dlp</td>
                 <td>Detects the presence of phi in study images and assigns categories to results</td>
                 <td>ai_categorize_phi_in_study_images_google_vision_then_dlp</td>
+            </tr>
+            <tr>
+                <td>classify_hemorrhage_in_study_images</td>
+                <td>Takes a batch of images and predicts hemorrhages in each image</td>
+                <td>ai_classify_hemorrhage_in_study_images</td>
             </tr>
         </table>
 
@@ -7333,6 +7364,7 @@
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; Only return the namespaces for this account (optional)<br>
                     <i>plus_phr</i> &bull; Flag to include the PHR account as well if account_id was specified (optional)<br>
+                    <i>name_and_id_only</i> &bull; Flag to return only the the namespace name and uuid (optional)<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                 </td>
             </tr>
@@ -7644,6 +7676,90 @@
                         <li> A sysadmin or support user can enable anyone else
                         <li> An account user with an adminstrative role can enable any user in the account
                     </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#user-idx">top</a>
+
+        <p><a name="user_pubkey_list"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>List the users that use public key authentication</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/user/pubkey/list</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>uuid</i> &bull; The node id<br>
+                    <i>serial_no</i> &bull; The serial number of the node<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>users</i> &bull; An array of the users.  Each object holds the following fields: email, public_key<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The node can not be found<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ul>
+                        <li> The list is sorted by creation order from most recent to oldest
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#user-idx">top</a>
+
+        <p><a name="user_pubkey_set"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Set the public key for a user</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/user/pubkey/set</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>uuid</i> &bull; The node id<br>
+                    <i>serial_no</i> &bull; The serial number of the node<br>
+                    <i>email</i> &bull; The users email<br>
+                    <i>public_key</i> &bull; A public key for public key authentication<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The node or user can not be found<br>
+                    NO_USER_PUBKEY &bull; The user does not use public key authentication<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    The user must have a public key already to set the new public key
                 </td>
             </tr>
         </table>
@@ -8917,7 +9033,7 @@
                     <i>study_uid</i> &bull; The v3 storage uid of the study (optional if uuid is passed)<br>
                     <i>storage_namespace</i> &bull; The storage namespace of the study (optional if uuid is passed)<br>
                     <i>phi_namespace</i> &bull; The phi namespace of the study (optional)<br>
-                    <i>action</i> &bull; The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)<br>
+                    <i>action</i> &bull; The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|IMAGE_DELETED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)<br>
                     <i>detail</i> &bull; Additional information<br>
                 </td>
             </tr>
@@ -15949,6 +16065,7 @@
                     * <i>patientid</i> &bull; Patient id to query for<br>
                     * <i>destination_ae_title</i> &bull; Value of the field in the thin study (optional)<br>
                     * <i>source</i> &bull; Source of the fetch either 'H' for an HL7 triggered fetch or 'O' for other<br>
+                    * <i>anonymize</i> &bull; A JSON hash of <a href="#namespace_anonymize">anonymization rules</a> to apply to retrieved studies (optional)<br>
                     <i>hl7</i> &bull; An array of HL7 messages to deliver each object in the array will have the following fields<br>
                     * <i>uuid</i> &bull; Id of the job<br>
                     * <i>destination_id</i> &bull; Id of the destination<br>
@@ -16093,6 +16210,7 @@
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     NOT_FOUND &bull; The node or job can not be found<br>
                     INVALID_STATUS &bull; Invalid status code<br>
+                    CONFLICTING_STATUS &bull; This status conflicts with a prior status update<br>
                 </td>
             </tr>
             <tr>
@@ -16322,6 +16440,47 @@
                 <th>Notes</th>
                 <td>
                     A node should notify services when it receives a study that needs to be pushed to the cloud. This call is needed for the monitor_study_create check to work.
+                </td>
+            </tr>
+        </table>
+        <a href="#node-idx">top</a>
+
+        <p><a name="node_study_anonymized"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>A study was anonymized by the gateway</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/node/study/anonymized</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>uuid</i> &bull; The node id<br>
+                    <i>serial_no</i> &bull; The serial number of the node<br>
+                    <i>old_study_uid</i> &bull; The old study uid<br>
+                    <i>new_study_uid</i> &bull; The new study uid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The node can not be found<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    A node should notify services when a study_uid is anonymized prior to uploading the study to the storage. This call is needed to adjust actions scheduled on the study (shares, edits, etc).
                 </td>
             </tr>
         </table>
@@ -18046,6 +18205,7 @@
                     <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request (optional)<br>
                     <i>settings</i> &bull; A hash of the <a href="#account-settings">account settings</a> that the user can override (optional)<br>
                     <i>setting_{SETTING_NAME}</i> &bull; Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)<br>
+                    <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -20946,6 +21106,7 @@
                     <i>no_dup_share</i> &bull; Flag to stop duplicate studies (same study_uid and image count) from getting shared into the namespace (optional)<br>
                     <i>study_field_flags</i> &bull; A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)<br>
                     <i>study_size_soft_threshold_per_user</i> &bull; A threshold for studies size per user. An email (by study_quota_exceeded template) will be sent when this limit is exceeded by a user. A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)<br>
+                    <i>share_related</i> &bull; Flag to make study shares with this namespace include related studies (same PHI namespace, same MRN) (optional)<br>
                     <div class="comment">-- The following account settings can be over-ridden in the namespace --</div>
                     <i>enable_dicom_wrapping</i> &bull; Value for the setting (optional)<br>
                     <i>auto_enable_dicom_wrapping</i> &bull; Value for the setting (optional)<br>
@@ -22064,6 +22225,7 @@
                     <i>end_date</i> &bull; The end date, default is today if not passed (optional)<br>
                     <i>modality</i> &bull; Filter analytics by modality (optional)<br>
                     <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Filter analytics by a subset of study customfields (optional)<br>
+                    <i>time_zone</i> &bull; The report's time zone. Time zone selection order: current user's time zone, <i>time_zone</i> parameter, UTC by default.
                 </td>
             </tr>
             <tr>
@@ -22136,6 +22298,7 @@
                     <i>period</i> &bull; The time period (day|week|month|year)<br>
                     <i>count</i> &bull; The number of periods to get<br>
                     <i>end_date</i> &bull; The end date, default is today if not passed (optional)<br>
+                    <i>time_zone</i> &bull; The report's time zone. Time zone selection order: current user's time zone, <i>time_zone</i> parameter, UTC by default.
                 </td>
             </tr>
             <tr>
@@ -22199,6 +22362,7 @@
                     <i>period</i> &bull; The time period (day|week|month|year)<br>
                     <i>count</i> &bull; The number of periods to get<br>
                     <i>end_date</i> &bull; The end date, default is today if not passed (optional)<br>
+                    <i>time_zone</i> &bull; The report's time zone. Time zone selection order: current user's time zone, <i>time_zone</i> parameter, UTC by default.
                 </td>
             </tr>
             <tr>
@@ -22264,6 +22428,7 @@
                     <i>count</i> &bull; The number of periods to get<br>
                     <i>end_date</i> &bull; The end date, for backwards compatibility (optional)<br>
                     <i>end_time</i> &bull; The end date and time, default is now if not passed (optional)<br>
+                    <i>time_zone</i> &bull; The report's time zone. Time zone selection order: current user's time zone, <i>time_zone</i> parameter, UTC by default.
                 </td>
             </tr>
             <tr>
@@ -22712,7 +22877,7 @@
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>name</i> &bull; Name of the customfield<br>
                     <i>object</i> &bull; The object to associate the customfield with (Study|User_account|Group|Location|Account|Patient|Case|Order|Appointment|Dicomdata|Scanner)<br>
-                    <i>type</i> &bull; Type of the custom field (text|number|date|memo|select|multiselect|radio|checkbox|search) (optional)<br>
+                    <i>type</i> &bull; Type of the custom field (text|number|date|memo|select|multiselect|radio|checkbox|search|bool) (optional)<br>
                     <i>capture_on_share_code</i> &bull; Flag if the field should be captured during a share code exchange (only applicable to study fields) (optional)<br>
                     <i>capture_on_destination_search</i> &bull; Flag if the field should be captured during query retrieve on /destination/search call (only applicable to study fields) (optional)<br>
                     <i>display_order</i> &bull; Integer to order how the fields should be displayed (optional)<br>
@@ -22771,6 +22936,7 @@
                         <li> Date fields must be saved in a YYYY-MM-DD format
                         <li> Checkboxes must be saved as a 1/0 flag
                         <li> Multiselect and radio field must be saved as a CSV list of the values
+                        <li> Boolean values are serialized to true/false JSON values and are passed as 0/1 flags or true/false strings to API. show_when rules coerces booleans to 0/1 so they can be used in logical operations.
                         <li>JSON format for options. Options is a hash with the following key value pairs
                         <ul>
                             <li> values - array of values for a select, multiselect, radio or search field. Macro values can be used to dynamically generate values as documented below.
@@ -22788,6 +22954,7 @@
                             <li> hint_as_help_text - Make the hint appear below the field input
                             <li> forbid_future_dates - Make the customfield accept only today and days in the past. User time zone is considered.
                             <li> block_id - Any string identifier, optional. Custom fields with the same block_id will be rendered on one line
+                            <li> show_in_qr_activity - Flag if the custom field should be exposed in study retrieve activities
                             <li> search_source - The data source for a search field. The available options are:
                             <ul>
                                 <li> athena_providers &bull; Search Athena for the provider
@@ -26273,6 +26440,8 @@
                     <i>start_time</i> &bull; Start date and time of the appointment<br>
                     <i>end_time</i> &bull; End date and time of the appointment<br>
                     <i>customfields</i> &bull; An array of the custom fields associated with this appointment. Each object has the following <a href="#customfields">fields</a> (This is only returned if the group has custom fields)<br>
+                    <i>external_id</i> &bull; The appointment ID in a placer/filler Hl7 application<br>
+                    <i>appointment_status</i> &bull; Status of the appointment (A|C|D) - Active, Cancelled, Discontinued<br>
                 </td>
             </tr>
             <tr>
@@ -26317,6 +26486,7 @@
                     <i>start_time</i> &bull; Start date and time of the appointment<br>
                     <i>end_time</i> &bull; End date and time of the appointment<br>
                     <i>customfields</i> &bull; An array of the custom fields associated with this appointment. Each object has the following <a href="#customfields">fields</a> (This is only returned if the group has custom fields)<br>
+                    <i>status</i> &bull; Status of the appointment (A|C|D) - Active, Cancelled, Discontinued (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -26752,6 +26922,7 @@
                     <i>state</i> &bull; The state code of the site (optional)<br>
                     <i>zip</i> &bull; The zip code of the site (optional)<br>
                     <i>city</i> &bull; The city the site is located in (optional)<br>
+                    <i>inactive</i> &bull; Flag if the site is actively used. Might be used to filter out inactive sites (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -26774,6 +26945,7 @@
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     DIFFERENT_ACCOUNTS &bull; The site and satellite sites are from different accounts<br>
                     NESTED_SATELLITE_SITE &bull; The satellite site has its satellite sites<br>
+                    INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
                 </td>
             </tr>
             <tr>
@@ -26815,6 +26987,7 @@
                     <i>satellite_sites</i> &bull; An array of the satellite sites. Each object has the following fields.<br>
                     * <i>uuid</i> &bull; Site Id<br>
                     * <i>name</i> &bull; Site name<br>
+                    <i>inactive</i> &bull; Flag if the site is actively used. Might be used to filter out inactive sites<br>
                 </td>
             </tr>
             <tr>
@@ -26922,7 +27095,6 @@
                     NOT_FOUND &bull; The site can not be found<br>
                     NOT_PERMITTED &bull; You are not permitted to add users to the site<br>
                     USER_NOT_FOUND &bull; The user was not found<br>
-                    NOT_MEMBER &bull; The user is not in the account<br>
                     ALREADY_EXISTS &bull; The user is in the contact list already<br>
                 </td>
             </tr>
@@ -27266,6 +27438,10 @@
                     <i>manufacturer</i> &bull; The manufacturer of the scanner<br>
                     <i>model</i> &bull; The scanner model<br>
                     <i>customfields</i> &bull; An array of the custom fields associated with this scanner. Each object has the following <a href="#customfields">fields</a> (This is only returned if the scanner has custom fields)<br>
+                    <i>validated_for</i> &bull; An array of the trials (groups) the scanner is validated for. Each object has the following fields.<br>
+                    * <i>uuid</i> &bull; Group Id<br>
+                    * <i>name</i> &bull; Group name<br>
+                    * <i>study_uid</i> &bull; The study UID used in the process of scanner validation for the group<br>
                 </td>
             </tr>
             <tr>

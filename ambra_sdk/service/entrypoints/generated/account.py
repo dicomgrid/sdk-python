@@ -207,6 +207,7 @@ class Account:
         account_email=None,
         account_login=None,
         account_password=None,
+        customfield_param=None,
         email=None,
         epic_user=None,
         event_approve=None,
@@ -246,8 +247,9 @@ class Account:
         :param account_email: Users account_email. Only set this if it is different than the users login email (optional).
         :param account_login: Users login name in the account. (optional).
         :param account_password: Password for the account_password. (optional).
+        :param customfield_param: Custom field(s) (optional)
         :param email: email
-        :param epic_user: Epic user used to map Epic users into Ambra&#39;s ones to track activity. (optional).
+        :param epic_user: Epic user used to map Epic users into Ambra's ones to track activity. (optional).
         :param event_approve: Notify the user on a approval needed into the account namespace (optional)
         :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)
         :param event_harvest: Notify the user on a harvest into the account namespace (optional)
@@ -268,7 +270,7 @@ class Account:
         :param event_upload: Notify the user on an upload into the account namespace (optional)
         :param event_upload_fail: Notify the user on a failed upload into the account namespace (optional)
         :param global_param: Flag if this is a global user (optional).
-        :param global_role_id: uuid of a role to be used in groups and locations when the global user is added to them, this role overrides groups&#39;/locations&#39; default roles (optional).
+        :param global_role_id: uuid of a role to be used in groups and locations when the global user is added to them, this role overrides groups'/locations' default roles (optional).
         :param max_sessions: Over-ride value for the max number of simultaneous sessions the user can have. (optional).
         :param password_reset: Flag if the password needs to be reset. (optional).
         :param role_id: uuid of the users role in the account (optional).
@@ -317,6 +319,9 @@ class Account:
            'user_id': user_id,
            'uuid': uuid,
         }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
         if setting_param is not None:
             setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
             request_data.update(setting_param_dict)
@@ -389,7 +394,7 @@ class Account:
         :param account_login: Users login name in the account. (optional).
         :param account_password: Password for the account_password. (optional).
         :param customfield_param: Custom field(s) (optional)
-        :param epic_user: Epic user used to map Epic users into Ambra&#39;s ones to track activity (optional).
+        :param epic_user: Epic user used to map Epic users into Ambra's ones to track activity (optional).
         :param event_approve: Notify the user on a approval needed into the account namespace (optional)
         :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)
         :param event_harvest: Notify the user on a harvest into the account namespace (optional)
@@ -410,7 +415,7 @@ class Account:
         :param event_upload: Notify the user on an upload into the account namespace (optional)
         :param event_upload_fail: Notify the user on a failed upload into the account namespace (optional)
         :param global_param: Flag if this is a global user. (optional).
-        :param global_role_id: uuid of a role to be used in groups and locations when the global user is added to them, this role overrides groups&#39;/locations&#39; default roles (optional).
+        :param global_role_id: uuid of a role to be used in groups and locations when the global user is added to them, this role overrides groups'/locations' default roles (optional).
         :param max_sessions: Over-ride value for the max number of simultaneous sessions the user can have. (optional).
         :param password_reset: Flag if the password needs to be reset. (optional).
         :param role_id: uuid of the users role in the account (optional).

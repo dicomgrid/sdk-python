@@ -98,7 +98,7 @@ class Webhook:
         :param by_webhook_event: Flag to fire WEBHOOK_FAILED once at final unsuccessful try of a failing webhook (optional)
         :param cron: Cron timing string for CRON events e.g 0 9 * * mon-fri(optional)
         :param delay: Number of seconds to delay running this webhook for after it is triggered (optional)
-        :param filter_field: Name of the study field (by default) or another object&#39;s field (should have prefix like &#34;webhook.&#34;) to filter on (optional)
+        :param filter_field: Name of the study field (by default) or another object's field (should have prefix like "webhook.") to filter on (optional)
         :param filter_regexp: Regular expression to match the value of the filter_field against (optional)
         :param max_age: Ignore studies that are more than this number of days old based on the study_date (optional)
         :param node_id: uuid of the node to proxy the webhook through (optional)

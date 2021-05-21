@@ -82,7 +82,7 @@ class Purge:
         """Add.
         :param account_id: uuid of the account the rule is for
         :param days_old: Studies greater than or equal to these days old will be purged
-        :param days_old_how: How should the days old value be calculated using the &#39;U&#39;pdated, &#39;C&#39;reated or &#39;S&#39;tudy date
+        :param days_old_how: How should the days old value be calculated using the 'U'pdated, 'C'reated or 'S'tudy date
         :param name: Name of the purge rule
         :param adults: Apply this rule to adults - flag (optional)
         :param archive: Archive the studies rather than deleting them - flag (optional)
@@ -164,7 +164,7 @@ class Purge:
         :param adults: Apply this rule to adults - flag (optional)
         :param archive: Archive the studies rather than deleting them - flag (optional)
         :param days_old: Studies greater than or equal to these days old will be purged (optional)
-        :param days_old_how: How should the days old value be calculated using the &#39;U&#39;pdated, &#39;C&#39;reated or &#39;S&#39;tudy date (optional)
+        :param days_old_how: How should the days old value be calculated using the 'U'pdated, 'C'reated or 'S'tudy date (optional)
         :param global_param: Flag to make this a global purge rule (optional)
         :param max_deletes: Maximum number of purges per run of the rule (optional)
         :param minors: Apply this rule to minors - flag (optional)

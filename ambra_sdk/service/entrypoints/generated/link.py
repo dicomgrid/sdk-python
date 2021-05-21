@@ -496,7 +496,7 @@ class Link:
         :param u: The uuid of the user_account record to create the guest link as
         :param v: A JSON hash with the following keys pairs. The JSON must be encrypted and base64 encoded
 
- filter.*=&gt;Filter field(s) as per the /study/list to specify the study(s) to construct the link for
+ filter.*=>Filter field(s) as per the /study/list to specify the study(s) to construct the link for
              The include_priors link option value can be passed as a key
              Any additional fields will the saved in the study audit trail and the following fields email_address, redirect_url, integration_key and skip_email_prompt will be available in /namespace/share_code if this is an upload link
         """

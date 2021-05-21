@@ -201,15 +201,23 @@ def check_response(  # NOQA:WPS231
         error_subtype: Optional[Any] = json.get('error_subtype', None)
         error_data = json.get('error_data')
 
+        # Error type can be a list.
+        # we should get only frist value of this list
+        # but in Exception we pass all type
+        if isinstance(error_type, list):
+            error_type_value = error_type[0]
+        else:
+            error_type_value = error_type
+
         # Error subtype can be a list.
         # We should use only hashable types for dict keys
         error_subtype_str: Optional[str] = str(error_subtype) \
             if error_subtype is not None else None
-        exception = errors_mapping.get((error_type, error_subtype_str))
+        exception = errors_mapping.get((error_type_value, error_subtype_str))
 
         # If we have not special exc for subtype - get default
         if exception is None:
-            exception = errors_mapping.get((error_type, None))
+            exception = errors_mapping.get((error_type_value, None))
 
         # For backward compatibility
         # In previous version we have errors_mapping:
@@ -217,11 +225,19 @@ def check_response(  # NOQA:WPS231
         # Now we have:
         # (error_type, error_subtype) => exception
         if not exception and error_subtype is None:
-            exception = errors_mapping.get(error_type)
+            exception = errors_mapping.get(error_type_value)
         if exception:
-            exception.set_additional_info(error_subtype, error_data)
+            exception.set_additional_info(
+                error_type,
+                error_subtype,
+                error_data,
+            )
             raise exception
-        raise PreconditionFailed()
+        raise PreconditionFailed(
+            error_type=error_type,
+            error_subtype=error_subtype,
+            error_data=error_data,
+        )
     elif response.status_code == 401:
         raise AuthorizationRequired()
     elif response.status_code == 405:

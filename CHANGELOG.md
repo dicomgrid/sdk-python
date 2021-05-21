@@ -5,10 +5,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [3.21.4.0-1] - 2021-05-19
+### Added
+- Service public api updated (same veresion)
+- Service models updated (same veresion)
+- Storage public api support: LBL0038 v15.0 2021-05-19
+- Support list in ERROR_TYPE v3services response
+- Added is_ai argument for api.Storage.Study.Anonymize
+
+### Fixed
+- Removed dataclasses (python 3.6 support)
+- Storage api args (used java classes)
+- Deprecation warning messages
+- Timeout, ws_timeout in anonymize_and_{wait,get} ignored
+- Unicode symbols in docs (only for params description)
+
 ## [3.21.3.0-2] - 2021-04-16
 ### Fixed
 - api.Namespace.settings settings -> ai_settings
-
 
 ## [3.21.3.0-1] - 2021-04-07
 ### Added

@@ -7,6 +7,7 @@ from ambra_sdk.exceptions.service import AccountNotFound
 from ambra_sdk.exceptions.service import AlreadyConnected
 from ambra_sdk.exceptions.service import AlreadyDone
 from ambra_sdk.exceptions.service import AlreadyPending
+from ambra_sdk.exceptions.service import ConflictingStatus
 from ambra_sdk.exceptions.service import FilterNotFound
 from ambra_sdk.exceptions.service import HasDestinations
 from ambra_sdk.exceptions.service import InvalidCondition
@@ -288,7 +289,7 @@ class Node:
         :param monitor_study_create: Check if the node is sending studies normally (optional)
         :param monitor_study_create_threshold: Threshold in minutes for triggering the monitor_study_create notification (optional)
         :param name: Description of the node (optional)
-        :param reload_configuration: If this flag is set the node will be instructed to reload it&#39;s configuration on the next ping (optional)
+        :param reload_configuration: If this flag is set the node will be instructed to reload it's configuration on the next ping (optional)
         :param serial_no: serial_no
         :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
         :param settings: A hash of the account settings that the node can override (optional)
@@ -462,6 +463,7 @@ class Node:
         }
 	
         errors_mapping = {}
+        errors_mapping[('CONFLICTING_STATUS', None)] = ConflictingStatus('This status conflicts with a prior status update')
         errors_mapping[('INVALID_STATUS', None)] = InvalidStatus('Invalid status code')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The node or job can not be found')
@@ -617,6 +619,38 @@ class Node:
         query_data = {
             'api': self._api,
             'url': '/node/study/queued',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        return QueryO(**query_data)
+    
+    def study_anonymized(
+        self,
+        new_study_uid,
+        old_study_uid,
+        serial_no,
+        uuid,
+    ):
+        """Study anonymized.
+        :param new_study_uid: The new study uid
+        :param old_study_uid: The old study uid
+        :param serial_no: The serial number of the node
+        :param uuid: The node id
+        """
+        request_data = {
+           'new_study_uid': new_study_uid,
+           'old_study_uid': old_study_uid,
+           'serial_no': serial_no,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/node/study/anonymized',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': False,

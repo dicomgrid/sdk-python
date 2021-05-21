@@ -24,6 +24,7 @@ from ambra_sdk.exceptions.service import InvalidTimeZone
 from ambra_sdk.exceptions.service import InvalidToken
 from ambra_sdk.exceptions.service import Lockout
 from ambra_sdk.exceptions.service import MissingFields
+from ambra_sdk.exceptions.service import NoUserPubkey
 from ambra_sdk.exceptions.service import NotDisabled
 from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import NotHash
@@ -196,7 +197,7 @@ class User:
         :param ui_json: JSON for UI settings (optional) possible options:
 
 show_org_manage_link (boolean) Show link to manage multiple organizations
-advanced_search (array) Advanced search customization for role. See account level &#34;advanced_search&#34; ui_json param for possible values
+advanced_search (array) Advanced search customization for role. See account level "advanced_search" ui_json param for possible values
 enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         :param uuid: The users uuid (optional). Uses the session user if not passed
         """
@@ -463,14 +464,17 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
     def namespace_list(
         self,
         account_id=None,
+        name_and_id_only=None,
         plus_phr=None,
     ):
         """Namespace list.
         :param account_id: Only return the namespaces for this account (optional)
+        :param name_and_id_only: Flag to return only the the namespace name and uuid (optional)
         :param plus_phr: Flag to include the PHR account as well if account_id was specified (optional)
         """
         request_data = {
            'account_id': account_id,
+           'name_and_id_only': name_and_id_only,
            'plus_phr': plus_phr,
         }
 	
@@ -680,6 +684,65 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
+    def pubkey_list(
+        self,
+        serial_no,
+        uuid,
+    ):
+        """Pubkey list.
+        :param serial_no: The serial number of the node
+        :param uuid: The node id
+        """
+        request_data = {
+           'serial_no': serial_no,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/user/pubkey/list',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        return QueryO(**query_data)
+    
+    def pubkey_set(
+        self,
+        email,
+        public_key,
+        serial_no,
+        uuid,
+    ):
+        """Pubkey set.
+        :param email: The users email
+        :param public_key: A public key for public key authentication
+        :param serial_no: The serial number of the node
+        :param uuid: The node id
+        """
+        request_data = {
+           'email': email,
+           'public_key': public_key,
+           'serial_no': serial_no,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node or user can not be found')
+        errors_mapping[('NO_USER_PUBKEY', None)] = NoUserPubkey('The user does not use public key authentication')
+        query_data = {
+            'api': self._api,
+            'url': '/user/pubkey/set',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
         }
         return QueryO(**query_data)
     

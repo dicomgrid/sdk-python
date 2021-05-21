@@ -103,6 +103,7 @@ class Namespace:
         pixel_anonymize_color=None,
         priority_notifications=None,
         reverse_patient_name=None,
+        share_related=None,
         single_file_dicom_wrapping=None,
         study_field_flags=None,
         study_size_soft_threshold_per_user=None,
@@ -131,6 +132,7 @@ class Namespace:
         :param pixel_anonymize_color: Value for the setting (optional)
         :param priority_notifications: Value for the setting (optional)
         :param reverse_patient_name: Value for the setting (optional)
+        :param share_related: Flag to make study shares with this namespace include related studies (same PHI namespace, same MRN) (optional)
         :param single_file_dicom_wrapping: Value for the setting (optional)
         :param study_field_flags: A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)
         :param study_size_soft_threshold_per_user: A threshold for studies size per user. An email (by study_quota_exceeded template) will be sent when this limit is exceeded by a user. A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)
@@ -160,6 +162,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
            'pixel_anonymize_color': pixel_anonymize_color,
            'priority_notifications': priority_notifications,
            'reverse_patient_name': reverse_patient_name,
+           'share_related': share_related,
            'single_file_dicom_wrapping': single_file_dicom_wrapping,
            'study_field_flags': study_field_flags,
            'study_size_soft_threshold_per_user': study_size_soft_threshold_per_user,

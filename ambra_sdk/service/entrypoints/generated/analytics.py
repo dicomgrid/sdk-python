@@ -23,6 +23,7 @@ class Analytics:
         self,
         count,
         period,
+        time_zone,
         account_id=None,
         customfield_param=None,
         end_date=None,
@@ -32,6 +33,7 @@ class Analytics:
         """Study.
         :param count: The number of periods to get
         :param period: The time period (day|week|month|year)
+        :param time_zone: The report's time zone. Time zone selection order: current user's time zone, time_zone parameter, UTC by default.
         :param account_id: account_id
         :param customfield_param: Filter analytics by a subset of study customfields (optional)
         :param end_date: The end date, default is today if not passed (optional)
@@ -45,6 +47,7 @@ class Analytics:
            'modality': modality,
            'namespace_id': namespace_id,
            'period': period,
+           'time_zone': time_zone,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
@@ -72,6 +75,7 @@ class Analytics:
         account_id,
         count,
         period,
+        time_zone,
         end_date=None,
         patient_id=None,
     ):
@@ -79,6 +83,7 @@ class Analytics:
         :param account_id: The account id
         :param count: The number of periods to get
         :param period: The time period (day|week|month|year)
+        :param time_zone: The report's time zone. Time zone selection order: current user's time zone, time_zone parameter, UTC by default.
         :param end_date: The end date, default is today if not passed (optional)
         :param patient_id: Patient filter (optional)
         """
@@ -88,6 +93,7 @@ class Analytics:
            'end_date': end_date,
            'patient_id': patient_id,
            'period': period,
+           'time_zone': time_zone,
         }
 	
         errors_mapping = {}
@@ -111,6 +117,7 @@ class Analytics:
         account_id,
         count,
         period,
+        time_zone,
         end_date=None,
         namespace_id=None,
         user_id=None,
@@ -119,6 +126,7 @@ class Analytics:
         :param account_id: The account id
         :param count: The number of periods to get
         :param period: The time period (day|week|month|year)
+        :param time_zone: The report's time zone. Time zone selection order: current user's time zone, time_zone parameter, UTC by default.
         :param end_date: The end date, default is today if not passed (optional)
         :param namespace_id: Namespace filter (optional)
         :param user_id: User filter (optional)
@@ -129,6 +137,7 @@ class Analytics:
            'end_date': end_date,
            'namespace_id': namespace_id,
            'period': period,
+           'time_zone': time_zone,
            'user_id': user_id,
         }
 	
@@ -153,6 +162,7 @@ class Analytics:
         account_id,
         count,
         period,
+        time_zone,
         end_date=None,
         end_time=None,
         namespace_id=None,
@@ -162,6 +172,7 @@ class Analytics:
         :param account_id: The account id
         :param count: The number of periods to get
         :param period: The time period (hour|day|week|month|year)
+        :param time_zone: The report's time zone. Time zone selection order: current user's time zone, time_zone parameter, UTC by default.
         :param end_date: The end date, for backwards compatibility (optional)
         :param end_time: The end date and time, default is now if not passed (optional)
         :param namespace_id: Namespace filter (optional)
@@ -174,6 +185,7 @@ class Analytics:
            'end_time': end_time,
            'namespace_id': namespace_id,
            'period': period,
+           'time_zone': time_zone,
            'user_id': user_id,
         }
 	

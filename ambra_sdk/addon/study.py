@@ -263,11 +263,13 @@ class Study:  # NOQA:WPS214
         namespace: str,
         study_uid: str,
         region: Dict[str, Any],
+        phi_namespace: Optional[str] = None,
         to_namespace: Optional[str] = None,
         new_study_uid: Optional[str] = None,
         keep_image_uids: Optional[str] = None,
         color: Optional[str] = None,
         x_ambrahealth_job_id: Optional[str] = None,
+        is_ai: bool = False,
         only_prepare: bool = False,
         timeout: float = 200.0,
         ws_timeout: int = 5,
@@ -278,6 +280,7 @@ class Study:  # NOQA:WPS214
         :param namespace: Namespace (Required).
         :param study_uid: Study uid (Required).
         :param region: Region (Required).
+        :param phi_namespace: phi namespace
         :param to_namespace: The storage namespace
             into which the new study should be
             placed (default same as original).
@@ -288,6 +291,7 @@ class Study:  # NOQA:WPS214
         :param color: HTML-formatted color (rrggbb) of
             obscured regions (default is black-and-white checkerboard)
         :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument
+        :param is_ai: This is request from ai stack flag
         :param only_prepare: Get prepared request.
         :param timeout: waiting timeout
         :param ws_timeout: waiting from ws timeout
@@ -296,16 +300,20 @@ class Study:  # NOQA:WPS214
         """
         anonymize = self._api.Addon.Job.wait_completion(
             self._api.Storage.Study.anonymize,
+            timeout=timeout,
+            ws_timeout=ws_timeout,
             engine_fqdn=engine_fqdn,
             namespace=namespace,
             study_uid=study_uid,
             region=region,
+            phi_namespace=phi_namespace,
             to_namespace=to_namespace,
             new_study_uid=new_study_uid,
             keep_image_uids=keep_image_uids,
             color=color,
             only_prepare=only_prepare,
             x_ambrahealth_job_id=x_ambrahealth_job_id,
+            is_ai=is_ai,
         )
         anonymized_study_uid: str = anonymize.text
         return anonymized_study_uid  # NOQA:WPS331
@@ -316,11 +324,13 @@ class Study:  # NOQA:WPS214
         namespace: str,
         study_uid: str,
         region: Dict[str, Any],
+        phi_namespace: Optional[str] = None,
         to_namespace: Optional[str] = None,
         new_study_uid: Optional[str] = None,
         keep_image_uids: Optional[str] = None,
         color: Optional[str] = None,
         x_ambrahealth_job_id: Optional[str] = None,
+        is_ai: bool = False,
         only_prepare: bool = False,
         timeout: float = 200.0,
         ws_timeout: int = 5,
@@ -331,6 +341,7 @@ class Study:  # NOQA:WPS214
         :param namespace: Namespace (Required).
         :param study_uid: Study uid (Required).
         :param region: Region (Required).
+        :param phi_namespace: phi namespace
         :param to_namespace: The storage namespace
             into which the new study should be
             placed (default same as original).
@@ -341,6 +352,7 @@ class Study:  # NOQA:WPS214
         :param color: HTML-formatted color (rrggbb) of
             obscured regions (default is black-and-white checkerboard)
         :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument
+        :param is_ai: This is request from ai stack flag
         :param only_prepare: Get prepared request.
         :param timeout: waiting timeout
         :param ws_timeout: waiting from ws timeout
@@ -351,16 +363,20 @@ class Study:  # NOQA:WPS214
         start = monotonic()
         anonymize = self._api.Addon.Job.wait_completion(
             self._api.Storage.Study.anonymize,
+            timeout=timeout,
+            ws_timeout=ws_timeout,
             engine_fqdn=engine_fqdn,
             namespace=namespace,
             study_uid=study_uid,
             region=region,
+            phi_namespace=phi_namespace,
             to_namespace=to_namespace,
             new_study_uid=new_study_uid,
             keep_image_uids=keep_image_uids,
             color=color,
             only_prepare=only_prepare,
             x_ambrahealth_job_id=x_ambrahealth_job_id,
+            is_ai=is_ai,
         )
         anonymized_study_uid: str = anonymize.text
         spend_time = monotonic() - start

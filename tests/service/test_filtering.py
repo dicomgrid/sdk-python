@@ -80,7 +80,7 @@ class TestWithFilter:
         not zone
         """
         value = datetime.strptime(
-            '2000-01-02 03:04:05+03:00', '%Y-%m-%d %H:%M:%S%z',
+            '2000-01-02 03:04:05+0300', '%Y-%m-%d %H:%M:%S%z',
         )
         query.filter_by(Filter('field', FilterCondition.equals, value))
         assert 'filter.field.equals' in query.request_args.data

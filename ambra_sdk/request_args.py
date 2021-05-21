@@ -1,38 +1,55 @@
 """Request args."""
 
-from dataclasses import asdict, dataclass
 from typing import Any, Optional
 
 
-@dataclass
-class RequestArgs:
+class RequestArgs:  # NOQA:WPS230
     """Request args.
 
     Like in requests.request args
     """
 
-    method: str
-    url: str
-    params: Optional[Any] = None  # NOQA:WPS110
-    data: Optional[Any] = None  # NOQA:WPS110
-    json: Optional[Any] = None
-    headers: Optional[Any] = None
-    cookies: Optional[Any] = None
-    files: Optional[Any] = None
-    auth: Optional[Any] = None
-    timeout: Optional[Any] = None
-    allow_redirects: Optional[Any] = None
-    proxies: Optional[Any] = None
-    verify: Optional[Any] = None
-    stream: Optional[Any] = None
-    cert: Optional[Any] = None
+    def __init__(  # NOQA:D107,WPS211
+        self,
+        method: str,
+        url: str,
+        params: Optional[Any] = None,  # NOQA:WPS110
+        data: Optional[Any] = None,  # NOQA:WPS110
+        json: Optional[Any] = None,
+        headers: Optional[Any] = None,
+        cookies: Optional[Any] = None,
+        files: Optional[Any] = None,
+        auth: Optional[Any] = None,
+        timeout: Optional[Any] = None,
+        allow_redirects: Optional[Any] = None,
+        proxies: Optional[Any] = None,
+        verify: Optional[Any] = None,
+        stream: Optional[Any] = None,
+        cert: Optional[Any] = None,
+    ):  # NOQA: DAR101
+        """Init."""
+        self.method = method
+        self.url = url
+        self.params = params  # NOQA:WPS110
+        self.data = data  # NOQA:WPS110
+        self.json = json
+        self.headers = headers
+        self.cookies = cookies
+        self.files = files
+        self.auth = auth
+        self.timeout = timeout
+        self.allow_redirects = allow_redirects
+        self.proxies = proxies
+        self.verify = verify
+        self.stream = stream
+        self.cert = cert
 
     def to_dict(self):
         """To dict.
 
         :return: dict repr
         """
-        return asdict(self)
+        return self.__dict__.copy()
 
     def dict_optional_args(self):
         """Get dict optional args.

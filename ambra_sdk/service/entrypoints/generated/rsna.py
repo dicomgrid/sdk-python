@@ -25,7 +25,7 @@ class Rsna:
     ):
         """Phr_study.
         :param access_code: RSNA-generated access code
-        :param dob: Patient&#39;s date of birth YYYYMMDD
+        :param dob: Patient's date of birth YYYYMMDD
         :param exam_id: RSNA-generated exam ID/token/email (DEPRECATED June 2015 - use access_code)
         :param namespace: Namespace where retrieved exam will be stored
         :param pin: RSNA-generated PIN (DEPRECATED June 2015 - use access_code)

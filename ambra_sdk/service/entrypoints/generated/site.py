@@ -8,12 +8,12 @@ from ambra_sdk.exceptions.service import DifferentAccounts
 from ambra_sdk.exceptions.service import FilterNotFound
 from ambra_sdk.exceptions.service import InvalidCondition
 from ambra_sdk.exceptions.service import InvalidField
+from ambra_sdk.exceptions.service import InvalidFlag
 from ambra_sdk.exceptions.service import InvalidSortField
 from ambra_sdk.exceptions.service import InvalidSortOrder
 from ambra_sdk.exceptions.service import MissingFields
 from ambra_sdk.exceptions.service import NestedSatelliteSite
 from ambra_sdk.exceptions.service import NotFound
-from ambra_sdk.exceptions.service import NotMember
 from ambra_sdk.exceptions.service import NotPermitted
 from ambra_sdk.exceptions.service import UserNotFound
 from ambra_sdk.service.query import QueryO
@@ -101,6 +101,7 @@ class Site:
         self,
         uuid,
         city=None,
+        inactive=None,
         name=None,
         site_id=None,
         state=None,
@@ -109,6 +110,7 @@ class Site:
         """Set.
         :param uuid: The site uuid
         :param city: The city the site is located in (optional)
+        :param inactive: Flag if the site is actively used. Might be used to filter out inactive sites (optional)
         :param name: The sites name (optional)
         :param site_id: The site to attach them to as a satellite site (optional)
         :param state: The state code of the site (optional)
@@ -116,6 +118,7 @@ class Site:
         """
         request_data = {
            'city': city,
+           'inactive': inactive,
            'name': name,
            'site_id': site_id,
            'state': state,
@@ -125,6 +128,7 @@ class Site:
 	
         errors_mapping = {}
         errors_mapping[('DIFFERENT_ACCOUNTS', None)] = DifferentAccounts('The site and satellite sites are from different accounts')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NESTED_SATELLITE_SITE', None)] = NestedSatelliteSite('The satellite site has its satellite sites')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The site can not be found')
@@ -210,7 +214,6 @@ class Site:
         errors_mapping[('ALREADY_EXISTS', None)] = AlreadyExists('The user is in the contact list already')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The site can not be found')
-        errors_mapping[('NOT_MEMBER', None)] = NotMember('The user is not in the account')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add users to the site')
         errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user was not found')
         query_data = {

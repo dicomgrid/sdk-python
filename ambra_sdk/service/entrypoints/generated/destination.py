@@ -119,8 +119,8 @@ class Destination:
         :param aetitle: Aetitle of the destination (required if DICOM type)
         :param distributed_destinations: A JSON array of destination ids. This list will be used to process requests in round robin manner. Meaningful for DISTRIBUTING destination type only (opional)
         :param linked_destination: uuid of the destination for LINKED destinations
-        :param linked_qr_activity_in_referred_account: A flag to create DESTINATION_SEARCH activities in the linked destination&#39;s account. Meaningful for LINKED destinations only (opional)
-        :param linked_qr_to_referred_account: A flag to create resultant studies in the linked destination&#39;s account (not the account of LINKED destination where the search was initiated). Meaningful for LINKED destinations only (opional)
+        :param linked_qr_activity_in_referred_account: A flag to create DESTINATION_SEARCH activities in the linked destination's account. Meaningful for LINKED destinations only (opional)
+        :param linked_qr_to_referred_account: A flag to create resultant studies in the linked destination's account (not the account of LINKED destination where the search was initiated). Meaningful for LINKED destinations only (opional)
         :param name: Name of the destination
         :param node_id: uuid of the node that handles the destination
         :param path: Path of the folder for a FOLDER type of destination (required if FOLDER type)
@@ -249,8 +249,8 @@ class Destination:
     ):
         """Set.
         :param distributed_destinations: A JSON array of destination ids. This list will be used to process requests in round robin manner. Meaningful for DISTRIBUTING destination type only (opional)
-        :param linked_qr_activity_in_referred_account: A flag to create DESTINATION_SEARCH activities in the linked destination&#39;s account. Meaningful for LINKED destinations only (opional)
-        :param linked_qr_to_referred_account: A flag to create resultant studies in the linked destination&#39;s account (not the account of LINKED destination where the search was initiated). Meaningful for LINKED destinations only (opional)
+        :param linked_qr_activity_in_referred_account: A flag to create DESTINATION_SEARCH activities in the linked destination's account. Meaningful for LINKED destinations only (opional)
+        :param linked_qr_to_referred_account: A flag to create resultant studies in the linked destination's account (not the account of LINKED destination where the search was initiated). Meaningful for LINKED destinations only (opional)
         :param uuid: uuid of the destination
         :param address: Address of the destination (optional)
         :param aetitle: Aetitle of the destination (optional)

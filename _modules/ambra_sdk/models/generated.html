@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.models.generated &#8212; Ambra-SDK 3.21.3.0-1 documentation</title>
+    <title>ambra_sdk.models.generated &#8212; Ambra-SDK 3.21.4.0-1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -597,6 +597,7 @@
     <span class="sd">&quot;&quot;&quot;Analytics.&quot;&quot;&quot;</span>
     
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">clickhouse_last_id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The id of the last audit job processed&#39;</span><span class="p">)</span>
     <span class="n">last_id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The id of the last audit job processed&#39;</span><span class="p">)</span>
     <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
     <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
@@ -610,6 +611,7 @@
         <span class="bp">self</span><span class="p">,</span>
 	<span class="o">*</span><span class="p">,</span>
         <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">clickhouse_last_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">last_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -619,6 +621,7 @@
         <span class="n">updated_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clickhouse_last_id</span> <span class="o">=</span> <span class="n">clickhouse_last_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_id</span> <span class="o">=</span> <span class="n">last_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
@@ -702,9 +705,11 @@
     <span class="n">customfields</span> <span class="o">=</span> <span class="n">DictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Custom fields&#39;</span><span class="p">)</span>
     <span class="n">description</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Description&#39;</span><span class="p">)</span>
     <span class="n">end_time</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Time range&#39;</span><span class="p">)</span>
+    <span class="n">external_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Filler/Placer Appointment ID or other id&#39;</span><span class="p">)</span>
     <span class="n">patient_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The associated patient&#39;</span><span class="p">)</span>
     <span class="n">patient</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Patient&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated patient&#39;</span><span class="p">)</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Time range&#39;</span><span class="p">)</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Status of the Appointment - Active/Cancelled/Discontinued&#39;</span><span class="p">)</span>
     <span class="n">user_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The associated user&#39;</span><span class="p">)</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated user&#39;</span><span class="p">)</span>
     <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
@@ -725,9 +730,11 @@
         <span class="n">customfields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">end_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">external_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">patient_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">patient</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -744,9 +751,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">customfields</span> <span class="o">=</span> <span class="n">customfields</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="n">end_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">external_id</span> <span class="o">=</span> <span class="n">external_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">patient_id</span> <span class="o">=</span> <span class="n">patient_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">patient</span> <span class="o">=</span> <span class="n">patient</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">start_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
@@ -2318,6 +2327,7 @@
     <span class="n">distributing_destination_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The distributing destination that initiated the search&#39;</span><span class="p">)</span>
     <span class="n">distributing_destination</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;DestinationDistributed&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The distributing destination that initiated the search&#39;</span><span class="p">)</span>
     <span class="n">extra</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Extra data for speciality workflows like MPI&#39;</span><span class="p">)</span>
+    <span class="n">gateway_anonymization</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Flag to run anonymization on the gateway side&#39;</span><span class="p">)</span>
     <span class="n">hl7_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The search was triggered by this HL7 message&#39;</span><span class="p">)</span>
     <span class="n">hl7</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Hl7&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The search was triggered by this HL7 message&#39;</span><span class="p">)</span>
     <span class="n">linked_destination_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The linked destination that initiated the search&#39;</span><span class="p">)</span>
@@ -2368,6 +2378,7 @@
         <span class="n">distributing_destination_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">distributing_destination</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">extra</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">gateway_anonymization</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">hl7_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">hl7</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">linked_destination_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -2414,6 +2425,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">distributing_destination_id</span> <span class="o">=</span> <span class="n">distributing_destination_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">distributing_destination</span> <span class="o">=</span> <span class="n">distributing_destination</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">extra</span> <span class="o">=</span> <span class="n">extra</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gateway_anonymization</span> <span class="o">=</span> <span class="n">gateway_anonymization</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hl7_id</span> <span class="o">=</span> <span class="n">hl7_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hl7</span> <span class="o">=</span> <span class="n">hl7</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">linked_destination_id</span> <span class="o">=</span> <span class="n">linked_destination_id</span>
@@ -5806,10 +5818,10 @@
     
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
     <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
-    <span class="n">group_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Mapping betwee the scanner and group&#39;</span><span class="p">)</span>
-    <span class="n">group</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Mapping betwee the scanner and group&#39;</span><span class="p">)</span>
-    <span class="n">scanner_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Mapping betwee the scanner and group&#39;</span><span class="p">)</span>
-    <span class="n">scanner</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Scanner&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Mapping betwee the scanner and group&#39;</span><span class="p">)</span>
+    <span class="n">group_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Mapping between the scanner and group&#39;</span><span class="p">)</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Mapping between the scanner and group&#39;</span><span class="p">)</span>
+    <span class="n">scanner_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Mapping between the scanner and group&#39;</span><span class="p">)</span>
+    <span class="n">scanner</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Scanner&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Mapping between the scanner and group&#39;</span><span class="p">)</span>
     <span class="n">study_uid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The study_uid that validated the scanner&#39;</span><span class="p">)</span>
     <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
     <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
@@ -5908,6 +5920,7 @@
     <span class="n">account_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The associated account&#39;</span><span class="p">)</span>
     <span class="n">account</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Account&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated account&#39;</span><span class="p">)</span>
     <span class="n">city</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Location fields&#39;</span><span class="p">)</span>
+    <span class="n">inactive</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Inactive flag to hide a site from lists&#39;</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
     <span class="n">site_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The associated site in case this one is a satellite site&#39;</span><span class="p">)</span>
     <span class="n">site</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Site&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated site in case this one is a satellite site&#39;</span><span class="p">)</span>
@@ -5929,6 +5942,7 @@
         <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">account</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">city</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">inactive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">site_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">site</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -5946,6 +5960,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">account_id</span> <span class="o">=</span> <span class="n">account_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">account</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="n">city</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inactive</span> <span class="o">=</span> <span class="n">inactive</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">site_id</span> <span class="o">=</span> <span class="n">site_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">site</span>
@@ -6749,6 +6764,7 @@
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
     <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
     <span class="n">accession_number</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The accession number to fetch&#39;</span><span class="p">)</span>
+    <span class="n">anonymize</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated anonymization rules&#39;</span><span class="p">)</span>
     <span class="n">customfields</span> <span class="o">=</span> <span class="n">DictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Custom fields to be applied to the fetched study&#39;</span><span class="p">)</span>
     <span class="n">destination_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The destination&#39;</span><span class="p">)</span>
     <span class="n">destination</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Destination&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The destination&#39;</span><span class="p">)</span>
@@ -6780,6 +6796,7 @@
         <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">accession_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">anonymize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">customfields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">destination_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">destination</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -6807,6 +6824,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">accession_number</span> <span class="o">=</span> <span class="n">accession_number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">anonymize</span> <span class="o">=</span> <span class="n">anonymize</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">customfields</span> <span class="o">=</span> <span class="n">customfields</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">destination_id</span> <span class="o">=</span> <span class="n">destination_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">destination</span> <span class="o">=</span> <span class="n">destination</span>
@@ -7752,9 +7770,12 @@
     <span class="n">aws_pk</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;AWS information&#39;</span><span class="p">)</span>
     <span class="n">aws_region</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;AWS information&#39;</span><span class="p">)</span>
     <span class="n">aws_sk</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;AWS information&#39;</span><span class="p">)</span>
+    <span class="n">box_client_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Box information&#39;</span><span class="p">)</span>
+    <span class="n">box_client_secret</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Box information&#39;</span><span class="p">)</span>
     <span class="n">cache</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Cache new studies images&#39;</span><span class="p">)</span>
     <span class="n">captcha_pk</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Captcha public key&#39;</span><span class="p">)</span>
     <span class="n">captcha_sk</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Captcha secret key&#39;</span><span class="p">)</span>
+    <span class="n">clickhouse_version</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;ClickHouse scheme version&#39;</span><span class="p">)</span>
     <span class="n">database_version</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Database version&#39;</span><span class="p">)</span>
     <span class="n">drchrono_client_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Drchrono information&#39;</span><span class="p">)</span>
     <span class="n">drchrono_client_secret</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Drchrono information&#39;</span><span class="p">)</span>
@@ -7822,9 +7843,12 @@
         <span class="n">aws_pk</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">aws_region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">aws_sk</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">box_client_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">box_client_secret</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">cache</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">captcha_pk</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">captcha_sk</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">clickhouse_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">database_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">drchrono_client_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">drchrono_client_secret</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -7888,9 +7912,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">aws_pk</span> <span class="o">=</span> <span class="n">aws_pk</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aws_region</span> <span class="o">=</span> <span class="n">aws_region</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aws_sk</span> <span class="o">=</span> <span class="n">aws_sk</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_client_id</span> <span class="o">=</span> <span class="n">box_client_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_client_secret</span> <span class="o">=</span> <span class="n">box_client_secret</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="n">cache</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">captcha_pk</span> <span class="o">=</span> <span class="n">captcha_pk</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">captcha_sk</span> <span class="o">=</span> <span class="n">captcha_sk</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clickhouse_version</span> <span class="o">=</span> <span class="n">clickhouse_version</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">database_version</span> <span class="o">=</span> <span class="n">database_version</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">drchrono_client_id</span> <span class="o">=</span> <span class="n">drchrono_client_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">drchrono_client_secret</span> <span class="o">=</span> <span class="n">drchrono_client_secret</span>
@@ -9379,7 +9406,7 @@
 
 
 
-<p class="blurb">version 3.21.3.0-1</p>
+<p class="blurb">version 3.21.4.0-1</p>
 
 
 

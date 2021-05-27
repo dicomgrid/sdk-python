@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.storage.image &#8212; Ambra-SDK 3.21.3.0-1 documentation</title>
+    <title>ambra_sdk.storage.image &#8212; Ambra-SDK 3.21.4.0-1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -35,7 +35,7 @@
 <span></span><span class="sd">&quot;&quot;&quot;Storage image namespace.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">box</span> <span class="kn">import</span> <span class="n">Box</span>
 <span class="kn">from</span> <span class="nn">requests</span> <span class="kn">import</span> <span class="n">Response</span>
@@ -65,6 +65,7 @@
         <span class="n">engine_fqdn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">opened_file</span><span class="p">:</span> <span class="n">RequestsFileType</span><span class="p">,</span>
+        <span class="n">study_uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">use_box</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">x_ambrahealth_job_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -79,6 +80,7 @@
 <span class="sd">            File object, or may be 2-tuples (filename, fileobj),</span>
 <span class="sd">            3-tuples (filename, fileobj, contentype) or</span>
 <span class="sd">            4-tuples (filename, fileobj, contentype, custom_headers).</span>
+<span class="sd">        :param study_uid: study uid</span>
 <span class="sd">        :param use_box: Use box for response.</span>
 <span class="sd">        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument</span>
 <span class="sd">        :param only_prepare: Get prepared request.</span>
@@ -87,7 +89,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">url_template</span> <span class="o">=</span> <span class="s1">&#39;/namespace/</span><span class="si">{namespace}</span><span class="s1">/image&#39;</span>
         <span class="n">url_arg_names</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;engine_fqdn&#39;</span><span class="p">,</span> <span class="s1">&#39;namespace&#39;</span><span class="p">}</span>
-        <span class="n">request_arg_names</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">request_arg_names</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;study_uid&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">url</span><span class="p">,</span> <span class="n">request_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get_url_and_request</span><span class="p">(</span>
             <span class="n">url_template</span><span class="p">,</span>
             <span class="n">url_arg_names</span><span class="p">,</span>
@@ -147,7 +151,10 @@
         <span class="p">)</span>
         <span class="n">url_template</span> <span class="o">=</span> <span class="s1">&#39;/namespace/</span><span class="si">{namespace}</span><span class="s1">/wrap&#39;</span>
         <span class="n">url_arg_names</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;engine_fqdn&#39;</span><span class="p">,</span> <span class="s1">&#39;namespace&#39;</span><span class="p">}</span>
-        <span class="n">request_arg_names</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">request_arg_names</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;tags&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;render_wrapped_pdf&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">url</span><span class="p">,</span> <span class="n">request_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get_url_and_request</span><span class="p">(</span>
             <span class="n">url_template</span><span class="p">,</span>
             <span class="n">url_arg_names</span><span class="p">,</span>
@@ -274,9 +281,11 @@
         <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">image_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="c1"># In external api this is a hash parameter</span>
         <span class="n">image_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">pretranscode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">transfer_syntax</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Gets dicom payload.</span>
@@ -292,6 +301,7 @@
 <span class="sd">            If set, specifies the phi namespace from which to pull PHI.</span>
 <span class="sd">            Will overlay the values onto the phiSource.</span>
 <span class="sd">        :param pretranscode: Get pretranscoded dicom.</span>
+<span class="sd">        :param transfer_syntax: Transfer syntax.</span>
 <span class="sd">        :param only_prepare: Get prepared request.</span>
 
 <span class="sd">        :returns: dicom.</span>
@@ -308,7 +318,11 @@
             <span class="s1">&#39;image_uid&#39;</span><span class="p">,</span>
             <span class="s1">&#39;image_version&#39;</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="n">request_arg_names</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;phi_namespace&#39;</span><span class="p">,</span> <span class="s1">&#39;pretranscode&#39;</span><span class="p">}</span>
+        <span class="n">request_arg_names</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;phi_namespace&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;pretranscode&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;transfer_syntax&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="n">url</span><span class="p">,</span> <span class="n">request_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get_url_and_request</span><span class="p">(</span>
             <span class="n">url_template</span><span class="p">,</span>
             <span class="n">url_arg_names</span><span class="p">,</span>
@@ -337,7 +351,7 @@
 
 
 
-<p class="blurb">version 3.21.3.0-1</p>
+<p class="blurb">version 3.21.4.0-1</p>
 
 
 

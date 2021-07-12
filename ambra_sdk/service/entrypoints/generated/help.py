@@ -7,6 +7,7 @@ from ambra_sdk.exceptions.service import MissingFields
 from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import NotSysadminOrSupport
 from ambra_sdk.service.query import QueryO
+from ambra_sdk.service.query import AsyncQueryO
 
 class Help:
     """Help."""
@@ -63,4 +64,62 @@ class Help:
             'required_sid': True,
         }
         return QueryO(**query_data)
+    
+
+
+class AsyncHelp:
+    """AsyncHelp."""
+
+    def __init__(self, api):
+        self._api = api
+
+    
+    def get(
+        self,
+        key,
+    ):
+        """Get.
+        :param key: The help key
+        """
+        request_data = {
+           'key': key,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The help was not found')
+        query_data = {
+            'api': self._api,
+            'url': '/help/get',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def set(
+        self,
+        key,
+        text,
+    ):
+        """Set.
+        :param key: The help key
+        :param text: The help text
+        """
+        request_data = {
+           'key': key,
+           'text': text,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_SYSADMIN_OR_SUPPORT', None)] = NotSysadminOrSupport('The user is not a sysadmin or support user')
+        query_data = {
+            'api': self._api,
+            'url': '/help/set',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
     

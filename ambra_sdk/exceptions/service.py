@@ -1023,3 +1023,51 @@ class ConflictingStatus(PreconditionFailed):
 
 class NoUserPubkey(PreconditionFailed):
     """NoUserPubkey."""
+
+
+class CanNotTrack(PreconditionFailed):
+    """CanNotTrack."""
+
+
+class ActiveQuery(PreconditionFailed):
+    """ActiveQuery."""
+
+
+class Full(PreconditionFailed):
+    """Full."""
+
+
+class InvalidXml(PreconditionFailed):
+    """InvalidXml."""
+
+
+class CanNotRevive(PreconditionFailed):
+    """CanNotRevive."""
+
+
+class InvalidGroup(PreconditionFailed):
+    """InvalidGroup."""
+
+
+class NotPhantom(PreconditionFailed):
+    """NotPhantom."""
+
+
+class StudyQueryGroupChange(PreconditionFailed):
+    """StudyQueryGroupChange."""
+
+
+class Thumbnail(PreconditionFailed):
+    """Thumbnail."""
+
+
+class TooBig(PreconditionFailed):
+    """TooBig."""
+
+
+class DifferentAccounts(PreconditionFailed):
+    """DifferentAccounts."""
+
+
+class NestedSatelliteSite(PreconditionFailed):
+    """NestedSatelliteSite."""

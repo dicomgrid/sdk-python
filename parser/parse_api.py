@@ -11,7 +11,7 @@ from bs4.element import Tag
 from jinja2 import Environment, FileSystemLoader
 
 from ambra_sdk.pythonize import METHODS
-from ambra_sdk.service.query import get_query_cls_name
+from ambra_sdk.service.query.base_query import get_query_cls_name
 from parse_errors import ErrorParameter, parse_error_parameters
 from parse_request import (
     RequestGroupParametersDoc,

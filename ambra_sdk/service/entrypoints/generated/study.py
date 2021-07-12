@@ -7,6 +7,7 @@ from ambra_sdk.exceptions.service import Already
 from ambra_sdk.exceptions.service import AlreadyExists
 from ambra_sdk.exceptions.service import AlreadyThin
 from ambra_sdk.exceptions.service import Blocked
+from ambra_sdk.exceptions.service import CanNotRevive
 from ambra_sdk.exceptions.service import DelayOrMatch
 from ambra_sdk.exceptions.service import DestinationNotFound
 from ambra_sdk.exceptions.service import Failed
@@ -45,6 +46,7 @@ from ambra_sdk.exceptions.service import NotHash
 from ambra_sdk.exceptions.service import NotMatched
 from ambra_sdk.exceptions.service import NotPermitted
 from ambra_sdk.exceptions.service import NotReady
+from ambra_sdk.exceptions.service import NotSysadminOrSupport
 from ambra_sdk.exceptions.service import NotThin
 from ambra_sdk.exceptions.service import NothingToTake
 from ambra_sdk.exceptions.service import PdfFailed
@@ -64,12 +66,19 @@ from ambra_sdk.exceptions.service import StudyNotFound
 from ambra_sdk.exceptions.service import UnableToGenerate
 from ambra_sdk.exceptions.service import UnableToValidate
 from ambra_sdk.service.query import QueryO
+from ambra_sdk.service.query import AsyncQueryO
 from ambra_sdk.service.query import QueryOF
+from ambra_sdk.service.query import AsyncQueryOF
 from ambra_sdk.service.query import QueryOP
+from ambra_sdk.service.query import AsyncQueryOP
 from ambra_sdk.service.query import QueryOPF
+from ambra_sdk.service.query import AsyncQueryOPF
 from ambra_sdk.service.query import QueryOPS
+from ambra_sdk.service.query import AsyncQueryOPS
 from ambra_sdk.service.query import QueryOPSF
+from ambra_sdk.service.query import AsyncQueryOPSF
 from ambra_sdk.service.query import QueryOSF
+from ambra_sdk.service.query import AsyncQueryOSF
 
 class Study:
     """Study."""
@@ -2078,4 +2087,2062 @@ class Study:
             'required_sid': True,
         }
         return QueryO(**query_data)
+    
+    def revive(
+        self,
+        uuid,
+    ):
+        """Revive.
+        :param uuid: The study uuid
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('CAN_NOT_REVIVE', None)] = CanNotRevive('The study can not be revived')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The deleted study can not be found')
+        errors_mapping[('NOT_SYSADMIN_OR_SUPPORT', None)] = NotSysadminOrSupport('The user is not a sysadmin or support user')
+        query_data = {
+            'api': self._api,
+            'url': '/study/revive',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
+
+
+class AsyncStudy:
+    """AsyncStudy."""
+
+    def __init__(self, api):
+        self._api = api
+
+    
+    def add(
+        self,
+        accession_number=None,
+        attachment_count=None,
+        customfield_param=None,
+        destination_ae_title=None,
+        image_count=None,
+        integration_key=None,
+        medical_record_locator=None,
+        modality=None,
+        node_id=None,
+        patient_additional_history=None,
+        patient_address=None,
+        patient_age=None,
+        patient_birth_date=None,
+        patient_birth_time=None,
+        patient_birthname=None,
+        patient_comments=None,
+        patient_current_location=None,
+        patient_ethnic_group=None,
+        patient_institution_residence=None,
+        patient_mother_birthname=None,
+        patient_name=None,
+        patient_name_other=None,
+        patient_occupation=None,
+        patient_phone=None,
+        patient_religious_preference=None,
+        patient_sex=None,
+        patient_size=None,
+        patient_weight=None,
+        patientid=None,
+        patientid_other=None,
+        phi_namespace=None,
+        referring_physician=None,
+        serial_no=None,
+        source_ae_title=None,
+        storage_namespace=None,
+        study_date=None,
+        study_description=None,
+        study_time=None,
+        study_uid=None,
+        thin=None,
+        uuid=None,
+    ):
+        """Add.
+        :param accession_number: DICOM tag (0008,0050) (optional)
+        :param attachment_count: Attachment count (optional)
+        :param customfield_param: Custom field(s), see notes in /study/add (optional)
+        :param destination_ae_title: The destination aetitle (optional)
+        :param image_count: Images in the study (optional)
+        :param integration_key: Integration key for the study (optional)
+        :param medical_record_locator: DICOM tag (0010,1090) (optional)
+        :param modality: DICOM tag (0008,0060) (optional)
+        :param node_id: If this is a thin study the gateway UUID to retrieve it from can be specified (optional)
+        :param patient_additional_history: DICOM tag (0010,21B0) (optional)
+        :param patient_address: DICOM tag (0010,1040) (optional)
+        :param patient_age: DICOM tag (0010,1010) (optional)
+        :param patient_birth_date: DICOM tag (0010,0030) (optional)
+        :param patient_birth_time: DICOM tag (0010,0032) (optional)
+        :param patient_birthname: DICOM tag (0010,1005) (optional)
+        :param patient_comments: DICOM tag (0010,4000) (optional)
+        :param patient_current_location: DICOM tag (0038,0300) (optional)
+        :param patient_ethnic_group: DICOM tag (0010,2160) (optional)
+        :param patient_institution_residence: DICOM tag (0038,0400) (optional)
+        :param patient_mother_birthname: DICOM tag (0010,1060) (optional)
+        :param patient_name: DICOM tag (0010,0010)(optional)
+        :param patient_name_other: DICOM tag (0010,1001) (optional)
+        :param patient_occupation: DICOM tag (0010,2180) (optional)
+        :param patient_phone: DICOM tag (0010,2154) (optional)
+        :param patient_religious_preference: DICOM tag (0010,21F0) (optional)
+        :param patient_sex: DICOM tag (0010,0040) (optional)
+        :param patient_size: DICOM tag (0010,1020) (optional)
+        :param patient_weight: DICOM tag (0010,1030) (optional)
+        :param patientid: DICOM tag (0010,0020) (optional)
+        :param patientid_other: DICOM tag (0010,1000) (optional)
+        :param phi_namespace: phi_namespace
+        :param referring_physician: DICOM tag (0008,0090) (optional)
+        :param serial_no: serial_no
+        :param source_ae_title: The source aetitle (optional)
+        :param storage_namespace: storage_namespace
+        :param study_date: DICOM tag (0008,0020) (optional)
+        :param study_description: DICOM tag (0008,1030) (optional)
+        :param study_time: DICOM tag (0008,0030) (optional)
+        :param study_uid: study_uid
+        :param thin: Flag to add this as a thin study (optional)
+        :param uuid: uuid
+        """
+        request_data = {
+           'accession_number': accession_number,
+           'attachment_count': attachment_count,
+           'destination_ae_title': destination_ae_title,
+           'image_count': image_count,
+           'integration_key': integration_key,
+           'medical_record_locator': medical_record_locator,
+           'modality': modality,
+           'node_id': node_id,
+           'patient_additional_history': patient_additional_history,
+           'patient_address': patient_address,
+           'patient_age': patient_age,
+           'patient_birth_date': patient_birth_date,
+           'patient_birth_time': patient_birth_time,
+           'patient_birthname': patient_birthname,
+           'patient_comments': patient_comments,
+           'patient_current_location': patient_current_location,
+           'patient_ethnic_group': patient_ethnic_group,
+           'patient_institution_residence': patient_institution_residence,
+           'patient_mother_birthname': patient_mother_birthname,
+           'patient_name': patient_name,
+           'patient_name_other': patient_name_other,
+           'patient_occupation': patient_occupation,
+           'patient_phone': patient_phone,
+           'patient_religious_preference': patient_religious_preference,
+           'patient_sex': patient_sex,
+           'patient_size': patient_size,
+           'patient_weight': patient_weight,
+           'patientid': patientid,
+           'patientid_other': patientid_other,
+           'phi_namespace': phi_namespace,
+           'referring_physician': referring_physician,
+           'serial_no': serial_no,
+           'source_ae_title': source_ae_title,
+           'storage_namespace': storage_namespace,
+           'study_date': study_date,
+           'study_description': study_description,
+           'study_time': study_time,
+           'study_uid': study_uid,
+           'thin': thin,
+           'uuid': uuid,
+        }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('ALREADY_EXISTS', None)] = AlreadyExists('The study already exists. The error_subtype holds the uuid of the study and error_data holds the data from the /study/get call')
+        errors_mapping[('INVALID_CREDENTIALS', None)] = InvalidCredentials('The sid or node credentials are invalid')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('INVALID_INTEGER', None)] = InvalidInteger('An invalid integer was passed. The error_subtype holds the name of the invalid integer')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NAMESPACE_NOT_FOUND', None)] = NamespaceNotFound('The namespace was not found')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The error_subtype holds the name of the key for the object that can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        query_data = {
+            'api': self._api,
+            'url': '/study/add',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def set(
+        self,
+        accession_number=None,
+        attachment_count=None,
+        customfield_param=None,
+        destination_ae_title=None,
+        find_order_uuid=None,
+        image_count=None,
+        integration_key=None,
+        medical_record_locator=None,
+        modality=None,
+        node_id=None,
+        patient_additional_history=None,
+        patient_address=None,
+        patient_age=None,
+        patient_birth_date=None,
+        patient_birth_time=None,
+        patient_birthname=None,
+        patient_comments=None,
+        patient_current_location=None,
+        patient_ethnic_group=None,
+        patient_institution_residence=None,
+        patient_mother_birthname=None,
+        patient_name=None,
+        patient_name_other=None,
+        patient_occupation=None,
+        patient_phone=None,
+        patient_religious_preference=None,
+        patient_sex=None,
+        patient_size=None,
+        patient_weight=None,
+        patientid=None,
+        patientid_other=None,
+        phi_namespace=None,
+        referring_physician=None,
+        seconds_to_ingest=None,
+        serial_no=None,
+        source_ae_title=None,
+        storage_namespace=None,
+        study_date=None,
+        study_description=None,
+        study_id=None,
+        study_time=None,
+        study_uid=None,
+        use_upload_permission=None,
+        uuid=None,
+    ):
+        """Set.
+        :param accession_number: DICOM tag (0008,0050) (optional)
+        :param attachment_count: Attachment count (optional)
+        :param customfield_param: Custom field(s), see notes in /study/add (optional)
+        :param destination_ae_title: The destination aetitle (optional)
+        :param find_order_uuid: UUID of the search record used to modify the study (optional)
+        :param image_count: Images in the study (optional)
+        :param integration_key: Integration key for the study (optional)
+        :param medical_record_locator: DICOM tag (0010,1090) (optional)
+        :param modality: DICOM tag (0008,0060) (optional)
+        :param node_id: If this is a thin study the gateway UUID to retrieve it from can be specified (optional)
+        :param patient_additional_history: DICOM tag (0010,21B0) (optional)
+        :param patient_address: DICOM tag (0010,1040) (optional)
+        :param patient_age: DICOM tag (0010,1010) (optional)
+        :param patient_birth_date: DICOM tag (0010,0030) (optional)
+        :param patient_birth_time: DICOM tag (0010,0032) (optional)
+        :param patient_birthname: DICOM tag (0010,1005) (optional)
+        :param patient_comments: DICOM tag (0010,4000) (optional)
+        :param patient_current_location: DICOM tag (0038,0300) (optional)
+        :param patient_ethnic_group: DICOM tag (0010,2160) (optional)
+        :param patient_institution_residence: DICOM tag (0038,0400) (optional)
+        :param patient_mother_birthname: DICOM tag (0010,1060) (optional)
+        :param patient_name: DICOM tag (0010,0010) (optional)
+        :param patient_name_other: DICOM tag (0010,1001) (optional)
+        :param patient_occupation: DICOM tag (0010,2180) (optional)
+        :param patient_phone: DICOM tag (0010,2154) (optional)
+        :param patient_religious_preference: DICOM tag (0010,21F0) (optional)
+        :param patient_sex: DICOM tag (0010,0040) (optional)
+        :param patient_size: DICOM tag (0010,1020) (optional)
+        :param patient_weight: DICOM tag (0010,1030) (optional)
+        :param patientid: DICOM tag (0010,0020) (optional)
+        :param patientid_other: DICOM tag (0010,1000) (optional)
+        :param phi_namespace: phi_namespace
+        :param referring_physician: DICOM tag (0008,0090) (optional)
+        :param seconds_to_ingest: Flag to re-calculate the seconds_to_ingest metric (optional)
+        :param serial_no: serial_no
+        :param source_ae_title: The source aetitle (optional)
+        :param storage_namespace: storage_namespace
+        :param study_date: DICOM tag (0008,0020) (optional)
+        :param study_description: DICOM tag (0008,1030) (optional)
+        :param study_id: study_id
+        :param study_time: DICOM tag (0008,0030) (optional)
+        :param study_uid: study_uid
+        :param use_upload_permission: Flag to use the upload permissions for the permissions check (optional)
+        :param uuid: uuid
+        """
+        request_data = {
+           'accession_number': accession_number,
+           'attachment_count': attachment_count,
+           'destination_ae_title': destination_ae_title,
+           'find_order_uuid': find_order_uuid,
+           'image_count': image_count,
+           'integration_key': integration_key,
+           'medical_record_locator': medical_record_locator,
+           'modality': modality,
+           'node_id': node_id,
+           'patient_additional_history': patient_additional_history,
+           'patient_address': patient_address,
+           'patient_age': patient_age,
+           'patient_birth_date': patient_birth_date,
+           'patient_birth_time': patient_birth_time,
+           'patient_birthname': patient_birthname,
+           'patient_comments': patient_comments,
+           'patient_current_location': patient_current_location,
+           'patient_ethnic_group': patient_ethnic_group,
+           'patient_institution_residence': patient_institution_residence,
+           'patient_mother_birthname': patient_mother_birthname,
+           'patient_name': patient_name,
+           'patient_name_other': patient_name_other,
+           'patient_occupation': patient_occupation,
+           'patient_phone': patient_phone,
+           'patient_religious_preference': patient_religious_preference,
+           'patient_sex': patient_sex,
+           'patient_size': patient_size,
+           'patient_weight': patient_weight,
+           'patientid': patientid,
+           'patientid_other': patientid_other,
+           'phi_namespace': phi_namespace,
+           'referring_physician': referring_physician,
+           'seconds_to_ingest': seconds_to_ingest,
+           'serial_no': serial_no,
+           'source_ae_title': source_ae_title,
+           'storage_namespace': storage_namespace,
+           'study_date': study_date,
+           'study_description': study_description,
+           'study_id': study_id,
+           'study_time': study_time,
+           'study_uid': study_uid,
+           'use_upload_permission': use_upload_permission,
+           'uuid': uuid,
+        }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_CREDENTIALS', None)] = InvalidCredentials('The sid or node credentials are invalid')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit this study')
+        errors_mapping[('PENDING_MUST_MATCH', None)] = PendingMustMatch('The study is pending a must match approval from storage and can not be edited in this state')
+        query_data = {
+            'api': self._api,
+            'url': '/study/set',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def delete(
+        self,
+        node_id=None,
+        phi_namespace=None,
+        serial_no=None,
+        storage_namespace=None,
+        study_uid=None,
+        uuid=None,
+    ):
+        """Delete.
+        :param node_id: node_id
+        :param phi_namespace: phi_namespace
+        :param serial_no: serial_no
+        :param storage_namespace: storage_namespace
+        :param study_uid: study_uid
+        :param uuid: uuid
+        """
+        request_data = {
+           'node_id': node_id,
+           'phi_namespace': phi_namespace,
+           'serial_no': serial_no,
+           'storage_namespace': storage_namespace,
+           'study_uid': study_uid,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete this study')
+        query_data = {
+            'api': self._api,
+            'url': '/study/delete',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def list(
+        self,
+        customfield_h=None,
+        extra=None,
+        fields=None,
+        limit_hl7=None,
+        permissions_diff=None,
+        template=None,
+    ):
+        """List.
+        :param customfield_h: Flag to return a customfield hash as detailed in /study/get (optional)
+        :param extra: Flag to return extra data as detailed in /study/get (optional)
+        :param fields: A JSON list of the study fields to return (optional)
+        :param limit_hl7: Limit the length of Hl7 list to return. Zero means no limit (optional)
+        :param permissions_diff: Flag to return only the permissions that differ from the namespace permissions (optional)
+        :param template: A JSON hash with name, account_id and language of the template to return (optional)
+        """
+        request_data = {
+           'customfield_h': customfield_h,
+           'extra': extra,
+           'fields': fields,
+           'limit.hl7': limit_hl7,
+           'permissions_diff': permissions_diff,
+           'template': template,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_TEMPLATE', None)] = InvalidTemplate('The template is invalid the error_subtype holds the detail')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        query_data = {
+            'api': self._api,
+            'url': '/study/list',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        query_data['paginated_field'] = 'studies'
+        return AsyncQueryOPSF(**query_data)
+    
+    def count(
+        self,
+    ):
+        """Count.
+        """
+        request_data = {
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        query_data = {
+            'api': self._api,
+            'url': '/study/count',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryOF(**query_data)
+    
+    def cfind(
+        self,
+        serial_no,
+        uuid,
+        entire_account=None,
+        is_available=None,
+    ):
+        """Cfind.
+        :param serial_no: The serial number of the node
+        :param uuid: The node id
+        :param entire_account: Flag to search the entire account rather than just the nodes namespace. (optional)
+        :param is_available: Flag to limit search to studies that are ready for viewing. (optional)
+        """
+        request_data = {
+           'entire_account': entire_account,
+           'is_available': is_available,
+           'serial_no': serial_no,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
+        errors_mapping[('RUNNING', None)] = Running('This cfind is currently in process')
+        query_data = {
+            'api': self._api,
+            'url': '/study/cfind',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        query_data['paginated_field'] = 'studies'
+        return AsyncQueryOPF(**query_data)
+    
+    def get(
+        self,
+        customfield_h=None,
+        extra=None,
+        fields=None,
+        full_hl7=None,
+        limit_hl7=None,
+        node_id=None,
+        permissions_diff=None,
+        phi_namespace=None,
+        serial_no=None,
+        storage_namespace=None,
+        study_uid=None,
+        uuid=None,
+    ):
+        """Get.
+        :param customfield_h: Flag to return a customfield hash as detailed below (optional)
+        :param extra: Flag to return extra data as detailed below (optional)
+        :param fields: A JSON list of the study fields to return (optional)
+        :param full_hl7: Flag to return the full hl7 record instead of just the uuid (optional)
+        :param limit_hl7: Limit the length of Hl7 list to return. Zero means no limit (optional)
+        :param node_id: node_id
+        :param permissions_diff: Flag to return only the permissions that differ from the namespace permissions (optional)
+        :param phi_namespace: phi_namespace
+        :param serial_no: serial_no
+        :param storage_namespace: storage_namespace
+        :param study_uid: study_uid
+        :param uuid: uuid
+        """
+        request_data = {
+           'customfield_h': customfield_h,
+           'extra': extra,
+           'fields': fields,
+           'full_hl7': full_hl7,
+           'limit.hl7': limit_hl7,
+           'node_id': node_id,
+           'permissions_diff': permissions_diff,
+           'phi_namespace': phi_namespace,
+           'serial_no': serial_no,
+           'storage_namespace': storage_namespace,
+           'study_uid': study_uid,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to access this study')
+        query_data = {
+            'api': self._api,
+            'url': '/study/get',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def permissions(
+        self,
+        uuid,
+    ):
+        """Permissions.
+        :param uuid: The study uuid
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to access this study')
+        query_data = {
+            'api': self._api,
+            'url': '/study/permissions',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def exists(
+        self,
+        account_id=None,
+        phi_namespace=None,
+        storage_namespace=None,
+        study_uid=None,
+        uuid=None,
+    ):
+        """Exists.
+        :param account_id: account_id
+        :param phi_namespace: phi_namespace
+        :param storage_namespace: storage_namespace
+        :param study_uid: study_uid
+        :param uuid: uuid
+        """
+        request_data = {
+           'account_id': account_id,
+           'phi_namespace': phi_namespace,
+           'storage_namespace': storage_namespace,
+           'study_uid': study_uid,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        query_data = {
+            'api': self._api,
+            'url': '/study/exists',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def push(
+        self,
+        batch_no,
+        destination_id,
+        ping,
+        uuid,
+    ):
+        """Push.
+        :param batch_no: The batch number if pushing to a CD burner
+        :param destination_id: The destination to push it to
+        :param ping: Flag to send the ping job back in this call
+        :param uuid: The study uuid
+        """
+        request_data = {
+           'batch_no': batch_no,
+           'destination_id': destination_id,
+           'ping': ping,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or destination can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to push this study')
+        errors_mapping[('NOT_READY', None)] = NotReady('The study is not ready for pushing')
+        errors_mapping[('PENDING', None)] = Pending('There is already a pending push job')
+        query_data = {
+            'api': self._api,
+            'url': '/study/push',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def push_hl7(
+        self,
+        destination_id,
+        uuid,
+        hl7_id=None,
+        hl7_template_id=None,
+        once=None,
+    ):
+        """Push hl7.
+        :param destination_id: The destination to push it to
+        :param uuid: The study uuid
+        :param hl7_id: HL7 message to use in the template (optional)
+        :param hl7_template_id: The HL7 template to use (optional)
+        :param once: Flag that this message should only be sent a maximum of one time (optional)
+        """
+        request_data = {
+           'destination_id': destination_id,
+           'hl7_id': hl7_id,
+           'hl7_template_id': hl7_template_id,
+           'once': once,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study, destination, template or hl7 message can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to push this study')
+        errors_mapping[('NO_HL7_SUPPORT', None)] = NoHl7Support('The destination doesn&#39;t support HL7')
+        query_data = {
+            'api': self._api,
+            'url': '/study/push/hl7',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def pdf_hl7(
+        self,
+        hl7_id,
+        uuid,
+    ):
+        """Pdf hl7.
+        :param hl7_id: HL7 message to create the PDF report for
+        :param uuid: The study uuid
+        """
+        request_data = {
+           'hl7_id': hl7_id,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        query_data = {
+            'api': self._api,
+            'url': '/study/pdf/hl7',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def fax_hl7(
+        self,
+        hl7_id,
+        number,
+        uuid,
+    ):
+        """Fax hl7.
+        :param hl7_id: HL7 message to create the PDF report for
+        :param number: The fax number to send the PDF report to
+        :param uuid: The study uuid
+        """
+        request_data = {
+           'hl7_id': hl7_id,
+           'number': number,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_PHONE', None)] = InvalidPhone('The fax number is invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or HL7 message can not be found')
+        errors_mapping[('PDF_FAILED', None)] = PdfFailed('The PDF report failed to generate')
+        query_data = {
+            'api': self._api,
+            'url': '/study/fax/hl7',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def cmove(
+        self,
+        aetitle,
+        ping,
+        serial_no,
+        study_uid,
+        uuid,
+        detail=None,
+    ):
+        """Cmove.
+        :param aetitle: The aetitle to send to
+        :param ping: Flag to send the ping job back in this call
+        :param serial_no: The serial number of the node
+        :param study_uid: The study uid
+        :param uuid: The node id
+        :param detail: Additional detail to send on the /node/ping (optional)
+        """
+        request_data = {
+           'aetitle': aetitle,
+           'detail': detail,
+           'ping': ping,
+           'serial_no': serial_no,
+           'study_uid': study_uid,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('DESTINATION_NOT_FOUND', None)] = DestinationNotFound('The destination can not be found')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
+        errors_mapping[('NOT_READY', None)] = NotReady('The study is not ready for pushing')
+        errors_mapping[('PENDING', None)] = Pending('There is already a pending push job')
+        errors_mapping[('RETRIEVE', None)] = Retrieve('A thin study retrieval error. The error_subtype holds further detail')
+        errors_mapping[('STUDY_NOT_FOUND', None)] = StudyNotFound('The study can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/study/cmove',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def node_can_remove(
+        self,
+        serial_no,
+        study_uid,
+        uuid,
+    ):
+        """Node can remove.
+        :param serial_no: The serial number of the node
+        :param study_uid: The study uid
+        :param uuid: The node id
+        """
+        request_data = {
+           'serial_no': serial_no,
+           'study_uid': study_uid,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
+        errors_mapping[('STUDY_NOT_FOUND', None)] = StudyNotFound('The study can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/study/node/can/remove',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def share_who(
+        self,
+        type,
+        uuid,
+    ):
+        """Share who.
+        :param type: Type of objects you want (account|location|group|user)
+        :param uuid: The study uuid
+        """
+        request_data = {
+           'type': type,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or share object can not be found. The error_subtype holds a the name of the key that can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to share this study')
+        query_data = {
+            'api': self._api,
+            'url': '/study/share/who',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def share(
+        self,
+        account_id=None,
+        charge_authorized=None,
+        charge_modality=None,
+        customfield_param=None,
+        email=None,
+        group_id=None,
+        integration_key=None,
+        location_id=None,
+        masshiway=None,
+        message=None,
+        npi=None,
+        phi_namespace=None,
+        rsna=None,
+        share_code=None,
+        storage_namespace=None,
+        study_request_id=None,
+        study_uid=None,
+        user_id=None,
+        uuid=None,
+    ):
+        """Share.
+        :param account_id: account_id
+        :param charge_authorized: Flag that the sender authorized charging for this share (optional)
+        :param charge_modality: Modality of the study the charge was authorized for (optional)
+        :param customfield_param: Custom field(s) to apply to the shared study (optional)
+        :param email: email
+        :param group_id: group_id
+        :param integration_key: Integration key to tag the share with (optional)
+        :param location_id: location_id
+        :param masshiway: masshiway
+        :param message: Message to the recipient (optional)
+        :param npi: npi
+        :param phi_namespace: phi_namespace
+        :param rsna: rsna
+        :param share_code: share_code
+        :param storage_namespace: storage_namespace
+        :param study_request_id: study_request_id
+        :param study_uid: study_uid
+        :param user_id: user_id
+        :param uuid: uuid
+        """
+        request_data = {
+           'account_id': account_id,
+           'charge_authorized': charge_authorized,
+           'charge_modality': charge_modality,
+           'email': email,
+           'group_id': group_id,
+           'integration_key': integration_key,
+           'location_id': location_id,
+           'masshiway': masshiway,
+           'message': message,
+           'npi': npi,
+           'phi_namespace': phi_namespace,
+           'rsna': rsna,
+           'share_code': share_code,
+           'storage_namespace': storage_namespace,
+           'study_request_id': study_request_id,
+           'study_uid': study_uid,
+           'user_id': user_id,
+           'uuid': uuid,
+        }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_EMAIL', None)] = InvalidEmail('An invalid email was passed for an email share')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('INVALID_NPI', None)] = InvalidNpi('An invalid NPI was passed for a NPI share')
+        errors_mapping[('INVALID_PARAMETERS', None)] = InvalidParameters('Only pass a account_id or a location_id or a group_id or a user_id or a share code or an email')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or share object can not be found. The error_subtype holds a the name of the key that can not be found')
+        errors_mapping[('NOT_HASH', None)] = NotHash('The field is not a JSON hash. The error_subtype holds the name of the field')
+        errors_mapping[('NOT_MATCHED', None)] = NotMatched('This study does not match the study request criteria')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to share this study')
+        errors_mapping[('PHANTOM', None)] = Phantom('This is a phantom study')
+        errors_mapping[('REQUEST_CLOSED', None)] = RequestClosed('The study request is closed')
+        errors_mapping[('SHARE_FAILED', 'DECLINED')] = ShareFailed('The charge card was declined.')
+        errors_mapping[('SHARE_FAILED', 'NO_CARD')] = ShareFailed('The user does not have a card on file.')
+        errors_mapping[('SHARE_FAILED', 'NO_CHARGE_MODALITY')] = ShareFailed('The charge modality is required if charge_authorized is set and the charging is by modality.')
+        errors_mapping[('SHARE_FAILED', 'NO_DESTINATION')] = ShareFailed('The study can&#39;t be shared with a deleted object.')
+        errors_mapping[('SHARE_FAILED', 'NO_DUP_SHARE')] = ShareFailed('The destination namespace has the no_dup_share flag turned on and this study is a duplicate of an existing study in the namespace.')
+        errors_mapping[('SHARE_FAILED', 'SAME')] = ShareFailed('The study can&#39;t be shared into the same namespace.')
+        query_data = {
+            'api': self._api,
+            'url': '/study/share',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def share_stop(
+        self,
+        uuid,
+        account_id=None,
+        group_id=None,
+        location_id=None,
+        user_id=None,
+        user_invite_share_id=None,
+    ):
+        """Share stop.
+        :param uuid: The study uuid
+        :param account_id: account_id
+        :param group_id: group_id
+        :param location_id: location_id
+        :param user_id: user_id
+        :param user_invite_share_id: user_invite_share_id
+        """
+        request_data = {
+           'account_id': account_id,
+           'group_id': group_id,
+           'location_id': location_id,
+           'user_id': user_id,
+           'user_invite_share_id': user_invite_share_id,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_PARAMETERS', None)] = InvalidParameters('Only pass a account_id or a location_id or a group_id or a user_id')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or share object can not be found. The error_subtype holds a the name of the key that can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to stop sharing this study')
+        query_data = {
+            'api': self._api,
+            'url': '/study/share/stop',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def share_list(
+        self,
+        uuid,
+        name=None,
+    ):
+        """Share list.
+        :param uuid: The study uuid
+        :param name: Flag to return a hash with both the uuid and name of the object (optional)
+        """
+        request_data = {
+           'name': name,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view this list')
+        query_data = {
+            'api': self._api,
+            'url': '/study/share/list',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def approve(
+        self,
+        uuid,
+        delay=None,
+        must_match=None,
+    ):
+        """Approve.
+        :param uuid: The study uuid
+        :param delay: Number of seconds to delay showing the study as approved and running routing and events on it (optional)
+        :param must_match: A JSON hash of study field names and values that must match before showing the study as approved and running routing and events on it (optional)
+        """
+        request_data = {
+           'delay': delay,
+           'must_match': must_match,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('DELAY_OR_MATCH', None)] = DelayOrMatch('You can either delay or match, not both')
+        errors_mapping[('INVALID_DELAY', None)] = InvalidDelay('A delay must be between 0 and 600 seconds')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('An invalid must match field was passed. The error_subtype holds the name of the field')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to approve this study')
+        query_data = {
+            'api': self._api,
+            'url': '/study/approve',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def reject(
+        self,
+        uuid,
+        message=None,
+    ):
+        """Reject.
+        :param uuid: The study uuid
+        :param message: Message to send to the person who shared the study (optional)
+        """
+        request_data = {
+           'message': message,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to approve this study')
+        query_data = {
+            'api': self._api,
+            'url': '/study/reject',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def audit(
+        self,
+        action,
+        detail,
+        phi_namespace=None,
+        storage_namespace=None,
+        study_uid=None,
+        uuid=None,
+    ):
+        """Audit.
+        :param action: The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|IMAGE_DELETED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)
+        :param detail: Additional information
+        :param phi_namespace: The phi namespace of the study (optional)
+        :param storage_namespace: The storage namespace of the study (optional if uuid is passed)
+        :param study_uid: The v3 storage uid of the study (optional if uuid is passed)
+        :param uuid: The id of the study (optional if study_uid and storage_namespace are passed)
+        """
+        request_data = {
+           'action': action,
+           'detail': detail,
+           'phi_namespace': phi_namespace,
+           'storage_namespace': storage_namespace,
+           'study_uid': study_uid,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_ACTION', None)] = InvalidAction('An invalid action was passed')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/study/audit',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def star(
+        self,
+        star,
+        uuid,
+    ):
+        """Star.
+        :param star: Star flag set on or off (1|0)
+        :param uuid: The id of the study
+        """
+        request_data = {
+           'star': star,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to star this study')
+        query_data = {
+            'api': self._api,
+            'url': '/study/star',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def report_detail(
+        self,
+        account_id,
+        limit=None,
+    ):
+        """Report detail.
+        :param account_id: Limit to studies in the passed account
+        :param limit: Maximum size of the report. The default is 30,000 rows. If the report will be bigger than this an error will be returned (optional)
+        """
+        request_data = {
+           'account_id': account_id,
+           'limit': limit,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('REPORT_ERROR', None)] = ReportError('Unable to start the report')
+        query_data = {
+            'api': self._api,
+            'url': '/study/report/detail',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryOSF(**query_data)
+    
+    def report_series(
+        self,
+        email,
+        hours,
+        namespace_id,
+        limit=None,
+    ):
+        """Report series.
+        :param email: Send the report to this email address(es) when it is done
+        :param hours: Report on studies acquired within the last number of hours
+        :param namespace_id: Namespace to run the report on
+        :param limit: Maximum size of the report. The default is 30,000 studies. If the report will be bigger than this an error will be returned (optional)
+        """
+        request_data = {
+           'email': email,
+           'hours': hours,
+           'limit': limit,
+           'namespace_id': namespace_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('REPORT_ERROR', None)] = ReportError('Unable to start the report')
+        query_data = {
+            'api': self._api,
+            'url': '/study/report/series',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def viewer_settings(
+        self,
+        phi_namespace=None,
+        storage_namespace=None,
+        study_id=None,
+        study_uid=None,
+    ):
+        """Viewer settings.
+        :param phi_namespace: phi_namespace
+        :param storage_namespace: storage_namespace
+        :param study_id: study_id
+        :param study_uid: study_uid
+        """
+        request_data = {
+           'phi_namespace': phi_namespace,
+           'storage_namespace': storage_namespace,
+           'study_id': study_id,
+           'study_uid': study_uid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/study/viewer/settings',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def viewer3_settings(
+        self,
+        phi_namespace=None,
+        settings=None,
+        storage_namespace=None,
+        study_id=None,
+        study_uid=None,
+    ):
+        """Viewer3 settings.
+        :param phi_namespace: phi_namespace
+        :param settings: A JSON list of user settings set via /setting/set to return (optional)
+        :param storage_namespace: storage_namespace
+        :param study_id: study_id
+        :param study_uid: study_uid
+        """
+        request_data = {
+           'phi_namespace': phi_namespace,
+           'settings': settings,
+           'storage_namespace': storage_namespace,
+           'study_id': study_id,
+           'study_uid': study_uid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/study/viewer3/settings',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def status_set(
+        self,
+        new,
+        old,
+        study_id,
+    ):
+        """Status set.
+        :param new: The new study status value
+        :param old: The old study status value
+        :param study_id: Study uuid
+        """
+        request_data = {
+           'new': new,
+           'old': old,
+           'study_id': study_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_TAG', None)] = InvalidTag('The study status new value is not a valid value')
+        errors_mapping[('LOCKED', None)] = Locked('Another user has locked this study')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to set the status for this study')
+        errors_mapping[('SINGLETON', None)] = Singleton('The stage is a singleton stage and the user already has a locked study')
+        errors_mapping[('STALE', None)] = Stale('The study status you have is stale')
+        query_data = {
+            'api': self._api,
+            'url': '/study/status/set',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def status_locks(
+        self,
+    ):
+        """Status locks.
+        """
+        request_data = {
+        }
+	
+        errors_mapping = {}
+        query_data = {
+            'api': self._api,
+            'url': '/study/status/locks',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        query_data['paginated_field'] = 'studies'
+        return AsyncQueryOP(**query_data)
+    
+    def status_history(
+        self,
+        study_id,
+    ):
+        """Status history.
+        :param study_id: Study uuid
+        """
+        request_data = {
+           'study_id': study_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the status for this study')
+        query_data = {
+            'api': self._api,
+            'url': '/study/status/history',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def move(
+        self,
+        namespace_id,
+        uuid,
+    ):
+        """Move.
+        :param namespace_id: The namespace id
+        :param uuid: The study id
+        """
+        request_data = {
+           'namespace_id': namespace_id,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('ALREADY_EXISTS', None)] = AlreadyExists('The study already exists in the destination namespace')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or namespace was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to move the study to this namespace')
+        query_data = {
+            'api': self._api,
+            'url': '/study/move',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def duplicate(
+        self,
+        uuid,
+        include_attachments=None,
+        namespace_id=None,
+        overwrite=None,
+        study_request_id=None,
+    ):
+        """Duplicate.
+        :param uuid: The study id
+        :param include_attachments: Also duplicate attachments (optional)
+        :param namespace_id: namespace_id
+        :param overwrite: Flag if you want to overwrite an existing study in the destination namespace (optional)
+        :param study_request_id: study_request_id
+        """
+        request_data = {
+           'include_attachments': include_attachments,
+           'namespace_id': namespace_id,
+           'overwrite': overwrite,
+           'study_request_id': study_request_id,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('ALREADY_EXISTS', None)] = AlreadyExists('The study already exists in the destination namespace')
+        errors_mapping[('FAILED', None)] = Failed('The storage call failed to run')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or namespace was not found.')
+        errors_mapping[('NOT_MATCHED', None)] = NotMatched('This study does not match the study request criteria')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to duplicate the study to this namespace')
+        errors_mapping[('NO_DESTINATION', None)] = NoDestination('The study can&#39;t be duplicated to a deleted object&#39;s namespace')
+        errors_mapping[('REQUEST_CLOSED', None)] = RequestClosed('The study request is closed')
+        query_data = {
+            'api': self._api,
+            'url': '/study/duplicate',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def split(
+        self,
+        namespace_id,
+        no_split,
+        uuid,
+    ):
+        """Split.
+        :param namespace_id: The namespace id to split it into
+        :param no_split: Do not split on the series just create a new study with a study UID
+        :param uuid: The study id
+        """
+        request_data = {
+           'namespace_id': namespace_id,
+           'no_split': no_split,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_AVAILABLE', None)] = NotAvailable('The study is not available.')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or namespace was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to split the study to this namespace')
+        errors_mapping[('RECENT_NAMESPACE_SPLIT', None)] = RecentNamespaceSplit('The study was the result of a split in this namespace within the last 24 hours')
+        errors_mapping[('RUNNING', None)] = Running('The split job is currently running')
+        query_data = {
+            'api': self._api,
+            'url': '/study/split',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def freeze(
+        self,
+        thaw,
+        uuid,
+    ):
+        """Freeze.
+        :param thaw: Flag to thaw a frozen study
+        :param uuid: The study id
+        """
+        request_data = {
+           'thaw': thaw,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('ALREADY', None)] = Already('The study is already frozen or thawed')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_AVAILABLE', None)] = NotAvailable('The study is not available.')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to freeze or thaw the study')
+        query_data = {
+            'api': self._api,
+            'url': '/study/freeze',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def manual_route(
+        self,
+        route_id,
+        uuid,
+        email=None,
+        message=None,
+    ):
+        """Manual route.
+        :param route_id: The routing rule id
+        :param uuid: The study id
+        :param email: The email to share with if the rule has a share_email action with the USER_ENTRY token (optional)
+        :param message: The share message for the email share (optional)
+        """
+        request_data = {
+           'email': email,
+           'message': message,
+           'route_id': route_id,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_EMAIL', None)] = InvalidEmail('An invalid email address was passed')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or routing rule was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to manually route the study')
+        errors_mapping[('ROUTE_NOT_MATCHED', None)] = RouteNotMatched('The study does not match the route criteria')
+        query_data = {
+            'api': self._api,
+            'url': '/study/manual/route',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def find_order(
+        self,
+        uuid,
+        accession_number=None,
+        patient_name=None,
+        patientid=None,
+    ):
+        """Find order.
+        :param uuid: The study id
+        :param accession_number: accession_number
+        :param patient_name: patient_name
+        :param patientid: patientid
+        """
+        request_data = {
+           'accession_number': accession_number,
+           'patient_name': patient_name,
+           'patientid': patientid,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to find orders for this study')
+        query_data = {
+            'api': self._api,
+            'url': '/study/find/order',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        query_data['paginated_field'] = 'orders'
+        return AsyncQueryOP(**query_data)
+    
+    def archive(
+        self,
+        uuid,
+    ):
+        """Archive.
+        :param uuid: The study id
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('ALREADY_THIN', None)] = AlreadyThin('This is already a thin study')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('NO_FRESH_ARCHIVE', None)] = NoFreshArchive('A fresh archive copy of the study does not exist')
+        query_data = {
+            'api': self._api,
+            'url': '/study/archive',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def retrieve(
+        self,
+        uuid,
+    ):
+        """Retrieve.
+        :param uuid: The study id
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('MISSING_INFO', None)] = MissingInfo('The study needs a study_uid and an accession number')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('NOT_THIN', None)] = NotThin('This is not a thin study')
+        errors_mapping[('NO_QUERY_DESTINATION', None)] = NoQueryDestination('No query retrieve destination for a node that creates phantoms is available')
+        query_data = {
+            'api': self._api,
+            'url': '/study/retrieve',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def comment_add(
+        self,
+        body,
+        study_id,
+    ):
+        """Comment add.
+        :param body: The comment body
+        :param study_id: The study id
+        """
+        request_data = {
+           'body': body,
+           'study_id': study_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        query_data = {
+            'api': self._api,
+            'url': '/study/comment/add',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def comment_delete(
+        self,
+        uuid,
+    ):
+        """Comment delete.
+        :param uuid: The comment id
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The comment was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        query_data = {
+            'api': self._api,
+            'url': '/study/comment/delete',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def comment_get(
+        self,
+        uuid,
+    ):
+        """Comment get.
+        :param uuid: The comment id
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The comment was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        query_data = {
+            'api': self._api,
+            'url': '/study/comment/get',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def validate(
+        self,
+        uuid,
+        validate_id,
+        series=None,
+    ):
+        """Validate.
+        :param uuid: The study id
+        :param validate_id: The validation id
+        :param series: Only validate the specified series (optional)
+        """
+        request_data = {
+           'series': series,
+           'uuid': uuid,
+           'validate_id': validate_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or validation was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('UNABLE_TO_VALIDATE', None)] = UnableToValidate('The study is not available or did not return the data needed to validate')
+        query_data = {
+            'api': self._api,
+            'url': '/study/validate',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def attach_customfields(
+        self,
+        uuid,
+        report_name=None,
+    ):
+        """Attach customfields.
+        :param uuid: The study id
+        :param report_name: The report name (optional defaults to customfields.txt)
+        """
+        request_data = {
+           'report_name': report_name,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_AVAILABLE', None)] = NotAvailable('The study is available')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        query_data = {
+            'api': self._api,
+            'url': '/study/attach/customfields',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def external_viewer(
+        self,
+        redirect,
+        uuid,
+    ):
+        """External viewer.
+        :param redirect: A flag to return an HTTP redirect to the viewer URL rather than the JSON structure
+        :param uuid: The study id
+        """
+        request_data = {
+           'redirect': redirect,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_AVAILABLE', None)] = NotAvailable('The study is not available')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('UNABLE_TO_GENERATE', None)] = UnableToGenerate('The link could not be successfully generated')
+        query_data = {
+            'api': self._api,
+            'url': '/study/external/viewer',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def question(
+        self,
+        detail,
+        question,
+        uuid,
+    ):
+        """Question.
+        :param detail: Optional detail to pass through to the AI stack
+        :param question: The question to ask or a JSON array of questions to ask
+        :param uuid: The study id
+        """
+        request_data = {
+           'detail': detail,
+           'question': question,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('IN_PROCESS', None)] = InProcess('The question is currently in process')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NODE_NOT_SETUP', None)] = NodeNotSetup('A node needs to be attached to the study namespace for this question')
+        errors_mapping[('NOT_ENABLED', None)] = NotEnabled('The account does not have the ai_QUESTION customfield')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or question was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        query_data = {
+            'api': self._api,
+            'url': '/study/question',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def dicomdata_load(
+        self,
+        uuid,
+    ):
+        """Dicomdata load.
+        :param uuid: The study id
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_AVAILABLE', None)] = NotAvailable('The study is not available in storage')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study or question was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('RUNNING', None)] = Running('A load job is already running')
+        query_data = {
+            'api': self._api,
+            'url': '/study/dicomdata/load',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def timing_event(
+        self,
+        event,
+        storage_namespace,
+        study_uid,
+        node_id=None,
+        serial_no=None,
+        size=None,
+    ):
+        """Timing event.
+        :param event: The event
+        :param storage_namespace: The storage namespace
+        :param study_uid: The study uid
+        :param node_id: node_id
+        :param serial_no: serial_no
+        :param size: The number of bytes associated with the event (optional)
+        """
+        request_data = {
+           'event': event,
+           'node_id': node_id,
+           'serial_no': serial_no,
+           'size': size,
+           'storage_namespace': storage_namespace,
+           'study_uid': study_uid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        query_data = {
+            'api': self._api,
+            'url': '/study/timing/event',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def timing_log(
+        self,
+        uuid,
+    ):
+        """Timing log.
+        :param uuid: The study uuid
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        query_data = {
+            'api': self._api,
+            'url': '/study/timing/log',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        query_data['paginated_field'] = 'events'
+        return AsyncQueryOPS(**query_data)
+    
+    def sync(
+        self,
+        image_count=None,
+        node_id=None,
+        phi_namespace=None,
+        serial_no=None,
+        storage_namespace=None,
+        study_id=None,
+        study_uid=None,
+    ):
+        """Sync.
+        :param image_count: Update the study image count and then sync (optional)
+        :param node_id: node_id
+        :param phi_namespace: phi_namespace
+        :param serial_no: serial_no
+        :param storage_namespace: storage_namespace
+        :param study_id: study_id
+        :param study_uid: study_uid
+        """
+        request_data = {
+           'image_count': image_count,
+           'node_id': node_id,
+           'phi_namespace': phi_namespace,
+           'serial_no': serial_no,
+           'storage_namespace': storage_namespace,
+           'study_id': study_id,
+           'study_uid': study_uid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('BLOCKED', None)] = Blocked('This is a repeat sync which is not allowed')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to sync this study')
+        query_data = {
+            'api': self._api,
+            'url': '/study/sync',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def take(
+        self,
+        namespace_id,
+    ):
+        """Take.
+        :param namespace_id: The namespace id to take a study into
+        """
+        request_data = {
+           'namespace_id': namespace_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOTHING_TO_TAKE', None)] = NothingToTake('There is no unshared studies in the source namespace')
+        errors_mapping[('NOT_ENABLED', None)] = NotEnabled('the feature is not enabled check the enable_take_study_feature and take_study_source_namespace account settings')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to take a study in this account')
+        query_data = {
+            'api': self._api,
+            'url': '/study/take',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def request_add(
+        self,
+        account_id,
+        comments,
+        namespace_id,
+        patient_birth_date,
+        patient_first_name,
+        patient_last_name,
+        modality=None,
+        patient_sex=None,
+        patientid=None,
+        study_date_end=None,
+        study_date_start=None,
+        study_description=None,
+    ):
+        """Request add.
+        :param account_id: The account id to send the study request to
+        :param comments: Free form request comments
+        :param namespace_id: The namespace id requested studies to put (share or duplicate) into
+        :param patient_birth_date: The patient date of birth a study should match
+        :param patient_first_name: The patient first name a study should match
+        :param patient_last_name: The patient last name a study should match
+        :param modality: The modality a study should match (optional)
+        :param patient_sex: The patient sex a study should match (optional)
+        :param patientid: The MRN a study should match (optional)
+        :param study_date_end: The DICOM date that a study date should be less or equal to (optional)
+        :param study_date_start: The DICOM date that a study date should be greater or equal to (optional)
+        :param study_description: The string a study description should partially match (optional)
+        """
+        request_data = {
+           'account_id': account_id,
+           'comments': comments,
+           'modality': modality,
+           'namespace_id': namespace_id,
+           'patient_birth_date': patient_birth_date,
+           'patient_first_name': patient_first_name,
+           'patient_last_name': patient_last_name,
+           'patient_sex': patient_sex,
+           'patientid': patientid,
+           'study_date_end': study_date_end,
+           'study_date_start': study_date_start,
+           'study_description': study_description,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('ALREADY', None)] = Already('An active (pending or in progress) study request with the same study criteria and the same namespace/account combination already exists')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace or account was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to request a study into this namespace')
+        query_data = {
+            'api': self._api,
+            'url': '/study/request/add',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def request_get(
+        self,
+        uuid,
+    ):
+        """Request get.
+        :param uuid: The study request uuid
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study request was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to access this study request')
+        query_data = {
+            'api': self._api,
+            'url': '/study/request/get',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def request_match(
+        self,
+        study_request_id,
+    ):
+        """Request match.
+        :param study_request_id: The study request uuid
+        """
+        request_data = {
+           'study_request_id': study_request_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study request was not found')
+        errors_mapping[('REQUEST_CLOSED', None)] = RequestClosed('The request is not active (pending or in progress)')
+        query_data = {
+            'api': self._api,
+            'url': '/study/request/match',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def revive(
+        self,
+        uuid,
+    ):
+        """Revive.
+        :param uuid: The study uuid
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('CAN_NOT_REVIVE', None)] = CanNotRevive('The study can not be revived')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The deleted study can not be found')
+        errors_mapping[('NOT_SYSADMIN_OR_SUPPORT', None)] = NotSysadminOrSupport('The user is not a sysadmin or support user')
+        query_data = {
+            'api': self._api,
+            'url': '/study/revive',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
     

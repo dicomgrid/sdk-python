@@ -250,3 +250,26 @@ class TestStudy:
         ) \
             .first()
         assert study
+
+    def test_study_list_get(
+        self,
+        api,
+        account,
+        readonly_study,
+    ):
+        """Test study list get."""
+        get_result = api \
+            .Study \
+            .list() \
+            .set_rows_in_page(5000) \
+            .filter_by(
+                Filter(
+                    'phi_namespace',
+                    FilterCondition.equals,
+                    account.account.namespace_id,
+                ),
+            ) \
+            .get()
+        assert 'more' in get_result
+        assert 'studies' in get_result
+        assert 'page' in get_result

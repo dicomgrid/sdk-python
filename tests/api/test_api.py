@@ -1,8 +1,12 @@
+from threading import Thread
+from time import monotonic
+
 import pytest
 import requests
 from dynaconf import settings
 
 from ambra_sdk.api import Api
+from ambra_sdk.api.base_api import RateLimit, RateLimits
 from ambra_sdk.exceptions.service import InvalidCredentials
 
 
@@ -52,6 +56,7 @@ class TestApi:
         api = Api.with_creds(url, username, password)
         with pytest.raises(InvalidCredentials):
             api.get_new_sid()
+        api.logout()
 
     def test_logout(self, api):
         """Test logout."""
@@ -156,6 +161,9 @@ class TestApi:
                 resp = requests.Response()
                 resp._content = content
                 resp.status_code = 200
+                resp.headers = {
+                    'content-type': 'application/json',
+                }
                 return resp
             assert 'service_header' in r.headers
             assert r.headers['service_header'] == 'value'
@@ -186,6 +194,9 @@ class TestApi:
             resp = requests.Response()
             resp._content = content
             resp.status_code = 200
+            resp.headers = {
+                'content-type': 'application/json',
+            }
             return resp
 
         api = Api.with_creds(  # NOQA:S106
@@ -196,3 +207,67 @@ class TestApi:
         )
         requests_mock.add_matcher(matcher)
         api.get_new_sid()
+
+    def test__wait_for_service_request(self):
+        """Test wait for service request."""
+        api = Api.with_creds(  # NOQA:S106
+            username='username',
+            url='http://127.0.0.1',
+            password='pass',
+        )
+        assert api._rate_limits
+        assert api._rate_limits_lock
+        api._wait_for_service_request('')
+        assert api._last_request_time
+        assert api._last_call_period
+
+        now = monotonic()
+        api._last_request_time = now
+        api._last_call_period = 2.0  # 2 seconds
+        api._wait_for_service_request('')
+        assert monotonic() - now > 2.0
+
+    def test__wait_for_service_request_in_threads(self):
+        """Test wait for service request in threads."""
+        api = Api.with_creds(  # NOQA:S106
+            username='username',
+            url='http://127.0.0.1',
+            password='pass',
+            rate_limits=RateLimits(
+                default=RateLimit(1, 1),
+                get_limit=RateLimit(2, 1),
+                special=None,
+            ),
+        )
+        threads = []
+        now = monotonic()
+        threads_n = 3
+        for _ in range(threads_n):  # NOQA:WPS122
+            thread = Thread(
+                target=api._wait_for_service_request,
+                args=('some_url', ),
+            )
+            threads.append(thread)
+            thread.start()
+        for thread in threads:  # NOQA:WPS440
+            thread.join()
+        spent_time = monotonic() - now
+        assert spent_time > (threads_n - 1) * 1  # NOQA:WPS345
+        assert spent_time < (threads_n + 1) * 1    # NOQA:WPS345
+
+        threads = []
+        now = monotonic()
+        threads_n = 3
+        for _ in range(threads_n):  # NOQA:WPS122
+            thread = Thread(  # NOQA:WPS440
+                target=api._wait_for_service_request,
+                args=('some_url/get', ),
+            )
+            threads.append(thread)
+            thread.start()
+        for thread in threads:  # NOQA:WPS440
+            thread.join()
+
+        spent_time = monotonic() - now
+        assert spent_time > (threads_n - 1) * 0.5
+        assert spent_time < (threads_n + 1) * 1  # NOQA:WPS345

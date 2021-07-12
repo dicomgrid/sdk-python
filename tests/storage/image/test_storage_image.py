@@ -52,7 +52,7 @@ class TestStorageImage:
     def test_upload_study(self, upload_study):
         """Test uploading study path."""
         dicom_path = Path(__file__) \
-            .parents[1] \
+            .parents[2] \
             .joinpath('dicoms', 'anonymize')
         study = upload_study(dicom_path)
         study_uid = '1.2.840.10008.1.142353.149743743.367518058.1727281618'  # NOQA:E501
@@ -122,7 +122,7 @@ class TestStorageImageWrap:
     def test_wrap(self, api, readonly_study):
         """Test wrap method."""
         image_path = Path(__file__) \
-            .parents[1] \
+            .parents[2] \
             .joinpath('images', 'logo.png')
         engine_fqdn = readonly_study.engine_fqdn
         storage_namespace = readonly_study.storage_namespace
@@ -142,7 +142,7 @@ class TestStorageImageWrap:
         Upload file with filename
         """
         image_path = Path(__file__) \
-            .parents[1] \
+            .parents[2] \
             .joinpath('images', 'logo.png')
         engine_fqdn = readonly_study.engine_fqdn
         storage_namespace = readonly_study.storage_namespace
@@ -166,7 +166,7 @@ class TestStorageImageWrap:
         Upload file with filename and contenttype
         """
         image_path = Path(__file__) \
-            .parents[1] \
+            .parents[2] \
             .joinpath('images', 'logo.png')
         engine_fqdn = readonly_study.engine_fqdn
         storage_namespace = readonly_study.storage_namespace

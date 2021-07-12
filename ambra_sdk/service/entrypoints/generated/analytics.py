@@ -11,6 +11,7 @@ from ambra_sdk.exceptions.service import MissingFields
 from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import NotPermitted
 from ambra_sdk.service.query import QueryO
+from ambra_sdk.service.query import AsyncQueryO
 
 class Analytics:
     """Analytics."""
@@ -204,4 +205,199 @@ class Analytics:
             'required_sid': True,
         }
         return QueryO(**query_data)
+    
+
+
+class AsyncAnalytics:
+    """AsyncAnalytics."""
+
+    def __init__(self, api):
+        self._api = api
+
+    
+    def study(
+        self,
+        count,
+        period,
+        time_zone,
+        account_id=None,
+        customfield_param=None,
+        end_date=None,
+        modality=None,
+        namespace_id=None,
+    ):
+        """Study.
+        :param count: The number of periods to get
+        :param period: The time period (day|week|month|year)
+        :param time_zone: The report's time zone. Time zone selection order: current user's time zone, time_zone parameter, UTC by default.
+        :param account_id: account_id
+        :param customfield_param: Filter analytics by a subset of study customfields (optional)
+        :param end_date: The end date, default is today if not passed (optional)
+        :param modality: Filter analytics by modality (optional)
+        :param namespace_id: namespace_id
+        """
+        request_data = {
+           'account_id': account_id,
+           'count': count,
+           'end_date': end_date,
+           'modality': modality,
+           'namespace_id': namespace_id,
+           'period': period,
+           'time_zone': time_zone,
+        }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_COUNT', None)] = InvalidCount('Invalid or excessive count value')
+        errors_mapping[('INVALID_END_DATE', None)] = InvalidEndDate('An invalid period')
+        errors_mapping[('INVALID_PARAMETERS', None)] = InvalidParameters('Only pass a account_id or namespace_id')
+        errors_mapping[('INVALID_PERIOD', None)] = InvalidPeriod('An invalid period')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or namespace can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view analytics for this account or namespace')
+        query_data = {
+            'api': self._api,
+            'url': '/analytics/study',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def patient_portal(
+        self,
+        account_id,
+        count,
+        period,
+        time_zone,
+        end_date=None,
+        patient_id=None,
+    ):
+        """Patient portal.
+        :param account_id: The account id
+        :param count: The number of periods to get
+        :param period: The time period (day|week|month|year)
+        :param time_zone: The report's time zone. Time zone selection order: current user's time zone, time_zone parameter, UTC by default.
+        :param end_date: The end date, default is today if not passed (optional)
+        :param patient_id: Patient filter (optional)
+        """
+        request_data = {
+           'account_id': account_id,
+           'count': count,
+           'end_date': end_date,
+           'patient_id': patient_id,
+           'period': period,
+           'time_zone': time_zone,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_COUNT', None)] = InvalidCount('Invalid or excessive count value')
+        errors_mapping[('INVALID_END_DATE', None)] = InvalidEndDate('An invalid period')
+        errors_mapping[('INVALID_PERIOD', None)] = InvalidPeriod('An invalid period')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or patient can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view analytics for this account or namespace')
+        query_data = {
+            'api': self._api,
+            'url': '/analytics/patient/portal',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def radreport(
+        self,
+        account_id,
+        count,
+        period,
+        time_zone,
+        end_date=None,
+        namespace_id=None,
+        user_id=None,
+    ):
+        """Radreport.
+        :param account_id: The account id
+        :param count: The number of periods to get
+        :param period: The time period (day|week|month|year)
+        :param time_zone: The report's time zone. Time zone selection order: current user's time zone, time_zone parameter, UTC by default.
+        :param end_date: The end date, default is today if not passed (optional)
+        :param namespace_id: Namespace filter (optional)
+        :param user_id: User filter (optional)
+        """
+        request_data = {
+           'account_id': account_id,
+           'count': count,
+           'end_date': end_date,
+           'namespace_id': namespace_id,
+           'period': period,
+           'time_zone': time_zone,
+           'user_id': user_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_COUNT', None)] = InvalidCount('Invalid or excessive count value')
+        errors_mapping[('INVALID_END_DATE', None)] = InvalidEndDate('An invalid period')
+        errors_mapping[('INVALID_PERIOD', None)] = InvalidPeriod('An invalid period')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or patient can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view analytics for this account or namespace')
+        query_data = {
+            'api': self._api,
+            'url': '/analytics/radreport',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def user(
+        self,
+        account_id,
+        count,
+        period,
+        time_zone,
+        end_date=None,
+        end_time=None,
+        namespace_id=None,
+        user_id=None,
+    ):
+        """User.
+        :param account_id: The account id
+        :param count: The number of periods to get
+        :param period: The time period (hour|day|week|month|year)
+        :param time_zone: The report's time zone. Time zone selection order: current user's time zone, time_zone parameter, UTC by default.
+        :param end_date: The end date, for backwards compatibility (optional)
+        :param end_time: The end date and time, default is now if not passed (optional)
+        :param namespace_id: Namespace filter (optional)
+        :param user_id: User filter (optional)
+        """
+        request_data = {
+           'account_id': account_id,
+           'count': count,
+           'end_date': end_date,
+           'end_time': end_time,
+           'namespace_id': namespace_id,
+           'period': period,
+           'time_zone': time_zone,
+           'user_id': user_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_COUNT', None)] = InvalidCount('Invalid or excessive count value')
+        errors_mapping[('INVALID_END_DATE', None)] = InvalidEndDate('An invalid period')
+        errors_mapping[('INVALID_PERIOD', None)] = InvalidPeriod('An invalid period')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or patient can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view analytics for this account or namespace')
+        query_data = {
+            'api': self._api,
+            'url': '/analytics/user',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
     

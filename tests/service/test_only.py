@@ -17,6 +17,7 @@ class TestWithOnly:
                 self.request_args = RequestArgs(
                     method='POST',
                     url='/some/url',
+                    full_url='/some/url',
                 )
 
         return QueryO()

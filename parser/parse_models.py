@@ -49,6 +49,7 @@ TYPE_MAPPING = MappingProxyType(
         'datetime': 'DateTime',
         'date': 'Date',
         'kv': 'DictField',
+        'uuid': 'String',
     }
 )
 
@@ -105,6 +106,10 @@ DEFAULT_FOREIGN_MODELS = MappingProxyType(
         'site_id': 'Site',
         'scanner_id': 'Scanner',
         'global_role_id': 'Role',
+        'query_id': 'Query',
+        'owner_namespace_id': 'Namespace',
+        'owner_user_id': 'User',
+        'thumbnail_id': 'Thumbnail',
     }
 )
 
@@ -233,6 +238,10 @@ class Model(NamedTuple):
                 # Foreign field
                 if '_id' in field.name:
                     f_name = field.name.replace('_id', '')
+                    # Destination_search two thumbnail fields
+                    if f_name in (f.name for f in self.fields):
+                        f_name = '{field_name}_obj'.format(field_name=field.name)
+                        
                 else:
                     f_name = '{field_name}_obj'.format(field_name=field.name)
                 yield Field(

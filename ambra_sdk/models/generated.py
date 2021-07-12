@@ -316,6 +316,9 @@ class AccountSamlRole(BaseModel):
     event_message = Boolean(description='The event flags')
     event_new_report = Boolean(description='The event flags')
     event_node = Boolean(description='The event flags')
+    event_query_add = Boolean(description='The event flags')
+    event_query_edit = Boolean(description='The event flags')
+    event_query_reply = Boolean(description='The event flags')
     event_report_remove = Boolean(description='The event flags')
     event_share = Boolean(description='The event flags')
     event_status_change = Boolean(description='The event flags')
@@ -355,6 +358,9 @@ class AccountSamlRole(BaseModel):
         event_message=None,
         event_new_report=None,
         event_node=None,
+        event_query_add=None,
+        event_query_edit=None,
+        event_query_reply=None,
         event_report_remove=None,
         event_share=None,
         event_status_change=None,
@@ -390,6 +396,9 @@ class AccountSamlRole(BaseModel):
         self.event_message = event_message
         self.event_new_report = event_new_report
         self.event_node = event_node
+        self.event_query_add = event_query_add
+        self.event_query_edit = event_query_edit
+        self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
         self.event_status_change = event_status_change
@@ -2313,6 +2322,7 @@ class DestinationSearch(BaseModel):
     study = FK(model='Study', description='Study id if this is a MWL search')
     study_request_id = String(description='FK. Study request that initiated the search')
     study_request = FK(model='StudyRequest', description='Study request that initiated the search')
+    tracking_number = String(description='Tracking number')
     user_id = String(description='FK. The user who ran the search')
     user = FK(model='User', description='The user who ran the search')
     created = DateTime(description='Timestamp when the record was created')
@@ -2364,6 +2374,7 @@ class DestinationSearch(BaseModel):
         study=None,
         study_request_id=None,
         study_request=None,
+        tracking_number=None,
         user_id=None,
         user=None,
         created=None,
@@ -2411,6 +2422,7 @@ class DestinationSearch(BaseModel):
         self.study = study
         self.study_request_id = study_request_id
         self.study_request = study_request
+        self.tracking_number = tracking_number
         self.user_id = user_id
         self.user = user
         self.created = created
@@ -2923,6 +2935,8 @@ class FilterShare(BaseModel):
     group = FK(model='Group', description='Who it is shared with')
     location_id = String(description='FK. Who it is shared with')
     location = FK(model='Location', description='Who it is shared with')
+    role_id = String(description='FK. Who it is shared with')
+    role = FK(model='Role', description='Who it is shared with')
     user_id = String(description='FK. Who it is shared with')
     user = FK(model='User', description='Who it is shared with')
     created = DateTime(description='Timestamp when the record was created')
@@ -2945,6 +2959,8 @@ class FilterShare(BaseModel):
         group=None,
         location_id=None,
         location=None,
+        role_id=None,
+        role=None,
         user_id=None,
         user=None,
         created=None,
@@ -2963,6 +2979,8 @@ class FilterShare(BaseModel):
         self.group = group
         self.location_id = location_id
         self.location = location
+        self.role_id = role_id
+        self.role = role
         self.user_id = user_id
         self.user = user
         self.created = created
@@ -3889,6 +3907,8 @@ class Message(BaseModel):
     namespace = FK(model='Namespace', description='The namespace the message is for')
     parent_id = String(description='FK. The parent message')
     parent = FK(model='Message', description='The parent message')
+    query_id = String(description='FK. The linked query object')
+    query = FK(model='Query', description='The linked query object')
     study_id = String(description='FK. The study the message is for')
     study = FK(model='Study', description='The study the message is for')
     study_request_id = String(description='FK. The study request the message is for')
@@ -3919,6 +3939,8 @@ class Message(BaseModel):
         namespace=None,
         parent_id=None,
         parent=None,
+        query_id=None,
+        query=None,
         study_id=None,
         study=None,
         study_request_id=None,
@@ -3945,6 +3967,8 @@ class Message(BaseModel):
         self.namespace = namespace
         self.parent_id = parent_id
         self.parent = parent
+        self.query_id = query_id
+        self.query = query
         self.study_id = study_id
         self.study = study
         self.study_request_id = study_request_id
@@ -3988,6 +4012,9 @@ class Namespace(BaseModel):
     event_message = Boolean(description='The default event settings flags')
     event_new_report = Boolean(description='The default event settings flags')
     event_node = Boolean(description='The default event settings flags')
+    event_query_add = Boolean(description='The default event settings flags')
+    event_query_edit = Boolean(description='The default event settings flags')
+    event_query_reply = Boolean(description='The default event settings flags')
     event_report_remove = Boolean(description='The default event settings flags')
     event_share = Boolean(description='The default event settings flags')
     event_status_change = Boolean(description='The default event settings flags')
@@ -4059,6 +4086,9 @@ class Namespace(BaseModel):
         event_message=None,
         event_new_report=None,
         event_node=None,
+        event_query_add=None,
+        event_query_edit=None,
+        event_query_reply=None,
         event_report_remove=None,
         event_share=None,
         event_status_change=None,
@@ -4126,6 +4156,9 @@ class Namespace(BaseModel):
         self.event_message = event_message
         self.event_new_report = event_new_report
         self.event_node = event_node
+        self.event_query_add = event_query_add
+        self.event_query_edit = event_query_edit
+        self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
         self.event_status_change = event_status_change
@@ -4264,7 +4297,7 @@ class Node(BaseModel):
     namespace_id = String(description='FK. The associated namespace')
     namespace = FK(model='Namespace', description='The associated namespace')
     os_type = String(description='OS type of the node, used for harvester only currently')
-    performance_data = String(description='as well as a rolling array of maybe 10 minutes worth of CPU, memory, disk and network usage')
+    performance_data = String(description='Performance counters from node. Depreciated. To be deleted after 2021-06 release')
     reload_configuration = Boolean(description='Reload configuration')
     serial_no = String(description='The serial number')
     settings = DictField(description='Account settings overrides')
@@ -4477,6 +4510,51 @@ class NodeEvent(BaseModel):
         self.event = event
         self.node_id = node_id
         self.node = node
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+        self.updated = updated
+        self.updated_by = updated_by
+        self.updated_by_obj = updated_by_obj
+
+
+
+class NodePerformanceData(BaseModel):
+    """NodePerformanceData."""
+    
+    id = Integer(description='Primary key for internal use')
+    uuid = String(description='UUID for external use')
+    node_id = String(description='FK. Node information')
+    node = FK(model='Node', description='Node information')
+    performance_data = String(description='as well as a rolling array of maybe 10 minutes worth of CPU, memory, disk and network usage')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+    updated = DateTime(description='Timestamp when the record was last updated')
+    updated_by = String(description='FK. ID of the user who updated the record')
+    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        uuid=None,
+        node_id=None,
+        node=None,
+        performance_data=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+        updated=None,
+        updated_by=None,
+        updated_by_obj=None,
+    ):
+        self.id = id
+        self.uuid = uuid
+        self.node_id = node_id
+        self.node = node
+        self.performance_data = performance_data
         self.created = created
         self.created_by = created_by
         self.created_by_obj = created_by_obj
@@ -5014,6 +5092,213 @@ class Purge(BaseModel):
         self.study_status_tags = study_status_tags
         self.suspended = suspended
         self.thin = thin
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+        self.updated = updated
+        self.updated_by = updated_by
+        self.updated_by_obj = updated_by_obj
+
+
+
+class Query(BaseModel):
+    """Query."""
+    
+    id = Integer(description='Primary key for internal use')
+    uuid = String(description='UUID for external use')
+    account_id = String(description='FK. Query links')
+    account = FK(model='Account', description='Query links')
+    body = String(description='Query description')
+    customfields = DictField(description='Custom fields')
+    escalation_count_since_status_change = Integer(description='Communication plan counters')
+    group_id = String(description='FK. Query links')
+    group = FK(model='Group', description='Query links')
+    last_reminder = DateTime(description='Communication plan counters')
+    last_reply = DateTime(description='Communication plan counters')
+    last_status_change = DateTime(description='Communication plan counters')
+    notify = String(description='Additional notification receivers (emails CSV)')
+    owner_namespace_id = String(description='FK. The owners')
+    owner_namespace = FK(model='Namespace', description='The owners')
+    owner_user_id = String(description='FK. The owners')
+    owner_user = FK(model='User', description='The owners')
+    query_no = Integer(description='The query number (displayed as a 7-digit number)')
+    query_status = String(description='Query status')
+    query_type = String(description='The type of the query')
+    reminder_count_since_reply = Integer(description='Communication plan counters')
+    study_id = String(description='FK. Query links')
+    study = FK(model='Study', description='Query links')
+    subject = String(description='Subject line')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+    updated = DateTime(description='Timestamp when the record was last updated')
+    updated_by = String(description='FK. ID of the user who updated the record')
+    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        uuid=None,
+        account_id=None,
+        account=None,
+        body=None,
+        customfields=None,
+        escalation_count_since_status_change=None,
+        group_id=None,
+        group=None,
+        last_reminder=None,
+        last_reply=None,
+        last_status_change=None,
+        notify=None,
+        owner_namespace_id=None,
+        owner_namespace=None,
+        owner_user_id=None,
+        owner_user=None,
+        query_no=None,
+        query_status=None,
+        query_type=None,
+        reminder_count_since_reply=None,
+        study_id=None,
+        study=None,
+        subject=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+        updated=None,
+        updated_by=None,
+        updated_by_obj=None,
+    ):
+        self.id = id
+        self.uuid = uuid
+        self.account_id = account_id
+        self.account = account
+        self.body = body
+        self.customfields = customfields
+        self.escalation_count_since_status_change = escalation_count_since_status_change
+        self.group_id = group_id
+        self.group = group
+        self.last_reminder = last_reminder
+        self.last_reply = last_reply
+        self.last_status_change = last_status_change
+        self.notify = notify
+        self.owner_namespace_id = owner_namespace_id
+        self.owner_namespace = owner_namespace
+        self.owner_user_id = owner_user_id
+        self.owner_user = owner_user
+        self.query_no = query_no
+        self.query_status = query_status
+        self.query_type = query_type
+        self.reminder_count_since_reply = reminder_count_since_reply
+        self.study_id = study_id
+        self.study = study
+        self.subject = subject
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+        self.updated = updated
+        self.updated_by = updated_by
+        self.updated_by_obj = updated_by_obj
+
+
+
+class QueryAttachment(BaseModel):
+    """QueryAttachment."""
+    
+    id = Integer(description='Primary key for internal use')
+    uuid = String(description='UUID for external use')
+    name = String(description='The attachment name')
+    phantom = Boolean(description='The attachment phantom flag to hide half-uploaded attachments')
+    query_id = String(description='FK. The owning query')
+    query = FK(model='Query', description='The owning query')
+    size = Integer(description='The attachment size')
+    thumbnail = Boolean(description='The thumbnail sign')
+    thumbnail_id = String(description='FK. The related thumbnail')
+    thumbnail_id_obj = FK(model='Thumbnail', description='The related thumbnail')
+    tombstone = Boolean(description='The attachment tombstone to hide half-deleted attachments')
+    type_field = String(description='The attachment MIME-type')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        uuid=None,
+        name=None,
+        phantom=None,
+        query_id=None,
+        query=None,
+        size=None,
+        thumbnail=None,
+        thumbnail_id=None,
+        thumbnail_id_obj=None,
+        tombstone=None,
+        type_field=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+    ):
+        self.id = id
+        self.uuid = uuid
+        self.name = name
+        self.phantom = phantom
+        self.query_id = query_id
+        self.query = query
+        self.size = size
+        self.thumbnail = thumbnail
+        self.thumbnail_id = thumbnail_id
+        self.thumbnail_id_obj = thumbnail_id_obj
+        self.tombstone = tombstone
+        self.type_field = type_field
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+
+
+
+class QueryRecipient(BaseModel):
+    """QueryRecipient."""
+    
+    id = Integer(description='Primary key for internal use')
+    uuid = String(description='UUID for external use')
+    query_id = String(description='FK. Mapping between the user and query')
+    query = FK(model='Query', description='Mapping between the user and query')
+    user_id = String(description='FK. Mapping between the user and query')
+    user = FK(model='User', description='Mapping between the user and query')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+    updated = DateTime(description='Timestamp when the record was last updated')
+    updated_by = String(description='FK. ID of the user who updated the record')
+    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        uuid=None,
+        query_id=None,
+        query=None,
+        user_id=None,
+        user=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+        updated=None,
+        updated_by=None,
+        updated_by_obj=None,
+    ):
+        self.id = id
+        self.uuid = uuid
+        self.query_id = query_id
+        self.query = query
+        self.user_id = user_id
+        self.user = user
         self.created = created
         self.created_by = created_by
         self.created_by_obj = created_by_obj
@@ -6249,6 +6534,8 @@ class StudyAnalytics(BaseModel):
     study_share_in = Integer(description='Share in and out')
     study_share_out = Integer(description='Share in and out')
     study_view = Integer(description='Delete, view download and push')
+    study_view_load_cnt = Integer(description='Study view count and total load time')
+    study_view_load_tot = Integer(description='Study view count and total load time')
 
 
     def __init__(
@@ -6277,6 +6564,8 @@ class StudyAnalytics(BaseModel):
         study_share_in=None,
         study_share_out=None,
         study_view=None,
+        study_view_load_cnt=None,
+        study_view_load_tot=None,
     ):
         self.id = id
         self.account_id = account_id
@@ -6301,6 +6590,8 @@ class StudyAnalytics(BaseModel):
         self.study_share_in = study_share_in
         self.study_share_out = study_share_out
         self.study_view = study_view
+        self.study_view_load_cnt = study_view_load_cnt
+        self.study_view_load_tot = study_view_load_tot
 
 
 
@@ -6748,6 +7039,7 @@ class StudyFetch(BaseModel):
     study_id = String(description='FK. Study id if this is for a thin study')
     study = FK(model='Study', description='Study id if this is for a thin study')
     study_uid = String(description='Extra data to scope the fetch down further')
+    tracking_number = String(description='Tracking number')
     created = DateTime(description='Timestamp when the record was created')
     created_by = String(description='FK. ID of the user who created the record')
     created_by_obj = FK(model='User', description='ID of the user who created the record')
@@ -6780,6 +7072,7 @@ class StudyFetch(BaseModel):
         study_id=None,
         study=None,
         study_uid=None,
+        tracking_number=None,
         created=None,
         created_by=None,
         created_by_obj=None,
@@ -6808,6 +7101,7 @@ class StudyFetch(BaseModel):
         self.study_id = study_id
         self.study = study
         self.study_uid = study_uid
+        self.tracking_number = tracking_number
         self.created = created
         self.created_by = created_by
         self.created_by_obj = created_by_obj
@@ -7736,8 +8030,11 @@ class System(BaseModel):
     aws_pk = String(description='AWS information')
     aws_region = String(description='AWS information')
     aws_sk = String(description='AWS information')
+    azure_access_key = String(description='Azure information')
+    azure_account_name = String(description='Azure information')
     box_client_id = String(description='Box information')
     box_client_secret = String(description='Box information')
+    box_enterprises = String(description='Box information')
     cache = Boolean(description='Cache new studies images')
     captcha_pk = String(description='Captcha public key')
     captcha_sk = String(description='Captcha secret key')
@@ -7809,8 +8106,11 @@ class System(BaseModel):
         aws_pk=None,
         aws_region=None,
         aws_sk=None,
+        azure_access_key=None,
+        azure_account_name=None,
         box_client_id=None,
         box_client_secret=None,
+        box_enterprises=None,
         cache=None,
         captcha_pk=None,
         captcha_sk=None,
@@ -7878,8 +8178,11 @@ class System(BaseModel):
         self.aws_pk = aws_pk
         self.aws_region = aws_region
         self.aws_sk = aws_sk
+        self.azure_access_key = azure_access_key
+        self.azure_account_name = azure_account_name
         self.box_client_id = box_client_id
         self.box_client_secret = box_client_secret
+        self.box_enterprises = box_enterprises
         self.cache = cache
         self.captcha_pk = captcha_pk
         self.captcha_sk = captcha_sk
@@ -8296,6 +8599,9 @@ class User(BaseModel):
     event_link_mine = Boolean(description='The event flags for the personal namespace')
     event_message = Boolean(description='The event flags for the personal namespace')
     event_new_report = Boolean(description='The event flags for the personal namespace')
+    event_query_add = Boolean(description='The event flags for the personal namespace')
+    event_query_edit = Boolean(description='The event flags for the personal namespace')
+    event_query_reply = Boolean(description='The event flags for the personal namespace')
     event_report_remove = Boolean(description='The event flags for the personal namespace')
     event_share = Boolean(description='The event flags for the personal namespace')
     event_status_change = Boolean(description='The event flags for the personal namespace')
@@ -8355,6 +8661,9 @@ class User(BaseModel):
         event_link_mine=None,
         event_message=None,
         event_new_report=None,
+        event_query_add=None,
+        event_query_edit=None,
+        event_query_reply=None,
         event_report_remove=None,
         event_share=None,
         event_status_change=None,
@@ -8410,6 +8719,9 @@ class User(BaseModel):
         self.event_link_mine = event_link_mine
         self.event_message = event_message
         self.event_new_report = event_new_report
+        self.event_query_add = event_query_add
+        self.event_query_edit = event_query_edit
+        self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
         self.event_status_change = event_status_change
@@ -8473,6 +8785,9 @@ class UserAccount(BaseModel):
     event_new_report = Boolean(description='The event flags')
     event_node = Boolean(description='The event flags')
     event_purge = Boolean(description='The event flags')
+    event_query_add = Boolean(description='The event flags')
+    event_query_edit = Boolean(description='The event flags')
+    event_query_reply = Boolean(description='The event flags')
     event_report_remove = Boolean(description='The event flags')
     event_share = Boolean(description='The event flags')
     event_status_change = Boolean(description='The event flags')
@@ -8526,6 +8841,9 @@ class UserAccount(BaseModel):
         event_new_report=None,
         event_node=None,
         event_purge=None,
+        event_query_add=None,
+        event_query_edit=None,
+        event_query_reply=None,
         event_report_remove=None,
         event_share=None,
         event_status_change=None,
@@ -8575,6 +8893,9 @@ class UserAccount(BaseModel):
         self.event_new_report = event_new_report
         self.event_node = event_node
         self.event_purge = event_purge
+        self.event_query_add = event_query_add
+        self.event_query_edit = event_query_edit
+        self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
         self.event_status_change = event_status_change
@@ -8618,6 +8939,8 @@ class UserAnalytics(BaseModel):
     study_reject = Integer(description='The metrics')
     study_upload_epic = Integer(description='The metrics')
     study_view = Integer(description='The metrics')
+    study_view_load_cnt = Integer(description='Study view count and total load time')
+    study_view_load_tot = Integer(description='Study view count and total load time')
     time = DateTime(description='The day and time')
     user_id = String(description='FK. The primary keys')
     user = FK(model='User', description='The primary keys')
@@ -8636,6 +8959,8 @@ class UserAnalytics(BaseModel):
         study_reject=None,
         study_upload_epic=None,
         study_view=None,
+        study_view_load_cnt=None,
+        study_view_load_tot=None,
         time=None,
         user_id=None,
         user=None,
@@ -8650,6 +8975,8 @@ class UserAnalytics(BaseModel):
         self.study_reject = study_reject
         self.study_upload_epic = study_upload_epic
         self.study_view = study_view
+        self.study_view_load_cnt = study_view_load_cnt
+        self.study_view_load_tot = study_view_load_tot
         self.time = time
         self.user_id = user_id
         self.user = user
@@ -8721,6 +9048,9 @@ class UserGroup(BaseModel):
     event_message = Boolean(description='The event flags')
     event_new_report = Boolean(description='The event flags')
     event_node = Boolean(description='The event flags')
+    event_query_add = Boolean(description='The event flags')
+    event_query_edit = Boolean(description='The event flags')
+    event_query_reply = Boolean(description='The event flags')
     event_report_remove = Boolean(description='The event flags')
     event_share = Boolean(description='The event flags')
     event_status_change = Boolean(description='The event flags')
@@ -8758,6 +9088,9 @@ class UserGroup(BaseModel):
         event_message=None,
         event_new_report=None,
         event_node=None,
+        event_query_add=None,
+        event_query_edit=None,
+        event_query_reply=None,
         event_report_remove=None,
         event_share=None,
         event_status_change=None,
@@ -8791,6 +9124,9 @@ class UserGroup(BaseModel):
         self.event_message = event_message
         self.event_new_report = event_new_report
         self.event_node = event_node
+        self.event_query_add = event_query_add
+        self.event_query_edit = event_query_edit
+        self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
         self.event_status_change = event_status_change
@@ -8946,6 +9282,9 @@ class UserLocation(BaseModel):
     event_message = Boolean(description='The event flags')
     event_new_report = Boolean(description='The event flags')
     event_node = Boolean(description='The event flags')
+    event_query_add = Boolean(description='The event flags')
+    event_query_edit = Boolean(description='The event flags')
+    event_query_reply = Boolean(description='The event flags')
     event_report_remove = Boolean(description='The event flags')
     event_share = Boolean(description='The event flags')
     event_status_change = Boolean(description='The event flags')
@@ -8983,6 +9322,9 @@ class UserLocation(BaseModel):
         event_message=None,
         event_new_report=None,
         event_node=None,
+        event_query_add=None,
+        event_query_edit=None,
+        event_query_reply=None,
         event_report_remove=None,
         event_share=None,
         event_status_change=None,
@@ -9016,6 +9358,9 @@ class UserLocation(BaseModel):
         self.event_message = event_message
         self.event_new_report = event_new_report
         self.event_node = event_node
+        self.event_query_add = event_query_add
+        self.event_query_edit = event_query_edit
+        self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
         self.event_status_change = event_status_change

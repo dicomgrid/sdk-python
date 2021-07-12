@@ -1,9 +1,9 @@
-__version__ = '3.21.4.0-1'
+__version__ = '3.21.5.0-1'
 
 # from footer in api.html
-API_VERSION = 'LBL0022 v45.0 2021-04-07'
+API_VERSION = 'LBL0022 v47.0 2021-06-30'
 # equal for API_VERSION based on dictionary.html
-MODELS_VERSION = 'LBL0022 v45.0 2021-04-07'
+MODELS_VERSION = 'LBL0022 v47.0 2021-06-30'
 # from storage_api.html
 STORAGE_VERSION = 'LBL0038 v15.0 2021-05-19'
 

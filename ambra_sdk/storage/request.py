@@ -1,14 +1,16 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, Mapping, NamedTuple, Optional
+from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 
+from aiohttp import ClientResponse, FormData
 from requests import Response
 
-from ambra_sdk.exceptions.storage import AmbraResponseException
-from ambra_sdk.storage.response import check_response
+from ambra_sdk.storage.response import async_check_errors, check_errors
 from ambra_sdk.types import RequestsFileType
 
 if TYPE_CHECKING:
-    from ambra_sdk.storage.storage import Storage  # NOQA:WPS433
+    from ambra_sdk.storage.storage.storage import Storage  # NOQA:WPS433
+    from ambra_sdk.storage.storage.async_storage \
+        import AsyncStorage  # NOQA:WPS433
 
 
 class StorageMethod(Enum):
@@ -19,22 +21,42 @@ class StorageMethod(Enum):
     delete = 'DELETE'
 
 
-class PreparedRequest(NamedTuple):
+REQUEST_FILES_TYPE = Optional[Union[Dict[str, RequestsFileType], FormData]]
+
+
+class PreparedRequest:  # NOQA:WPS230
     """Prepared request."""
 
-    # This some sort of private field.
-    # User should not have dicect access to this field
-    # But we can not use _name in NamedTuple attributes
-    storage_: 'Storage'  # NOQA WPS1120
-    url: str
-    method: StorageMethod
-    # Mapping type is covariant is covariant type
-    errors_mapping: Optional[Mapping[int, AmbraResponseException]] = None
-    params: Optional[Dict[str, Any]] = None  # NOQA:WPS110
-    files: Optional[Dict[str, RequestsFileType]] = None
-    headers: Optional[Dict[str, str]] = None
-    data: Optional[Any] = None  # NOQA:WPS110
-    stream: Optional[bool] = None
+    __slots__ = (
+        'storage',
+        'url',
+        'method',
+        'params',
+        'files',
+        'headers',
+        'data',
+        'stream',
+    )
+
+    def __init__(  # NOQA:WPS211,D107
+        self,
+        storage: Union['Storage', 'AsyncStorage'],
+        url: str,
+        method: StorageMethod,
+        params: Optional[Dict[str, Any]] = None,  # NOQA:WPS110
+        files: REQUEST_FILES_TYPE = None,
+        headers: Optional[Dict[str, str]] = None,
+        data: Optional[Any] = None,  # NOQA:WPS110
+        stream: Optional[bool] = None,
+    ):
+        self.storage = storage
+        self.url = url
+        self.method = method
+        self.params = params  # NOQA:WPS110
+        self.files = files
+        self.headers = headers
+        self.data = data  # NOQA:WPS110
+        self.stream = stream
 
     def execute(self) -> Response:
         """Execute prepared request.
@@ -44,7 +66,10 @@ class PreparedRequest(NamedTuple):
 
         :return: response object
         """
-        response: Response = self.storage_.retry_with_new_sid(
+        if TYPE_CHECKING:
+            assert isinstance(self.storage, Storage)  # NOQA:S101
+
+        response: Response = self.storage.retry_with_new_sid(
             self.execute_once,
         )
         return response  # NOQA:WPS331
@@ -55,6 +80,9 @@ class PreparedRequest(NamedTuple):
         :return: response object
         :raises RuntimeError: Unknown request method
         """
+        if TYPE_CHECKING:
+            assert isinstance(self.storage, Storage)  # NOQA:S101
+
         request_kwargs: Dict[str, Any] = {}
         if self.params is not None:
             request_kwargs['params'] = self.params
@@ -72,13 +100,13 @@ class PreparedRequest(NamedTuple):
             request_kwargs['stream'] = self.stream
 
         if self.method == StorageMethod.get:
-            response = self.storage_.get(self.url, **request_kwargs)
+            response = self.storage.get(self.url, **request_kwargs)
 
         elif self.method == StorageMethod.post:
-            response = self.storage_.post(self.url, **request_kwargs)
+            response = self.storage.post(self.url, **request_kwargs)
 
         elif self.method == StorageMethod.delete:
-            response = self.storage_.delete(self.url, **request_kwargs)
+            response = self.storage.delete(self.url, **request_kwargs)
 
         else:
             raise RuntimeError(
@@ -87,8 +115,60 @@ class PreparedRequest(NamedTuple):
                 ),
             )
 
-        return check_response(
-            response,
-            self.url,
-            errors_mapping=self.errors_mapping,
-        )
+        return check_errors(response)
+
+    async def async_execute(self) -> ClientResponse:
+        """Execute prepared request.
+
+        If sid problems we try to get new sid
+        and retry request.
+
+        :return: response object
+        """
+        response: ClientResponse = await self \
+            .storage.retry_with_new_sid(self.async_execute_once)
+        return response  # NOQA:WPS331
+
+    async def async_execute_once(self) -> ClientResponse:
+        """Execute prepared request.
+
+        :return: response object
+        :raises RuntimeError: Unknown request method
+        """
+        request_kwargs: Dict[str, Any] = {}
+        if self.params is not None:
+            request_kwargs['params'] = self.params
+
+        if self.data is not None and self.files is not None:
+            raise RuntimeError('Use data or files in prepared request')
+        if self.data is not None:
+            request_kwargs['data'] = self.data
+
+        if self.files is not None:
+            request_kwargs['data'] = self.files
+
+        if self.headers is not None:
+            request_kwargs['headers'] = self.headers
+
+        response: ClientResponse
+
+        if TYPE_CHECKING:
+            assert isinstance(self.storage, AsyncStorage)  # NOQA:S101
+
+        if self.method == StorageMethod.get:
+            response = await self.storage.get(self.url, **request_kwargs)
+
+        elif self.method == StorageMethod.post:
+            response = await self.storage.post(self.url, **request_kwargs)
+
+        elif self.method == StorageMethod.delete:
+            response = await self.storage.delete(self.url, **request_kwargs)
+
+        else:
+            raise RuntimeError(
+                'Unknown storage request method: {method}'.format(
+                    method=self.method,
+                ),
+            )
+
+        return await async_check_errors(response)

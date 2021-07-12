@@ -1,9 +1,15 @@
 """Sorting."""
 
 from enum import Enum
-from typing import NamedTuple
+from typing import Generic, NamedTuple, TypeVar
 
-from ambra_sdk.request_args import RequestArgs
+from ambra_sdk.request_args import AioHTTPRequestArgs, RequestArgs
+
+REQUEST_ARGS_TYPE = TypeVar(
+    'REQUEST_ARGS_TYPE',
+    RequestArgs,
+    AioHTTPRequestArgs,
+)
 
 
 class SortingOrder(Enum):
@@ -30,10 +36,10 @@ class Sorter(NamedTuple):
         )
 
 
-class WithSorting:
+class WithSorting(Generic[REQUEST_ARGS_TYPE]):
     """With sorting mixin."""
 
-    request_args: RequestArgs
+    request_args: REQUEST_ARGS_TYPE
 
     def sort_by(self, sorter_obj: Sorter):
         """Sort by sorter.

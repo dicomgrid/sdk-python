@@ -9,6 +9,7 @@ from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import NotPermitted
 from ambra_sdk.exceptions.service import NotSysadminOrSupport
 from ambra_sdk.service.query import QueryO
+from ambra_sdk.service.query import AsyncQueryO
 
 class Terminology:
     """Terminology."""
@@ -188,4 +189,185 @@ class Terminology:
             'required_sid': False,
         }
         return QueryO(**query_data)
+    
+
+
+class AsyncTerminology:
+    """AsyncTerminology."""
+
+    def __init__(self, api):
+        self._api = api
+
+    
+    def account_overrides(
+        self,
+        account_id=None,
+        phi_namespace=None,
+        storage_namespace=None,
+        study_uid=None,
+        vanity=None,
+    ):
+        """Account overrides.
+        :param account_id: account_id
+        :param phi_namespace: phi_namespace
+        :param storage_namespace: storage_namespace
+        :param study_uid: study_uid
+        :param vanity: vanity
+        """
+        request_data = {
+           'account_id': account_id,
+           'phi_namespace': phi_namespace,
+           'storage_namespace': storage_namespace,
+           'study_uid': study_uid,
+           'vanity': vanity,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or vanity was not found')
+        query_data = {
+            'api': self._api,
+            'url': '/terminology/account/overrides',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def tags(
+        self,
+        language,
+        account_id=None,
+        phi_namespace=None,
+        storage_namespace=None,
+        study_uid=None,
+        tags=None,
+        vanity=None,
+    ):
+        """Tags.
+        :param language: The ISO 639-1 language code
+        :param account_id: account_id
+        :param phi_namespace: phi_namespace
+        :param storage_namespace: storage_namespace
+        :param study_uid: study_uid
+        :param tags: A comma separated list of the terminology tags to look up (optional)
+        :param vanity: vanity
+        """
+        request_data = {
+           'account_id': account_id,
+           'language': language,
+           'phi_namespace': phi_namespace,
+           'storage_namespace': storage_namespace,
+           'study_uid': study_uid,
+           'tags': tags,
+           'vanity': vanity,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        query_data = {
+            'api': self._api,
+            'url': '/terminology/tags',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def set(
+        self,
+        language,
+        tag,
+        value,
+        account_id=None,
+        vanity=None,
+    ):
+        """Set.
+        :param language: The ISO 639-1 language code
+        :param tag: The tag to set
+        :param value: The value of the tag. If this is empty the tag is deleted
+        :param account_id: The uuid of the account to apply the tag for (optional)
+        :param vanity: Vanity to apply the tag for (optional)
+        """
+        request_data = {
+           'account_id': account_id,
+           'language': language,
+           'tag': tag,
+           'value': value,
+           'vanity': vanity,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('The user is not an account administrator  and is trying to set account tags')
+        errors_mapping[('NOT_SYSADMIN_OR_SUPPORT', None)] = NotSysadminOrSupport('The user is not a sysadmin or support user and is trying to set global tags')
+        errors_mapping[('NO_VALUE', None)] = NoValue('The value parameter was not passed')
+        query_data = {
+            'api': self._api,
+            'url': '/terminology/set',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def list(
+        self,
+        language,
+        tags,
+        account_id=None,
+        vanity=None,
+    ):
+        """List.
+        :param language: The ISO 639-1 language code
+        :param tags: A comma separated list of the terminology tags to look up
+        :param account_id: account_id
+        :param vanity: vanity
+        """
+        request_data = {
+           'account_id': account_id,
+           'language': language,
+           'tags': tags,
+           'vanity': vanity,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        query_data = {
+            'api': self._api,
+            'url': '/terminology/list',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def i18next(
+        self,
+        lng,
+        account_id=None,
+        vanity=None,
+    ):
+        """I18next.
+        :param lng: The language code
+        :param account_id: account_id
+        :param vanity: vanity
+        """
+        request_data = {
+           'account_id': account_id,
+           'lng': lng,
+           'vanity': vanity,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        query_data = {
+            'api': self._api,
+            'url': '/terminology/i18next',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        return AsyncQueryO(**query_data)
     

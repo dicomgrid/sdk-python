@@ -1,20 +1,26 @@
 """Only fields."""
 
 import json
-from typing import Dict, List, Union
+from typing import Dict, Generic, List, TypeVar, Union
 
 from ambra_sdk.models.base import FieldDescriptor
-from ambra_sdk.request_args import RequestArgs
+from ambra_sdk.request_args import AioHTTPRequestArgs, RequestArgs
 
 OnlyField = Union[str, Dict[str, List[str]], FieldDescriptor]
 
 OnlyFields = Union[OnlyField, List[OnlyField]]
 
+REQUEST_ARGS_TYPE = TypeVar(
+    'REQUEST_ARGS_TYPE',
+    RequestArgs,
+    AioHTTPRequestArgs,
+)
 
-class WithOnly:
+
+class WithOnly(Generic[REQUEST_ARGS_TYPE]):
     """With only fields mixin."""
 
-    request_args: RequestArgs
+    request_args: REQUEST_ARGS_TYPE
 
     def only_top_field(self, field: str):
         """Request only one top field.

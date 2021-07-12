@@ -5,11 +5,13 @@ import pytest
 from dynaconf import settings
 
 from ambra_sdk.exceptions.storage import (
+    AccessDenied,
     AmbraResponseException,
-    NotFound,
-    PermissionDenied,
-    UnprocessableEntity,
-    UnsupportedMediaType,
+    BadRequest,
+    ImageNotFound,
+    NotPdfFile,
+    NotVideoInImage,
+    StudyNotFound,
 )
 from ambra_sdk.service.ws import WSManager
 
@@ -40,7 +42,7 @@ class TestStorageStudy:
         storage_namespace = readonly_study.storage_namespace
         study_uid = readonly_study.study_uid
         logo = Path(__file__) \
-            .parents[1] \
+            .parents[2] \
             .joinpath('images', 'logo.png')
         with open(logo, 'rb') as f:
             api.Storage.Study.post_attachment(
@@ -88,6 +90,55 @@ class TestStorageStudy:
         )
         assert prepared.url
 
+    def test_schema_bad_request(self, api, readonly_study):
+        """Test schema bad request."""
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+        study_uid = 'bad'
+
+        with pytest.raises(StudyNotFound) as exc:
+            api.Storage.Study.schema(
+                engine_fqdn=engine_fqdn,
+                namespace=storage_namespace,
+                study_uid=study_uid,
+            )
+        exc_v = exc.value
+        assert exc_v.code == 404
+        assert exc_v.exception_data['study_uid'] == 'bad'
+        assert exc_v.storage_code == 18
+        assert exc_v.description == "Study wasn't found by provided ids"
+        assert exc_v.http_status_code == 404
+        assert exc_v.readable_status == 'STUDY_NOT_FOUND'
+        assert exc_v.created
+        assert exc_v.extended is None
+        assert str(exc_v) == "404. Study wasn't found by provided ids"
+
+    def test_schema_bad_request_with_trace(self, api, readonly_study):
+        """Test schema bad r request with trace."""
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+        study_uid = 'bad'
+
+        with pytest.raises(StudyNotFound) as exc:
+            q = api.Storage.Study.schema(
+                engine_fqdn=engine_fqdn,
+                namespace=storage_namespace,
+                study_uid=study_uid,
+                only_prepare=True,
+            )
+            q.headers = {'X-AmbraHealth-Verbose-Errors': '1'}
+            q.execute()
+        exc_v = exc.value
+        assert exc_v.code == 404
+        assert exc_v.exception_data['study_uid'] == 'bad'
+        assert exc_v.storage_code == 18
+        assert exc_v.description == "Study wasn't found by provided ids"
+        assert exc_v.http_status_code == 404
+        assert exc_v.readable_status == 'STUDY_NOT_FOUND'
+        assert exc_v.created
+        assert exc_v.extended is not None
+        assert str(exc_v) == "404. Study wasn't found by provided ids"
+
     def test_schema(self, api, readonly_study):
         """Test schema method."""
         engine_fqdn = readonly_study.engine_fqdn
@@ -104,7 +155,7 @@ class TestStorageStudy:
     def test_delete(self, api, account, auto_remove):
         """Test delete method."""
         study_dir = Path(__file__) \
-            .parents[1] \
+            .parents[2] \
             .joinpath('dicoms', 'anonymize')
         study = api.Addon.Study.upload_dir_and_get(
             study_dir=study_dir,
@@ -135,7 +186,7 @@ class TestStorageStudy:
     ):
         """Test delete_image method."""
         study_dir = Path(__file__) \
-            .parents[1] \
+            .parents[2] \
             .joinpath('dicoms', 'anonymize')
         study = api.Addon.Study.upload_dir_and_get(
             study_dir=study_dir,
@@ -170,7 +221,7 @@ class TestStorageStudy:
         )
         assert delete_image.status_code in {200, 202}
 
-        with pytest.raises(NotFound):
+        with pytest.raises(ImageNotFound):
             delete_image = api.Storage.Study.delete_image(
                 engine_fqdn=engine_fqdn,
                 namespace=storage_namespace,
@@ -187,7 +238,7 @@ class TestStorageStudy:
     ):
         """Test delete_images method."""
         study_dir = Path(__file__) \
-            .parents[1] \
+            .parents[2] \
             .joinpath('dicoms', 'anonymize')
         study = api.Addon.Study.upload_dir_and_get(
             study_dir=study_dir,
@@ -223,7 +274,7 @@ class TestStorageStudy:
         )
         assert delete_images.status_code in {200, 202}
 
-        with pytest.raises(NotFound):
+        with pytest.raises(StudyNotFound):
             delete_images = api.Storage.Study.delete_images(
                 engine_fqdn=engine_fqdn,
                 namespace=storage_namespace,
@@ -231,8 +282,36 @@ class TestStorageStudy:
                 request_body=request_body,
             )
 
-        with pytest.raises(UnprocessableEntity):
-            delete_images = api.Storage.Study.delete_images(
+    def test_delete_images_unprocessable_entity(
+        self,
+        api,
+        account,
+        auto_remove,
+        storage_auto_remove,
+    ):
+        """Test delete_images method unprocessable entity."""
+        study_dir = Path(__file__) \
+            .parents[2] \
+            .joinpath('dicoms', 'anonymize')
+        study = api.Addon.Study.upload_dir_and_get(
+            study_dir=study_dir,
+            namespace_id=account.account.namespace_id,
+            timeout=settings.API['upload_study_timeout'],
+            ws_timeout=settings.API['ws_timeout'],
+        )
+        logger.info('Uploaded study %s', study.uuid)
+        auto_remove(study)
+
+        engine_fqdn = study.engine_fqdn
+        storage_namespace = study.storage_namespace
+        study_uid = study.study_uid
+        storage_auto_remove(
+            engine_fqdn,
+            storage_namespace,
+            study_uid,
+        )
+        with pytest.raises(BadRequest):
+            api.Storage.Study.delete_images(
                 engine_fqdn=engine_fqdn,
                 namespace=storage_namespace,
                 study_uid=study_uid,
@@ -379,7 +458,7 @@ class TestStorageStudy:
         study_uid = readonly_study.study_uid
 
         # TODO: Check with pdf dicoms
-        with pytest.raises(UnsupportedMediaType):
+        with pytest.raises(NotPdfFile):
             api.Storage.Study.pdf(
                 engine_fqdn=engine_fqdn,
                 namespace=storage_namespace,
@@ -495,7 +574,7 @@ class TestStorageStudy:
         study_uid = readonly_study.study_uid
 
         # TODO: Check with video dicoms
-        with pytest.raises(UnsupportedMediaType):
+        with pytest.raises(NotVideoInImage):
             api.Storage.Study.video(
                 engine_fqdn=engine_fqdn,
                 namespace=storage_namespace,
@@ -578,7 +657,7 @@ class TestStorageStudy:
         This method append images from one study to another.
         """
         study_dir1 = Path(__file__) \
-            .parents[1] \
+            .parents[2] \
             .joinpath('dicoms', 'splitted', '1')
 
         study1 = api.Addon.Study.upload_dir_and_get(
@@ -591,7 +670,7 @@ class TestStorageStudy:
         auto_remove(study1)
 
         study_dir2 = Path(__file__) \
-            .parents[1] \
+            .parents[2] \
             .joinpath('dicoms', 'splitted', '2')
 
         study2 = api.Addon.Study.upload_dir_and_get(
@@ -806,7 +885,7 @@ class TestStorageStudy:
             pytest.fail('Something goes wrong with retrying with new sid')
 
         # But access denied still works:
-        with pytest.raises(PermissionDenied):
+        with pytest.raises(AccessDenied):
             api.Storage.Study.schema(
                 engine_fqdn=engine_fqdn,
                 namespace='abra',

@@ -3,7 +3,9 @@
 import uuid as uuid_lib
 from contextlib import suppress
 from time import monotonic
-from typing import Mapping, Optional, Tuple, Union
+from typing import Mapping, Optional, Tuple, Union, cast
+
+from box import Box
 
 from ambra_sdk.exceptions.service import (
     NotFound,
@@ -111,7 +113,7 @@ class Job:
                 if monotonic() - start >= timeout:
                     break
                 with suppress(NotFound):
-                    job_status = get_job_query.get()
+                    job_status = cast(Box, get_job_query.get())
                     if job_status['state'] != 'DONE':
                         raise RuntimeError(  # NOQA:WPS220
                             'Unknown job status {job_status}'.format(

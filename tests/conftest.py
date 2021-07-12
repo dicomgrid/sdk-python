@@ -1,7 +1,9 @@
+import asyncio
+
 import pytest
 from dynaconf import settings
 
-from ambra_sdk.api import Api
+from ambra_sdk.api import Api, AsyncApi
 
 
 @pytest.fixture(scope='session', autouse=True)
@@ -29,9 +31,40 @@ def api():
     api.logout()
 
 
+@pytest.fixture(scope='module')
+def event_loop():
+    """Event loop module scoped.
+
+    :return: event loop for module scope
+    """
+    return asyncio.get_event_loop()
+
+
+@pytest.fixture(scope='module')
+async def async_api(event_loop):
+    """Get api.
+
+    :param event_loop: event loop for modules scope
+    :yields: valid  ambra api
+    """
+    url = settings.API['url']
+    username = settings.API['username']
+    password = settings.API['password']
+    api = AsyncApi.with_creds(
+        url,
+        username,
+        password,
+        'SDK testing',
+    )
+    yield api
+    await api.logout()
+
+
 pytest_plugins = [
     'tests.fixtures.account',
+    'tests.fixtures.async_account',
     'tests.fixtures.study',
+    'tests.fixtures.async_study',
     'tests.fixtures.ws',
     'tests.fixtures.customfield',
 ]

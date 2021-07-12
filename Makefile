@@ -32,3 +32,5 @@ gh:
 	-touch ../sdk-python-doc/.nojekyll
 tox:
 	-poetry run tox || true
+
+check-full: flake mypy doctest tox

@@ -10,6 +10,7 @@ from ambra_sdk.exceptions.service import {{ exception }}
 
 {%- for query_class_name in query_class_names %}
 from ambra_sdk.service.query import {{ query_class_name }}
+from ambra_sdk.service.query import Async{{ query_class_name }}
 {%- endfor %}
 
 class {{ namespace }}:
@@ -70,4 +71,65 @@ class {{ namespace }}:
         query_data['paginated_field'] = '{{ api.paginated_field.name }}'
 	{%- endif %}
         return {{ api.query_class_name }}(**query_data)
+    {% endfor %}
+
+
+class Async{{ namespace }}:
+    """Async{{ namespace }}."""
+
+    def __init__(self, api):
+        self._api = api
+
+    {% for api in apis %}
+    def {{ api.func_name }}(
+        self,
+        {%- for req in api.request_params %}
+        {{ req.pythonic_name }}{% if req.optional %}=None{% endif %},
+        {%- endfor %}
+    ):
+        """{{ api.func_head }}.
+
+        {%- for req in api.request_params %}
+        :param {{ req.pythonic_name }}: {{ req.description }}
+        {%- endfor %}
+        {%- if api.notes %}
+
+        Notes:
+
+        {%- for note in api.notes %}
+        {{ note.description }}
+        {%- endfor %}
+        {%- endif %}
+        """
+        request_data = {
+        {%- for req in api.request_usual_params %}
+           '{{ req.name }}': {{ req.pythonic_name }},
+        {%- endfor %}
+        }
+
+        {%- for req in api.request_multiple_params %}
+        if {{req.pythonic_name}} is not None:
+            {{ req.pythonic_name }}_dict = {'{prefix}{k}'.format(prefix='{{ req.multiliple_prefix }}', k=k): v for k,v in {{ req.pythonic_name }}.items()}
+            request_data.update({{ req.pythonic_name }}_dict)
+        {%- endfor %}
+	
+        errors_mapping = {}
+	{%- for error in api.errors %}
+	    {%- if error.subtype is none %}
+        errors_mapping[('{{ error.name }}', None)] = {{ error.exception_name() }}('{{error.description | e}}')
+	    {%- else %}
+        errors_mapping[('{{ error.name }}', '{{ error.subtype }}')] = {{ error.exception_name() }}('{{error.description | e}}')
+	    {%- endif %}
+	{%- endfor %}
+        query_data = {
+            'api': self._api,
+            'url': '{{ api.url }}',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': {{ api.sid_required }},
+        }
+        {%- if api.with_pagination %}
+        query_data['paginated_field'] = '{{ api.paginated_field.name }}'
+	{%- endif %}
+        return Async{{ api.query_class_name }}(**query_data)
     {% endfor %}{% endautoescape %}

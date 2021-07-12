@@ -122,6 +122,9 @@ def create_account(api, account_name: str) -> Tuple[Box, Box]:
                 'study_split': 1,
                 'study_merge': 1,
                 'study_delete_image': 1,
+                'customcode_view': 1,
+                'customcode_edit': 1,
+                'customcode_deploy': 1,
             },
         ),
     ).get()

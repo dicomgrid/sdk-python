@@ -129,6 +129,7 @@
                 <li><a href="#study_request_add">/study/request/add</a>
                 <li><a href="#study_request_get">/study/request/get</a>
                 <li><a href="#study_request_match">/study/request/match</a>
+                <li><a href="#study_revive">/study/revive</a>
             </ul>
             <li><a href="#tag" name="tag-idx">Tag commands</a>
             <ul>
@@ -287,6 +288,7 @@
                 <li><a href="#node_found_mwl">/node/found/mwl</a>
                 <li><a href="#node_event">/node/event</a>
                 <li><a href="#node_log">/node/log</a>
+                <li><a href="#node_xml">/node/xml</a>
                 <li><a href="#node_metric">/node/metric</a>
                 <li><a href="#node_performance_set">/node/performance/set</a>
                 <li><a href="#node_performance_get">/node/performance/get</a>
@@ -302,6 +304,7 @@
                 <li><a href="#destination_get">/destination/get</a>
                 <li><a href="#destination_delete">/destination/delete</a>
                 <li><a href="#destination_search">/destination/search</a>
+                <li><a href="#destination_search_report">/destination/search/report</a>
                 <li><a href="#destination_retrieve">/destination/retrieve</a>
                 <li><a href="#destination_search_mwl">/destination/search/mwl</a>
             </ul>
@@ -560,6 +563,18 @@
                 <li><a href="#scanner_set">/scanner/set</a>
                 <li><a href="#scanner_get">/scanner/get</a>
                 <li><a href="#scanner_delete">/scanner/delete</a>
+            </ul>
+            <li><a href="#query" name="query-idx">Query commands</a>
+            <ul>
+                <li><a href="#query_list">/query/list</a>
+                <li><a href="#query_add">/query/add</a>
+                <li><a href="#query_set">/query/set</a>
+                <li><a href="#query_get">/query/get</a>
+                <li><a href="#query_delete">/query/delete</a>
+                <li><a href="#query_status_set">/query/status/set</a>
+                <li><a href="#query_attachment_add">/query/attachment/add</a>
+                <li><a href="#query_attachment_commit">/query/attachment/commit</a>
+                <li><a href="#query_attachment_delete">/query/attachment/delete</a>
             </ul>
         </ol>
 
@@ -1990,6 +2005,14 @@
                 <td>Can they request access to an org</td>
             </tr>
             <tr>
+                <td>user_edit_shared_filter</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they edit saved searches that have been shared with them</td>
+            </tr>
+            <tr>
                 <td>channel_activity</td>
                 <td>1</td>
                 <td>1</td>
@@ -2055,7 +2078,7 @@
             </tr>
             <tr>
                 <td>site_edit>
-                <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2063,15 +2086,15 @@
             </tr>
             <tr>
                 <td>site_view</td>
-                <td>1</td>
-                <td>1</td>
+                <td>0</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>Can they view sites in the account</td>
             </tr>
             <tr>
                 <td>site_delete</td>
-                <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2079,7 +2102,7 @@
             </tr>
             <tr>
                 <td>scanner_add</td>
-                <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2087,7 +2110,7 @@
             </tr>
             <tr>
                 <td>scanner_edit</td>
-                <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2095,15 +2118,15 @@
             </tr>
             <tr>
                 <td>scanner_view</td>
-                <td>1</td>
-                <td>1</td>
+                <td>0</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>Can they view scanners</td>
             </tr>
             <tr>
                 <td>scanner_delete</td>
-                <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2111,7 +2134,7 @@
             </tr>
             <tr>
                 <td>site_user_add</td>
-                <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2119,7 +2142,7 @@
             </tr>
             <tr>
                 <td>site_user_edit</td>
-                <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2127,19 +2150,91 @@
             </tr>
             <tr>
                 <td>site_user_view</td>
-                <td>1</td>
-                <td>1</td>
+                <td>0</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>Can they view site contact lists</td>
             </tr>
             <tr>
                 <td>site_user_delete</td>
-                <td>1</td>
+                <td>09</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>Can they delete users from site contact lists</td>
+            </tr>
+            <tr>
+                <td>terminology_view</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they see the terminology administration tab</td>
+            </tr>
+            <tr>
+                <td>terminology_edit</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they edit terminology records</td>
+            </tr>
+            <tr>
+                <td>query_add</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add queries owned by the namespace</td>
+            </tr>
+            <tr>
+                <td>query_edit</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they edit queries owned by the namespace</td>
+            </tr>
+            <tr>
+                <td>query_view</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view queries owned by the namespace</td>
+            </tr>
+            <tr>
+                <td>query_view_meta</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view query metadata for queries owned by the namespace</td>
+            </tr>
+            <tr>
+                <td>query_view_only_own</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Can they only view queries owned by them</td>
+            </tr>
+            <tr>
+                <td>query_delete</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they delete queries owned by the namespace</td>
+            </tr>
+            <tr>
+                <td>query_reply</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they reply in queries owned by the namespace</td>
             </tr>
         </table>
 
@@ -3952,6 +4047,7 @@
                         <li> accession_number - Specify the name of the assertion attribute to add the accession number to the study search
                         <li> blocked_emails - A JSON array of email addresses to block from this workflow. Use this to block system assigned dummy email addresses that would result in multiple patients accessing others patients PHI
                         <li> source_namespace - The uuid of the namespace to share the studies from if the user is not a patient. The default is the account namespace.
+                        <li> force_reshare - Flag to force a reshare of the studies. This is useful for picking up changed study information.
                     </ul>
                 </td>
             </tr>
@@ -4310,6 +4406,17 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Maximum number of studies to match against an HL7 message</td>
+            </tr>
+            <tr>
+                <td>include_orm_in_study_find_order</td>
+                <td>Flag</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Include ORM messages when search for orders in /study/find/order</td>
             </tr>
             <tr>
                 <td>include_adt_in_study_find_order</td>
@@ -5008,6 +5115,16 @@
                 <td>0</td>
                 <td>The maximum number of failed logins against the account vanity(s) to hold for up to 30 days. The information on the failed logins is available via the /audit/failedlogins end point.</td>
             </tr>
+                <td>storage_delete_delay</td>
+                <td>Number</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>The number of minutes to delay deleting a study from storage. During the delay the study can be re-injected into the system via the /study/revive call</td>
+            </tr>
             <tr>
                 <td>radreport_attestation_signature</td>
                 <td>Flag</td>
@@ -5183,6 +5300,7 @@
                         <li> domain &bull; domain for iconnect (defaults to AMBRA)
                         <li> role &bull; role for iconnect (defaults to EMRUSERS)
                         <li> priors &bull; Flag to include priors in eunity (same patientid, patient_birth_date and phi_namespace)
+                        <li> most_recent_prior &bull; Flag to include the most recent prior in eunity 
                         <li> other_params &bull; A JSON array of other parameters to add to the URL
                     </ul>
                 </td>
@@ -5234,7 +5352,8 @@
                         <li> timeout &bull; Optional number of seconds for the timeout on the FHIR call to Epic, defaults to 5
                         <li> upload_namespace_id &bull; UUID of the namespace to upload into. Defaults to the account namespace if not specified
                         <li> include_first_in_match &bull; Flag to include the first name in the search. Default is last, dob and gender.
-                        <li> mrn_search &bull; Search by MRN instead of patient PHI. This field should contain a text template to create the Epic identifier value e.g. <nobr><code>MRN|{$patientid}</code></nobr>
+                        <li> mrn_search &bull; Search by MRN instead of patient PHI. This field must contain a text template to create the Epic identifier value e.g. <nobr><code>MRN|{$patientid}</code></nobr>
+                        <li> mrn_search_activity &bull; Search by MRN in the activity list. This field must contain a text template to create the Epic identifier value e.g. <nobr><code>MRN|{$patientid}</code></nobr>
                         <li> skip_phi_update &bull; Skip the lookup for patient phi to update the study, send the study to activities queue
                         <li> server_oauth_url &bull; Full URL to the Epic endpoint to get the server to server OAuth token from e.g. <code>https://apporchard.epic.com/interconnect-aocurprd-oauth/oauth2/token</code>
                         <li> server_oauth_private_key &bull; The private key to encrypt the JWT token for server OAuth. The public key is registered with Epic. Each setup requires a unique key setup and the the keys can be generated as follows<br><code>openssl genrsa -out privatekey.pem 2048</code><br><code>openssl req -new -x509 -key privatekey.pem -out publickey509.pem -subj '/CN=myapp'</code><br>To convert the private key to a single line for JSON usage run the following command<br><code>jq -sR < privatekey.pem</code>
@@ -5585,6 +5704,17 @@
             </tr>
             <tr>
                 <td>ai_run_custom_code_namespace_scripts</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Settings for the AI question</td>
+            </tr>
+            <tr>
+                <td>ai_obfuscate_faces</td>
                 <td>Text</td>
                 <td></td>
                 <td>0</td>
@@ -6034,6 +6164,91 @@
                 <td>0</td>
                 <td>A comma separated list of account UUIDs allowed to create groups linked to sites from the account this setting belongs to</td>
             </tr>
+
+
+            <tr>
+                <td>default_query_owner_namespace</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A namespace UUID to be used as a default owning namespace for the queries created (e.g. auto created queries). </td>
+            </tr>
+            <tr>
+                <td>query_types</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A JSON list of allowed query types for the account. Each of the query type is defined by a hash, the keys and values in the hash are as follows:
+                    <ul>
+                        <li> tag &bull; The query type tag
+                        <li> arm &bull; The subject arm or an arm list the tag is limited to (optional)
+                    </ul>
+
+                </td>
+            </tr>
+            <tr>
+                <td>query_status_tags</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A JSON list of allowed query statuses for the account. The first status in the list is used as a default status for newly created queries. The Closed status is processed in a special way. Each of the query status is defined by a hash, the keys and values in the hash are as follows:
+                    <ul>
+                        <li> tag &bull; The query status
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>trial_communication_plan</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A JSON list of escalation rules for the account. Every rule is a hash with the <code>condition</code> and <code>action</code> keys. Each of the condition and action is defined by a hash, the keys and values for the <code>condition</code> are as follows:
+                    <ul>
+                        <li> elapsed_from_reply &bull; The number of seconds passed from the last reply
+                        <li> elapsed_from_status_change &bull; The number of seconds passed from the last query status change
+                        <li> elapsed_from_reminder &bull; The number of seconds passed from the last reminder sent out for the query
+                        <li> any query field &bull; Any query field that should match for the rule to be aplpied to the query. Values are scalars to match the field or an array of values to match
+                    </ul>
+                    The keys and values for the <code>action</code> are as follows:
+                    <ul>
+                        <li> do &bull; The action to perform on condition match (remind|add_recipient)
+                        <li> user_id &bull; The user ID to add as a recipient to the query. Applies for the add_recipient action only (optional)
+                    </ul>
+
+                </td>
+            </tr>
+            <tr>
+                <td>query_auto_upload_to_unqualified_site</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A JSON hash with the information needed to create an auto query on study upload for an unqualfied site without <code>test_upload</code> named customfield set for the uploaded study. The keys and values in the hash are as follows:
+                    <ul>
+                        <li> subject &bull; The query subject line
+                        <li> body &bull; The query body
+                        <li> key &bull; The query  type tag
+                    </ul>
+            </tr>
         </table>
 
         <a name="ai-questions"><h3>Study AI questions</h3></a>
@@ -6183,6 +6398,11 @@
                 <td>classify_hemorrhage_in_study_images</td>
                 <td>Takes a batch of images and predicts hemorrhages in each image</td>
                 <td>ai_classify_hemorrhage_in_study_images</td>
+            </tr>
+            <tr>
+                <td>obfuscate_faces</td>
+                <td>Automatically recognizes coordinates of faces within images in the study and blocks them out</td>
+                <td>ai_obfuscate_faces</td>
             </tr>
         </table>
 
@@ -6692,7 +6912,7 @@
                     <ul>
                         <li> The session is invalidated when invalid signature is provided
                         <li> Other API calls that require a sid will return a 401 until the session which requires a signature is validated
-                        <li> The signature is calculated for a message consisting of the following parts joined by null character: user email, the current sid (binary form), the user's public key (DER form of the SubjectPublicKeyInfo structure) and the 'sha256' string. The signature should be calculated using the user public key's algorithm with the SHA-256 hashing algorithm.
+                        <li> The signature is calculated for a message consisting of the following parts joined by null character: user email, the current sid (binary form), the user's public key in DER form and the 'sha256' string. The signature should be calculated using the user public key's algorithm with the SHA-256 hashing algorithm.
                     </ul>
                 </td>
             </tr>
@@ -6892,6 +7112,9 @@
                     <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds<br>
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails<br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user<br>
+                    <i>event_query_add</i> &bull; Notify the user when a new query is issued<br>
+                    <i>event_query_edit</i> &bull; Notify the user when a query is edites<br>
+                    <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query<br>
                     <i>share_code</i> &bull; The share code of the user<br>
                     <i>share_description</i> &bull; The share description of the user<br>
                     <i>time_zone</i> &bull; The users time zone abbreviation<br>
@@ -6996,7 +7219,7 @@
                         <li> You can not change the password, email or cc_token or MD5 of acceptances of another user. Any changes will be ignored.
                         <li> Only sysadmins and support users are allowed to change <i>allowed_login_brands</i>. An ordinary cannot change allowed_login_brands even for himself.
                         <li> If a time_zone is set it will take precedence over any time zone passed in filter.tz. This allows a distributed organization to ensure that everyone is looking at the same data.
-                        <li> The public key should be in RFC7468 sec.13 format. The SubjectPublicKeyInfo structure defined in RFC5280 sec.A.1 is used through the session validation process.
+                        <li> The public key should be in RFC4716 format.
                     </ol>
                 </td>
             </tr>
@@ -7439,6 +7662,9 @@
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
                     <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request (optional)<br>
+                    <i>event_query_add</i> &bull; Notify the user when a new query is issued (optional)<br>
+                    <i>event_query_edit</i> &bull; Notify the user when a query is edites (optional)<br>
+                    <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -7493,6 +7719,9 @@
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
                     <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request (optional)<br>
+                    <i>event_query_add</i> &bull; Notify the user when a new query is issued (optional)<br>
+                    <i>event_query_edit</i> &bull; Notify the user when a query is edites (optional)<br>
+                    <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -10564,7 +10793,7 @@
                 </td>
             </tr>
         </table>
-        <a href="#activity-idx">top</a>
+        <a href="#study-idx">top</a>
 
         <p><a name="study_request_match"></a>
         <table class="bordered-table">
@@ -10603,8 +10832,53 @@
                 </td>
             </tr>
         </table>
-        <a href="#activity-idx">top</a>
+        <a href="#study-idx">top</a>
 
+        <p><a name="study_revive"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Revive a deleted study from storage during the storage_delete_delay period</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/revive</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The study uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    sysadmin or support
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    NOT_SYSADMIN_OR_SUPPORT &bull; The user is not a sysadmin or support user<br>
+                    NOT_FOUND &bull; The deleted study can not be found 
+                    CAN_NOT_REVIVE &bull; The study can not be revived
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    This will reload the study from storage as a new study.
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
 
         <a name="tag"><h3>Tag commands</h3></a>
 
@@ -10667,7 +10941,7 @@
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>tag</i> &bull; Value of the tag <br>
-                    <i>object</i> &bull; Object class to apply it to (Study|User_account|Group|Location|Account|Patient|Case|Order|Message)<br>
+                    <i>object</i> &bull; Object class to apply it to (Study|User_account|Group|Location|Account|Patient|Case|Order|Message|Query)<br>
                     <i>object_id</i> &bull; UUID of the object<br>
                 </td>
             </tr>
@@ -12648,6 +12922,7 @@
                 <th>Parameters</th>
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>account_id</i> &bull; uuid of the account<br>
                     <i>name</i> &bull; The name of the code<br>
                     <i>type</i> &bull; Type of code (AI_CUSTOM_VALIDATION_CODE)<br>
                     <i>language</i> &bull; Language of code (PYTHON)<br>
@@ -16114,6 +16389,7 @@
                     * <i>start</i> &bull; The start date and time for the log range<br>
                     * <i>end</i> &bull; The end date and time for the log range<br>
                     * <i>type</i> &bull; The log type to process (log|dicom|queue|system)<br>
+                    <i>xml</i> &bull; An array of the XML jobs to process
                 </td>
             </tr>
             <tr>
@@ -16687,6 +16963,56 @@
             </tr>
         </table>
         <a href="#node-idx">top</a>
+
+        <p><a name="node_xml"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Send XML to or from a node</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/node/xml</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>(sid || serial_no)</i> &bull; The session id or serial number of the node<br>
+                    <i>uuid</i> &bull; The node id<br>
+                    <i>xml</i> &bull; XML message<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The node can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to perform this action<br>
+                    INVALID_XML &bull; The XML does not parse<br>
+                    FULL &bull; The XML queue is full<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ul>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#node-idx">top</a>
+
 
         <p><a name="node_metric"></a>
         <table class="bordered-table">
@@ -17364,6 +17690,7 @@
                     <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) will be set for the resultant studies after <a href="#destination_retrieve">/destination/retrieve</a> call (optional)<br>
                     <i>anonymize</i> &bull; A JSON hash of <a href="#namespace_anonymize">anonymization rules</a> to apply to retrieved studies (optional)<br>
                     <i>anonymize_{STUDY_FIELD}</i> &bull; The anonymization rules breakdown. This overrides the anonymize parameter if passed (optional)<br>
+                    <i>tracking_number</i> &bull; A UUID tracking number that can be used to pull a report against this search (optional)<br> 
                     <div class="comment">-- The rest of the fields are used for the search --</div>
                     <i>study_uid</i> &bull; Study uid to find (optional)<br>
                     <i>patient_name</i> &bull; Patient name to find (optional)<br>
@@ -17403,6 +17730,7 @@
                     INVALID_FIELD_NAME &bull; The field cannot be used in anonymization rules. The <i>error_subtype</i> holds the invalid field name.<br>
                     INVALID_REGEXP &bull; Invalid anonymization rule regular expression. The <i>error_subtype</i> holds the invalid regexp.<br>
                     INSUFFICIENT_CRITERIA &bull; Not enough search fields are populated<br>
+                    CAN_NOT_TRACK &bull; Tracking only works with the create_study option<br>
                 </td>
             </tr>
             <tr>
@@ -17412,6 +17740,53 @@
                         <li> start_datetime and end_datetime support underscore token substitutions. Tokens available: __TODAY__, __YESTERDAY__, __N_DAYS_AGO__. Both take users' time zone into account.
                         <li> study_request_id parameter is used to trigger study request worflow search, all other optional parameters are ignored in this case. The search is executed using study request criteria. Results are available through <a href="#study_request_get">/study/request/get</a> call
                     </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#destination-idx">top</a>
+
+        <p><a name="destination_search_report"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Generate a report against the tracking number of the search(s)</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/destination/search/report</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>tracking_number</i> &bull; The tracking number to report on<br>
+                    <i>email</i> &bull; Optional email address to send the report to<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>report_id</i> &bull; The report id<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    destination_search
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The namespace was not found<br>
+                    NOT_PERMITTED &bull; You are not permitted to do this<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
                 </td>
             </tr>
         </table>
@@ -18203,6 +18578,9 @@
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
                     <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request (optional)<br>
+                    <i>event_query_add</i> &bull; Notify the user when a new query is issued (optional)<br>
+                    <i>event_query_edit</i> &bull; Notify the user when a query is edites (optional)<br>
+                    <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query (optional)<br>
                     <i>settings</i> &bull; A hash of the <a href="#account-settings">account settings</a> that the user can override (optional)<br>
                     <i>setting_{SETTING_NAME}</i> &bull; Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)<br>
                     <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
@@ -18295,6 +18673,9 @@
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
                     <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request (optional)<br>
+                    <i>event_query_add</i> &bull; Notify the user when a new query is issued (optional)<br>
+                    <i>event_query_edit</i> &bull; Notify the user when a query is edites (optional)<br>
+                    <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query (optional)<br>
                     <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
                     <i>settings</i> &bull; A hash of the <a href="#account-settings">account settings</a> that the user can override (optional)<br>
                     <i>setting_{SETTING_NAME}</i> &bull; Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)<br>
@@ -18401,6 +18782,9 @@
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
                     <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request<br>
+                    <i>event_query_add</i> &bull; Notify the user when a new query is issued (optional)<br>
+                    <i>event_query_edit</i> &bull; Notify the user when a query is edites (optional)<br>
+                    <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query (optional)<br>
                     <i>groups</i> &bull; An array of the accounts groups the user is a member of<br>
                     <i>locations</i> &bull; An array of the accounts locations the user is a member of. Both of these contain the following fields.<br>
                     * <i>uuid</i> &bull; uuid of the group/location<br>
@@ -19366,6 +19750,9 @@
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
                     <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request (optional)<br>
+                    <i>event_query_add</i> &bull; Notify the user when a new query is issued (optional)<br>
+                    <i>event_query_edit</i> &bull; Notify the user when a query is edites (optional)<br>
+                    <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query (optional)<br>
                     <i>no_physician_alias_share</i> &bull; Flag to exclude this location from a physician alias share (optional)<br>
                 </td>
             </tr>
@@ -19494,6 +19881,9 @@
                     * <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails<br>
                     * <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user<br>
                     * <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request<br>
+                    * <i>event_query_add</i> &bull; Notify the user when a new query is issued<br>
+                    * <i>event_query_edit</i> &bull; Notify the user when a query is edites<br>
+                    * <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query<br>
                     * <i>no_physician_alias_share</i> &bull; Flag to exclude this location from a physician alias share<br>
                 </td>
             </tr>
@@ -19814,6 +20204,7 @@
                     NOT_FOUND &bull; The group can not be found<br>
                     NOT_PERMITTED &bull; You are not permitted to delete this group<br>
                     NOT_EMPTY &bull; The group still has studies in it<br>
+                    ACTIVE_QUERY &bull; The group has outstanding Queries<br>
                 </td>
             </tr>
             <tr>
@@ -19858,6 +20249,9 @@
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
                     <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request (optional)<br>
+                    <i>event_query_add</i> &bull; Notify the user when a new query is issued (optional)<br>
+                    <i>event_query_edit</i> &bull; Notify the user when a query is edites (optional)<br>
+                    <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query (optional)<br>
                     <i>no_physician_alias_share</i> &bull; Flag to exclude this group from a physician alias share (optional)<br>
                 </td>
             </tr>
@@ -19986,6 +20380,9 @@
                     * <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails<br>
                     * <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user<br>
                     * <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request<br>
+                    * <i>event_query_add</i> &bull; Notify the user when a new query is issued<br>
+                    * <i>event_query_edit</i> &bull; Notify the user when a query is edites<br>
+                    * <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query<br>
                     * <i>no_physician_alias_share</i> &bull; Flag to exclude this group from a physician alias share<br>
                 </td>
             </tr>
@@ -21620,6 +22017,9 @@
                     <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
                     <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
                     <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request (optional)<br>
+                    <i>event_query_add</i> &bull; Notify the user when a new query is issued (optional)<br>
+                    <i>event_query_edit</i> &bull; Notify the user when a query is edites (optional)<br>
+                    <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -21639,10 +22039,13 @@
                     <i>event_node</i> &bull; Notify the user when a namespace node sends an event<br>
                     <i>event_link</i> &bull; Notify the user when an anonymous link is hit in the namespace<br>
                     <i>event_link_mine</i> &bull; Notify the user when an anonymous link created by the user is hit in the namespace<br>
-                    <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds (optional)<br>
-                    <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails (optional) <br>
-                    <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user (optional)<br>
+                    <i>event_thin_study_success</i> &bull; Notify the user when a thin study retrieval they initiated succeeds<br>
+                    <i>event_thin_study_fail</i> &bull; Notify the user when a thin study retrieval they initiated fails<br>
+                    <i>event_case_assignment</i> &bull; Notify the user when they are assigned a case as a medical or admin user<br>
                     <i>event_incoming_study_request</i> &bull; Notify the user when they get an incoming study request<br>
+                    <i>event_query_add</i> &bull; Notify the user when a new query is issued<br>
+                    <i>event_query_edit</i> &bull; Notify the user when a query is edites<br>
+                    <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query<br>
                 </td>
             </tr>
             <tr>
@@ -22251,6 +22654,7 @@
                     * <i>study_share_in</i> &bull; Number of studies shared into the account or namespace<br>
                     * <i>study_approve</i> &bull; Number of studies approved into the account or namespace<br>
                     * <i>study_auto_approve</i> &bull; Number of studies auto approved into the account or namespace<br>
+                    * <i>study_view_load</i> &bull; Average time in ms for the study view load time<br>
                 </td>
             </tr>
             <tr>
@@ -22444,6 +22848,7 @@
                     * <i>study_reject</i> &bull; Number of studies rejected<br>
                     * <i>study_upload_epic</i> &bull; Number of studies uploaded using Epic workflow<br>
                     * <i>study_view</i> &bull; Number of studies viewed<br>
+                    * <i>study_view_load</i> &bull; Average time in ms for the study view load time<br>
                     * <i>namespaces</i> &bull; A JSON array of unique namespaces covered by the period. Each array element is a hash with a id and name kv pair<br>
                     * <i>users</i> &bull; A JSON array of unique users covered by the period. Each array element is a hash with a id and name kv pair<br>
                 </td>
@@ -22702,7 +23107,7 @@
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The filter uuid<br>
-                    <i>(account_id || location_id || group_id || user_id)</i> &bull; uuid of the account, location, group or user to share this filter with<br>
+                    <i>(account_id || location_id || group_id || user_id || role_id)</i> &bull; uuid of the account, location, group, user, or role to share this filter with<br>
                 </td>
             </tr>
             <tr>
@@ -22742,7 +23147,7 @@
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The filter uuid<br>
-                    <i>(account_id || location_id || group_id || user_id)</i> &bull; uuid of the account, location, group or user to stop sharing this filter with<br>
+                    <i>(account_id || location_id || group_id || user_id || role_id)</i> &bull; uuid of the account, location, group, user, or role to stop sharing this filter with<br>
                 </td>
             </tr>
             <tr>
@@ -22791,6 +23196,7 @@
                     <i>location_id</i> &bull; A list of the location_id's the filter is shared with<br>
                     <i>group_id</i> &bull; A list of the group_id's the filter is shared with<br>
                     <i>user_id</i> &bull; A list of the user_id's the filter is shared with<br>
+                    <i>role_id</i> &bull; A list of the role_id's the filter is shared with<br>
                 </td>
             </tr>
             <tr>
@@ -22876,7 +23282,7 @@
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>name</i> &bull; Name of the customfield<br>
-                    <i>object</i> &bull; The object to associate the customfield with (Study|User_account|Group|Location|Account|Patient|Case|Order|Appointment|Dicomdata|Scanner)<br>
+                    <i>object</i> &bull; The object to associate the customfield with (Study|User_account|Group|Location|Account|Patient|Case|Order|Appointment|Dicomdata|Scanner|Query)<br>
                     <i>type</i> &bull; Type of the custom field (text|number|date|memo|select|multiselect|radio|checkbox|search|bool) (optional)<br>
                     <i>capture_on_share_code</i> &bull; Flag if the field should be captured during a share code exchange (only applicable to study fields) (optional)<br>
                     <i>capture_on_destination_search</i> &bull; Flag if the field should be captured during query retrieve on /destination/search call (only applicable to study fields) (optional)<br>
@@ -23432,6 +23838,7 @@
                             <li>STUDY_REPORT - Called when a report is added to a study
                             <li>STUDY_REPORT_REMOVE - Called when a report is removed from a study
                             <li>STUDY_RADREPORT - Called when a rad report is attached to a study
+                            <li>STUDY_RADREPORT_SIGNED - Called when a rad report is signed
                             <li>STUDY_THIN_FAIL - Called when a thin study fails to retrieve
                             <li>STUDY_VIEW - Called when a study is viewed
                             <li>STUDY_DOWNLOAD - Called when the the study is downloaded
@@ -23460,6 +23867,8 @@
                             <li>STUDY_DEID_FAIL - Called for a study when the storage fails to de-identify it
                             <li>STUDY_IMAGE_COUNT - Called when image count for a study changes, not called for new studies
                             <li>STUDY_COPY - Called when an study is successfully copied into a namespace
+                            <li>QUERY_ADD - Called when a new Query is issued
+                            <li>QUERY_STATUS - Called when the Query status changes
                         </ul>
                         <li> For the STUDY_PUSH_STATUS event the destination fields are available as destination.field and the push status as study_push.status for the letter status or study_push.success for a 1/0 flag where 0 is success and 1 is failed
                         <li> For the STUDY_UPLOAD_FAIL event the reason the upload failed is available in the study.failed_upload_reason field
@@ -23467,7 +23876,7 @@
                         <li> If the retry flag is set on the web hook will retry up to three times until it succeeds. The spacing on the retries is a minute later, then 10 minutes later and then an hour later.
                         <li> The sid_user_id is useful for calling API methods that require a sid. A sid will be generated and added to the call parameters.
                         <li> The filter_field can be a customfield in the <code>customfield-CUSTOMFIELD_UUID</code> format
-                        <li> If the event is STUDY_RADREPORT both the study.* and radreport.* fields will be available for use
+                        <li> If the event is STUDY_RADREPORT or STUDY_RADREPORT_SIGNED both the study.* and radreport.* fields will be available for use
                         <li> If the event is STUDY_REPORT or STUDY_REPORT_REMOVE and the filter_field is S-attachment_mime_type the mime type of the attachment will be filtered against the filter regular expression
                         <li> If the event is STUDY_HL7 or HL7_ADD and the filter_field is S-hl7_type the HL7 message type will be filtered against the filter regular expression. The fields in the HL7 object related to the Hl7 message that triggered the webhook are also for use in the webhook e.g. hl7.uuid. Hl7 message fields are accessible through hl7.hash prefix e.g. hl7.hash.PID_5
                         <li> If the event is STUDY_HL7 or HL7_ADD and the filter_field is S-hl7_transform_condition the filter_field_regexp should be a transform condition expression to match against the HL7 message. See /hl7/transform/add for the format for the transform condition format.
@@ -23491,6 +23900,7 @@
                                 <li> basic - a hash with username and password keys and values
                                 <li> custom - a hash of keys and values that will be passed in the HTTP header of the webhook e.g. <nobr><code>{"custom":{"name":"test"}}</code></nobr>
                             </ul>
+                        <li> For the QUERY_ADD and QUERY_STATUS events the query data is available as <code>query.*</code> parameters
                     </ul>
                 </td>
             </tr>
@@ -25038,7 +25448,7 @@
                 <th>Parameters</th>
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
-                    <i>(namespace_id || user_id || group_id || location_id || account_id || email || share_code || study_id || study_request_id)</i> &bull; The namespace, entity, email, share code, study or study request to send the message to<br>
+                    <i>(namespace_id || user_id || group_id || location_id || account_id || email || share_code || study_id || study_request_id || query_id)</i> &bull; The namespace, entity, email, share code, study, study request or query to send the message to<br>
                     <i>body</i> &bull; The body of the message<br>
                     <i>subject</i> &bull; The subject of the message (optional)<br>
                     <i>parent_id</i> &bull; The uuid of the parent message (optional)<br>
@@ -25055,6 +25465,7 @@
                 <th>Permission</th>
                 <td>
                     message_edit
+                    query_reply
                 </td>
             </tr>
             <tr>
@@ -25104,6 +25515,7 @@
                     <i>is_mine</i> &bull; Flag if I created this message<br>
                     <i>parent_id</i> &bull; The uuid of the parent message<br>
                     <i>study_id</i> &bull; The uuid of study associated with this message<br>
+                    <i>query_id</i> &bull; The uuid of the Query associated with this message<br>
                     <i>tags</i> &bull; An array of user tags associated with this object (This is only returned if the object has tags)<br>
                 </td>
             </tr>
@@ -25111,6 +25523,7 @@
                 <th>Permission</th>
                 <td>
                     message_view
+                    query_view
                 </td>
             </tr>
             <tr>
@@ -27511,9 +27924,485 @@
         </table>
         <a href="#scanner-idx">top</a>
 
+        <a name="query"><h3>Query commands</h3></a>
+
+        <p><a name="query_list"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get a list of the queries</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/query/list</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
+                    <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
+                    <i>sort_by</i> &bull; <a href="#sort">Sorting</a> (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>page</i> &bull; The pagination status hash<br>
+                    <i>queries</i> &bull; An array of the queries. Each object holds the same fields as the <a href="#query_get">/query/get</a> call<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    query_view
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#query-idx">top</a>
+
+        <p><a name="query_add"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Add a query</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/query/add</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>group_id</i> &bull; Id of the group associated to a trial site to add them to<br>
+                    <i>subject</i> &bull; Subject line of the query<br>
+                    <i>body</i> &bull; The query body (optional)<br>
+                    <i>query_type</i> &bull; The query type (optional)<br>
+                    <i>owner_namespace_id</i> &bull; The namespace owning the query. The account default from the <i>default_query_owner_namespace</i> account setting is used if not passed through the parameter (optional)<br>
+                    <i>owner_user_id</i> &bull; The user owning the query (optional)<br>
+                    <i>study_id</i> &bull; The study the query is related to (optional)<br>
+                    <i>recipients</i> &bull; JSON array of the user UUIDs to add to the query as recipients (optional)<br>
+                    <i>notify</i> &bull; Comma delimited list of the emails to be notified of the query events (optional)<br>
+                    <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>uuid</i> &bull; The uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    query_add
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The object was not found. The <i>error_subtype</i> holds the type of object not found<br>
+                    NOT_PERMITTED &bull; You are not permitted to add a query to the namespace<br>
+                    INVALID_GROUP &bull; The group passed is not linked to a trial site<br>
+                    NOT_CONFIGURED &bull; The group's account is not configured<br>
+                    INVALID_TYPE &bull; The passed type is not valid for the group and patient arm<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    The query is created with the first status defined for the acount using the <i>query_status_tags</i> account setting
+                </td>
+            </tr>
+        </table>
+        <a href="#query-idx">top</a>
+
+        <p><a name="query_set"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Edit a query</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/query/set</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The query uuid<br>
+                    <i>query_type</i> &bull; The query type (optional)<br>
+                    <i>group_id</i> &bull; Id of the group associated to a trial site to add them to. Group change is not allowed for study-related queries (optional)<br>
+                    <i>subject</i> &bull; Subject line of the query (optional)<br>
+                    <i>body</i> &bull; The query body (optional)<br>
+                    <i>owner_user_id</i> &bull; The user owning the query (optional)<br>
+                    <i>recipients</i> &bull; JSON array of the user UUIDs to add to the query as recipients (optional)<br>
+                    <i>notify</i> &bull; Comma delimited list of the emails to be notified of the query events (optional)<br>
+                    <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    query_edit
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    NOT_FOUND &bull; The object was not found. The <i>error_subtype</i> holds the type of object not found<br>
+                    NOT_PERMITTED &bull; You are not permitted to edit the query<br>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    STUDY_QUERY_GROUP_CHANGE &bull; Cannot change group for the study-related query<br>
+                    INVALID_GROUP &bull; The group passed is not linked to a trial site or is from another account<br>
+                    NOT_CONFIGURED &bull; The group's account is not configured<br>
+                    INVALID_TYPE &bull; The passed type is not valid for the group and patient arm<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#query-idx">top</a>
+
+        <p><a name="query_get"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get a Query</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/query/get</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The query uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>uuid</i> &bull; The query uuid<br>
+                    <i>query_type</i> &bull; The query type<br>
+                    <i>query_status</i> &bull; The query status tag<br>
+                    <i>subject</i> &bull; Subject line of the query<br>
+                    <i>body</i> &bull; The query body<br>
+                    <i>query_no</i> &bull; The query number in the account<br>
+                    <i>created</i> &bull; Date and time the query was created<br>
+                    <i>owner_namespace_id</i> &bull; The namespace UUID owning the query<br>
+                    <i>owner_user_id</i> &bull; The user owning user's UUID<br>
+                    <i>owner_user_name</i> &bull; The user owning user's name<br>
+                    <i>owner_user_email</i> &bull; The user owning user's email<br>
+                    <i>study_id</i> &bull; The study the query is related to<br>
+                    <i>study_modality</i> &bull; The related study modality<br>
+                    <i>group_id</i> &bull; Id of the group associated to a trial site<br>
+                    <i>group_id</i> &bull; Name of the group associated to a trial site<br>
+                    <i>attachments</i> &bull; An array of the query attachments. Each object has the following fields.<br>
+                    * <i>uuid</i> &bull; Attachment Id<br>
+                    * <i>created</i> &bull; Date and time the attachment was created<br>
+                    * <i>length</i> &bull; The attachment size in bytes<br>
+                    * <i>type</i> &bull; The attachment MIME-type<br>
+                    * <i>name</i> &bull; The attachment display name<br>
+                    * <i>url</i> &bull; The URL to download the attachment<br>
+                    * <i>headers</i> &bull; The headers to include in the download request. For the headers format see <a href="#query_attachment_add">/query/attachment/add</a><br>
+                    * <i>thumbnail_url</i> &bull; The URL to download the attachment thumbnail. Returned when there is a thumbnail for the attachment<br>
+                    * <i>thumbnail_headers</i> &bull; The headers to include in the thumbnail download request. Returned when there is a thumbnail for the attachment<br>
+                    --- The following fields are only returned if the user has query_view_meta permission ---<br>
+                    <i>notify</i> &bull; Comma delimited list of the emails to be notified of the query events<br>
+                    <i>recipients</i> &bull; JSON array of the study recipients. Each array element is a HASH with two keys: uuid and email<br>
+                    <i>last_reply</i> &bull; Date and time when the last reply was added<br>
+                    <i>last_status_change</i> &bull; Date and time when the query status changes for the last time<br>
+                    <i>last_reminder</i> &bull; Date and time when the last reminder was sent out for the query<br>
+                    <i>escalation_count_since_status_change</i> &bull; The escalation count since the last status change for the query<br>
+                    <i>reminder_count_since_reply</i> &bull; The count o remiders sent out since the last reply<br>
+                    <i>patient_id</i> &bull; The patient id<br>
+                    <i>patient_mrn</i> &bull; The patient MRN<br>
+                    <i>patient_name</i> &bull; The patient name<br>
+                    <i>patient_arm</i> &bull; The patient arm (defined by the <code>trial_arm</code> named customfield)<br>
+                    <i>tags</i> &bull; An array of user tags associated with this object (This is only returned if the object has tags)<br>
+                    <i>customfields</i> &bull; An array of the custom fields associated with this case. Each object has the following <a href="#customfields">fields</a> (This is only returned if the case has custom fields)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    query_view
+                    query_view_meta
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The query can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to view the query<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#query-idx">top</a>
+
+        <p><a name="query_delete"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Delete a query</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/query/delete</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The query uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    query_delete
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The query can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to delete the query<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#query-idx">top</a>
+
+        <p><a name="query_status_set"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Set the status of a query</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/query/status/set</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; Query uuid<br>
+                    <i>old</i> &bull; The old query status value<br>
+                    <i>new</i> &bull; The new query status value<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The query can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to set the status for this query<br>
+                    STALE &bull; The query status you have is stale<br>
+                    INVALID_TAG &bull; The query status new value is not a valid value<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#query-idx">top</a>
+
+        <p><a name="query_attachment_add"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Add an attachment to a query</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/query/attachment/add</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>query_id</i> &bull; Query UUID<br>
+                    <i>name</i> &bull; The attachment display name<br>
+                    <i>length</i> &bull; The attachment size in bytes<br>
+                    <i>type</i> &bull; The attachment MIME-type<br>
+                    <i>thumbnail_length</i> &bull; The attachment's thumbnail MIME-type (optional)<br>
+                    <i>thumbnail_type</i> &bull; The attachment's thumbnail size in bytes (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>uuid</i> &bull; The attachment uuid<br>
+                    <i>upload_url</i> &bull; The URL to use for content upload<br>
+                    <i>upload_headers</i> &bull; The headers to include in the upload request<br>
+                    <i>thumbnail_upload_url</i> &bull; The URL to use for content upload<br>
+                    <i>thumbnail_upload_headers</i> &bull; The headers to include in the upload request<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The query can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to add attachments to this query<br>
+                    TOO_BIG &bull; The attachment size exceeds the limit<br>
+                    NOT_CONFIGURED &bull; The Azure keys are not configured<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ul>
+                        <li> <i>thumbnail_length</i> and <i>thumbnail_type</i> parameters must be used together.
+                        <li> The request to put file contents should be of type PUT and include all the headers provided with the call result.
+                        <li> The headers in the response are encoded as an array of two-element arrays, the first element is the name of a header, the second is the header's value.
+                        <li> Current file size limit is 10MB
+                        <li> <i>thumbnail_upload_url</i> and <i>thumbnail_upload_headers</i> are returned when thumbnail-related parameters are passed.
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#query-idx">top</a>
+
+        <p><a name="query_attachment_commit"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Finish a query attachment upload</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/query/attachment/commit</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; Attachment UUID<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The query attachment can not be found<br>
+                    NOT_PERMITTED &bull; You are not the creator of the query attachment<br>
+                    NOT_PHANTOM &bull; The attachment is not phantom<br>
+                    NOT_CONFIGURED &bull; The Azure keys are not configured<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#query-idx">top</a>
+
+        <p><a name="query_attachment_delete"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Delete an attachment from the query</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/query/attachment/delete</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; Attachment UUID<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The query attachment can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to delete attachments from this query<br>
+                    THUMBNAIL &bull; The attachment is a thumbnail for the attachment, Use the main attachment to delete the thumbnail<br>
+                    NOT_CONFIGURED &bull; The Azure keys are not configured<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#query-idx">top</a>
 
 
-    <footer>LBL0022 v45.0 2021-04-07</footer>
+    <footer>LBL0022 v47.0 2021-06-30</footer>
     </div>
 </body>
 </html>

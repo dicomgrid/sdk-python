@@ -11,7 +11,9 @@ from ambra_sdk.exceptions.service import InvalidSortOrder
 from ambra_sdk.exceptions.service import MissingFields
 from ambra_sdk.exceptions.service import NotPermitted
 from ambra_sdk.service.query import QueryO
+from ambra_sdk.service.query import AsyncQueryO
 from ambra_sdk.service.query import QueryOPSF
+from ambra_sdk.service.query import AsyncQueryOPSF
 
 class Radreportmacro:
     """Radreportmacro."""
@@ -176,4 +178,170 @@ class Radreportmacro:
             'required_sid': True,
         }
         return QueryO(**query_data)
+    
+
+
+class AsyncRadreportmacro:
+    """AsyncRadreportmacro."""
+
+    def __init__(self, api):
+        self._api = api
+
+    
+    def list(
+        self,
+        account_id,
+        modality=None,
+        type=None,
+    ):
+        """List.
+        :param account_id: uuid of the account
+        :param modality: Limit to this modality (optional)
+        :param type: Limit to this type (optional)
+        """
+        request_data = {
+           'account_id': account_id,
+           'modality': modality,
+           'type': type,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this operation')
+        query_data = {
+            'api': self._api,
+            'url': '/radreportmacro/list',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        query_data['paginated_field'] = 'macros'
+        return AsyncQueryOPSF(**query_data)
+    
+    def add(
+        self,
+        account_id,
+        body,
+        modality,
+        name,
+        type,
+        hotkey=None,
+    ):
+        """Add.
+        :param account_id: uuid of the account
+        :param body: JSON body of the macro
+        :param modality: Modality
+        :param name: Name of the macro
+        :param type: Type of radreport
+        :param hotkey: Hotkey of the macro (optional)
+        """
+        request_data = {
+           'account_id': account_id,
+           'body': body,
+           'hotkey': hotkey,
+           'modality': modality,
+           'name': name,
+           'type': type,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this operation')
+        query_data = {
+            'api': self._api,
+            'url': '/radreportmacro/add',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def set(
+        self,
+        uuid,
+        body=None,
+        hotkey=None,
+        modality=None,
+        name=None,
+        type=None,
+    ):
+        """Set.
+        :param uuid: uuid of the macro
+        :param body: JSON body of the macro (optional)
+        :param hotkey: Hotkey of the macro (optional)
+        :param modality: Modality (optional)
+        :param name: Name of the macro (optional)
+        :param type: Type of radreport (optional)
+        """
+        request_data = {
+           'body': body,
+           'hotkey': hotkey,
+           'modality': modality,
+           'name': name,
+           'type': type,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this operation')
+        query_data = {
+            'api': self._api,
+            'url': '/radreportmacro/set',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def get(
+        self,
+        uuid,
+    ):
+        """Get.
+        :param uuid: uuid of the macro
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this operation')
+        query_data = {
+            'api': self._api,
+            'url': '/radreportmacro/get',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def delete(
+        self,
+        uuid,
+    ):
+        """Delete.
+        :param uuid: uuid of the macro
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this operation')
+        query_data = {
+            'api': self._api,
+            'url': '/radreportmacro/delete',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
     

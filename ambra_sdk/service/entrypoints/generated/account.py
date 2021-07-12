@@ -35,7 +35,9 @@ from ambra_sdk.exceptions.service import TokenFailed
 from ambra_sdk.exceptions.service import UserNotFound
 from ambra_sdk.exceptions.service import WithNotFound
 from ambra_sdk.service.query import QueryO
+from ambra_sdk.service.query import AsyncQueryO
 from ambra_sdk.service.query import QueryOPSF
+from ambra_sdk.service.query import AsyncQueryOPSF
 
 class Account:
     """Account."""
@@ -221,6 +223,9 @@ class Account:
         event_new_report=None,
         event_node=None,
         event_purge=None,
+        event_query_add=None,
+        event_query_edit=None,
+        event_query_reply=None,
         event_report_remove=None,
         event_share=None,
         event_status_change=None,
@@ -261,6 +266,9 @@ class Account:
         :param event_new_report: Notify the user when a report is attached in the account namespace (optional)
         :param event_node: Notify the user when an account node sends an event (optional)
         :param event_purge: Notify the user the results of a purge job for the account (optional)
+        :param event_query_add: Notify the user when a new query is issued (optional)
+        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)
         :param event_share: Notify the user on a share into the account namespace (optional)
         :param event_status_change: Notify the user when the status of a study is changed (optional)
@@ -299,6 +307,9 @@ class Account:
            'event_new_report': event_new_report,
            'event_node': event_node,
            'event_purge': event_purge,
+           'event_query_add': event_query_add,
+           'event_query_edit': event_query_edit,
+           'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
            'event_status_change': event_status_change,
@@ -368,6 +379,9 @@ class Account:
         event_new_report=None,
         event_node=None,
         event_purge=None,
+        event_query_add=None,
+        event_query_edit=None,
+        event_query_reply=None,
         event_report_remove=None,
         event_share=None,
         event_status_change=None,
@@ -406,6 +420,9 @@ class Account:
         :param event_new_report: Notify the user when a report is attached in the account namespace (optional)
         :param event_node: Notify the user when an account node sends an event (optional)
         :param event_purge: Notify the user the results of a purge job for the account (optional)
+        :param event_query_add: Notify the user when a new query is issued (optional)
+        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)
         :param event_share: Notify the user on a share into the account namespace (optional)
         :param event_status_change: Notify the user when the status of a study is changed (optional)
@@ -441,6 +458,9 @@ class Account:
            'event_new_report': event_new_report,
            'event_node': event_node,
            'event_purge': event_purge,
+           'event_query_add': event_query_add,
+           'event_query_edit': event_query_edit,
+           'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
            'event_status_change': event_status_change,
@@ -901,4 +921,889 @@ class Account:
             'required_sid': True,
         }
         return QueryO(**query_data)
+    
+
+
+class AsyncAccount:
+    """AsyncAccount."""
+
+    def __init__(self, api):
+        self._api = api
+
+    
+    def list(
+        self,
+        permissions=None,
+    ):
+        """List.
+        :param permissions: Flag to return the users role and permissions in the accounts (optional)
+        """
+        request_data = {
+           'permissions': permissions,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        query_data = {
+            'api': self._api,
+            'url': '/account/list',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        query_data['paginated_field'] = 'accounts'
+        return AsyncQueryOPSF(**query_data)
+    
+    def set(
+        self,
+        uuid,
+        can_request=None,
+        css=None,
+        customfield_param=None,
+        hl7_template=None,
+        must_approve=None,
+        must_approve_harvest=None,
+        must_approve_move=None,
+        must_approve_upload=None,
+        name=None,
+        no_share=None,
+        password_expire=None,
+        role_id=None,
+        search_threshold=None,
+        session_expire=None,
+        setting_param=None,
+        settings=None,
+        share_code=None,
+        share_description=None,
+        share_settings=None,
+        share_via_gateway=None,
+        vanity=None,
+        vendor=None,
+    ):
+        """Set.
+        :param uuid: The account uuid
+        :param can_request: Flag if user can request to join the account (optional)
+        :param css: Custom CSS for the account (optional)
+        :param customfield_param: Custom field(s) (optional)
+        :param hl7_template: The HL7 reporting template for the account (optional)
+        :param must_approve: Flag if shared studies must be approved for the account namespace (optional)
+        :param must_approve_harvest: Flag if harvested studies must be approved (optional)
+        :param must_approve_move: Flag if moved studies must be approved (optional)
+        :param must_approve_upload: Flag if uploaded studies must be approved (optional)
+        :param name: Name of the account (optional)
+        :param no_share: Flag if studies can not be shared with this account (optional). Studies can still be shared with locations, groups and users in the account.
+        :param password_expire: Number of days before account passwords expire. No expiration if zero. (optional)
+        :param role_id: Id for the default role for the account (optional)
+        :param search_threshold: The number of studies record in the namespace to switch the UI from list to search mode (optional)
+        :param session_expire: Number of minutes before an idle session expires. (optional)
+        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param settings: A hash of the account settings (optional)
+        :param share_code: The share code of the account (optional)
+        :param share_description: The share description of the account (optional)
+        :param share_settings: Share settings JSON structure of the share display settings (optional)
+        :param share_via_gateway: Flag if a gateway share is allowed (optional)
+        :param vanity: Vanity host name for the account. Multiple host names can be specified in a comma separate list (optional)
+        :param vendor: Vendor name (optional)
+        """
+        request_data = {
+           'can_request': can_request,
+           'css': css,
+           'hl7_template': hl7_template,
+           'must_approve': must_approve,
+           'must_approve_harvest': must_approve_harvest,
+           'must_approve_move': must_approve_move,
+           'must_approve_upload': must_approve_upload,
+           'name': name,
+           'no_share': no_share,
+           'password_expire': password_expire,
+           'role_id': role_id,
+           'search_threshold': search_threshold,
+           'session_expire': session_expire,
+           'settings': settings,
+           'share_code': share_code,
+           'share_description': share_description,
+           'share_settings': share_settings,
+           'share_via_gateway': share_via_gateway,
+           'uuid': uuid,
+           'vanity': vanity,
+           'vendor': vendor,
+        }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
+        if setting_param is not None:
+            setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
+            request_data.update(setting_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('DUPLICATE_NAME', None)] = DuplicateName('The account name is already taken')
+        errors_mapping[('DUPLICATE_VANITY', None)] = DuplicateVanity('The vanity host name is already taken. The error_subtype holds the taken hostname')
+        errors_mapping[('DUP_SHARE_CODE', None)] = DupShareCode('The share code is already used')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('INVALID_INTEGER', None)] = InvalidInteger('An invalid integer was passed. The error_subtype holds the name of the invalid integer')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('INVALID_VANITY', None)] = InvalidVanity('The vanity host name is invalid. The error_subtype holds the invalid hostname')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found. The error_subtype holds the name of field that triggered the error')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to modify this record')
+        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for the account, data contains role_id and namespace_id')
+        query_data = {
+            'api': self._api,
+            'url': '/account/set',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def get(
+        self,
+        uuid,
+        brand_settings=None,
+        permissions=None,
+    ):
+        """Get.
+        :param uuid: The account uuid
+        :param brand_settings: A comma delimited list of the settings from /brand/get for this vanity to return (optional)
+        :param permissions: Flag to return the users role and permissions in the accounts (optional)
+        """
+        request_data = {
+           'brand_settings': brand_settings,
+           'permissions': permissions,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        query_data = {
+            'api': self._api,
+            'url': '/account/get',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def user_add(
+        self,
+        uuid,
+        account_alias=None,
+        account_email=None,
+        account_login=None,
+        account_password=None,
+        customfield_param=None,
+        email=None,
+        epic_user=None,
+        event_approve=None,
+        event_case_assignment=None,
+        event_harvest=None,
+        event_incoming_study_request=None,
+        event_join=None,
+        event_link=None,
+        event_link_mine=None,
+        event_message=None,
+        event_new_report=None,
+        event_node=None,
+        event_purge=None,
+        event_query_add=None,
+        event_query_edit=None,
+        event_query_reply=None,
+        event_report_remove=None,
+        event_share=None,
+        event_status_change=None,
+        event_study_comment=None,
+        event_thin_study_fail=None,
+        event_thin_study_success=None,
+        event_upload=None,
+        event_upload_fail=None,
+        global_param=None,
+        global_role_id=None,
+        max_sessions=None,
+        password_reset=None,
+        role_id=None,
+        session_expire=None,
+        set_default_organization=None,
+        setting_param=None,
+        settings=None,
+        sso_only=None,
+        user_id=None,
+    ):
+        """User add.
+        :param uuid: The account uuid
+        :param account_alias: Users alias in the account. (optional).
+        :param account_email: Users account_email. Only set this if it is different than the users login email (optional).
+        :param account_login: Users login name in the account. (optional).
+        :param account_password: Password for the account_password. (optional).
+        :param customfield_param: Custom field(s) (optional)
+        :param email: email
+        :param epic_user: Epic user used to map Epic users into Ambra's ones to track activity. (optional).
+        :param event_approve: Notify the user on a approval needed into the account namespace (optional)
+        :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)
+        :param event_harvest: Notify the user on a harvest into the account namespace (optional)
+        :param event_incoming_study_request: Notify the user when they get an incoming study request (optional)
+        :param event_join: Notify the user on a join request for the account (optional)
+        :param event_link: Notify the user when an anonymous link is hit in the namespace (optional)
+        :param event_link_mine: Notify the user when an anonymous link created by the user is hit in the namespace (optional)
+        :param event_message: Notify the user when a message is sent to the account namespace (optional)
+        :param event_new_report: Notify the user when a report is attached in the account namespace (optional)
+        :param event_node: Notify the user when an account node sends an event (optional)
+        :param event_purge: Notify the user the results of a purge job for the account (optional)
+        :param event_query_add: Notify the user when a new query is issued (optional)
+        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
+        :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)
+        :param event_share: Notify the user on a share into the account namespace (optional)
+        :param event_status_change: Notify the user when the status of a study is changed (optional)
+        :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
+        :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)
+        :param event_thin_study_success: Notify the user when a thin study retrieval they initiated succeeds (optional)
+        :param event_upload: Notify the user on an upload into the account namespace (optional)
+        :param event_upload_fail: Notify the user on a failed upload into the account namespace (optional)
+        :param global_param: Flag if this is a global user (optional).
+        :param global_role_id: uuid of a role to be used in groups and locations when the global user is added to them, this role overrides groups'/locations' default roles (optional).
+        :param max_sessions: Over-ride value for the max number of simultaneous sessions the user can have. (optional).
+        :param password_reset: Flag if the password needs to be reset. (optional).
+        :param role_id: uuid of the users role in the account (optional).
+        :param session_expire: Number of minutes before an idle session expires. (optional)
+        :param set_default_organization: A flag to set this account as a default one for the user using user_default_organization Setting. (optional)
+        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param settings: A hash of the account settings that the user can override (optional)
+        :param sso_only: Flag if the user can only login via SSO. (optional).
+        :param user_id: user_id
+        """
+        request_data = {
+           'account_alias': account_alias,
+           'account_email': account_email,
+           'account_login': account_login,
+           'account_password': account_password,
+           'email': email,
+           'epic_user': epic_user,
+           'event_approve': event_approve,
+           'event_case_assignment': event_case_assignment,
+           'event_harvest': event_harvest,
+           'event_incoming_study_request': event_incoming_study_request,
+           'event_join': event_join,
+           'event_link': event_link,
+           'event_link_mine': event_link_mine,
+           'event_message': event_message,
+           'event_new_report': event_new_report,
+           'event_node': event_node,
+           'event_purge': event_purge,
+           'event_query_add': event_query_add,
+           'event_query_edit': event_query_edit,
+           'event_query_reply': event_query_reply,
+           'event_report_remove': event_report_remove,
+           'event_share': event_share,
+           'event_status_change': event_status_change,
+           'event_study_comment': event_study_comment,
+           'event_thin_study_fail': event_thin_study_fail,
+           'event_thin_study_success': event_thin_study_success,
+           'event_upload': event_upload,
+           'event_upload_fail': event_upload_fail,
+           'global': global_param,
+           'global_role_id': global_role_id,
+           'max_sessions': max_sessions,
+           'password_reset': password_reset,
+           'role_id': role_id,
+           'session_expire': session_expire,
+           'set_default_organization': set_default_organization,
+           'settings': settings,
+           'sso_only': sso_only,
+           'user_id': user_id,
+           'uuid': uuid,
+        }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
+        if setting_param is not None:
+            setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
+            request_data.update(setting_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('ALREADY_EXISTS', None)] = AlreadyExists('The user is already a member of the account')
+        errors_mapping[('BAD_PASSWORD', None)] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
+        errors_mapping[('DUPLICATE_NAME', None)] = DuplicateName('The account_login is already in use')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add this user to the account')
+        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'GLOBAL_USER_WITH_RESTRICTED_ROLE')] = RoleNamespaceMismatch('They are adding a global user with a role restricted to group/location and there is a group/location in the account, data contains role_id, namespace_id and user_id')
+        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for the account, data contains role_id and namespace_id')
+        errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/account/user/add',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def user_set(
+        self,
+        user_id,
+        uuid,
+        account_alias=None,
+        account_email=None,
+        account_login=None,
+        account_password=None,
+        customfield_param=None,
+        epic_user=None,
+        event_approve=None,
+        event_case_assignment=None,
+        event_harvest=None,
+        event_incoming_study_request=None,
+        event_join=None,
+        event_link=None,
+        event_link_mine=None,
+        event_message=None,
+        event_new_report=None,
+        event_node=None,
+        event_purge=None,
+        event_query_add=None,
+        event_query_edit=None,
+        event_query_reply=None,
+        event_report_remove=None,
+        event_share=None,
+        event_status_change=None,
+        event_study_comment=None,
+        event_thin_study_fail=None,
+        event_thin_study_success=None,
+        event_upload=None,
+        event_upload_fail=None,
+        global_param=None,
+        global_role_id=None,
+        max_sessions=None,
+        password_reset=None,
+        role_id=None,
+        session_expire=None,
+        setting_param=None,
+        settings=None,
+        sso_only=None,
+    ):
+        """User set.
+        :param user_id: The users uuid
+        :param uuid: The account uuid
+        :param account_alias: Users alias in the account. (optional).
+        :param account_email: Users account_email. Only set this if it is different than the users login email (optional).
+        :param account_login: Users login name in the account. (optional).
+        :param account_password: Password for the account_password. (optional).
+        :param customfield_param: Custom field(s) (optional)
+        :param epic_user: Epic user used to map Epic users into Ambra's ones to track activity (optional).
+        :param event_approve: Notify the user on a approval needed into the account namespace (optional)
+        :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)
+        :param event_harvest: Notify the user on a harvest into the account namespace (optional)
+        :param event_incoming_study_request: Notify the user when they get an incoming study request (optional)
+        :param event_join: Notify the user on a join request for the account (optional)
+        :param event_link: Notify the user when an anonymous link is hit in the namespace (optional)
+        :param event_link_mine: Notify the user when an anonymous link created by the user is hit in the namespace (optional)
+        :param event_message: Notify the user when a message is sent to the account namespace (optional)
+        :param event_new_report: Notify the user when a report is attached in the account namespace (optional)
+        :param event_node: Notify the user when an account node sends an event (optional)
+        :param event_purge: Notify the user the results of a purge job for the account (optional)
+        :param event_query_add: Notify the user when a new query is issued (optional)
+        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
+        :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)
+        :param event_share: Notify the user on a share into the account namespace (optional)
+        :param event_status_change: Notify the user when the status of a study is changed (optional)
+        :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
+        :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)
+        :param event_thin_study_success: Notify the user when a thin study retrieval they initiated succeeds (optional)
+        :param event_upload: Notify the user on an upload into the account namespace (optional)
+        :param event_upload_fail: Notify the user on a failed upload into the account namespace (optional)
+        :param global_param: Flag if this is a global user. (optional).
+        :param global_role_id: uuid of a role to be used in groups and locations when the global user is added to them, this role overrides groups'/locations' default roles (optional).
+        :param max_sessions: Over-ride value for the max number of simultaneous sessions the user can have. (optional).
+        :param password_reset: Flag if the password needs to be reset. (optional).
+        :param role_id: uuid of the users role in the account (optional).
+        :param session_expire: Number of minutes before an idle session expires. (optional)
+        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param settings: A hash of the account settings that the user can override (optional)
+        :param sso_only: Flag if the user can only login via SSO. (optional).
+        """
+        request_data = {
+           'account_alias': account_alias,
+           'account_email': account_email,
+           'account_login': account_login,
+           'account_password': account_password,
+           'epic_user': epic_user,
+           'event_approve': event_approve,
+           'event_case_assignment': event_case_assignment,
+           'event_harvest': event_harvest,
+           'event_incoming_study_request': event_incoming_study_request,
+           'event_join': event_join,
+           'event_link': event_link,
+           'event_link_mine': event_link_mine,
+           'event_message': event_message,
+           'event_new_report': event_new_report,
+           'event_node': event_node,
+           'event_purge': event_purge,
+           'event_query_add': event_query_add,
+           'event_query_edit': event_query_edit,
+           'event_query_reply': event_query_reply,
+           'event_report_remove': event_report_remove,
+           'event_share': event_share,
+           'event_status_change': event_status_change,
+           'event_study_comment': event_study_comment,
+           'event_thin_study_fail': event_thin_study_fail,
+           'event_thin_study_success': event_thin_study_success,
+           'event_upload': event_upload,
+           'event_upload_fail': event_upload_fail,
+           'global': global_param,
+           'global_role_id': global_role_id,
+           'max_sessions': max_sessions,
+           'password_reset': password_reset,
+           'role_id': role_id,
+           'session_expire': session_expire,
+           'settings': settings,
+           'sso_only': sso_only,
+           'user_id': user_id,
+           'uuid': uuid,
+        }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
+        if setting_param is not None:
+            setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
+            request_data.update(setting_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('BAD_PASSWORD', None)] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
+        errors_mapping[('CAN_NOT_PROMOTE', None)] = CanNotPromote('A user can not switch themselves to an admin role if they are currently not in an admin role')
+        errors_mapping[('DUPLICATE_NAME', None)] = DuplicateName('The account_login is already in use')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit this user')
+        errors_mapping[('NO_USER_OVERRIDE', None)] = NoUserOverride('The setting does not allow a user override')
+        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'GLOBAL_USER_WITH_RESTRICTED_ROLE')] = RoleNamespaceMismatch('They are making the user global with a role restricted to group/location and there is a group/location in the account, data contains role_id, namespace_id and user_id.')
+        errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for the account, data contains role_id and namespace_id')
+        errors_mapping[('ROLE_NOT_FOUND', None)] = RoleNotFound('The role was not found or is not an account role')
+        errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user can not be found or is not a member of this account')
+        query_data = {
+            'api': self._api,
+            'url': '/account/user/set',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def user_get(
+        self,
+        user_id,
+        uuid,
+    ):
+        """User get.
+        :param user_id: The users uuid
+        :param uuid: The account uuid
+        """
+        request_data = {
+           'user_id': user_id,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user can not be found or is not a member of this account')
+        query_data = {
+            'api': self._api,
+            'url': '/account/user/get',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def user_delete(
+        self,
+        user_id,
+        uuid,
+    ):
+        """User delete.
+        :param user_id: The user uuid
+        :param uuid: The account uuid
+        """
+        request_data = {
+           'user_id': user_id,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete this user')
+        errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The user can not be found or is not a member of this account')
+        query_data = {
+            'api': self._api,
+            'url': '/account/user/delete',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def user_list(
+        self,
+        uuid,
+    ):
+        """User list.
+        :param uuid: The account uuid
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to list the users in this account')
+        query_data = {
+            'api': self._api,
+            'url': '/account/user/list',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        query_data['paginated_field'] = 'users'
+        return AsyncQueryOPSF(**query_data)
+    
+    def user_report_login(
+        self,
+        uuid,
+        user_id=None,
+    ):
+        """User report login.
+        :param uuid: The account uuid
+        :param user_id: Limit to this user_id (optional)
+        """
+        request_data = {
+           'user_id': user_id,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to list the users in this account')
+        query_data = {
+            'api': self._api,
+            'url': '/account/user/report/login',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def can_share(
+        self,
+        account_id,
+        by_id,
+        by_type,
+        with_id,
+        with_type,
+    ):
+        """Can share.
+        :param account_id: The account id
+        :param by_id: The uuid of the object that can share
+        :param by_type: The type of object that can share. (user|account|group|location)
+        :param with_id: The uuid of the object that they can share with
+        :param with_type: The type of object that they can share with (user|account|group|location)
+        """
+        request_data = {
+           'account_id': account_id,
+           'by_id': by_id,
+           'by_type': by_type,
+           'with_id': with_id,
+           'with_type': with_type,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('BY_NOT_FOUND', None)] = ByNotFound('The &#34;by&#34; object can not be found')
+        errors_mapping[('INVALID_TYPE', None)] = InvalidType('The type of object is invalidate. The error_subtype holds the type that is invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this action')
+        errors_mapping[('WITH_NOT_FOUND', None)] = WithNotFound('The &#34;with&#34; object can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/account/can/share',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def can_share_stop(
+        self,
+        account_id,
+        by_id,
+        by_type,
+        with_id,
+        with_type,
+    ):
+        """Can share stop.
+        :param account_id: The account id
+        :param by_id: The uuid of the object that can share
+        :param by_type: The type of object that can share. (user|account|group|location)
+        :param with_id: The uuid of the object that they can share with
+        :param with_type: The type of object that they can share with (user|account|group|location)
+        """
+        request_data = {
+           'account_id': account_id,
+           'by_id': by_id,
+           'by_type': by_type,
+           'with_id': with_id,
+           'with_type': with_type,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('BY_NOT_FOUND', None)] = ByNotFound('The &#34;by&#34; object can not be found')
+        errors_mapping[('INVALID_TYPE', None)] = InvalidType('The type of object is invalidate. The error_subtype holds the type that is invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this action')
+        errors_mapping[('WITH_NOT_FOUND', None)] = WithNotFound('The &#34;with&#34; object can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/account/can/share/stop',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def can_share_list(
+        self,
+        account_id,
+    ):
+        """Can share list.
+        :param account_id: The account id
+        """
+        request_data = {
+           'account_id': account_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to perform this action')
+        query_data = {
+            'api': self._api,
+            'url': '/account/can/share/list',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def css(
+        self,
+        account_id=None,
+        vanity=None,
+    ):
+        """Css.
+        :param account_id: account_id
+        :param vanity: vanity
+        """
+        request_data = {
+           'account_id': account_id,
+           'vanity': vanity,
+        }
+	
+        errors_mapping = {}
+        query_data = {
+            'api': self._api,
+            'url': '/account/css',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def settings(
+        self,
+        account_id=None,
+        brand_settings=None,
+        namespace_id=None,
+        settings=None,
+        vanity=None,
+    ):
+        """Settings.
+        :param account_id: account_id
+        :param brand_settings: A comma delimited list of the settings from /brand/get for this vanity to return (optional)
+        :param namespace_id: Apply overrides for the namespace (optional)
+        :param settings: A comma delimited list of the settings to return (optional)
+        :param vanity: vanity
+        """
+        request_data = {
+           'account_id': account_id,
+           'brand_settings': brand_settings,
+           'namespace_id': namespace_id,
+           'settings': settings,
+           'vanity': vanity,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or namespace can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/account/settings',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def settings_validate(
+        self,
+        uuid,
+        setting_param=None,
+        settings=None,
+    ):
+        """Settings validate.
+        :param uuid: The account uuid
+        :param setting_param: Validate an individual setting. This is an alternative to the settings hash (optional)
+        :param settings: A hash of the account settings with values to validate (optional)
+        """
+        request_data = {
+           'settings': settings,
+           'uuid': uuid,
+        }
+        if setting_param is not None:
+            setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
+            request_data.update(setting_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_SETTING', None)] = InvalidSetting('An invalid setting was passed. The error_subtype holds the name of the invalid setting')
+        errors_mapping[('INVALID_SETTING_VALUE', None)] = InvalidSettingValue('An invalid setting value was passed. The error_subtype holds the name of the setting with the invalid value')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or namespace can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/account/settings/validate',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def connect(
+        self,
+        code,
+        uuid,
+    ):
+        """Connect.
+        :param code: The OAuth code
+        :param uuid: The account_id
+        """
+        request_data = {
+           'code': code,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('TOKEN_FAILED', None)] = TokenFailed('The OAuth code did not return a valid token from the processor')
+        query_data = {
+            'api': self._api,
+            'url': '/account/connect',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def md5_counter(
+        self,
+        md5,
+        uuid,
+        node_id=None,
+        serial_no=None,
+    ):
+        """Md5 counter.
+        :param md5: The MD5 value
+        :param uuid: UUID of the account (only needed for sid authentication)
+        :param node_id: node_id
+        :param serial_no: serial_no
+        """
+        request_data = {
+           'md5': md5,
+           'node_id': node_id,
+           'serial_no': serial_no,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        query_data = {
+            'api': self._api,
+            'url': '/account/md5/counter',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def list_requestable(
+        self,
+        namespace_id,
+    ):
+        """List requestable.
+        :param namespace_id: Id of the namespace to receive requested studies into
+        """
+        request_data = {
+           'namespace_id': namespace_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not allowed to list requestable accounts')
+        query_data = {
+            'api': self._api,
+            'url': '/account/list/requestable',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def radreport_email_authorize(
+        self,
+        captcha_response,
+        uuid,
+    ):
+        """Radreport email authorize.
+        :param captcha_response: A solved captcha
+        :param uuid: The account id
+        """
+        request_data = {
+           'captcha_response': captcha_response,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('CAPTCHA_FAILED', None)] = CaptchaFailed('The captcha is not solved')
+        errors_mapping[('NOT_ENABLED', None)] = NotEnabled('The feature of sending radreports out is not enabled for the account')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not the account&#39;s sysadmin')
+        query_data = {
+            'api': self._api,
+            'url': '/account/radreport/email/authorize',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
     

@@ -2,9 +2,15 @@
 
 from datetime import datetime
 from enum import Enum
-from typing import Any, List, NamedTuple, Union
+from typing import Any, Generic, List, NamedTuple, TypeVar, Union
 
-from ambra_sdk.request_args import RequestArgs
+from ambra_sdk.request_args import AioHTTPRequestArgs, RequestArgs
+
+REQUEST_ARGS_TYPE = TypeVar(
+    'REQUEST_ARGS_TYPE',
+    RequestArgs,
+    AioHTTPRequestArgs,
+)
 
 
 class FilterCondition(Enum):
@@ -31,10 +37,10 @@ class Filter(NamedTuple):
     value: Union[datetime, str, List[str]]  # NOQA:WPS110
 
 
-class WithFilter:
+class WithFilter(Generic[REQUEST_ARGS_TYPE]):
     """With Filter mixin."""
 
-    request_args: RequestArgs
+    request_args: REQUEST_ARGS_TYPE
 
     def filter_by(self, filter_obj: Filter):
         """Filter by filter.

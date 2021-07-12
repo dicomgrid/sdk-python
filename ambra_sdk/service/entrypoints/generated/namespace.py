@@ -28,6 +28,7 @@ from ambra_sdk.exceptions.service import NotList
 from ambra_sdk.exceptions.service import NotPermitted
 from ambra_sdk.exceptions.service import OnlyAll
 from ambra_sdk.service.query import QueryO
+from ambra_sdk.service.query import AsyncQueryO
 
 class Namespace:
     """Namespace."""
@@ -408,6 +409,9 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
         event_message=None,
         event_new_report=None,
         event_node=None,
+        event_query_add=None,
+        event_query_edit=None,
+        event_query_reply=None,
         event_report_remove=None,
         event_share=None,
         event_status_change=None,
@@ -428,6 +432,9 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
         :param event_message: Notify the user when a message is sent to the namespace (optional)
         :param event_new_report: Notify the user when a report is attached in the namespace (optional)
         :param event_node: Notify the user when a namespace node sends an event (optional)
+        :param event_query_add: Notify the user when a new query is issued (optional)
+        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the namespace (optional)
         :param event_share: Notify the user on a share into the namespace (optional)
         :param event_status_change: Notify the user when the status of a study is changed (optional)
@@ -447,6 +454,9 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
            'event_message': event_message,
            'event_new_report': event_new_report,
            'event_node': event_node,
+           'event_query_add': event_query_add,
+           'event_query_edit': event_query_edit,
+           'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
            'event_status_change': event_status_change,
@@ -631,4 +641,618 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
             'required_sid': True,
         }
         return QueryO(**query_data)
+    
+
+
+class AsyncNamespace:
+    """AsyncNamespace."""
+
+    def __init__(self, api):
+        self._api = api
+
+    
+    def permissions(
+        self,
+        namespace_id=None,
+        oauth=None,
+        phi_namespace=None,
+        serial_no=None,
+        storage_namespace=None,
+        study_id=None,
+        study_uid=None,
+        uuid=None,
+    ):
+        """Permissions.
+        :param namespace_id: namespace_id
+        :param oauth: Flag to return the OAuth token information for the user (optional)
+        :param phi_namespace: phi_namespace
+        :param serial_no: serial_no
+        :param storage_namespace: storage_namespace
+        :param study_id: study_id
+        :param study_uid: study_uid
+        :param uuid: uuid
+        """
+        request_data = {
+           'namespace_id': namespace_id,
+           'oauth': oauth,
+           'phi_namespace': phi_namespace,
+           'serial_no': serial_no,
+           'storage_namespace': storage_namespace,
+           'study_id': study_id,
+           'study_uid': study_uid,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_CREDENTIALS', None)] = InvalidCredentials('The sid or node credentials are invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found')
+        query_data = {
+            'api': self._api,
+            'url': '/namespace/permissions',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def settings(
+        self,
+        uuid,
+        ai_settings=None,
+        allow_drag_and_drop_in_study_uploader=None,
+        auto_create_patient=None,
+        auto_enable_dicom_wrapping=None,
+        cloud_storage_config=None,
+        disable_duplicate_study_upload=None,
+        disable_mobile_dicom_wrapping=None,
+        enable_dicom_deidentification=None,
+        enable_dicom_wrapping=None,
+        enable_epic_patient_lookup=None,
+        enable_multipart_uploader=None,
+        enable_namespace_ai_questions=None,
+        force_new_study_on_upload=None,
+        link_defaults=None,
+        must_approve_duplicate_study_uid=None,
+        no_dup_share=None,
+        pixel_anonymize_color=None,
+        priority_notifications=None,
+        reverse_patient_name=None,
+        share_related=None,
+        single_file_dicom_wrapping=None,
+        study_field_flags=None,
+        study_size_soft_threshold_per_user=None,
+        try_update_original_study=None,
+        ui_json=None,
+        upload_settings=None,
+    ):
+        """Settings.
+        :param uuid: The uuid of the namespace
+        :param ai_settings: Other AI settings
+        :param allow_drag_and_drop_in_study_uploader: Value for the setting (optional)
+        :param auto_create_patient: Value for the setting (optional)
+        :param auto_enable_dicom_wrapping: Value for the setting (optional)
+        :param cloud_storage_config: Value for the setting (optional)
+        :param disable_duplicate_study_upload: Value for the setting (optional)
+        :param disable_mobile_dicom_wrapping: Value for the setting (optional)
+        :param enable_dicom_deidentification: Value for the setting (optional)
+        :param enable_dicom_wrapping: Value for the setting (optional)
+        :param enable_epic_patient_lookup: Value for the setting (optional)
+        :param enable_multipart_uploader: Value for the setting (optional)
+        :param enable_namespace_ai_questions: Value for the setting (optional)
+        :param force_new_study_on_upload: Value for the setting (optional)
+        :param link_defaults: Value for the setting (optional)
+        :param must_approve_duplicate_study_uid: Value for the setting (optional)
+        :param no_dup_share: Flag to stop duplicate studies (same study_uid and image count) from getting shared into the namespace (optional)
+        :param pixel_anonymize_color: Value for the setting (optional)
+        :param priority_notifications: Value for the setting (optional)
+        :param reverse_patient_name: Value for the setting (optional)
+        :param share_related: Flag to make study shares with this namespace include related studies (same PHI namespace, same MRN) (optional)
+        :param single_file_dicom_wrapping: Value for the setting (optional)
+        :param study_field_flags: A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)
+        :param study_size_soft_threshold_per_user: A threshold for studies size per user. An email (by study_quota_exceeded template) will be sent when this limit is exceeded by a user. A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)
+        :param try_update_original_study: Value for the setting (optional)
+        :param ui_json: JSON for UI setting (optional) possible options:
+
+pixel_de_id_by_default (boolean) Pixel de-id tool is set by default when uploading study to this namespace
+show_image_on_upload_page (boolean)  Show computer image with CD on upload page when image is uploading to this namespace
+        :param upload_settings: Value for the setting (optional)
+        """
+        request_data = {
+           'allow_drag_and_drop_in_study_uploader': allow_drag_and_drop_in_study_uploader,
+           'auto_create_patient': auto_create_patient,
+           'auto_enable_dicom_wrapping': auto_enable_dicom_wrapping,
+           'cloud_storage_config': cloud_storage_config,
+           'disable_duplicate_study_upload': disable_duplicate_study_upload,
+           'disable_mobile_dicom_wrapping': disable_mobile_dicom_wrapping,
+           'enable_dicom_deidentification': enable_dicom_deidentification,
+           'enable_dicom_wrapping': enable_dicom_wrapping,
+           'enable_epic_patient_lookup': enable_epic_patient_lookup,
+           'enable_multipart_uploader': enable_multipart_uploader,
+           'enable_namespace_ai_questions': enable_namespace_ai_questions,
+           'force_new_study_on_upload': force_new_study_on_upload,
+           'link_defaults': link_defaults,
+           'must_approve_duplicate_study_uid': must_approve_duplicate_study_uid,
+           'no_dup_share': no_dup_share,
+           'pixel_anonymize_color': pixel_anonymize_color,
+           'priority_notifications': priority_notifications,
+           'reverse_patient_name': reverse_patient_name,
+           'share_related': share_related,
+           'single_file_dicom_wrapping': single_file_dicom_wrapping,
+           'study_field_flags': study_field_flags,
+           'study_size_soft_threshold_per_user': study_size_soft_threshold_per_user,
+           'try_update_original_study': try_update_original_study,
+           'ui_json': ui_json,
+           'upload_settings': upload_settings,
+           'uuid': uuid,
+        }
+        if ai_settings is not None:
+            ai_settings_dict = {'{prefix}{k}'.format(prefix='', k=k): v for k,v in ai_settings.items()}
+            request_data.update(ai_settings_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_SETTING', None)] = InvalidSetting('An invalid setting was passed. The error_subtype holds the name of the invalid setting')
+        errors_mapping[('INVALID_SETTING_VALUE', None)] = InvalidSettingValue('An invalid setting value was passed. The error_subtype holds the name of the setting with the invalid value')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
+        query_data = {
+            'api': self._api,
+            'url': '/namespace/settings',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def share_code(
+        self,
+        namespace_id=None,
+        serial_no=None,
+        share_code=None,
+        uuid=None,
+    ):
+        """Share_code.
+        :param namespace_id: namespace_id
+        :param serial_no: serial_no
+        :param share_code: share_code
+        :param uuid: uuid
+        """
+        request_data = {
+           'namespace_id': namespace_id,
+           'serial_no': serial_no,
+           'share_code': share_code,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_LINK', None)] = InvalidLink('The anonymous upload link is no longer valid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The share code was not found or if gateway credentials are passed is not valid for gateway uploads')
+        query_data = {
+            'api': self._api,
+            'url': '/namespace/share_code',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def share_pricing(
+        self,
+        uuid,
+        charge_description=None,
+        currency=None,
+        customfields_pricing=None,
+        pricing=None,
+        second_opinion_config=None,
+        second_opinion_share=None,
+        share_charge_by_modality=None,
+        sum_price_matches=None,
+    ):
+        """Share pricing.
+        :param uuid: The uuid of the namespace
+        :param charge_description: The description of the charge (optional)
+        :param currency: 3-letter ISO code for currency to charge in (USD|GBP) (optional)
+        :param customfields_pricing: Pricing table in JSON format (optional)
+        :param pricing: Pricing table in JSON format (optional)
+        :param second_opinion_config: JSON configuration for the second opinion workflow (optional)
+        :param second_opinion_share: Flag to enable/disable the second opinion workflow for the share (optional)
+        :param share_charge_by_modality: Charge shares (including second opinion) by modality of a shared study if this flag is set (optional)
+        :param sum_price_matches: Flag to search for all matches in customfields_pricing table and to add them up (optional)
+        """
+        request_data = {
+           'charge_description': charge_description,
+           'currency': currency,
+           'customfields_pricing': customfields_pricing,
+           'pricing': pricing,
+           'second_opinion_config': second_opinion_config,
+           'second_opinion_share': second_opinion_share,
+           'share_charge_by_modality': share_charge_by_modality,
+           'sum_price_matches': sum_price_matches,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_AMOUNT', None)] = InvalidAmount('An invalid amount. The error_subtype holds the invalid amount')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The pricing condition is invalid')
+        errors_mapping[('INVALID_CURRENCY', None)] = InvalidCurrency('Invalid currency')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('The field is not a valid flag')
+        errors_mapping[('INVALID_INTEGER', None)] = InvalidInteger('The price is not an integer number')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NEEDS_ANY_OR_ALL', None)] = NeedsAnyOrAll('The hash needs an &#34;ANY&#34; or &#34;ALL&#34; key')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
+        errors_mapping[('NOT_HASH', None)] = NotHash('The pricing field is not a hash')
+        errors_mapping[('NOT_LIST', None)] = NotList('The customfields_pricing table is not a JSON list')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to price this namespace')
+        errors_mapping[('ONLY_ALL', None)] = OnlyAll('If the hash has an ALL value it can&#39;t have any other values')
+        query_data = {
+            'api': self._api,
+            'url': '/namespace/share/pricing',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def share_price(
+        self,
+        uuid,
+        customfield_param=None,
+    ):
+        """Share price.
+        :param uuid: The uuid of the namespace
+        :param customfield_param: Custom field(s) defined for the case (or study) account objects with values entered in the second opinion wizard (or in the image share screen) (optional)
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('NOT_CUSTOMFIELDS_PRICING', None)] = NotCustomfieldsPricing('The namespace is set up to charge by modality')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/namespace/share/price',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def anonymize(
+        self,
+        uuid,
+        prompt_for_anonymize=None,
+        rules=None,
+    ):
+        """Anonymize.
+        :param uuid: The uuid of the namespace
+        :param prompt_for_anonymize: Flag to prompt if the anonymization rules should be applied. Only applicable to ingress anonymization. (optional)
+        :param rules: Anonymization rules in JSON format. The format is a hash with the keys the names of the fields to anonymize and the values the regular expressions to apply. (optional)
+        """
+        request_data = {
+           'prompt_for_anonymize': prompt_for_anonymize,
+           'rules': rules,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_FIELD_NAME', None)] = InvalidFieldName('The field name is n the rules hash is invalid. The error_subtype holds the invalid field name')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('INVALID_REGEXP', None)] = InvalidRegexp('Invalid regular expression. The error_subtype holds the invalid regexp.')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
+        errors_mapping[('NOT_HASH', None)] = NotHash('The rules field is not a hash')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to anonymize this namespace')
+        query_data = {
+            'api': self._api,
+            'url': '/namespace/anonymize',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def coverpage(
+        self,
+        uuid,
+        coverpage=None,
+    ):
+        """Coverpage.
+        :param uuid: The uuid of the namespace
+        :param coverpage: The coverpage value. See the notes for formatting details or pass an empty string to remove the current cover page. (optional)
+        """
+        request_data = {
+           'coverpage': coverpage,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        query_data = {
+            'api': self._api,
+            'url': '/namespace/coverpage',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def validate_customfields(
+        self,
+        share_code,
+        customfield_param=None,
+    ):
+        """Validate customfields.
+        :param share_code: The share code
+        :param customfield_param: Custom field(s)
+        """
+        request_data = {
+           'share_code': share_code,
+        }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        query_data = {
+            'api': self._api,
+            'url': '/namespace/validate/customfields',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def event_defaults(
+        self,
+        uuid,
+        event_approve=None,
+        event_case_assignment=None,
+        event_harvest=None,
+        event_incoming_study_request=None,
+        event_link=None,
+        event_link_mine=None,
+        event_message=None,
+        event_new_report=None,
+        event_node=None,
+        event_query_add=None,
+        event_query_edit=None,
+        event_query_reply=None,
+        event_report_remove=None,
+        event_share=None,
+        event_status_change=None,
+        event_study_comment=None,
+        event_thin_study_fail=None,
+        event_thin_study_success=None,
+        event_upload=None,
+        event_upload_fail=None,
+    ):
+        """Event defaults.
+        :param uuid: The uuid of the namespace
+        :param event_approve: Notify the user on a approval needed into the namespace (optional)
+        :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)
+        :param event_harvest: Notify the user on a harvest into the namespace (optional)
+        :param event_incoming_study_request: Notify the user when they get an incoming study request (optional)
+        :param event_link: Notify the user when an anonymous link is hit in the namespace (optional)
+        :param event_link_mine: Notify the user when an anonymous link created by the user is hit in the namespace (optional)
+        :param event_message: Notify the user when a message is sent to the namespace (optional)
+        :param event_new_report: Notify the user when a report is attached in the namespace (optional)
+        :param event_node: Notify the user when a namespace node sends an event (optional)
+        :param event_query_add: Notify the user when a new query is issued (optional)
+        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
+        :param event_report_remove: Notify the user when a report is removed in the namespace (optional)
+        :param event_share: Notify the user on a share into the namespace (optional)
+        :param event_status_change: Notify the user when the status of a study is changed (optional)
+        :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
+        :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)
+        :param event_thin_study_success: Notify the user when a thin study retrieval they initiated succeeds (optional)
+        :param event_upload: Notify the user on an upload into the namespace (optional)
+        :param event_upload_fail: Notify the user on a failed upload into the namespace (optional)
+        """
+        request_data = {
+           'event_approve': event_approve,
+           'event_case_assignment': event_case_assignment,
+           'event_harvest': event_harvest,
+           'event_incoming_study_request': event_incoming_study_request,
+           'event_link': event_link,
+           'event_link_mine': event_link_mine,
+           'event_message': event_message,
+           'event_new_report': event_new_report,
+           'event_node': event_node,
+           'event_query_add': event_query_add,
+           'event_query_edit': event_query_edit,
+           'event_query_reply': event_query_reply,
+           'event_report_remove': event_report_remove,
+           'event_share': event_share,
+           'event_status_change': event_status_change,
+           'event_study_comment': event_study_comment,
+           'event_thin_study_fail': event_thin_study_fail,
+           'event_thin_study_success': event_thin_study_success,
+           'event_upload': event_upload,
+           'event_upload_fail': event_upload_fail,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to apply defaults to this namespace')
+        query_data = {
+            'api': self._api,
+            'url': '/namespace/event/defaults',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def study_defaults(
+        self,
+        uuid,
+        defaults=None,
+    ):
+        """Study defaults.
+        :param uuid: The uuid of the namespace
+        :param defaults: Default values in JSON format. The format is a hash with the keys the names of the fields and the values are the default value. The available field name are as listed in the returned field hash. (optional)
+        """
+        request_data = {
+           'defaults': defaults,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_FIELD_NAME', None)] = InvalidFieldName('The field name in the default hash is invalid. The error_subtype holds the invalid field name')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
+        errors_mapping[('NOT_HASH', None)] = NotHash('The rules field is not a hash')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to apply defaults to this namespace')
+        query_data = {
+            'api': self._api,
+            'url': '/namespace/study/defaults',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def engine_fqdn(
+        self,
+        namespace_id=None,
+        phi_namespace=None,
+        source=None,
+        storage_namespace=None,
+        study_id=None,
+        study_uid=None,
+    ):
+        """Engine fqdn.
+        :param namespace_id: namespace_id
+        :param phi_namespace: phi_namespace
+        :param source: The source of the query (optional)
+        :param storage_namespace: storage_namespace
+        :param study_id: study_id
+        :param study_uid: study_uid
+        """
+        request_data = {
+           'namespace_id': namespace_id,
+           'phi_namespace': phi_namespace,
+           'source': source,
+           'storage_namespace': storage_namespace,
+           'study_id': study_id,
+           'study_uid': study_uid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
+        query_data = {
+            'api': self._api,
+            'url': '/namespace/engine/fqdn',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def removed_user_report(
+        self,
+        account_id,
+        email,
+        uuid,
+    ):
+        """Removed user report.
+        :param account_id: The UUID of the account. A report will be produced for group, location and account namespaces of this account
+        :param email: Optional email address to send the report to
+        :param uuid: The UUID of the namespace
+        """
+        request_data = {
+           'account_id': account_id,
+           'email': email,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        query_data = {
+            'api': self._api,
+            'url': '/namespace/removed/user/report',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def question(
+        self,
+        detail,
+        question,
+        uuid,
+    ):
+        """Question.
+        :param detail: Optional detail to pass through to the AI stack
+        :param question: The question to ask or a JSON array of questions to ask
+        :param uuid: The namespace id
+        """
+        request_data = {
+           'detail': detail,
+           'question': question,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('IN_PROCESS', None)] = InProcess('The question is currently in process')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NODE_NOT_SETUP', None)] = NodeNotSetup('A node needs to be attached to the namespace for this question')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace or question was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        query_data = {
+            'api': self._api,
+            'url': '/namespace/question',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def audit(
+        self,
+        action,
+        detail,
+        uuid,
+    ):
+        """Audit.
+        :param action: The audit action (AI_ACTION)
+        :param detail: Additional information
+        :param uuid: The id of the namespace
+        """
+        request_data = {
+           'action': action,
+           'detail': detail,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_ACTION', None)] = InvalidAction('An invalid action was passed')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/namespace/audit',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
     

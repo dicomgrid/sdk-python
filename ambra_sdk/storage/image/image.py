@@ -1,30 +1,17 @@
 """Storage image namespace."""
 
-import os
 from typing import Optional, Union
 
 from box import Box
 from requests import Response
 
-from ambra_sdk.exceptions.storage import (
-    EntityTooLarge,
-    PermissionDenied,
-    PreconditionFailed,
-)
-from ambra_sdk.storage.bool_to_int import bool_to_int
-from ambra_sdk.storage.request import PreparedRequest, StorageMethod
+from ambra_sdk.storage.image.base_image import BaseImage
+from ambra_sdk.storage.request import PreparedRequest
 from ambra_sdk.types import RequestsFileType
 
 
-class Image:
+class Image(BaseImage):
     """Storage Image commands."""
-
-    def __init__(self, storage):
-        """init.
-
-        :param storage: storage api
-        """
-        self._storage = storage
 
     def upload(
         self,
@@ -53,27 +40,12 @@ class Image:
 
         :returns: image object attributes
         """
-        url_template = '/namespace/{namespace}/image'
-        url_arg_names = {'engine_fqdn', 'namespace'}
-        request_arg_names = {
-            'study_uid',
-        }
-        url, request_data = self._storage.get_url_and_request(
-            url_template,
-            url_arg_names,
-            request_arg_names,
-            locals(),
-        )
-        headers = {}
-        if x_ambrahealth_job_id is not None:
-            headers['X-AmbraHealth-Job-Id'] = x_ambrahealth_job_id
-        prepared_request = PreparedRequest(
-            storage_=self._storage,
-            method=StorageMethod.post,
-            url=url,
-            params=request_data,
-            headers=headers,
-            data=opened_file,
+        prepared_request = self._upload(
+            engine_fqdn=engine_fqdn,
+            namespace=namespace,
+            opened_file=opened_file,
+            study_uid=study_uid,
+            x_ambrahealth_job_id=x_ambrahealth_job_id,
         )
         if only_prepare is True:
             return prepared_request
@@ -82,7 +54,6 @@ class Image:
             return Box(response.json())
         return response
 
-    # TODO: What to do with tags?
     def wrap(
         self,
         engine_fqdn: str,
@@ -112,78 +83,14 @@ class Image:
 
         :returns: image object attributes
         """
-        render_wrapped_pdf: int = bool_to_int(  # type: ignore
-            render_wrapped_pdf,
+        prepared_request = self._wrap(
+            engine_fqdn=engine_fqdn,
+            namespace=namespace,
+            opened_file=opened_file,
+            tags=tags,
+            render_wrapped_pdf=render_wrapped_pdf,
+            x_ambrahealth_job_id=x_ambrahealth_job_id,
         )
-        url_template = '/namespace/{namespace}/wrap'
-        url_arg_names = {'engine_fqdn', 'namespace'}
-        request_arg_names = {
-            'tags',
-            'render_wrapped_pdf',
-        }
-        url, request_data = self._storage.get_url_and_request(
-            url_template,
-            url_arg_names,
-            request_arg_names,
-            locals(),
-        )
-        if isinstance(opened_file, tuple):
-            fp = opened_file[1]
-        else:
-            fp = opened_file
-        file_size = os.fstat(fp.fileno()).st_size
-        files = {
-            'file': opened_file,
-        }
-        headers = {'X-File-Size': str(file_size)}
-
-        if x_ambrahealth_job_id is not None:
-            headers['X-AmbraHealth-Job-Id'] = x_ambrahealth_job_id
-
-        errors_mapping = {
-            403:
-            PermissionDenied(
-                'The sid is not valid or the user does '
-                'not have permission to upload a non DICOM '
-                'file from a study specified by the namespace.',
-            ),
-            412:
-            PreconditionFailed(
-                'X-File-Size header is not provided or has an '
-                'invalid value.',
-            ),
-            413:
-            EntityTooLarge(
-                'The file to be DICOM-wrapped is larger than '
-                '2GiB (2^31 - 1 bytes).',
-            ),
-        }
-
-        if tags is not None:
-            post_data = {
-                'tags': tags,
-            }
-            prepared_request = PreparedRequest(
-                storage_=self._storage,
-                method=StorageMethod.post,
-                url=url,
-                errors_mapping=errors_mapping,
-                params=request_data,
-                files=files,
-                headers=headers,
-                data=post_data,
-            )
-        else:
-            prepared_request = PreparedRequest(
-                storage_=self._storage,
-                method=StorageMethod.post,
-                url=url,
-                errors_mapping=errors_mapping,
-                params=request_data,
-                files=files,
-                headers=headers,
-            )
-
         if only_prepare is True:
             return prepared_request
         return prepared_request.execute()
@@ -216,26 +123,13 @@ class Image:
         :returns: the vendor-specified graphical \
             annotations, empty if not implemented for the vendor or generating device.
         """
-        url_template = '/study/{namespace}/{study_uid}/image/{image_uid}/version/{image_version}/cadsr'
-        url_arg_names = {
-            'engine_fqdn',
-            'namespace',
-            'study_uid',
-            'image_uid',
-            'image_version',
-        }
-        request_arg_names = {'phi_namespace'}
-        url, request_data = self._storage.get_url_and_request(
-            url_template,
-            url_arg_names,
-            request_arg_names,
-            locals(),
-        )
-        prepared_request = PreparedRequest(
-            storage_=self._storage,
-            method=StorageMethod.get,
-            url=url,
-            params=request_data,
+        prepared_request = self._cadsr(
+            engine_fqdn=engine_fqdn,
+            namespace=namespace,
+            study_uid=study_uid,
+            image_uid=image_uid,
+            image_version=image_version,
+            phi_namespace=phi_namespace,
         )
         if only_prepare is True:
             return prepared_request
@@ -272,35 +166,15 @@ class Image:
 
         :returns: dicom.
         """
-        pretranscode: int = bool_to_int(  # type: ignore
-            pretranscode,
-        )
-        url_template = '/study/{namespace}/{study_uid}/image/{image_uid}/version/{image_version}'
-
-        url_arg_names = {
-            'engine_fqdn',
-            'namespace',
-            'study_uid',
-            'image_uid',
-            'image_version',
-        }
-        request_arg_names = {
-            'phi_namespace',
-            'pretranscode',
-            'transfer_syntax',
-        }
-        url, request_data = self._storage.get_url_and_request(
-            url_template,
-            url_arg_names,
-            request_arg_names,
-            locals(),
-        )
-        prepared_request = PreparedRequest(
-            storage_=self._storage,
-            method=StorageMethod.get,
-            url=url,
-            params=request_data,
-            stream=True,
+        prepared_request = self._dicom_payload(
+            engine_fqdn=engine_fqdn,
+            namespace=namespace,
+            study_uid=study_uid,
+            image_uid=image_uid,
+            image_version=image_version,
+            phi_namespace=phi_namespace,
+            pretranscode=pretranscode,
+            transfer_syntax=transfer_syntax,
         )
         if only_prepare is True:
             return prepared_request

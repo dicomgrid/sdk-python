@@ -31,8 +31,11 @@ from ambra_sdk.exceptions.service import NotHash
 from ambra_sdk.exceptions.service import NotMember
 from ambra_sdk.exceptions.service import NotPermitted
 from ambra_sdk.service.query import QueryO
+from ambra_sdk.service.query import AsyncQueryO
 from ambra_sdk.service.query import QueryOF
+from ambra_sdk.service.query import AsyncQueryOF
 from ambra_sdk.service.query import QueryOPSF
+from ambra_sdk.service.query import AsyncQueryOPSF
 
 class User:
     """User."""
@@ -530,6 +533,9 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         event_link_mine=None,
         event_message=None,
         event_new_report=None,
+        event_query_add=None,
+        event_query_edit=None,
+        event_query_reply=None,
         event_report_remove=None,
         event_share=None,
         event_status_change=None,
@@ -550,6 +556,9 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         :param event_link_mine: Notify the user when an anonymous link created by the user is hit in the namespace (optional)
         :param event_message: Notify the user when a message is sent to the namespace (optional)
         :param event_new_report: Notify the user when a report is attached in the namespace (optional)
+        :param event_query_add: Notify the user when a new query is issued (optional)
+        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the namespace (optional)
         :param event_share: Notify the user on a share into the namespace (optional)
         :param event_status_change: Notify the user when the status of a study is changed (optional)
@@ -569,6 +578,9 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
            'event_link_mine': event_link_mine,
            'event_message': event_message,
            'event_new_report': event_new_report,
+           'event_query_add': event_query_add,
+           'event_query_edit': event_query_edit,
+           'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
            'event_status_change': event_status_change,
@@ -745,4 +757,727 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
             'required_sid': False,
         }
         return QueryO(**query_data)
+    
+
+
+class AsyncUser:
+    """AsyncUser."""
+
+    def __init__(self, api):
+        self._api = api
+
+    
+    def join(
+        self,
+        email,
+        first,
+        last,
+        password,
+        captcha_response=None,
+        customfield_param=None,
+        share_code=None,
+    ):
+        """Join.
+        :param email: Email
+        :param first: First name
+        :param last: Last name
+        :param password: Password
+        :param captcha_response: Response from captcha (optional)
+        :param customfield_param: Custom field(s) defined in the vanity_registration_customfields account setting (optional)
+        :param share_code: Share code they are joining from (optional)
+        """
+        request_data = {
+           'captcha_response': captcha_response,
+           'email': email,
+           'first': first,
+           'last': last,
+           'password': password,
+           'share_code': share_code,
+        }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('BAD_PASSWORD', None)] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
+        errors_mapping[('CAPTCHA_FAILED', None)] = CaptchaFailed('Verifying the captcha failed')
+        errors_mapping[('DUPLICATE_EMAIL', None)] = DuplicateEmail('The email is already used')
+        errors_mapping[('LOCKOUT', None)] = Lockout('Too many joins attempt')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        query_data = {
+            'api': self._api,
+            'url': '/user/join',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def add(
+        self,
+        account_id,
+        email,
+        first,
+        last,
+        mobile_phone,
+        password,
+    ):
+        """Add.
+        :param account_id: Account id to check for the user_edit permission
+        :param email: Email
+        :param first: First name
+        :param last: Last name
+        :param mobile_phone: SMS phone number
+        :param password: Password
+        """
+        request_data = {
+           'account_id': account_id,
+           'email': email,
+           'first': first,
+           'last': last,
+           'mobile_phone': mobile_phone,
+           'password': password,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('BAD_PASSWORD', None)] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
+        errors_mapping[('DUPLICATE_EMAIL', None)] = DuplicateEmail('The email is already used')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        query_data = {
+            'api': self._api,
+            'url': '/user/add',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def get(
+        self,
+        account_id=None,
+        uuid=None,
+    ):
+        """Get.
+        :param account_id: Account id if you are trying to get a user other than yourself (optional)
+        :param uuid: The users uuid (optional). Uses the session user if not passed
+        """
+        request_data = {
+           'account_id': account_id,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The user can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to access this user record')
+        query_data = {
+            'api': self._api,
+            'url': '/user/get',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def set(
+        self,
+        indicator_md5,
+        privacy_md5,
+        terms_md5,
+        account_id=None,
+        allowed_login_brands=None,
+        cc_token=None,
+        email=None,
+        first=None,
+        last=None,
+        mobile_phone=None,
+        old_password=None,
+        password=None,
+        pin_required=None,
+        public_key=None,
+        share_code=None,
+        share_description=None,
+        time_zone=None,
+        ui_json=None,
+        uuid=None,
+    ):
+        """Set.
+        :param indicator_md5: MD5 of the accepted indications of use
+        :param privacy_md5: MD5 of the accepted privacy policy
+        :param terms_md5: MD5 of the accepted terms of service
+        :param account_id: Account id if you are trying to set a user other than yourself (optional)
+        :param allowed_login_brands: A comma separated list of Brand UUIDs that the user is allowed to use when logging in (optional)
+        :param cc_token: The credit card token to attach to the users account (optional)
+        :param email: Email (optional)
+        :param first: First name (optional)
+        :param last: Last name (optional)
+        :param mobile_phone: SMS phone number (optional)
+        :param old_password: Previous user password (optional)
+        :param password: User password (optional)
+        :param pin_required: Flag to require a PIN for every login (optional)
+        :param public_key: A public key for public key authentication (optional)
+        :param share_code: The share code of the user (optional)
+        :param share_description: The share description of the user (optional)
+        :param time_zone: The users time zone name as per https://www.postgresql.org/docs/9.1/static/view-pg-timezone-names.html (optional)
+        :param ui_json: JSON for UI settings (optional) possible options:
+
+show_org_manage_link (boolean) Show link to manage multiple organizations
+advanced_search (array) Advanced search customization for role. See account level "advanced_search" ui_json param for possible values
+enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
+        :param uuid: The users uuid (optional). Uses the session user if not passed
+        """
+        request_data = {
+           'account_id': account_id,
+           'allowed_login_brands': allowed_login_brands,
+           'cc_token': cc_token,
+           'email': email,
+           'first': first,
+           'indicator_md5': indicator_md5,
+           'last': last,
+           'mobile_phone': mobile_phone,
+           'old_password': old_password,
+           'password': password,
+           'pin_required': pin_required,
+           'privacy_md5': privacy_md5,
+           'public_key': public_key,
+           'share_code': share_code,
+           'share_description': share_description,
+           'terms_md5': terms_md5,
+           'time_zone': time_zone,
+           'ui_json': ui_json,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('BAD_PASSWORD', None)] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
+        errors_mapping[('DUPLICATE_EMAIL', None)] = DuplicateEmail('The email is already used')
+        errors_mapping[('INVALID_PASSWORD', None)] = InvalidPassword('The old_password does not match the current password')
+        errors_mapping[('INVALID_TIME_ZONE', None)] = InvalidTimeZone('The time zone is invalid')
+        errors_mapping[('INVALID_TOKEN', None)] = InvalidToken('The cc_token is invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The user can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit this user record. The error_subtype will hold the specific reason permission was denied.')
+        query_data = {
+            'api': self._api,
+            'url': '/user/set',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def delete(
+        self,
+    ):
+        """Delete.
+        """
+        request_data = {
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        query_data = {
+            'api': self._api,
+            'url': '/user/delete',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def password_lost(
+        self,
+        email,
+    ):
+        """Password lost.
+        :param email: The email
+        """
+        request_data = {
+           'email': email,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('LOCKOUT', None)] = Lockout('Too many failed attempts')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        query_data = {
+            'api': self._api,
+            'url': '/user/password/lost',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def password_reset(
+        self,
+        password,
+        token,
+    ):
+        """Password reset.
+        :param password: The new password
+        :param token: The reset token
+        """
+        request_data = {
+           'password': password,
+           'token': token,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('BAD_PASSWORD', None)] = BadPassword('Password needs to be at least 8 characters long, contain at least two numbers, contain at least two characters and can&#39;t be one of your last three passwords')
+        errors_mapping[('INVALID_TOKEN', None)] = InvalidToken('The token is invalid')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        query_data = {
+            'api': self._api,
+            'url': '/user/password/reset',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def welcome(
+        self,
+        account_id,
+        email,
+        link,
+    ):
+        """Welcome.
+        :param account_id: Id of the account to welcome them to
+        :param email: The email of the user to welcome
+        :param link: URL to reset the password at. The reset token will be appended to the link
+        """
+        request_data = {
+           'account_id': account_id,
+           'email': email,
+           'link': link,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_LINK', None)] = InvalidLink('The link needs to be a https link within the site domain')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The user can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/user/welcome',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def join_list(
+        self,
+    ):
+        """Join list.
+        """
+        request_data = {
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        query_data = {
+            'api': self._api,
+            'url': '/user/join/list',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        query_data['paginated_field'] = 'accounts'
+        return AsyncQueryOPSF(**query_data)
+    
+    def join_request(
+        self,
+        account_id,
+    ):
+        """Join request.
+        :param account_id: Id of the account to request to join
+        """
+        request_data = {
+           'account_id': account_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('ALREADY_MEMBER', None)] = AlreadyMember('The user is already a member of the account')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to join this account')
+        query_data = {
+            'api': self._api,
+            'url': '/user/join/request',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def invite(
+        self,
+        account_id,
+        email,
+        link,
+        groups=None,
+        link_already=None,
+        locations=None,
+        role_id=None,
+    ):
+        """Invite.
+        :param account_id: The account to invite the person too
+        :param email: Email address of the person to invite
+        :param link: URL to accept the invitation at. The invitation id will be appended to the link
+        :param groups: A JSON hash with the keys the group uuids to add the user to and the values the role uuid for the group (optional)
+        :param link_already: URL to accept the invitation at for an existing user on the system. The invitation id will be appended to the link (optional)
+        :param locations: A JSON hash with the keys the location uuids to add the user to and the values the role uuid for the location (optional)
+        :param role_id: The role to give the user (optional)
+        """
+        request_data = {
+           'account_id': account_id,
+           'email': email,
+           'groups': groups,
+           'link': link,
+           'link_already': link_already,
+           'locations': locations,
+           'role_id': role_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('ALREADY_EXISTS', None)] = AlreadyExists('They are already in this account')
+        errors_mapping[('INVALID_EMAIL', None)] = InvalidEmail('Enter a valid email address')
+        errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
+        errors_mapping[('INVALID_LINK', None)] = InvalidLink('The link needs to be a https link within the site domain')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account or role can not be found. The error_subtype holds the uuid of the not found item')
+        errors_mapping[('NOT_HASH', None)] = NotHash('The field is not a JSON hash. The error_subtype holds the name of the field')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to invite users to this account')
+        query_data = {
+            'api': self._api,
+            'url': '/user/invite',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def invite_accept(
+        self,
+        uuid,
+    ):
+        """Invite accept.
+        :param uuid: Id of the invitation
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('ACCEPTED', None)] = Accepted('The invitation was already accepted')
+        errors_mapping[('ALREADY_EXISTS', None)] = AlreadyExists('They are already in this account')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The invitation was not found')
+        query_data = {
+            'api': self._api,
+            'url': '/user/invite/accept',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def namespace_list(
+        self,
+        account_id=None,
+        name_and_id_only=None,
+        plus_phr=None,
+    ):
+        """Namespace list.
+        :param account_id: Only return the namespaces for this account (optional)
+        :param name_and_id_only: Flag to return only the the namespace name and uuid (optional)
+        :param plus_phr: Flag to include the PHR account as well if account_id was specified (optional)
+        """
+        request_data = {
+           'account_id': account_id,
+           'name_and_id_only': name_and_id_only,
+           'plus_phr': plus_phr,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        query_data = {
+            'api': self._api,
+            'url': '/user/namespace/list',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryOF(**query_data)
+    
+    def event(
+        self,
+        namespace_id,
+        uuid=None,
+    ):
+        """Event.
+        :param namespace_id: Id of the namespace to set the flags on
+        :param uuid: Return event flags for this user, not current user (optional)
+        """
+        request_data = {
+           'namespace_id': namespace_id,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace or user can not be found')
+        errors_mapping[('NOT_MEMBER', None)] = NotMember('The user is not a member of this namespace')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not allowed to get user&#39;s event flags')
+        query_data = {
+            'api': self._api,
+            'url': '/user/event',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def event_set(
+        self,
+        namespace_id,
+        event_approve=None,
+        event_case_assignment=None,
+        event_harvest=None,
+        event_incoming_study_request=None,
+        event_link=None,
+        event_link_mine=None,
+        event_message=None,
+        event_new_report=None,
+        event_query_add=None,
+        event_query_edit=None,
+        event_query_reply=None,
+        event_report_remove=None,
+        event_share=None,
+        event_status_change=None,
+        event_study_comment=None,
+        event_thin_study_fail=None,
+        event_thin_study_success=None,
+        event_upload=None,
+        event_upload_fail=None,
+        uuid=None,
+    ):
+        """Event set.
+        :param namespace_id: Id of the namespace to set the flags on
+        :param event_approve: Notify the user on a approval needed into the namespace (optional)
+        :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)
+        :param event_harvest: Notify the user on a harvest into the namespace (optional)
+        :param event_incoming_study_request: Notify the user when they get an incoming study request (optional)
+        :param event_link: Notify the user when an anonymous link is hit in the namespace (optional)
+        :param event_link_mine: Notify the user when an anonymous link created by the user is hit in the namespace (optional)
+        :param event_message: Notify the user when a message is sent to the namespace (optional)
+        :param event_new_report: Notify the user when a report is attached in the namespace (optional)
+        :param event_query_add: Notify the user when a new query is issued (optional)
+        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
+        :param event_report_remove: Notify the user when a report is removed in the namespace (optional)
+        :param event_share: Notify the user on a share into the namespace (optional)
+        :param event_status_change: Notify the user when the status of a study is changed (optional)
+        :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
+        :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)
+        :param event_thin_study_success: Notify the user when a thin study retrieval they initiated succeeds (optional)
+        :param event_upload: Notify the user on an upload into the namespace (optional)
+        :param event_upload_fail: Notify the user on a failed upload into the namespace (optional)
+        :param uuid: Return event flags for this user, not current user (optional)
+        """
+        request_data = {
+           'event_approve': event_approve,
+           'event_case_assignment': event_case_assignment,
+           'event_harvest': event_harvest,
+           'event_incoming_study_request': event_incoming_study_request,
+           'event_link': event_link,
+           'event_link_mine': event_link_mine,
+           'event_message': event_message,
+           'event_new_report': event_new_report,
+           'event_query_add': event_query_add,
+           'event_query_edit': event_query_edit,
+           'event_query_reply': event_query_reply,
+           'event_report_remove': event_report_remove,
+           'event_share': event_share,
+           'event_status_change': event_status_change,
+           'event_study_comment': event_study_comment,
+           'event_thin_study_fail': event_thin_study_fail,
+           'event_thin_study_success': event_thin_study_success,
+           'event_upload': event_upload,
+           'event_upload_fail': event_upload_fail,
+           'namespace_id': namespace_id,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace or user can not be found')
+        errors_mapping[('NOT_MEMBER', None)] = NotMember('The user is not a member of this namespace')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not allowed to set user&#39;s event flags')
+        query_data = {
+            'api': self._api,
+            'url': '/user/event/set',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def token(
+        self,
+        delete,
+        generate,
+    ):
+        """Token.
+        :param delete: Flag to delete the shared secret and disable TOKEN PIN authentication
+        :param generate: Flag to generate the shared secret for a token authenticator and enable TOKEN PIN authentication
+        """
+        request_data = {
+           'delete': delete,
+           'generate': generate,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('ALREADY_DONE', None)] = AlreadyDone('A shared secret was already generated')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        query_data = {
+            'api': self._api,
+            'url': '/user/token',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def device_clear(
+        self,
+    ):
+        """Device clear.
+        """
+        request_data = {
+        }
+	
+        errors_mapping = {}
+        query_data = {
+            'api': self._api,
+            'url': '/user/device/clear',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def signature(
+        self,
+        signature,
+    ):
+        """Signature.
+        :param signature: Set the users signature to this base64 encoded image
+        """
+        request_data = {
+           'signature': signature,
+        }
+	
+        errors_mapping = {}
+        query_data = {
+            'api': self._api,
+            'url': '/user/signature',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def enable(
+        self,
+        uuid,
+        disable=None,
+    ):
+        """Enable.
+        :param uuid: User uuid
+        :param disable: A flag indicating whether to disable the user (optional)
+        """
+        request_data = {
+           'disable': disable,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('NOT_DISABLED', None)] = NotDisabled('The user is not disabled')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The user can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to enable this user')
+        query_data = {
+            'api': self._api,
+            'url': '/user/enable',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def pubkey_list(
+        self,
+        serial_no,
+        uuid,
+    ):
+        """Pubkey list.
+        :param serial_no: The serial number of the node
+        :param uuid: The node id
+        """
+        request_data = {
+           'serial_no': serial_no,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node can not be found')
+        query_data = {
+            'api': self._api,
+            'url': '/user/pubkey/list',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def pubkey_set(
+        self,
+        email,
+        public_key,
+        serial_no,
+        uuid,
+    ):
+        """Pubkey set.
+        :param email: The users email
+        :param public_key: A public key for public key authentication
+        :param serial_no: The serial number of the node
+        :param uuid: The node id
+        """
+        request_data = {
+           'email': email,
+           'public_key': public_key,
+           'serial_no': serial_no,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The node or user can not be found')
+        errors_mapping[('NO_USER_PUBKEY', None)] = NoUserPubkey('The user does not use public key authentication')
+        query_data = {
+            'api': self._api,
+            'url': '/user/pubkey/set',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': False,
+        }
+        return AsyncQueryO(**query_data)
     

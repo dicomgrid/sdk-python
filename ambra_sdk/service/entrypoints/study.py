@@ -3,6 +3,8 @@ from typing import Any, Dict
 
 from box import Box, BoxList
 
+from ambra_sdk.service.entrypoints.generated.study import \
+    AsyncStudy as GAsyncStudy
 from ambra_sdk.service.entrypoints.generated.study import Study as GStudy
 
 
@@ -61,6 +63,34 @@ class StudyBox(Box):
 
 class Study(GStudy):
     """Study namespace."""
+
+    @wraps(GStudy.get)
+    def get(self, *args, **kwargs):
+        """Get method.
+
+        :param args: args
+        :param kwargs: kwargs
+        :return: query
+        """
+        query = super().get(*args, **kwargs)
+        query.return_constructor = StudyBox
+        return query
+
+    @wraps(GStudy.list)  # NOQA:WPS125
+    def list(self, *args, **kwargs):  # NOQA:A003,WPS125
+        """List method.
+
+        :param args: args
+        :param kwargs: kwargs
+        :return: query
+        """
+        query = super().list(*args, **kwargs)
+        query.return_constructor = StudyBox
+        return query
+
+
+class AsyncStudy(GAsyncStudy):
+    """Async Study namespace."""
 
     @wraps(GStudy.get)
     def get(self, *args, **kwargs):

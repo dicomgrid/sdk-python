@@ -1,25 +1,15 @@
-"""Query objects."""
-
-from typing import Any, Callable, Dict, Generic, Optional
+"""Base query objects."""
+from typing import Any, Callable, Dict, Generic
 
 from box import Box
 
-from ambra_sdk.request_args import RequestArgs
-from ambra_sdk.service.filtering import WithFilter
-from ambra_sdk.service.only import WithOnly
-from ambra_sdk.service.response import (
-    ERROR_MAPPING,
-    RETURN_TYPE,
-    IterableResponse,
-    check_response,
-)
-from ambra_sdk.service.sorting import WithSorting
+from ambra_sdk.service.response import ERROR_MAPPING, JSON_RETURN_TYPE
 
 DEFAULT_ROWS_IN_PAGINATION_PAGE = 100
 
 
-class Query(Generic[RETURN_TYPE]):
-    """Simple query."""
+class BaseQuery(Generic[JSON_RETURN_TYPE]):
+    """Base query."""
 
     def __init__(  # NOQA: WPS211
         self,
@@ -28,7 +18,7 @@ class Query(Generic[RETURN_TYPE]):
         request_data: Dict[str, Any],
         errors_mapping: ERROR_MAPPING,
         required_sid: bool = False,
-        return_constructor: Callable[..., RETURN_TYPE] = Box,
+        return_constructor: Callable[..., JSON_RETURN_TYPE] = Box,
     ):
         """Query initialization.
 
@@ -41,11 +31,7 @@ class Query(Generic[RETURN_TYPE]):
         """
         self._api = api
         self.url = url
-        self.request_args = RequestArgs(
-            method='POST',
-            url=self._api.service_full_url(url),
-            data=request_data,
-        )
+        self.request_data = request_data
         self._required_sid = required_sid
         self._errors_mapping = errors_mapping
         self.return_constructor = return_constructor
@@ -59,37 +45,9 @@ class Query(Generic[RETURN_TYPE]):
         full_url: str = self._api.service_full_url(self.url)
         return full_url  # NOQA:331
 
-    def get(self) -> RETURN_TYPE:
-        """Get response object.
 
-        If sid problems we try to get new sid
-        and retry request.
-
-        :return: response object
-        """
-        get_result: RETURN_TYPE = self._api.retry_with_new_sid(
-            self.get_once,
-        )
-        return get_result  # NOQA:331
-
-    def get_once(self) -> RETURN_TYPE:
-        """Get response object.
-
-        :return: response object
-        """
-        response = self._api.service_request(
-            request_args=self.request_args,
-            required_sid=self._required_sid,
-        )
-        response = check_response(response, self._errors_mapping)
-        response_json = response.json()
-        if 'status' in response_json:
-            response_json.pop('status')
-        return self.return_constructor(response_json)
-
-
-class QueryP(Query):
-    """Query with pagination."""
+class BaseQueryP(BaseQuery):
+    """Base query with pagination."""
 
     def __init__(  # NOQA: WPS211
         self,
@@ -99,7 +57,7 @@ class QueryP(Query):
         errors_mapping: ERROR_MAPPING,
         paginated_field: str,
         required_sid: bool = False,
-        return_constructor: Callable[..., RETURN_TYPE] = Box,
+        return_constructor: Callable[..., JSON_RETURN_TYPE] = Box,
     ):
         """Query initialization.
 
@@ -140,61 +98,6 @@ class QueryP(Query):
             raise ValueError('Negative rows in page')
         self._rows_in_page = rows_in_page
         return self
-
-    def all(self) -> IterableResponse:  # NOQA: A003,WPS125
-        """Get iterable response.
-
-        :returns: iterable response object
-        """
-        return IterableResponse(
-            self._api,
-            self.url,
-            self._required_sid,
-            self.request_args,
-            self._errors_mapping,
-            self._paginated_field,
-            self._rows_in_page,
-            self.return_constructor,
-        )
-
-    def first(self) -> Optional[RETURN_TYPE]:
-        """Get First element of sequence.
-
-        :returns: Response object
-        """
-        return self.all().first()
-
-
-class QueryO(Query, WithOnly):
-    """Query with only fields."""
-
-
-class QueryOF(QueryO, WithFilter):
-    """Query with filtering."""
-
-
-class QueryOS(QueryO, WithSorting):
-    """Query with sorting."""
-
-
-class QueryOSF(QueryOF, WithSorting):
-    """Query with filtering ans sorting."""
-
-
-class QueryOP(QueryP, WithOnly):
-    """Query with pagination and only fields."""
-
-
-class QueryOPF(QueryOP, WithFilter):
-    """Query with pagination and filtering."""
-
-
-class QueryOPS(QueryOP, WithSorting):
-    """Query with pagination and sorting."""
-
-
-class QueryOPSF(QueryOPS, WithFilter):
-    """Query with pagination sorting and filtering."""
 
 
 def get_query_cls_name(

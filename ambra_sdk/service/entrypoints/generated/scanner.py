@@ -12,7 +12,9 @@ from ambra_sdk.exceptions.service import MissingFields
 from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import NotPermitted
 from ambra_sdk.service.query import QueryO
+from ambra_sdk.service.query import AsyncQueryO
 from ambra_sdk.service.query import QueryOPSF
+from ambra_sdk.service.query import AsyncQueryOPSF
 
 class Scanner:
     """Scanner."""
@@ -186,4 +188,179 @@ class Scanner:
             'required_sid': True,
         }
         return QueryO(**query_data)
+    
+
+
+class AsyncScanner:
+    """AsyncScanner."""
+
+    def __init__(self, api):
+        self._api = api
+
+    
+    def list(
+        self,
+        account_id,
+    ):
+        """List.
+        :param account_id: uuid of the account
+        """
+        request_data = {
+           'account_id': account_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_SORT_FIELD', None)] = InvalidSortField('The field is not valid for this object. The error_subtype will hold the field name this applies to')
+        errors_mapping[('INVALID_SORT_ORDER', None)] = InvalidSortOrder('The sort order for the field is invalid. The error_subtype will hold the field name this applies to')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view scanners in this account')
+        query_data = {
+            'api': self._api,
+            'url': '/scanner/list',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        query_data['paginated_field'] = 'scanners'
+        return AsyncQueryOPSF(**query_data)
+    
+    def add(
+        self,
+        name,
+        site_id,
+        customfield_param=None,
+        manufacturer=None,
+        modality=None,
+        model=None,
+        serial_no=None,
+    ):
+        """Add.
+        :param name: Name of the scanner
+        :param site_id: Id of the site to add them to
+        :param customfield_param: Custom field(s) (optional)
+        :param manufacturer: The manufacturer of the scanner (optional)
+        :param modality: Modality (optional)
+        :param model: The scanner model (optional)
+        :param serial_no: The serial number of the scanner (optional)
+        """
+        request_data = {
+           'manufacturer': manufacturer,
+           'modality': modality,
+           'model': model,
+           'name': name,
+           'serial_no': serial_no,
+           'site_id': site_id,
+        }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found. The error_subtype holds the type of object not found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add a scanner to the account')
+        query_data = {
+            'api': self._api,
+            'url': '/scanner/add',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def set(
+        self,
+        uuid,
+        customfield_param=None,
+        manufacturer=None,
+        modality=None,
+        model=None,
+        name=None,
+        serial_no=None,
+    ):
+        """Set.
+        :param uuid: The scanner uuid
+        :param customfield_param: Custom field(s) (optional)
+        :param manufacturer: The manufacturer of the scanner (optional)
+        :param modality: Modality (optional)
+        :param model: The scanner model (optional)
+        :param name: Name of the scanner (optional)
+        :param serial_no: The serial number of the scanner (optional)
+        """
+        request_data = {
+           'manufacturer': manufacturer,
+           'modality': modality,
+           'model': model,
+           'name': name,
+           'serial_no': serial_no,
+           'uuid': uuid,
+        }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The scanner can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the scanner')
+        query_data = {
+            'api': self._api,
+            'url': '/scanner/set',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def get(
+        self,
+        uuid,
+    ):
+        """Get.
+        :param uuid: The scanner uuid
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The scanner can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the scaner')
+        query_data = {
+            'api': self._api,
+            'url': '/scanner/get',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def delete(
+        self,
+        uuid,
+    ):
+        """Delete.
+        :param uuid: The scanner uuid
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The scanner can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete the scanner')
+        query_data = {
+            'api': self._api,
+            'url': '/scanner/delete',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
     

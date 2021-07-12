@@ -7,6 +7,7 @@ from ambra_sdk.exceptions.service import MissingFields
 from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import NotPermitted
 from ambra_sdk.service.query import QueryO
+from ambra_sdk.service.query import AsyncQueryO
 
 class Keyimage:
     """Keyimage."""
@@ -140,4 +141,139 @@ class Keyimage:
             'required_sid': True,
         }
         return QueryO(**query_data)
+    
+
+
+class AsyncKeyimage:
+    """AsyncKeyimage."""
+
+    def __init__(self, api):
+        self._api = api
+
+    
+    def list(
+        self,
+        phi_namespace=None,
+        storage_namespace=None,
+        study_id=None,
+        study_uid=None,
+    ):
+        """List.
+        :param phi_namespace: phi_namespace
+        :param storage_namespace: storage_namespace
+        :param study_id: study_id
+        :param study_uid: study_uid
+        """
+        request_data = {
+           'phi_namespace': phi_namespace,
+           'storage_namespace': storage_namespace,
+           'study_id': study_id,
+           'study_uid': study_uid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the study or key images for the study')
+        query_data = {
+            'api': self._api,
+            'url': '/keyimage/list',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def add(
+        self,
+        frame_number,
+        instance_uid,
+        series_uid,
+        version,
+        phi_namespace=None,
+        storage_namespace=None,
+        study_id=None,
+        study_uid=None,
+    ):
+        """Add.
+        :param frame_number: The frame number
+        :param instance_uid: The instance uid
+        :param series_uid: The series uid
+        :param version: The frame version
+        :param phi_namespace: phi_namespace
+        :param storage_namespace: storage_namespace
+        :param study_id: study_id
+        :param study_uid: study_uid
+        """
+        request_data = {
+           'frame_number': frame_number,
+           'instance_uid': instance_uid,
+           'phi_namespace': phi_namespace,
+           'series_uid': series_uid,
+           'storage_namespace': storage_namespace,
+           'study_id': study_id,
+           'study_uid': study_uid,
+           'version': version,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to mark key images for the study')
+        query_data = {
+            'api': self._api,
+            'url': '/keyimage/add',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def get(
+        self,
+        uuid,
+    ):
+        """Get.
+        :param uuid: Id of the keyimage
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The key image  was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the key image')
+        query_data = {
+            'api': self._api,
+            'url': '/keyimage/get',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def delete(
+        self,
+        uuid,
+    ):
+        """Delete.
+        :param uuid: Id of the key image
+        """
+        request_data = {
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The key image  was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete the key image')
+        query_data = {
+            'api': self._api,
+            'url': '/keyimage/delete',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
     

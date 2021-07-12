@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [3.21.5.0-1] - 2021-06-30
+### Added
+- Asyncio !!!
+- Service public api support: LBL0022 v47.0 2021-06-30
+- Service models: LBL0022 v47.0 2021-06-30
+- Rate limits
+- Descriptive storage errors (new storage errors mechanism)
+- Not json responses from v3services
+
 ## [3.21.4.0-1] - 2021-05-19
 ### Added
 - Service public api updated (same veresion)

@@ -1,17 +1,19 @@
 """Ambra storage and service API."""
 
 import logging
-from typing import Callable, Dict, NamedTuple, Optional
+from threading import Lock
+from time import monotonic, sleep
+from typing import Callable, Optional, TypeVar
 
 import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util import Retry
 
-from ambra_sdk import __version__
 from ambra_sdk.addon.addon import Addon
+from ambra_sdk.api.base_api import BaseApi
 from ambra_sdk.clear_params import clear_params
 from ambra_sdk.exceptions.service import AuthorizationRequired
-from ambra_sdk.exceptions.storage import PermissionDenied
+from ambra_sdk.exceptions.storage import AccessDenied
 from ambra_sdk.request_args import RequestArgs
 from ambra_sdk.service.entrypoints import (
     Account,
@@ -41,14 +43,17 @@ from ambra_sdk.service.entrypoints import (
     Order,
     Patient,
     Purge,
+    Query,
     Radreport,
     Radreportmacro,
     Report,
     Role,
     Route,
     Rsna,
+    Scanner,
     Session,
     Setting,
+    Site,
     Study,
     Tag,
     Terminology,
@@ -60,53 +65,31 @@ from ambra_sdk.service.entrypoints import (
 from ambra_sdk.storage.storage import Storage
 
 logger = logging.getLogger(__name__)
-DEFAULT_SDK_CLIENT_NAME = 'Ambra SDK default client'
 
 
-class Credentials(NamedTuple):
-    """Credentials."""
-
-    username: str
-    password: str
-
-
-class Api:  # NOQA:WPS214,WPS230
+class Api(BaseApi):
     """Ambra API."""
 
-    def __init__(  # NOQA:WPS211
-        self,
-        url: str,
-        username: Optional[str] = None,
-        password: Optional[str] = None,
-        sid: Optional[str] = None,
-        client_name: str = DEFAULT_SDK_CLIENT_NAME,
-        special_headers_for_login: Optional[Dict[str, str]] = None,
-    ):
+    backend = 'REQUESTS'
+
+    def __init__(self, *args, **kwargs):
         """Init api.
 
-        :param url: api url
-        :param sid: session id
-        :param username: username credential
-        :param password: password credential
-        :param client_name: user defined client name
-        :param special_headers_for_login: special headers for login
+        :param args: args
+        :param kwargs: kwargs
         """
-        self._api_url: str = url
-        self._creds: Optional[Credentials] = None
-        self._sid: Optional[str] = sid
-        self._client_name = client_name
-        self._special_headers_for_login = special_headers_for_login
-        self._default_headers = {
-            'SDK-CLIENT-NAME': client_name,
-            'SDK-VERSION': __version__,
-        }
-        self._storage_default_headers: Dict[str, str] = {}
-        self._service_default_headers: Dict[str, str] = {}
-        if username is not None and password is not None:
-            self._creds = Credentials(username=username, password=password)
+        super().__init__(*args, **kwargs)
+
         self._service_session: Optional[requests.Session] = None
         self._storage_session: Optional[requests.Session] = None
         self._init_request_params()
+
+        # For rate limits
+        self._rate_limits_lock = Lock()
+        self._last_request_time = None
+        self._last_call_period = None
+
+        # Init services api
         self._init_service_entrypoints()
 
         # Init storage api namespace
@@ -114,72 +97,6 @@ class Api:  # NOQA:WPS214,WPS230
 
         # Init addon namespace
         self.Addon = Addon(self)
-
-        # prepare ws
-        self.ws_url = '{url}/channel/websocket'.format(url=url)
-
-    @property
-    def default_headers(self):
-        """Default headers."""  # NOQA:D401
-        return self._default_headers  # NOQA:DAR201
-
-    @property
-    def service_default_headers(self):
-        """Service default headers."""
-        return self._service_default_headers  # NOQA:DAR201
-
-    @property
-    def storage_default_headers(self):
-        """Storage default headers."""
-        return self._storage_default_headers  # NOQA:DAR201
-
-    @classmethod
-    def with_sid(
-        cls,
-        url: str,
-        sid: str,
-        client_name: str = DEFAULT_SDK_CLIENT_NAME,
-    ) -> 'Api':
-        """Create Api with sid.
-
-        :param url: api url
-        :param sid: session id
-        :param client_name: user defined client name
-
-        :return: Api
-        """
-        return cls(
-            url=url,
-            sid=sid,
-            client_name=client_name,
-        )
-
-    @classmethod
-    def with_creds(
-        cls,
-        url: str,
-        username: str,
-        password: str,
-        client_name: str = DEFAULT_SDK_CLIENT_NAME,
-        special_headers_for_login: Optional[Dict[str, str]] = None,
-    ) -> 'Api':
-        """Create Api with (username, password) credentials.
-
-        :param url: api url
-        :param username: username credential
-        :param password: password credential
-        :param client_name: user defined client name
-        :param special_headers_for_login: special headers for login
-
-        :return: Api
-        """
-        return cls(
-            url=url,
-            username=username,
-            password=password,
-            client_name=client_name,
-            special_headers_for_login=special_headers_for_login,
-        )
 
     @property
     def service_session(self) -> requests.Session:
@@ -226,12 +143,10 @@ class Api:  # NOQA:WPS214,WPS230
         :param kwargs: request arguments
         :return: response obj
         """
-        if required_sid:
-            # Sid passed always in url params (?sid=...)
-            request_params = kwargs.pop('params')
-            # Get or create new sid
-            request_params['sid'] = self.sid
-            kwargs['params'] = request_params
+        kwargs = self._prepare_storage_request_args(
+            required_sid=required_sid,
+            **kwargs,
+        )
         logger.info(
             'Storage get: %s. Params: %s',
             url,
@@ -252,12 +167,10 @@ class Api:  # NOQA:WPS214,WPS230
         :param kwargs: request arguments
         :return: response obj
         """
-        if required_sid:
-            # Sid passed always in url params (?sid=...)
-            request_params = kwargs.pop('params')
-            # Delete or create new sid
-            request_params['sid'] = self.sid
-            kwargs['params'] = request_params
+        kwargs = self._prepare_storage_request_args(
+            required_sid=required_sid,
+            **kwargs,
+        )
         logger.info(
             'Storage delete: %s. Params: %s',
             url,
@@ -278,12 +191,10 @@ class Api:  # NOQA:WPS214,WPS230
         :param kwargs: request arguments
         :return: response obj
         """
-        if required_sid:
-            # Sid passed always in url params (?sid=...)
-            request_params = kwargs.pop('params')
-            # Post or create new sid
-            request_params['sid'] = self.sid
-            kwargs['params'] = request_params
+        kwargs = self._prepare_storage_request_args(
+            required_sid=required_sid,
+            **kwargs,
+        )
         logger.info(
             'Storage post: %s. Params: %s',
             url,
@@ -291,18 +202,128 @@ class Api:  # NOQA:WPS214,WPS230
         )
         return self.storage_session.post(url=url, **kwargs)
 
-    def service_full_url(self, url: str) -> str:
-        """Full service method url.
+    def service_request(
+        self,
+        request_args: RequestArgs,
+        required_sid: bool,
+    ) -> requests.Response:
+        """Post data to url.
 
-        :param url: method url
-        :return: full url
+        :param request_args: request args
+        :param required_sid: is this method required sid
+        :return: response
         """
-        return '{base_url}{entrypoint_url}'.format(
-            base_url=self._api_url,
-            entrypoint_url=url,
+        self._wait_for_service_request(request_args.url)
+        return self._service_request_without_rate_limits(
+            request_args=request_args,
+            required_sid=required_sid,
         )
 
-    def service_request(
+    def service_post(
+        self,
+        url: str,
+        required_sid: bool,
+        **kwargs,
+    ) -> requests.Response:
+        """Post data to url.
+
+        :param url: method url
+        :param required_sid: is this method required sid
+        :param kwargs: request arguments
+        :return: response
+        """
+        full_url = self.service_full_url(url)
+        request_args = RequestArgs(
+            method='POST',
+            url=url,
+            full_url=full_url,
+            **kwargs,
+        )
+        return self.service_request(
+            request_args=request_args,
+            required_sid=required_sid,
+        )
+
+    def get_sid(self) -> str:
+        """Get or create new sid.
+
+        :return: sid
+        """
+        if self._sid is None:
+            return self.get_new_sid()
+        return self._sid
+
+    @property
+    def sid(self) -> str:
+        """Get or create new sid property.
+
+        :return: sid
+        """
+        return self.get_sid()
+
+    def logout(self):
+        """Logout."""
+        if self._sid:
+            self.Session.logout().get()
+            self._sid = None
+        if self._storage_session:
+            self._storage_session.close()
+        if self._service_session:
+            self._service_session.close()
+
+    def get_new_sid(self) -> str:
+        """Get new sid.
+
+        :raises RuntimeError: Missined credentials
+        :return: sid
+        """
+        if self._creds is None:
+            raise RuntimeError('Missed credentials')
+        new_sid: str = self.Session.get_sid(
+            self._creds.username,
+            self._creds.password,
+            special_headers_for_login=self._special_headers_for_login,
+        )
+        self._sid = new_sid
+        return new_sid
+
+    FN_RETURN_TYPE = TypeVar('FN_RETURN_TYPE')
+
+    def retry_with_new_sid(
+        self,
+        fn: Callable[..., FN_RETURN_TYPE],
+    ) -> FN_RETURN_TYPE:
+        """Retry with new sid.
+
+        :param fn: callable method
+        :return: fn result
+        """
+        try:
+            return fn()
+        except (AuthorizationRequired, AccessDenied):
+            self.get_new_sid()
+            return fn()
+
+    def _wait_for_service_request(self, url):
+        if self._rate_limits:
+            with self._rate_limits_lock:
+                call_period = self._rate_limits.call_period(url)
+                now = monotonic()
+                if self._last_request_time is None:
+                    # This is a first run
+                    self._last_request_time = now
+                    self._last_call_period = call_period
+                    return
+
+                wait_time = self._last_request_time + \
+                    self._last_call_period - now
+                if wait_time > 0:
+                    logger.info('Sleep %s due to rate limits', wait_time)
+                    sleep(wait_time)
+                self._last_request_time = monotonic()
+                self._last_call_period = call_period
+
+    def _service_request_without_rate_limits(
         self,
         request_args: RequestArgs,
         required_sid: bool,
@@ -324,79 +345,28 @@ class Api:  # NOQA:WPS214,WPS230
         )
         return self.service_session.request(
             method=request_args.method,
-            url=request_args.url,
+            url=request_args.full_url,
             **request_args.dict_optional_args(),
         )
 
-    def service_post(
+    def _prepare_storage_request_args(
         self,
-        url: str,
         required_sid: bool,
         **kwargs,
-    ) -> requests.Response:
-        """Post data to url.
-
-        :param url: method url
-        :param required_sid: is this method required sid
-        :param kwargs: request arguments
-        :return: response
-        """
-        full_url = self.service_full_url(url)
-        request_args = RequestArgs(
-            method='POST',
-            url=full_url,
-            **kwargs,
-        )
-        return self.service_request(
-            request_args=request_args,
-            required_sid=required_sid,
-        )
-
-    @property
-    def sid(self) -> str:
-        """Get or create new sid property.
-
-        :return: sid
-        """
-        if self._sid is None:
-            return self.get_new_sid()
-        return self._sid
-
-    def logout(self):
-        """Logout."""
-        self.Session.logout()
-        self._sid = None
-
-    def get_new_sid(self) -> str:
-        """Get new sid.
-
-        :raises RuntimeError: Missined credentials
-        :return: sid
-        """
-        if self._creds is None:
-            raise RuntimeError('Missed credentials')
-        new_sid: str = self.Session.get_sid(
-            self._creds.username,
-            self._creds.password,
-            special_headers_for_login=self._special_headers_for_login,
-        )
-        self._sid = new_sid
-        return new_sid
-
-    def retry_with_new_sid(
-        self,
-        fn: Callable,
     ):
-        """Retry with new sid.
+        """Prepare storage request kwargs args.
 
-        :param fn: callable method
-        :return: fn result
+        :param required_sid: required sid
+        :param kwargs: kwargs
+        :return: kwargs
         """
-        try:
-            return fn()
-        except (AuthorizationRequired, PermissionDenied):
-            self.get_new_sid()
-            return fn()
+        if required_sid:
+            # Sid passed always in url params (?sid=...)
+            request_params = kwargs.pop('params')
+            # Get or create new sid
+            request_params['sid'] = self.get_sid()
+            kwargs['params'] = request_params
+        return kwargs
 
     def _init_request_params(self):
         method_whitelist = [
@@ -475,3 +445,6 @@ class Api:  # NOQA:WPS214,WPS230
         self.User = User(self)
         self.Validate = Validate(self)
         self.Webhook = Webhook(self)
+        self.Query = Query(self)
+        self.Scanner = Scanner(self)
+        self.Site = Site(self)

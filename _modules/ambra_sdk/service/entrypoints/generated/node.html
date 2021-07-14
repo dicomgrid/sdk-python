@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.node &#8212; Ambra-SDK 3.21.4.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.node &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -43,6 +43,7 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">AlreadyPending</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">ConflictingStatus</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">FilterNotFound</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">Full</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">HasDestinations</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidCondition</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidConfiguration</span>
@@ -60,6 +61,7 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidStatus</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidType</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidUuid</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidXml</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">MissingFields</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NoNodeOverride</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotFound</span>
@@ -67,7 +69,9 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">ScheduleIsOff</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">TryLater</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">QueryO</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">AsyncQueryO</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">QueryOPSF</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">AsyncQueryOPSF</span>
 
 <span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Node.&quot;&quot;&quot;</span>
@@ -855,6 +859,38 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">QueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
     
+<div class="viewcode-block" id="Node.xml"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Node.xml">[docs]</a>    <span class="k">def</span> <span class="nf">xml</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">xml</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Xml.</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        :param xml: XML message</span>
+<span class="sd">        :param serial_no: serial_no</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;xml&#39;</span><span class="p">:</span> <span class="n">xml</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;FULL&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Full</span><span class="p">(</span><span class="s1">&#39;The XML queue is full&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_XML&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidXml</span><span class="p">(</span><span class="s1">&#39;The XML does not parse&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to perform this action&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/xml&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">QueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
 <div class="viewcode-block" id="Node.metric"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Node.metric">[docs]</a>    <span class="k">def</span> <span class="nf">metric</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">job_id</span><span class="p">,</span>
@@ -1047,6 +1083,1018 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">QueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
     
+
+
+<span class="k">class</span> <span class="nc">AsyncNode</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;AsyncNode.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_api</span> <span class="o">=</span> <span class="n">api</span>
+
+    
+<div class="viewcode-block" id="AsyncNode.list"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List.</span>
+<span class="sd">        :param account_id: uuid of the account (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;FILTER_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">FilterNotFound</span><span class="p">(</span><span class="s1">&#39;The filter can not be found. The error_subtype will hold the filter UUID&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CONDITION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCondition</span><span class="p">(</span><span class="s1">&#39;The condition is not support. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SORT_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSortField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the field name this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SORT_ORDER&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSortOrder</span><span class="p">(</span><span class="s1">&#39;The sort order for the field is invalid. The error_subtype will hold the field name this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The account can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to view this list&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/list&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">query_data</span><span class="p">[</span><span class="s1">&#39;paginated_field&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nodes&#39;</span>
+        <span class="k">return</span> <span class="n">AsyncQueryOPSF</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.public"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.public">[docs]</a>    <span class="k">def</span> <span class="nf">public</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Public.</span>
+<span class="sd">        :param account_id: The account the user is in</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;FILTER_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">FilterNotFound</span><span class="p">(</span><span class="s1">&#39;The filter can not be found. The error_subtype will hold the filter UUID&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CONDITION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCondition</span><span class="p">(</span><span class="s1">&#39;The condition is not support. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FILTER&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidFilter</span><span class="p">(</span><span class="s1">&#39;Invalid filter field&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SORT_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSortField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the field name this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SORT_ORDER&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSortOrder</span><span class="p">(</span><span class="s1">&#39;The sort order for the field is invalid. The error_subtype will hold the field name this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node or account can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to do this&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/public&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">query_data</span><span class="p">[</span><span class="s1">&#39;paginated_field&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nodes&#39;</span>
+        <span class="k">return</span> <span class="n">AsyncQueryOPSF</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.connect"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Connect.</span>
+<span class="sd">        :param account_id: The account the user is in</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        :param message: Message (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ALREADY_CONNECTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">AlreadyConnected</span><span class="p">(</span><span class="s1">&#39;The node is already connected to the account&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ALREADY_PENDING&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">AlreadyPending</span><span class="p">(</span><span class="s1">&#39;The node is pending connection already&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node or account can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to do this&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/connect&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.approve"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.approve">[docs]</a>    <span class="k">def</span> <span class="nf">approve</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Approve.</span>
+<span class="sd">        :param account_id: The account which requested the connection</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ALREADY_CONNECTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">AlreadyConnected</span><span class="p">(</span><span class="s1">&#39;The node is already connected to the account&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node, node connection request or account can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to do this&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/approve&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.add"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">accelerator_id</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="nb">type</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">category</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ctc_bucket</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">facility_contact</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">facility_contact_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">facility_email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">facility_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">facility_notes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">facility_zip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">group_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_public</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">location_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">os_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add.</span>
+<span class="sd">        :param accelerator_id: uuid of the accelerator if this is an accelerator node</span>
+<span class="sd">        :param name: Description of the node</span>
+<span class="sd">        :param type: Type of node (STORAGE|HARVESTER|ACCELERATOR|CLEARINGHOUSE|VIRTUAL|UTILITY|XDS)</span>
+<span class="sd">        :param account_id: account_id</span>
+<span class="sd">        :param category: Node category (ACTIVE|INACTIVE|MIGRATION|TEST|DUPLICATE|INTEGRATED|ACCELERATOR) (optional)</span>
+<span class="sd">        :param ctc_bucket: Name of the S3 bucket to use for a cloud to cloud gateway (optional)</span>
+<span class="sd">        :param facility_contact: Name of the facility contact (optional)</span>
+<span class="sd">        :param facility_contact_title: Title of the facility contact (optional)</span>
+<span class="sd">        :param facility_email: Email of the facility contact (optional)</span>
+<span class="sd">        :param facility_name: Name of the facility it is installed at (optional)</span>
+<span class="sd">        :param facility_notes: Notes about the facility (optional)</span>
+<span class="sd">        :param facility_zip: Zip code of the facility it is installed at (optional)</span>
+<span class="sd">        :param group_id: group_id</span>
+<span class="sd">        :param is_public: Flag if the node is public (optional)</span>
+<span class="sd">        :param location_id: location_id</span>
+<span class="sd">        :param os_type: Node OS type, used with HARVESTER node type only (WINDOWS|MACOS) (optional)</span>
+<span class="sd">        :param uuid: uuid of the node (optional, you can use this to explicitly set the UUID)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;accelerator_id&#39;</span><span class="p">:</span> <span class="n">accelerator_id</span><span class="p">,</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+           <span class="s1">&#39;ctc_bucket&#39;</span><span class="p">:</span> <span class="n">ctc_bucket</span><span class="p">,</span>
+           <span class="s1">&#39;facility_contact&#39;</span><span class="p">:</span> <span class="n">facility_contact</span><span class="p">,</span>
+           <span class="s1">&#39;facility_contact_title&#39;</span><span class="p">:</span> <span class="n">facility_contact_title</span><span class="p">,</span>
+           <span class="s1">&#39;facility_email&#39;</span><span class="p">:</span> <span class="n">facility_email</span><span class="p">,</span>
+           <span class="s1">&#39;facility_name&#39;</span><span class="p">:</span> <span class="n">facility_name</span><span class="p">,</span>
+           <span class="s1">&#39;facility_notes&#39;</span><span class="p">:</span> <span class="n">facility_notes</span><span class="p">,</span>
+           <span class="s1">&#39;facility_zip&#39;</span><span class="p">:</span> <span class="n">facility_zip</span><span class="p">,</span>
+           <span class="s1">&#39;group_id&#39;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">,</span>
+           <span class="s1">&#39;is_public&#39;</span><span class="p">:</span> <span class="n">is_public</span><span class="p">,</span>
+           <span class="s1">&#39;location_id&#39;</span><span class="p">:</span> <span class="n">location_id</span><span class="p">,</span>
+           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;os_type&#39;</span><span class="p">:</span> <span class="n">os_type</span><span class="p">,</span>
+           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ACCOUNT_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">AccountNotFound</span><span class="p">(</span><span class="s1">&#39;The account was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_LINKAGE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidLinkage</span><span class="p">(</span><span class="s1">&#39;The linkage is invalid&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_OS_TYPE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidOsType</span><span class="p">(</span><span class="s1">&#39;Invalid OS type of node&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_TYPE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidType</span><span class="p">(</span><span class="s1">&#39;Invalid type of node&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_UUID&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidUuid</span><span class="p">(</span><span class="s1">&#39;Invalid uuid format or this uuid is already in use&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to add a node to this account&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/add&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.set"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">category</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">configuration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ctc_bucket</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">facility_contact</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">facility_contact_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">facility_email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">facility_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">facility_notes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">facility_zip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_public</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">monitor_email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">monitor_node_last_send</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">monitor_node_last_send_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">monitor_node_ping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">monitor_node_slow_push</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">monitor_node_slow_push_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">monitor_study_create</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">monitor_study_create_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">reload_configuration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">setting_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">storage_namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">warning_email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set.</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        :param category: Node category (ACTIVE|INACTIVE|MIGRATION|TEST|DUPLICATE|INTEGRATED) (optional)</span>
+<span class="sd">        :param configuration: The configuration as a JSON hash of key values pairs (optional)</span>
+<span class="sd">        :param ctc_bucket: Name of the S3 bucket to use for a cloud to cloud gateway (optional)</span>
+<span class="sd">        :param facility_contact: Name of the facility contact (optional)</span>
+<span class="sd">        :param facility_contact_title: Title of the facility contact (optional)</span>
+<span class="sd">        :param facility_email: Email of the facility contact (optional)</span>
+<span class="sd">        :param facility_name: Name of the facility it is installed at (optional)</span>
+<span class="sd">        :param facility_notes: Notes about the facility (optional)</span>
+<span class="sd">        :param facility_zip: Zip code of the facility it is installed at (optional)</span>
+<span class="sd">        :param is_public: Flag if the node is public (optional)</span>
+<span class="sd">        :param monitor_email: Email address(es) to send monitor failure notices (optional)</span>
+<span class="sd">        :param monitor_node_last_send: Check if the node has sent a study recently (optional)</span>
+<span class="sd">        :param monitor_node_last_send_threshold: Threshold in minutes for triggering the monitor_node_last_send notification (optional)</span>
+<span class="sd">        :param monitor_node_ping: Check if the node is pinging (optional)</span>
+<span class="sd">        :param monitor_node_slow_push: Check if the node is pushing slowly (optional)</span>
+<span class="sd">        :param monitor_node_slow_push_threshold: Threshold in minutes for triggering the monitor_node_slow_push notification (optional)</span>
+<span class="sd">        :param monitor_study_create: Check if the node is sending studies normally (optional)</span>
+<span class="sd">        :param monitor_study_create_threshold: Threshold in minutes for triggering the monitor_study_create notification (optional)</span>
+<span class="sd">        :param name: Description of the node (optional)</span>
+<span class="sd">        :param reload_configuration: If this flag is set the node will be instructed to reload it&#39;s configuration on the next ping (optional)</span>
+<span class="sd">        :param serial_no: serial_no</span>
+<span class="sd">        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
+<span class="sd">        :param settings: A hash of the account settings that the node can override (optional)</span>
+<span class="sd">        :param storage_namespace: Namespace uuid to attach the node to. This requires a sysadmin sid and must be within the same account (optional)</span>
+<span class="sd">        :param warning_email: Email address(es) to send warning notices (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+           <span class="s1">&#39;configuration&#39;</span><span class="p">:</span> <span class="n">configuration</span><span class="p">,</span>
+           <span class="s1">&#39;ctc_bucket&#39;</span><span class="p">:</span> <span class="n">ctc_bucket</span><span class="p">,</span>
+           <span class="s1">&#39;facility_contact&#39;</span><span class="p">:</span> <span class="n">facility_contact</span><span class="p">,</span>
+           <span class="s1">&#39;facility_contact_title&#39;</span><span class="p">:</span> <span class="n">facility_contact_title</span><span class="p">,</span>
+           <span class="s1">&#39;facility_email&#39;</span><span class="p">:</span> <span class="n">facility_email</span><span class="p">,</span>
+           <span class="s1">&#39;facility_name&#39;</span><span class="p">:</span> <span class="n">facility_name</span><span class="p">,</span>
+           <span class="s1">&#39;facility_notes&#39;</span><span class="p">:</span> <span class="n">facility_notes</span><span class="p">,</span>
+           <span class="s1">&#39;facility_zip&#39;</span><span class="p">:</span> <span class="n">facility_zip</span><span class="p">,</span>
+           <span class="s1">&#39;is_public&#39;</span><span class="p">:</span> <span class="n">is_public</span><span class="p">,</span>
+           <span class="s1">&#39;monitor_email&#39;</span><span class="p">:</span> <span class="n">monitor_email</span><span class="p">,</span>
+           <span class="s1">&#39;monitor_node_last_send&#39;</span><span class="p">:</span> <span class="n">monitor_node_last_send</span><span class="p">,</span>
+           <span class="s1">&#39;monitor_node_last_send_threshold&#39;</span><span class="p">:</span> <span class="n">monitor_node_last_send_threshold</span><span class="p">,</span>
+           <span class="s1">&#39;monitor_node_ping&#39;</span><span class="p">:</span> <span class="n">monitor_node_ping</span><span class="p">,</span>
+           <span class="s1">&#39;monitor_node_slow_push&#39;</span><span class="p">:</span> <span class="n">monitor_node_slow_push</span><span class="p">,</span>
+           <span class="s1">&#39;monitor_node_slow_push_threshold&#39;</span><span class="p">:</span> <span class="n">monitor_node_slow_push_threshold</span><span class="p">,</span>
+           <span class="s1">&#39;monitor_study_create&#39;</span><span class="p">:</span> <span class="n">monitor_study_create</span><span class="p">,</span>
+           <span class="s1">&#39;monitor_study_create_threshold&#39;</span><span class="p">:</span> <span class="n">monitor_study_create_threshold</span><span class="p">,</span>
+           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;reload_configuration&#39;</span><span class="p">:</span> <span class="n">reload_configuration</span><span class="p">,</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;settings&#39;</span><span class="p">:</span> <span class="n">settings</span><span class="p">,</span>
+           <span class="s1">&#39;storage_namespace&#39;</span><span class="p">:</span> <span class="n">storage_namespace</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;warning_email&#39;</span><span class="p">:</span> <span class="n">warning_email</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">setting_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">setting_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;setting_&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">setting_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">setting_param_dict</span><span class="p">)</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CONFIGURATION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidConfiguration</span><span class="p">(</span><span class="s1">&#39;An invalid combination of configuration options was set. The error_subtype will hold more detail&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to edit this node&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NO_NODE_OVERRIDE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NoNodeOverride</span><span class="p">(</span><span class="s1">&#39;The setting does not allow a node override&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/set&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.get"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get.</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        :param serial_no: serial_no</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/get&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.ping"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.ping">[docs]</a>    <span class="k">def</span> <span class="nf">ping</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ack</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Ping.</span>
+<span class="sd">        :param ack: Flag if the gateway wants to use the acknowledge workflow</span>
+<span class="sd">        :param serial_no: The serial number of the node</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;ack&#39;</span><span class="p">:</span> <span class="n">ack</span><span class="p">,</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/ping&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.ping_ack"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.ping_ack">[docs]</a>    <span class="k">def</span> <span class="nf">ping_ack</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Ping ack.</span>
+<span class="sd">        :param serial_no: The serial number of the node</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/ping/ack&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.deliver"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.deliver">[docs]</a>    <span class="k">def</span> <span class="nf">deliver</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="p">,</span>
+        <span class="n">status</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">ack</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">destination_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">email_reason</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_local</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">status_reason</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Deliver.</span>
+<span class="sd">        :param serial_no: The serial number of the node</span>
+<span class="sd">        :param status: Status code of the job (S|F|P|B|U) - Success, failure, partial transfer, blocked or uncached</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        :param ack: The HL7 ACK if this was an HL7 job (optional)</span>
+<span class="sd">        :param destination_id: The uuid of the destination, required for local pushes (optional)</span>
+<span class="sd">        :param email_reason: Email the user this reason for the status change (optional)</span>
+<span class="sd">        :param is_local: The flag used to indicate the local push (optional)</span>
+<span class="sd">        :param job_id: The uuid of the push job, not used for local pushes (optional)</span>
+<span class="sd">        :param status_reason: Detail on the status change (optional)</span>
+<span class="sd">        :param study_uid: The study uid of the local push, required for local pushes only (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;ack&#39;</span><span class="p">:</span> <span class="n">ack</span><span class="p">,</span>
+           <span class="s1">&#39;destination_id&#39;</span><span class="p">:</span> <span class="n">destination_id</span><span class="p">,</span>
+           <span class="s1">&#39;email_reason&#39;</span><span class="p">:</span> <span class="n">email_reason</span><span class="p">,</span>
+           <span class="s1">&#39;is_local&#39;</span><span class="p">:</span> <span class="n">is_local</span><span class="p">,</span>
+           <span class="s1">&#39;job_id&#39;</span><span class="p">:</span> <span class="n">job_id</span><span class="p">,</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n">status</span><span class="p">,</span>
+           <span class="s1">&#39;status_reason&#39;</span><span class="p">:</span> <span class="n">status_reason</span><span class="p">,</span>
+           <span class="s1">&#39;study_uid&#39;</span><span class="p">:</span> <span class="n">study_uid</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;CONFLICTING_STATUS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ConflictingStatus</span><span class="p">(</span><span class="s1">&#39;This status conflicts with a prior status update&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_STATUS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidStatus</span><span class="p">(</span><span class="s1">&#39;Invalid status code&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node or job can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/deliver&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.retrieve"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.retrieve">[docs]</a>    <span class="k">def</span> <span class="nf">retrieve</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">job_id</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="p">,</span>
+        <span class="n">status</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve.</span>
+<span class="sd">        :param job_id: The uuid of the fetch job</span>
+<span class="sd">        :param serial_no: The serial number of the node</span>
+<span class="sd">        :param status: Status code of the job (S|F|P) - Success, failure, partial transfer</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;job_id&#39;</span><span class="p">:</span> <span class="n">job_id</span><span class="p">,</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n">status</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_STATUS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidStatus</span><span class="p">(</span><span class="s1">&#39;Invalid status code&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node or job can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/retrieve&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.webhook"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.webhook">[docs]</a>    <span class="k">def</span> <span class="nf">webhook</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="p">,</span>
+        <span class="n">status</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">webhook_id</span><span class="p">,</span>
+        <span class="n">error_message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Webhook.</span>
+<span class="sd">        :param serial_no: The serial number of the node</span>
+<span class="sd">        :param status: Status code of the job (S|F) - Success, failure</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        :param webhook_id: The uuid of the webhook job</span>
+<span class="sd">        :param error_message: Detailed error message (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;error_message&#39;</span><span class="p">:</span> <span class="n">error_message</span><span class="p">,</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n">status</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;webhook_id&#39;</span><span class="p">:</span> <span class="n">webhook_id</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_STATUS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidStatus</span><span class="p">(</span><span class="s1">&#39;Invalid status code&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node or webhook can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/webhook&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.configuration"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.configuration">[docs]</a>    <span class="k">def</span> <span class="nf">configuration</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Configuration.</span>
+<span class="sd">        :param serial_no: The serial number of the node</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/configuration&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.delete"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Delete.</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;HAS_DESTINATIONS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">HasDestinations</span><span class="p">(</span><span class="s1">&#39;The node has associated destinations&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to delete this node&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/delete&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.study_queued"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.study_queued">[docs]</a>    <span class="k">def</span> <span class="nf">study_queued</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="p">,</span>
+        <span class="n">study_uid</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Study queued.</span>
+<span class="sd">        :param serial_no: The serial number of the node</span>
+<span class="sd">        :param study_uid: The study uid</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;study_uid&#39;</span><span class="p">:</span> <span class="n">study_uid</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/study/queued&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.study_anonymized"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.study_anonymized">[docs]</a>    <span class="k">def</span> <span class="nf">study_anonymized</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">new_study_uid</span><span class="p">,</span>
+        <span class="n">old_study_uid</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Study anonymized.</span>
+<span class="sd">        :param new_study_uid: The new study uid</span>
+<span class="sd">        :param old_study_uid: The old study uid</span>
+<span class="sd">        :param serial_no: The serial number of the node</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;new_study_uid&#39;</span><span class="p">:</span> <span class="n">new_study_uid</span><span class="p">,</span>
+           <span class="s1">&#39;old_study_uid&#39;</span><span class="p">:</span> <span class="n">old_study_uid</span><span class="p">,</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/study/anonymized&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.found"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.found">[docs]</a>    <span class="k">def</span> <span class="nf">found</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">search_id</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">studies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Found.</span>
+<span class="sd">        :param search_id: The id of the search request</span>
+<span class="sd">        :param serial_no: The serial number of the node</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        :param status: Status code of the job, S by default (S|F) - Success, failure (optional)</span>
+<span class="sd">        :param studies: A JSON array of the studies found. Each object has the following fields (optional)</span>
+<span class="sd">          * study_uid The study_uid</span>
+<span class="sd">          * study_date The study date</span>
+<span class="sd">          * accession_number The accession number</span>
+<span class="sd">          * referring_physician The referring physician</span>
+<span class="sd">          * patient_name Patient name</span>
+<span class="sd">          * patientid Patient ID</span>
+<span class="sd">          * patient_sex Gender </span>
+<span class="sd">          * patient_birth_date Birth date</span>
+<span class="sd">          * study_description Study description</span>
+<span class="sd">          * modality Modality</span>
+<span class="sd">          * result_fields A JSON structure with the answers for the requested result_fields in /destination/search (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;search_id&#39;</span><span class="p">:</span> <span class="n">search_id</span><span class="p">,</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n">status</span><span class="p">,</span>
+           <span class="s1">&#39;studies&#39;</span><span class="p">:</span> <span class="n">studies</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ALREADY_DONE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">AlreadyDone</span><span class="p">(</span><span class="s1">&#39;The search has already had results returned against it&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_STATUS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidStatus</span><span class="p">(</span><span class="s1">&#39;An invalid status was passed&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node or search can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/found&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.found_mwl"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.found_mwl">[docs]</a>    <span class="k">def</span> <span class="nf">found_mwl</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">search_id</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">orders</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Found mwl.</span>
+<span class="sd">        :param search_id: The id of the search request</span>
+<span class="sd">        :param serial_no: The serial number of the node</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        :param orders: A JSON array of the orders found. Each object has the following fields (optional)</span>
+<span class="sd">          * patient_name Patient name</span>
+<span class="sd">          * patientid Patient id </span>
+<span class="sd">          * accession_number Accession number </span>
+<span class="sd">          * patient_sex Gender </span>
+<span class="sd">          * patient_birth_date Birth date</span>
+<span class="sd">          * order_number Order number </span>
+<span class="sd">          * order_date Order date</span>
+<span class="sd">        :param status: Status code of the job, S by default (S|F) - Success, failure (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;orders&#39;</span><span class="p">:</span> <span class="n">orders</span><span class="p">,</span>
+           <span class="s1">&#39;search_id&#39;</span><span class="p">:</span> <span class="n">search_id</span><span class="p">,</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n">status</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ALREADY_DONE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">AlreadyDone</span><span class="p">(</span><span class="s1">&#39;The search has already had results returned against it&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_STATUS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidStatus</span><span class="p">(</span><span class="s1">&#39;An invalid status was passed&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node or search can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/found/mwl&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.event"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.event">[docs]</a>    <span class="k">def</span> <span class="nf">event</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">destination_id</span><span class="p">,</span>
+        <span class="n">event</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Event.</span>
+<span class="sd">        :param destination_id: The id of the destination if the event is associated with a destination</span>
+<span class="sd">        :param event: The event (c_echo_error)</span>
+<span class="sd">        :param serial_no: The serial number of the node</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;destination_id&#39;</span><span class="p">:</span> <span class="n">destination_id</span><span class="p">,</span>
+           <span class="s1">&#39;event&#39;</span><span class="p">:</span> <span class="n">event</span><span class="p">,</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_EVENT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidEvent</span><span class="p">(</span><span class="s1">&#39;Invalid event&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node or destination can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;SCHEDULE_IS_OFF&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ScheduleIsOff</span><span class="p">(</span><span class="s1">&#39;The event is outside of its scheduled time&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/event&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.log"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">end</span><span class="p">,</span>
+        <span class="n">start</span><span class="p">,</span>
+        <span class="nb">type</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Log.</span>
+<span class="sd">        :param end: End time stamp in YYYY-MM-DD HH:MM:SS format</span>
+<span class="sd">        :param start: Start time stamp in YYYY-MM-DD HH:MM:SS format</span>
+<span class="sd">        :param type: Type of log (log|dicom|queue|system) defaults to log if not passed</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">end</span><span class="p">,</span>
+           <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">start</span><span class="p">,</span>
+           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_DATE_TIME&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidDateTime</span><span class="p">(</span><span class="s1">&#39;The timestamp is invalid&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_RANGE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidRange</span><span class="p">(</span><span class="s1">&#39;An invalid time range was specified&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to perform this action&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;TRY_LATER&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">TryLater</span><span class="p">(</span><span class="s1">&#39;The log search queue is full&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/log&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.xml"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.xml">[docs]</a>    <span class="k">def</span> <span class="nf">xml</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">xml</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Xml.</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        :param xml: XML message</span>
+<span class="sd">        :param serial_no: serial_no</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;xml&#39;</span><span class="p">:</span> <span class="n">xml</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;FULL&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Full</span><span class="p">(</span><span class="s1">&#39;The XML queue is full&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_XML&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidXml</span><span class="p">(</span><span class="s1">&#39;The XML does not parse&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to perform this action&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/xml&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.metric"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.metric">[docs]</a>    <span class="k">def</span> <span class="nf">metric</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">job_id</span><span class="p">,</span>
+        <span class="n">metric</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Metric.</span>
+<span class="sd">        :param job_id: The uuid of the push job</span>
+<span class="sd">        :param metric: The metric to record</span>
+<span class="sd">        :param serial_no: The serial number of the node</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;job_id&#39;</span><span class="p">:</span> <span class="n">job_id</span><span class="p">,</span>
+           <span class="s1">&#39;metric&#39;</span><span class="p">:</span> <span class="n">metric</span><span class="p">,</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_METRIC&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidMetric</span><span class="p">(</span><span class="s1">&#39;The metric is invalid for this job type&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node or job can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/metric&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.performance_set"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.performance_set">[docs]</a>    <span class="k">def</span> <span class="nf">performance_set</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Performance set.</span>
+<span class="sd">        :param data: A JSON data structure with performance data</span>
+<span class="sd">        :param serial_no: The serial number of the node</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/performance/set&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.performance_get"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.performance_get">[docs]</a>    <span class="k">def</span> <span class="nf">performance_get</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Performance get.</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        :param serial_no: serial_no</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to view this node&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/performance/get&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.progress_add"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.progress_add">[docs]</a>    <span class="k">def</span> <span class="nf">progress_add</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">queue</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="p">,</span>
+        <span class="n">state</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">accession_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">destination_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">detail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">patientid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Progress add.</span>
+<span class="sd">        :param queue: The queue</span>
+<span class="sd">        :param serial_no: The serial number of the node</span>
+<span class="sd">        :param state: The status</span>
+<span class="sd">        :param uuid: The node id</span>
+<span class="sd">        :param accession_number: DICOM tag (0008,0050) (optional)</span>
+<span class="sd">        :param destination_id: The destination uuid (optional)</span>
+<span class="sd">        :param detail: JSON detail (optional)</span>
+<span class="sd">        :param patientid: DICOM tag (0010,0020) (optional)</span>
+<span class="sd">        :param study_uid: Study uid (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;accession_number&#39;</span><span class="p">:</span> <span class="n">accession_number</span><span class="p">,</span>
+           <span class="s1">&#39;destination_id&#39;</span><span class="p">:</span> <span class="n">destination_id</span><span class="p">,</span>
+           <span class="s1">&#39;detail&#39;</span><span class="p">:</span> <span class="n">detail</span><span class="p">,</span>
+           <span class="s1">&#39;patientid&#39;</span><span class="p">:</span> <span class="n">patientid</span><span class="p">,</span>
+           <span class="s1">&#39;queue&#39;</span><span class="p">:</span> <span class="n">queue</span><span class="p">,</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="n">state</span><span class="p">,</span>
+           <span class="s1">&#39;study_uid&#39;</span><span class="p">:</span> <span class="n">study_uid</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node or destination can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/progress/add&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.progress_list"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.progress_list">[docs]</a>    <span class="k">def</span> <span class="nf">progress_list</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">destination_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Progress list.</span>
+<span class="sd">        :param destination_id: destination_id</span>
+<span class="sd">        :param node_id: node_id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;destination_id&#39;</span><span class="p">:</span> <span class="n">destination_id</span><span class="p">,</span>
+           <span class="s1">&#39;node_id&#39;</span><span class="p">:</span> <span class="n">node_id</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;FILTER_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">FilterNotFound</span><span class="p">(</span><span class="s1">&#39;The filter can not be found. The error_subtype will hold the filter UUID&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CONDITION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCondition</span><span class="p">(</span><span class="s1">&#39;The condition is not support. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SORT_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSortField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the field name this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SORT_ORDER&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSortOrder</span><span class="p">(</span><span class="s1">&#39;The sort order for the field is invalid. The error_subtype will hold the field name this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The node can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to do this&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/progress/list&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">query_data</span><span class="p">[</span><span class="s1">&#39;paginated_field&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;progresses&#39;</span>
+        <span class="k">return</span> <span class="n">AsyncQueryOPSF</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNode.progress_get"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNode.progress_get">[docs]</a>    <span class="k">def</span> <span class="nf">progress_get</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Progress get.</span>
+<span class="sd">        :param uuid: The node progress uuid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The record can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to do this&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/node/progress/get&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
 </pre></div>
 
           </div>
@@ -1059,7 +2107,7 @@
 
 
 
-<p class="blurb">version 3.21.4.0-1</p>
+<p class="blurb">version 3.21.5.0-1</p>
 
 
 
@@ -1080,6 +2128,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../service_api.html">Service API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../storage_api.html">Storage API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../async.html">Async</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../addon.html">Addon methods</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../referencies/index.html">References</a></li>

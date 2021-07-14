@@ -23,7 +23,7 @@ Make sure that the current version of `ambra-sdk` is not lower.
 
    >>> from ambra_sdk import API_VERSION
    >>> print(API_VERSION)
-   LBL0022 v45.0 2021-04-07
+   LBL0022 v47.0 2021-06-30
 
 In `ambra-sdk` all service api methods have the form
 `api.CommandNamespace.command.{get(),all() or first()}`.
@@ -41,7 +41,7 @@ For example:
 
     >>> query_object = api.Study.list()
     >>> print(type(query_object))
-    <class 'ambra_sdk.service.query.QueryOPSF'>
+    <class 'ambra_sdk.service.query.query.QueryOPSF'>
 
 `OSF` in query type name means that you can use `only`, `sort_by`, and `filter_by` methods. `P` means that this is a query for results with pagination. So you can use `all` or `first` method on this object.
 

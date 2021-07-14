@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Async &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Addon methods" href="addon.html" />
+    <link rel="prev" title="Storage API" href="storage_api.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="async">
+<span id="id1"></span><h1>Async<a class="headerlink" href="#async" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">SDK</span></code> has an async version (support asyncio mechanism in python).
+For using Async version of SDK you need import:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ambra_sdk.api</span> <span class="kn">import</span> <span class="n">AsyncApi</span>
+<span class="n">api</span> <span class="o">=</span> <span class="n">AsyncApi</span><span class="o">.</span><span class="n">with_creds</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For example service <cite>api.User.get</cite> can be performed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="k">await</span> <span class="n">api</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">only</span><span class="p">([</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We support async versions for all methods in the sync version of sdk (include addon methods).</p>
+<div class="section" id="async-vs-sync-difference">
+<h2>Async vs Sync difference<a class="headerlink" href="#async-vs-sync-difference" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>In the async version for results with pagination we have an async genereator result.
+For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">for</span> <span class="n">study</span> <span class="ow">in</span> <span class="n">api</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">study</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is pretty the same like in sync version, but now you can not to do something like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">studies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+</pre></div>
+</div>
+</li>
+<li><p>In the async version we have <cite>aiohttp.ClientResponse</cite> instead of <cite>requests.Response</cite> object. There are some differences between this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sync:</span>
+<span class="n">anonymize_response</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Storage</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">anonymize</span><span class="p">(</span>
+    <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
+    <span class="n">namespace</span><span class="o">=</span><span class="n">storage_namespace</span><span class="p">,</span>
+    <span class="n">to_namespace</span><span class="o">=</span><span class="n">storage_namespace</span><span class="p">,</span>
+    <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;121197149&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">response_status_code</span> <span class="o">=</span> <span class="n">anonymize_response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">new_study_uid</span> <span class="o">=</span> <span class="n">anonymize_response</span><span class="o">.</span><span class="n">text</span>
+
+<span class="c1"># Async:</span>
+<span class="n">anonymize_response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">api</span><span class="o">.</span><span class="n">Storage</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">anonymize</span><span class="p">(</span>
+    <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
+    <span class="n">namespace</span><span class="o">=</span><span class="n">storage_namespace</span><span class="p">,</span>
+    <span class="n">to_namespace</span><span class="o">=</span><span class="n">storage_namespace</span><span class="p">,</span>
+    <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;121197149&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># respone.status_code -&gt; response.status</span>
+<span class="n">response_status_code</span> <span class="o">=</span> <span class="n">anonymize_response</span><span class="o">.</span><span class="n">status</span>
+
+<span class="c1"># response.text now is coroutine</span>
+<span class="n">new_study_uid</span> <span class="o">=</span> <span class="k">await</span> <span class="n">anonymize_response</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p>Api has no <cite>sid</cite> property. For get SDK sid use this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sid</span> <span class="o">=</span> <span class="k">await</span> <span class="n">api</span><span class="o">.</span><span class="n">get_sid</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Ambra-SDK</a></h1>
+
+
+
+<p class="blurb">version 3.21.5.0-1</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=dicomgrid&repo=sdk-python&type=watch&count=False&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="service_api.html">Service API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage_api.html">Storage API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Async</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#async-vs-sync-difference">Async vs Sync difference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="addon.html">Addon methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="referencies/index.html">References</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="storage_api.html" title="previous chapter">Storage API</a></li>
+      <li>Next: <a href="addon.html" title="next chapter">Addon methods</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ambrahealth AI team.
+      
+      |
+      <a href="_sources/async.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

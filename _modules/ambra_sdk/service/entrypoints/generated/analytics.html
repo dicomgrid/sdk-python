@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.analytics &#8212; Ambra-SDK 3.21.4.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.analytics &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -45,6 +45,7 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotPermitted</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">QueryO</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">AsyncQueryO</span>
 
 <span class="k">class</span> <span class="nc">Analytics</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Analytics.&quot;&quot;&quot;</span>
@@ -239,6 +240,201 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">QueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
     
+
+
+<span class="k">class</span> <span class="nc">AsyncAnalytics</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;AsyncAnalytics.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_api</span> <span class="o">=</span> <span class="n">api</span>
+
+    
+<div class="viewcode-block" id="AsyncAnalytics.study"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncAnalytics.study">[docs]</a>    <span class="k">def</span> <span class="nf">study</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">count</span><span class="p">,</span>
+        <span class="n">period</span><span class="p">,</span>
+        <span class="n">time_zone</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">customfield_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">modality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">namespace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Study.</span>
+<span class="sd">        :param count: The number of periods to get</span>
+<span class="sd">        :param period: The time period (day|week|month|year)</span>
+<span class="sd">        :param time_zone: The report&#39;s time zone. Time zone selection order: current user&#39;s time zone, time_zone parameter, UTC by default.</span>
+<span class="sd">        :param account_id: account_id</span>
+<span class="sd">        :param customfield_param: Filter analytics by a subset of study customfields (optional)</span>
+<span class="sd">        :param end_date: The end date, default is today if not passed (optional)</span>
+<span class="sd">        :param modality: Filter analytics by modality (optional)</span>
+<span class="sd">        :param namespace_id: namespace_id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span>
+           <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="n">end_date</span><span class="p">,</span>
+           <span class="s1">&#39;modality&#39;</span><span class="p">:</span> <span class="n">modality</span><span class="p">,</span>
+           <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
+           <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="n">period</span><span class="p">,</span>
+           <span class="s1">&#39;time_zone&#39;</span><span class="p">:</span> <span class="n">time_zone</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">customfield_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">customfield_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">customfield_param_dict</span><span class="p">)</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_COUNT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCount</span><span class="p">(</span><span class="s1">&#39;Invalid or excessive count value&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_END_DATE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidEndDate</span><span class="p">(</span><span class="s1">&#39;An invalid period&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_PARAMETERS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidParameters</span><span class="p">(</span><span class="s1">&#39;Only pass a account_id or namespace_id&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_PERIOD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidPeriod</span><span class="p">(</span><span class="s1">&#39;An invalid period&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The account or namespace can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to view analytics for this account or namespace&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/analytics/study&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncAnalytics.patient_portal"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncAnalytics.patient_portal">[docs]</a>    <span class="k">def</span> <span class="nf">patient_portal</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="p">,</span>
+        <span class="n">count</span><span class="p">,</span>
+        <span class="n">period</span><span class="p">,</span>
+        <span class="n">time_zone</span><span class="p">,</span>
+        <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">patient_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Patient portal.</span>
+<span class="sd">        :param account_id: The account id</span>
+<span class="sd">        :param count: The number of periods to get</span>
+<span class="sd">        :param period: The time period (day|week|month|year)</span>
+<span class="sd">        :param time_zone: The report&#39;s time zone. Time zone selection order: current user&#39;s time zone, time_zone parameter, UTC by default.</span>
+<span class="sd">        :param end_date: The end date, default is today if not passed (optional)</span>
+<span class="sd">        :param patient_id: Patient filter (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span>
+           <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="n">end_date</span><span class="p">,</span>
+           <span class="s1">&#39;patient_id&#39;</span><span class="p">:</span> <span class="n">patient_id</span><span class="p">,</span>
+           <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="n">period</span><span class="p">,</span>
+           <span class="s1">&#39;time_zone&#39;</span><span class="p">:</span> <span class="n">time_zone</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_COUNT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCount</span><span class="p">(</span><span class="s1">&#39;Invalid or excessive count value&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_END_DATE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidEndDate</span><span class="p">(</span><span class="s1">&#39;An invalid period&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_PERIOD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidPeriod</span><span class="p">(</span><span class="s1">&#39;An invalid period&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The account or patient can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to view analytics for this account or namespace&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/analytics/patient/portal&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncAnalytics.radreport"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncAnalytics.radreport">[docs]</a>    <span class="k">def</span> <span class="nf">radreport</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="p">,</span>
+        <span class="n">count</span><span class="p">,</span>
+        <span class="n">period</span><span class="p">,</span>
+        <span class="n">time_zone</span><span class="p">,</span>
+        <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">namespace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Radreport.</span>
+<span class="sd">        :param account_id: The account id</span>
+<span class="sd">        :param count: The number of periods to get</span>
+<span class="sd">        :param period: The time period (day|week|month|year)</span>
+<span class="sd">        :param time_zone: The report&#39;s time zone. Time zone selection order: current user&#39;s time zone, time_zone parameter, UTC by default.</span>
+<span class="sd">        :param end_date: The end date, default is today if not passed (optional)</span>
+<span class="sd">        :param namespace_id: Namespace filter (optional)</span>
+<span class="sd">        :param user_id: User filter (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span>
+           <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="n">end_date</span><span class="p">,</span>
+           <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
+           <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="n">period</span><span class="p">,</span>
+           <span class="s1">&#39;time_zone&#39;</span><span class="p">:</span> <span class="n">time_zone</span><span class="p">,</span>
+           <span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_COUNT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCount</span><span class="p">(</span><span class="s1">&#39;Invalid or excessive count value&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_END_DATE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidEndDate</span><span class="p">(</span><span class="s1">&#39;An invalid period&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_PERIOD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidPeriod</span><span class="p">(</span><span class="s1">&#39;An invalid period&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The account or patient can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to view analytics for this account or namespace&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/analytics/radreport&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncAnalytics.user"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncAnalytics.user">[docs]</a>    <span class="k">def</span> <span class="nf">user</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="p">,</span>
+        <span class="n">count</span><span class="p">,</span>
+        <span class="n">period</span><span class="p">,</span>
+        <span class="n">time_zone</span><span class="p">,</span>
+        <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">end_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">namespace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;User.</span>
+<span class="sd">        :param account_id: The account id</span>
+<span class="sd">        :param count: The number of periods to get</span>
+<span class="sd">        :param period: The time period (hour|day|week|month|year)</span>
+<span class="sd">        :param time_zone: The report&#39;s time zone. Time zone selection order: current user&#39;s time zone, time_zone parameter, UTC by default.</span>
+<span class="sd">        :param end_date: The end date, for backwards compatibility (optional)</span>
+<span class="sd">        :param end_time: The end date and time, default is now if not passed (optional)</span>
+<span class="sd">        :param namespace_id: Namespace filter (optional)</span>
+<span class="sd">        :param user_id: User filter (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span>
+           <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="n">end_date</span><span class="p">,</span>
+           <span class="s1">&#39;end_time&#39;</span><span class="p">:</span> <span class="n">end_time</span><span class="p">,</span>
+           <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
+           <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="n">period</span><span class="p">,</span>
+           <span class="s1">&#39;time_zone&#39;</span><span class="p">:</span> <span class="n">time_zone</span><span class="p">,</span>
+           <span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_COUNT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCount</span><span class="p">(</span><span class="s1">&#39;Invalid or excessive count value&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_END_DATE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidEndDate</span><span class="p">(</span><span class="s1">&#39;An invalid period&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_PERIOD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidPeriod</span><span class="p">(</span><span class="s1">&#39;An invalid period&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The account or patient can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to view analytics for this account or namespace&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/analytics/user&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
 </pre></div>
 
           </div>
@@ -251,7 +447,7 @@
 
 
 
-<p class="blurb">version 3.21.4.0-1</p>
+<p class="blurb">version 3.21.5.0-1</p>
 
 
 
@@ -272,6 +468,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../service_api.html">Service API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../storage_api.html">Storage API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../async.html">Async</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../addon.html">Addon methods</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../referencies/index.html">References</a></li>

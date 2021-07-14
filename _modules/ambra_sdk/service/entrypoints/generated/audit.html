@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.audit &#8212; Ambra-SDK 3.21.4.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.audit &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -45,8 +45,11 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotPermitted</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">QueryO</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">AsyncQueryO</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">QueryOP</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">AsyncQueryOP</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">QueryOPF</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">AsyncQueryOPF</span>
 
 <span class="k">class</span> <span class="nc">Audit</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Audit.&quot;&quot;&quot;</span>
@@ -245,6 +248,205 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">QueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
     
+
+
+<span class="k">class</span> <span class="nc">AsyncAudit</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;AsyncAudit.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_api</span> <span class="o">=</span> <span class="n">api</span>
+
+    
+<div class="viewcode-block" id="AsyncAudit.object"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncAudit.object">[docs]</a>    <span class="k">def</span> <span class="nf">object</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">customfield_detail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">download</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">reverse</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Object.</span>
+<span class="sd">        :param uuid: The uuid of the object to audit</span>
+<span class="sd">        :param customfield_detail: Flag to include the customfield name in the detail (optional)</span>
+<span class="sd">        :param download: Flag to create a zipped CSV file. A report_id will be returned and the file can be accessed via /report/status and /report/zip (optional)</span>
+<span class="sd">        :param reverse: Flag to reverse the default sort order (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;customfield_detail&#39;</span><span class="p">:</span> <span class="n">customfield_detail</span><span class="p">,</span>
+           <span class="s1">&#39;download&#39;</span><span class="p">:</span> <span class="n">download</span><span class="p">,</span>
+           <span class="s1">&#39;reverse&#39;</span><span class="p">:</span> <span class="n">reverse</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;FILTER_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">FilterNotFound</span><span class="p">(</span><span class="s1">&#39;The filter can not be found. The error_subtype will hold the filter UUID&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CONDITION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCondition</span><span class="p">(</span><span class="s1">&#39;The condition is not support. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The object was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to access this object&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/audit/object&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">query_data</span><span class="p">[</span><span class="s1">&#39;paginated_field&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;events&#39;</span>
+        <span class="k">return</span> <span class="n">AsyncQueryOPF</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncAudit.user"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncAudit.user">[docs]</a>    <span class="k">def</span> <span class="nf">user</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="p">,</span>
+        <span class="n">user_id</span><span class="p">,</span>
+        <span class="n">download</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">reverse</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">study_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;User.</span>
+<span class="sd">        :param account_id: The id of the account</span>
+<span class="sd">        :param user_id: The id of the user to audit</span>
+<span class="sd">        :param download: Flag to create a zipped CSV file. A report_id will be returned and the file can be accessed via /report/status and /report/zip (optional)</span>
+<span class="sd">        :param reverse: Flag to reverse the default sort order (optional)</span>
+<span class="sd">        :param study_fields: JSON list of study fields to include in the response (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;download&#39;</span><span class="p">:</span> <span class="n">download</span><span class="p">,</span>
+           <span class="s1">&#39;reverse&#39;</span><span class="p">:</span> <span class="n">reverse</span><span class="p">,</span>
+           <span class="s1">&#39;study_fields&#39;</span><span class="p">:</span> <span class="n">study_fields</span><span class="p">,</span>
+           <span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;FILTER_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">FilterNotFound</span><span class="p">(</span><span class="s1">&#39;The filter can not be found. The error_subtype will hold the filter UUID&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CONDITION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCondition</span><span class="p">(</span><span class="s1">&#39;The condition is not support. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The user was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to access this user record&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/audit/user&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">query_data</span><span class="p">[</span><span class="s1">&#39;paginated_field&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;events&#39;</span>
+        <span class="k">return</span> <span class="n">AsyncQueryOPF</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncAudit.account"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncAudit.account">[docs]</a>    <span class="k">def</span> <span class="nf">account</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="p">,</span>
+        <span class="n">download</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">reverse</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Account.</span>
+<span class="sd">        :param account_id: The id of the account</span>
+<span class="sd">        :param download: Flag to create a zipped CSV file. A report_id will be returned and the file can be accessed via /report/status and /report/zip (optional)</span>
+<span class="sd">        :param reverse: Flag to reverse the default sort order (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;download&#39;</span><span class="p">:</span> <span class="n">download</span><span class="p">,</span>
+           <span class="s1">&#39;reverse&#39;</span><span class="p">:</span> <span class="n">reverse</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;FILTER_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">FilterNotFound</span><span class="p">(</span><span class="s1">&#39;The filter can not be found. The error_subtype will hold the filter UUID&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CONDITION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCondition</span><span class="p">(</span><span class="s1">&#39;The condition is not support. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The account was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to access this information&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/audit/account&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">query_data</span><span class="p">[</span><span class="s1">&#39;paginated_field&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;events&#39;</span>
+        <span class="k">return</span> <span class="n">AsyncQueryOPF</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncAudit.deleted"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncAudit.deleted">[docs]</a>    <span class="k">def</span> <span class="nf">deleted</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="p">,</span>
+        <span class="nb">type</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Deleted.</span>
+<span class="sd">        :param account_id: The id of the account</span>
+<span class="sd">        :param type: The type of the object (Study|User etc.)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to access this record&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/audit/deleted&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">query_data</span><span class="p">[</span><span class="s1">&#39;paginated_field&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;objects&#39;</span>
+        <span class="k">return</span> <span class="n">AsyncQueryOP</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncAudit.log"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncAudit.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">bucket</span><span class="p">,</span>
+        <span class="n">rest_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Log.</span>
+<span class="sd">        :param bucket: Name of the bucket to log to</span>
+<span class="sd">        :param rest_params: Parameters are logged to a message in the bucket</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;bucket&#39;</span><span class="p">:</span> <span class="n">bucket</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">rest_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rest_params_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">rest_params</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">rest_params_dict</span><span class="p">)</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_BUCKET&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidBucket</span><span class="p">(</span><span class="s1">&#39;The bucket name can only contain A-z characters and must be between 4 and 16 characters long&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/audit/log&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncAudit.failedlogins"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncAudit.failedlogins">[docs]</a>    <span class="k">def</span> <span class="nf">failedlogins</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="p">,</span>
+        <span class="n">from_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Failedlogins.</span>
+<span class="sd">        :param account_id: The id of the account</span>
+<span class="sd">        :param from_time: Only return events after the epoch time (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;from_time&#39;</span><span class="p">:</span> <span class="n">from_time</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/audit/failedlogins&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
 </pre></div>
 
           </div>
@@ -257,7 +459,7 @@
 
 
 
-<p class="blurb">version 3.21.4.0-1</p>
+<p class="blurb">version 3.21.5.0-1</p>
 
 
 
@@ -278,6 +480,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../service_api.html">Service API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../storage_api.html">Storage API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../async.html">Async</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../addon.html">Addon methods</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../referencies/index.html">References</a></li>

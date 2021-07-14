@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.radreport &#8212; Ambra-SDK 3.21.4.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.radreport &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -54,7 +54,9 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotSysadminOrSupport</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">PdfFailed</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">QueryO</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">AsyncQueryO</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">QueryOPSF</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">AsyncQueryOPSF</span>
 
 <span class="k">class</span> <span class="nc">Radreport</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Radreport.&quot;&quot;&quot;</span>
@@ -548,6 +550,500 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">QueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
     
+
+
+<span class="k">class</span> <span class="nc">AsyncRadreport</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;AsyncRadreport.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_api</span> <span class="o">=</span> <span class="n">api</span>
+
+    
+<div class="viewcode-block" id="AsyncRadreport.add"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRadreport.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">study_id</span><span class="p">,</span>
+        <span class="nb">type</span><span class="p">,</span>
+        <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add.</span>
+<span class="sd">        :param study_id: Id of the study to add the radreport to</span>
+<span class="sd">        :param type: The type of the radreport</span>
+<span class="sd">        :param fields: A JSON hash of the fields in the report (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">fields</span><span class="p">,</span>
+           <span class="s1">&#39;study_id&#39;</span><span class="p">:</span> <span class="n">study_id</span><span class="p">,</span>
+           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The study was not found.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to add a radreport to the study&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/radreport/add&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRadreport.set"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRadreport.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">attachment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set.</span>
+<span class="sd">        :param uuid: Id of the radreport</span>
+<span class="sd">        :param attachment: A JSON hash of the storage attachment information (optional)</span>
+<span class="sd">        :param fields: A JSON hash of the fields in the report (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;attachment&#39;</span><span class="p">:</span> <span class="n">attachment</span><span class="p">,</span>
+           <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">fields</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The study was not found.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to add a radreport to the study&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/radreport/set&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRadreport.get"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRadreport.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get.</span>
+<span class="sd">        :param uuid: Id of the radreport</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The radreport  was not found.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to view the radreport&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/radreport/get&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRadreport.audit"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRadreport.audit">[docs]</a>    <span class="k">def</span> <span class="nf">audit</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">action</span><span class="p">,</span>
+        <span class="n">detail</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Audit.</span>
+<span class="sd">        :param action: The audit action (SIGNED|MEDICAL_EDIT|ADMIN_EDIT|REPORT_GENERATED)</span>
+<span class="sd">        :param detail: Additional information</span>
+<span class="sd">        :param uuid: The id of the radreport</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="n">action</span><span class="p">,</span>
+           <span class="s1">&#39;detail&#39;</span><span class="p">:</span> <span class="n">detail</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_ACTION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidAction</span><span class="p">(</span><span class="s1">&#39;An invalid action was passed&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The radreport can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/radreport/audit&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRadreport.delete"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRadreport.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Delete.</span>
+<span class="sd">        :param uuid: Id of the radreport</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The radreport  was not found.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to delete the radreport&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/radreport/delete&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRadreport.description"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRadreport.description">[docs]</a>    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Description.</span>
+<span class="sd">        :param uuid: Id of the radreport</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The radreport  was not found.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to view the radreport&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/radreport/description&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRadreport.user_list"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRadreport.user_list">[docs]</a>    <span class="k">def</span> <span class="nf">user_list</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">user_id</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;User list.</span>
+<span class="sd">        :param user_id: The user id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;FILTER_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">FilterNotFound</span><span class="p">(</span><span class="s1">&#39;The filter can not be found. The error_subtype will hold the filter UUID&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CONDITION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCondition</span><span class="p">(</span><span class="s1">&#39;The condition is not support. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SORT_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSortField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the field name this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SORT_ORDER&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSortOrder</span><span class="p">(</span><span class="s1">&#39;The sort order for the field is invalid. The error_subtype will hold the field name this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The user was not found.&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/radreport/user/list&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">query_data</span><span class="p">[</span><span class="s1">&#39;paginated_field&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;radreports&#39;</span>
+        <span class="k">return</span> <span class="n">AsyncQueryOPSF</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRadreport.pdf"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRadreport.pdf">[docs]</a>    <span class="k">def</span> <span class="nf">pdf</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pdf.</span>
+<span class="sd">        :param uuid: The radreport uuid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/radreport/pdf&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRadreport.fax"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRadreport.fax">[docs]</a>    <span class="k">def</span> <span class="nf">fax</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">number</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fax.</span>
+<span class="sd">        :param number: The fax number to send the PDF report to</span>
+<span class="sd">        :param uuid: The radreport uuid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;number&#39;</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_PHONE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidPhone</span><span class="p">(</span><span class="s1">&#39;The fax number is invalid&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_ENABLED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotEnabled</span><span class="p">(</span><span class="s1">&#39;The radreport mailing out is not enabled for the account&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The radreport can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to do this&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NO_ATTACHMENT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NoAttachment</span><span class="p">(</span><span class="s1">&#39;The radreport does not have an attached report&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;PDF_FAILED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">PdfFailed</span><span class="p">(</span><span class="s1">&#39;The PDF report failed to generate&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/radreport/fax&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRadreport.email"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRadreport.email">[docs]</a>    <span class="k">def</span> <span class="nf">email</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">email</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Email.</span>
+<span class="sd">        :param email: The email address(es) to send the radreport to</span>
+<span class="sd">        :param uuid: The radreport uuid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_EMAIL&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidEmail</span><span class="p">(</span><span class="s1">&#39;An invalid email address was passed&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_ENABLED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotEnabled</span><span class="p">(</span><span class="s1">&#39;The radreport mailing out is not enabled for the account&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The radreport can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to do this&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NO_ATTACHMENT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NoAttachment</span><span class="p">(</span><span class="s1">&#39;The radreport does not have an attached report&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;PDF_FAILED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">PdfFailed</span><span class="p">(</span><span class="s1">&#39;The PDF report failed to generate&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/radreport/email&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRadreport.template_list"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRadreport.template_list">[docs]</a>    <span class="k">def</span> <span class="nf">template_list</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="p">,</span>
+        <span class="n">active</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Template list.</span>
+<span class="sd">        :param account_id: uuid of the account</span>
+<span class="sd">        :param active: Limit to active templates (optional)</span>
+<span class="sd">        :param type: Limit to this type (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;active&#39;</span><span class="p">:</span> <span class="n">active</span><span class="p">,</span>
+           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;FILTER_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">FilterNotFound</span><span class="p">(</span><span class="s1">&#39;The filter can not be found. The error_subtype will hold the filter UUID&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CONDITION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCondition</span><span class="p">(</span><span class="s1">&#39;The condition is not support. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SORT_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSortField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the field name this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SORT_ORDER&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSortOrder</span><span class="p">(</span><span class="s1">&#39;The sort order for the field is invalid. The error_subtype will hold the field name this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to perform this operation&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/radreport/template/list&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">query_data</span><span class="p">[</span><span class="s1">&#39;paginated_field&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;templates&#39;</span>
+        <span class="k">return</span> <span class="n">AsyncQueryOPSF</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRadreport.template_add"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRadreport.template_add">[docs]</a>    <span class="k">def</span> <span class="nf">template_add</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="p">,</span>
+        <span class="n">body</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="nb">type</span><span class="p">,</span>
+        <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">preview</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Template add.</span>
+<span class="sd">        :param account_id: uuid of the account</span>
+<span class="sd">        :param body: Body of the template</span>
+<span class="sd">        :param name: Name of the template</span>
+<span class="sd">        :param type: Type of radreport</span>
+<span class="sd">        :param options: JSON options of the template (optional)</span>
+<span class="sd">        :param preview: Preview of the template (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;body&#39;</span><span class="p">:</span> <span class="n">body</span><span class="p">,</span>
+           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="n">options</span><span class="p">,</span>
+           <span class="s1">&#39;preview&#39;</span><span class="p">:</span> <span class="n">preview</span><span class="p">,</span>
+           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_SYSADMIN_OR_SUPPORT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotSysadminOrSupport</span><span class="p">(</span><span class="s1">&#39;The user is not a sysadmin or support user&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/radreport/template/add&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRadreport.template_set"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRadreport.template_set">[docs]</a>    <span class="k">def</span> <span class="nf">template_set</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">body</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">preview</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Template set.</span>
+<span class="sd">        :param uuid: uuid of the template</span>
+<span class="sd">        :param body: Body of the template (optional)</span>
+<span class="sd">        :param name: Name of the template (optional)</span>
+<span class="sd">        :param options: JSON options of the template (optional)</span>
+<span class="sd">        :param preview: Preview of the template (optional)</span>
+<span class="sd">        :param type: Type of radreport (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;body&#39;</span><span class="p">:</span> <span class="n">body</span><span class="p">,</span>
+           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="n">options</span><span class="p">,</span>
+           <span class="s1">&#39;preview&#39;</span><span class="p">:</span> <span class="n">preview</span><span class="p">,</span>
+           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_SYSADMIN_OR_SUPPORT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotSysadminOrSupport</span><span class="p">(</span><span class="s1">&#39;You are not permitted to perform this operation&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/radreport/template/set&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRadreport.template_get"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRadreport.template_get">[docs]</a>    <span class="k">def</span> <span class="nf">template_get</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Template get.</span>
+<span class="sd">        :param uuid: uuid of the template</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The radreport template can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to perform this operation&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/radreport/template/get&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRadreport.template_get_type"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRadreport.template_get_type">[docs]</a>    <span class="k">def</span> <span class="nf">template_get_type</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="p">,</span>
+        <span class="nb">type</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Template get type.</span>
+<span class="sd">        :param account_id: uuid of the account</span>
+<span class="sd">        :param type: Type of the template</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The radreport template can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to perform this operation&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/radreport/template/get/type&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRadreport.template_delete"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRadreport.template_delete">[docs]</a>    <span class="k">def</span> <span class="nf">template_delete</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Template delete.</span>
+<span class="sd">        :param uuid: uuid of the template</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_SYSADMIN_OR_SUPPORT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotSysadminOrSupport</span><span class="p">(</span><span class="s1">&#39;The user is not a sysadmin or support user&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/radreport/template/delete&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRadreport.template_activate"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRadreport.template_activate">[docs]</a>    <span class="k">def</span> <span class="nf">template_activate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Template activate.</span>
+<span class="sd">        :param uuid: uuid of the template</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The radreport template can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_SYSADMIN_OR_SUPPORT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotSysadminOrSupport</span><span class="p">(</span><span class="s1">&#39;The user is not a sysadmin or support user&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/radreport/template/activate&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
 </pre></div>
 
           </div>
@@ -560,7 +1056,7 @@
 
 
 
-<p class="blurb">version 3.21.4.0-1</p>
+<p class="blurb">version 3.21.5.0-1</p>
 
 
 
@@ -581,6 +1077,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../service_api.html">Service API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../storage_api.html">Storage API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../async.html">Async</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../addon.html">Addon methods</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../referencies/index.html">References</a></li>

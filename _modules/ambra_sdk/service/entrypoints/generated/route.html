@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.route &#8212; Ambra-SDK 3.21.4.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.route &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -55,7 +55,9 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotPermitted</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">QueryO</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">AsyncQueryO</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">QueryOPSF</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">AsyncQueryOPSF</span>
 
 <span class="k">class</span> <span class="nc">Route</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Route.&quot;&quot;&quot;</span>
@@ -345,6 +347,296 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">QueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
     
+
+
+<span class="k">class</span> <span class="nc">AsyncRoute</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;AsyncRoute.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_api</span> <span class="o">=</span> <span class="n">api</span>
+
+    
+<div class="viewcode-block" id="AsyncRoute.list"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRoute.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List.</span>
+<span class="sd">        :param account_id: uuid of the account</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;FILTER_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">FilterNotFound</span><span class="p">(</span><span class="s1">&#39;The filter can not be found. The error_subtype will hold the filter UUID&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CONDITION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCondition</span><span class="p">(</span><span class="s1">&#39;The condition is not support. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the filter expression this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SORT_FIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSortField</span><span class="p">(</span><span class="s1">&#39;The field is not valid for this object. The error_subtype will hold the field name this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SORT_ORDER&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSortOrder</span><span class="p">(</span><span class="s1">&#39;The sort order for the field is invalid. The error_subtype will hold the field name this applies to&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The account can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to view this list&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/route/list&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">query_data</span><span class="p">[</span><span class="s1">&#39;paginated_field&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;routes&#39;</span>
+        <span class="k">return</span> <span class="n">AsyncQueryOPSF</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRoute.add"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRoute.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">actions</span><span class="p">,</span>
+        <span class="n">conditions</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="n">on_harvest</span><span class="p">,</span>
+        <span class="n">on_share</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">delay</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">delay_seconds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">delay_till_schedule</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">group_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">location_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">manual_roles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">namespace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">no_re_run</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">on_manual_route</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">on_thin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">on_upload</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">other_namespaces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">schedule</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">suspended</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add.</span>
+<span class="sd">        :param actions: Route actions in JSON format</span>
+<span class="sd">        :param conditions: Route conditions in JSON format</span>
+<span class="sd">        :param name: Name of the route</span>
+<span class="sd">        :param on_harvest: Apply the rule to studies harvested into the namespace</span>
+<span class="sd">        :param on_share: Apply the rule to studies shared into the namespace</span>
+<span class="sd">        :param account_id: account_id</span>
+<span class="sd">        :param delay: Number of minutes to delay running this rule for after it is triggered (optional)</span>
+<span class="sd">        :param delay_seconds: Number of seconds to delay running this rule for after it is triggered (optional)</span>
+<span class="sd">        :param delay_till_schedule: Delay running this rule after it is triggered until the next scheduled time - flag (optional)</span>
+<span class="sd">        :param group_id: group_id</span>
+<span class="sd">        :param location_id: location_id</span>
+<span class="sd">        :param manual_roles: A comma separated list of the uuid of roles that can run the rule manually (optional)</span>
+<span class="sd">        :param namespace_id: namespace_id</span>
+<span class="sd">        :param no_re_run: Do not run this rule on a re-notification from storage - flag (optional)</span>
+<span class="sd">        :param on_manual_route: Apply this rule for a manually routed study - flag (optional)</span>
+<span class="sd">        :param on_thin: Apply this rule to thin studies when they are created - flag (optional)</span>
+<span class="sd">        :param on_upload: Apply the rule to studies uploaded into the namespace - flag (optional)</span>
+<span class="sd">        :param options: Route options in JSON format (optional)</span>
+<span class="sd">        :param other_namespaces: A comma separated list of the uuid of other namespaces to apply this rule to (optional)</span>
+<span class="sd">        :param schedule: Route schedule in JSON format (optional)</span>
+<span class="sd">        :param suspended: This rule is suspended and not applied - flag (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;actions&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="p">,</span>
+           <span class="s1">&#39;conditions&#39;</span><span class="p">:</span> <span class="n">conditions</span><span class="p">,</span>
+           <span class="s1">&#39;delay&#39;</span><span class="p">:</span> <span class="n">delay</span><span class="p">,</span>
+           <span class="s1">&#39;delay_seconds&#39;</span><span class="p">:</span> <span class="n">delay_seconds</span><span class="p">,</span>
+           <span class="s1">&#39;delay_till_schedule&#39;</span><span class="p">:</span> <span class="n">delay_till_schedule</span><span class="p">,</span>
+           <span class="s1">&#39;group_id&#39;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">,</span>
+           <span class="s1">&#39;location_id&#39;</span><span class="p">:</span> <span class="n">location_id</span><span class="p">,</span>
+           <span class="s1">&#39;manual_roles&#39;</span><span class="p">:</span> <span class="n">manual_roles</span><span class="p">,</span>
+           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
+           <span class="s1">&#39;no_re_run&#39;</span><span class="p">:</span> <span class="n">no_re_run</span><span class="p">,</span>
+           <span class="s1">&#39;on_harvest&#39;</span><span class="p">:</span> <span class="n">on_harvest</span><span class="p">,</span>
+           <span class="s1">&#39;on_manual_route&#39;</span><span class="p">:</span> <span class="n">on_manual_route</span><span class="p">,</span>
+           <span class="s1">&#39;on_share&#39;</span><span class="p">:</span> <span class="n">on_share</span><span class="p">,</span>
+           <span class="s1">&#39;on_thin&#39;</span><span class="p">:</span> <span class="n">on_thin</span><span class="p">,</span>
+           <span class="s1">&#39;on_upload&#39;</span><span class="p">:</span> <span class="n">on_upload</span><span class="p">,</span>
+           <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="n">options</span><span class="p">,</span>
+           <span class="s1">&#39;other_namespaces&#39;</span><span class="p">:</span> <span class="n">other_namespaces</span><span class="p">,</span>
+           <span class="s1">&#39;schedule&#39;</span><span class="p">:</span> <span class="n">schedule</span><span class="p">,</span>
+           <span class="s1">&#39;suspended&#39;</span><span class="p">:</span> <span class="n">suspended</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ACCOUNT_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">AccountNotFound</span><span class="p">(</span><span class="s1">&#39;The account was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_ACTION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidAction</span><span class="p">(</span><span class="s1">&#39;An action is invalid. The error_subtype holds the error detail&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CONDITION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCondition</span><span class="p">(</span><span class="s1">&#39;A condition is invalid. The error_subtype holds the condition&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FLAG&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidFlag</span><span class="p">(</span><span class="s1">&#39;An invalid flag was passed. The error_subtype holds the name of the invalid flag&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_LINKAGE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidLinkage</span><span class="p">(</span><span class="s1">&#39;The linkage is invalid&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_MANUAL_ROLES&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidManualRoles</span><span class="p">(</span><span class="s1">&#39;The manual_roles is invalid. The error_subtype holds the error detail&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_OPTION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidOption</span><span class="p">(</span><span class="s1">&#39;An option is invalid. The error_subtype holds the error detail&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_OTHER_NAMESPACES&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidOtherNamespaces</span><span class="p">(</span><span class="s1">&#39;The other_namespaces is invalid. The error_subtype holds the error detail&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SCHEDULE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSchedule</span><span class="p">(</span><span class="s1">&#39;The schedule is invalid. The error_subtype holds the error detail&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to add a route to that account&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/route/add&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRoute.set"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRoute.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">actions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">conditions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">delay</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">delay_seconds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">delay_till_schedule</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">manual_roles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">no_re_run</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">on_harvest</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">on_manual_route</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">on_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">on_thin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">on_upload</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">other_namespaces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">schedule</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">suspended</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set.</span>
+<span class="sd">        :param uuid: The route uuid</span>
+<span class="sd">        :param actions: Route actions in JSON format (optional)</span>
+<span class="sd">        :param conditions: Route conditions in JSON format (optional)</span>
+<span class="sd">        :param delay: Number of minutes to delay running this rule for after it is triggered (optional)</span>
+<span class="sd">        :param delay_seconds: Number of seconds to delay running this rule for after it is triggered (optional)</span>
+<span class="sd">        :param delay_till_schedule: Delay running this rule after it is triggered until the next scheduled time - flag (optional)</span>
+<span class="sd">        :param manual_roles: A comma separated list of the uuid of roles that can run the rule manually (optional)</span>
+<span class="sd">        :param name: Name of the route (optional)</span>
+<span class="sd">        :param no_re_run: Do not run this rule on a re-notification from storage - flag (optional)</span>
+<span class="sd">        :param on_harvest: Apply the rule to studies harvested into the namespace (optional)</span>
+<span class="sd">        :param on_manual_route: Apply this rule for a manually routed study- flag (optional)</span>
+<span class="sd">        :param on_share: Apply the rule to studies shared into the namespace (optional)</span>
+<span class="sd">        :param on_thin: Apply this rule to thin studies when they are created - flag (optional)</span>
+<span class="sd">        :param on_upload: Apply the rule to studies uploaded into the namespace - flag (optional)</span>
+<span class="sd">        :param options: Route options in JSON format (optional)</span>
+<span class="sd">        :param other_namespaces: A comma separated list of the uuid of other namespaces to apply this rule to (optional)</span>
+<span class="sd">        :param schedule: Route schedule in JSON format (optional)</span>
+<span class="sd">        :param suspended: This rule is suspended and not applied - flag (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;actions&#39;</span><span class="p">:</span> <span class="n">actions</span><span class="p">,</span>
+           <span class="s1">&#39;conditions&#39;</span><span class="p">:</span> <span class="n">conditions</span><span class="p">,</span>
+           <span class="s1">&#39;delay&#39;</span><span class="p">:</span> <span class="n">delay</span><span class="p">,</span>
+           <span class="s1">&#39;delay_seconds&#39;</span><span class="p">:</span> <span class="n">delay_seconds</span><span class="p">,</span>
+           <span class="s1">&#39;delay_till_schedule&#39;</span><span class="p">:</span> <span class="n">delay_till_schedule</span><span class="p">,</span>
+           <span class="s1">&#39;manual_roles&#39;</span><span class="p">:</span> <span class="n">manual_roles</span><span class="p">,</span>
+           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;no_re_run&#39;</span><span class="p">:</span> <span class="n">no_re_run</span><span class="p">,</span>
+           <span class="s1">&#39;on_harvest&#39;</span><span class="p">:</span> <span class="n">on_harvest</span><span class="p">,</span>
+           <span class="s1">&#39;on_manual_route&#39;</span><span class="p">:</span> <span class="n">on_manual_route</span><span class="p">,</span>
+           <span class="s1">&#39;on_share&#39;</span><span class="p">:</span> <span class="n">on_share</span><span class="p">,</span>
+           <span class="s1">&#39;on_thin&#39;</span><span class="p">:</span> <span class="n">on_thin</span><span class="p">,</span>
+           <span class="s1">&#39;on_upload&#39;</span><span class="p">:</span> <span class="n">on_upload</span><span class="p">,</span>
+           <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="n">options</span><span class="p">,</span>
+           <span class="s1">&#39;other_namespaces&#39;</span><span class="p">:</span> <span class="n">other_namespaces</span><span class="p">,</span>
+           <span class="s1">&#39;schedule&#39;</span><span class="p">:</span> <span class="n">schedule</span><span class="p">,</span>
+           <span class="s1">&#39;suspended&#39;</span><span class="p">:</span> <span class="n">suspended</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_ACTION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidAction</span><span class="p">(</span><span class="s1">&#39;An action is invalid. The error_subtype holds the error detail&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CONDITION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCondition</span><span class="p">(</span><span class="s1">&#39;A condition is invalid. The error_subtype holds the condition&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FLAG&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidFlag</span><span class="p">(</span><span class="s1">&#39;An invalid flag was passed. The error_subtype holds the name of the invalid flag&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_MANUAL_ROLES&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidManualRoles</span><span class="p">(</span><span class="s1">&#39;The manual_roles is invalid. The error_subtype holds the error detail&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_OPTION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidOption</span><span class="p">(</span><span class="s1">&#39;An option is invalid. The error_subtype holds the error detail&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_OTHER_NAMESPACES&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidOtherNamespaces</span><span class="p">(</span><span class="s1">&#39;The other_namespaces is invalid. The error_subtype holds the error detail&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SCHEDULE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSchedule</span><span class="p">(</span><span class="s1">&#39;The schedule is invalid. The error_subtype holds the error detail&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The route can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to edit the route&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/route/set&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRoute.get"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRoute.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get.</span>
+<span class="sd">        :param uuid: The route uuid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The route can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to view the route&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/route/get&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRoute.delete"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRoute.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Delete.</span>
+<span class="sd">        :param uuid: The route uuid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The route can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to delete the route&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/route/delete&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncRoute.physician_alias_match"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncRoute.physician_alias_match">[docs]</a>    <span class="k">def</span> <span class="nf">physician_alias_match</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="p">,</span>
+        <span class="n">lv</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Physician alias match.</span>
+<span class="sd">        :param account_id: The account to test in</span>
+<span class="sd">        :param lv: The tag text to match against the PHYSICIAN_ALIAS rule.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;lv&#39;</span><span class="p">:</span> <span class="n">lv</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The account can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to do this&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/route/physician/alias/match&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
 </pre></div>
 
           </div>
@@ -357,7 +649,7 @@
 
 
 
-<p class="blurb">version 3.21.4.0-1</p>
+<p class="blurb">version 3.21.5.0-1</p>
 
 
 
@@ -378,6 +670,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../service_api.html">Service API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../storage_api.html">Storage API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../async.html">Async</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../addon.html">Addon methods</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../referencies/index.html">References</a></li>

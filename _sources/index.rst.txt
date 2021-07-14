@@ -23,7 +23,7 @@ Key features
 - :ref:`Storage API<storage-api>`
 - :ref:`Models<referencies-models>` for easier sdk usage
 - Some useful :ref:`addon functions<referencies-addon>` 
-
+- :ref:`Async<async>`
 
 Source code
 ~~~~~~~~~~~
@@ -58,6 +58,7 @@ It's *Apache 2* licensed and is freely available.
    quickstart
    service_api
    storage_api
+   async
    addon
    faq
    referencies/index

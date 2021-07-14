@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.namespace &#8212; Ambra-SDK 3.21.4.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.namespace &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -62,6 +62,7 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotPermitted</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">OnlyAll</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">QueryO</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">AsyncQueryO</span>
 
 <span class="k">class</span> <span class="nc">Namespace</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Namespace.&quot;&quot;&quot;</span>
@@ -442,6 +443,9 @@
         <span class="n">event_message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_new_report</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_node</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_query_add</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_query_edit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -462,6 +466,9 @@
 <span class="sd">        :param event_message: Notify the user when a message is sent to the namespace (optional)</span>
 <span class="sd">        :param event_new_report: Notify the user when a report is attached in the namespace (optional)</span>
 <span class="sd">        :param event_node: Notify the user when a namespace node sends an event (optional)</span>
+<span class="sd">        :param event_query_add: Notify the user when a new query is issued (optional)</span>
+<span class="sd">        :param event_query_edit: Notify the user when a query is edites (optional)</span>
+<span class="sd">        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)</span>
 <span class="sd">        :param event_report_remove: Notify the user when a report is removed in the namespace (optional)</span>
 <span class="sd">        :param event_share: Notify the user on a share into the namespace (optional)</span>
 <span class="sd">        :param event_status_change: Notify the user when the status of a study is changed (optional)</span>
@@ -481,6 +488,9 @@
            <span class="s1">&#39;event_message&#39;</span><span class="p">:</span> <span class="n">event_message</span><span class="p">,</span>
            <span class="s1">&#39;event_new_report&#39;</span><span class="p">:</span> <span class="n">event_new_report</span><span class="p">,</span>
            <span class="s1">&#39;event_node&#39;</span><span class="p">:</span> <span class="n">event_node</span><span class="p">,</span>
+           <span class="s1">&#39;event_query_add&#39;</span><span class="p">:</span> <span class="n">event_query_add</span><span class="p">,</span>
+           <span class="s1">&#39;event_query_edit&#39;</span><span class="p">:</span> <span class="n">event_query_edit</span><span class="p">,</span>
+           <span class="s1">&#39;event_query_reply&#39;</span><span class="p">:</span> <span class="n">event_query_reply</span><span class="p">,</span>
            <span class="s1">&#39;event_report_remove&#39;</span><span class="p">:</span> <span class="n">event_report_remove</span><span class="p">,</span>
            <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
            <span class="s1">&#39;event_status_change&#39;</span><span class="p">:</span> <span class="n">event_status_change</span><span class="p">,</span>
@@ -666,6 +676,620 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">QueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
     
+
+
+<span class="k">class</span> <span class="nc">AsyncNamespace</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;AsyncNamespace.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_api</span> <span class="o">=</span> <span class="n">api</span>
+
+    
+<div class="viewcode-block" id="AsyncNamespace.permissions"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNamespace.permissions">[docs]</a>    <span class="k">def</span> <span class="nf">permissions</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">namespace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">oauth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">phi_namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">storage_namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">study_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Permissions.</span>
+<span class="sd">        :param namespace_id: namespace_id</span>
+<span class="sd">        :param oauth: Flag to return the OAuth token information for the user (optional)</span>
+<span class="sd">        :param phi_namespace: phi_namespace</span>
+<span class="sd">        :param serial_no: serial_no</span>
+<span class="sd">        :param storage_namespace: storage_namespace</span>
+<span class="sd">        :param study_id: study_id</span>
+<span class="sd">        :param study_uid: study_uid</span>
+<span class="sd">        :param uuid: uuid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
+           <span class="s1">&#39;oauth&#39;</span><span class="p">:</span> <span class="n">oauth</span><span class="p">,</span>
+           <span class="s1">&#39;phi_namespace&#39;</span><span class="p">:</span> <span class="n">phi_namespace</span><span class="p">,</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;storage_namespace&#39;</span><span class="p">:</span> <span class="n">storage_namespace</span><span class="p">,</span>
+           <span class="s1">&#39;study_id&#39;</span><span class="p">:</span> <span class="n">study_id</span><span class="p">,</span>
+           <span class="s1">&#39;study_uid&#39;</span><span class="p">:</span> <span class="n">study_uid</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CREDENTIALS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCredentials</span><span class="p">(</span><span class="s1">&#39;The sid or node credentials are invalid&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The object was not found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/namespace/permissions&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNamespace.settings"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNamespace.settings">[docs]</a>    <span class="k">def</span> <span class="nf">settings</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">ai_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">allow_drag_and_drop_in_study_uploader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">auto_create_patient</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">auto_enable_dicom_wrapping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">cloud_storage_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">disable_duplicate_study_upload</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">disable_mobile_dicom_wrapping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">enable_dicom_deidentification</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">enable_dicom_wrapping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">enable_epic_patient_lookup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">enable_multipart_uploader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">enable_namespace_ai_questions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">force_new_study_on_upload</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">link_defaults</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">must_approve_duplicate_study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">no_dup_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">pixel_anonymize_color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">priority_notifications</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">reverse_patient_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">share_related</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">single_file_dicom_wrapping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">study_field_flags</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">study_size_soft_threshold_per_user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">try_update_original_study</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ui_json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">upload_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Settings.</span>
+<span class="sd">        :param uuid: The uuid of the namespace</span>
+<span class="sd">        :param ai_settings: Other AI settings</span>
+<span class="sd">        :param allow_drag_and_drop_in_study_uploader: Value for the setting (optional)</span>
+<span class="sd">        :param auto_create_patient: Value for the setting (optional)</span>
+<span class="sd">        :param auto_enable_dicom_wrapping: Value for the setting (optional)</span>
+<span class="sd">        :param cloud_storage_config: Value for the setting (optional)</span>
+<span class="sd">        :param disable_duplicate_study_upload: Value for the setting (optional)</span>
+<span class="sd">        :param disable_mobile_dicom_wrapping: Value for the setting (optional)</span>
+<span class="sd">        :param enable_dicom_deidentification: Value for the setting (optional)</span>
+<span class="sd">        :param enable_dicom_wrapping: Value for the setting (optional)</span>
+<span class="sd">        :param enable_epic_patient_lookup: Value for the setting (optional)</span>
+<span class="sd">        :param enable_multipart_uploader: Value for the setting (optional)</span>
+<span class="sd">        :param enable_namespace_ai_questions: Value for the setting (optional)</span>
+<span class="sd">        :param force_new_study_on_upload: Value for the setting (optional)</span>
+<span class="sd">        :param link_defaults: Value for the setting (optional)</span>
+<span class="sd">        :param must_approve_duplicate_study_uid: Value for the setting (optional)</span>
+<span class="sd">        :param no_dup_share: Flag to stop duplicate studies (same study_uid and image count) from getting shared into the namespace (optional)</span>
+<span class="sd">        :param pixel_anonymize_color: Value for the setting (optional)</span>
+<span class="sd">        :param priority_notifications: Value for the setting (optional)</span>
+<span class="sd">        :param reverse_patient_name: Value for the setting (optional)</span>
+<span class="sd">        :param share_related: Flag to make study shares with this namespace include related studies (same PHI namespace, same MRN) (optional)</span>
+<span class="sd">        :param single_file_dicom_wrapping: Value for the setting (optional)</span>
+<span class="sd">        :param study_field_flags: A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)</span>
+<span class="sd">        :param study_size_soft_threshold_per_user: A threshold for studies size per user. An email (by study_quota_exceeded template) will be sent when this limit is exceeded by a user. A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)</span>
+<span class="sd">        :param try_update_original_study: Value for the setting (optional)</span>
+<span class="sd">        :param ui_json: JSON for UI setting (optional) possible options:</span>
+
+<span class="sd">pixel_de_id_by_default (boolean) Pixel de-id tool is set by default when uploading study to this namespace</span>
+<span class="sd">show_image_on_upload_page (boolean)  Show computer image with CD on upload page when image is uploading to this namespace</span>
+<span class="sd">        :param upload_settings: Value for the setting (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;allow_drag_and_drop_in_study_uploader&#39;</span><span class="p">:</span> <span class="n">allow_drag_and_drop_in_study_uploader</span><span class="p">,</span>
+           <span class="s1">&#39;auto_create_patient&#39;</span><span class="p">:</span> <span class="n">auto_create_patient</span><span class="p">,</span>
+           <span class="s1">&#39;auto_enable_dicom_wrapping&#39;</span><span class="p">:</span> <span class="n">auto_enable_dicom_wrapping</span><span class="p">,</span>
+           <span class="s1">&#39;cloud_storage_config&#39;</span><span class="p">:</span> <span class="n">cloud_storage_config</span><span class="p">,</span>
+           <span class="s1">&#39;disable_duplicate_study_upload&#39;</span><span class="p">:</span> <span class="n">disable_duplicate_study_upload</span><span class="p">,</span>
+           <span class="s1">&#39;disable_mobile_dicom_wrapping&#39;</span><span class="p">:</span> <span class="n">disable_mobile_dicom_wrapping</span><span class="p">,</span>
+           <span class="s1">&#39;enable_dicom_deidentification&#39;</span><span class="p">:</span> <span class="n">enable_dicom_deidentification</span><span class="p">,</span>
+           <span class="s1">&#39;enable_dicom_wrapping&#39;</span><span class="p">:</span> <span class="n">enable_dicom_wrapping</span><span class="p">,</span>
+           <span class="s1">&#39;enable_epic_patient_lookup&#39;</span><span class="p">:</span> <span class="n">enable_epic_patient_lookup</span><span class="p">,</span>
+           <span class="s1">&#39;enable_multipart_uploader&#39;</span><span class="p">:</span> <span class="n">enable_multipart_uploader</span><span class="p">,</span>
+           <span class="s1">&#39;enable_namespace_ai_questions&#39;</span><span class="p">:</span> <span class="n">enable_namespace_ai_questions</span><span class="p">,</span>
+           <span class="s1">&#39;force_new_study_on_upload&#39;</span><span class="p">:</span> <span class="n">force_new_study_on_upload</span><span class="p">,</span>
+           <span class="s1">&#39;link_defaults&#39;</span><span class="p">:</span> <span class="n">link_defaults</span><span class="p">,</span>
+           <span class="s1">&#39;must_approve_duplicate_study_uid&#39;</span><span class="p">:</span> <span class="n">must_approve_duplicate_study_uid</span><span class="p">,</span>
+           <span class="s1">&#39;no_dup_share&#39;</span><span class="p">:</span> <span class="n">no_dup_share</span><span class="p">,</span>
+           <span class="s1">&#39;pixel_anonymize_color&#39;</span><span class="p">:</span> <span class="n">pixel_anonymize_color</span><span class="p">,</span>
+           <span class="s1">&#39;priority_notifications&#39;</span><span class="p">:</span> <span class="n">priority_notifications</span><span class="p">,</span>
+           <span class="s1">&#39;reverse_patient_name&#39;</span><span class="p">:</span> <span class="n">reverse_patient_name</span><span class="p">,</span>
+           <span class="s1">&#39;share_related&#39;</span><span class="p">:</span> <span class="n">share_related</span><span class="p">,</span>
+           <span class="s1">&#39;single_file_dicom_wrapping&#39;</span><span class="p">:</span> <span class="n">single_file_dicom_wrapping</span><span class="p">,</span>
+           <span class="s1">&#39;study_field_flags&#39;</span><span class="p">:</span> <span class="n">study_field_flags</span><span class="p">,</span>
+           <span class="s1">&#39;study_size_soft_threshold_per_user&#39;</span><span class="p">:</span> <span class="n">study_size_soft_threshold_per_user</span><span class="p">,</span>
+           <span class="s1">&#39;try_update_original_study&#39;</span><span class="p">:</span> <span class="n">try_update_original_study</span><span class="p">,</span>
+           <span class="s1">&#39;ui_json&#39;</span><span class="p">:</span> <span class="n">ui_json</span><span class="p">,</span>
+           <span class="s1">&#39;upload_settings&#39;</span><span class="p">:</span> <span class="n">upload_settings</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">ai_settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ai_settings_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">ai_settings</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ai_settings_dict</span><span class="p">)</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SETTING&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSetting</span><span class="p">(</span><span class="s1">&#39;An invalid setting was passed. The error_subtype holds the name of the invalid setting&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SETTING_VALUE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSettingValue</span><span class="p">(</span><span class="s1">&#39;An invalid setting value was passed. The error_subtype holds the name of the setting with the invalid value&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The namespace was not found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/namespace/settings&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNamespace.share_code"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNamespace.share_code">[docs]</a>    <span class="k">def</span> <span class="nf">share_code</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">namespace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">share_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Share_code.</span>
+<span class="sd">        :param namespace_id: namespace_id</span>
+<span class="sd">        :param serial_no: serial_no</span>
+<span class="sd">        :param share_code: share_code</span>
+<span class="sd">        :param uuid: uuid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
+           <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
+           <span class="s1">&#39;share_code&#39;</span><span class="p">:</span> <span class="n">share_code</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_LINK&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidLink</span><span class="p">(</span><span class="s1">&#39;The anonymous upload link is no longer valid&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The share code was not found or if gateway credentials are passed is not valid for gateway uploads&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/namespace/share_code&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNamespace.share_pricing"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNamespace.share_pricing">[docs]</a>    <span class="k">def</span> <span class="nf">share_pricing</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">charge_description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">currency</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">customfields_pricing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">pricing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">second_opinion_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">second_opinion_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">share_charge_by_modality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">sum_price_matches</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Share pricing.</span>
+<span class="sd">        :param uuid: The uuid of the namespace</span>
+<span class="sd">        :param charge_description: The description of the charge (optional)</span>
+<span class="sd">        :param currency: 3-letter ISO code for currency to charge in (USD|GBP) (optional)</span>
+<span class="sd">        :param customfields_pricing: Pricing table in JSON format (optional)</span>
+<span class="sd">        :param pricing: Pricing table in JSON format (optional)</span>
+<span class="sd">        :param second_opinion_config: JSON configuration for the second opinion workflow (optional)</span>
+<span class="sd">        :param second_opinion_share: Flag to enable/disable the second opinion workflow for the share (optional)</span>
+<span class="sd">        :param share_charge_by_modality: Charge shares (including second opinion) by modality of a shared study if this flag is set (optional)</span>
+<span class="sd">        :param sum_price_matches: Flag to search for all matches in customfields_pricing table and to add them up (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;charge_description&#39;</span><span class="p">:</span> <span class="n">charge_description</span><span class="p">,</span>
+           <span class="s1">&#39;currency&#39;</span><span class="p">:</span> <span class="n">currency</span><span class="p">,</span>
+           <span class="s1">&#39;customfields_pricing&#39;</span><span class="p">:</span> <span class="n">customfields_pricing</span><span class="p">,</span>
+           <span class="s1">&#39;pricing&#39;</span><span class="p">:</span> <span class="n">pricing</span><span class="p">,</span>
+           <span class="s1">&#39;second_opinion_config&#39;</span><span class="p">:</span> <span class="n">second_opinion_config</span><span class="p">,</span>
+           <span class="s1">&#39;second_opinion_share&#39;</span><span class="p">:</span> <span class="n">second_opinion_share</span><span class="p">,</span>
+           <span class="s1">&#39;share_charge_by_modality&#39;</span><span class="p">:</span> <span class="n">share_charge_by_modality</span><span class="p">,</span>
+           <span class="s1">&#39;sum_price_matches&#39;</span><span class="p">:</span> <span class="n">sum_price_matches</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_AMOUNT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidAmount</span><span class="p">(</span><span class="s1">&#39;An invalid amount. The error_subtype holds the invalid amount&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CONDITION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCondition</span><span class="p">(</span><span class="s1">&#39;The pricing condition is invalid&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CURRENCY&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCurrency</span><span class="p">(</span><span class="s1">&#39;Invalid currency&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FLAG&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidFlag</span><span class="p">(</span><span class="s1">&#39;The field is not a valid flag&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_INTEGER&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidInteger</span><span class="p">(</span><span class="s1">&#39;The price is not an integer number&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NEEDS_ANY_OR_ALL&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NeedsAnyOrAll</span><span class="p">(</span><span class="s1">&#39;The hash needs an &amp;#34;ANY&amp;#34; or &amp;#34;ALL&amp;#34; key&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The namespace was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_HASH&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotHash</span><span class="p">(</span><span class="s1">&#39;The pricing field is not a hash&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_LIST&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotList</span><span class="p">(</span><span class="s1">&#39;The customfields_pricing table is not a JSON list&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to price this namespace&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ONLY_ALL&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">OnlyAll</span><span class="p">(</span><span class="s1">&#39;If the hash has an ALL value it can&amp;#39;t have any other values&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/namespace/share/pricing&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNamespace.share_price"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNamespace.share_price">[docs]</a>    <span class="k">def</span> <span class="nf">share_price</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">customfield_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Share price.</span>
+<span class="sd">        :param uuid: The uuid of the namespace</span>
+<span class="sd">        :param customfield_param: Custom field(s) defined for the case (or study) account objects with values entered in the second opinion wizard (or in the image share screen) (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">customfield_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">customfield_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">customfield_param_dict</span><span class="p">)</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_CUSTOMFIELDS_PRICING&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotCustomfieldsPricing</span><span class="p">(</span><span class="s1">&#39;The namespace is set up to charge by modality&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The namespace can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/namespace/share/price&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNamespace.anonymize"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNamespace.anonymize">[docs]</a>    <span class="k">def</span> <span class="nf">anonymize</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">prompt_for_anonymize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">rules</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Anonymize.</span>
+<span class="sd">        :param uuid: The uuid of the namespace</span>
+<span class="sd">        :param prompt_for_anonymize: Flag to prompt if the anonymization rules should be applied. Only applicable to ingress anonymization. (optional)</span>
+<span class="sd">        :param rules: Anonymization rules in JSON format. The format is a hash with the keys the names of the fields to anonymize and the values the regular expressions to apply. (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;prompt_for_anonymize&#39;</span><span class="p">:</span> <span class="n">prompt_for_anonymize</span><span class="p">,</span>
+           <span class="s1">&#39;rules&#39;</span><span class="p">:</span> <span class="n">rules</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FIELD_NAME&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidFieldName</span><span class="p">(</span><span class="s1">&#39;The field name is n the rules hash is invalid. The error_subtype holds the invalid field name&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_REGEXP&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidRegexp</span><span class="p">(</span><span class="s1">&#39;Invalid regular expression. The error_subtype holds the invalid regexp.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The namespace was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_HASH&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotHash</span><span class="p">(</span><span class="s1">&#39;The rules field is not a hash&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to anonymize this namespace&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/namespace/anonymize&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNamespace.coverpage"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNamespace.coverpage">[docs]</a>    <span class="k">def</span> <span class="nf">coverpage</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">coverpage</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Coverpage.</span>
+<span class="sd">        :param uuid: The uuid of the namespace</span>
+<span class="sd">        :param coverpage: The coverpage value. See the notes for formatting details or pass an empty string to remove the current cover page. (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;coverpage&#39;</span><span class="p">:</span> <span class="n">coverpage</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The namespace was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to do this&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/namespace/coverpage&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNamespace.validate_customfields"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNamespace.validate_customfields">[docs]</a>    <span class="k">def</span> <span class="nf">validate_customfields</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">share_code</span><span class="p">,</span>
+        <span class="n">customfield_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Validate customfields.</span>
+<span class="sd">        :param share_code: The share code</span>
+<span class="sd">        :param customfield_param: Custom field(s)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;share_code&#39;</span><span class="p">:</span> <span class="n">share_code</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">customfield_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">customfield_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">customfield_param_dict</span><span class="p">)</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CUSTOMFIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCustomfield</span><span class="p">(</span><span class="s1">&#39;Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/namespace/validate/customfields&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNamespace.event_defaults"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNamespace.event_defaults">[docs]</a>    <span class="k">def</span> <span class="nf">event_defaults</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">event_approve</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_case_assignment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_harvest</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_incoming_study_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_link</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_link_mine</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_new_report</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_node</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_query_add</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_query_edit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_thin_study_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_thin_study_success</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_upload</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_upload_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Event defaults.</span>
+<span class="sd">        :param uuid: The uuid of the namespace</span>
+<span class="sd">        :param event_approve: Notify the user on a approval needed into the namespace (optional)</span>
+<span class="sd">        :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)</span>
+<span class="sd">        :param event_harvest: Notify the user on a harvest into the namespace (optional)</span>
+<span class="sd">        :param event_incoming_study_request: Notify the user when they get an incoming study request (optional)</span>
+<span class="sd">        :param event_link: Notify the user when an anonymous link is hit in the namespace (optional)</span>
+<span class="sd">        :param event_link_mine: Notify the user when an anonymous link created by the user is hit in the namespace (optional)</span>
+<span class="sd">        :param event_message: Notify the user when a message is sent to the namespace (optional)</span>
+<span class="sd">        :param event_new_report: Notify the user when a report is attached in the namespace (optional)</span>
+<span class="sd">        :param event_node: Notify the user when a namespace node sends an event (optional)</span>
+<span class="sd">        :param event_query_add: Notify the user when a new query is issued (optional)</span>
+<span class="sd">        :param event_query_edit: Notify the user when a query is edites (optional)</span>
+<span class="sd">        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)</span>
+<span class="sd">        :param event_report_remove: Notify the user when a report is removed in the namespace (optional)</span>
+<span class="sd">        :param event_share: Notify the user on a share into the namespace (optional)</span>
+<span class="sd">        :param event_status_change: Notify the user when the status of a study is changed (optional)</span>
+<span class="sd">        :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)</span>
+<span class="sd">        :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)</span>
+<span class="sd">        :param event_thin_study_success: Notify the user when a thin study retrieval they initiated succeeds (optional)</span>
+<span class="sd">        :param event_upload: Notify the user on an upload into the namespace (optional)</span>
+<span class="sd">        :param event_upload_fail: Notify the user on a failed upload into the namespace (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;event_approve&#39;</span><span class="p">:</span> <span class="n">event_approve</span><span class="p">,</span>
+           <span class="s1">&#39;event_case_assignment&#39;</span><span class="p">:</span> <span class="n">event_case_assignment</span><span class="p">,</span>
+           <span class="s1">&#39;event_harvest&#39;</span><span class="p">:</span> <span class="n">event_harvest</span><span class="p">,</span>
+           <span class="s1">&#39;event_incoming_study_request&#39;</span><span class="p">:</span> <span class="n">event_incoming_study_request</span><span class="p">,</span>
+           <span class="s1">&#39;event_link&#39;</span><span class="p">:</span> <span class="n">event_link</span><span class="p">,</span>
+           <span class="s1">&#39;event_link_mine&#39;</span><span class="p">:</span> <span class="n">event_link_mine</span><span class="p">,</span>
+           <span class="s1">&#39;event_message&#39;</span><span class="p">:</span> <span class="n">event_message</span><span class="p">,</span>
+           <span class="s1">&#39;event_new_report&#39;</span><span class="p">:</span> <span class="n">event_new_report</span><span class="p">,</span>
+           <span class="s1">&#39;event_node&#39;</span><span class="p">:</span> <span class="n">event_node</span><span class="p">,</span>
+           <span class="s1">&#39;event_query_add&#39;</span><span class="p">:</span> <span class="n">event_query_add</span><span class="p">,</span>
+           <span class="s1">&#39;event_query_edit&#39;</span><span class="p">:</span> <span class="n">event_query_edit</span><span class="p">,</span>
+           <span class="s1">&#39;event_query_reply&#39;</span><span class="p">:</span> <span class="n">event_query_reply</span><span class="p">,</span>
+           <span class="s1">&#39;event_report_remove&#39;</span><span class="p">:</span> <span class="n">event_report_remove</span><span class="p">,</span>
+           <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
+           <span class="s1">&#39;event_status_change&#39;</span><span class="p">:</span> <span class="n">event_status_change</span><span class="p">,</span>
+           <span class="s1">&#39;event_study_comment&#39;</span><span class="p">:</span> <span class="n">event_study_comment</span><span class="p">,</span>
+           <span class="s1">&#39;event_thin_study_fail&#39;</span><span class="p">:</span> <span class="n">event_thin_study_fail</span><span class="p">,</span>
+           <span class="s1">&#39;event_thin_study_success&#39;</span><span class="p">:</span> <span class="n">event_thin_study_success</span><span class="p">,</span>
+           <span class="s1">&#39;event_upload&#39;</span><span class="p">:</span> <span class="n">event_upload</span><span class="p">,</span>
+           <span class="s1">&#39;event_upload_fail&#39;</span><span class="p">:</span> <span class="n">event_upload_fail</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FLAG&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidFlag</span><span class="p">(</span><span class="s1">&#39;An invalid flag was passed. The error_subtype holds the name of the invalid flag&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The namespace was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to apply defaults to this namespace&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/namespace/event/defaults&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNamespace.study_defaults"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNamespace.study_defaults">[docs]</a>    <span class="k">def</span> <span class="nf">study_defaults</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">defaults</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Study defaults.</span>
+<span class="sd">        :param uuid: The uuid of the namespace</span>
+<span class="sd">        :param defaults: Default values in JSON format. The format is a hash with the keys the names of the fields and the values are the default value. The available field name are as listed in the returned field hash. (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;defaults&#39;</span><span class="p">:</span> <span class="n">defaults</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FIELD_NAME&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidFieldName</span><span class="p">(</span><span class="s1">&#39;The field name in the default hash is invalid. The error_subtype holds the invalid field name&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_JSON&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidJson</span><span class="p">(</span><span class="s1">&#39;The field is not in valid JSON format. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The namespace was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_HASH&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotHash</span><span class="p">(</span><span class="s1">&#39;The rules field is not a hash&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to apply defaults to this namespace&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/namespace/study/defaults&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNamespace.engine_fqdn"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNamespace.engine_fqdn">[docs]</a>    <span class="k">def</span> <span class="nf">engine_fqdn</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">namespace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">phi_namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">storage_namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">study_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Engine fqdn.</span>
+<span class="sd">        :param namespace_id: namespace_id</span>
+<span class="sd">        :param phi_namespace: phi_namespace</span>
+<span class="sd">        :param source: The source of the query (optional)</span>
+<span class="sd">        :param storage_namespace: storage_namespace</span>
+<span class="sd">        :param study_id: study_id</span>
+<span class="sd">        :param study_uid: study_uid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;namespace_id&#39;</span><span class="p">:</span> <span class="n">namespace_id</span><span class="p">,</span>
+           <span class="s1">&#39;phi_namespace&#39;</span><span class="p">:</span> <span class="n">phi_namespace</span><span class="p">,</span>
+           <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span>
+           <span class="s1">&#39;storage_namespace&#39;</span><span class="p">:</span> <span class="n">storage_namespace</span><span class="p">,</span>
+           <span class="s1">&#39;study_id&#39;</span><span class="p">:</span> <span class="n">study_id</span><span class="p">,</span>
+           <span class="s1">&#39;study_uid&#39;</span><span class="p">:</span> <span class="n">study_uid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The namespace was not found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/namespace/engine/fqdn&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNamespace.removed_user_report"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNamespace.removed_user_report">[docs]</a>    <span class="k">def</span> <span class="nf">removed_user_report</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="p">,</span>
+        <span class="n">email</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Removed user report.</span>
+<span class="sd">        :param account_id: The UUID of the account. A report will be produced for group, location and account namespaces of this account</span>
+<span class="sd">        :param email: Optional email address to send the report to</span>
+<span class="sd">        :param uuid: The UUID of the namespace</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The namespace was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to do this&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/namespace/removed/user/report&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNamespace.question"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNamespace.question">[docs]</a>    <span class="k">def</span> <span class="nf">question</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">detail</span><span class="p">,</span>
+        <span class="n">question</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Question.</span>
+<span class="sd">        :param detail: Optional detail to pass through to the AI stack</span>
+<span class="sd">        :param question: The question to ask or a JSON array of questions to ask</span>
+<span class="sd">        :param uuid: The namespace id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;detail&#39;</span><span class="p">:</span> <span class="n">detail</span><span class="p">,</span>
+           <span class="s1">&#39;question&#39;</span><span class="p">:</span> <span class="n">question</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;IN_PROCESS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InProcess</span><span class="p">(</span><span class="s1">&#39;The question is currently in process&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NODE_NOT_SETUP&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NodeNotSetup</span><span class="p">(</span><span class="s1">&#39;A node needs to be attached to the namespace for this question&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The namespace or question was not found.&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to do this&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/namespace/question&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncNamespace.audit"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncNamespace.audit">[docs]</a>    <span class="k">def</span> <span class="nf">audit</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">action</span><span class="p">,</span>
+        <span class="n">detail</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Audit.</span>
+<span class="sd">        :param action: The audit action (AI_ACTION)</span>
+<span class="sd">        :param detail: Additional information</span>
+<span class="sd">        :param uuid: The id of the namespace</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="n">action</span><span class="p">,</span>
+           <span class="s1">&#39;detail&#39;</span><span class="p">:</span> <span class="n">detail</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_ACTION&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidAction</span><span class="p">(</span><span class="s1">&#39;An invalid action was passed&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The study can not be found&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/namespace/audit&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
 </pre></div>
 
           </div>
@@ -678,7 +1302,7 @@
 
 
 
-<p class="blurb">version 3.21.4.0-1</p>
+<p class="blurb">version 3.21.5.0-1</p>
 
 
 
@@ -699,6 +1323,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../service_api.html">Service API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../storage_api.html">Storage API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../async.html">Async</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../addon.html">Addon methods</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../referencies/index.html">References</a></li>

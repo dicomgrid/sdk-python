@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ambra_sdk.storage.image.image &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ambra_sdk.storage.image.image</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Storage image namespace.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">box</span> <span class="kn">import</span> <span class="n">Box</span>
+<span class="kn">from</span> <span class="nn">requests</span> <span class="kn">import</span> <span class="n">Response</span>
+
+<span class="kn">from</span> <span class="nn">ambra_sdk.storage.image.base_image</span> <span class="kn">import</span> <span class="n">BaseImage</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.storage.request</span> <span class="kn">import</span> <span class="n">PreparedRequest</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.types</span> <span class="kn">import</span> <span class="n">RequestsFileType</span>
+
+
+<div class="viewcode-block" id="Image"><a class="viewcode-back" href="../../../../referencies/storage_api.html#ambra_sdk.storage.image.Image">[docs]</a><span class="k">class</span> <span class="nc">Image</span><span class="p">(</span><span class="n">BaseImage</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Storage Image commands.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Image.upload"><a class="viewcode-back" href="../../../../referencies/storage_api.html#ambra_sdk.storage.image.Image.upload">[docs]</a>    <span class="k">def</span> <span class="nf">upload</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">engine_fqdn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">opened_file</span><span class="p">:</span> <span class="n">RequestsFileType</span><span class="p">,</span>
+        <span class="n">study_uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">use_box</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">x_ambrahealth_job_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Upload image to a namespace.</span>
+
+<span class="sd">        URL: /namespace/{namespace}/image?sid={sid}</span>
+
+<span class="sd">        :param engine_fqdn: Engine FQDN (Required).</span>
+<span class="sd">        :param namespace: Namespace (Required).</span>
+<span class="sd">        :param opened_file: Opened file (like in requests) (Required).</span>
+<span class="sd">            File object, or may be 2-tuples (filename, fileobj),</span>
+<span class="sd">            3-tuples (filename, fileobj, contentype) or</span>
+<span class="sd">            4-tuples (filename, fileobj, contentype, custom_headers).</span>
+<span class="sd">        :param study_uid: study uid</span>
+<span class="sd">        :param use_box: Use box for response.</span>
+<span class="sd">        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
+
+<span class="sd">        :returns: image object attributes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upload</span><span class="p">(</span>
+            <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
+            <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
+            <span class="n">opened_file</span><span class="o">=</span><span class="n">opened_file</span><span class="p">,</span>
+            <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
+            <span class="n">x_ambrahealth_job_id</span><span class="o">=</span><span class="n">x_ambrahealth_job_id</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">use_box</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="Image.wrap"><a class="viewcode-back" href="../../../../referencies/storage_api.html#ambra_sdk.storage.image.Image.wrap">[docs]</a>    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">engine_fqdn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">opened_file</span><span class="p">:</span> <span class="n">RequestsFileType</span><span class="p">,</span>
+        <span class="n">tags</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">render_wrapped_pdf</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">x_ambrahealth_job_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Upload a non DICOM image.</span>
+
+<span class="sd">        URL: /namespace/{namespace}/wrap?sid={sid}&amp;render_wrapped_pdf={0,1}</span>
+
+<span class="sd">        :param engine_fqdn: Engine FQDN (Required).</span>
+<span class="sd">        :param namespace: Namespace (Required).</span>
+<span class="sd">        :param tags: Any DICOM tags to be overwrite or added should be provided as a form-data field.</span>
+<span class="sd">        :param opened_file: The multipart file to be uploaded should be</span>
+<span class="sd">            provided as a form-data field.</span>
+<span class="sd">            File object, or may be 2-tuples (filename, fileobj),</span>
+<span class="sd">            3-tuples (filename, fileobj, contentype) or</span>
+<span class="sd">            4-tuples (filename, fileobj, contentype, custom_headers).</span>
+
+<span class="sd">        :param render_wrapped_pdf: An integer value of either 0 or 1.</span>
+<span class="sd">        :param x_ambrahealth_job_id: X-AmbraHealth-Job-Id headers argument</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
+
+<span class="sd">        :returns: image object attributes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap</span><span class="p">(</span>
+            <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
+            <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
+            <span class="n">opened_file</span><span class="o">=</span><span class="n">opened_file</span><span class="p">,</span>
+            <span class="n">tags</span><span class="o">=</span><span class="n">tags</span><span class="p">,</span>
+            <span class="n">render_wrapped_pdf</span><span class="o">=</span><span class="n">render_wrapped_pdf</span><span class="p">,</span>
+            <span class="n">x_ambrahealth_job_id</span><span class="o">=</span><span class="n">x_ambrahealth_job_id</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Image.cadsr"><a class="viewcode-back" href="../../../../referencies/storage_api.html#ambra_sdk.storage.image.Image.cadsr">[docs]</a>    <span class="k">def</span> <span class="nf">cadsr</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">engine_fqdn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">image_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">image_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Gets graphical annotations according to vendor definitions for CAD SR object.</span>
+
+<span class="sd">        URL: /study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/cadsr?sid={sid}</span>
+
+<span class="sd">        :param engine_fqdn: Engine FQDN (Required).</span>
+<span class="sd">        :param namespace: Namespace (Required).</span>
+<span class="sd">        :param study_uid: Study uid (Required).</span>
+<span class="sd">        :param image_uid: Image uid (Required).</span>
+<span class="sd">        :param image_version: image version (Required).</span>
+<span class="sd">        :param phi_namespace: A string, set to the UUID</span>
+<span class="sd">            of the namespace where the file was attached</span>
+<span class="sd">            if it was attached to a shared instance of the study</span>
+<span class="sd">            outside of the original storage namespace</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
+
+<span class="sd">        :returns: the vendor-specified graphical \</span>
+<span class="sd">            annotations, empty if not implemented for the vendor or generating device.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cadsr</span><span class="p">(</span>
+            <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
+            <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
+            <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
+            <span class="n">image_uid</span><span class="o">=</span><span class="n">image_uid</span><span class="p">,</span>
+            <span class="n">image_version</span><span class="o">=</span><span class="n">image_version</span><span class="p">,</span>
+            <span class="n">phi_namespace</span><span class="o">=</span><span class="n">phi_namespace</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Image.dicom_payload"><a class="viewcode-back" href="../../../../referencies/storage_api.html#ambra_sdk.storage.image.Image.dicom_payload">[docs]</a>    <span class="k">def</span> <span class="nf">dicom_payload</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">engine_fqdn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">study_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">image_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="c1"># In external api this is a hash parameter</span>
+        <span class="n">image_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pretranscode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">transfer_syntax</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Gets dicom payload.</span>
+
+<span class="sd">        URL: {namespace}/{studyUid}/image/{imageUid}/version/{hash}</span>
+
+<span class="sd">        :param engine_fqdn: Engine FQDN (Required).</span>
+<span class="sd">        :param namespace: Namespace (Required).</span>
+<span class="sd">        :param study_uid: Study uid (Required).</span>
+<span class="sd">        :param image_uid: Image uid (Required).</span>
+<span class="sd">        :param image_version: image version (Required).</span>
+<span class="sd">        :param phi_namespace: A string, set to the UUID</span>
+<span class="sd">            If set, specifies the phi namespace from which to pull PHI.</span>
+<span class="sd">            Will overlay the values onto the phiSource.</span>
+<span class="sd">        :param pretranscode: Get pretranscoded dicom.</span>
+<span class="sd">        :param transfer_syntax: Transfer syntax.</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
+
+<span class="sd">        :returns: dicom.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dicom_payload</span><span class="p">(</span>
+            <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
+            <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
+            <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
+            <span class="n">image_uid</span><span class="o">=</span><span class="n">image_uid</span><span class="p">,</span>
+            <span class="n">image_version</span><span class="o">=</span><span class="n">image_version</span><span class="p">,</span>
+            <span class="n">phi_namespace</span><span class="o">=</span><span class="n">phi_namespace</span><span class="p">,</span>
+            <span class="n">pretranscode</span><span class="o">=</span><span class="n">pretranscode</span><span class="p">,</span>
+            <span class="n">transfer_syntax</span><span class="o">=</span><span class="n">transfer_syntax</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Ambra-SDK</a></h1>
+
+
+
+<p class="blurb">version 3.21.5.0-1</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=dicomgrid&repo=sdk-python&type=watch&count=False&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../service_api.html">Service API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage_api.html">Storage API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../async.html">Async</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../addon.html">Addon methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../referencies/index.html">References</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ambrahealth AI team.
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

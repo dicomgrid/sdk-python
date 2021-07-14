@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Service API &#8212; Ambra-SDK 3.21.4.0-1 documentation</title>
+    <title>Service API &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -40,7 +40,7 @@
 Make sure that the current version of <cite>ambra-sdk</cite> is not lower.</p>
 <div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk</span> <span class="kn">import</span> <span class="n">API_VERSION</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">API_VERSION</span><span class="p">)</span>
-<span class="go">LBL0022 v45.0 2021-04-07</span>
+<span class="go">LBL0022 v47.0 2021-06-30</span>
 </pre></div>
 </div>
 <p>In <cite>ambra-sdk</cite> all service api methods have the form
@@ -52,7 +52,7 @@ Make sure that the current version of <cite>ambra-sdk</cite> is not lower.</p>
 For example:</p>
 <div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query_object</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Study</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">query_object</span><span class="p">))</span>
-<span class="go">&lt;class &#39;ambra_sdk.service.query.QueryOPSF&#39;&gt;</span>
+<span class="go">&lt;class &#39;ambra_sdk.service.query.query.QueryOPSF&#39;&gt;</span>
 </pre></div>
 </div>
 <p><cite>OSF</cite> in query type name means that you can use <cite>only</cite>, <cite>sort_by</cite>, and <cite>filter_by</cite> methods. <cite>P</cite> means that this is a query for results with pagination. So you can use <cite>all</cite> or <cite>first</cite> method on this object.</p>
@@ -315,7 +315,7 @@ The example below shows how to do this:</p>
 
 
 
-<p class="blurb">version 3.21.4.0-1</p>
+<p class="blurb">version 3.21.5.0-1</p>
 
 
 
@@ -347,6 +347,7 @@ The example below shows how to do this:</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="storage_api.html">Storage API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="async.html">Async</a></li>
 <li class="toctree-l1"><a class="reference internal" href="addon.html">Addon methods</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="referencies/index.html">References</a></li>

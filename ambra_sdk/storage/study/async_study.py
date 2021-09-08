@@ -966,6 +966,66 @@ class AsyncStudy(BaseStudy):
         # Method can return Html (depends on params)...
         return await prepared_request.async_execute()
 
+    async def attachment_image(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        study_uid: str,
+        attachment_uid: str,
+        version: str,
+        static_ids: Optional[bool] = None,
+        phi_namespace: Optional[str] = None,
+        use_box: bool = True,
+        only_prepare: bool = False,
+    ) -> Union[Box, ClientResponse, PreparedRequest]:
+        """Attachment image.
+
+        Adds a render of an attachment to a study.
+
+        URL: /study/{namespace}/{studyUid}/attachment/{attachmentUid}/version/{version}/image?sid={sid}&
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param study_uid: Study uid (Required).
+        :param attachment_uid: Attachment uid (Required).
+        :param version: version (Required)
+        :param static_ids: An integer of value 1 or 0. If 1, series
+            and images rendered from PDF are assigned (u)uids based
+            on a hash of the attachment; repeated requests to render the
+            same PDF will not result in more images.
+        :param phi_namespace: A string, set to the UUID of the namespace
+            where the file was attached if it was attached to a shared
+            instance of the study outside of the original storage namespace
+        :param use_box: Use box for response.
+        :param only_prepare: Get prepared request.
+
+        :returns: 202 Attachment succesfully rendered as an image and added to study.
+            500 (SERVER ERROR) if server error persisted.
+        """
+        prepared_request = self._attachment_image(
+            engine_fqdn=engine_fqdn,
+            namespace=namespace,
+            study_uid=study_uid,
+            attachment_uid=attachment_uid,
+            version=version,
+            static_ids=static_ids,
+            phi_namespace=phi_namespace,
+        )
+        if only_prepare is True:
+            return prepared_request
+        response = await prepared_request.async_execute()
+        if use_box is True:
+            # Storage does not use contenttype..
+            #
+            # For obtaining text aiohttp needs detect codpage.
+            # For unknown codepage it can spend a lot of time
+            # for big query.
+            #
+            # But storage does not response encoding.
+            response_text = await response.text(encoding='utf-8')
+            return Box(json.loads(response_text))
+        return response
+
     async def download(
         self,
         engine_fqdn: str,
@@ -982,6 +1042,7 @@ class AsyncStudy(BaseStudy):
         roche_directory: Optional[bool] = None,
         flat_directory: Optional[bool] = None,
         transfer_syntax: Optional[bool] = None,
+        anonymize_tags: Optional[str] = None,
         only_prepare: bool = False,
     ) -> Union[ClientResponse, PreparedRequest]:
         """Downloads a study ZIP file.
@@ -1016,6 +1077,11 @@ class AsyncStudy(BaseStudy):
             IMG0001-IMG{image count}, and not be organized into SER folder.
         :param transfer_syntax: transfer syntax
         :param only_prepare: Get prepared request.
+        :param anonymize_tags: The list of tag ids with overridden values
+            separated by comma (,) that should be overridden.
+            Example:
+            anonymize_tags={{tag_id_int_1}}={{tag_value_1}},{{tag_id_int_2}}={{tag_value_2}}.
+            To omit tag, provide special keyword that is being used in services overrides as value: __DELETE__
 
         :returns: study zip file response
         """
@@ -1034,6 +1100,7 @@ class AsyncStudy(BaseStudy):
             roche_directory=roche_directory,
             flat_directory=flat_directory,
             transfer_syntax=transfer_syntax,
+            anonymize_tags=anonymize_tags,
         )
         if only_prepare is True:
             return prepared_request
@@ -1440,3 +1507,55 @@ class AsyncStudy(BaseStudy):
         if only_prepare is True:
             return prepared_request
         return await prepared_request.async_execute()
+
+    async def create_rt(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        study_uid: str,
+        body: str,
+        phi_namespace: Optional[str] = None,
+        use_box: bool = True,
+        only_prepare: bool = False,
+    ) -> Union[Box, ClientResponse, PreparedRequest]:
+        """Create RT.
+
+        Generates RTSTRUCT DICOM file from the content sent by client
+
+        URL: /study/{namespace}/{studyUid}/rt?sid={sid}&phi_namespace={phi_namespace}
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param study_uid: Study uid (Required).
+        :param phi_namespace: A string, set to the UUID of the namespace
+            where the file was attached if it was attached to a shared
+            instance of the study outside of the original storage namespace
+
+        :param body: Body that represents fields of the RTSTRUCT DICOM
+        :param use_box: Use box for response.
+        :param only_prepare: Get prepared request.
+
+        :return: Image attributes
+        """
+        prepared_request = self._create_rt(
+            engine_fqdn=engine_fqdn,
+            namespace=namespace,
+            study_uid=study_uid,
+            phi_namespace=phi_namespace,
+            body=body,
+        )
+
+        if only_prepare is True:
+            return prepared_request
+        response = await prepared_request.async_execute()
+        if use_box is True:
+            # Storage does not use contenttype..
+            #
+            # For obtaining text aiohttp needs detect codpage.
+            # For unknown codepage it can spend a lot of time
+            # for big query.
+            #
+            # But storage does not response encoding.
+            response_text = await response.text(encoding='utf-8')
+            return Box(json.loads(response_text))
+        return response

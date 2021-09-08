@@ -37,8 +37,10 @@ from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import NotHash
 from ambra_sdk.exceptions.service import NotList
 from ambra_sdk.exceptions.service import NotPermitted
+from ambra_sdk.exceptions.service import OnlyOne
 from ambra_sdk.exceptions.service import PinLockout
 from ambra_sdk.exceptions.service import Validate
+from ambra_sdk.exceptions.service import ValidationFailed
 from ambra_sdk.service.query import QueryO
 from ambra_sdk.service.query import AsyncQueryO
 from ambra_sdk.service.query import QueryOPSF
@@ -58,6 +60,7 @@ class Link:
         user_id=None,
     ):
         """List.
+
         :param account_id: account_id
         :param study_id: study_id
         :param user_id: user_id
@@ -118,11 +121,14 @@ class Link:
         share_on_view=None,
         skip_email_prompt=None,
         study_id=None,
+        ui_json=None,
         upload_match=None,
         upload_study_customfields=None,
         use_share_code=None,
+        workflow=None,
     ):
         """Add.
+
         :param action: Link action (STUDY_LIST|STUDY_VIEW|STUDY_UPLOAD)
         :param prompt_for_anonymize: Flag to prompt if the anonymization rules should be applied on ingress
         :param acceptance_required: Flag that acceptance of TOS is required (optional)
@@ -152,9 +158,11 @@ class Link:
         :param share_on_view: Flag to share the study with the email after it is viewed (optional)
         :param skip_email_prompt: Skip the prompt for email step (optional)
         :param study_id: study_id
+        :param ui_json: JSON for UI settings (optional)
         :param upload_match: A JSON hash of DICOM tags and regular expressions they must match uploaded against this link (optional)
         :param upload_study_customfields: A JSON hash of customfields that will be mapped to a study on study upload. A key is a customfield UUID, a value is a value for the field (optional)
         :param use_share_code: Flag to use the namespace share code settings for a STUDY_UPLOAD (optional)
+        :param workflow: The workflow this link is intended for (patient_studies) (optional)
         """
         request_data = {
            'acceptance_required': acceptance_required,
@@ -186,9 +194,11 @@ class Link:
            'share_on_view': share_on_view,
            'skip_email_prompt': skip_email_prompt,
            'study_id': study_id,
+           'ui_json': ui_json,
            'upload_match': upload_match,
            'upload_study_customfields': upload_study_customfields,
            'use_share_code': use_share_code,
+           'workflow': workflow,
         }
 	
         errors_mapping = {}
@@ -207,6 +217,7 @@ class Link:
         errors_mapping[('NOT_LIST', None)] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to create links')
         errors_mapping[('VALIDATE', None)] = Validate('A validation error. The error_subtype holds the details on the error')
+        errors_mapping[('VALIDATION_FAILED', None)] = ValidationFailed('The workflow parameter validation failed')
         query_data = {
             'api': self._api,
             'url': '/link/add',
@@ -248,16 +259,20 @@ class Link:
         redirect_url,
         referer,
         share_on_view,
+        short_id,
         skip_email_prompt,
         study_id,
+        ui_json,
         upload_match,
         upload_study_customfields,
         url,
         use_share_code,
         user_id,
         uuid,
+        workflow,
     ):
         """Get.
+
         :param acceptance_required: Flag that acceptance of TOS is required
         :param account_id: The account id
         :param action: Link action
@@ -288,14 +303,17 @@ class Link:
         :param redirect_url: URL for the /link/redirect API which will take you directly to the study viewer or uploader
         :param referer: The link can only be accessed from the specified referer
         :param share_on_view: Flag to share the study with the email after it is viewed
+        :param short_id: Short ID of the link for the 'patient_studies' workflow
         :param skip_email_prompt: Skip the prompt for email step
         :param study_id: uuid of the study
+        :param ui_json: JSON for UI settings
         :param upload_match: A JSON hash of DICOM tags and regular expressions they must match uploaded against this link
         :param upload_study_customfields: A JSON hash of customfields that will be mapped to a study on study upload
         :param url: URL for the link which will take you to the UI entry point for links to enter email, password etc.
         :param use_share_code: Flag to use the namespace share code settings for a STUDY_UPLOAD
         :param user_id: The user id
         :param uuid: Id of the link
+        :param workflow: The workflow this link is intended for
         """
         request_data = {
            'acceptance_required': acceptance_required,
@@ -328,14 +346,17 @@ class Link:
            'redirect_url': redirect_url,
            'referer': referer,
            'share_on_view': share_on_view,
+           'short_id': short_id,
            'skip_email_prompt': skip_email_prompt,
            'study_id': study_id,
+           'ui_json': ui_json,
            'upload_match': upload_match,
            'upload_study_customfields': upload_study_customfields,
            'url': url,
            'use_share_code': use_share_code,
            'user_id': user_id,
            'uuid': uuid,
+           'workflow': workflow,
         }
 	
         errors_mapping = {}
@@ -356,6 +377,7 @@ class Link:
         uuid,
     ):
         """Delete.
+
         :param uuid: Id of the link
         """
         request_data = {
@@ -382,6 +404,7 @@ class Link:
         uuid=None,
     ):
         """Status.
+
         :param link_charge_id: The uuid of the prior charge against this link (optional)
         :param pin: pin
         :param uuid: uuid
@@ -414,13 +437,16 @@ class Link:
         link_charge_id=None,
         password=None,
         pin=None,
+        short_id=None,
         uuid=None,
     ):
         """Session.
+
         :param email_address: The users email (optional)
         :param link_charge_id: The uuid of the prior charge against this link (optional)
         :param password: Password if needed (optional)
         :param pin: pin
+        :param short_id: short_id
         :param uuid: uuid
         """
         request_data = {
@@ -428,6 +454,7 @@ class Link:
            'link_charge_id': link_charge_id,
            'password': password,
            'pin': pin,
+           'short_id': short_id,
            'uuid': uuid,
         }
 	
@@ -440,6 +467,7 @@ class Link:
         errors_mapping[('IP_BLOCKED', None)] = IpBlocked('An IP whitelist blocked access')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The link was not found')
+        errors_mapping[('ONLY_ONE', None)] = OnlyOne('You can pass either uuid or short_id, not both')
         errors_mapping[('PIN_LOCKOUT', None)] = PinLockout('Too many invalid PIN entries')
         query_data = {
             'api': self._api,
@@ -455,18 +483,22 @@ class Link:
         link_charge_id=None,
         password=None,
         pin=None,
+        short_id=None,
         uuid=None,
     ):
         """Redirect.
+
         :param link_charge_id: The uuid of the prior charge against this link (optional)
         :param password: Password if needed (optional)
         :param pin: pin
+        :param short_id: short_id
         :param uuid: uuid
         """
         request_data = {
            'link_charge_id': link_charge_id,
            'password': password,
            'pin': pin,
+           'short_id': short_id,
            'uuid': uuid,
         }
 	
@@ -479,6 +511,7 @@ class Link:
         errors_mapping[('LINK_NOT_FOUND', None)] = LinkNotFound('The link was not found')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('The configuration of this link requires the link UI be used instead of direct access')
+        errors_mapping[('ONLY_ONE', None)] = OnlyOne('You can pass either uuid or short_id, not both')
         errors_mapping[('PIN_LOCKOUT', None)] = PinLockout('Too many invalid PIN entries')
         query_data = {
             'api': self._api,
@@ -495,6 +528,7 @@ class Link:
         v,
     ):
         """External.
+
         :param u: The uuid of the user_account record to create the guest link as
         :param v: A JSON hash with the following keys pairs. The JSON must be encrypted and base64 encoded
 
@@ -530,6 +564,7 @@ class Link:
         v,
     ):
         """Sso.
+
         :param u: The uuid of the user_account record
         :param v: An encrypted JSON hash as per the instructions in the SSO to a PHR account with a study share section of the documentation
         """
@@ -560,6 +595,7 @@ class Link:
         uuid,
     ):
         """Sid.
+
         :param email: Email address to associate with this usage
         :param uuid: The uuid of the link usage
         """
@@ -585,6 +621,7 @@ class Link:
         uuid,
     ):
         """Mail.
+
         :param email: Email address
         :param uuid: The uuid of the link
         """
@@ -613,6 +650,7 @@ class Link:
         uuid,
     ):
         """Charge.
+
         :param charge_token: The stripe charge token
         :param uuid: The uuid of the link
         """
@@ -639,6 +677,7 @@ class Link:
         uuid,
     ):
         """Pin.
+
         :param uuid: The uuid of the link
         """
         request_data = {
@@ -673,6 +712,7 @@ class AsyncLink:
         user_id=None,
     ):
         """List.
+
         :param account_id: account_id
         :param study_id: study_id
         :param user_id: user_id
@@ -733,11 +773,14 @@ class AsyncLink:
         share_on_view=None,
         skip_email_prompt=None,
         study_id=None,
+        ui_json=None,
         upload_match=None,
         upload_study_customfields=None,
         use_share_code=None,
+        workflow=None,
     ):
         """Add.
+
         :param action: Link action (STUDY_LIST|STUDY_VIEW|STUDY_UPLOAD)
         :param prompt_for_anonymize: Flag to prompt if the anonymization rules should be applied on ingress
         :param acceptance_required: Flag that acceptance of TOS is required (optional)
@@ -767,9 +810,11 @@ class AsyncLink:
         :param share_on_view: Flag to share the study with the email after it is viewed (optional)
         :param skip_email_prompt: Skip the prompt for email step (optional)
         :param study_id: study_id
+        :param ui_json: JSON for UI settings (optional)
         :param upload_match: A JSON hash of DICOM tags and regular expressions they must match uploaded against this link (optional)
         :param upload_study_customfields: A JSON hash of customfields that will be mapped to a study on study upload. A key is a customfield UUID, a value is a value for the field (optional)
         :param use_share_code: Flag to use the namespace share code settings for a STUDY_UPLOAD (optional)
+        :param workflow: The workflow this link is intended for (patient_studies) (optional)
         """
         request_data = {
            'acceptance_required': acceptance_required,
@@ -801,9 +846,11 @@ class AsyncLink:
            'share_on_view': share_on_view,
            'skip_email_prompt': skip_email_prompt,
            'study_id': study_id,
+           'ui_json': ui_json,
            'upload_match': upload_match,
            'upload_study_customfields': upload_study_customfields,
            'use_share_code': use_share_code,
+           'workflow': workflow,
         }
 	
         errors_mapping = {}
@@ -822,6 +869,7 @@ class AsyncLink:
         errors_mapping[('NOT_LIST', None)] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to create links')
         errors_mapping[('VALIDATE', None)] = Validate('A validation error. The error_subtype holds the details on the error')
+        errors_mapping[('VALIDATION_FAILED', None)] = ValidationFailed('The workflow parameter validation failed')
         query_data = {
             'api': self._api,
             'url': '/link/add',
@@ -863,16 +911,20 @@ class AsyncLink:
         redirect_url,
         referer,
         share_on_view,
+        short_id,
         skip_email_prompt,
         study_id,
+        ui_json,
         upload_match,
         upload_study_customfields,
         url,
         use_share_code,
         user_id,
         uuid,
+        workflow,
     ):
         """Get.
+
         :param acceptance_required: Flag that acceptance of TOS is required
         :param account_id: The account id
         :param action: Link action
@@ -903,14 +955,17 @@ class AsyncLink:
         :param redirect_url: URL for the /link/redirect API which will take you directly to the study viewer or uploader
         :param referer: The link can only be accessed from the specified referer
         :param share_on_view: Flag to share the study with the email after it is viewed
+        :param short_id: Short ID of the link for the 'patient_studies' workflow
         :param skip_email_prompt: Skip the prompt for email step
         :param study_id: uuid of the study
+        :param ui_json: JSON for UI settings
         :param upload_match: A JSON hash of DICOM tags and regular expressions they must match uploaded against this link
         :param upload_study_customfields: A JSON hash of customfields that will be mapped to a study on study upload
         :param url: URL for the link which will take you to the UI entry point for links to enter email, password etc.
         :param use_share_code: Flag to use the namespace share code settings for a STUDY_UPLOAD
         :param user_id: The user id
         :param uuid: Id of the link
+        :param workflow: The workflow this link is intended for
         """
         request_data = {
            'acceptance_required': acceptance_required,
@@ -943,14 +998,17 @@ class AsyncLink:
            'redirect_url': redirect_url,
            'referer': referer,
            'share_on_view': share_on_view,
+           'short_id': short_id,
            'skip_email_prompt': skip_email_prompt,
            'study_id': study_id,
+           'ui_json': ui_json,
            'upload_match': upload_match,
            'upload_study_customfields': upload_study_customfields,
            'url': url,
            'use_share_code': use_share_code,
            'user_id': user_id,
            'uuid': uuid,
+           'workflow': workflow,
         }
 	
         errors_mapping = {}
@@ -971,6 +1029,7 @@ class AsyncLink:
         uuid,
     ):
         """Delete.
+
         :param uuid: Id of the link
         """
         request_data = {
@@ -997,6 +1056,7 @@ class AsyncLink:
         uuid=None,
     ):
         """Status.
+
         :param link_charge_id: The uuid of the prior charge against this link (optional)
         :param pin: pin
         :param uuid: uuid
@@ -1029,13 +1089,16 @@ class AsyncLink:
         link_charge_id=None,
         password=None,
         pin=None,
+        short_id=None,
         uuid=None,
     ):
         """Session.
+
         :param email_address: The users email (optional)
         :param link_charge_id: The uuid of the prior charge against this link (optional)
         :param password: Password if needed (optional)
         :param pin: pin
+        :param short_id: short_id
         :param uuid: uuid
         """
         request_data = {
@@ -1043,6 +1106,7 @@ class AsyncLink:
            'link_charge_id': link_charge_id,
            'password': password,
            'pin': pin,
+           'short_id': short_id,
            'uuid': uuid,
         }
 	
@@ -1055,6 +1119,7 @@ class AsyncLink:
         errors_mapping[('IP_BLOCKED', None)] = IpBlocked('An IP whitelist blocked access')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The link was not found')
+        errors_mapping[('ONLY_ONE', None)] = OnlyOne('You can pass either uuid or short_id, not both')
         errors_mapping[('PIN_LOCKOUT', None)] = PinLockout('Too many invalid PIN entries')
         query_data = {
             'api': self._api,
@@ -1070,18 +1135,22 @@ class AsyncLink:
         link_charge_id=None,
         password=None,
         pin=None,
+        short_id=None,
         uuid=None,
     ):
         """Redirect.
+
         :param link_charge_id: The uuid of the prior charge against this link (optional)
         :param password: Password if needed (optional)
         :param pin: pin
+        :param short_id: short_id
         :param uuid: uuid
         """
         request_data = {
            'link_charge_id': link_charge_id,
            'password': password,
            'pin': pin,
+           'short_id': short_id,
            'uuid': uuid,
         }
 	
@@ -1094,6 +1163,7 @@ class AsyncLink:
         errors_mapping[('LINK_NOT_FOUND', None)] = LinkNotFound('The link was not found')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('The configuration of this link requires the link UI be used instead of direct access')
+        errors_mapping[('ONLY_ONE', None)] = OnlyOne('You can pass either uuid or short_id, not both')
         errors_mapping[('PIN_LOCKOUT', None)] = PinLockout('Too many invalid PIN entries')
         query_data = {
             'api': self._api,
@@ -1110,6 +1180,7 @@ class AsyncLink:
         v,
     ):
         """External.
+
         :param u: The uuid of the user_account record to create the guest link as
         :param v: A JSON hash with the following keys pairs. The JSON must be encrypted and base64 encoded
 
@@ -1145,6 +1216,7 @@ class AsyncLink:
         v,
     ):
         """Sso.
+
         :param u: The uuid of the user_account record
         :param v: An encrypted JSON hash as per the instructions in the SSO to a PHR account with a study share section of the documentation
         """
@@ -1175,6 +1247,7 @@ class AsyncLink:
         uuid,
     ):
         """Sid.
+
         :param email: Email address to associate with this usage
         :param uuid: The uuid of the link usage
         """
@@ -1200,6 +1273,7 @@ class AsyncLink:
         uuid,
     ):
         """Mail.
+
         :param email: Email address
         :param uuid: The uuid of the link
         """
@@ -1228,6 +1302,7 @@ class AsyncLink:
         uuid,
     ):
         """Charge.
+
         :param charge_token: The stripe charge token
         :param uuid: The uuid of the link
         """
@@ -1254,6 +1329,7 @@ class AsyncLink:
         uuid,
     ):
         """Pin.
+
         :param uuid: The uuid of the link
         """
         request_data = {

@@ -32,6 +32,7 @@ class Analytics:
         namespace_id=None,
     ):
         """Study.
+
         :param count: The number of periods to get
         :param period: The time period (day|week|month|year)
         :param time_zone: The report's time zone. Time zone selection order: current user's time zone, time_zone parameter, UTC by default.
@@ -81,6 +82,7 @@ class Analytics:
         patient_id=None,
     ):
         """Patient portal.
+
         :param account_id: The account id
         :param count: The number of periods to get
         :param period: The time period (day|week|month|year)
@@ -124,6 +126,7 @@ class Analytics:
         user_id=None,
     ):
         """Radreport.
+
         :param account_id: The account id
         :param count: The number of periods to get
         :param period: The time period (day|week|month|year)
@@ -170,6 +173,7 @@ class Analytics:
         user_id=None,
     ):
         """User.
+
         :param account_id: The account id
         :param count: The number of periods to get
         :param period: The time period (hour|day|week|month|year)
@@ -227,6 +231,7 @@ class AsyncAnalytics:
         namespace_id=None,
     ):
         """Study.
+
         :param count: The number of periods to get
         :param period: The time period (day|week|month|year)
         :param time_zone: The report's time zone. Time zone selection order: current user's time zone, time_zone parameter, UTC by default.
@@ -276,6 +281,7 @@ class AsyncAnalytics:
         patient_id=None,
     ):
         """Patient portal.
+
         :param account_id: The account id
         :param count: The number of periods to get
         :param period: The time period (day|week|month|year)
@@ -319,6 +325,7 @@ class AsyncAnalytics:
         user_id=None,
     ):
         """Radreport.
+
         :param account_id: The account id
         :param count: The number of periods to get
         :param period: The time period (day|week|month|year)
@@ -365,6 +372,7 @@ class AsyncAnalytics:
         user_id=None,
     ):
         """User.
+
         :param account_id: The account id
         :param count: The number of periods to get
         :param period: The time period (hour|day|week|month|year)

@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [3.21.6.0-1] - 2021-08-11
+### Added
+- Cast request args to valid parameters
+- Cast values in filters to valid ones
+- Storage public api support: LBL0038 v16.0 2021-08-11
+- Response text in unknown SDK exceptions
+
 ## [3.21.5.0-1] - 2021-06-30
 ### Added
 - Asyncio !!!

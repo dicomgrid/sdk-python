@@ -35,6 +35,7 @@ class Role:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -72,6 +73,7 @@ class Role:
         settings=None,
     ):
         """Add.
+
         :param account_id: uuid of the account
         :param name: Name of the role
         :param for_account: A flag that the role can be used in an account, default is on (optional)
@@ -124,6 +126,7 @@ class Role:
         settings=None,
     ):
         """Set.
+
         :param uuid: The role uuid
         :param description: Description of the role (optional)
         :param for_account: A flag that the role can be used in an account (optional)
@@ -173,6 +176,7 @@ class Role:
         uuid,
     ):
         """Get.
+
         :param uuid: The role uuid
         """
         request_data = {
@@ -197,6 +201,7 @@ class Role:
         uuid,
     ):
         """Delete.
+
         :param uuid: The role uuid
         """
         request_data = {
@@ -222,6 +227,7 @@ class Role:
         account_id=None,
     ):
         """Default permissions.
+
         :param account_id: The account id (optional)
         """
         request_data = {
@@ -244,6 +250,7 @@ class Role:
         account_id,
     ):
         """Report detail.
+
         :param account_id: The account id
         """
         request_data = {
@@ -278,6 +285,7 @@ class AsyncRole:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -315,6 +323,7 @@ class AsyncRole:
         settings=None,
     ):
         """Add.
+
         :param account_id: uuid of the account
         :param name: Name of the role
         :param for_account: A flag that the role can be used in an account, default is on (optional)
@@ -367,6 +376,7 @@ class AsyncRole:
         settings=None,
     ):
         """Set.
+
         :param uuid: The role uuid
         :param description: Description of the role (optional)
         :param for_account: A flag that the role can be used in an account (optional)
@@ -416,6 +426,7 @@ class AsyncRole:
         uuid,
     ):
         """Get.
+
         :param uuid: The role uuid
         """
         request_data = {
@@ -440,6 +451,7 @@ class AsyncRole:
         uuid,
     ):
         """Delete.
+
         :param uuid: The role uuid
         """
         request_data = {
@@ -465,6 +477,7 @@ class AsyncRole:
         account_id=None,
     ):
         """Default permissions.
+
         :param account_id: The account id (optional)
         """
         request_data = {
@@ -487,6 +500,7 @@ class AsyncRole:
         account_id,
     ):
         """Report detail.
+
         :param account_id: The account id
         """
         request_data = {

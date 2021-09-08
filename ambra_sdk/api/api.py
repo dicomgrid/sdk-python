@@ -20,6 +20,7 @@ from ambra_sdk.service.entrypoints import (
     Activity,
     Analytics,
     Annotation,
+    Anonymization,
     Appointment,
     Audit,
     Case,
@@ -43,6 +44,7 @@ from ambra_sdk.service.entrypoints import (
     Order,
     Patient,
     Purge,
+    Qctask,
     Query,
     Radreport,
     Radreportmacro,
@@ -68,7 +70,39 @@ logger = logging.getLogger(__name__)
 
 
 class Api(BaseApi):
-    """Ambra API."""
+    """Ambra API.
+
+    Example:
+    >>> from ambra_sdk.api import Api
+    >>>
+    >>> api = Api.with_creds(
+    ...     url='https://ambrahealth_host/api/v3',
+    ...     username='username',
+    ...     password='password',
+    ...     client_name='Some name (ex: Hospital-ABC)',
+    ... )
+
+    Using some special parameters (In most cases you dont need this!):
+
+    >>> from ambra_sdk.api import Api
+    >>> from ambra_sdk.api.base_api import RateLimit, RateLimits
+    >>>
+    >>> MY_RLS = RateLimits(
+    ...        default=RateLimit(3, 2),
+    ...        get_limit=RateLimit(4, 2),
+    ...        special={'special_url': RateLimit(5, 2)},
+    ... )
+    >>>
+    >>> api = Api.with_creds(
+    ...     url='https://ambrahealth_host/api/v3',
+    ...     username='username',
+    ...     password='password',
+    ...     client_name='Some name (ex: Hospital-ABC)',
+    ...     special_headers_for_login={'Special-H': 'ABC'},
+    ...     rate_limits=MY_RLS,
+    ...     autocast_arguments=False,
+    ... )
+    """
 
     backend = 'REQUESTS'
 
@@ -346,7 +380,9 @@ class Api(BaseApi):
         return self.service_session.request(
             method=request_args.method,
             url=request_args.full_url,
-            **request_args.dict_optional_args(),
+            **request_args.dict_optional_args(
+                self._autocast_arguments,
+            ),
         )
 
     def _prepare_storage_request_args(
@@ -448,3 +484,5 @@ class Api(BaseApi):
         self.Query = Query(self)
         self.Scanner = Scanner(self)
         self.Site = Site(self)
+        self.Anonymization = Anonymization(self)
+        self.Qctask = Qctask(self)

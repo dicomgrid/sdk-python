@@ -40,6 +40,7 @@ class Group:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -85,6 +86,7 @@ class Group:
         site_id=None,
     ):
         """Add.
+
         :param account_id: uuid of the account
         :param name: Name of the group
         :param customfield_param: Custom field(s) (optional)
@@ -165,6 +167,7 @@ class Group:
         site_qualified=None,
     ):
         """Set.
+
         :param uuid: The group uuid
         :param customfield_param: Custom field(s) (optional)
         :param hl7_template: The HL7 reporting template for the group (optional)
@@ -228,6 +231,7 @@ class Group:
         uuid,
     ):
         """Get.
+
         :param uuid: The group uuid
         """
         request_data = {
@@ -252,6 +256,7 @@ class Group:
         uuid,
     ):
         """Delete.
+
         :param uuid: The group uuid
         """
         request_data = {
@@ -301,6 +306,7 @@ class Group:
         role_id=None,
     ):
         """User add.
+
         :param user_id: Id of the user
         :param uuid: The group id
         :param event_approve: Notify the user on a approval needed into the group namespace (optional)
@@ -376,6 +382,7 @@ class Group:
         uuid,
     ):
         """User delete.
+
         :param user_id: Id of the user
         :param uuid: The group id
         """
@@ -402,6 +409,7 @@ class Group:
         uuid,
     ):
         """User list.
+
         :param uuid: The group id
         """
         request_data = {
@@ -435,6 +443,7 @@ class Group:
         study_uid=None,
     ):
         """Scanner validate.
+
         :param invalidate: Flag if the scaner is being invalidated
         :param scanner_id: The scanner id
         :param uuid: The group id
@@ -475,6 +484,7 @@ class AsyncGroup:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -520,6 +530,7 @@ class AsyncGroup:
         site_id=None,
     ):
         """Add.
+
         :param account_id: uuid of the account
         :param name: Name of the group
         :param customfield_param: Custom field(s) (optional)
@@ -600,6 +611,7 @@ class AsyncGroup:
         site_qualified=None,
     ):
         """Set.
+
         :param uuid: The group uuid
         :param customfield_param: Custom field(s) (optional)
         :param hl7_template: The HL7 reporting template for the group (optional)
@@ -663,6 +675,7 @@ class AsyncGroup:
         uuid,
     ):
         """Get.
+
         :param uuid: The group uuid
         """
         request_data = {
@@ -687,6 +700,7 @@ class AsyncGroup:
         uuid,
     ):
         """Delete.
+
         :param uuid: The group uuid
         """
         request_data = {
@@ -736,6 +750,7 @@ class AsyncGroup:
         role_id=None,
     ):
         """User add.
+
         :param user_id: Id of the user
         :param uuid: The group id
         :param event_approve: Notify the user on a approval needed into the group namespace (optional)
@@ -811,6 +826,7 @@ class AsyncGroup:
         uuid,
     ):
         """User delete.
+
         :param user_id: Id of the user
         :param uuid: The group id
         """
@@ -837,6 +853,7 @@ class AsyncGroup:
         uuid,
     ):
         """User list.
+
         :param uuid: The group id
         """
         request_data = {
@@ -870,6 +887,7 @@ class AsyncGroup:
         study_uid=None,
     ):
         """Scanner validate.
+
         :param invalidate: Flag if the scaner is being invalidated
         :param scanner_id: The scanner id
         :param uuid: The group id

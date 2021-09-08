@@ -77,6 +77,7 @@ def check_errors(response: Response) -> Response:
         raise AmbraResponseException(
             code=status_code,
             description='Unknown status code',
+            response_text=response.text,
         )
     raise_storage_error(status_code, json)
 
@@ -105,5 +106,6 @@ async def async_check_errors(response: ClientResponse) -> ClientResponse:
         raise AmbraResponseException(
             code=status_code,
             description='Unknown status code',
+            response_text=text,
         )
     raise_storage_error(status_code, json)

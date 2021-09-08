@@ -21,6 +21,7 @@ class Setting:
         user_id=None,
     ):
         """Set.
+
         :param key: The key to store the value under. If the key name begins with temp_ it is only available for the session.
         :param value: The value to store
         :param user_id: A sysadmin user can set the value for a specific user (optional)
@@ -48,6 +49,7 @@ class Setting:
         user_id=None,
     ):
         """Get.
+
         :param key: The key to get
         :param user_id: A sysadmin user can get the value for a specific user (optional)
         """
@@ -71,6 +73,7 @@ class Setting:
         self,
     ):
         """Get all.
+
         """
         request_data = {
         }
@@ -101,6 +104,7 @@ class AsyncSetting:
         user_id=None,
     ):
         """Set.
+
         :param key: The key to store the value under. If the key name begins with temp_ it is only available for the session.
         :param value: The value to store
         :param user_id: A sysadmin user can set the value for a specific user (optional)
@@ -128,6 +132,7 @@ class AsyncSetting:
         user_id=None,
     ):
         """Get.
+
         :param key: The key to get
         :param user_id: A sysadmin user can get the value for a specific user (optional)
         """
@@ -151,6 +156,7 @@ class AsyncSetting:
         self,
     ):
         """Get all.
+
         """
         request_data = {
         }

@@ -55,6 +55,7 @@ class User:
         share_code=None,
     ):
         """Join.
+
         :param email: Email
         :param first: First name
         :param last: Last name
@@ -100,6 +101,7 @@ class User:
         password,
     ):
         """Add.
+
         :param account_id: Account id to check for the user_edit permission
         :param email: Email
         :param first: First name
@@ -136,6 +138,7 @@ class User:
         uuid=None,
     ):
         """Get.
+
         :param account_id: Account id if you are trying to get a user other than yourself (optional)
         :param uuid: The users uuid (optional). Uses the session user if not passed
         """
@@ -180,6 +183,7 @@ class User:
         uuid=None,
     ):
         """Set.
+
         :param indicator_md5: MD5 of the accepted indications of use
         :param privacy_md5: MD5 of the accepted privacy policy
         :param terms_md5: MD5 of the accepted terms of service
@@ -248,6 +252,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         self,
     ):
         """Delete.
+
         """
         request_data = {
         }
@@ -268,6 +273,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         email,
     ):
         """Password lost.
+
         :param email: The email
         """
         request_data = {
@@ -292,6 +298,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         token,
     ):
         """Password reset.
+
         :param password: The new password
         :param token: The reset token
         """
@@ -320,6 +327,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         link,
     ):
         """Welcome.
+
         :param account_id: Id of the account to welcome them to
         :param email: The email of the user to welcome
         :param link: URL to reset the password at. The reset token will be appended to the link
@@ -347,6 +355,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         self,
     ):
         """Join list.
+
         """
         request_data = {
         }
@@ -373,6 +382,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         account_id,
     ):
         """Join request.
+
         :param account_id: Id of the account to request to join
         """
         request_data = {
@@ -404,6 +414,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         role_id=None,
     ):
         """Invite.
+
         :param account_id: The account to invite the person too
         :param email: Email address of the person to invite
         :param link: URL to accept the invitation at. The invitation id will be appended to the link
@@ -445,6 +456,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         uuid,
     ):
         """Invite accept.
+
         :param uuid: Id of the invitation
         """
         request_data = {
@@ -471,6 +483,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         plus_phr=None,
     ):
         """Namespace list.
+
         :param account_id: Only return the namespaces for this account (optional)
         :param name_and_id_only: Flag to return only the the namespace name and uuid (optional)
         :param plus_phr: Flag to include the PHR account as well if account_id was specified (optional)
@@ -500,6 +513,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         uuid=None,
     ):
         """Event.
+
         :param namespace_id: Id of the namespace to set the flags on
         :param uuid: Return event flags for this user, not current user (optional)
         """
@@ -547,6 +561,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         uuid=None,
     ):
         """Event set.
+
         :param namespace_id: Id of the namespace to set the flags on
         :param event_approve: Notify the user on a approval needed into the namespace (optional)
         :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)
@@ -613,6 +628,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         generate,
     ):
         """Token.
+
         :param delete: Flag to delete the shared secret and disable TOKEN PIN authentication
         :param generate: Flag to generate the shared secret for a token authenticator and enable TOKEN PIN authentication
         """
@@ -637,6 +653,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         self,
     ):
         """Device clear.
+
         """
         request_data = {
         }
@@ -656,6 +673,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         signature,
     ):
         """Signature.
+
         :param signature: Set the users signature to this base64 encoded image
         """
         request_data = {
@@ -678,6 +696,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         disable=None,
     ):
         """Enable.
+
         :param uuid: User uuid
         :param disable: A flag indicating whether to disable the user (optional)
         """
@@ -705,6 +724,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         uuid,
     ):
         """Pubkey list.
+
         :param serial_no: The serial number of the node
         :param uuid: The node id
         """
@@ -733,6 +753,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         uuid,
     ):
         """Pubkey set.
+
         :param email: The users email
         :param public_key: A public key for public key authentication
         :param serial_no: The serial number of the node
@@ -778,6 +799,7 @@ class AsyncUser:
         share_code=None,
     ):
         """Join.
+
         :param email: Email
         :param first: First name
         :param last: Last name
@@ -823,6 +845,7 @@ class AsyncUser:
         password,
     ):
         """Add.
+
         :param account_id: Account id to check for the user_edit permission
         :param email: Email
         :param first: First name
@@ -859,6 +882,7 @@ class AsyncUser:
         uuid=None,
     ):
         """Get.
+
         :param account_id: Account id if you are trying to get a user other than yourself (optional)
         :param uuid: The users uuid (optional). Uses the session user if not passed
         """
@@ -903,6 +927,7 @@ class AsyncUser:
         uuid=None,
     ):
         """Set.
+
         :param indicator_md5: MD5 of the accepted indications of use
         :param privacy_md5: MD5 of the accepted privacy policy
         :param terms_md5: MD5 of the accepted terms of service
@@ -971,6 +996,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         self,
     ):
         """Delete.
+
         """
         request_data = {
         }
@@ -991,6 +1017,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         email,
     ):
         """Password lost.
+
         :param email: The email
         """
         request_data = {
@@ -1015,6 +1042,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         token,
     ):
         """Password reset.
+
         :param password: The new password
         :param token: The reset token
         """
@@ -1043,6 +1071,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         link,
     ):
         """Welcome.
+
         :param account_id: Id of the account to welcome them to
         :param email: The email of the user to welcome
         :param link: URL to reset the password at. The reset token will be appended to the link
@@ -1070,6 +1099,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         self,
     ):
         """Join list.
+
         """
         request_data = {
         }
@@ -1096,6 +1126,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         account_id,
     ):
         """Join request.
+
         :param account_id: Id of the account to request to join
         """
         request_data = {
@@ -1127,6 +1158,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         role_id=None,
     ):
         """Invite.
+
         :param account_id: The account to invite the person too
         :param email: Email address of the person to invite
         :param link: URL to accept the invitation at. The invitation id will be appended to the link
@@ -1168,6 +1200,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         uuid,
     ):
         """Invite accept.
+
         :param uuid: Id of the invitation
         """
         request_data = {
@@ -1194,6 +1227,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         plus_phr=None,
     ):
         """Namespace list.
+
         :param account_id: Only return the namespaces for this account (optional)
         :param name_and_id_only: Flag to return only the the namespace name and uuid (optional)
         :param plus_phr: Flag to include the PHR account as well if account_id was specified (optional)
@@ -1223,6 +1257,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         uuid=None,
     ):
         """Event.
+
         :param namespace_id: Id of the namespace to set the flags on
         :param uuid: Return event flags for this user, not current user (optional)
         """
@@ -1270,6 +1305,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         uuid=None,
     ):
         """Event set.
+
         :param namespace_id: Id of the namespace to set the flags on
         :param event_approve: Notify the user on a approval needed into the namespace (optional)
         :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)
@@ -1336,6 +1372,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         generate,
     ):
         """Token.
+
         :param delete: Flag to delete the shared secret and disable TOKEN PIN authentication
         :param generate: Flag to generate the shared secret for a token authenticator and enable TOKEN PIN authentication
         """
@@ -1360,6 +1397,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         self,
     ):
         """Device clear.
+
         """
         request_data = {
         }
@@ -1379,6 +1417,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         signature,
     ):
         """Signature.
+
         :param signature: Set the users signature to this base64 encoded image
         """
         request_data = {
@@ -1401,6 +1440,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         disable=None,
     ):
         """Enable.
+
         :param uuid: User uuid
         :param disable: A flag indicating whether to disable the user (optional)
         """
@@ -1428,6 +1468,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         uuid,
     ):
         """Pubkey list.
+
         :param serial_no: The serial number of the node
         :param uuid: The node id
         """
@@ -1456,6 +1497,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         uuid,
     ):
         """Pubkey set.
+
         :param email: The users email
         :param public_key: A public key for public key authentication
         :param serial_no: The serial number of the node

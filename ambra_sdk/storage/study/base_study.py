@@ -1164,6 +1164,65 @@ class BaseStudy:
             files=files,
         )
 
+    def _attachment_image(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        study_uid: str,
+        attachment_uid: str,
+        version: str,
+        static_ids: Optional[bool] = None,
+        phi_namespace: Optional[str] = None,
+    ) -> PreparedRequest:
+        """Attachment image.
+
+        Adds a render of an attachment to a study.
+
+        URL: /study/{namespace}/{studyUid}/attachment/{attachmentUid}/version/{version}/image?sid={sid}&
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param study_uid: Study uid (Required).
+        :param attachment_uid: Attachment uid (Required).
+        :param version: version (Required)
+        :param static_ids: An integer of value 1 or 0. If 1, series
+            and images rendered from PDF are assigned (u)uids based
+            on a hash of the attachment; repeated requests to render the
+            same PDF will not result in more images.
+        :param phi_namespace: A string, set to the UUID of the namespace
+            where the file was attached if it was attached to a shared
+            instance of the study outside of the original storage namespace
+
+        :returns: 202 Attachment succesfully rendered as an image and added to study.
+            500 (SERVER ERROR) if server error persisted.
+        """
+        static_ids: int = bool_to_int(static_ids)  # type: ignore
+
+        url_template = '/study/{namespace}/{study_uid}/attachment/{attachment_uid}/version/{version}/image'
+        url_arg_names = {
+            'engine_fqdn',
+            'namespace',
+            'study_uid',
+            'attachment_uid',
+            'version',
+        }
+        request_arg_names = {
+            'phi_namespace',
+            'static_ids',
+        }
+        url, request_data = self._storage.get_url_and_request(
+            url_template,
+            url_arg_names,
+            request_arg_names,
+            locals(),
+        )
+        return PreparedRequest(
+            storage=self._storage,
+            method=StorageMethod.post,
+            url=url,
+            params=request_data,
+        )
+
     def _download(
         self,
         engine_fqdn: str,
@@ -1182,6 +1241,7 @@ class BaseStudy:
         roche_directory: Optional[bool] = None,
         flat_directory: Optional[bool] = None,
         transfer_syntax: Optional[bool] = None,
+        anonymize_tags: Optional[str] = None,
     ) -> PreparedRequest:
         """Downloads a study ZIP file.
 
@@ -1214,6 +1274,11 @@ class BaseStudy:
         :param flat_directory: If "1", .dcm files will be flatly named
             IMG0001-IMG{image count}, and not be organized into SER folder.
         :param transfer_syntax: transfer syntax
+        :param anonymize_tags: The list of tag ids with overridden values
+            separated by comma (,) that should be overridden.
+            Example:
+            anonymize_tags={{tag_id_int_1}}={{tag_value_1}},{{tag_id_int_2}}={{tag_value_2}}.
+            To omit tag, provide special keyword that is being used in services overrides as value: __DELETE__
 
         :raises ValueError: Wrong bundle value
 
@@ -1250,6 +1315,7 @@ class BaseStudy:
             'roche_directory',
             'flat_directory',
             'transfer_syntax',
+            'anonymize_tags',
         }
         url, request_data = self._storage.get_url_and_request(
             url_template,
@@ -1785,5 +1851,57 @@ class BaseStudy:
             method=StorageMethod.post,
             url=url,
             params=request_data,
+            headers=headers,
+        )
+
+    def _create_rt(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        study_uid: str,
+        body: str,
+        phi_namespace: Optional[str] = None,
+    ) -> PreparedRequest:
+        """Create RT.
+
+        Generates RTSTRUCT DICOM file from the content sent by client
+
+        URL: /study/{namespace}/{studyUid}/rt?sid={sid}&phi_namespace={phi_namespace}
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param study_uid: Study uid (Required).
+        :param phi_namespace: A string, set to the UUID of the namespace
+            where the file was attached if it was attached to a shared
+            instance of the study outside of the original storage namespace
+
+        :param body: Body that represents fields of the RTSTRUCT DICOM
+        :return: Image attributes
+        """
+        url_template = '/study/{namespace}/{study_uid}/rt'
+        url_arg_names = {
+            'engine_fqdn',
+            'namespace',
+            'study_uid',
+        }
+        request_arg_names = {
+            'phi_namespace',
+        }
+        url, request_data = self._storage.get_url_and_request(
+            url_template,
+            url_arg_names,
+            request_arg_names,
+            locals(),
+        )
+        headers = {
+            'Content-Type': 'application/json; charset=utf-8',
+        }
+
+        return PreparedRequest(
+            storage=self._storage,
+            method=StorageMethod.post,
+            url=url,
+            params=request_data,
+            data=body,
             headers=headers,
         )

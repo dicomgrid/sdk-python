@@ -36,6 +36,7 @@ class Query:
         self,
     ):
         """List.
+
         """
         request_data = {
         }
@@ -70,6 +71,7 @@ class Query:
         study_id=None,
     ):
         """Add.
+
         :param group_id: Id of the group associated to a trial site to add them to
         :param subject: Subject line of the query
         :param body: The query body (optional)
@@ -125,6 +127,7 @@ class Query:
         subject=None,
     ):
         """Set.
+
         :param uuid: The query uuid
         :param body: The query body (optional)
         :param customfield_param: Custom field(s) (optional)
@@ -171,6 +174,7 @@ class Query:
         uuid,
     ):
         """Get.
+
         :param uuid: The query uuid
         """
         request_data = {
@@ -195,6 +199,7 @@ class Query:
         uuid,
     ):
         """Delete.
+
         :param uuid: The query uuid
         """
         request_data = {
@@ -221,6 +226,7 @@ class Query:
         uuid,
     ):
         """Status set.
+
         :param new: The new query status value
         :param old: The old query status value
         :param uuid: Query uuid
@@ -256,6 +262,7 @@ class Query:
         thumbnail_type=None,
     ):
         """Attachment add.
+
         :param length: The attachment size in bytes
         :param name: The attachment display name
         :param query_id: Query UUID
@@ -292,6 +299,7 @@ class Query:
         uuid,
     ):
         """Attachment commit.
+
         :param uuid: Attachment UUID
         """
         request_data = {
@@ -318,6 +326,7 @@ class Query:
         uuid,
     ):
         """Attachment delete.
+
         :param uuid: Attachment UUID
         """
         request_data = {
@@ -352,6 +361,7 @@ class AsyncQuery:
         self,
     ):
         """List.
+
         """
         request_data = {
         }
@@ -386,6 +396,7 @@ class AsyncQuery:
         study_id=None,
     ):
         """Add.
+
         :param group_id: Id of the group associated to a trial site to add them to
         :param subject: Subject line of the query
         :param body: The query body (optional)
@@ -441,6 +452,7 @@ class AsyncQuery:
         subject=None,
     ):
         """Set.
+
         :param uuid: The query uuid
         :param body: The query body (optional)
         :param customfield_param: Custom field(s) (optional)
@@ -487,6 +499,7 @@ class AsyncQuery:
         uuid,
     ):
         """Get.
+
         :param uuid: The query uuid
         """
         request_data = {
@@ -511,6 +524,7 @@ class AsyncQuery:
         uuid,
     ):
         """Delete.
+
         :param uuid: The query uuid
         """
         request_data = {
@@ -537,6 +551,7 @@ class AsyncQuery:
         uuid,
     ):
         """Status set.
+
         :param new: The new query status value
         :param old: The old query status value
         :param uuid: Query uuid
@@ -572,6 +587,7 @@ class AsyncQuery:
         thumbnail_type=None,
     ):
         """Attachment add.
+
         :param length: The attachment size in bytes
         :param name: The attachment display name
         :param query_id: Query UUID
@@ -608,6 +624,7 @@ class AsyncQuery:
         uuid,
     ):
         """Attachment commit.
+
         :param uuid: Attachment UUID
         """
         request_data = {
@@ -634,6 +651,7 @@ class AsyncQuery:
         uuid,
     ):
         """Attachment delete.
+
         :param uuid: Attachment UUID
         """
         request_data = {

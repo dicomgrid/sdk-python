@@ -4,7 +4,11 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Generic, List, NamedTuple, TypeVar, Union
 
-from ambra_sdk.request_args import AioHTTPRequestArgs, RequestArgs
+from ambra_sdk.request_args import (
+    AioHTTPRequestArgs,
+    RequestArgs,
+    cast_argument,
+)
 
 REQUEST_ARGS_TYPE = TypeVar(
     'REQUEST_ARGS_TYPE',
@@ -121,5 +125,5 @@ class WithFilter(Generic[REQUEST_ARGS_TYPE]):
         request_data['filter.{filter_name}.{filter_condition}'.format(
             filter_name=field_name,
             filter_condition=filter_condition.value,
-        )] = str(value)
+        )] = cast_argument(value)
         self.request_args.data = request_data  # NOQA:WPS110

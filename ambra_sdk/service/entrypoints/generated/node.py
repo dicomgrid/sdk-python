@@ -51,6 +51,7 @@ class Node:
         account_id=None,
     ):
         """List.
+
         :param account_id: uuid of the account (optional)
         """
         request_data = {
@@ -81,6 +82,7 @@ class Node:
         account_id,
     ):
         """Public.
+
         :param account_id: The account the user is in
         """
         request_data = {
@@ -114,6 +116,7 @@ class Node:
         message=None,
     ):
         """Connect.
+
         :param account_id: The account the user is in
         :param uuid: The node id
         :param message: Message (optional)
@@ -145,6 +148,7 @@ class Node:
         uuid,
     ):
         """Approve.
+
         :param account_id: The account which requested the connection
         :param uuid: The node id
         """
@@ -188,6 +192,7 @@ class Node:
         uuid=None,
     ):
         """Add.
+
         :param accelerator_id: uuid of the accelerator if this is an accelerator node
         :param name: Description of the node
         :param type: Type of node (STORAGE|HARVESTER|ACCELERATOR|CLEARINGHOUSE|VIRTUAL|UTILITY|XDS)
@@ -273,6 +278,7 @@ class Node:
         warning_email=None,
     ):
         """Set.
+
         :param uuid: The node id
         :param category: Node category (ACTIVE|INACTIVE|MIGRATION|TEST|DUPLICATE|INTEGRATED) (optional)
         :param configuration: The configuration as a JSON hash of key values pairs (optional)
@@ -353,6 +359,7 @@ class Node:
         serial_no=None,
     ):
         """Get.
+
         :param uuid: The node id
         :param serial_no: serial_no
         """
@@ -380,6 +387,7 @@ class Node:
         uuid,
     ):
         """Ping.
+
         :param ack: Flag if the gateway wants to use the acknowledge workflow
         :param serial_no: The serial number of the node
         :param uuid: The node id
@@ -408,6 +416,7 @@ class Node:
         uuid,
     ):
         """Ping ack.
+
         :param serial_no: The serial number of the node
         :param uuid: The node id
         """
@@ -442,6 +451,7 @@ class Node:
         study_uid=None,
     ):
         """Deliver.
+
         :param serial_no: The serial number of the node
         :param status: Status code of the job (S|F|P|B|U) - Success, failure, partial transfer, blocked or uncached
         :param uuid: The node id
@@ -488,6 +498,7 @@ class Node:
         uuid,
     ):
         """Retrieve.
+
         :param job_id: The uuid of the fetch job
         :param serial_no: The serial number of the node
         :param status: Status code of the job (S|F|P) - Success, failure, partial transfer
@@ -522,6 +533,7 @@ class Node:
         error_message=None,
     ):
         """Webhook.
+
         :param serial_no: The serial number of the node
         :param status: Status code of the job (S|F) - Success, failure
         :param uuid: The node id
@@ -555,6 +567,7 @@ class Node:
         uuid,
     ):
         """Configuration.
+
         :param serial_no: The serial number of the node
         :param uuid: The node id
         """
@@ -580,6 +593,7 @@ class Node:
         uuid,
     ):
         """Delete.
+
         :param uuid: The node id
         """
         request_data = {
@@ -607,6 +621,7 @@ class Node:
         uuid,
     ):
         """Study queued.
+
         :param serial_no: The serial number of the node
         :param study_uid: The study uid
         :param uuid: The node id
@@ -637,6 +652,7 @@ class Node:
         uuid,
     ):
         """Study anonymized.
+
         :param new_study_uid: The new study uid
         :param old_study_uid: The old study uid
         :param serial_no: The serial number of the node
@@ -670,6 +686,7 @@ class Node:
         studies=None,
     ):
         """Found.
+
         :param search_id: The id of the search request
         :param serial_no: The serial number of the node
         :param uuid: The node id
@@ -719,6 +736,7 @@ class Node:
         status=None,
     ):
         """Found mwl.
+
         :param search_id: The id of the search request
         :param serial_no: The serial number of the node
         :param uuid: The node id
@@ -763,6 +781,7 @@ class Node:
         uuid,
     ):
         """Event.
+
         :param destination_id: The id of the destination if the event is associated with a destination
         :param event: The event (c_echo_error)
         :param serial_no: The serial number of the node
@@ -797,6 +816,7 @@ class Node:
         uuid,
     ):
         """Log.
+
         :param end: End time stamp in YYYY-MM-DD HH:MM:SS format
         :param start: Start time stamp in YYYY-MM-DD HH:MM:SS format
         :param type: Type of log (log|dicom|queue|system) defaults to log if not passed
@@ -832,6 +852,7 @@ class Node:
         serial_no=None,
     ):
         """Xml.
+
         :param uuid: The node id
         :param xml: XML message
         :param serial_no: serial_no
@@ -865,6 +886,7 @@ class Node:
         uuid,
     ):
         """Metric.
+
         :param job_id: The uuid of the push job
         :param metric: The metric to record
         :param serial_no: The serial number of the node
@@ -897,6 +919,7 @@ class Node:
         uuid,
     ):
         """Performance set.
+
         :param data: A JSON data structure with performance data
         :param serial_no: The serial number of the node
         :param uuid: The node id
@@ -925,6 +948,7 @@ class Node:
         serial_no=None,
     ):
         """Performance get.
+
         :param uuid: The node id
         :param serial_no: serial_no
         """
@@ -958,6 +982,7 @@ class Node:
         study_uid=None,
     ):
         """Progress add.
+
         :param queue: The queue
         :param serial_no: The serial number of the node
         :param state: The status
@@ -998,6 +1023,7 @@ class Node:
         node_id=None,
     ):
         """Progress list.
+
         :param destination_id: destination_id
         :param node_id: node_id
         """
@@ -1030,6 +1056,7 @@ class Node:
         uuid,
     ):
         """Progress get.
+
         :param uuid: The node progress uuid
         """
         request_data = {
@@ -1063,6 +1090,7 @@ class AsyncNode:
         account_id=None,
     ):
         """List.
+
         :param account_id: uuid of the account (optional)
         """
         request_data = {
@@ -1093,6 +1121,7 @@ class AsyncNode:
         account_id,
     ):
         """Public.
+
         :param account_id: The account the user is in
         """
         request_data = {
@@ -1126,6 +1155,7 @@ class AsyncNode:
         message=None,
     ):
         """Connect.
+
         :param account_id: The account the user is in
         :param uuid: The node id
         :param message: Message (optional)
@@ -1157,6 +1187,7 @@ class AsyncNode:
         uuid,
     ):
         """Approve.
+
         :param account_id: The account which requested the connection
         :param uuid: The node id
         """
@@ -1200,6 +1231,7 @@ class AsyncNode:
         uuid=None,
     ):
         """Add.
+
         :param accelerator_id: uuid of the accelerator if this is an accelerator node
         :param name: Description of the node
         :param type: Type of node (STORAGE|HARVESTER|ACCELERATOR|CLEARINGHOUSE|VIRTUAL|UTILITY|XDS)
@@ -1285,6 +1317,7 @@ class AsyncNode:
         warning_email=None,
     ):
         """Set.
+
         :param uuid: The node id
         :param category: Node category (ACTIVE|INACTIVE|MIGRATION|TEST|DUPLICATE|INTEGRATED) (optional)
         :param configuration: The configuration as a JSON hash of key values pairs (optional)
@@ -1365,6 +1398,7 @@ class AsyncNode:
         serial_no=None,
     ):
         """Get.
+
         :param uuid: The node id
         :param serial_no: serial_no
         """
@@ -1392,6 +1426,7 @@ class AsyncNode:
         uuid,
     ):
         """Ping.
+
         :param ack: Flag if the gateway wants to use the acknowledge workflow
         :param serial_no: The serial number of the node
         :param uuid: The node id
@@ -1420,6 +1455,7 @@ class AsyncNode:
         uuid,
     ):
         """Ping ack.
+
         :param serial_no: The serial number of the node
         :param uuid: The node id
         """
@@ -1454,6 +1490,7 @@ class AsyncNode:
         study_uid=None,
     ):
         """Deliver.
+
         :param serial_no: The serial number of the node
         :param status: Status code of the job (S|F|P|B|U) - Success, failure, partial transfer, blocked or uncached
         :param uuid: The node id
@@ -1500,6 +1537,7 @@ class AsyncNode:
         uuid,
     ):
         """Retrieve.
+
         :param job_id: The uuid of the fetch job
         :param serial_no: The serial number of the node
         :param status: Status code of the job (S|F|P) - Success, failure, partial transfer
@@ -1534,6 +1572,7 @@ class AsyncNode:
         error_message=None,
     ):
         """Webhook.
+
         :param serial_no: The serial number of the node
         :param status: Status code of the job (S|F) - Success, failure
         :param uuid: The node id
@@ -1567,6 +1606,7 @@ class AsyncNode:
         uuid,
     ):
         """Configuration.
+
         :param serial_no: The serial number of the node
         :param uuid: The node id
         """
@@ -1592,6 +1632,7 @@ class AsyncNode:
         uuid,
     ):
         """Delete.
+
         :param uuid: The node id
         """
         request_data = {
@@ -1619,6 +1660,7 @@ class AsyncNode:
         uuid,
     ):
         """Study queued.
+
         :param serial_no: The serial number of the node
         :param study_uid: The study uid
         :param uuid: The node id
@@ -1649,6 +1691,7 @@ class AsyncNode:
         uuid,
     ):
         """Study anonymized.
+
         :param new_study_uid: The new study uid
         :param old_study_uid: The old study uid
         :param serial_no: The serial number of the node
@@ -1682,6 +1725,7 @@ class AsyncNode:
         studies=None,
     ):
         """Found.
+
         :param search_id: The id of the search request
         :param serial_no: The serial number of the node
         :param uuid: The node id
@@ -1731,6 +1775,7 @@ class AsyncNode:
         status=None,
     ):
         """Found mwl.
+
         :param search_id: The id of the search request
         :param serial_no: The serial number of the node
         :param uuid: The node id
@@ -1775,6 +1820,7 @@ class AsyncNode:
         uuid,
     ):
         """Event.
+
         :param destination_id: The id of the destination if the event is associated with a destination
         :param event: The event (c_echo_error)
         :param serial_no: The serial number of the node
@@ -1809,6 +1855,7 @@ class AsyncNode:
         uuid,
     ):
         """Log.
+
         :param end: End time stamp in YYYY-MM-DD HH:MM:SS format
         :param start: Start time stamp in YYYY-MM-DD HH:MM:SS format
         :param type: Type of log (log|dicom|queue|system) defaults to log if not passed
@@ -1844,6 +1891,7 @@ class AsyncNode:
         serial_no=None,
     ):
         """Xml.
+
         :param uuid: The node id
         :param xml: XML message
         :param serial_no: serial_no
@@ -1877,6 +1925,7 @@ class AsyncNode:
         uuid,
     ):
         """Metric.
+
         :param job_id: The uuid of the push job
         :param metric: The metric to record
         :param serial_no: The serial number of the node
@@ -1909,6 +1958,7 @@ class AsyncNode:
         uuid,
     ):
         """Performance set.
+
         :param data: A JSON data structure with performance data
         :param serial_no: The serial number of the node
         :param uuid: The node id
@@ -1937,6 +1987,7 @@ class AsyncNode:
         serial_no=None,
     ):
         """Performance get.
+
         :param uuid: The node id
         :param serial_no: serial_no
         """
@@ -1970,6 +2021,7 @@ class AsyncNode:
         study_uid=None,
     ):
         """Progress add.
+
         :param queue: The queue
         :param serial_no: The serial number of the node
         :param state: The status
@@ -2010,6 +2062,7 @@ class AsyncNode:
         node_id=None,
     ):
         """Progress list.
+
         :param destination_id: destination_id
         :param node_id: node_id
         """
@@ -2042,6 +2095,7 @@ class AsyncNode:
         uuid,
     ):
         """Progress get.
+
         :param uuid: The node progress uuid
         """
         request_data = {

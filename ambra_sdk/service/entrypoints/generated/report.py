@@ -21,6 +21,7 @@ class Report:
         report_id,
     ):
         """Status.
+
         :param report_id: The report id
         """
         request_data = {
@@ -45,6 +46,7 @@ class Report:
         report_id,
     ):
         """Zip.
+
         :param report_id: The report id
         """
         request_data = {
@@ -75,6 +77,7 @@ class AsyncReport:
         report_id,
     ):
         """Status.
+
         :param report_id: The report id
         """
         request_data = {
@@ -99,6 +102,7 @@ class AsyncReport:
         report_id,
     ):
         """Zip.
+
         :param report_id: The report id
         """
         request_data = {

@@ -435,6 +435,9 @@ class Activity(BaseModel):
     namespace = FK(model='Namespace', description='Id of the namespace the activity is associated with')
     node_connect_id = String(description='FK. Id of the node connect request the activity is associated with')
     node_connect = FK(model='NodeConnect', description='Id of the node connect request the activity is associated with')
+    priority = Integer(description='The activity priority')
+    qctask_id = String(description='FK. Id of the clinical trial QC task')
+    qctask = FK(model='Task', description='Id of the clinical trial QC task')
     study_id = String(description='FK. Id of the study the activity is associated with')
     study = FK(model='Study', description='Id of the study the activity is associated with')
     type_field = String(description='Type of activity')
@@ -459,6 +462,9 @@ class Activity(BaseModel):
         namespace=None,
         node_connect_id=None,
         node_connect=None,
+        priority=None,
+        qctask_id=None,
+        qctask=None,
         study_id=None,
         study=None,
         type_field=None,
@@ -479,6 +485,9 @@ class Activity(BaseModel):
         self.namespace = namespace
         self.node_connect_id = node_connect_id
         self.node_connect = node_connect
+        self.priority = priority
+        self.qctask_id = qctask_id
+        self.qctask = qctask
         self.study_id = study_id
         self.study = study
         self.type_field = type_field
@@ -661,6 +670,54 @@ class Annotation(BaseModel):
         self.study = study
         self.user_id = user_id
         self.user = user
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+        self.updated = updated
+        self.updated_by = updated_by
+        self.updated_by_obj = updated_by_obj
+
+
+
+class Anonymization(BaseModel):
+    """Anonymization."""
+    
+    id = Integer(description='Primary key for internal use')
+    uuid = String(description='UUID for external use')
+    account_id = String(description='FK. The associated account')
+    account = FK(model='Account', description='The associated account')
+    name = String(description='Name')
+    rules = String(description='Anonymization rules')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+    updated = DateTime(description='Timestamp when the record was last updated')
+    updated_by = String(description='FK. ID of the user who updated the record')
+    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        uuid=None,
+        account_id=None,
+        account=None,
+        name=None,
+        rules=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+        updated=None,
+        updated_by=None,
+        updated_by_obj=None,
+    ):
+        self.id = id
+        self.uuid = uuid
+        self.account_id = account_id
+        self.account = account
+        self.name = name
+        self.rules = rules
         self.created = created
         self.created_by = created_by
         self.created_by_obj = created_by_obj
@@ -1895,9 +1952,12 @@ class Customfield(BaseModel):
     load_from_sr = String(description='Load the value from the SR')
     load_hl7 = String(description='HL7 options')
     load_hl7_filter = String(description='HL7 options')
+    load_order = Boolean(description='Map to other object&#39;s customfield')
     name = String(description='Name and type  of the field')
     object = String(description='Associated object and account')
     options = String(description='Settings')
+    other_customfield_id = String(description='FK. Map to other object&#39;s customfield')
+    other_customfield = FK(model='Customfield', description='Map to other object&#39;s customfield')
     other_dicom_tags = String(description='An array of other DICOM tags to map to in storage')
     required = Boolean(description='Settings')
     type_field = String(description='Name and type  of the field')
@@ -1932,9 +1992,12 @@ class Customfield(BaseModel):
         load_from_sr=None,
         load_hl7=None,
         load_hl7_filter=None,
+        load_order=None,
         name=None,
         object=None,
         options=None,
+        other_customfield_id=None,
+        other_customfield=None,
         other_dicom_tags=None,
         required=None,
         type_field=None,
@@ -1965,9 +2028,12 @@ class Customfield(BaseModel):
         self.load_from_sr = load_from_sr
         self.load_hl7 = load_hl7
         self.load_hl7_filter = load_hl7_filter
+        self.load_order = load_order
         self.name = name
         self.object = object
         self.options = options
+        self.other_customfield_id = other_customfield_id
+        self.other_customfield = other_customfield
         self.other_dicom_tags = other_dicom_tags
         self.required = required
         self.type_field = type_field
@@ -2875,6 +2941,9 @@ class Filter(BaseModel):
     account = FK(model='Account', description='The associated account')
     configuration = String(description='The configuration as a json structure')
     name = String(description='Name')
+    namespace_id = String(description='FK. the phi namespace id')
+    namespace = FK(model='Namespace', description='the phi namespace id')
+    tier_path = String(description='For tiered filters, the path')
     type_field = String(description='The type of the filter')
     user_id = String(description='FK. The user')
     user = FK(model='User', description='The user')
@@ -2895,6 +2964,9 @@ class Filter(BaseModel):
         account=None,
         configuration=None,
         name=None,
+        namespace_id=None,
+        namespace=None,
+        tier_path=None,
         type_field=None,
         user_id=None,
         user=None,
@@ -2911,6 +2983,9 @@ class Filter(BaseModel):
         self.account = account
         self.configuration = configuration
         self.name = name
+        self.namespace_id = namespace_id
+        self.namespace = namespace
+        self.tier_path = tier_path
         self.type_field = type_field
         self.user_id = user_id
         self.user = user
@@ -2983,6 +3058,54 @@ class FilterShare(BaseModel):
         self.role = role
         self.user_id = user_id
         self.user = user
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+        self.updated = updated
+        self.updated_by = updated_by
+        self.updated_by_obj = updated_by_obj
+
+
+
+class FilterTier(BaseModel):
+    """FilterTier."""
+    
+    id = Integer(description='Primary key for internal use')
+    ancestor_id = String(description='FK. Primary key for internal use')
+    ancestor = FK(model='Ancestor', description='Primary key for internal use')
+    depth = Integer(description='Primary key for internal use')
+    descendant_id = String(description='FK. Primary key for internal use')
+    descendant = FK(model='Descendant', description='Primary key for internal use')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+    updated = DateTime(description='Timestamp when the record was last updated')
+    updated_by = String(description='FK. ID of the user who updated the record')
+    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        ancestor_id=None,
+        ancestor=None,
+        depth=None,
+        descendant_id=None,
+        descendant=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+        updated=None,
+        updated_by=None,
+        updated_by_obj=None,
+    ):
+        self.id = id
+        self.ancestor_id = ancestor_id
+        self.ancestor = ancestor
+        self.depth = depth
+        self.descendant_id = descendant_id
+        self.descendant = descendant
         self.created = created
         self.created_by = created_by
         self.created_by_obj = created_by_obj
@@ -3412,12 +3535,13 @@ class Link(BaseModel):
     skip_email_prompt = Boolean(description='Skip ask for the email')
     study_id = String(description='FK. The study the link is for or the filter expression or the namespace for an upload action')
     study = FK(model='Study', description='The study the link is for or the filter expression or the namespace for an upload action')
+    ui_json = String(description='JSON for UI settings')
     upload_match = String(description='Must match rules for uploads')
     upload_study_customfields = DictField(description='Study custom fields for STUDY_UPLOAD')
     use_share_code = Boolean(description='Use the namespace share code information for uploads')
     user_id = String(description='FK. The user who created the link. Any filter is applied in this users context as well')
     user = FK(model='User', description='The user who created the link. Any filter is applied in this users context as well')
-    workflow = String(description='Workflow this link is involved in. The only possible value currently is &#39;epic_upload&#39;')
+    workflow = String(description='Workflow this link is involved in. Possible values epic_upload, patient_studies')
     created = DateTime(description='Timestamp when the record was created')
     created_by = String(description='FK. ID of the user who created the record')
     created_by_obj = FK(model='User', description='ID of the user who created the record')
@@ -3462,6 +3586,7 @@ class Link(BaseModel):
         skip_email_prompt=None,
         study_id=None,
         study=None,
+        ui_json=None,
         upload_match=None,
         upload_study_customfields=None,
         use_share_code=None,
@@ -3508,6 +3633,7 @@ class Link(BaseModel):
         self.skip_email_prompt = skip_email_prompt
         self.study_id = study_id
         self.study = study
+        self.ui_json = ui_json
         self.upload_match = upload_match
         self.upload_study_customfields = upload_study_customfields
         self.use_share_code = use_share_code
@@ -3997,6 +4123,8 @@ class Namespace(BaseModel):
     accelerator = FK(model='Accelerator', description='Global accelerator it is attached too')
     account_id = String(description='FK. Who it is linked to')
     account = FK(model='Account', description='Who it is linked to')
+    anonymization_id = String(description='FK. Anonymization rules')
+    anonymization = FK(model='Anonyimization', description='Anonymization rules')
     anonymize = String(description='Anonymization rules')
     archive = Integer(description='Archive setting. 0 = no archive or else archive and restore based on the priority value of the setting. e.g. 99 is high priority, -99 is low priority')
     cache = Boolean(description='Cache new studies image')
@@ -4071,6 +4199,8 @@ class Namespace(BaseModel):
         accelerator=None,
         account_id=None,
         account=None,
+        anonymization_id=None,
+        anonymization=None,
         anonymize=None,
         archive=None,
         cache=None,
@@ -4141,6 +4271,8 @@ class Namespace(BaseModel):
         self.accelerator = accelerator
         self.account_id = account_id
         self.account = account
+        self.anonymization_id = anonymization_id
+        self.anonymization = anonymization
         self.anonymize = anonymize
         self.archive = archive
         self.cache = cache
@@ -5092,6 +5224,117 @@ class Purge(BaseModel):
         self.study_status_tags = study_status_tags
         self.suspended = suspended
         self.thin = thin
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+        self.updated = updated
+        self.updated_by = updated_by
+        self.updated_by_obj = updated_by_obj
+
+
+
+class Qctask(BaseModel):
+    """Qctask."""
+    
+    id = Integer(description='Primary key for internal use')
+    uuid = String(description='UUID for external use')
+    customfields = DictField(description='Custom fields')
+    message = String(description='Message associated with activity')
+    namespace_id = String(description='FK. Id of the namespace the activity is associated with')
+    namespace = FK(model='Namespace', description='Id of the namespace the activity is associated with')
+    priority = Integer(description='The activity priority')
+    query_id = String(description='FK. Optional Query link')
+    query = FK(model='Query', description='Optional Query link')
+    user_id = String(description='FK. Id of the user the activity is specifically for.')
+    user = FK(model='User', description='Id of the user the activity is specifically for.')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+    updated = DateTime(description='Timestamp when the record was last updated')
+    updated_by = String(description='FK. ID of the user who updated the record')
+    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        uuid=None,
+        customfields=None,
+        message=None,
+        namespace_id=None,
+        namespace=None,
+        priority=None,
+        query_id=None,
+        query=None,
+        user_id=None,
+        user=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+        updated=None,
+        updated_by=None,
+        updated_by_obj=None,
+    ):
+        self.id = id
+        self.uuid = uuid
+        self.customfields = customfields
+        self.message = message
+        self.namespace_id = namespace_id
+        self.namespace = namespace
+        self.priority = priority
+        self.query_id = query_id
+        self.query = query
+        self.user_id = user_id
+        self.user = user
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+        self.updated = updated
+        self.updated_by = updated_by
+        self.updated_by_obj = updated_by_obj
+
+
+
+class QctaskStudy(BaseModel):
+    """QctaskStudy."""
+    
+    id = Integer(description='Primary key for internal use')
+    uuid = String(description='UUID for external use')
+    qctask_id = String(description='FK. QC task')
+    qctask = FK(model='Task', description='QC task')
+    study_id = String(description='FK. Study')
+    study = FK(model='Study', description='Study')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+    updated = DateTime(description='Timestamp when the record was last updated')
+    updated_by = String(description='FK. ID of the user who updated the record')
+    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        uuid=None,
+        qctask_id=None,
+        qctask=None,
+        study_id=None,
+        study=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+        updated=None,
+        updated_by=None,
+        updated_by_obj=None,
+    ):
+        self.id = id
+        self.uuid = uuid
+        self.qctask_id = qctask_id
+        self.qctask = qctask
+        self.study_id = study_id
+        self.study = study
         self.created = created
         self.created_by = created_by
         self.created_by_obj = created_by_obj
@@ -8032,6 +8275,8 @@ class System(BaseModel):
     aws_sk = String(description='AWS information')
     azure_access_key = String(description='Azure information')
     azure_account_name = String(description='Azure information')
+    azure_endpoint_suffix = String(description='Azure information')
+    azure_query_attachments_dir = String(description='Azure information')
     box_client_id = String(description='Box information')
     box_client_secret = String(description='Box information')
     box_enterprises = String(description='Box information')
@@ -8060,6 +8305,7 @@ class System(BaseModel):
     login_page_banner_show_stop = DateTime(description='Login page banner text')
     passwdqc = String(description='Password controls')
     passwdqc_description = String(description='Password controls')
+    permissions_mask = String(description='Permissions mask')
     phr_bypass_study_oversized_threshold = Boolean(description='Bypass oversized threshold for studies in PHR accounts')
     phr_permissions = String(description='The PHR  permissions over-ride')
     privacy_html = String(description='HTML for the terms of use, privacy policy and indicators of use')
@@ -8108,6 +8354,8 @@ class System(BaseModel):
         aws_sk=None,
         azure_access_key=None,
         azure_account_name=None,
+        azure_endpoint_suffix=None,
+        azure_query_attachments_dir=None,
         box_client_id=None,
         box_client_secret=None,
         box_enterprises=None,
@@ -8136,6 +8384,7 @@ class System(BaseModel):
         login_page_banner_show_stop=None,
         passwdqc=None,
         passwdqc_description=None,
+        permissions_mask=None,
         phr_bypass_study_oversized_threshold=None,
         phr_permissions=None,
         privacy_html=None,
@@ -8180,6 +8429,8 @@ class System(BaseModel):
         self.aws_sk = aws_sk
         self.azure_access_key = azure_access_key
         self.azure_account_name = azure_account_name
+        self.azure_endpoint_suffix = azure_endpoint_suffix
+        self.azure_query_attachments_dir = azure_query_attachments_dir
         self.box_client_id = box_client_id
         self.box_client_secret = box_client_secret
         self.box_enterprises = box_enterprises
@@ -8208,6 +8459,7 @@ class System(BaseModel):
         self.login_page_banner_show_stop = login_page_banner_show_stop
         self.passwdqc = passwdqc
         self.passwdqc_description = passwdqc_description
+        self.permissions_mask = permissions_mask
         self.phr_bypass_study_oversized_threshold = phr_bypass_study_oversized_threshold
         self.phr_permissions = phr_permissions
         self.privacy_html = privacy_html

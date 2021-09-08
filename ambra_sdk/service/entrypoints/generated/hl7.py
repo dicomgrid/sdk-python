@@ -34,6 +34,7 @@ class Hl7:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -67,6 +68,7 @@ class Hl7:
         accession_number=None,
     ):
         """Add.
+
         :param message: The HL7 message
         :param serial_no: The serial number of the node
         :param uuid: The node id
@@ -104,6 +106,7 @@ class Hl7:
         study_uid=None,
     ):
         """Get.
+
         :param raw: Flag to return the raw HL7 message as well
         :param uuid: The hl7 uuid
         :param node_id: node_id
@@ -142,6 +145,7 @@ class Hl7:
         uuid,
     ):
         """Delete.
+
         :param uuid: The hl7 uuid
         """
         request_data = {
@@ -166,6 +170,7 @@ class Hl7:
         study_id,
     ):
         """Study report.
+
         :param study_id: The study uuid
         """
         request_data = {
@@ -190,6 +195,7 @@ class Hl7:
         uuid,
     ):
         """Extract report.
+
         :param uuid: The HL7 uuid
         """
         request_data = {
@@ -215,6 +221,7 @@ class Hl7:
         account_id,
     ):
         """Template list.
+
         :param account_id: The account uuid
         """
         request_data = {
@@ -241,6 +248,7 @@ class Hl7:
         name,
     ):
         """Template add.
+
         :param account_id: The account uuid
         :param body: The HL7 message with replacement expressions
         :param name: Name of the template
@@ -272,6 +280,7 @@ class Hl7:
         uuid,
     ):
         """Template set.
+
         :param body: The HL7 message with replacement expressions
         :param name: Name of the template
         :param uuid: The template id
@@ -301,6 +310,7 @@ class Hl7:
         uuid,
     ):
         """Template get.
+
         :param uuid: The template id
         """
         request_data = {
@@ -329,6 +339,7 @@ class Hl7:
         uuid,
     ):
         """Template render.
+
         :param hex: Flag if you want a hexdump of the text returned rather than the JSON
         :param hl7_id: Optional hl7 message
         :param study_id: The study id
@@ -361,6 +372,7 @@ class Hl7:
         uuid,
     ):
         """Template delete.
+
         :param uuid: The template id
         """
         request_data = {
@@ -385,6 +397,7 @@ class Hl7:
         account_id,
     ):
         """Transform list.
+
         :param account_id: The account uuid
         """
         request_data = {
@@ -419,6 +432,7 @@ class Hl7:
         replacements,
     ):
         """Transform add.
+
         :param account_id: The account uuid
         :param conditions: A JSON array of the transform conditions
         :param name: Name of the transform
@@ -459,6 +473,7 @@ class Hl7:
         uuid,
     ):
         """Transform set.
+
         :param conditions: A JSON array of the transform conditions
         :param name: Name of the transform
         :param order_by: A numeric ordering value. Transformations are run in this order from lowest to highest
@@ -495,6 +510,7 @@ class Hl7:
         uuid,
     ):
         """Transform get.
+
         :param uuid: The transform id
         """
         request_data = {
@@ -519,6 +535,7 @@ class Hl7:
         uuid,
     ):
         """Transform delete.
+
         :param uuid: The transform id
         """
         request_data = {
@@ -543,6 +560,7 @@ class Hl7:
         hl7,
     ):
         """Transform test.
+
         :param hl7: HL7 message to run the transformations on
         """
         request_data = {
@@ -567,6 +585,7 @@ class Hl7:
         fields=None,
     ):
         """Parse fields.
+
         :param message: HL7 message to parse
         :param fields: Comma delimited list of the field to return. Use the notation specified in /hl7/transform/add (optional)
         """
@@ -601,6 +620,7 @@ class AsyncHl7:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -634,6 +654,7 @@ class AsyncHl7:
         accession_number=None,
     ):
         """Add.
+
         :param message: The HL7 message
         :param serial_no: The serial number of the node
         :param uuid: The node id
@@ -671,6 +692,7 @@ class AsyncHl7:
         study_uid=None,
     ):
         """Get.
+
         :param raw: Flag to return the raw HL7 message as well
         :param uuid: The hl7 uuid
         :param node_id: node_id
@@ -709,6 +731,7 @@ class AsyncHl7:
         uuid,
     ):
         """Delete.
+
         :param uuid: The hl7 uuid
         """
         request_data = {
@@ -733,6 +756,7 @@ class AsyncHl7:
         study_id,
     ):
         """Study report.
+
         :param study_id: The study uuid
         """
         request_data = {
@@ -757,6 +781,7 @@ class AsyncHl7:
         uuid,
     ):
         """Extract report.
+
         :param uuid: The HL7 uuid
         """
         request_data = {
@@ -782,6 +807,7 @@ class AsyncHl7:
         account_id,
     ):
         """Template list.
+
         :param account_id: The account uuid
         """
         request_data = {
@@ -808,6 +834,7 @@ class AsyncHl7:
         name,
     ):
         """Template add.
+
         :param account_id: The account uuid
         :param body: The HL7 message with replacement expressions
         :param name: Name of the template
@@ -839,6 +866,7 @@ class AsyncHl7:
         uuid,
     ):
         """Template set.
+
         :param body: The HL7 message with replacement expressions
         :param name: Name of the template
         :param uuid: The template id
@@ -868,6 +896,7 @@ class AsyncHl7:
         uuid,
     ):
         """Template get.
+
         :param uuid: The template id
         """
         request_data = {
@@ -896,6 +925,7 @@ class AsyncHl7:
         uuid,
     ):
         """Template render.
+
         :param hex: Flag if you want a hexdump of the text returned rather than the JSON
         :param hl7_id: Optional hl7 message
         :param study_id: The study id
@@ -928,6 +958,7 @@ class AsyncHl7:
         uuid,
     ):
         """Template delete.
+
         :param uuid: The template id
         """
         request_data = {
@@ -952,6 +983,7 @@ class AsyncHl7:
         account_id,
     ):
         """Transform list.
+
         :param account_id: The account uuid
         """
         request_data = {
@@ -986,6 +1018,7 @@ class AsyncHl7:
         replacements,
     ):
         """Transform add.
+
         :param account_id: The account uuid
         :param conditions: A JSON array of the transform conditions
         :param name: Name of the transform
@@ -1026,6 +1059,7 @@ class AsyncHl7:
         uuid,
     ):
         """Transform set.
+
         :param conditions: A JSON array of the transform conditions
         :param name: Name of the transform
         :param order_by: A numeric ordering value. Transformations are run in this order from lowest to highest
@@ -1062,6 +1096,7 @@ class AsyncHl7:
         uuid,
     ):
         """Transform get.
+
         :param uuid: The transform id
         """
         request_data = {
@@ -1086,6 +1121,7 @@ class AsyncHl7:
         uuid,
     ):
         """Transform delete.
+
         :param uuid: The transform id
         """
         request_data = {
@@ -1110,6 +1146,7 @@ class AsyncHl7:
         hl7,
     ):
         """Transform test.
+
         :param hl7: HL7 message to run the transformations on
         """
         request_data = {
@@ -1134,6 +1171,7 @@ class AsyncHl7:
         fields=None,
     ):
         """Parse fields.
+
         :param message: HL7 message to parse
         :param fields: Comma delimited list of the field to return. Use the notation specified in /hl7/transform/add (optional)
         """

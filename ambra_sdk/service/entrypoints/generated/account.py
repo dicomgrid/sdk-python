@@ -51,6 +51,7 @@ class Account:
         permissions=None,
     ):
         """List.
+
         :param permissions: Flag to return the users role and permissions in the accounts (optional)
         """
         request_data = {
@@ -100,6 +101,7 @@ class Account:
         vendor=None,
     ):
         """Set.
+
         :param uuid: The account uuid
         :param can_request: Flag if user can request to join the account (optional)
         :param css: Custom CSS for the account (optional)
@@ -182,6 +184,7 @@ class Account:
         permissions=None,
     ):
         """Get.
+
         :param uuid: The account uuid
         :param brand_settings: A comma delimited list of the settings from /brand/get for this vanity to return (optional)
         :param permissions: Flag to return the users role and permissions in the accounts (optional)
@@ -247,6 +250,7 @@ class Account:
         user_id=None,
     ):
         """User add.
+
         :param uuid: The account uuid
         :param account_alias: Users alias in the account. (optional).
         :param account_email: Users account_email. Only set this if it is different than the users login email (optional).
@@ -401,6 +405,7 @@ class Account:
         sso_only=None,
     ):
         """User set.
+
         :param user_id: The users uuid
         :param uuid: The account uuid
         :param account_alias: Users alias in the account. (optional).
@@ -516,6 +521,7 @@ class Account:
         uuid,
     ):
         """User get.
+
         :param user_id: The users uuid
         :param uuid: The account uuid
         """
@@ -543,6 +549,7 @@ class Account:
         uuid,
     ):
         """User delete.
+
         :param user_id: The user uuid
         :param uuid: The account uuid
         """
@@ -570,6 +577,7 @@ class Account:
         uuid,
     ):
         """User list.
+
         :param uuid: The account uuid
         """
         request_data = {
@@ -601,6 +609,7 @@ class Account:
         user_id=None,
     ):
         """User report login.
+
         :param uuid: The account uuid
         :param user_id: Limit to this user_id (optional)
         """
@@ -631,6 +640,7 @@ class Account:
         with_type,
     ):
         """Can share.
+
         :param account_id: The account id
         :param by_id: The uuid of the object that can share
         :param by_type: The type of object that can share. (user|account|group|location)
@@ -670,6 +680,7 @@ class Account:
         with_type,
     ):
         """Can share stop.
+
         :param account_id: The account id
         :param by_id: The uuid of the object that can share
         :param by_type: The type of object that can share. (user|account|group|location)
@@ -705,6 +716,7 @@ class Account:
         account_id,
     ):
         """Can share list.
+
         :param account_id: The account id
         """
         request_data = {
@@ -730,6 +742,7 @@ class Account:
         vanity=None,
     ):
         """Css.
+
         :param account_id: account_id
         :param vanity: vanity
         """
@@ -757,6 +770,7 @@ class Account:
         vanity=None,
     ):
         """Settings.
+
         :param account_id: account_id
         :param brand_settings: A comma delimited list of the settings from /brand/get for this vanity to return (optional)
         :param namespace_id: Apply overrides for the namespace (optional)
@@ -789,6 +803,7 @@ class Account:
         settings=None,
     ):
         """Settings validate.
+
         :param uuid: The account uuid
         :param setting_param: Validate an individual setting. This is an alternative to the settings hash (optional)
         :param settings: A hash of the account settings with values to validate (optional)
@@ -820,6 +835,7 @@ class Account:
         uuid,
     ):
         """Connect.
+
         :param code: The OAuth code
         :param uuid: The account_id
         """
@@ -849,6 +865,7 @@ class Account:
         serial_no=None,
     ):
         """Md5 counter.
+
         :param md5: The MD5 value
         :param uuid: UUID of the account (only needed for sid authentication)
         :param node_id: node_id
@@ -876,6 +893,7 @@ class Account:
         namespace_id,
     ):
         """List requestable.
+
         :param namespace_id: Id of the namespace to receive requested studies into
         """
         request_data = {
@@ -900,6 +918,7 @@ class Account:
         uuid,
     ):
         """Radreport email authorize.
+
         :param captcha_response: A solved captcha
         :param uuid: The account id
         """
@@ -936,6 +955,7 @@ class AsyncAccount:
         permissions=None,
     ):
         """List.
+
         :param permissions: Flag to return the users role and permissions in the accounts (optional)
         """
         request_data = {
@@ -985,6 +1005,7 @@ class AsyncAccount:
         vendor=None,
     ):
         """Set.
+
         :param uuid: The account uuid
         :param can_request: Flag if user can request to join the account (optional)
         :param css: Custom CSS for the account (optional)
@@ -1067,6 +1088,7 @@ class AsyncAccount:
         permissions=None,
     ):
         """Get.
+
         :param uuid: The account uuid
         :param brand_settings: A comma delimited list of the settings from /brand/get for this vanity to return (optional)
         :param permissions: Flag to return the users role and permissions in the accounts (optional)
@@ -1132,6 +1154,7 @@ class AsyncAccount:
         user_id=None,
     ):
         """User add.
+
         :param uuid: The account uuid
         :param account_alias: Users alias in the account. (optional).
         :param account_email: Users account_email. Only set this if it is different than the users login email (optional).
@@ -1286,6 +1309,7 @@ class AsyncAccount:
         sso_only=None,
     ):
         """User set.
+
         :param user_id: The users uuid
         :param uuid: The account uuid
         :param account_alias: Users alias in the account. (optional).
@@ -1401,6 +1425,7 @@ class AsyncAccount:
         uuid,
     ):
         """User get.
+
         :param user_id: The users uuid
         :param uuid: The account uuid
         """
@@ -1428,6 +1453,7 @@ class AsyncAccount:
         uuid,
     ):
         """User delete.
+
         :param user_id: The user uuid
         :param uuid: The account uuid
         """
@@ -1455,6 +1481,7 @@ class AsyncAccount:
         uuid,
     ):
         """User list.
+
         :param uuid: The account uuid
         """
         request_data = {
@@ -1486,6 +1513,7 @@ class AsyncAccount:
         user_id=None,
     ):
         """User report login.
+
         :param uuid: The account uuid
         :param user_id: Limit to this user_id (optional)
         """
@@ -1516,6 +1544,7 @@ class AsyncAccount:
         with_type,
     ):
         """Can share.
+
         :param account_id: The account id
         :param by_id: The uuid of the object that can share
         :param by_type: The type of object that can share. (user|account|group|location)
@@ -1555,6 +1584,7 @@ class AsyncAccount:
         with_type,
     ):
         """Can share stop.
+
         :param account_id: The account id
         :param by_id: The uuid of the object that can share
         :param by_type: The type of object that can share. (user|account|group|location)
@@ -1590,6 +1620,7 @@ class AsyncAccount:
         account_id,
     ):
         """Can share list.
+
         :param account_id: The account id
         """
         request_data = {
@@ -1615,6 +1646,7 @@ class AsyncAccount:
         vanity=None,
     ):
         """Css.
+
         :param account_id: account_id
         :param vanity: vanity
         """
@@ -1642,6 +1674,7 @@ class AsyncAccount:
         vanity=None,
     ):
         """Settings.
+
         :param account_id: account_id
         :param brand_settings: A comma delimited list of the settings from /brand/get for this vanity to return (optional)
         :param namespace_id: Apply overrides for the namespace (optional)
@@ -1674,6 +1707,7 @@ class AsyncAccount:
         settings=None,
     ):
         """Settings validate.
+
         :param uuid: The account uuid
         :param setting_param: Validate an individual setting. This is an alternative to the settings hash (optional)
         :param settings: A hash of the account settings with values to validate (optional)
@@ -1705,6 +1739,7 @@ class AsyncAccount:
         uuid,
     ):
         """Connect.
+
         :param code: The OAuth code
         :param uuid: The account_id
         """
@@ -1734,6 +1769,7 @@ class AsyncAccount:
         serial_no=None,
     ):
         """Md5 counter.
+
         :param md5: The MD5 value
         :param uuid: UUID of the account (only needed for sid authentication)
         :param node_id: node_id
@@ -1761,6 +1797,7 @@ class AsyncAccount:
         namespace_id,
     ):
         """List requestable.
+
         :param namespace_id: Id of the namespace to receive requested studies into
         """
         request_data = {
@@ -1785,6 +1822,7 @@ class AsyncAccount:
         uuid,
     ):
         """Radreport email authorize.
+
         :param captcha_response: A solved captcha
         :param uuid: The account id
         """

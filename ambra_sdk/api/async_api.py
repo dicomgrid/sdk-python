@@ -18,6 +18,7 @@ from ambra_sdk.service.entrypoints import (
     AsyncActivity,
     AsyncAnalytics,
     AsyncAnnotation,
+    AsyncAnonymization,
     AsyncAppointment,
     AsyncAudit,
     AsyncCase,
@@ -41,6 +42,7 @@ from ambra_sdk.service.entrypoints import (
     AsyncOrder,
     AsyncPatient,
     AsyncPurge,
+    AsyncQctask,
     AsyncQuery,
     AsyncRadreport,
     AsyncRadreportmacro,
@@ -66,7 +68,39 @@ logger = logging.getLogger(__name__)
 
 
 class AsyncApi(BaseApi):
-    """Ambra Async API."""
+    """Ambra Async API.
+
+    Example:
+    >>> from ambra_sdk.api import AsyncApi
+    >>>
+    >>> api = AsyncApi.with_creds(
+    ...     url='https://ambrahealth_host/api/v3',
+    ...     username='username',
+    ...     password='password',
+    ...     client_name='Some name (ex: Hospital-ABC)',
+    ... )
+
+    Using some special parameters (In most cases you dont need this!):
+
+    >>> from ambra_sdk.api import AsyncApi
+    >>> from ambra_sdk.api.base_api import RateLimit, RateLimits
+    >>>
+    >>> MY_RLS = RateLimits(
+    ...        default=RateLimit(3, 2),
+    ...        get_limit=RateLimit(4, 2),
+    ...        special={'special_url': RateLimit(5, 2)},
+    ... )
+    >>>
+    >>> api = AsyncApi.with_creds(
+    ...     url='https://ambrahealth_host/api/v3',
+    ...     username='username',
+    ...     password='password',
+    ...     client_name='Some name (ex: Hospital-ABC)',
+    ...     special_headers_for_login={'Special-H': 'ABC'},
+    ...     rate_limits=MY_RLS,
+    ...     autocast_arguments=False,
+    ... )
+    """
 
     backend = 'AIOHTTP'
 
@@ -333,7 +367,9 @@ class AsyncApi(BaseApi):
         return await self.service_session.request(
             method=request_args.method,
             url=request_args.full_url,
-            **request_args.dict_optional_args(),
+            **request_args.dict_optional_args(
+                self._autocast_arguments,
+            ),
         )
 
     async def _prepare_storage_request_args(
@@ -402,3 +438,5 @@ class AsyncApi(BaseApi):
         self.Query = AsyncQuery(self)
         self.Scanner = AsyncScanner(self)
         self.Site = AsyncSite(self)
+        self.AsyncAnonymization = AsyncAnonymization(self)
+        self.AsyncQctask = AsyncQctask(self)

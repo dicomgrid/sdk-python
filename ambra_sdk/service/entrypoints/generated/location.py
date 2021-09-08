@@ -37,6 +37,7 @@ class Location:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -81,6 +82,7 @@ class Location:
         share_via_gateway=None,
     ):
         """Add.
+
         :param account_id: uuid of the account
         :param name: Name of the location
         :param customfield_param: Custom field(s) (optional)
@@ -156,6 +158,7 @@ class Location:
         share_via_gateway=None,
     ):
         """Set.
+
         :param uuid: The location uuid
         :param customfield_param: Custom field(s) (optional)
         :param hl7_template: The HL7 reporting template for the location (optional)
@@ -214,6 +217,7 @@ class Location:
         uuid,
     ):
         """Get.
+
         :param uuid: The location uuid
         """
         request_data = {
@@ -238,6 +242,7 @@ class Location:
         uuid,
     ):
         """Delete.
+
         :param uuid: The location uuid
         """
         request_data = {
@@ -286,6 +291,7 @@ class Location:
         role_id=None,
     ):
         """User add.
+
         :param event_upload_fail: Notify the user on a failed upload into the location namespace
         :param user_id: Id of the user
         :param uuid: The location id
@@ -361,6 +367,7 @@ class Location:
         uuid,
     ):
         """User delete.
+
         :param user_id: The user id
         :param uuid: The location id
         """
@@ -387,6 +394,7 @@ class Location:
         uuid,
     ):
         """User list.
+
         :param uuid: The location id
         """
         request_data = {
@@ -426,6 +434,7 @@ class AsyncLocation:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -470,6 +479,7 @@ class AsyncLocation:
         share_via_gateway=None,
     ):
         """Add.
+
         :param account_id: uuid of the account
         :param name: Name of the location
         :param customfield_param: Custom field(s) (optional)
@@ -545,6 +555,7 @@ class AsyncLocation:
         share_via_gateway=None,
     ):
         """Set.
+
         :param uuid: The location uuid
         :param customfield_param: Custom field(s) (optional)
         :param hl7_template: The HL7 reporting template for the location (optional)
@@ -603,6 +614,7 @@ class AsyncLocation:
         uuid,
     ):
         """Get.
+
         :param uuid: The location uuid
         """
         request_data = {
@@ -627,6 +639,7 @@ class AsyncLocation:
         uuid,
     ):
         """Delete.
+
         :param uuid: The location uuid
         """
         request_data = {
@@ -675,6 +688,7 @@ class AsyncLocation:
         role_id=None,
     ):
         """User add.
+
         :param event_upload_fail: Notify the user on a failed upload into the location namespace
         :param user_id: Id of the user
         :param uuid: The location id
@@ -750,6 +764,7 @@ class AsyncLocation:
         uuid,
     ):
         """User delete.
+
         :param user_id: The user id
         :param uuid: The location id
         """
@@ -776,6 +791,7 @@ class AsyncLocation:
         uuid,
     ):
         """User list.
+
         :param uuid: The location id
         """
         request_data = {

@@ -32,6 +32,7 @@ class Audit:
         reverse=None,
     ):
         """Object.
+
         :param uuid: The uuid of the object to audit
         :param customfield_detail: Flag to include the customfield name in the detail (optional)
         :param download: Flag to create a zipped CSV file. A report_id will be returned and the file can be accessed via /report/status and /report/zip (optional)
@@ -70,6 +71,7 @@ class Audit:
         study_fields=None,
     ):
         """User.
+
         :param account_id: The id of the account
         :param user_id: The id of the user to audit
         :param download: Flag to create a zipped CSV file. A report_id will be returned and the file can be accessed via /report/status and /report/zip (optional)
@@ -108,6 +110,7 @@ class Audit:
         reverse=None,
     ):
         """Account.
+
         :param account_id: The id of the account
         :param download: Flag to create a zipped CSV file. A report_id will be returned and the file can be accessed via /report/status and /report/zip (optional)
         :param reverse: Flag to reverse the default sort order (optional)
@@ -141,6 +144,7 @@ class Audit:
         type,
     ):
         """Deleted.
+
         :param account_id: The id of the account
         :param type: The type of the object (Study|User etc.)
         """
@@ -168,6 +172,7 @@ class Audit:
         rest_params=None,
     ):
         """Log.
+
         :param bucket: Name of the bucket to log to
         :param rest_params: Parameters are logged to a message in the bucket
         """
@@ -196,6 +201,7 @@ class Audit:
         from_time=None,
     ):
         """Failedlogins.
+
         :param account_id: The id of the account
         :param from_time: Only return events after the epoch time (optional)
         """
@@ -231,6 +237,7 @@ class AsyncAudit:
         reverse=None,
     ):
         """Object.
+
         :param uuid: The uuid of the object to audit
         :param customfield_detail: Flag to include the customfield name in the detail (optional)
         :param download: Flag to create a zipped CSV file. A report_id will be returned and the file can be accessed via /report/status and /report/zip (optional)
@@ -269,6 +276,7 @@ class AsyncAudit:
         study_fields=None,
     ):
         """User.
+
         :param account_id: The id of the account
         :param user_id: The id of the user to audit
         :param download: Flag to create a zipped CSV file. A report_id will be returned and the file can be accessed via /report/status and /report/zip (optional)
@@ -307,6 +315,7 @@ class AsyncAudit:
         reverse=None,
     ):
         """Account.
+
         :param account_id: The id of the account
         :param download: Flag to create a zipped CSV file. A report_id will be returned and the file can be accessed via /report/status and /report/zip (optional)
         :param reverse: Flag to reverse the default sort order (optional)
@@ -340,6 +349,7 @@ class AsyncAudit:
         type,
     ):
         """Deleted.
+
         :param account_id: The id of the account
         :param type: The type of the object (Study|User etc.)
         """
@@ -367,6 +377,7 @@ class AsyncAudit:
         rest_params=None,
     ):
         """Log.
+
         :param bucket: Name of the bucket to log to
         :param rest_params: Parameters are logged to a message in the bucket
         """
@@ -395,6 +406,7 @@ class AsyncAudit:
         from_time=None,
     ):
         """Failedlogins.
+
         :param account_id: The id of the account
         :param from_time: Only return events after the epoch time (optional)
         """

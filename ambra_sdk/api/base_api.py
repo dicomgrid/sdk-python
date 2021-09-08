@@ -67,6 +67,7 @@ class BaseApi:  # NOQA:WPS214,WPS230
         client_name: str = DEFAULT_SDK_CLIENT_NAME,
         special_headers_for_login: Optional[Dict[str, str]] = None,
         rate_limits: Optional[RateLimits] = DEFAULT_RATE_LIMITS,
+        autocast_arguments: bool = True,
     ):
         """Init api.
 
@@ -75,8 +76,25 @@ class BaseApi:  # NOQA:WPS214,WPS230
         :param username: username credential
         :param password: password credential
         :param client_name: user defined client name
-        :param special_headers_for_login: special headers for login
-        :param rate_limits: rate limits
+            This is some string. Using this in ambra sdk server
+            we can find your requests and can help you to
+            solve some problems.
+        :param special_headers_for_login: some special
+            headers for logging requests.
+        :param rate_limits: how many requests you can
+            execute per second using this Api
+        :param autocast_arguments: If is True,
+            SDK tring to cast your parameters to valid
+            request arguments. For example:
+
+            some_datetime -> '%Y-%m-%d %H:%M:%S'
+            ['a', 'b'] -> '["a", "b"]'
+
+            without this argument you need to do something like this:
+            >> api.Study.get(
+            ..     ...,
+            ..     fields=json.dumps(["field1", "field2"]),
+            .. ).get()
         """
         self._api_url: str = url
         self._creds: Optional[Credentials] = None
@@ -93,6 +111,7 @@ class BaseApi:  # NOQA:WPS214,WPS230
             self._creds = Credentials(username=username, password=password)
         self._rate_limits = rate_limits
         self.ws_url = '{url}/channel/websocket'.format(url=self._api_url)
+        self._autocast_arguments = autocast_arguments
 
     @property
     def default_headers(self):
@@ -116,13 +135,30 @@ class BaseApi:  # NOQA:WPS214,WPS230
         sid: str,
         client_name: str = DEFAULT_SDK_CLIENT_NAME,
         rate_limits: RateLimits = DEFAULT_RATE_LIMITS,
+        autocast_arguments: bool = True,
     ) -> 'BaseApi':
         """Create Api with sid.
 
         :param url: api url
         :param sid: session id
         :param client_name: user defined client name
-        :param rate_limits: rate limits
+            This is some string. Using this in ambra sdk server
+            we can find your requests and can help you to
+            solve some problems.
+        :param rate_limits: how many requests you can
+            execute per second using this Api
+        :param autocast_arguments: If is True,
+            SDK tring to cast your parameters to valid
+            request arguments. For example:
+
+            some_datetime -> '%Y-%m-%d %H:%M:%S'
+            ['a', 'b'] -> '["a", "b"]'
+
+            without this argument you need to do something like this:
+            >> api.Study.get(
+            ..     ...,
+            ..     fields=json.dumps(["field1", "field2"]),
+            .. ).get()
 
         :return: Api
         """
@@ -131,6 +167,7 @@ class BaseApi:  # NOQA:WPS214,WPS230
             sid=sid,
             client_name=client_name,
             rate_limits=rate_limits,
+            autocast_arguments=autocast_arguments,
         )
 
     @classmethod
@@ -142,6 +179,7 @@ class BaseApi:  # NOQA:WPS214,WPS230
         client_name: str = DEFAULT_SDK_CLIENT_NAME,
         special_headers_for_login: Optional[Dict[str, str]] = None,
         rate_limits: RateLimits = DEFAULT_RATE_LIMITS,
+        autocast_arguments: bool = True,
     ) -> 'BaseApi':
         """Create Api with (username, password) credentials.
 
@@ -149,8 +187,25 @@ class BaseApi:  # NOQA:WPS214,WPS230
         :param username: username credential
         :param password: password credential
         :param client_name: user defined client name
-        :param special_headers_for_login: special headers for login
-        :param rate_limits: rate limits
+            This is some string. Using this in ambra sdk server
+            we can find your requests and can help you to
+            solve some problems.
+        :param special_headers_for_login: some special
+            headers for logging requests.
+        :param rate_limits: how many requests you can
+            execute per second using this Api
+        :param autocast_arguments: If is True,
+            SDK tring to cast your parameters to valid
+            request arguments. For example:
+
+            some_datetime -> '%Y-%m-%d %H:%M:%S'
+            ['a', 'b'] -> '["a", "b"]'
+
+            without this argument you need to do something like this:
+            >> api.Study.get(
+            ..     ...,
+            ..     fields=json.dumps(["field1", "field2"]),
+            .. ).get()
 
         :return: Api
         """
@@ -161,6 +216,7 @@ class BaseApi:  # NOQA:WPS214,WPS230
             client_name=client_name,
             special_headers_for_login=special_headers_for_login,
             rate_limits=rate_limits,
+            autocast_arguments=autocast_arguments,
         )
 
     def service_full_url(self, url: str) -> str:

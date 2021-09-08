@@ -35,6 +35,7 @@ class Purge:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -82,6 +83,7 @@ class Purge:
         thin=None,
     ):
         """Add.
+
         :param account_id: uuid of the account the rule is for
         :param days_old: Studies greater than or equal to these days old will be purged
         :param days_old_how: How should the days old value be calculated using the 'U'pdated, 'C'reated or 'S'tudy date
@@ -162,6 +164,7 @@ class Purge:
         thin=None,
     ):
         """Set.
+
         :param uuid: Id of the purge rule
         :param adults: Apply this rule to adults - flag (optional)
         :param archive: Archive the studies rather than deleting them - flag (optional)
@@ -224,6 +227,7 @@ class Purge:
         uuid,
     ):
         """Get.
+
         :param uuid: Id of the purge rule
         """
         request_data = {
@@ -248,6 +252,7 @@ class Purge:
         uuid,
     ):
         """Delete.
+
         :param uuid: Id of the purge rule
         """
         request_data = {
@@ -275,6 +280,7 @@ class Purge:
         rule_id=None,
     ):
         """Run.
+
         :param dry_run: Do a dry run of the rule - flag
         :param account_id: account_id
         :param object: Limit purging to this object only (optional)
@@ -314,6 +320,7 @@ class AsyncPurge:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -361,6 +368,7 @@ class AsyncPurge:
         thin=None,
     ):
         """Add.
+
         :param account_id: uuid of the account the rule is for
         :param days_old: Studies greater than or equal to these days old will be purged
         :param days_old_how: How should the days old value be calculated using the 'U'pdated, 'C'reated or 'S'tudy date
@@ -441,6 +449,7 @@ class AsyncPurge:
         thin=None,
     ):
         """Set.
+
         :param uuid: Id of the purge rule
         :param adults: Apply this rule to adults - flag (optional)
         :param archive: Archive the studies rather than deleting them - flag (optional)
@@ -503,6 +512,7 @@ class AsyncPurge:
         uuid,
     ):
         """Get.
+
         :param uuid: Id of the purge rule
         """
         request_data = {
@@ -527,6 +537,7 @@ class AsyncPurge:
         uuid,
     ):
         """Delete.
+
         :param uuid: Id of the purge rule
         """
         request_data = {
@@ -554,6 +565,7 @@ class AsyncPurge:
         rule_id=None,
     ):
         """Run.
+
         :param dry_run: Do a dry run of the rule - flag
         :param account_id: account_id
         :param object: Limit purging to this object only (optional)

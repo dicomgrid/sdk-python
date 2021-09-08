@@ -19,6 +19,7 @@ class Training:
         self,
     ):
         """Todo.
+
         """
         request_data = {
         }
@@ -41,6 +42,7 @@ class Training:
         additional_parameters=None,
     ):
         """Done.
+
         :param account_id: Id of the account the training is for
         :param form_number: The formstack id of the form
         :param additional_parameters: Additional parameters will be logged as part of the TRAINING_DONE user audit event
@@ -77,6 +79,7 @@ class AsyncTraining:
         self,
     ):
         """Todo.
+
         """
         request_data = {
         }
@@ -99,6 +102,7 @@ class AsyncTraining:
         additional_parameters=None,
     ):
         """Done.
+
         :param account_id: Id of the account the training is for
         :param form_number: The formstack id of the form
         :param additional_parameters: Additional parameters will be logged as part of the TRAINING_DONE user audit event

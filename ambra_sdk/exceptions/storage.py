@@ -1,4 +1,11 @@
-"""Ambra storage exceptions."""
+"""Ambra storage exceptions.
+
+ Version: a1038f4611d60145d59bbfcf734c7eefc191fc64 (storage commit)
+
+https://github.com/dicomgrid/v3storage/blob/master/GridV2WebServices/src/main/java/com/dicomgrid/webservice/exception/handling/ApiException.java#L132
+
+~/dev/v3storage/GridV2WebServices/src/main/java/com/dicomgrid/webservice/exception/handling/ApiException.java
+"""
 
 import inspect
 import types
@@ -39,9 +46,6 @@ class StorageResponseException(AmbraResponseException):  # NOQA:WPS230
         self.readable_status = readable_status
         self.created = created
         self.extended = extended
-
-
-# https://github.com/dicomgrid/v3storage/blob/master/GridV2WebServices/src/main/java/com/dicomgrid/webservice/exception/handling/ApiException.java#L132
 
 
 class Unknown(StorageResponseException):
@@ -223,8 +227,7 @@ class StoreOperationFailed(StorageResponseException):
 
     storage_code = 20
     description = (
-        'An error occurred while trying'
-        ' to persist image into storage'
+        'An error occurred while trying to persist image into storage'
     )
     http_status_code = HTTPStatus.INTERNAL_SERVER_ERROR.value
     readable_status = 'STORE_OPERATION_FAILED'
@@ -244,8 +247,7 @@ class AnonymizeRegionsException(StorageResponseException):
 
     storage_code = 22
     description = (
-        'An error occurred during anonymizing'
-        ' regions of supplied DICOM'
+        'An error occurred during anonymizing regions of supplied DICOM'
     )
     http_status_code = HTTPStatus.INTERNAL_SERVER_ERROR.value
     readable_status = 'ANONYMIZE_REGIONS_EXCEPTION'
@@ -283,8 +285,8 @@ class ErrorOnReadingEmbeddedThinkingSystem(StorageResponseException):
 
     storage_code = 26
     description = (
-        'An error occurred during reading'
-        ' embedded thinking system PR and fixing tags'
+        'An error occurred during reading embedded thinking system PR '
+        'and fixing tags'
     )
     http_status_code = HTTPStatus.INTERNAL_SERVER_ERROR.value
     readable_status = 'ERROR_ON_READING_EMBEDDED_THINKING_SYSTEM'
@@ -307,8 +309,8 @@ class ErrorOccurredWhileExtractingDatumFromDicom(StorageResponseException):
 
     storage_code = 28
     description = (
-        'An error occurred while extracting DATUM'
-        ' tags from DICOM, and splitting this DICOM'
+        'An error occurred while extracting DATUM tags from DICOM, and '
+        'splitting this DICOM'
     )
     http_status_code = HTTPStatus.INTERNAL_SERVER_ERROR.value
     readable_status = 'ERROR_OCCURRED_WHILE_EXTRACTING_DATUM_FROM_DICOM'
@@ -391,6 +393,80 @@ class TranscodingServiceError(StorageResponseException):
     readable_status = 'TRANSCODING_SERVICE_ERROR'
 
 
+class NoImagesInStudy(StorageResponseException):
+    """NoImagesInStudy."""
+
+    storage_code = 36
+    description = 'There are no images in study schema'
+    http_status_code = HTTPStatus.NOT_ACCEPTABLE.value
+    readable_status = 'NO_IMAGES_IN_STUDY'
+
+
+class ErrorOnStudyPull(StorageResponseException):
+    """ErrorOnStudyPull."""
+
+    storage_code = 37
+    description = 'Wrapped error when executing request to pull study'
+    http_status_code = HTTPStatus.INTERNAL_SERVER_ERROR.value
+    readable_status = 'ERROR_ON_STUDY_PULL'
+
+
+class NotVideoInImage(StorageResponseException):
+    """NotVideoInImage."""
+
+    storage_code = 38
+    description = (
+        'Video in DICOM requested, but wrapped file is another content'
+    )
+    http_status_code = HTTPStatus.UNSUPPORTED_MEDIA_TYPE.value
+    readable_status = 'NOT_VIDEO_IN_IMAGE'
+
+
+class NotPdfFile(StorageResponseException):
+    """NotPdfFile."""
+
+    storage_code = 39
+    description = 'PDF requested from wrapped DICOM, wrong format found'
+    http_status_code = HTTPStatus.UNSUPPORTED_MEDIA_TYPE.value
+    readable_status = 'NOT_PDF_FILE'
+
+
+class RequestedRangeNotSatisfiable(StorageResponseException):
+    """RequestedRangeNotSatisfiable."""
+
+    storage_code = 40
+    description = (
+        'Range of bytes requested within this entity has wrong interval'
+    )
+    http_status_code = HTTPStatus.REQUESTED_RANGE_NOT_SATISFIABLE.value
+    readable_status = 'REQUESTED_RANGE_NOT_SATISFIABLE'
+
+
+class AnonymizeTagsFormatError(StorageResponseException):
+    """AnonymizeTagsFormatError."""
+
+    storage_code = 41
+    description = (
+        'Bad anonymize_tags parameter format, the proper one '
+        'ex. anonymize_tags={{tag_id_int_1}}='
+        '{{tag_value_1}},{{tag_id_int_2}}={{tag_value_2}}'
+    )
+    http_status_code = HTTPStatus.PRECONDITION_FAILED.value
+    readable_status = 'ANONYMIZE_TAGS_FORMAT_ERROR'
+
+
+class MissingRequiredDicomTag(StorageResponseException):
+    """MissingRequiredDicomTag."""
+
+    storage_code = 42
+    description = (
+        'Some of the required tags for ingestion are not present in the '
+        'DICOM file'
+    )
+    http_status_code = HTTPStatus.PRECONDITION_FAILED.value
+    readable_status = 'MISSING_REQUIRED_DICOM_TAG'
+
+
 class ValidationError(StorageResponseException):
     """ValidationError."""
 
@@ -398,46 +474,6 @@ class ValidationError(StorageResponseException):
     description = 'Request validation failed'
     http_status_code = HTTPStatus.PRECONDITION_FAILED.value
     readable_status = 'VALIDATION_ERROR'
-
-
-class NotVideoInImage(StorageResponseException):
-    """NotVideoInImage."""
-
-    storage_code = 36
-    description = (
-        'Video in DICOM requested, but wrapped file is another content'
-    )
-    http_status_code = HTTPStatus.UNSUPPORTED_MEDIA_TYPE
-    readable_status = 'NOT_VIDEO_IN_IMAGE'
-
-
-class NotPdfFile(StorageResponseException):
-    """NotPdfFile."""
-
-    storage_code = 37
-    description = 'PDF requested from wrapped DICOM, wrong format found'
-    http_status_code = HTTPStatus.UNSUPPORTED_MEDIA_TYPE
-    readable_status = 'NOT_PDF_FILE'
-
-
-class RequestedRangeNotSatisfiable(StorageResponseException):
-    """RequestedRangeNotSatisfiable."""
-
-    storage_code = 38
-    description = (
-        'Range of bytes requested within this entity has wrong interval'
-    )
-    http_status_code = HTTPStatus.REQUESTED_RANGE_NOT_SATISFIABLE
-    readable_status = 'REQUESTED_RANGE_NOT_SATISFIABLE'
-
-
-class ErrorOnStudyPull(StorageResponseException):
-    """ErrorOnStudyPull."""
-
-    storage_code = 39
-    description = 'Wrapped error when executing request to pull study'
-    http_status_code = HTTPStatus.INTERNAL_SERVER_ERROR.value
-    readable_status = 'ERROR_ON_STUDY_PULL'
 
 
 errors = [

@@ -28,6 +28,7 @@ class Dicomdata:
         study_id=None,
     ):
         """List.
+
         :param dicom_tags: A JSON list of the DICOM tags to return (optional)
         :param namespace_id: namespace_id
         :param study_id: study_id
@@ -61,6 +62,7 @@ class Dicomdata:
         dicom_tags=None,
     ):
         """Get.
+
         :param customfields: An array of the custom fields associated with this dicomdata. Each object has the following fields (This is only returned if the dicomdata has custom fields)
         :param uuid: Id of the DICOM data
         :param dicom_tags: A JSON list of the DICOM tags to return (optional)
@@ -100,6 +102,7 @@ class AsyncDicomdata:
         study_id=None,
     ):
         """List.
+
         :param dicom_tags: A JSON list of the DICOM tags to return (optional)
         :param namespace_id: namespace_id
         :param study_id: study_id
@@ -133,6 +136,7 @@ class AsyncDicomdata:
         dicom_tags=None,
     ):
         """Get.
+
         :param customfields: An array of the custom fields associated with this dicomdata. Each object has the following fields (This is only returned if the dicomdata has custom fields)
         :param uuid: Id of the DICOM data
         :param dicom_tags: A JSON list of the DICOM tags to return (optional)

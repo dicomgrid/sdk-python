@@ -23,6 +23,7 @@ DOC_FIELDS = {
     'NODE_CONNECT- A user has requested to connect the public node',
     'STUDY_REQUEST_INBOUND - An incoming study request',
     'STUDY_REQUEST_OUTBOUND - An outgoing study request',
+    'TRIAL_QC_TASK - A pending clinical trial QC task',
     '* Epoch time of the event',
     '* LOCKOUT if the login failed due to the lockout or PRIMARY if the login failed due to invalid credentials',
     '* The vanity of the event',

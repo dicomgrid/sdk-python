@@ -38,6 +38,7 @@ class Radreport:
         fields=None,
     ):
         """Add.
+
         :param study_id: Id of the study to add the radreport to
         :param type: The type of the radreport
         :param fields: A JSON hash of the fields in the report (optional)
@@ -69,6 +70,7 @@ class Radreport:
         fields=None,
     ):
         """Set.
+
         :param uuid: Id of the radreport
         :param attachment: A JSON hash of the storage attachment information (optional)
         :param fields: A JSON hash of the fields in the report (optional)
@@ -98,6 +100,7 @@ class Radreport:
         uuid,
     ):
         """Get.
+
         :param uuid: Id of the radreport
         """
         request_data = {
@@ -124,6 +127,7 @@ class Radreport:
         uuid,
     ):
         """Audit.
+
         :param action: The audit action (SIGNED|MEDICAL_EDIT|ADMIN_EDIT|REPORT_GENERATED)
         :param detail: Additional information
         :param uuid: The id of the radreport
@@ -152,6 +156,7 @@ class Radreport:
         uuid,
     ):
         """Delete.
+
         :param uuid: Id of the radreport
         """
         request_data = {
@@ -176,6 +181,7 @@ class Radreport:
         uuid,
     ):
         """Description.
+
         :param uuid: Id of the radreport
         """
         request_data = {
@@ -200,6 +206,7 @@ class Radreport:
         user_id,
     ):
         """User list.
+
         :param user_id: The user id
         """
         request_data = {
@@ -229,6 +236,7 @@ class Radreport:
         uuid,
     ):
         """Pdf.
+
         :param uuid: The radreport uuid
         """
         request_data = {
@@ -251,6 +259,7 @@ class Radreport:
         uuid,
     ):
         """Fax.
+
         :param number: The fax number to send the PDF report to
         :param uuid: The radreport uuid
         """
@@ -282,6 +291,7 @@ class Radreport:
         uuid,
     ):
         """Email.
+
         :param email: The email address(es) to send the radreport to
         :param uuid: The radreport uuid
         """
@@ -314,6 +324,7 @@ class Radreport:
         type=None,
     ):
         """Template list.
+
         :param account_id: uuid of the account
         :param active: Limit to active templates (optional)
         :param type: Limit to this type (optional)
@@ -352,6 +363,7 @@ class Radreport:
         preview=None,
     ):
         """Template add.
+
         :param account_id: uuid of the account
         :param body: Body of the template
         :param name: Name of the template
@@ -390,6 +402,7 @@ class Radreport:
         type=None,
     ):
         """Template set.
+
         :param uuid: uuid of the template
         :param body: Body of the template (optional)
         :param name: Name of the template (optional)
@@ -423,6 +436,7 @@ class Radreport:
         uuid,
     ):
         """Template get.
+
         :param uuid: uuid of the template
         """
         request_data = {
@@ -448,6 +462,7 @@ class Radreport:
         type,
     ):
         """Template get type.
+
         :param account_id: uuid of the account
         :param type: Type of the template
         """
@@ -474,6 +489,7 @@ class Radreport:
         uuid,
     ):
         """Template delete.
+
         :param uuid: uuid of the template
         """
         request_data = {
@@ -497,6 +513,7 @@ class Radreport:
         uuid,
     ):
         """Template activate.
+
         :param uuid: uuid of the template
         """
         request_data = {
@@ -532,6 +549,7 @@ class AsyncRadreport:
         fields=None,
     ):
         """Add.
+
         :param study_id: Id of the study to add the radreport to
         :param type: The type of the radreport
         :param fields: A JSON hash of the fields in the report (optional)
@@ -563,6 +581,7 @@ class AsyncRadreport:
         fields=None,
     ):
         """Set.
+
         :param uuid: Id of the radreport
         :param attachment: A JSON hash of the storage attachment information (optional)
         :param fields: A JSON hash of the fields in the report (optional)
@@ -592,6 +611,7 @@ class AsyncRadreport:
         uuid,
     ):
         """Get.
+
         :param uuid: Id of the radreport
         """
         request_data = {
@@ -618,6 +638,7 @@ class AsyncRadreport:
         uuid,
     ):
         """Audit.
+
         :param action: The audit action (SIGNED|MEDICAL_EDIT|ADMIN_EDIT|REPORT_GENERATED)
         :param detail: Additional information
         :param uuid: The id of the radreport
@@ -646,6 +667,7 @@ class AsyncRadreport:
         uuid,
     ):
         """Delete.
+
         :param uuid: Id of the radreport
         """
         request_data = {
@@ -670,6 +692,7 @@ class AsyncRadreport:
         uuid,
     ):
         """Description.
+
         :param uuid: Id of the radreport
         """
         request_data = {
@@ -694,6 +717,7 @@ class AsyncRadreport:
         user_id,
     ):
         """User list.
+
         :param user_id: The user id
         """
         request_data = {
@@ -723,6 +747,7 @@ class AsyncRadreport:
         uuid,
     ):
         """Pdf.
+
         :param uuid: The radreport uuid
         """
         request_data = {
@@ -745,6 +770,7 @@ class AsyncRadreport:
         uuid,
     ):
         """Fax.
+
         :param number: The fax number to send the PDF report to
         :param uuid: The radreport uuid
         """
@@ -776,6 +802,7 @@ class AsyncRadreport:
         uuid,
     ):
         """Email.
+
         :param email: The email address(es) to send the radreport to
         :param uuid: The radreport uuid
         """
@@ -808,6 +835,7 @@ class AsyncRadreport:
         type=None,
     ):
         """Template list.
+
         :param account_id: uuid of the account
         :param active: Limit to active templates (optional)
         :param type: Limit to this type (optional)
@@ -846,6 +874,7 @@ class AsyncRadreport:
         preview=None,
     ):
         """Template add.
+
         :param account_id: uuid of the account
         :param body: Body of the template
         :param name: Name of the template
@@ -884,6 +913,7 @@ class AsyncRadreport:
         type=None,
     ):
         """Template set.
+
         :param uuid: uuid of the template
         :param body: Body of the template (optional)
         :param name: Name of the template (optional)
@@ -917,6 +947,7 @@ class AsyncRadreport:
         uuid,
     ):
         """Template get.
+
         :param uuid: uuid of the template
         """
         request_data = {
@@ -942,6 +973,7 @@ class AsyncRadreport:
         type,
     ):
         """Template get type.
+
         :param account_id: uuid of the account
         :param type: Type of the template
         """
@@ -968,6 +1000,7 @@ class AsyncRadreport:
         uuid,
     ):
         """Template delete.
+
         :param uuid: uuid of the template
         """
         request_data = {
@@ -991,6 +1024,7 @@ class AsyncRadreport:
         uuid,
     ):
         """Template activate.
+
         :param uuid: uuid of the template
         """
         request_data = {

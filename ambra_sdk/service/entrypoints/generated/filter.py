@@ -30,8 +30,9 @@ class Filter:
         type,
     ):
         """List.
+
         :param account_id: Limit to global filters and filters within the account namespaces
-        :param type: The type of filter to list
+        :param type: The type of filter to list (repeat this to get multiple types)
         """
         request_data = {
            'account_id': account_id,
@@ -60,21 +61,26 @@ class Filter:
         name,
         type,
         account_id=None,
+        tier_parent_id=None,
     ):
         """Add.
+
         :param configuration: The configuration as a JSON data structure
         :param name: The name of the filter
         :param type: The type of the filter
         :param account_id: The account id to link this filter with (optional)
+        :param tier_parent_id: The uuid of the filter that this filter should be a child of (optional, for tiered filters)
         """
         request_data = {
            'account_id': account_id,
            'configuration': configuration,
            'name': name,
+           'tier_parent_id': tier_parent_id,
            'type': type,
         }
 	
         errors_mapping = {}
+        errors_mapping[('INVALID_CONFIG', None)] = InvalidConfig('The configuration is invalid')
         query_data = {
             'api': self._api,
             'url': '/filter/add',
@@ -89,6 +95,7 @@ class Filter:
         uuid,
     ):
         """Get.
+
         :param uuid: The filter uuid
         """
         request_data = {
@@ -115,6 +122,7 @@ class Filter:
         type=None,
     ):
         """Set.
+
         :param uuid: The filter uuid
         :param account_id: The account id to link this filter with (optional)
         :param configuration: The configuration as a JSON data structure (optional)
@@ -147,6 +155,7 @@ class Filter:
         uuid,
     ):
         """Delete.
+
         :param uuid: The filter uuid
         """
         request_data = {
@@ -175,6 +184,7 @@ class Filter:
         user_id=None,
     ):
         """Share.
+
         :param uuid: The filter uuid
         :param account_id: account_id
         :param group_id: group_id
@@ -214,6 +224,7 @@ class Filter:
         user_id=None,
     ):
         """Share stop.
+
         :param uuid: The filter uuid
         :param account_id: account_id
         :param group_id: group_id
@@ -247,6 +258,7 @@ class Filter:
         uuid,
     ):
         """Share list.
+
         :param uuid: The filter uuid
         """
         request_data = {
@@ -279,8 +291,9 @@ class AsyncFilter:
         type,
     ):
         """List.
+
         :param account_id: Limit to global filters and filters within the account namespaces
-        :param type: The type of filter to list
+        :param type: The type of filter to list (repeat this to get multiple types)
         """
         request_data = {
            'account_id': account_id,
@@ -309,21 +322,26 @@ class AsyncFilter:
         name,
         type,
         account_id=None,
+        tier_parent_id=None,
     ):
         """Add.
+
         :param configuration: The configuration as a JSON data structure
         :param name: The name of the filter
         :param type: The type of the filter
         :param account_id: The account id to link this filter with (optional)
+        :param tier_parent_id: The uuid of the filter that this filter should be a child of (optional, for tiered filters)
         """
         request_data = {
            'account_id': account_id,
            'configuration': configuration,
            'name': name,
+           'tier_parent_id': tier_parent_id,
            'type': type,
         }
 	
         errors_mapping = {}
+        errors_mapping[('INVALID_CONFIG', None)] = InvalidConfig('The configuration is invalid')
         query_data = {
             'api': self._api,
             'url': '/filter/add',
@@ -338,6 +356,7 @@ class AsyncFilter:
         uuid,
     ):
         """Get.
+
         :param uuid: The filter uuid
         """
         request_data = {
@@ -364,6 +383,7 @@ class AsyncFilter:
         type=None,
     ):
         """Set.
+
         :param uuid: The filter uuid
         :param account_id: The account id to link this filter with (optional)
         :param configuration: The configuration as a JSON data structure (optional)
@@ -396,6 +416,7 @@ class AsyncFilter:
         uuid,
     ):
         """Delete.
+
         :param uuid: The filter uuid
         """
         request_data = {
@@ -424,6 +445,7 @@ class AsyncFilter:
         user_id=None,
     ):
         """Share.
+
         :param uuid: The filter uuid
         :param account_id: account_id
         :param group_id: group_id
@@ -463,6 +485,7 @@ class AsyncFilter:
         user_id=None,
     ):
         """Share stop.
+
         :param uuid: The filter uuid
         :param account_id: account_id
         :param group_id: group_id
@@ -496,6 +519,7 @@ class AsyncFilter:
         uuid,
     ):
         """Share list.
+
         :param uuid: The filter uuid
         """
         request_data = {

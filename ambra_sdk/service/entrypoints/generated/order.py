@@ -40,6 +40,7 @@ class Order:
         customfield_param=None,
     ):
         """Add.
+
         :param accession_number: Accession number
         :param account_id: uuid of the account to add them to
         :param patient_birth_date: DOB
@@ -83,6 +84,7 @@ class Order:
         uuid,
     ):
         """Get.
+
         :param uuid: The order uuid
         """
         request_data = {
@@ -115,6 +117,7 @@ class Order:
         customfield_param=None,
     ):
         """Set.
+
         :param accession_number: Accession number
         :param patient_birth_date: DOB
         :param patient_name: Patient name
@@ -157,6 +160,7 @@ class Order:
         uuid,
     ):
         """Delete.
+
         :param uuid: The order uuid
         """
         request_data = {
@@ -181,6 +185,7 @@ class Order:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -219,6 +224,7 @@ class Order:
         scheduled_station_aetitle,
     ):
         """Sps add.
+
         :param modality: Modality
         :param order_id: uuid of the order
         :param requested_procedure_description: Procedure description
@@ -267,6 +273,7 @@ class Order:
         scheduled_station_aetitle=None,
     ):
         """Sps set.
+
         :param uuid: UUID of the SPS
         :param modality: Modality (optional)
         :param requested_procedure_description: Procedure description (optional)
@@ -307,6 +314,7 @@ class Order:
         uuid,
     ):
         """Sps delete.
+
         :param uuid: UUID of the SPS
         """
         request_data = {
@@ -334,6 +342,7 @@ class Order:
         uuid,
     ):
         """Sps status.
+
         :param mpps_status: The mpps status to set (PENDING|IN_PROGRESS|DISCONTINUED|COMPLETED)
         :param mpps_uid: The mpps UUID of the SPS
         :param serial_no: The serial number of the node
@@ -367,6 +376,7 @@ class Order:
         serial_no=None,
     ):
         """Sps find.
+
         :param account_id: The account uuid if sid authentication is used
         :param node_id: node_id
         :param serial_no: serial_no
@@ -415,6 +425,7 @@ class AsyncOrder:
         customfield_param=None,
     ):
         """Add.
+
         :param accession_number: Accession number
         :param account_id: uuid of the account to add them to
         :param patient_birth_date: DOB
@@ -458,6 +469,7 @@ class AsyncOrder:
         uuid,
     ):
         """Get.
+
         :param uuid: The order uuid
         """
         request_data = {
@@ -490,6 +502,7 @@ class AsyncOrder:
         customfield_param=None,
     ):
         """Set.
+
         :param accession_number: Accession number
         :param patient_birth_date: DOB
         :param patient_name: Patient name
@@ -532,6 +545,7 @@ class AsyncOrder:
         uuid,
     ):
         """Delete.
+
         :param uuid: The order uuid
         """
         request_data = {
@@ -556,6 +570,7 @@ class AsyncOrder:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -594,6 +609,7 @@ class AsyncOrder:
         scheduled_station_aetitle,
     ):
         """Sps add.
+
         :param modality: Modality
         :param order_id: uuid of the order
         :param requested_procedure_description: Procedure description
@@ -642,6 +658,7 @@ class AsyncOrder:
         scheduled_station_aetitle=None,
     ):
         """Sps set.
+
         :param uuid: UUID of the SPS
         :param modality: Modality (optional)
         :param requested_procedure_description: Procedure description (optional)
@@ -682,6 +699,7 @@ class AsyncOrder:
         uuid,
     ):
         """Sps delete.
+
         :param uuid: UUID of the SPS
         """
         request_data = {
@@ -709,6 +727,7 @@ class AsyncOrder:
         uuid,
     ):
         """Sps status.
+
         :param mpps_status: The mpps status to set (PENDING|IN_PROGRESS|DISCONTINUED|COMPLETED)
         :param mpps_uid: The mpps UUID of the SPS
         :param serial_no: The serial number of the node
@@ -742,6 +761,7 @@ class AsyncOrder:
         serial_no=None,
     ):
         """Sps find.
+
         :param account_id: The account uuid if sid authentication is used
         :param node_id: node_id
         :param serial_no: serial_no

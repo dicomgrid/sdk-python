@@ -25,6 +25,7 @@ class Annotation:
         study_uid=None,
     ):
         """List.
+
         :param phi_namespace: phi_namespace
         :param storage_namespace: storage_namespace
         :param study_id: study_id
@@ -63,6 +64,7 @@ class Annotation:
         study_uid=None,
     ):
         """Add.
+
         :param frame_number: The frame number
         :param instance_uid: The instance uid
         :param series_uid: The series uid
@@ -105,6 +107,7 @@ class Annotation:
         uuid,
     ):
         """Set.
+
         :param json: The JSON annotation data structure
         :param uuid: Id of the annotation
         """
@@ -132,6 +135,7 @@ class Annotation:
         uuid,
     ):
         """Get.
+
         :param uuid: Id of the annotation
         """
         request_data = {
@@ -156,6 +160,7 @@ class Annotation:
         uuid,
     ):
         """Delete.
+
         :param uuid: Id of the annotation
         """
         request_data = {
@@ -192,6 +197,7 @@ class AsyncAnnotation:
         study_uid=None,
     ):
         """List.
+
         :param phi_namespace: phi_namespace
         :param storage_namespace: storage_namespace
         :param study_id: study_id
@@ -230,6 +236,7 @@ class AsyncAnnotation:
         study_uid=None,
     ):
         """Add.
+
         :param frame_number: The frame number
         :param instance_uid: The instance uid
         :param series_uid: The series uid
@@ -272,6 +279,7 @@ class AsyncAnnotation:
         uuid,
     ):
         """Set.
+
         :param json: The JSON annotation data structure
         :param uuid: Id of the annotation
         """
@@ -299,6 +307,7 @@ class AsyncAnnotation:
         uuid,
     ):
         """Get.
+
         :param uuid: Id of the annotation
         """
         request_data = {
@@ -323,6 +332,7 @@ class AsyncAnnotation:
         uuid,
     ):
         """Delete.
+
         :param uuid: Id of the annotation
         """
         request_data = {

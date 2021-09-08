@@ -52,6 +52,7 @@ class Patient:
         study_id=None,
     ):
         """Add.
+
         :param account_id: uuid of the account to add them to
         :param alt_email: Alternate email address (optional)
         :param alt_mobile_phone: Alternate mobile phone number (optional)
@@ -111,6 +112,7 @@ class Patient:
         uuid,
     ):
         """Get.
+
         :param uuid: The patient uuid
         """
         request_data = {
@@ -148,6 +150,7 @@ class Patient:
         name=None,
     ):
         """Set.
+
         :param birth_date: Birth date
         :param mrn: MRN
         :param sex: Gender
@@ -204,6 +207,7 @@ class Patient:
         uuid,
     ):
         """Delete.
+
         :param uuid: The patient uuid
         """
         request_data = {
@@ -228,6 +232,7 @@ class Patient:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -259,6 +264,7 @@ class Patient:
         viewable_only,
     ):
         """Study list.
+
         :param uuid: The patient id
         :param viewable_only: Flag if they only want the studies the user can view
         """
@@ -288,6 +294,7 @@ class Patient:
         mrn,
     ):
         """Portal find.
+
         :param birth_date: Date of birth
         :param first: The first name
         :param last: The last name
@@ -323,6 +330,7 @@ class Patient:
         patient_id,
     ):
         """Portal pin.
+
         :param alt_email: Flag if they want the PIN sent via the alt_email
         :param alt_mobile_phone: Flag if they want the PIN sent via SMS to the alt_mobile_phone
         :param email: Flag if they want the PIN sent via email
@@ -356,6 +364,7 @@ class Patient:
         pin,
     ):
         """Portal login.
+
         :param patient_id: The patient id
         :param pin: The PIN
         """
@@ -383,6 +392,7 @@ class Patient:
         self,
     ):
         """Portal list.
+
         """
         request_data = {
         }
@@ -428,6 +438,7 @@ class AsyncPatient:
         study_id=None,
     ):
         """Add.
+
         :param account_id: uuid of the account to add them to
         :param alt_email: Alternate email address (optional)
         :param alt_mobile_phone: Alternate mobile phone number (optional)
@@ -487,6 +498,7 @@ class AsyncPatient:
         uuid,
     ):
         """Get.
+
         :param uuid: The patient uuid
         """
         request_data = {
@@ -524,6 +536,7 @@ class AsyncPatient:
         name=None,
     ):
         """Set.
+
         :param birth_date: Birth date
         :param mrn: MRN
         :param sex: Gender
@@ -580,6 +593,7 @@ class AsyncPatient:
         uuid,
     ):
         """Delete.
+
         :param uuid: The patient uuid
         """
         request_data = {
@@ -604,6 +618,7 @@ class AsyncPatient:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -635,6 +650,7 @@ class AsyncPatient:
         viewable_only,
     ):
         """Study list.
+
         :param uuid: The patient id
         :param viewable_only: Flag if they only want the studies the user can view
         """
@@ -664,6 +680,7 @@ class AsyncPatient:
         mrn,
     ):
         """Portal find.
+
         :param birth_date: Date of birth
         :param first: The first name
         :param last: The last name
@@ -699,6 +716,7 @@ class AsyncPatient:
         patient_id,
     ):
         """Portal pin.
+
         :param alt_email: Flag if they want the PIN sent via the alt_email
         :param alt_mobile_phone: Flag if they want the PIN sent via SMS to the alt_mobile_phone
         :param email: Flag if they want the PIN sent via email
@@ -732,6 +750,7 @@ class AsyncPatient:
         pin,
     ):
         """Portal login.
+
         :param patient_id: The patient id
         :param pin: The PIN
         """
@@ -759,6 +778,7 @@ class AsyncPatient:
         self,
     ):
         """Portal list.
+
         """
         request_data = {
         }

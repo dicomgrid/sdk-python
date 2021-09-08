@@ -32,6 +32,7 @@ class Case:
         uuid,
     ):
         """Get.
+
         :param uuid: The case uuid
         """
         request_data = {
@@ -64,6 +65,7 @@ class Case:
         submitted=None,
     ):
         """Set.
+
         :param uuid: The case uuid
         :param assigned_admin_id: Id of the admin user assigned to the case (optional)
         :param assigned_medical_id: Id of the medical user assigned to the case (optional)
@@ -110,6 +112,7 @@ class Case:
         uuid,
     ):
         """Return.
+
         :param reason: The reason the case was returned
         :param uuid: The case uuid
         """
@@ -135,6 +138,7 @@ class Case:
         uuid,
     ):
         """Delete.
+
         :param uuid: The case uuid
         """
         request_data = {
@@ -159,6 +163,7 @@ class Case:
         account_id=None,
     ):
         """List.
+
         :param account_id: uuid of the account (optional)
         """
         request_data = {
@@ -191,6 +196,7 @@ class Case:
         detach=None,
     ):
         """Attach.
+
         :param study_id: Study uuid
         :param uuid: Case uuid
         :param detach: Flag to detach the study from the case (optional)
@@ -228,6 +234,7 @@ class AsyncCase:
         uuid,
     ):
         """Get.
+
         :param uuid: The case uuid
         """
         request_data = {
@@ -260,6 +267,7 @@ class AsyncCase:
         submitted=None,
     ):
         """Set.
+
         :param uuid: The case uuid
         :param assigned_admin_id: Id of the admin user assigned to the case (optional)
         :param assigned_medical_id: Id of the medical user assigned to the case (optional)
@@ -306,6 +314,7 @@ class AsyncCase:
         uuid,
     ):
         """Return.
+
         :param reason: The reason the case was returned
         :param uuid: The case uuid
         """
@@ -331,6 +340,7 @@ class AsyncCase:
         uuid,
     ):
         """Delete.
+
         :param uuid: The case uuid
         """
         request_data = {
@@ -355,6 +365,7 @@ class AsyncCase:
         account_id=None,
     ):
         """List.
+
         :param account_id: uuid of the account (optional)
         """
         request_data = {
@@ -387,6 +398,7 @@ class AsyncCase:
         detach=None,
     ):
         """Attach.
+
         :param study_id: Study uuid
         :param uuid: Case uuid
         :param detach: Flag to detach the study from the case (optional)

@@ -913,3 +913,165 @@ class TestStorageStudy:
         )
         assert new_study
         auto_remove(new_study)
+
+    def test_attachment_image(
+        self,
+        api,
+        readonly_study,
+        logo_attachment,
+    ):
+        """Test attachment image method."""
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+        study_uid = readonly_study.study_uid
+        attachment = api.Storage.Study.attachment_image(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            study_uid=study_uid,
+            attachment_uid=logo_attachment['id'],
+            version=logo_attachment['version'],
+        )
+        assert attachment.study_uid
+
+    def test_create_rt(
+        self,
+        api,
+        readonly_study,
+    ):
+        """Test create rt."""
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+        study_uid = readonly_study.study_uid
+
+        body = """{
+          "structureSetLabel": "1",
+          "structureSetName": "1",
+          "structureSetDescription": "1",
+          "instanceNumber": "1",
+          "structureSetDate": 1625486773319,
+          "structureSetTime": 1625486773319,
+          "referencedFrameOfReferenceList": [
+              {
+                  "frameOfReferenceUID": "1",
+                  "rtReferencedStudies": [
+                      {
+                          "referencedSOPClassUID": "1",
+                          "referencedSOPInstanceUID": "1",
+                          "rtReferencedSeries": [
+                              {
+                                  "seriesInstanceUID": "series",
+                                  "contourImageSequences": [
+                                      {
+                                          "referencedFrameNumber": "10",
+                                          "referencedSegmentNumber": "3"
+                                      }
+                                  ]
+                              }
+                          ]
+                      }
+                  ]
+              }
+          ],
+          "structureSetROISequences": [
+              {
+                  "roiNumber": "1",
+                  "referencedFrameOfReferenceUID": "1",
+                  "roiName": "1",
+                  "roiDescription": "1",
+                  "roiVolume": "1",
+                  "roiGenerationAlgorithm": "MANUAL",
+                  "roiGenerationDescription": "1",
+                  "derivationCodeSequences": [
+                      {
+                          "codeValue": "1",
+                          "codingSchemeDesignator": "1",
+                          "codingSchemeVersion": "1",
+                          "codeMeaning": "1"
+                      }
+                  ]
+              }
+          ],
+          "predecessorStructureSet": [
+              {
+                  "referencedSOPClassUID": "sop class uid",
+                  "referencedSOPInstanceUID": "instance uid"
+              }
+          ],
+          "roiContours": [
+              {
+                  "referencedROINumber": "12",
+                  "roiDisplayColor": "333",
+                  "contourSequences": [
+                      {
+                          "contourNumber": "3",
+                          "attachedContours": "3",
+                          "contourGeometricType": "OPEN_PLANAR",
+                          "contourSlabThickness": "3",
+                          "contourOffsetVector": "3",
+                          "numberOfContourPoints": "3",
+                          "contourImageSequence": [
+                              {
+                                  "referencedFrameNumber": "21",
+                                  "referencedSegmentNumber": "18"
+                              }
+                          ],
+                          "contourData": [
+                              {
+                                  "x": 5.6,
+                                  "y": 123.9,
+                                  "z": 43.2
+                              }
+                          ]
+                      }
+                  ]
+              }
+          ],
+          "rtROIObservations": [
+              {
+                  "observationNumber": "11",
+                  "referencedROINumber": "11",
+                  "roiObservationLabel": "11",
+                  "roiObservationDescription": "11",
+                  "rtROIInterpretedType": "EXTERNAL",
+                  "roiInterpreter": "11",
+                  "materialId": "11",
+                  "relatedROISequences": [
+                      {
+                          "referencedROINumber": "22",
+                          "rtROIRelationship": "22"
+                      }
+                  ],
+                  "codeSequenceMacroAttributes": [
+                      {
+                          "codeValue": "88",
+                          "codingSchemeDesignator": "88",
+                          "codingSchemeVersion": "88",
+                          "codeMeaning": "88"
+                      }
+                  ],
+                  "relatedRtRoiObservationsSequence": [
+                      "33"
+                  ],
+                  "physicalProperties": [
+                      {
+                          "roiPhysicalProperty": "EFFECTIVE_Z",
+                          "roiElementalCompositeSequences": [
+                              {
+                                  "roiAtomicNumber": "5",
+                                  "roiAtomicMassFraction": "5",
+                                  "physicalPropertyValue": "5"
+                              }
+                          ]
+                      }
+                  ]
+              }
+          ]
+      }"""
+        create_rt = api.Storage.Study.create_rt(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            study_uid=study_uid,
+            body=body,
+        )
+        assert create_rt.namespace
+        assert create_rt.study_uid

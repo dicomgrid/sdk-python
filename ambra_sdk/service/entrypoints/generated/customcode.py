@@ -40,6 +40,7 @@ class Customcode:
         zip=None,
     ):
         """Add.
+
         :param account_id: uuid of the account
         :param code: The code
         :param language: Language of code (PYTHON)
@@ -78,6 +79,7 @@ class Customcode:
         uuid,
     ):
         """Get.
+
         :param uuid: The code uuid
         """
         request_data = {
@@ -106,6 +108,7 @@ class Customcode:
         zip=None,
     ):
         """Set.
+
         :param uuid: The code uuid
         :param code: The code (optional)
         :param name: The name of the code (optional)
@@ -140,6 +143,7 @@ class Customcode:
         uuid,
     ):
         """Zip.
+
         :param uuid: The code uuid
         """
         request_data = {
@@ -161,6 +165,7 @@ class Customcode:
         uuid,
     ):
         """Delete.
+
         :param uuid: The code uuid
         """
         request_data = {
@@ -185,6 +190,7 @@ class Customcode:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -216,6 +222,7 @@ class Customcode:
         uuid,
     ):
         """Deploy.
+
         :param namespace_id: uuid of the namespace
         :param uuid: uuid of the customcode
         """
@@ -243,6 +250,7 @@ class Customcode:
         deployment_id,
     ):
         """Undeploy.
+
         :param deployment_id: Deployment uuid
         """
         request_data = {
@@ -267,6 +275,7 @@ class Customcode:
         uuid,
     ):
         """Deploy get.
+
         :param uuid: uuid of customcode deployment
         """
         request_data = {
@@ -292,6 +301,7 @@ class Customcode:
         namespace_id=None,
     ):
         """Deploy list.
+
         :param customcode_id: customcode_id
         :param namespace_id: namespace_id
         """
@@ -339,6 +349,7 @@ class AsyncCustomcode:
         zip=None,
     ):
         """Add.
+
         :param account_id: uuid of the account
         :param code: The code
         :param language: Language of code (PYTHON)
@@ -377,6 +388,7 @@ class AsyncCustomcode:
         uuid,
     ):
         """Get.
+
         :param uuid: The code uuid
         """
         request_data = {
@@ -405,6 +417,7 @@ class AsyncCustomcode:
         zip=None,
     ):
         """Set.
+
         :param uuid: The code uuid
         :param code: The code (optional)
         :param name: The name of the code (optional)
@@ -439,6 +452,7 @@ class AsyncCustomcode:
         uuid,
     ):
         """Zip.
+
         :param uuid: The code uuid
         """
         request_data = {
@@ -460,6 +474,7 @@ class AsyncCustomcode:
         uuid,
     ):
         """Delete.
+
         :param uuid: The code uuid
         """
         request_data = {
@@ -484,6 +499,7 @@ class AsyncCustomcode:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -515,6 +531,7 @@ class AsyncCustomcode:
         uuid,
     ):
         """Deploy.
+
         :param namespace_id: uuid of the namespace
         :param uuid: uuid of the customcode
         """
@@ -542,6 +559,7 @@ class AsyncCustomcode:
         deployment_id,
     ):
         """Undeploy.
+
         :param deployment_id: Deployment uuid
         """
         request_data = {
@@ -566,6 +584,7 @@ class AsyncCustomcode:
         uuid,
     ):
         """Deploy get.
+
         :param uuid: uuid of customcode deployment
         """
         request_data = {
@@ -591,6 +610,7 @@ class AsyncCustomcode:
         namespace_id=None,
     ):
         """Deploy list.
+
         :param customcode_id: customcode_id
         :param namespace_id: namespace_id
         """

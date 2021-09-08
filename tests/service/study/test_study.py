@@ -21,6 +21,26 @@ class TestStudy:
         assert query.url == '/study/list'
         assert query.full_url == settings['API'].url + query.url
 
+    def test_study_list_in(
+        self,
+        api,
+        account,
+        readonly_study,
+    ):
+        """Test study list."""
+        study = api \
+            .Study \
+            .list() \
+            .filter_by(
+                Filter(
+                    'phi_namespace',
+                    FilterCondition.in_condition,
+                    [account.account.namespace_id, 'abcdefg'],
+                ),
+            ) \
+            .first()
+        assert study
+
     def test_study_list(
         self,
         api,

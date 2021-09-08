@@ -26,7 +26,7 @@ class {{ namespace }}:
         {{ req.pythonic_name }}{% if req.optional %}=None{% endif %},
         {%- endfor %}
     ):
-        """{{ api.func_head }}.
+        """{{ api.func_head }}.{{ '\n' }}
 
         {%- for req in api.request_params %}
         :param {{ req.pythonic_name }}: {{ req.description }}
@@ -87,7 +87,7 @@ class Async{{ namespace }}:
         {{ req.pythonic_name }}{% if req.optional %}=None{% endif %},
         {%- endfor %}
     ):
-        """{{ api.func_head }}.
+        """{{ api.func_head }}.{{ '\n' }}
 
         {%- for req in api.request_params %}
         :param {{ req.pythonic_name }}: {{ req.description }}

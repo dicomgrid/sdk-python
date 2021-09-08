@@ -5,6 +5,10 @@ from ambra_sdk.service.entrypoints.annotation import (
     Annotation,
     AsyncAnnotation,
 )
+from ambra_sdk.service.entrypoints.anonymization import (
+    Anonymization,
+    AsyncAnonymization,
+)
 from ambra_sdk.service.entrypoints.appointment import (
     Appointment,
     AsyncAppointment,
@@ -43,6 +47,7 @@ from ambra_sdk.service.entrypoints.npi import AsyncNpi, Npi
 from ambra_sdk.service.entrypoints.order import AsyncOrder, Order
 from ambra_sdk.service.entrypoints.patient import AsyncPatient, Patient
 from ambra_sdk.service.entrypoints.purge import AsyncPurge, Purge
+from ambra_sdk.service.entrypoints.qctask import AsyncQctask, Qctask
 from ambra_sdk.service.entrypoints.query import AsyncQuery, Query
 from ambra_sdk.service.entrypoints.radreport import AsyncRadreport, Radreport
 from ambra_sdk.service.entrypoints.radreportmacro import (
@@ -114,6 +119,8 @@ __all__ = [
     'Query',
     'Scanner',
     'Site',
+    'Anonymization',
+    'Qctask',
     'AsyncSession',
     'AsyncUser',
     'AsyncStudy',
@@ -159,4 +166,6 @@ __all__ = [
     'AsyncQuery',
     'AsyncScanner',
     'AsyncSite',
+    'AsyncAnonymization',
+    'AsyncQctask',
 ]

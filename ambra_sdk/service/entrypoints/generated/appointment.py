@@ -37,6 +37,7 @@ class Appointment:
         user_id=None,
     ):
         """Add.
+
         :param account_id: uuid of the account to add them to
         :param end_time: End date and time of the appointment
         :param patient_id: Id of the patient to create the appointment for
@@ -78,6 +79,7 @@ class Appointment:
         uuid,
     ):
         """Get.
+
         :param uuid: The appointment uuid
         """
         request_data = {
@@ -108,6 +110,7 @@ class Appointment:
         status=None,
     ):
         """Set.
+
         :param customfields: An array of the custom fields associated with this appointment. Each object has the following fields (This is only returned if the group has custom fields)
         :param description: Description of the appointment
         :param end_time: End date and time of the appointment
@@ -146,6 +149,7 @@ class Appointment:
         uuid,
     ):
         """Delete.
+
         :param uuid: The appointment uuid
         """
         request_data = {
@@ -170,6 +174,7 @@ class Appointment:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -215,6 +220,7 @@ class AsyncAppointment:
         user_id=None,
     ):
         """Add.
+
         :param account_id: uuid of the account to add them to
         :param end_time: End date and time of the appointment
         :param patient_id: Id of the patient to create the appointment for
@@ -256,6 +262,7 @@ class AsyncAppointment:
         uuid,
     ):
         """Get.
+
         :param uuid: The appointment uuid
         """
         request_data = {
@@ -286,6 +293,7 @@ class AsyncAppointment:
         status=None,
     ):
         """Set.
+
         :param customfields: An array of the custom fields associated with this appointment. Each object has the following fields (This is only returned if the group has custom fields)
         :param description: Description of the appointment
         :param end_time: End date and time of the appointment
@@ -324,6 +332,7 @@ class AsyncAppointment:
         uuid,
     ):
         """Delete.
+
         :param uuid: The appointment uuid
         """
         request_data = {
@@ -348,6 +357,7 @@ class AsyncAppointment:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {

@@ -27,6 +27,7 @@ class Message:
         self,
     ):
         """List.
+
         """
         request_data = {
         }
@@ -65,6 +66,7 @@ class Message:
         user_id=None,
     ):
         """Add.
+
         :param body: The body of the message
         :param account_id: account_id
         :param email: email
@@ -113,6 +115,7 @@ class Message:
         uuid,
     ):
         """Get.
+
         :param uuid: Id of the message
         """
         request_data = {
@@ -137,6 +140,7 @@ class Message:
         uuid,
     ):
         """Delete.
+
         :param uuid: Id of the message
         """
         request_data = {
@@ -161,6 +165,7 @@ class Message:
         reset=None,
     ):
         """Count.
+
         :param reset: Flag to reset counter back to zero (optional)
         """
         request_data = {
@@ -190,6 +195,7 @@ class AsyncMessage:
         self,
     ):
         """List.
+
         """
         request_data = {
         }
@@ -228,6 +234,7 @@ class AsyncMessage:
         user_id=None,
     ):
         """Add.
+
         :param body: The body of the message
         :param account_id: account_id
         :param email: email
@@ -276,6 +283,7 @@ class AsyncMessage:
         uuid,
     ):
         """Get.
+
         :param uuid: Id of the message
         """
         request_data = {
@@ -300,6 +308,7 @@ class AsyncMessage:
         uuid,
     ):
         """Delete.
+
         :param uuid: Id of the message
         """
         request_data = {
@@ -324,6 +333,7 @@ class AsyncMessage:
         reset=None,
     ):
         """Count.
+
         :param reset: Flag to reset counter back to zero (optional)
         """
         request_data = {

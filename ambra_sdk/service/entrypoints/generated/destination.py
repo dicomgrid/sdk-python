@@ -48,6 +48,7 @@ class Destination:
         serial_no=None,
     ):
         """List.
+
         :param account_id: uuid of the account
         :param uuid: uuid of the destination
         :param node_id: node_id
@@ -117,6 +118,7 @@ class Destination:
         ui_json=None,
     ):
         """Add.
+
         :param account_id: uuid of the account
         :param address: Address of the destination (required if DICOM type)
         :param aetitle: Aetitle of the destination (required if DICOM type)
@@ -251,6 +253,7 @@ class Destination:
         ui_json=None,
     ):
         """Set.
+
         :param distributed_destinations: A JSON array of destination ids. This list will be used to process requests in round robin manner. Meaningful for DISTRIBUTING destination type only (opional)
         :param linked_qr_activity_in_referred_account: A flag to create DESTINATION_SEARCH activities in the linked destination's account. Meaningful for LINKED destinations only (opional)
         :param linked_qr_to_referred_account: A flag to create resultant studies in the linked destination's account (not the account of LINKED destination where the search was initiated). Meaningful for LINKED destinations only (opional)
@@ -346,6 +349,7 @@ class Destination:
         uuid,
     ):
         """Get.
+
         :param uuid: uuid of the destination
         """
         request_data = {
@@ -370,6 +374,7 @@ class Destination:
         uuid,
     ):
         """Delete.
+
         :param uuid: uuid of the destination
         """
         request_data = {
@@ -419,6 +424,7 @@ class Destination:
         tracking_number=None,
     ):
         """Search.
+
         :param uuid: uuid of the destination
         :param accession_number: Accession number to find (optional)
         :param anonymize: A JSON hash of anonymization rules to apply to retrieved studies (optional)
@@ -503,6 +509,7 @@ class Destination:
         tracking_number,
     ):
         """Search report.
+
         :param email: Optional email address to send the report to
         :param tracking_number: The tracking number to report on
         """
@@ -532,6 +539,7 @@ class Destination:
         customfield_param=None,
     ):
         """Retrieve.
+
         :param activity_id: uuid of the DESTINATION_SEARCH activity to retrieve from
         :param send_method: The method to send a study as a study request response (share|duplicate)
         :param study_request_found_id: UUID of a study request search results to retrieve and send as study request response
@@ -571,6 +579,7 @@ class Destination:
         patientid=None,
     ):
         """Search mwl.
+
         :param study_id: The id of the study we are searching for orders for
         :param uuid: uuid of the destination
         :param accession_number: Accession number to find (optional)
@@ -625,6 +634,7 @@ class AsyncDestination:
         serial_no=None,
     ):
         """List.
+
         :param account_id: uuid of the account
         :param uuid: uuid of the destination
         :param node_id: node_id
@@ -694,6 +704,7 @@ class AsyncDestination:
         ui_json=None,
     ):
         """Add.
+
         :param account_id: uuid of the account
         :param address: Address of the destination (required if DICOM type)
         :param aetitle: Aetitle of the destination (required if DICOM type)
@@ -828,6 +839,7 @@ class AsyncDestination:
         ui_json=None,
     ):
         """Set.
+
         :param distributed_destinations: A JSON array of destination ids. This list will be used to process requests in round robin manner. Meaningful for DISTRIBUTING destination type only (opional)
         :param linked_qr_activity_in_referred_account: A flag to create DESTINATION_SEARCH activities in the linked destination's account. Meaningful for LINKED destinations only (opional)
         :param linked_qr_to_referred_account: A flag to create resultant studies in the linked destination's account (not the account of LINKED destination where the search was initiated). Meaningful for LINKED destinations only (opional)
@@ -923,6 +935,7 @@ class AsyncDestination:
         uuid,
     ):
         """Get.
+
         :param uuid: uuid of the destination
         """
         request_data = {
@@ -947,6 +960,7 @@ class AsyncDestination:
         uuid,
     ):
         """Delete.
+
         :param uuid: uuid of the destination
         """
         request_data = {
@@ -996,6 +1010,7 @@ class AsyncDestination:
         tracking_number=None,
     ):
         """Search.
+
         :param uuid: uuid of the destination
         :param accession_number: Accession number to find (optional)
         :param anonymize: A JSON hash of anonymization rules to apply to retrieved studies (optional)
@@ -1080,6 +1095,7 @@ class AsyncDestination:
         tracking_number,
     ):
         """Search report.
+
         :param email: Optional email address to send the report to
         :param tracking_number: The tracking number to report on
         """
@@ -1109,6 +1125,7 @@ class AsyncDestination:
         customfield_param=None,
     ):
         """Retrieve.
+
         :param activity_id: uuid of the DESTINATION_SEARCH activity to retrieve from
         :param send_method: The method to send a study as a study request response (share|duplicate)
         :param study_request_found_id: UUID of a study request search results to retrieve and send as study request response
@@ -1148,6 +1165,7 @@ class AsyncDestination:
         patientid=None,
     ):
         """Search mwl.
+
         :param study_id: The id of the study we are searching for orders for
         :param uuid: uuid of the destination
         :param accession_number: Accession number to find (optional)

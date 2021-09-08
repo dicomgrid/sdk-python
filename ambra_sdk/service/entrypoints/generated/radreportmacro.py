@@ -29,6 +29,7 @@ class Radreportmacro:
         type=None,
     ):
         """List.
+
         :param account_id: uuid of the account
         :param modality: Limit to this modality (optional)
         :param type: Limit to this type (optional)
@@ -67,6 +68,7 @@ class Radreportmacro:
         hotkey=None,
     ):
         """Add.
+
         :param account_id: uuid of the account
         :param body: JSON body of the macro
         :param modality: Modality
@@ -105,6 +107,7 @@ class Radreportmacro:
         type=None,
     ):
         """Set.
+
         :param uuid: uuid of the macro
         :param body: JSON body of the macro (optional)
         :param hotkey: Hotkey of the macro (optional)
@@ -138,6 +141,7 @@ class Radreportmacro:
         uuid,
     ):
         """Get.
+
         :param uuid: uuid of the macro
         """
         request_data = {
@@ -161,6 +165,7 @@ class Radreportmacro:
         uuid,
     ):
         """Delete.
+
         :param uuid: uuid of the macro
         """
         request_data = {
@@ -195,6 +200,7 @@ class AsyncRadreportmacro:
         type=None,
     ):
         """List.
+
         :param account_id: uuid of the account
         :param modality: Limit to this modality (optional)
         :param type: Limit to this type (optional)
@@ -233,6 +239,7 @@ class AsyncRadreportmacro:
         hotkey=None,
     ):
         """Add.
+
         :param account_id: uuid of the account
         :param body: JSON body of the macro
         :param modality: Modality
@@ -271,6 +278,7 @@ class AsyncRadreportmacro:
         type=None,
     ):
         """Set.
+
         :param uuid: uuid of the macro
         :param body: JSON body of the macro (optional)
         :param hotkey: Hotkey of the macro (optional)
@@ -304,6 +312,7 @@ class AsyncRadreportmacro:
         uuid,
     ):
         """Get.
+
         :param uuid: uuid of the macro
         """
         request_data = {
@@ -327,6 +336,7 @@ class AsyncRadreportmacro:
         uuid,
     ):
         """Delete.
+
         :param uuid: uuid of the macro
         """
         request_data = {

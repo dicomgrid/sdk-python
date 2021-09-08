@@ -1071,3 +1071,27 @@ class DifferentAccounts(PreconditionFailed):
 
 class NestedSatelliteSite(PreconditionFailed):
     """NestedSatelliteSite."""
+
+
+class HasAnonymizationProfile(PreconditionFailed):
+    """HasAnonymizationProfile."""
+
+
+class HasAnonymizationRules(PreconditionFailed):
+    """HasAnonymizationRules."""
+
+
+class SidUserPrivilegeEscalation(PreconditionFailed):
+    """SidUserPrivilegeEscalation."""
+
+
+class InvisibleQuery(PreconditionFailed):
+    """InvisibleQuery."""
+
+
+class NamespaceNotAccountRelated(PreconditionFailed):
+    """NamespaceNotAccountRelated."""
+
+
+class NotOwningNamespace(PreconditionFailed):
+    """NotOwningNamespace."""

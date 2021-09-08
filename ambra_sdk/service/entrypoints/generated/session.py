@@ -52,6 +52,7 @@ class Session:
         vanity=None,
     ):
         """Login.
+
         :param login: The user account_login or email address
         :param account_login: account_login
         :param account_name: account_name
@@ -103,6 +104,7 @@ class Session:
         settings=None,
     ):
         """User.
+
         :param settings: A JSON list of user settings set via /setting/set to return (optional)
         """
         request_data = {
@@ -125,6 +127,7 @@ class Session:
         namespace_id=None,
     ):
         """Permissions.
+
         :param account_id: account_id
         :param namespace_id: namespace_id
         """
@@ -147,6 +150,7 @@ class Session:
         self,
     ):
         """Logout.
+
         """
         request_data = {
         }
@@ -168,6 +172,7 @@ class Session:
         redirect_uri,
     ):
         """Csrf enable.
+
         :param redirect_uri: The URL to redirect to
         """
         request_data = {
@@ -190,6 +195,7 @@ class Session:
         self,
     ):
         """Uuid.
+
         """
         request_data = {
         }
@@ -208,6 +214,7 @@ class Session:
         self,
     ):
         """Oauth start.
+
         """
         request_data = {
         }
@@ -230,6 +237,7 @@ class Session:
         vendor,
     ):
         """Oauth.
+
         :param code: The OAuth code
         :param redirect_uri: The redirect_uri used to get the code parameter
         :param vendor: The OAuth vendor (doximity|google|brand)
@@ -265,6 +273,7 @@ class Session:
         duration=None,
     ):
         """Oauth token.
+
         :param client_id: The users email address
         :param client_secret: The users password
         :param grant_type: The grant type, set to client_credentials
@@ -296,6 +305,7 @@ class Session:
         remember_device=None,
     ):
         """Pin.
+
         :param pin: The PIN
         :param remember_device: Remember the device as trusted. (optional)
         """
@@ -323,6 +333,7 @@ class Session:
         signature,
     ):
         """Sign.
+
         :param signature: The Base64-encoded signature
         """
         request_data = {
@@ -346,6 +357,7 @@ class Session:
         self,
     ):
         """Ttl.
+
         """
         request_data = {
         }
@@ -385,6 +397,7 @@ class AsyncSession:
         vanity=None,
     ):
         """Login.
+
         :param login: The user account_login or email address
         :param account_login: account_login
         :param account_name: account_name
@@ -436,6 +449,7 @@ class AsyncSession:
         settings=None,
     ):
         """User.
+
         :param settings: A JSON list of user settings set via /setting/set to return (optional)
         """
         request_data = {
@@ -458,6 +472,7 @@ class AsyncSession:
         namespace_id=None,
     ):
         """Permissions.
+
         :param account_id: account_id
         :param namespace_id: namespace_id
         """
@@ -480,6 +495,7 @@ class AsyncSession:
         self,
     ):
         """Logout.
+
         """
         request_data = {
         }
@@ -501,6 +517,7 @@ class AsyncSession:
         redirect_uri,
     ):
         """Csrf enable.
+
         :param redirect_uri: The URL to redirect to
         """
         request_data = {
@@ -523,6 +540,7 @@ class AsyncSession:
         self,
     ):
         """Uuid.
+
         """
         request_data = {
         }
@@ -541,6 +559,7 @@ class AsyncSession:
         self,
     ):
         """Oauth start.
+
         """
         request_data = {
         }
@@ -563,6 +582,7 @@ class AsyncSession:
         vendor,
     ):
         """Oauth.
+
         :param code: The OAuth code
         :param redirect_uri: The redirect_uri used to get the code parameter
         :param vendor: The OAuth vendor (doximity|google|brand)
@@ -598,6 +618,7 @@ class AsyncSession:
         duration=None,
     ):
         """Oauth token.
+
         :param client_id: The users email address
         :param client_secret: The users password
         :param grant_type: The grant type, set to client_credentials
@@ -629,6 +650,7 @@ class AsyncSession:
         remember_device=None,
     ):
         """Pin.
+
         :param pin: The PIN
         :param remember_device: Remember the device as trusted. (optional)
         """
@@ -656,6 +678,7 @@ class AsyncSession:
         signature,
     ):
         """Sign.
+
         :param signature: The Base64-encoded signature
         """
         request_data = {
@@ -679,6 +702,7 @@ class AsyncSession:
         self,
     ):
         """Ttl.
+
         """
         request_data = {
         }

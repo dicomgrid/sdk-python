@@ -24,6 +24,7 @@ class Keyimage:
         study_uid=None,
     ):
         """List.
+
         :param phi_namespace: phi_namespace
         :param storage_namespace: storage_namespace
         :param study_id: study_id
@@ -61,6 +62,7 @@ class Keyimage:
         study_uid=None,
     ):
         """Add.
+
         :param frame_number: The frame number
         :param instance_uid: The instance uid
         :param series_uid: The series uid
@@ -99,6 +101,7 @@ class Keyimage:
         uuid,
     ):
         """Get.
+
         :param uuid: Id of the keyimage
         """
         request_data = {
@@ -123,6 +126,7 @@ class Keyimage:
         uuid,
     ):
         """Delete.
+
         :param uuid: Id of the key image
         """
         request_data = {
@@ -159,6 +163,7 @@ class AsyncKeyimage:
         study_uid=None,
     ):
         """List.
+
         :param phi_namespace: phi_namespace
         :param storage_namespace: storage_namespace
         :param study_id: study_id
@@ -196,6 +201,7 @@ class AsyncKeyimage:
         study_uid=None,
     ):
         """Add.
+
         :param frame_number: The frame number
         :param instance_uid: The instance uid
         :param series_uid: The series uid
@@ -234,6 +240,7 @@ class AsyncKeyimage:
         uuid,
     ):
         """Get.
+
         :param uuid: Id of the keyimage
         """
         request_data = {
@@ -258,6 +265,7 @@ class AsyncKeyimage:
         uuid,
     ):
         """Delete.
+
         :param uuid: Id of the key image
         """
         request_data = {

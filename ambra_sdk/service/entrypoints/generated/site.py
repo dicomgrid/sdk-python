@@ -33,6 +33,7 @@ class Site:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -68,6 +69,7 @@ class Site:
         zip=None,
     ):
         """Add.
+
         :param account_id: uuid of the account to add them to
         :param name: The sites name
         :param city: The city the site is located in (optional)
@@ -110,6 +112,7 @@ class Site:
         zip=None,
     ):
         """Set.
+
         :param uuid: The site uuid
         :param city: The city the site is located in (optional)
         :param inactive: Flag if the site is actively used. Might be used to filter out inactive sites (optional)
@@ -149,6 +152,7 @@ class Site:
         uuid,
     ):
         """Get.
+
         :param uuid: The site uuid
         """
         request_data = {
@@ -173,6 +177,7 @@ class Site:
         uuid,
     ):
         """Delete.
+
         :param uuid: The site uuid
         """
         request_data = {
@@ -200,6 +205,7 @@ class Site:
         user_id=None,
     ):
         """User add.
+
         :param role_name: The role name that should be used for the user in groups
         :param uuid: The group id
         :param email: email
@@ -235,6 +241,7 @@ class Site:
         user_id=None,
     ):
         """User set.
+
         :param uuid: The site id
         :param email: email
         :param role_name: The role name that should be used for the user in groups (optional)
@@ -266,6 +273,7 @@ class Site:
         uuid,
     ):
         """User list.
+
         :param uuid: The site id
         """
         request_data = {
@@ -297,6 +305,7 @@ class Site:
         uuid,
     ):
         """User delete.
+
         :param user_id: Id of the user
         :param uuid: The site id
         """
@@ -333,6 +342,7 @@ class AsyncSite:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -368,6 +378,7 @@ class AsyncSite:
         zip=None,
     ):
         """Add.
+
         :param account_id: uuid of the account to add them to
         :param name: The sites name
         :param city: The city the site is located in (optional)
@@ -410,6 +421,7 @@ class AsyncSite:
         zip=None,
     ):
         """Set.
+
         :param uuid: The site uuid
         :param city: The city the site is located in (optional)
         :param inactive: Flag if the site is actively used. Might be used to filter out inactive sites (optional)
@@ -449,6 +461,7 @@ class AsyncSite:
         uuid,
     ):
         """Get.
+
         :param uuid: The site uuid
         """
         request_data = {
@@ -473,6 +486,7 @@ class AsyncSite:
         uuid,
     ):
         """Delete.
+
         :param uuid: The site uuid
         """
         request_data = {
@@ -500,6 +514,7 @@ class AsyncSite:
         user_id=None,
     ):
         """User add.
+
         :param role_name: The role name that should be used for the user in groups
         :param uuid: The group id
         :param email: email
@@ -535,6 +550,7 @@ class AsyncSite:
         user_id=None,
     ):
         """User set.
+
         :param uuid: The site id
         :param email: email
         :param role_name: The role name that should be used for the user in groups (optional)
@@ -566,6 +582,7 @@ class AsyncSite:
         uuid,
     ):
         """User list.
+
         :param uuid: The site id
         """
         request_data = {
@@ -597,6 +614,7 @@ class AsyncSite:
         uuid,
     ):
         """User delete.
+
         :param user_id: Id of the user
         :param uuid: The site id
         """

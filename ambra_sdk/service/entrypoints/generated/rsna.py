@@ -25,6 +25,7 @@ class Rsna:
         clearinghouse=None,
     ):
         """Phr_study.
+
         :param access_code: RSNA-generated access code
         :param dob: Patient's date of birth YYYYMMDD
         :param exam_id: RSNA-generated exam ID/token/email (DEPRECATED June 2015 - use access_code)
@@ -72,6 +73,7 @@ class AsyncRsna:
         clearinghouse=None,
     ):
         """Phr_study.
+
         :param access_code: RSNA-generated access code
         :param dob: Patient's date of birth YYYYMMDD
         :param exam_id: RSNA-generated exam ID/token/email (DEPRECATED June 2015 - use access_code)

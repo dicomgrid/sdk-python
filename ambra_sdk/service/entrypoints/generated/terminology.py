@@ -27,6 +27,7 @@ class Terminology:
         vanity=None,
     ):
         """Account overrides.
+
         :param account_id: account_id
         :param phi_namespace: phi_namespace
         :param storage_namespace: storage_namespace
@@ -64,6 +65,7 @@ class Terminology:
         vanity=None,
     ):
         """Tags.
+
         :param language: The ISO 639-1 language code
         :param account_id: account_id
         :param phi_namespace: phi_namespace
@@ -102,6 +104,7 @@ class Terminology:
         vanity=None,
     ):
         """Set.
+
         :param language: The ISO 639-1 language code
         :param tag: The tag to set
         :param value: The value of the tag. If this is empty the tag is deleted
@@ -139,6 +142,7 @@ class Terminology:
         vanity=None,
     ):
         """List.
+
         :param language: The ISO 639-1 language code
         :param tags: A comma separated list of the terminology tags to look up
         :param account_id: account_id
@@ -169,6 +173,7 @@ class Terminology:
         vanity=None,
     ):
         """I18next.
+
         :param lng: The language code
         :param account_id: account_id
         :param vanity: vanity
@@ -208,6 +213,7 @@ class AsyncTerminology:
         vanity=None,
     ):
         """Account overrides.
+
         :param account_id: account_id
         :param phi_namespace: phi_namespace
         :param storage_namespace: storage_namespace
@@ -245,6 +251,7 @@ class AsyncTerminology:
         vanity=None,
     ):
         """Tags.
+
         :param language: The ISO 639-1 language code
         :param account_id: account_id
         :param phi_namespace: phi_namespace
@@ -283,6 +290,7 @@ class AsyncTerminology:
         vanity=None,
     ):
         """Set.
+
         :param language: The ISO 639-1 language code
         :param tag: The tag to set
         :param value: The value of the tag. If this is empty the tag is deleted
@@ -320,6 +328,7 @@ class AsyncTerminology:
         vanity=None,
     ):
         """List.
+
         :param language: The ISO 639-1 language code
         :param tags: A comma separated list of the terminology tags to look up
         :param account_id: account_id
@@ -350,6 +359,7 @@ class AsyncTerminology:
         vanity=None,
     ):
         """I18next.
+
         :param lng: The language code
         :param account_id: account_id
         :param vanity: vanity

@@ -34,6 +34,7 @@ class Dictionary:
         account_id,
     ):
         """List.
+
         :param account_id: The account id
         """
         request_data = {
@@ -69,6 +70,7 @@ class Dictionary:
         replace,
     ):
         """Add.
+
         :param account_id: The account id
         :param case_sensitive: Flag if the dictionary lookup is case sensitive or not
         :param lookup: A JSON array of field names that will be concatenated and MD5 hashed for the dictionary lookup value
@@ -108,6 +110,7 @@ class Dictionary:
         uuid,
     ):
         """Set.
+
         :param name: The dictionary name
         :param uuid: The dictionary id
         """
@@ -134,6 +137,7 @@ class Dictionary:
         uuid,
     ):
         """Get.
+
         :param uuid: The dictionary id
         """
         request_data = {
@@ -158,6 +162,7 @@ class Dictionary:
         uuid,
     ):
         """Delete.
+
         :param uuid: The dictionary id
         """
         request_data = {
@@ -183,6 +188,7 @@ class Dictionary:
         lookup=None,
     ):
         """Entries.
+
         :param uuid: The dictionary id
         :param lookup: Only return the entry for the optional lookup entry (optional)
         """
@@ -213,6 +219,7 @@ class Dictionary:
         regexp=None,
     ):
         """Entry add.
+
         :param lookup: The JSON array of the lookup values to add. Alternatively a regular expression if the regexp parameter is passed
         :param replace: The JSON array of the replacement field values
         :param uuid: The dictionary id
@@ -248,6 +255,7 @@ class Dictionary:
         uuid,
     ):
         """Entry delete.
+
         :param lookup: The JSON array of the lookup values or the regular expression to delete
         :param uuid: The dictionary id
         """
@@ -285,6 +293,7 @@ class Dictionary:
         skip_if_replace_has_value=None,
     ):
         """Attach.
+
         :param uuid: The dictionary id
         :param account_id: account_id
         :param add_if_no_match: Flag to add the lookup and replace values to the dictionary if no match occurs (optional)
@@ -337,6 +346,7 @@ class Dictionary:
         skip_if_replace_has_value=None,
     ):
         """Attach set.
+
         :param uuid: The dictionary attach id
         :param add_if_no_match: Flag to add the lookup and replace values to the dictionary if no match occurs (optional)
         :param approve_if_match: Approve the object if there was a match (optional)
@@ -377,6 +387,7 @@ class Dictionary:
         uuid,
     ):
         """Detach.
+
         :param uuid: The dictionary attach id
         """
         request_data = {
@@ -410,6 +421,7 @@ class AsyncDictionary:
         account_id,
     ):
         """List.
+
         :param account_id: The account id
         """
         request_data = {
@@ -445,6 +457,7 @@ class AsyncDictionary:
         replace,
     ):
         """Add.
+
         :param account_id: The account id
         :param case_sensitive: Flag if the dictionary lookup is case sensitive or not
         :param lookup: A JSON array of field names that will be concatenated and MD5 hashed for the dictionary lookup value
@@ -484,6 +497,7 @@ class AsyncDictionary:
         uuid,
     ):
         """Set.
+
         :param name: The dictionary name
         :param uuid: The dictionary id
         """
@@ -510,6 +524,7 @@ class AsyncDictionary:
         uuid,
     ):
         """Get.
+
         :param uuid: The dictionary id
         """
         request_data = {
@@ -534,6 +549,7 @@ class AsyncDictionary:
         uuid,
     ):
         """Delete.
+
         :param uuid: The dictionary id
         """
         request_data = {
@@ -559,6 +575,7 @@ class AsyncDictionary:
         lookup=None,
     ):
         """Entries.
+
         :param uuid: The dictionary id
         :param lookup: Only return the entry for the optional lookup entry (optional)
         """
@@ -589,6 +606,7 @@ class AsyncDictionary:
         regexp=None,
     ):
         """Entry add.
+
         :param lookup: The JSON array of the lookup values to add. Alternatively a regular expression if the regexp parameter is passed
         :param replace: The JSON array of the replacement field values
         :param uuid: The dictionary id
@@ -624,6 +642,7 @@ class AsyncDictionary:
         uuid,
     ):
         """Entry delete.
+
         :param lookup: The JSON array of the lookup values or the regular expression to delete
         :param uuid: The dictionary id
         """
@@ -661,6 +680,7 @@ class AsyncDictionary:
         skip_if_replace_has_value=None,
     ):
         """Attach.
+
         :param uuid: The dictionary id
         :param account_id: account_id
         :param add_if_no_match: Flag to add the lookup and replace values to the dictionary if no match occurs (optional)
@@ -713,6 +733,7 @@ class AsyncDictionary:
         skip_if_replace_has_value=None,
     ):
         """Attach set.
+
         :param uuid: The dictionary attach id
         :param add_if_no_match: Flag to add the lookup and replace values to the dictionary if no match occurs (optional)
         :param approve_if_match: Approve the object if there was a match (optional)
@@ -753,6 +774,7 @@ class AsyncDictionary:
         uuid,
     ):
         """Detach.
+
         :param uuid: The dictionary attach id
         """
         request_data = {

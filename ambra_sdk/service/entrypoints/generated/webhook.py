@@ -15,6 +15,7 @@ from ambra_sdk.exceptions.service import InvalidMethod
 from ambra_sdk.exceptions.service import InvalidRegexp
 from ambra_sdk.exceptions.service import InvalidTransformCondition
 from ambra_sdk.exceptions.service import InvalidType
+from ambra_sdk.exceptions.service import InvalidUrl
 from ambra_sdk.exceptions.service import InvalidWebhookSetup
 from ambra_sdk.exceptions.service import MissingFields
 from ambra_sdk.exceptions.service import NodeNotFound
@@ -29,6 +30,7 @@ from ambra_sdk.exceptions.service import SfdcMissingFields
 from ambra_sdk.exceptions.service import SfdcNotHash
 from ambra_sdk.exceptions.service import SidUserNotFound
 from ambra_sdk.exceptions.service import SidUserNotInAccount
+from ambra_sdk.exceptions.service import SidUserPrivilegeEscalation
 from ambra_sdk.exceptions.service import UserNotFound
 from ambra_sdk.service.query import QueryO
 from ambra_sdk.service.query import AsyncQueryO
@@ -45,6 +47,7 @@ class Webhook:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -88,6 +91,7 @@ class Webhook:
         suspended=None,
     ):
         """Add.
+
         :param account_id: uuid of the account
         :param event: Event to call it on (See the notes for the available events)
         :param method: Method to call it with (POST|GET|POST_JSON|PUT|GET_JSON)
@@ -144,6 +148,7 @@ class Webhook:
         errors_mapping[('INVALID_METHOD', None)] = InvalidMethod('An invalid method was passed')
         errors_mapping[('INVALID_REGEXP', None)] = InvalidRegexp('Invalid regular expression')
         errors_mapping[('INVALID_TRANSFORM_CONDITION', None)] = InvalidTransformCondition('The transform condition is invalid')
+        errors_mapping[('INVALID_URL', None)] = InvalidUrl('The url value is invalid')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NODE_NOT_FOUND', None)] = NodeNotFound('The node can not be found')
         errors_mapping[('NOT_HASH', None)] = NotHash('The parameter or auth field is not a hash.')
@@ -155,6 +160,7 @@ class Webhook:
         errors_mapping[('SFDC_NOT_HASH', None)] = SfdcNotHash('The SFDC auth value is not a JSON hash')
         errors_mapping[('SID_USER_NOT_FOUND', None)] = SidUserNotFound('The sid user can not be found')
         errors_mapping[('SID_USER_NOT_IN_ACCOUNT', None)] = SidUserNotInAccount('The sid user is not a member of this account')
+        errors_mapping[('SID_USER_PRIVILEGE_ESCALATION', None)] = SidUserPrivilegeEscalation('The user for sid_user_id has higher privileges that the calling user')
         errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The basic authentication user can not be found')
         query_data = {
             'api': self._api,
@@ -189,6 +195,7 @@ class Webhook:
         url=None,
     ):
         """Set.
+
         :param uuid: uuid of the webhook
         :param auth: A JSON hash with the authentication details (optional)
         :param by_accession_number: Flag to expand the once search to include studies with the same accession_number (optional)
@@ -242,6 +249,7 @@ class Webhook:
         errors_mapping[('INVALID_METHOD', None)] = InvalidMethod('An invalid method was passed')
         errors_mapping[('INVALID_REGEXP', None)] = InvalidRegexp('Invalid regular expression')
         errors_mapping[('INVALID_TRANSFORM_CONDITION', None)] = InvalidTransformCondition('The transform condition is invalid')
+        errors_mapping[('INVALID_URL', None)] = InvalidUrl('The url value is invalid')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NODE_NOT_FOUND', None)] = NodeNotFound('The node can not be found')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The webhook can not be found')
@@ -252,6 +260,7 @@ class Webhook:
         errors_mapping[('SFDC_NOT_HASH', None)] = SfdcNotHash('The SFDC auth value is not a JSON hash')
         errors_mapping[('SID_USER_NOT_FOUND', None)] = SidUserNotFound('The sid user can not be found')
         errors_mapping[('SID_USER_NOT_IN_ACCOUNT', None)] = SidUserNotInAccount('The sid user is not a member of this account')
+        errors_mapping[('SID_USER_PRIVILEGE_ESCALATION', None)] = SidUserPrivilegeEscalation('The user for sid_user_id has higher privileges that the calling user')
         query_data = {
             'api': self._api,
             'url': '/webhook/set',
@@ -266,6 +275,7 @@ class Webhook:
         uuid,
     ):
         """Get.
+
         :param uuid: uuid of the webhook
         """
         request_data = {
@@ -290,6 +300,7 @@ class Webhook:
         uuid,
     ):
         """Delete.
+
         :param uuid: uuid of the webhook
         """
         request_data = {
@@ -315,6 +326,7 @@ class Webhook:
         uuid,
     ):
         """Trigger.
+
         :param study_id: uuid of the study to fire the webhook for
         :param uuid: uuid of the webhook
         """
@@ -342,6 +354,7 @@ class Webhook:
         uuid,
     ):
         """Run.
+
         :param study_id: uuid of the study to run the webhook for
         :param uuid: uuid of the webhook
         """
@@ -373,6 +386,7 @@ class Webhook:
         study_count=None,
     ):
         """Event.
+
         :param type: The type of event (STUDY_UPLOAD_START|STUDY_UPLOAD_END)
         :param integration_key: The integration key associated with the event (optional)
         :param namespace_id: namespace_id
@@ -409,6 +423,7 @@ class Webhook:
         webhook_id,
     ):
         """Email.
+
         :param html: The HTML part of the email
         :param subject: The subject of the email
         :param template_id: The email template UUID to be used
@@ -452,6 +467,7 @@ class AsyncWebhook:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -495,6 +511,7 @@ class AsyncWebhook:
         suspended=None,
     ):
         """Add.
+
         :param account_id: uuid of the account
         :param event: Event to call it on (See the notes for the available events)
         :param method: Method to call it with (POST|GET|POST_JSON|PUT|GET_JSON)
@@ -551,6 +568,7 @@ class AsyncWebhook:
         errors_mapping[('INVALID_METHOD', None)] = InvalidMethod('An invalid method was passed')
         errors_mapping[('INVALID_REGEXP', None)] = InvalidRegexp('Invalid regular expression')
         errors_mapping[('INVALID_TRANSFORM_CONDITION', None)] = InvalidTransformCondition('The transform condition is invalid')
+        errors_mapping[('INVALID_URL', None)] = InvalidUrl('The url value is invalid')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NODE_NOT_FOUND', None)] = NodeNotFound('The node can not be found')
         errors_mapping[('NOT_HASH', None)] = NotHash('The parameter or auth field is not a hash.')
@@ -562,6 +580,7 @@ class AsyncWebhook:
         errors_mapping[('SFDC_NOT_HASH', None)] = SfdcNotHash('The SFDC auth value is not a JSON hash')
         errors_mapping[('SID_USER_NOT_FOUND', None)] = SidUserNotFound('The sid user can not be found')
         errors_mapping[('SID_USER_NOT_IN_ACCOUNT', None)] = SidUserNotInAccount('The sid user is not a member of this account')
+        errors_mapping[('SID_USER_PRIVILEGE_ESCALATION', None)] = SidUserPrivilegeEscalation('The user for sid_user_id has higher privileges that the calling user')
         errors_mapping[('USER_NOT_FOUND', None)] = UserNotFound('The basic authentication user can not be found')
         query_data = {
             'api': self._api,
@@ -596,6 +615,7 @@ class AsyncWebhook:
         url=None,
     ):
         """Set.
+
         :param uuid: uuid of the webhook
         :param auth: A JSON hash with the authentication details (optional)
         :param by_accession_number: Flag to expand the once search to include studies with the same accession_number (optional)
@@ -649,6 +669,7 @@ class AsyncWebhook:
         errors_mapping[('INVALID_METHOD', None)] = InvalidMethod('An invalid method was passed')
         errors_mapping[('INVALID_REGEXP', None)] = InvalidRegexp('Invalid regular expression')
         errors_mapping[('INVALID_TRANSFORM_CONDITION', None)] = InvalidTransformCondition('The transform condition is invalid')
+        errors_mapping[('INVALID_URL', None)] = InvalidUrl('The url value is invalid')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NODE_NOT_FOUND', None)] = NodeNotFound('The node can not be found')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The webhook can not be found')
@@ -659,6 +680,7 @@ class AsyncWebhook:
         errors_mapping[('SFDC_NOT_HASH', None)] = SfdcNotHash('The SFDC auth value is not a JSON hash')
         errors_mapping[('SID_USER_NOT_FOUND', None)] = SidUserNotFound('The sid user can not be found')
         errors_mapping[('SID_USER_NOT_IN_ACCOUNT', None)] = SidUserNotInAccount('The sid user is not a member of this account')
+        errors_mapping[('SID_USER_PRIVILEGE_ESCALATION', None)] = SidUserPrivilegeEscalation('The user for sid_user_id has higher privileges that the calling user')
         query_data = {
             'api': self._api,
             'url': '/webhook/set',
@@ -673,6 +695,7 @@ class AsyncWebhook:
         uuid,
     ):
         """Get.
+
         :param uuid: uuid of the webhook
         """
         request_data = {
@@ -697,6 +720,7 @@ class AsyncWebhook:
         uuid,
     ):
         """Delete.
+
         :param uuid: uuid of the webhook
         """
         request_data = {
@@ -722,6 +746,7 @@ class AsyncWebhook:
         uuid,
     ):
         """Trigger.
+
         :param study_id: uuid of the study to fire the webhook for
         :param uuid: uuid of the webhook
         """
@@ -749,6 +774,7 @@ class AsyncWebhook:
         uuid,
     ):
         """Run.
+
         :param study_id: uuid of the study to run the webhook for
         :param uuid: uuid of the webhook
         """
@@ -780,6 +806,7 @@ class AsyncWebhook:
         study_count=None,
     ):
         """Event.
+
         :param type: The type of event (STUDY_UPLOAD_START|STUDY_UPLOAD_END)
         :param integration_key: The integration key associated with the event (optional)
         :param namespace_id: namespace_id
@@ -816,6 +843,7 @@ class AsyncWebhook:
         webhook_id,
     ):
         """Email.
+
         :param html: The HTML part of the email
         :param subject: The subject of the email
         :param template_id: The email template UUID to be used

@@ -28,6 +28,7 @@ class Scanner:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -64,6 +65,7 @@ class Scanner:
         serial_no=None,
     ):
         """Add.
+
         :param name: Name of the scanner
         :param site_id: Id of the site to add them to
         :param customfield_param: Custom field(s) (optional)
@@ -108,6 +110,7 @@ class Scanner:
         serial_no=None,
     ):
         """Set.
+
         :param uuid: The scanner uuid
         :param customfield_param: Custom field(s) (optional)
         :param manufacturer: The manufacturer of the scanner (optional)
@@ -146,6 +149,7 @@ class Scanner:
         uuid,
     ):
         """Get.
+
         :param uuid: The scanner uuid
         """
         request_data = {
@@ -170,6 +174,7 @@ class Scanner:
         uuid,
     ):
         """Delete.
+
         :param uuid: The scanner uuid
         """
         request_data = {
@@ -203,6 +208,7 @@ class AsyncScanner:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -239,6 +245,7 @@ class AsyncScanner:
         serial_no=None,
     ):
         """Add.
+
         :param name: Name of the scanner
         :param site_id: Id of the site to add them to
         :param customfield_param: Custom field(s) (optional)
@@ -283,6 +290,7 @@ class AsyncScanner:
         serial_no=None,
     ):
         """Set.
+
         :param uuid: The scanner uuid
         :param customfield_param: Custom field(s) (optional)
         :param manufacturer: The manufacturer of the scanner (optional)
@@ -321,6 +329,7 @@ class AsyncScanner:
         uuid,
     ):
         """Get.
+
         :param uuid: The scanner uuid
         """
         request_data = {
@@ -345,6 +354,7 @@ class AsyncScanner:
         uuid,
     ):
         """Delete.
+
         :param uuid: The scanner uuid
         """
         request_data = {

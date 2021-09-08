@@ -23,6 +23,7 @@ class Npi:
         zip=None,
     ):
         """Find.
+
         :param last: Last name
         :param state: 2 letter state code
         :param first: First name (optional)
@@ -64,6 +65,7 @@ class AsyncNpi:
         zip=None,
     ):
         """Find.
+
         :param last: Last name
         :param state: 2 letter state code
         :param first: First name (optional)

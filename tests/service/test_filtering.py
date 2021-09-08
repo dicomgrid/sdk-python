@@ -128,3 +128,11 @@ class TestWithFilter:
         assert str(
             exc_info.value,
         ) == 'Use one timezone for all datetimes in requtest'
+
+    def test_filter_by_list(self, query):
+        """Test filter by list value."""
+        value = ['value', datetime(2000, 1, 2, 3, 4, 5)]
+        query.filter_by(Filter('field', FilterCondition.equals, value))
+        assert 'filter.field.equals' in query.request_args.data
+        assert query.request_args.data['filter.field.equals'] \
+            == '["value", "2000-01-02 03:04:05"]'

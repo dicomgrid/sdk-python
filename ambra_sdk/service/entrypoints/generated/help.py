@@ -21,6 +21,7 @@ class Help:
         key,
     ):
         """Get.
+
         :param key: The help key
         """
         request_data = {
@@ -45,6 +46,7 @@ class Help:
         text,
     ):
         """Set.
+
         :param key: The help key
         :param text: The help text
         """
@@ -79,6 +81,7 @@ class AsyncHelp:
         key,
     ):
         """Get.
+
         :param key: The help key
         """
         request_data = {
@@ -103,6 +106,7 @@ class AsyncHelp:
         text,
     ):
         """Set.
+
         :param key: The help key
         :param text: The help text
         """

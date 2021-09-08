@@ -125,4 +125,10 @@ async def async_check_response(  # NOQA:WPS231
             )
         json = await response.json()
         check_412(json, errors_mapping)
-    raise AmbraResponseException(code=status_code)
+
+    response_text = await response.text()
+    raise AmbraResponseException(
+        code=status_code,
+        description='Unknown error',
+        response_text=response_text,
+    )

@@ -29,6 +29,7 @@ class Tag:
         object,
     ):
         """List.
+
         :param object: Object class (Study|User_account|Group|Location|Account|Patient|Case|Order|Message)
         """
         request_data = {
@@ -58,6 +59,7 @@ class Tag:
         tag,
     ):
         """Add.
+
         :param object: Object class to apply it to (Study|User_account|Group|Location|Account|Patient|Case|Order|Message|Query)
         :param object_id: UUID of the object
         :param tag: Value of the tag
@@ -89,6 +91,7 @@ class Tag:
         tag,
     ):
         """Delete.
+
         :param object: Object class to apply it to (Study|User_account|Group|Location|Account|Patient|Case|Order)
         :param object_id: UUID of the object
         :param tag: Value of the tag
@@ -126,6 +129,7 @@ class AsyncTag:
         object,
     ):
         """List.
+
         :param object: Object class (Study|User_account|Group|Location|Account|Patient|Case|Order|Message)
         """
         request_data = {
@@ -155,6 +159,7 @@ class AsyncTag:
         tag,
     ):
         """Add.
+
         :param object: Object class to apply it to (Study|User_account|Group|Location|Account|Patient|Case|Order|Message|Query)
         :param object_id: UUID of the object
         :param tag: Value of the tag
@@ -186,6 +191,7 @@ class AsyncTag:
         tag,
     ):
         """Delete.
+
         :param object: Object class to apply it to (Study|User_account|Group|Location|Account|Patient|Case|Order)
         :param object_id: UUID of the object
         :param tag: Value of the tag

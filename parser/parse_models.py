@@ -110,6 +110,11 @@ DEFAULT_FOREIGN_MODELS = MappingProxyType(
         'owner_namespace_id': 'Namespace',
         'owner_user_id': 'User',
         'thumbnail_id': 'Thumbnail',
+        'qctask_id': 'Task',
+        'other_customfield_id': 'Customfield',
+        'ancestor_id': 'Ancestor',
+        'descendant_id': 'Descendant',
+        'anonymization_id': 'Anonyimization',
     }
 )
 

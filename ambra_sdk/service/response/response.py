@@ -116,4 +116,8 @@ def check_response(  # NOQA:WPS231
             )
         json = response.json()
         check_412(json, errors_mapping)
-    raise AmbraResponseException(code=status_code)
+    raise AmbraResponseException(
+        code=status_code,
+        description='Unknown error',
+        response_text=response.text,
+    )

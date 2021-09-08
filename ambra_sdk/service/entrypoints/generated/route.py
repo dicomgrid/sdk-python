@@ -37,6 +37,7 @@ class Route:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -87,6 +88,7 @@ class Route:
         suspended=None,
     ):
         """Add.
+
         :param actions: Route actions in JSON format
         :param conditions: Route conditions in JSON format
         :param name: Name of the route
@@ -177,6 +179,7 @@ class Route:
         suspended=None,
     ):
         """Set.
+
         :param uuid: The route uuid
         :param actions: Route actions in JSON format (optional)
         :param conditions: Route conditions in JSON format (optional)
@@ -243,6 +246,7 @@ class Route:
         uuid,
     ):
         """Get.
+
         :param uuid: The route uuid
         """
         request_data = {
@@ -267,6 +271,7 @@ class Route:
         uuid,
     ):
         """Delete.
+
         :param uuid: The route uuid
         """
         request_data = {
@@ -292,6 +297,7 @@ class Route:
         lv,
     ):
         """Physician alias match.
+
         :param account_id: The account to test in
         :param lv: The tag text to match against the PHYSICIAN_ALIAS rule.
         """
@@ -327,6 +333,7 @@ class AsyncRoute:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -377,6 +384,7 @@ class AsyncRoute:
         suspended=None,
     ):
         """Add.
+
         :param actions: Route actions in JSON format
         :param conditions: Route conditions in JSON format
         :param name: Name of the route
@@ -467,6 +475,7 @@ class AsyncRoute:
         suspended=None,
     ):
         """Set.
+
         :param uuid: The route uuid
         :param actions: Route actions in JSON format (optional)
         :param conditions: Route conditions in JSON format (optional)
@@ -533,6 +542,7 @@ class AsyncRoute:
         uuid,
     ):
         """Get.
+
         :param uuid: The route uuid
         """
         request_data = {
@@ -557,6 +567,7 @@ class AsyncRoute:
         uuid,
     ):
         """Delete.
+
         :param uuid: The route uuid
         """
         request_data = {
@@ -582,6 +593,7 @@ class AsyncRoute:
         lv,
     ):
         """Physician alias match.
+
         :param account_id: The account to test in
         :param lv: The tag text to match against the PHYSICIAN_ALIAS rule.
         """

@@ -26,6 +26,7 @@ class Meeting:
         study_uid=None,
     ):
         """Add.
+
         :param name: Title of the meeting
         :param state: State of the meeting
         :param phi_namespace: phi_namespace
@@ -61,6 +62,7 @@ class Meeting:
         state=None,
     ):
         """Set.
+
         :param uuid: UUID of the meeting
         :param name: Title of the meeting (optional)
         :param state: State of the meeting (optional)
@@ -88,6 +90,7 @@ class Meeting:
         uuid,
     ):
         """Get.
+
         :param uuid: UUID of the meeting
         """
         request_data = {
@@ -111,6 +114,7 @@ class Meeting:
         uuid,
     ):
         """Join.
+
         :param uuid: UUID of the meeting
         """
         request_data = {
@@ -134,6 +138,7 @@ class Meeting:
         uuid,
     ):
         """Leave.
+
         :param uuid: UUID of the meeting
         """
         request_data = {
@@ -155,6 +160,7 @@ class Meeting:
         uuid,
     ):
         """Roster.
+
         :param uuid: UUID of the meeting
         """
         request_data = {
@@ -179,6 +185,7 @@ class Meeting:
         uuid,
     ):
         """Presenter.
+
         :param user_id: UUID of the user to make the presenter
         :param uuid: UUID of the meeting
         """
@@ -205,6 +212,7 @@ class Meeting:
         uuid,
     ):
         """Ping.
+
         :param uuid: UUID of the meeting
         """
         request_data = {
@@ -227,6 +235,7 @@ class Meeting:
         uuid,
     ):
         """Delete.
+
         :param uuid: UUID of the meeting
         """
         request_data = {
@@ -251,6 +260,7 @@ class Meeting:
         uuid,
     ):
         """Events add.
+
         :param event: Event to send to the meeting
         :param uuid: UUID of the meeting
         """
@@ -290,6 +300,7 @@ class AsyncMeeting:
         study_uid=None,
     ):
         """Add.
+
         :param name: Title of the meeting
         :param state: State of the meeting
         :param phi_namespace: phi_namespace
@@ -325,6 +336,7 @@ class AsyncMeeting:
         state=None,
     ):
         """Set.
+
         :param uuid: UUID of the meeting
         :param name: Title of the meeting (optional)
         :param state: State of the meeting (optional)
@@ -352,6 +364,7 @@ class AsyncMeeting:
         uuid,
     ):
         """Get.
+
         :param uuid: UUID of the meeting
         """
         request_data = {
@@ -375,6 +388,7 @@ class AsyncMeeting:
         uuid,
     ):
         """Join.
+
         :param uuid: UUID of the meeting
         """
         request_data = {
@@ -398,6 +412,7 @@ class AsyncMeeting:
         uuid,
     ):
         """Leave.
+
         :param uuid: UUID of the meeting
         """
         request_data = {
@@ -419,6 +434,7 @@ class AsyncMeeting:
         uuid,
     ):
         """Roster.
+
         :param uuid: UUID of the meeting
         """
         request_data = {
@@ -443,6 +459,7 @@ class AsyncMeeting:
         uuid,
     ):
         """Presenter.
+
         :param user_id: UUID of the user to make the presenter
         :param uuid: UUID of the meeting
         """
@@ -469,6 +486,7 @@ class AsyncMeeting:
         uuid,
     ):
         """Ping.
+
         :param uuid: UUID of the meeting
         """
         request_data = {
@@ -491,6 +509,7 @@ class AsyncMeeting:
         uuid,
     ):
         """Delete.
+
         :param uuid: UUID of the meeting
         """
         request_data = {
@@ -515,6 +534,7 @@ class AsyncMeeting:
         uuid,
     ):
         """Events add.
+
         :param event: Event to send to the meeting
         :param uuid: UUID of the meeting
         """

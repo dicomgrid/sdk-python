@@ -132,6 +132,7 @@ class Study:
         uuid=None,
     ):
         """Add.
+
         :param accession_number: DICOM tag (0008,0050) (optional)
         :param attachment_count: Attachment count (optional)
         :param customfield_param: Custom field(s), see notes in /study/add (optional)
@@ -287,6 +288,7 @@ class Study:
         uuid=None,
     ):
         """Set.
+
         :param accession_number: DICOM tag (0008,0050) (optional)
         :param attachment_count: Attachment count (optional)
         :param customfield_param: Custom field(s), see notes in /study/add (optional)
@@ -407,6 +409,7 @@ class Study:
         uuid=None,
     ):
         """Delete.
+
         :param node_id: node_id
         :param phi_namespace: phi_namespace
         :param serial_no: serial_no
@@ -446,6 +449,7 @@ class Study:
         template=None,
     ):
         """List.
+
         :param customfield_h: Flag to return a customfield hash as detailed in /study/get (optional)
         :param extra: Flag to return extra data as detailed in /study/get (optional)
         :param fields: A JSON list of the study fields to return (optional)
@@ -484,6 +488,7 @@ class Study:
         self,
     ):
         """Count.
+
         """
         request_data = {
         }
@@ -510,6 +515,7 @@ class Study:
         is_available=None,
     ):
         """Cfind.
+
         :param serial_no: The serial number of the node
         :param uuid: The node id
         :param entire_account: Flag to search the entire account rather than just the nodes namespace. (optional)
@@ -555,6 +561,7 @@ class Study:
         uuid=None,
     ):
         """Get.
+
         :param customfield_h: Flag to return a customfield hash as detailed below (optional)
         :param extra: Flag to return extra data as detailed below (optional)
         :param fields: A JSON list of the study fields to return (optional)
@@ -601,6 +608,7 @@ class Study:
         uuid,
     ):
         """Permissions.
+
         :param uuid: The study uuid
         """
         request_data = {
@@ -629,6 +637,7 @@ class Study:
         uuid=None,
     ):
         """Exists.
+
         :param account_id: account_id
         :param phi_namespace: phi_namespace
         :param storage_namespace: storage_namespace
@@ -662,6 +671,7 @@ class Study:
         uuid,
     ):
         """Push.
+
         :param batch_no: The batch number if pushing to a CD burner
         :param destination_id: The destination to push it to
         :param ping: Flag to send the ping job back in this call
@@ -698,6 +708,7 @@ class Study:
         once=None,
     ):
         """Push hl7.
+
         :param destination_id: The destination to push it to
         :param uuid: The study uuid
         :param hl7_id: HL7 message to use in the template (optional)
@@ -732,6 +743,7 @@ class Study:
         uuid,
     ):
         """Pdf hl7.
+
         :param hl7_id: HL7 message to create the PDF report for
         :param uuid: The study uuid
         """
@@ -757,6 +769,7 @@ class Study:
         uuid,
     ):
         """Fax hl7.
+
         :param hl7_id: HL7 message to create the PDF report for
         :param number: The fax number to send the PDF report to
         :param uuid: The study uuid
@@ -791,6 +804,7 @@ class Study:
         detail=None,
     ):
         """Cmove.
+
         :param aetitle: The aetitle to send to
         :param ping: Flag to send the ping job back in this call
         :param serial_no: The serial number of the node
@@ -831,6 +845,7 @@ class Study:
         uuid,
     ):
         """Node can remove.
+
         :param serial_no: The serial number of the node
         :param study_uid: The study uid
         :param uuid: The node id
@@ -860,6 +875,7 @@ class Study:
         uuid,
     ):
         """Share who.
+
         :param type: Type of objects you want (account|location|group|user)
         :param uuid: The study uuid
         """
@@ -904,6 +920,7 @@ class Study:
         uuid=None,
     ):
         """Share.
+
         :param account_id: account_id
         :param charge_authorized: Flag that the sender authorized charging for this share (optional)
         :param charge_modality: Modality of the study the charge was authorized for (optional)
@@ -985,6 +1002,7 @@ class Study:
         user_invite_share_id=None,
     ):
         """Share stop.
+
         :param uuid: The study uuid
         :param account_id: account_id
         :param group_id: group_id
@@ -1021,6 +1039,7 @@ class Study:
         name=None,
     ):
         """Share list.
+
         :param uuid: The study uuid
         :param name: Flag to return a hash with both the uuid and name of the object (optional)
         """
@@ -1049,6 +1068,7 @@ class Study:
         must_match=None,
     ):
         """Approve.
+
         :param uuid: The study uuid
         :param delay: Number of seconds to delay showing the study as approved and running routing and events on it (optional)
         :param must_match: A JSON hash of study field names and values that must match before showing the study as approved and running routing and events on it (optional)
@@ -1082,6 +1102,7 @@ class Study:
         message=None,
     ):
         """Reject.
+
         :param uuid: The study uuid
         :param message: Message to send to the person who shared the study (optional)
         """
@@ -1113,6 +1134,7 @@ class Study:
         uuid=None,
     ):
         """Audit.
+
         :param action: The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|IMAGE_DELETED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)
         :param detail: Additional information
         :param phi_namespace: The phi namespace of the study (optional)
@@ -1148,6 +1170,7 @@ class Study:
         uuid,
     ):
         """Star.
+
         :param star: Star flag set on or off (1|0)
         :param uuid: The id of the study
         """
@@ -1176,6 +1199,7 @@ class Study:
         limit=None,
     ):
         """Report detail.
+
         :param account_id: Limit to studies in the passed account
         :param limit: Maximum size of the report. The default is 30,000 rows. If the report will be bigger than this an error will be returned (optional)
         """
@@ -1209,6 +1233,7 @@ class Study:
         limit=None,
     ):
         """Report series.
+
         :param email: Send the report to this email address(es) when it is done
         :param hours: Report on studies acquired within the last number of hours
         :param namespace_id: Namespace to run the report on
@@ -1241,6 +1266,7 @@ class Study:
         study_uid=None,
     ):
         """Viewer settings.
+
         :param phi_namespace: phi_namespace
         :param storage_namespace: storage_namespace
         :param study_id: study_id
@@ -1274,6 +1300,7 @@ class Study:
         study_uid=None,
     ):
         """Viewer3 settings.
+
         :param phi_namespace: phi_namespace
         :param settings: A JSON list of user settings set via /setting/set to return (optional)
         :param storage_namespace: storage_namespace
@@ -1307,6 +1334,7 @@ class Study:
         study_id,
     ):
         """Status set.
+
         :param new: The new study status value
         :param old: The old study status value
         :param study_id: Study uuid
@@ -1338,6 +1366,7 @@ class Study:
         self,
     ):
         """Status locks.
+
         """
         request_data = {
         }
@@ -1358,6 +1387,7 @@ class Study:
         study_id,
     ):
         """Status history.
+
         :param study_id: Study uuid
         """
         request_data = {
@@ -1383,6 +1413,7 @@ class Study:
         uuid,
     ):
         """Move.
+
         :param namespace_id: The namespace id
         :param uuid: The study id
         """
@@ -1414,6 +1445,7 @@ class Study:
         study_request_id=None,
     ):
         """Duplicate.
+
         :param uuid: The study id
         :param include_attachments: Also duplicate attachments (optional)
         :param namespace_id: namespace_id
@@ -1453,6 +1485,7 @@ class Study:
         uuid,
     ):
         """Split.
+
         :param namespace_id: The namespace id to split it into
         :param no_split: Do not split on the series just create a new study with a study UID
         :param uuid: The study id
@@ -1485,6 +1518,7 @@ class Study:
         uuid,
     ):
         """Freeze.
+
         :param thaw: Flag to thaw a frozen study
         :param uuid: The study id
         """
@@ -1516,6 +1550,7 @@ class Study:
         message=None,
     ):
         """Manual route.
+
         :param route_id: The routing rule id
         :param uuid: The study id
         :param email: The email to share with if the rule has a share_email action with the USER_ENTRY token (optional)
@@ -1551,6 +1586,7 @@ class Study:
         patientid=None,
     ):
         """Find order.
+
         :param uuid: The study id
         :param accession_number: accession_number
         :param patient_name: patient_name
@@ -1582,6 +1618,7 @@ class Study:
         uuid,
     ):
         """Archive.
+
         :param uuid: The study id
         """
         request_data = {
@@ -1608,6 +1645,7 @@ class Study:
         uuid,
     ):
         """Retrieve.
+
         :param uuid: The study id
         """
         request_data = {
@@ -1636,6 +1674,7 @@ class Study:
         study_id,
     ):
         """Comment add.
+
         :param body: The comment body
         :param study_id: The study id
         """
@@ -1662,6 +1701,7 @@ class Study:
         uuid,
     ):
         """Comment delete.
+
         :param uuid: The comment id
         """
         request_data = {
@@ -1686,6 +1726,7 @@ class Study:
         uuid,
     ):
         """Comment get.
+
         :param uuid: The comment id
         """
         request_data = {
@@ -1712,6 +1753,7 @@ class Study:
         series=None,
     ):
         """Validate.
+
         :param uuid: The study id
         :param validate_id: The validation id
         :param series: Only validate the specified series (optional)
@@ -1742,6 +1784,7 @@ class Study:
         report_name=None,
     ):
         """Attach customfields.
+
         :param uuid: The study id
         :param report_name: The report name (optional defaults to customfields.txt)
         """
@@ -1770,6 +1813,7 @@ class Study:
         uuid,
     ):
         """External viewer.
+
         :param redirect: A flag to return an HTTP redirect to the viewer URL rather than the JSON structure
         :param uuid: The study id
         """
@@ -1800,6 +1844,7 @@ class Study:
         uuid,
     ):
         """Question.
+
         :param detail: Optional detail to pass through to the AI stack
         :param question: The question to ask or a JSON array of questions to ask
         :param uuid: The study id
@@ -1831,6 +1876,7 @@ class Study:
         uuid,
     ):
         """Dicomdata load.
+
         :param uuid: The study id
         """
         request_data = {
@@ -1862,6 +1908,7 @@ class Study:
         size=None,
     ):
         """Timing event.
+
         :param event: The event
         :param storage_namespace: The storage namespace
         :param study_uid: The study uid
@@ -1895,6 +1942,7 @@ class Study:
         uuid,
     ):
         """Timing log.
+
         :param uuid: The study uuid
         """
         request_data = {
@@ -1927,6 +1975,7 @@ class Study:
         study_uid=None,
     ):
         """Sync.
+
         :param image_count: Update the study image count and then sync (optional)
         :param node_id: node_id
         :param phi_namespace: phi_namespace
@@ -1964,6 +2013,7 @@ class Study:
         namespace_id,
     ):
         """Take.
+
         :param namespace_id: The namespace id to take a study into
         """
         request_data = {
@@ -2001,6 +2051,7 @@ class Study:
         study_description=None,
     ):
         """Request add.
+
         :param account_id: The account id to send the study request to
         :param comments: Free form request comments
         :param namespace_id: The namespace id requested studies to put (share or duplicate) into
@@ -2047,6 +2098,7 @@ class Study:
         uuid,
     ):
         """Request get.
+
         :param uuid: The study request uuid
         """
         request_data = {
@@ -2070,6 +2122,7 @@ class Study:
         study_request_id,
     ):
         """Request match.
+
         :param study_request_id: The study request uuid
         """
         request_data = {
@@ -2093,6 +2146,7 @@ class Study:
         uuid,
     ):
         """Revive.
+
         :param uuid: The study uuid
         """
         request_data = {
@@ -2166,6 +2220,7 @@ class AsyncStudy:
         uuid=None,
     ):
         """Add.
+
         :param accession_number: DICOM tag (0008,0050) (optional)
         :param attachment_count: Attachment count (optional)
         :param customfield_param: Custom field(s), see notes in /study/add (optional)
@@ -2321,6 +2376,7 @@ class AsyncStudy:
         uuid=None,
     ):
         """Set.
+
         :param accession_number: DICOM tag (0008,0050) (optional)
         :param attachment_count: Attachment count (optional)
         :param customfield_param: Custom field(s), see notes in /study/add (optional)
@@ -2441,6 +2497,7 @@ class AsyncStudy:
         uuid=None,
     ):
         """Delete.
+
         :param node_id: node_id
         :param phi_namespace: phi_namespace
         :param serial_no: serial_no
@@ -2480,6 +2537,7 @@ class AsyncStudy:
         template=None,
     ):
         """List.
+
         :param customfield_h: Flag to return a customfield hash as detailed in /study/get (optional)
         :param extra: Flag to return extra data as detailed in /study/get (optional)
         :param fields: A JSON list of the study fields to return (optional)
@@ -2518,6 +2576,7 @@ class AsyncStudy:
         self,
     ):
         """Count.
+
         """
         request_data = {
         }
@@ -2544,6 +2603,7 @@ class AsyncStudy:
         is_available=None,
     ):
         """Cfind.
+
         :param serial_no: The serial number of the node
         :param uuid: The node id
         :param entire_account: Flag to search the entire account rather than just the nodes namespace. (optional)
@@ -2589,6 +2649,7 @@ class AsyncStudy:
         uuid=None,
     ):
         """Get.
+
         :param customfield_h: Flag to return a customfield hash as detailed below (optional)
         :param extra: Flag to return extra data as detailed below (optional)
         :param fields: A JSON list of the study fields to return (optional)
@@ -2635,6 +2696,7 @@ class AsyncStudy:
         uuid,
     ):
         """Permissions.
+
         :param uuid: The study uuid
         """
         request_data = {
@@ -2663,6 +2725,7 @@ class AsyncStudy:
         uuid=None,
     ):
         """Exists.
+
         :param account_id: account_id
         :param phi_namespace: phi_namespace
         :param storage_namespace: storage_namespace
@@ -2696,6 +2759,7 @@ class AsyncStudy:
         uuid,
     ):
         """Push.
+
         :param batch_no: The batch number if pushing to a CD burner
         :param destination_id: The destination to push it to
         :param ping: Flag to send the ping job back in this call
@@ -2732,6 +2796,7 @@ class AsyncStudy:
         once=None,
     ):
         """Push hl7.
+
         :param destination_id: The destination to push it to
         :param uuid: The study uuid
         :param hl7_id: HL7 message to use in the template (optional)
@@ -2766,6 +2831,7 @@ class AsyncStudy:
         uuid,
     ):
         """Pdf hl7.
+
         :param hl7_id: HL7 message to create the PDF report for
         :param uuid: The study uuid
         """
@@ -2791,6 +2857,7 @@ class AsyncStudy:
         uuid,
     ):
         """Fax hl7.
+
         :param hl7_id: HL7 message to create the PDF report for
         :param number: The fax number to send the PDF report to
         :param uuid: The study uuid
@@ -2825,6 +2892,7 @@ class AsyncStudy:
         detail=None,
     ):
         """Cmove.
+
         :param aetitle: The aetitle to send to
         :param ping: Flag to send the ping job back in this call
         :param serial_no: The serial number of the node
@@ -2865,6 +2933,7 @@ class AsyncStudy:
         uuid,
     ):
         """Node can remove.
+
         :param serial_no: The serial number of the node
         :param study_uid: The study uid
         :param uuid: The node id
@@ -2894,6 +2963,7 @@ class AsyncStudy:
         uuid,
     ):
         """Share who.
+
         :param type: Type of objects you want (account|location|group|user)
         :param uuid: The study uuid
         """
@@ -2938,6 +3008,7 @@ class AsyncStudy:
         uuid=None,
     ):
         """Share.
+
         :param account_id: account_id
         :param charge_authorized: Flag that the sender authorized charging for this share (optional)
         :param charge_modality: Modality of the study the charge was authorized for (optional)
@@ -3019,6 +3090,7 @@ class AsyncStudy:
         user_invite_share_id=None,
     ):
         """Share stop.
+
         :param uuid: The study uuid
         :param account_id: account_id
         :param group_id: group_id
@@ -3055,6 +3127,7 @@ class AsyncStudy:
         name=None,
     ):
         """Share list.
+
         :param uuid: The study uuid
         :param name: Flag to return a hash with both the uuid and name of the object (optional)
         """
@@ -3083,6 +3156,7 @@ class AsyncStudy:
         must_match=None,
     ):
         """Approve.
+
         :param uuid: The study uuid
         :param delay: Number of seconds to delay showing the study as approved and running routing and events on it (optional)
         :param must_match: A JSON hash of study field names and values that must match before showing the study as approved and running routing and events on it (optional)
@@ -3116,6 +3190,7 @@ class AsyncStudy:
         message=None,
     ):
         """Reject.
+
         :param uuid: The study uuid
         :param message: Message to send to the person who shared the study (optional)
         """
@@ -3147,6 +3222,7 @@ class AsyncStudy:
         uuid=None,
     ):
         """Audit.
+
         :param action: The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|IMAGE_DELETED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)
         :param detail: Additional information
         :param phi_namespace: The phi namespace of the study (optional)
@@ -3182,6 +3258,7 @@ class AsyncStudy:
         uuid,
     ):
         """Star.
+
         :param star: Star flag set on or off (1|0)
         :param uuid: The id of the study
         """
@@ -3210,6 +3287,7 @@ class AsyncStudy:
         limit=None,
     ):
         """Report detail.
+
         :param account_id: Limit to studies in the passed account
         :param limit: Maximum size of the report. The default is 30,000 rows. If the report will be bigger than this an error will be returned (optional)
         """
@@ -3243,6 +3321,7 @@ class AsyncStudy:
         limit=None,
     ):
         """Report series.
+
         :param email: Send the report to this email address(es) when it is done
         :param hours: Report on studies acquired within the last number of hours
         :param namespace_id: Namespace to run the report on
@@ -3275,6 +3354,7 @@ class AsyncStudy:
         study_uid=None,
     ):
         """Viewer settings.
+
         :param phi_namespace: phi_namespace
         :param storage_namespace: storage_namespace
         :param study_id: study_id
@@ -3308,6 +3388,7 @@ class AsyncStudy:
         study_uid=None,
     ):
         """Viewer3 settings.
+
         :param phi_namespace: phi_namespace
         :param settings: A JSON list of user settings set via /setting/set to return (optional)
         :param storage_namespace: storage_namespace
@@ -3341,6 +3422,7 @@ class AsyncStudy:
         study_id,
     ):
         """Status set.
+
         :param new: The new study status value
         :param old: The old study status value
         :param study_id: Study uuid
@@ -3372,6 +3454,7 @@ class AsyncStudy:
         self,
     ):
         """Status locks.
+
         """
         request_data = {
         }
@@ -3392,6 +3475,7 @@ class AsyncStudy:
         study_id,
     ):
         """Status history.
+
         :param study_id: Study uuid
         """
         request_data = {
@@ -3417,6 +3501,7 @@ class AsyncStudy:
         uuid,
     ):
         """Move.
+
         :param namespace_id: The namespace id
         :param uuid: The study id
         """
@@ -3448,6 +3533,7 @@ class AsyncStudy:
         study_request_id=None,
     ):
         """Duplicate.
+
         :param uuid: The study id
         :param include_attachments: Also duplicate attachments (optional)
         :param namespace_id: namespace_id
@@ -3487,6 +3573,7 @@ class AsyncStudy:
         uuid,
     ):
         """Split.
+
         :param namespace_id: The namespace id to split it into
         :param no_split: Do not split on the series just create a new study with a study UID
         :param uuid: The study id
@@ -3519,6 +3606,7 @@ class AsyncStudy:
         uuid,
     ):
         """Freeze.
+
         :param thaw: Flag to thaw a frozen study
         :param uuid: The study id
         """
@@ -3550,6 +3638,7 @@ class AsyncStudy:
         message=None,
     ):
         """Manual route.
+
         :param route_id: The routing rule id
         :param uuid: The study id
         :param email: The email to share with if the rule has a share_email action with the USER_ENTRY token (optional)
@@ -3585,6 +3674,7 @@ class AsyncStudy:
         patientid=None,
     ):
         """Find order.
+
         :param uuid: The study id
         :param accession_number: accession_number
         :param patient_name: patient_name
@@ -3616,6 +3706,7 @@ class AsyncStudy:
         uuid,
     ):
         """Archive.
+
         :param uuid: The study id
         """
         request_data = {
@@ -3642,6 +3733,7 @@ class AsyncStudy:
         uuid,
     ):
         """Retrieve.
+
         :param uuid: The study id
         """
         request_data = {
@@ -3670,6 +3762,7 @@ class AsyncStudy:
         study_id,
     ):
         """Comment add.
+
         :param body: The comment body
         :param study_id: The study id
         """
@@ -3696,6 +3789,7 @@ class AsyncStudy:
         uuid,
     ):
         """Comment delete.
+
         :param uuid: The comment id
         """
         request_data = {
@@ -3720,6 +3814,7 @@ class AsyncStudy:
         uuid,
     ):
         """Comment get.
+
         :param uuid: The comment id
         """
         request_data = {
@@ -3746,6 +3841,7 @@ class AsyncStudy:
         series=None,
     ):
         """Validate.
+
         :param uuid: The study id
         :param validate_id: The validation id
         :param series: Only validate the specified series (optional)
@@ -3776,6 +3872,7 @@ class AsyncStudy:
         report_name=None,
     ):
         """Attach customfields.
+
         :param uuid: The study id
         :param report_name: The report name (optional defaults to customfields.txt)
         """
@@ -3804,6 +3901,7 @@ class AsyncStudy:
         uuid,
     ):
         """External viewer.
+
         :param redirect: A flag to return an HTTP redirect to the viewer URL rather than the JSON structure
         :param uuid: The study id
         """
@@ -3834,6 +3932,7 @@ class AsyncStudy:
         uuid,
     ):
         """Question.
+
         :param detail: Optional detail to pass through to the AI stack
         :param question: The question to ask or a JSON array of questions to ask
         :param uuid: The study id
@@ -3865,6 +3964,7 @@ class AsyncStudy:
         uuid,
     ):
         """Dicomdata load.
+
         :param uuid: The study id
         """
         request_data = {
@@ -3896,6 +3996,7 @@ class AsyncStudy:
         size=None,
     ):
         """Timing event.
+
         :param event: The event
         :param storage_namespace: The storage namespace
         :param study_uid: The study uid
@@ -3929,6 +4030,7 @@ class AsyncStudy:
         uuid,
     ):
         """Timing log.
+
         :param uuid: The study uuid
         """
         request_data = {
@@ -3961,6 +4063,7 @@ class AsyncStudy:
         study_uid=None,
     ):
         """Sync.
+
         :param image_count: Update the study image count and then sync (optional)
         :param node_id: node_id
         :param phi_namespace: phi_namespace
@@ -3998,6 +4101,7 @@ class AsyncStudy:
         namespace_id,
     ):
         """Take.
+
         :param namespace_id: The namespace id to take a study into
         """
         request_data = {
@@ -4035,6 +4139,7 @@ class AsyncStudy:
         study_description=None,
     ):
         """Request add.
+
         :param account_id: The account id to send the study request to
         :param comments: Free form request comments
         :param namespace_id: The namespace id requested studies to put (share or duplicate) into
@@ -4081,6 +4186,7 @@ class AsyncStudy:
         uuid,
     ):
         """Request get.
+
         :param uuid: The study request uuid
         """
         request_data = {
@@ -4104,6 +4210,7 @@ class AsyncStudy:
         study_request_id,
     ):
         """Request match.
+
         :param study_request_id: The study request uuid
         """
         request_data = {
@@ -4127,6 +4234,7 @@ class AsyncStudy:
         uuid,
     ):
         """Revive.
+
         :param uuid: The study uuid
         """
         request_data = {

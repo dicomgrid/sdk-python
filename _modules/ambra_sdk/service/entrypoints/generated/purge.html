@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.purge &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.purge &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -69,6 +69,7 @@
         <span class="n">account_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
+
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -116,6 +117,7 @@
         <span class="n">thin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param account_id: uuid of the account the rule is for</span>
 <span class="sd">        :param days_old: Studies greater than or equal to these days old will be purged</span>
 <span class="sd">        :param days_old_how: How should the days old value be calculated using the &#39;U&#39;pdated, &#39;C&#39;reated or &#39;S&#39;tudy date</span>
@@ -196,6 +198,7 @@
         <span class="n">thin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
+
 <span class="sd">        :param uuid: Id of the purge rule</span>
 <span class="sd">        :param adults: Apply this rule to adults - flag (optional)</span>
 <span class="sd">        :param archive: Archive the studies rather than deleting them - flag (optional)</span>
@@ -258,6 +261,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param uuid: Id of the purge rule</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -282,6 +286,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param uuid: Id of the purge rule</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -309,6 +314,7 @@
         <span class="n">rule_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Run.</span>
+
 <span class="sd">        :param dry_run: Do a dry run of the rule - flag</span>
 <span class="sd">        :param account_id: account_id</span>
 <span class="sd">        :param object: Limit purging to this object only (optional)</span>
@@ -348,6 +354,7 @@
         <span class="n">account_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
+
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -395,6 +402,7 @@
         <span class="n">thin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param account_id: uuid of the account the rule is for</span>
 <span class="sd">        :param days_old: Studies greater than or equal to these days old will be purged</span>
 <span class="sd">        :param days_old_how: How should the days old value be calculated using the &#39;U&#39;pdated, &#39;C&#39;reated or &#39;S&#39;tudy date</span>
@@ -475,6 +483,7 @@
         <span class="n">thin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
+
 <span class="sd">        :param uuid: Id of the purge rule</span>
 <span class="sd">        :param adults: Apply this rule to adults - flag (optional)</span>
 <span class="sd">        :param archive: Archive the studies rather than deleting them - flag (optional)</span>
@@ -537,6 +546,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param uuid: Id of the purge rule</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -561,6 +571,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param uuid: Id of the purge rule</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -588,6 +599,7 @@
         <span class="n">rule_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Run.</span>
+
 <span class="sd">        :param dry_run: Do a dry run of the rule - flag</span>
 <span class="sd">        :param account_id: account_id</span>
 <span class="sd">        :param object: Limit purging to this object only (optional)</span>
@@ -625,7 +637,7 @@
 
 
 
-<p class="blurb">version 3.21.5.0-1</p>
+<p class="blurb">version 3.21.6.0-1</p>
 
 
 

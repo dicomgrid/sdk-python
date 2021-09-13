@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.dictionary &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.dictionary &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -68,6 +68,7 @@
         <span class="n">account_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
+
 <span class="sd">        :param account_id: The account id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -103,6 +104,7 @@
         <span class="n">replace</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param account_id: The account id</span>
 <span class="sd">        :param case_sensitive: Flag if the dictionary lookup is case sensitive or not</span>
 <span class="sd">        :param lookup: A JSON array of field names that will be concatenated and MD5 hashed for the dictionary lookup value</span>
@@ -142,6 +144,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
+
 <span class="sd">        :param name: The dictionary name</span>
 <span class="sd">        :param uuid: The dictionary id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -168,6 +171,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param uuid: The dictionary id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -192,6 +196,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param uuid: The dictionary id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -217,6 +222,7 @@
         <span class="n">lookup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Entries.</span>
+
 <span class="sd">        :param uuid: The dictionary id</span>
 <span class="sd">        :param lookup: Only return the entry for the optional lookup entry (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -247,6 +253,7 @@
         <span class="n">regexp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Entry add.</span>
+
 <span class="sd">        :param lookup: The JSON array of the lookup values to add. Alternatively a regular expression if the regexp parameter is passed</span>
 <span class="sd">        :param replace: The JSON array of the replacement field values</span>
 <span class="sd">        :param uuid: The dictionary id</span>
@@ -282,6 +289,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Entry delete.</span>
+
 <span class="sd">        :param lookup: The JSON array of the lookup values or the regular expression to delete</span>
 <span class="sd">        :param uuid: The dictionary id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -319,6 +327,7 @@
         <span class="n">skip_if_replace_has_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Attach.</span>
+
 <span class="sd">        :param uuid: The dictionary id</span>
 <span class="sd">        :param account_id: account_id</span>
 <span class="sd">        :param add_if_no_match: Flag to add the lookup and replace values to the dictionary if no match occurs (optional)</span>
@@ -371,6 +380,7 @@
         <span class="n">skip_if_replace_has_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Attach set.</span>
+
 <span class="sd">        :param uuid: The dictionary attach id</span>
 <span class="sd">        :param add_if_no_match: Flag to add the lookup and replace values to the dictionary if no match occurs (optional)</span>
 <span class="sd">        :param approve_if_match: Approve the object if there was a match (optional)</span>
@@ -411,6 +421,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detach.</span>
+
 <span class="sd">        :param uuid: The dictionary attach id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -444,6 +455,7 @@
         <span class="n">account_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
+
 <span class="sd">        :param account_id: The account id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -479,6 +491,7 @@
         <span class="n">replace</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param account_id: The account id</span>
 <span class="sd">        :param case_sensitive: Flag if the dictionary lookup is case sensitive or not</span>
 <span class="sd">        :param lookup: A JSON array of field names that will be concatenated and MD5 hashed for the dictionary lookup value</span>
@@ -518,6 +531,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
+
 <span class="sd">        :param name: The dictionary name</span>
 <span class="sd">        :param uuid: The dictionary id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -544,6 +558,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param uuid: The dictionary id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -568,6 +583,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param uuid: The dictionary id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -593,6 +609,7 @@
         <span class="n">lookup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Entries.</span>
+
 <span class="sd">        :param uuid: The dictionary id</span>
 <span class="sd">        :param lookup: Only return the entry for the optional lookup entry (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -623,6 +640,7 @@
         <span class="n">regexp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Entry add.</span>
+
 <span class="sd">        :param lookup: The JSON array of the lookup values to add. Alternatively a regular expression if the regexp parameter is passed</span>
 <span class="sd">        :param replace: The JSON array of the replacement field values</span>
 <span class="sd">        :param uuid: The dictionary id</span>
@@ -658,6 +676,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Entry delete.</span>
+
 <span class="sd">        :param lookup: The JSON array of the lookup values or the regular expression to delete</span>
 <span class="sd">        :param uuid: The dictionary id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -695,6 +714,7 @@
         <span class="n">skip_if_replace_has_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Attach.</span>
+
 <span class="sd">        :param uuid: The dictionary id</span>
 <span class="sd">        :param account_id: account_id</span>
 <span class="sd">        :param add_if_no_match: Flag to add the lookup and replace values to the dictionary if no match occurs (optional)</span>
@@ -747,6 +767,7 @@
         <span class="n">skip_if_replace_has_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Attach set.</span>
+
 <span class="sd">        :param uuid: The dictionary attach id</span>
 <span class="sd">        :param add_if_no_match: Flag to add the lookup and replace values to the dictionary if no match occurs (optional)</span>
 <span class="sd">        :param approve_if_match: Approve the object if there was a match (optional)</span>
@@ -787,6 +808,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detach.</span>
+
 <span class="sd">        :param uuid: The dictionary attach id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -818,7 +840,7 @@
 
 
 
-<p class="blurb">version 3.21.5.0-1</p>
+<p class="blurb">version 3.21.6.0-1</p>
 
 
 

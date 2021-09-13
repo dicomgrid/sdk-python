@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.destination &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.destination &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -82,6 +82,7 @@
         <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
+
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        :param uuid: uuid of the destination</span>
 <span class="sd">        :param node_id: node_id</span>
@@ -151,6 +152,7 @@
         <span class="n">ui_json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        :param address: Address of the destination (required if DICOM type)</span>
 <span class="sd">        :param aetitle: Aetitle of the destination (required if DICOM type)</span>
@@ -285,6 +287,7 @@
         <span class="n">ui_json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
+
 <span class="sd">        :param distributed_destinations: A JSON array of destination ids. This list will be used to process requests in round robin manner. Meaningful for DISTRIBUTING destination type only (opional)</span>
 <span class="sd">        :param linked_qr_activity_in_referred_account: A flag to create DESTINATION_SEARCH activities in the linked destination&#39;s account. Meaningful for LINKED destinations only (opional)</span>
 <span class="sd">        :param linked_qr_to_referred_account: A flag to create resultant studies in the linked destination&#39;s account (not the account of LINKED destination where the search was initiated). Meaningful for LINKED destinations only (opional)</span>
@@ -380,6 +383,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param uuid: uuid of the destination</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -404,6 +408,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param uuid: uuid of the destination</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -453,6 +458,7 @@
         <span class="n">tracking_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Search.</span>
+
 <span class="sd">        :param uuid: uuid of the destination</span>
 <span class="sd">        :param accession_number: Accession number to find (optional)</span>
 <span class="sd">        :param anonymize: A JSON hash of anonymization rules to apply to retrieved studies (optional)</span>
@@ -537,6 +543,7 @@
         <span class="n">tracking_number</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Search report.</span>
+
 <span class="sd">        :param email: Optional email address to send the report to</span>
 <span class="sd">        :param tracking_number: The tracking number to report on</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -566,6 +573,7 @@
         <span class="n">customfield_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve.</span>
+
 <span class="sd">        :param activity_id: uuid of the DESTINATION_SEARCH activity to retrieve from</span>
 <span class="sd">        :param send_method: The method to send a study as a study request response (share|duplicate)</span>
 <span class="sd">        :param study_request_found_id: UUID of a study request search results to retrieve and send as study request response</span>
@@ -605,6 +613,7 @@
         <span class="n">patientid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Search mwl.</span>
+
 <span class="sd">        :param study_id: The id of the study we are searching for orders for</span>
 <span class="sd">        :param uuid: uuid of the destination</span>
 <span class="sd">        :param accession_number: Accession number to find (optional)</span>
@@ -659,6 +668,7 @@
         <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
+
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        :param uuid: uuid of the destination</span>
 <span class="sd">        :param node_id: node_id</span>
@@ -728,6 +738,7 @@
         <span class="n">ui_json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        :param address: Address of the destination (required if DICOM type)</span>
 <span class="sd">        :param aetitle: Aetitle of the destination (required if DICOM type)</span>
@@ -862,6 +873,7 @@
         <span class="n">ui_json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
+
 <span class="sd">        :param distributed_destinations: A JSON array of destination ids. This list will be used to process requests in round robin manner. Meaningful for DISTRIBUTING destination type only (opional)</span>
 <span class="sd">        :param linked_qr_activity_in_referred_account: A flag to create DESTINATION_SEARCH activities in the linked destination&#39;s account. Meaningful for LINKED destinations only (opional)</span>
 <span class="sd">        :param linked_qr_to_referred_account: A flag to create resultant studies in the linked destination&#39;s account (not the account of LINKED destination where the search was initiated). Meaningful for LINKED destinations only (opional)</span>
@@ -957,6 +969,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param uuid: uuid of the destination</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -981,6 +994,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param uuid: uuid of the destination</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1030,6 +1044,7 @@
         <span class="n">tracking_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Search.</span>
+
 <span class="sd">        :param uuid: uuid of the destination</span>
 <span class="sd">        :param accession_number: Accession number to find (optional)</span>
 <span class="sd">        :param anonymize: A JSON hash of anonymization rules to apply to retrieved studies (optional)</span>
@@ -1114,6 +1129,7 @@
         <span class="n">tracking_number</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Search report.</span>
+
 <span class="sd">        :param email: Optional email address to send the report to</span>
 <span class="sd">        :param tracking_number: The tracking number to report on</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1143,6 +1159,7 @@
         <span class="n">customfield_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve.</span>
+
 <span class="sd">        :param activity_id: uuid of the DESTINATION_SEARCH activity to retrieve from</span>
 <span class="sd">        :param send_method: The method to send a study as a study request response (share|duplicate)</span>
 <span class="sd">        :param study_request_found_id: UUID of a study request search results to retrieve and send as study request response</span>
@@ -1182,6 +1199,7 @@
         <span class="n">patientid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Search mwl.</span>
+
 <span class="sd">        :param study_id: The id of the study we are searching for orders for</span>
 <span class="sd">        :param uuid: uuid of the destination</span>
 <span class="sd">        :param accession_number: Accession number to find (optional)</span>
@@ -1231,7 +1249,7 @@
 
 
 
-<p class="blurb">version 3.21.5.0-1</p>
+<p class="blurb">version 3.21.6.0-1</p>
 
 
 

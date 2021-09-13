@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.hl7 &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.hl7 &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -68,6 +68,7 @@
         <span class="n">account_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
+
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -101,6 +102,7 @@
         <span class="n">accession_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param message: The HL7 message</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -138,6 +140,7 @@
         <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param raw: Flag to return the raw HL7 message as well</span>
 <span class="sd">        :param uuid: The hl7 uuid</span>
 <span class="sd">        :param node_id: node_id</span>
@@ -176,6 +179,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param uuid: The hl7 uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -200,6 +204,7 @@
         <span class="n">study_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Study report.</span>
+
 <span class="sd">        :param study_id: The study uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -224,6 +229,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Extract report.</span>
+
 <span class="sd">        :param uuid: The HL7 uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -249,6 +255,7 @@
         <span class="n">account_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template list.</span>
+
 <span class="sd">        :param account_id: The account uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -275,6 +282,7 @@
         <span class="n">name</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template add.</span>
+
 <span class="sd">        :param account_id: The account uuid</span>
 <span class="sd">        :param body: The HL7 message with replacement expressions</span>
 <span class="sd">        :param name: Name of the template</span>
@@ -306,6 +314,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template set.</span>
+
 <span class="sd">        :param body: The HL7 message with replacement expressions</span>
 <span class="sd">        :param name: Name of the template</span>
 <span class="sd">        :param uuid: The template id</span>
@@ -335,6 +344,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template get.</span>
+
 <span class="sd">        :param uuid: The template id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -363,6 +373,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template render.</span>
+
 <span class="sd">        :param hex: Flag if you want a hexdump of the text returned rather than the JSON</span>
 <span class="sd">        :param hl7_id: Optional hl7 message</span>
 <span class="sd">        :param study_id: The study id</span>
@@ -395,6 +406,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template delete.</span>
+
 <span class="sd">        :param uuid: The template id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -419,6 +431,7 @@
         <span class="n">account_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Transform list.</span>
+
 <span class="sd">        :param account_id: The account uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -453,6 +466,7 @@
         <span class="n">replacements</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Transform add.</span>
+
 <span class="sd">        :param account_id: The account uuid</span>
 <span class="sd">        :param conditions: A JSON array of the transform conditions</span>
 <span class="sd">        :param name: Name of the transform</span>
@@ -493,6 +507,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Transform set.</span>
+
 <span class="sd">        :param conditions: A JSON array of the transform conditions</span>
 <span class="sd">        :param name: Name of the transform</span>
 <span class="sd">        :param order_by: A numeric ordering value. Transformations are run in this order from lowest to highest</span>
@@ -529,6 +544,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Transform get.</span>
+
 <span class="sd">        :param uuid: The transform id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -553,6 +569,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Transform delete.</span>
+
 <span class="sd">        :param uuid: The transform id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -577,6 +594,7 @@
         <span class="n">hl7</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Transform test.</span>
+
 <span class="sd">        :param hl7: HL7 message to run the transformations on</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -601,6 +619,7 @@
         <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse fields.</span>
+
 <span class="sd">        :param message: HL7 message to parse</span>
 <span class="sd">        :param fields: Comma delimited list of the field to return. Use the notation specified in /hl7/transform/add (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -635,6 +654,7 @@
         <span class="n">account_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
+
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -668,6 +688,7 @@
         <span class="n">accession_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param message: The HL7 message</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -705,6 +726,7 @@
         <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param raw: Flag to return the raw HL7 message as well</span>
 <span class="sd">        :param uuid: The hl7 uuid</span>
 <span class="sd">        :param node_id: node_id</span>
@@ -743,6 +765,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param uuid: The hl7 uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -767,6 +790,7 @@
         <span class="n">study_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Study report.</span>
+
 <span class="sd">        :param study_id: The study uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -791,6 +815,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Extract report.</span>
+
 <span class="sd">        :param uuid: The HL7 uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -816,6 +841,7 @@
         <span class="n">account_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template list.</span>
+
 <span class="sd">        :param account_id: The account uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -842,6 +868,7 @@
         <span class="n">name</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template add.</span>
+
 <span class="sd">        :param account_id: The account uuid</span>
 <span class="sd">        :param body: The HL7 message with replacement expressions</span>
 <span class="sd">        :param name: Name of the template</span>
@@ -873,6 +900,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template set.</span>
+
 <span class="sd">        :param body: The HL7 message with replacement expressions</span>
 <span class="sd">        :param name: Name of the template</span>
 <span class="sd">        :param uuid: The template id</span>
@@ -902,6 +930,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template get.</span>
+
 <span class="sd">        :param uuid: The template id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -930,6 +959,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template render.</span>
+
 <span class="sd">        :param hex: Flag if you want a hexdump of the text returned rather than the JSON</span>
 <span class="sd">        :param hl7_id: Optional hl7 message</span>
 <span class="sd">        :param study_id: The study id</span>
@@ -962,6 +992,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template delete.</span>
+
 <span class="sd">        :param uuid: The template id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -986,6 +1017,7 @@
         <span class="n">account_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Transform list.</span>
+
 <span class="sd">        :param account_id: The account uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1020,6 +1052,7 @@
         <span class="n">replacements</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Transform add.</span>
+
 <span class="sd">        :param account_id: The account uuid</span>
 <span class="sd">        :param conditions: A JSON array of the transform conditions</span>
 <span class="sd">        :param name: Name of the transform</span>
@@ -1060,6 +1093,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Transform set.</span>
+
 <span class="sd">        :param conditions: A JSON array of the transform conditions</span>
 <span class="sd">        :param name: Name of the transform</span>
 <span class="sd">        :param order_by: A numeric ordering value. Transformations are run in this order from lowest to highest</span>
@@ -1096,6 +1130,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Transform get.</span>
+
 <span class="sd">        :param uuid: The transform id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1120,6 +1155,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Transform delete.</span>
+
 <span class="sd">        :param uuid: The transform id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1144,6 +1180,7 @@
         <span class="n">hl7</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Transform test.</span>
+
 <span class="sd">        :param hl7: HL7 message to run the transformations on</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1168,6 +1205,7 @@
         <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse fields.</span>
+
 <span class="sd">        :param message: HL7 message to parse</span>
 <span class="sd">        :param fields: Comma delimited list of the field to return. Use the notation specified in /hl7/transform/add (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1200,7 +1238,7 @@
 
 
 
-<p class="blurb">version 3.21.5.0-1</p>
+<p class="blurb">version 3.21.6.0-1</p>
 
 
 

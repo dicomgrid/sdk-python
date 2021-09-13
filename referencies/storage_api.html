@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Storage namespace &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
+    <title>Storage namespace &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -222,6 +222,38 @@ outside of the original storage namespace</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt id="ambra_sdk.storage.study.Study.attachment_image">
+<code class="sig-name descname">attachment_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">attachment_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">version</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">static_ids</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">use_box</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>box.box.Box<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study/study.html#Study.attachment_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.attachment_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attachment image.</p>
+<p>Adds a render of an attachment to a study.</p>
+<p>URL: /study/{namespace}/{studyUid}/attachment/{attachmentUid}/version/{version}/image?sid={sid}&amp;</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine_fqdn</strong> – Engine FQDN (Required).</p></li>
+<li><p><strong>namespace</strong> – Namespace (Required).</p></li>
+<li><p><strong>study_uid</strong> – Study uid (Required).</p></li>
+<li><p><strong>attachment_uid</strong> – Attachment uid (Required).</p></li>
+<li><p><strong>version</strong> – version (Required)</p></li>
+<li><p><strong>static_ids</strong> – An integer of value 1 or 0. If 1, series
+and images rendered from PDF are assigned (u)uids based
+on a hash of the attachment; repeated requests to render the
+same PDF will not result in more images.</p></li>
+<li><p><strong>phi_namespace</strong> – A string, set to the UUID of the namespace
+where the file was attached if it was attached to a shared
+instance of the study outside of the original storage namespace</p></li>
+<li><p><strong>use_box</strong> – Use box for response.</p></li>
+<li><p><strong>only_prepare</strong> – Get prepared request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>202 Attachment succesfully rendered as an image and added to study.
+500 (SERVER ERROR) if server error persisted.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.attribute">
 <code class="sig-name descname">attribute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_version</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">groups</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">include_tags</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exclude_unnamed</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">use_box</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>box.box.Box<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study/study.html#Study.attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.attribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets study image attributes.</p>
@@ -329,6 +361,32 @@ instead of counting from (possibly cached) meta data.</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>count obj</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.storage.study.Study.create_rt">
+<code class="sig-name descname">create_rt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">body</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">use_box</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>box.box.Box<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study/study.html#Study.create_rt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.create_rt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create RT.</p>
+<p>Generates RTSTRUCT DICOM file from the content sent by client</p>
+<p>URL: /study/{namespace}/{studyUid}/rt?sid={sid}&amp;phi_namespace={phi_namespace}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine_fqdn</strong> – Engine FQDN (Required).</p></li>
+<li><p><strong>namespace</strong> – Namespace (Required).</p></li>
+<li><p><strong>study_uid</strong> – Study uid (Required).</p></li>
+<li><p><strong>phi_namespace</strong> – A string, set to the UUID of the namespace
+where the file was attached if it was attached to a shared
+instance of the study outside of the original storage namespace</p></li>
+<li><p><strong>body</strong> – Body that represents fields of the RTSTRUCT DICOM</p></li>
+<li><p><strong>use_box</strong> – Use box for response.</p></li>
+<li><p><strong>only_prepare</strong> – Get prepared request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Image attributes</p>
 </dd>
 </dl>
 </dd></dl>
@@ -509,7 +567,7 @@ wxh sets maximum width and height</p></li>
 
 <dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.download">
-<code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">bundle</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">series_uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">include_wrapped_dicoms</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">stop_on_failure</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exclude_viewer</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">v3</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">roche_directory</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">flat_directory</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">transfer_syntax</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study/study.html#Study.download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.download" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">bundle</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">series_uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">include_wrapped_dicoms</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">stop_on_failure</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exclude_viewer</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">v3</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">roche_directory</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">flat_directory</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">transfer_syntax</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">anonymize_tags</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study/study.html#Study.download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Downloads a study ZIP file.</p>
 <p>URL: /study/{namespace}/{studyUid}/download?sid={sid}&amp;phi_namespace={phi_namespace}&amp;bundle={iso,dicom,osx,win}&amp;include_wrapped_dicoms={0,1}&amp;series_uid={series_uid[,series_uid…]}&amp;image_uid={image_uid[,image_uid…]}</p>
 <dl class="field-list simple">
@@ -541,6 +599,11 @@ StudyDate-ClinicalTrialTimePointID/Modality/SeriesTime-SeriesDescription/ folder
 <li><p><strong>flat_directory</strong> – If “1”, .dcm files will be flatly named
 IMG0001-IMG{image count}, and not be organized into SER folder.</p></li>
 <li><p><strong>transfer_syntax</strong> – transfer syntax</p></li>
+<li><p><strong>anonymize_tags</strong> – The list of tag ids with overridden values
+separated by comma (,) that should be overridden.
+Example:
+anonymize_tags={{tag_id_int_1}}={{tag_value_1}},{{tag_id_int_2}}={{tag_value_2}}.
+To omit tag, provide special keyword that is being used in services overrides as value: __DELETE__</p></li>
 <li><p><strong>only_prepare</strong> – Get prepared request.</p></li>
 </ul>
 </dd>
@@ -1046,7 +1109,7 @@ outside of the original storage namespace</p></li>
 
 
 
-<p class="blurb">version 3.21.5.0-1</p>
+<p class="blurb">version 3.21.6.0-1</p>
 
 
 
@@ -1071,6 +1134,8 @@ outside of the original storage namespace</p></li>
 <li class="toctree-l1"><a class="reference internal" href="../addon.html">Addon methods</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">References</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.html">Api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#async-api">Async Api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="service_api.html">Service namespace</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Storage namespace</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#image-namespace">Image namespace</a></li>

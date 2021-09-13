@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.radreport &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.radreport &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -72,6 +72,7 @@
         <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param study_id: Id of the study to add the radreport to</span>
 <span class="sd">        :param type: The type of the radreport</span>
 <span class="sd">        :param fields: A JSON hash of the fields in the report (optional)</span>
@@ -103,6 +104,7 @@
         <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
+
 <span class="sd">        :param uuid: Id of the radreport</span>
 <span class="sd">        :param attachment: A JSON hash of the storage attachment information (optional)</span>
 <span class="sd">        :param fields: A JSON hash of the fields in the report (optional)</span>
@@ -132,6 +134,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param uuid: Id of the radreport</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -158,6 +161,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Audit.</span>
+
 <span class="sd">        :param action: The audit action (SIGNED|MEDICAL_EDIT|ADMIN_EDIT|REPORT_GENERATED)</span>
 <span class="sd">        :param detail: Additional information</span>
 <span class="sd">        :param uuid: The id of the radreport</span>
@@ -186,6 +190,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param uuid: Id of the radreport</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -210,6 +215,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Description.</span>
+
 <span class="sd">        :param uuid: Id of the radreport</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -234,6 +240,7 @@
         <span class="n">user_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;User list.</span>
+
 <span class="sd">        :param user_id: The user id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -263,6 +270,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Pdf.</span>
+
 <span class="sd">        :param uuid: The radreport uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -285,6 +293,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Fax.</span>
+
 <span class="sd">        :param number: The fax number to send the PDF report to</span>
 <span class="sd">        :param uuid: The radreport uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -316,6 +325,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Email.</span>
+
 <span class="sd">        :param email: The email address(es) to send the radreport to</span>
 <span class="sd">        :param uuid: The radreport uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -348,6 +358,7 @@
         <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template list.</span>
+
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        :param active: Limit to active templates (optional)</span>
 <span class="sd">        :param type: Limit to this type (optional)</span>
@@ -386,6 +397,7 @@
         <span class="n">preview</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template add.</span>
+
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        :param body: Body of the template</span>
 <span class="sd">        :param name: Name of the template</span>
@@ -424,6 +436,7 @@
         <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template set.</span>
+
 <span class="sd">        :param uuid: uuid of the template</span>
 <span class="sd">        :param body: Body of the template (optional)</span>
 <span class="sd">        :param name: Name of the template (optional)</span>
@@ -457,6 +470,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template get.</span>
+
 <span class="sd">        :param uuid: uuid of the template</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -482,6 +496,7 @@
         <span class="nb">type</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template get type.</span>
+
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        :param type: Type of the template</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -508,6 +523,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template delete.</span>
+
 <span class="sd">        :param uuid: uuid of the template</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -531,6 +547,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template activate.</span>
+
 <span class="sd">        :param uuid: uuid of the template</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -566,6 +583,7 @@
         <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param study_id: Id of the study to add the radreport to</span>
 <span class="sd">        :param type: The type of the radreport</span>
 <span class="sd">        :param fields: A JSON hash of the fields in the report (optional)</span>
@@ -597,6 +615,7 @@
         <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
+
 <span class="sd">        :param uuid: Id of the radreport</span>
 <span class="sd">        :param attachment: A JSON hash of the storage attachment information (optional)</span>
 <span class="sd">        :param fields: A JSON hash of the fields in the report (optional)</span>
@@ -626,6 +645,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param uuid: Id of the radreport</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -652,6 +672,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Audit.</span>
+
 <span class="sd">        :param action: The audit action (SIGNED|MEDICAL_EDIT|ADMIN_EDIT|REPORT_GENERATED)</span>
 <span class="sd">        :param detail: Additional information</span>
 <span class="sd">        :param uuid: The id of the radreport</span>
@@ -680,6 +701,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param uuid: Id of the radreport</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -704,6 +726,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Description.</span>
+
 <span class="sd">        :param uuid: Id of the radreport</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -728,6 +751,7 @@
         <span class="n">user_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;User list.</span>
+
 <span class="sd">        :param user_id: The user id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -757,6 +781,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Pdf.</span>
+
 <span class="sd">        :param uuid: The radreport uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -779,6 +804,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Fax.</span>
+
 <span class="sd">        :param number: The fax number to send the PDF report to</span>
 <span class="sd">        :param uuid: The radreport uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -810,6 +836,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Email.</span>
+
 <span class="sd">        :param email: The email address(es) to send the radreport to</span>
 <span class="sd">        :param uuid: The radreport uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -842,6 +869,7 @@
         <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template list.</span>
+
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        :param active: Limit to active templates (optional)</span>
 <span class="sd">        :param type: Limit to this type (optional)</span>
@@ -880,6 +908,7 @@
         <span class="n">preview</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template add.</span>
+
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        :param body: Body of the template</span>
 <span class="sd">        :param name: Name of the template</span>
@@ -918,6 +947,7 @@
         <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template set.</span>
+
 <span class="sd">        :param uuid: uuid of the template</span>
 <span class="sd">        :param body: Body of the template (optional)</span>
 <span class="sd">        :param name: Name of the template (optional)</span>
@@ -951,6 +981,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template get.</span>
+
 <span class="sd">        :param uuid: uuid of the template</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -976,6 +1007,7 @@
         <span class="nb">type</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template get type.</span>
+
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        :param type: Type of the template</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1002,6 +1034,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template delete.</span>
+
 <span class="sd">        :param uuid: uuid of the template</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1025,6 +1058,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Template activate.</span>
+
 <span class="sd">        :param uuid: uuid of the template</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1056,7 +1090,7 @@
 
 
 
-<p class="blurb">version 3.21.5.0-1</p>
+<p class="blurb">version 3.21.6.0-1</p>
 
 
 

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.node &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.node &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -85,6 +85,7 @@
         <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
+
 <span class="sd">        :param account_id: uuid of the account (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -115,6 +116,7 @@
         <span class="n">account_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Public.</span>
+
 <span class="sd">        :param account_id: The account the user is in</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -148,6 +150,7 @@
         <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Connect.</span>
+
 <span class="sd">        :param account_id: The account the user is in</span>
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        :param message: Message (optional)</span>
@@ -179,6 +182,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Approve.</span>
+
 <span class="sd">        :param account_id: The account which requested the connection</span>
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -222,6 +226,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param accelerator_id: uuid of the accelerator if this is an accelerator node</span>
 <span class="sd">        :param name: Description of the node</span>
 <span class="sd">        :param type: Type of node (STORAGE|HARVESTER|ACCELERATOR|CLEARINGHOUSE|VIRTUAL|UTILITY|XDS)</span>
@@ -307,6 +312,7 @@
         <span class="n">warning_email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
+
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        :param category: Node category (ACTIVE|INACTIVE|MIGRATION|TEST|DUPLICATE|INTEGRATED) (optional)</span>
 <span class="sd">        :param configuration: The configuration as a JSON hash of key values pairs (optional)</span>
@@ -387,6 +393,7 @@
         <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        :param serial_no: serial_no</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -414,6 +421,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ping.</span>
+
 <span class="sd">        :param ack: Flag if the gateway wants to use the acknowledge workflow</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -442,6 +450,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ping ack.</span>
+
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -476,6 +485,7 @@
         <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deliver.</span>
+
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param status: Status code of the job (S|F|P|B|U) - Success, failure, partial transfer, blocked or uncached</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -522,6 +532,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve.</span>
+
 <span class="sd">        :param job_id: The uuid of the fetch job</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param status: Status code of the job (S|F|P) - Success, failure, partial transfer</span>
@@ -556,6 +567,7 @@
         <span class="n">error_message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Webhook.</span>
+
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param status: Status code of the job (S|F) - Success, failure</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -589,6 +601,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Configuration.</span>
+
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -614,6 +627,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -641,6 +655,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Study queued.</span>
+
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param study_uid: The study uid</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -671,6 +686,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Study anonymized.</span>
+
 <span class="sd">        :param new_study_uid: The new study uid</span>
 <span class="sd">        :param old_study_uid: The old study uid</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
@@ -704,6 +720,7 @@
         <span class="n">studies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Found.</span>
+
 <span class="sd">        :param search_id: The id of the search request</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -753,6 +770,7 @@
         <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Found mwl.</span>
+
 <span class="sd">        :param search_id: The id of the search request</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -797,6 +815,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Event.</span>
+
 <span class="sd">        :param destination_id: The id of the destination if the event is associated with a destination</span>
 <span class="sd">        :param event: The event (c_echo_error)</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
@@ -831,6 +850,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Log.</span>
+
 <span class="sd">        :param end: End time stamp in YYYY-MM-DD HH:MM:SS format</span>
 <span class="sd">        :param start: Start time stamp in YYYY-MM-DD HH:MM:SS format</span>
 <span class="sd">        :param type: Type of log (log|dicom|queue|system) defaults to log if not passed</span>
@@ -866,6 +886,7 @@
         <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Xml.</span>
+
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        :param xml: XML message</span>
 <span class="sd">        :param serial_no: serial_no</span>
@@ -899,6 +920,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Metric.</span>
+
 <span class="sd">        :param job_id: The uuid of the push job</span>
 <span class="sd">        :param metric: The metric to record</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
@@ -931,6 +953,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Performance set.</span>
+
 <span class="sd">        :param data: A JSON data structure with performance data</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -959,6 +982,7 @@
         <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Performance get.</span>
+
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        :param serial_no: serial_no</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -992,6 +1016,7 @@
         <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Progress add.</span>
+
 <span class="sd">        :param queue: The queue</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param state: The status</span>
@@ -1032,6 +1057,7 @@
         <span class="n">node_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Progress list.</span>
+
 <span class="sd">        :param destination_id: destination_id</span>
 <span class="sd">        :param node_id: node_id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1064,6 +1090,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Progress get.</span>
+
 <span class="sd">        :param uuid: The node progress uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1097,6 +1124,7 @@
         <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
+
 <span class="sd">        :param account_id: uuid of the account (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1127,6 +1155,7 @@
         <span class="n">account_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Public.</span>
+
 <span class="sd">        :param account_id: The account the user is in</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1160,6 +1189,7 @@
         <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Connect.</span>
+
 <span class="sd">        :param account_id: The account the user is in</span>
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        :param message: Message (optional)</span>
@@ -1191,6 +1221,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Approve.</span>
+
 <span class="sd">        :param account_id: The account which requested the connection</span>
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1234,6 +1265,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param accelerator_id: uuid of the accelerator if this is an accelerator node</span>
 <span class="sd">        :param name: Description of the node</span>
 <span class="sd">        :param type: Type of node (STORAGE|HARVESTER|ACCELERATOR|CLEARINGHOUSE|VIRTUAL|UTILITY|XDS)</span>
@@ -1319,6 +1351,7 @@
         <span class="n">warning_email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
+
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        :param category: Node category (ACTIVE|INACTIVE|MIGRATION|TEST|DUPLICATE|INTEGRATED) (optional)</span>
 <span class="sd">        :param configuration: The configuration as a JSON hash of key values pairs (optional)</span>
@@ -1399,6 +1432,7 @@
         <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        :param serial_no: serial_no</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1426,6 +1460,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ping.</span>
+
 <span class="sd">        :param ack: Flag if the gateway wants to use the acknowledge workflow</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -1454,6 +1489,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ping ack.</span>
+
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1488,6 +1524,7 @@
         <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deliver.</span>
+
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param status: Status code of the job (S|F|P|B|U) - Success, failure, partial transfer, blocked or uncached</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -1534,6 +1571,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve.</span>
+
 <span class="sd">        :param job_id: The uuid of the fetch job</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param status: Status code of the job (S|F|P) - Success, failure, partial transfer</span>
@@ -1568,6 +1606,7 @@
         <span class="n">error_message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Webhook.</span>
+
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param status: Status code of the job (S|F) - Success, failure</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -1601,6 +1640,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Configuration.</span>
+
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1626,6 +1666,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1653,6 +1694,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Study queued.</span>
+
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param study_uid: The study uid</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -1683,6 +1725,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Study anonymized.</span>
+
 <span class="sd">        :param new_study_uid: The new study uid</span>
 <span class="sd">        :param old_study_uid: The old study uid</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
@@ -1716,6 +1759,7 @@
         <span class="n">studies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Found.</span>
+
 <span class="sd">        :param search_id: The id of the search request</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -1765,6 +1809,7 @@
         <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Found mwl.</span>
+
 <span class="sd">        :param search_id: The id of the search request</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -1809,6 +1854,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Event.</span>
+
 <span class="sd">        :param destination_id: The id of the destination if the event is associated with a destination</span>
 <span class="sd">        :param event: The event (c_echo_error)</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
@@ -1843,6 +1889,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Log.</span>
+
 <span class="sd">        :param end: End time stamp in YYYY-MM-DD HH:MM:SS format</span>
 <span class="sd">        :param start: Start time stamp in YYYY-MM-DD HH:MM:SS format</span>
 <span class="sd">        :param type: Type of log (log|dicom|queue|system) defaults to log if not passed</span>
@@ -1878,6 +1925,7 @@
         <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Xml.</span>
+
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        :param xml: XML message</span>
 <span class="sd">        :param serial_no: serial_no</span>
@@ -1911,6 +1959,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Metric.</span>
+
 <span class="sd">        :param job_id: The uuid of the push job</span>
 <span class="sd">        :param metric: The metric to record</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
@@ -1943,6 +1992,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Performance set.</span>
+
 <span class="sd">        :param data: A JSON data structure with performance data</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -1971,6 +2021,7 @@
         <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Performance get.</span>
+
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        :param serial_no: serial_no</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2004,6 +2055,7 @@
         <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Progress add.</span>
+
 <span class="sd">        :param queue: The queue</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param state: The status</span>
@@ -2044,6 +2096,7 @@
         <span class="n">node_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Progress list.</span>
+
 <span class="sd">        :param destination_id: destination_id</span>
 <span class="sd">        :param node_id: node_id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2076,6 +2129,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Progress get.</span>
+
 <span class="sd">        :param uuid: The node progress uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -2107,7 +2161,7 @@
 
 
 
-<p class="blurb">version 3.21.5.0-1</p>
+<p class="blurb">version 3.21.6.0-1</p>
 
 
 

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.site &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.site &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -67,6 +67,7 @@
         <span class="n">account_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
+
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -102,6 +103,7 @@
         <span class="nb">zip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param account_id: uuid of the account to add them to</span>
 <span class="sd">        :param name: The sites name</span>
 <span class="sd">        :param city: The city the site is located in (optional)</span>
@@ -144,6 +146,7 @@
         <span class="nb">zip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
+
 <span class="sd">        :param uuid: The site uuid</span>
 <span class="sd">        :param city: The city the site is located in (optional)</span>
 <span class="sd">        :param inactive: Flag if the site is actively used. Might be used to filter out inactive sites (optional)</span>
@@ -183,6 +186,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param uuid: The site uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -207,6 +211,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param uuid: The site uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -234,6 +239,7 @@
         <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;User add.</span>
+
 <span class="sd">        :param role_name: The role name that should be used for the user in groups</span>
 <span class="sd">        :param uuid: The group id</span>
 <span class="sd">        :param email: email</span>
@@ -269,6 +275,7 @@
         <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;User set.</span>
+
 <span class="sd">        :param uuid: The site id</span>
 <span class="sd">        :param email: email</span>
 <span class="sd">        :param role_name: The role name that should be used for the user in groups (optional)</span>
@@ -300,6 +307,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;User list.</span>
+
 <span class="sd">        :param uuid: The site id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -331,6 +339,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;User delete.</span>
+
 <span class="sd">        :param user_id: Id of the user</span>
 <span class="sd">        :param uuid: The site id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -367,6 +376,7 @@
         <span class="n">account_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
+
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -402,6 +412,7 @@
         <span class="nb">zip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param account_id: uuid of the account to add them to</span>
 <span class="sd">        :param name: The sites name</span>
 <span class="sd">        :param city: The city the site is located in (optional)</span>
@@ -444,6 +455,7 @@
         <span class="nb">zip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
+
 <span class="sd">        :param uuid: The site uuid</span>
 <span class="sd">        :param city: The city the site is located in (optional)</span>
 <span class="sd">        :param inactive: Flag if the site is actively used. Might be used to filter out inactive sites (optional)</span>
@@ -483,6 +495,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param uuid: The site uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -507,6 +520,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param uuid: The site uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -534,6 +548,7 @@
         <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;User add.</span>
+
 <span class="sd">        :param role_name: The role name that should be used for the user in groups</span>
 <span class="sd">        :param uuid: The group id</span>
 <span class="sd">        :param email: email</span>
@@ -569,6 +584,7 @@
         <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;User set.</span>
+
 <span class="sd">        :param uuid: The site id</span>
 <span class="sd">        :param email: email</span>
 <span class="sd">        :param role_name: The role name that should be used for the user in groups (optional)</span>
@@ -600,6 +616,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;User list.</span>
+
 <span class="sd">        :param uuid: The site id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -631,6 +648,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;User delete.</span>
+
 <span class="sd">        :param user_id: Id of the user</span>
 <span class="sd">        :param uuid: The site id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -665,7 +683,7 @@
 
 
 
-<p class="blurb">version 3.21.5.0-1</p>
+<p class="blurb">version 3.21.6.0-1</p>
 
 
 

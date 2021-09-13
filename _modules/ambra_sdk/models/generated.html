@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.models.generated &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
+    <title>ambra_sdk.models.generated &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -469,6 +469,9 @@
     <span class="n">namespace</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Namespace&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Id of the namespace the activity is associated with&#39;</span><span class="p">)</span>
     <span class="n">node_connect_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Id of the node connect request the activity is associated with&#39;</span><span class="p">)</span>
     <span class="n">node_connect</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;NodeConnect&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Id of the node connect request the activity is associated with&#39;</span><span class="p">)</span>
+    <span class="n">priority</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The activity priority&#39;</span><span class="p">)</span>
+    <span class="n">qctask_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Id of the clinical trial QC task&#39;</span><span class="p">)</span>
+    <span class="n">qctask</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Task&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Id of the clinical trial QC task&#39;</span><span class="p">)</span>
     <span class="n">study_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Id of the study the activity is associated with&#39;</span><span class="p">)</span>
     <span class="n">study</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Study&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Id of the study the activity is associated with&#39;</span><span class="p">)</span>
     <span class="n">type_field</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Type of activity&#39;</span><span class="p">)</span>
@@ -493,6 +496,9 @@
         <span class="n">namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">node_connect_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">node_connect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">priority</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">qctask_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">qctask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">study_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">study</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">type_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -513,6 +519,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="n">namespace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">node_connect_id</span> <span class="o">=</span> <span class="n">node_connect_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">node_connect</span> <span class="o">=</span> <span class="n">node_connect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">priority</span> <span class="o">=</span> <span class="n">priority</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qctask_id</span> <span class="o">=</span> <span class="n">qctask_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qctask</span> <span class="o">=</span> <span class="n">qctask</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">study_id</span> <span class="o">=</span> <span class="n">study_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">study</span> <span class="o">=</span> <span class="n">study</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type_field</span> <span class="o">=</span> <span class="n">type_field</span>
@@ -695,6 +704,54 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">study</span> <span class="o">=</span> <span class="n">study</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated</span> <span class="o">=</span> <span class="n">updated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">updated_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">updated_by_obj</span></div>
+
+
+
+<div class="viewcode-block" id="Anonymization"><a class="viewcode-back" href="../../../referencies/models.html#ambra_sdk.models.generated.Anonymization">[docs]</a><span class="k">class</span> <span class="nc">Anonymization</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Anonymization.&quot;&quot;&quot;</span>
+    
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
+    <span class="n">account_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The associated account&#39;</span><span class="p">)</span>
+    <span class="n">account</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Account&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated account&#39;</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
+    <span class="n">rules</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Anonymization rules&#39;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">updated</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was last updated&#39;</span><span class="p">)</span>
+    <span class="n">updated_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who updated the record&#39;</span><span class="p">)</span>
+    <span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who updated the record&#39;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">account</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">rules</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">account_id</span> <span class="o">=</span> <span class="n">account_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">account</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rules</span> <span class="o">=</span> <span class="n">rules</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
@@ -1929,9 +1986,12 @@
     <span class="n">load_from_sr</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Load the value from the SR&#39;</span><span class="p">)</span>
     <span class="n">load_hl7</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;HL7 options&#39;</span><span class="p">)</span>
     <span class="n">load_hl7_filter</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;HL7 options&#39;</span><span class="p">)</span>
+    <span class="n">load_order</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Map to other object&amp;#39;s customfield&#39;</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Name and type  of the field&#39;</span><span class="p">)</span>
     <span class="nb">object</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Associated object and account&#39;</span><span class="p">)</span>
     <span class="n">options</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Settings&#39;</span><span class="p">)</span>
+    <span class="n">other_customfield_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Map to other object&amp;#39;s customfield&#39;</span><span class="p">)</span>
+    <span class="n">other_customfield</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Customfield&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Map to other object&amp;#39;s customfield&#39;</span><span class="p">)</span>
     <span class="n">other_dicom_tags</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;An array of other DICOM tags to map to in storage&#39;</span><span class="p">)</span>
     <span class="n">required</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Settings&#39;</span><span class="p">)</span>
     <span class="n">type_field</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Name and type  of the field&#39;</span><span class="p">)</span>
@@ -1966,9 +2026,12 @@
         <span class="n">load_from_sr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">load_hl7</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">load_hl7_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">load_order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="nb">object</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">other_customfield_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">other_customfield</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">other_dicom_tags</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">required</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">type_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1999,9 +2062,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">load_from_sr</span> <span class="o">=</span> <span class="n">load_from_sr</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_hl7</span> <span class="o">=</span> <span class="n">load_hl7</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_hl7_filter</span> <span class="o">=</span> <span class="n">load_hl7_filter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_order</span> <span class="o">=</span> <span class="n">load_order</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="o">=</span> <span class="nb">object</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">other_customfield_id</span> <span class="o">=</span> <span class="n">other_customfield_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">other_customfield</span> <span class="o">=</span> <span class="n">other_customfield</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">other_dicom_tags</span> <span class="o">=</span> <span class="n">other_dicom_tags</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">required</span> <span class="o">=</span> <span class="n">required</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type_field</span> <span class="o">=</span> <span class="n">type_field</span>
@@ -2909,6 +2975,9 @@
     <span class="n">account</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Account&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated account&#39;</span><span class="p">)</span>
     <span class="n">configuration</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The configuration as a json structure&#39;</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
+    <span class="n">namespace_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. the phi namespace id&#39;</span><span class="p">)</span>
+    <span class="n">namespace</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Namespace&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;the phi namespace id&#39;</span><span class="p">)</span>
+    <span class="n">tier_path</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;For tiered filters, the path&#39;</span><span class="p">)</span>
     <span class="n">type_field</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The type of the filter&#39;</span><span class="p">)</span>
     <span class="n">user_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The user&#39;</span><span class="p">)</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The user&#39;</span><span class="p">)</span>
@@ -2929,6 +2998,9 @@
         <span class="n">account</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">configuration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">namespace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">tier_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">type_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -2945,6 +3017,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">account</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">configuration</span> <span class="o">=</span> <span class="n">configuration</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">namespace_id</span> <span class="o">=</span> <span class="n">namespace_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="n">namespace</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tier_path</span> <span class="o">=</span> <span class="n">tier_path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type_field</span> <span class="o">=</span> <span class="n">type_field</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
@@ -3017,6 +3092,54 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">role</span> <span class="o">=</span> <span class="n">role</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated</span> <span class="o">=</span> <span class="n">updated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">updated_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">updated_by_obj</span></div>
+
+
+
+<div class="viewcode-block" id="FilterTier"><a class="viewcode-back" href="../../../referencies/models.html#ambra_sdk.models.generated.FilterTier">[docs]</a><span class="k">class</span> <span class="nc">FilterTier</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;FilterTier.&quot;&quot;&quot;</span>
+    
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">ancestor_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">ancestor</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Ancestor&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">depth</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">descendant_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">descendant</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Descendant&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">updated</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was last updated&#39;</span><span class="p">)</span>
+    <span class="n">updated_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who updated the record&#39;</span><span class="p">)</span>
+    <span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who updated the record&#39;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ancestor_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ancestor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">depth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">descendant_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">descendant</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ancestor_id</span> <span class="o">=</span> <span class="n">ancestor_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ancestor</span> <span class="o">=</span> <span class="n">ancestor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="n">depth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">descendant_id</span> <span class="o">=</span> <span class="n">descendant_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">descendant</span> <span class="o">=</span> <span class="n">descendant</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
@@ -3446,12 +3569,13 @@
     <span class="n">skip_email_prompt</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Skip ask for the email&#39;</span><span class="p">)</span>
     <span class="n">study_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The study the link is for or the filter expression or the namespace for an upload action&#39;</span><span class="p">)</span>
     <span class="n">study</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Study&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The study the link is for or the filter expression or the namespace for an upload action&#39;</span><span class="p">)</span>
+    <span class="n">ui_json</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;JSON for UI settings&#39;</span><span class="p">)</span>
     <span class="n">upload_match</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Must match rules for uploads&#39;</span><span class="p">)</span>
     <span class="n">upload_study_customfields</span> <span class="o">=</span> <span class="n">DictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Study custom fields for STUDY_UPLOAD&#39;</span><span class="p">)</span>
     <span class="n">use_share_code</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Use the namespace share code information for uploads&#39;</span><span class="p">)</span>
     <span class="n">user_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The user who created the link. Any filter is applied in this users context as well&#39;</span><span class="p">)</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The user who created the link. Any filter is applied in this users context as well&#39;</span><span class="p">)</span>
-    <span class="n">workflow</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Workflow this link is involved in. The only possible value currently is &amp;#39;epic_upload&amp;#39;&#39;</span><span class="p">)</span>
+    <span class="n">workflow</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Workflow this link is involved in. Possible values epic_upload, patient_studies&#39;</span><span class="p">)</span>
     <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
     <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
     <span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who created the record&#39;</span><span class="p">)</span>
@@ -3496,6 +3620,7 @@
         <span class="n">skip_email_prompt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">study_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">study</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ui_json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">upload_match</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">upload_study_customfields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">use_share_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -3542,6 +3667,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">skip_email_prompt</span> <span class="o">=</span> <span class="n">skip_email_prompt</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">study_id</span> <span class="o">=</span> <span class="n">study_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">study</span> <span class="o">=</span> <span class="n">study</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui_json</span> <span class="o">=</span> <span class="n">ui_json</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">upload_match</span> <span class="o">=</span> <span class="n">upload_match</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">upload_study_customfields</span> <span class="o">=</span> <span class="n">upload_study_customfields</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">use_share_code</span> <span class="o">=</span> <span class="n">use_share_code</span>
@@ -4031,6 +4157,8 @@
     <span class="n">accelerator</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Accelerator&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Global accelerator it is attached too&#39;</span><span class="p">)</span>
     <span class="n">account_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Who it is linked to&#39;</span><span class="p">)</span>
     <span class="n">account</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Account&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Who it is linked to&#39;</span><span class="p">)</span>
+    <span class="n">anonymization_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Anonymization rules&#39;</span><span class="p">)</span>
+    <span class="n">anonymization</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Anonyimization&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Anonymization rules&#39;</span><span class="p">)</span>
     <span class="n">anonymize</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Anonymization rules&#39;</span><span class="p">)</span>
     <span class="n">archive</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Archive setting. 0 = no archive or else archive and restore based on the priority value of the setting. e.g. 99 is high priority, -99 is low priority&#39;</span><span class="p">)</span>
     <span class="n">cache</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Cache new studies image&#39;</span><span class="p">)</span>
@@ -4105,6 +4233,8 @@
         <span class="n">accelerator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">account</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">anonymization_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">anonymization</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">anonymize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">archive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">cache</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -4175,6 +4305,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">accelerator</span> <span class="o">=</span> <span class="n">accelerator</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">account_id</span> <span class="o">=</span> <span class="n">account_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">account</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">anonymization_id</span> <span class="o">=</span> <span class="n">anonymization_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">anonymization</span> <span class="o">=</span> <span class="n">anonymization</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">anonymize</span> <span class="o">=</span> <span class="n">anonymize</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">archive</span> <span class="o">=</span> <span class="n">archive</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="n">cache</span>
@@ -5126,6 +5258,117 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">study_status_tags</span> <span class="o">=</span> <span class="n">study_status_tags</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">suspended</span> <span class="o">=</span> <span class="n">suspended</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">thin</span> <span class="o">=</span> <span class="n">thin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated</span> <span class="o">=</span> <span class="n">updated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">updated_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">updated_by_obj</span></div>
+
+
+
+<div class="viewcode-block" id="Qctask"><a class="viewcode-back" href="../../../referencies/models.html#ambra_sdk.models.generated.Qctask">[docs]</a><span class="k">class</span> <span class="nc">Qctask</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Qctask.&quot;&quot;&quot;</span>
+    
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
+    <span class="n">customfields</span> <span class="o">=</span> <span class="n">DictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Custom fields&#39;</span><span class="p">)</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Message associated with activity&#39;</span><span class="p">)</span>
+    <span class="n">namespace_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Id of the namespace the activity is associated with&#39;</span><span class="p">)</span>
+    <span class="n">namespace</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Namespace&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Id of the namespace the activity is associated with&#39;</span><span class="p">)</span>
+    <span class="n">priority</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The activity priority&#39;</span><span class="p">)</span>
+    <span class="n">query_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Optional Query link&#39;</span><span class="p">)</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Query&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Optional Query link&#39;</span><span class="p">)</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Id of the user the activity is specifically for.&#39;</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Id of the user the activity is specifically for.&#39;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">updated</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was last updated&#39;</span><span class="p">)</span>
+    <span class="n">updated_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who updated the record&#39;</span><span class="p">)</span>
+    <span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who updated the record&#39;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">customfields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">namespace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">priority</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">query_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">customfields</span> <span class="o">=</span> <span class="n">customfields</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">namespace_id</span> <span class="o">=</span> <span class="n">namespace_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="n">namespace</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">priority</span> <span class="o">=</span> <span class="n">priority</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query_id</span> <span class="o">=</span> <span class="n">query_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated</span> <span class="o">=</span> <span class="n">updated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">updated_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">updated_by_obj</span></div>
+
+
+
+<div class="viewcode-block" id="QctaskStudy"><a class="viewcode-back" href="../../../referencies/models.html#ambra_sdk.models.generated.QctaskStudy">[docs]</a><span class="k">class</span> <span class="nc">QctaskStudy</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;QctaskStudy.&quot;&quot;&quot;</span>
+    
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
+    <span class="n">qctask_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. QC task&#39;</span><span class="p">)</span>
+    <span class="n">qctask</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Task&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;QC task&#39;</span><span class="p">)</span>
+    <span class="n">study_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Study&#39;</span><span class="p">)</span>
+    <span class="n">study</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Study&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Study&#39;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">updated</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was last updated&#39;</span><span class="p">)</span>
+    <span class="n">updated_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who updated the record&#39;</span><span class="p">)</span>
+    <span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who updated the record&#39;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">qctask_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">qctask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">study_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">study</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qctask_id</span> <span class="o">=</span> <span class="n">qctask_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qctask</span> <span class="o">=</span> <span class="n">qctask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">study_id</span> <span class="o">=</span> <span class="n">study_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">study</span> <span class="o">=</span> <span class="n">study</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
@@ -8066,6 +8309,8 @@
     <span class="n">aws_sk</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;AWS information&#39;</span><span class="p">)</span>
     <span class="n">azure_access_key</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Azure information&#39;</span><span class="p">)</span>
     <span class="n">azure_account_name</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Azure information&#39;</span><span class="p">)</span>
+    <span class="n">azure_endpoint_suffix</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Azure information&#39;</span><span class="p">)</span>
+    <span class="n">azure_query_attachments_dir</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Azure information&#39;</span><span class="p">)</span>
     <span class="n">box_client_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Box information&#39;</span><span class="p">)</span>
     <span class="n">box_client_secret</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Box information&#39;</span><span class="p">)</span>
     <span class="n">box_enterprises</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Box information&#39;</span><span class="p">)</span>
@@ -8094,6 +8339,7 @@
     <span class="n">login_page_banner_show_stop</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Login page banner text&#39;</span><span class="p">)</span>
     <span class="n">passwdqc</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Password controls&#39;</span><span class="p">)</span>
     <span class="n">passwdqc_description</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Password controls&#39;</span><span class="p">)</span>
+    <span class="n">permissions_mask</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Permissions mask&#39;</span><span class="p">)</span>
     <span class="n">phr_bypass_study_oversized_threshold</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Bypass oversized threshold for studies in PHR accounts&#39;</span><span class="p">)</span>
     <span class="n">phr_permissions</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The PHR  permissions over-ride&#39;</span><span class="p">)</span>
     <span class="n">privacy_html</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;HTML for the terms of use, privacy policy and indicators of use&#39;</span><span class="p">)</span>
@@ -8142,6 +8388,8 @@
         <span class="n">aws_sk</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">azure_access_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">azure_account_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">azure_endpoint_suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">azure_query_attachments_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">box_client_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">box_client_secret</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">box_enterprises</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -8170,6 +8418,7 @@
         <span class="n">login_page_banner_show_stop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">passwdqc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">passwdqc_description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">permissions_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">phr_bypass_study_oversized_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">phr_permissions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">privacy_html</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -8214,6 +8463,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">aws_sk</span> <span class="o">=</span> <span class="n">aws_sk</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">azure_access_key</span> <span class="o">=</span> <span class="n">azure_access_key</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">azure_account_name</span> <span class="o">=</span> <span class="n">azure_account_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">azure_endpoint_suffix</span> <span class="o">=</span> <span class="n">azure_endpoint_suffix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">azure_query_attachments_dir</span> <span class="o">=</span> <span class="n">azure_query_attachments_dir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">box_client_id</span> <span class="o">=</span> <span class="n">box_client_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">box_client_secret</span> <span class="o">=</span> <span class="n">box_client_secret</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">box_enterprises</span> <span class="o">=</span> <span class="n">box_enterprises</span>
@@ -8242,6 +8493,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">login_page_banner_show_stop</span> <span class="o">=</span> <span class="n">login_page_banner_show_stop</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">passwdqc</span> <span class="o">=</span> <span class="n">passwdqc</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">passwdqc_description</span> <span class="o">=</span> <span class="n">passwdqc_description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">permissions_mask</span> <span class="o">=</span> <span class="n">permissions_mask</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phr_bypass_study_oversized_threshold</span> <span class="o">=</span> <span class="n">phr_bypass_study_oversized_threshold</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phr_permissions</span> <span class="o">=</span> <span class="n">phr_permissions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">privacy_html</span> <span class="o">=</span> <span class="n">privacy_html</span>
@@ -9751,7 +10003,7 @@
 
 
 
-<p class="blurb">version 3.21.5.0-1</p>
+<p class="blurb">version 3.21.6.0-1</p>
 
 
 

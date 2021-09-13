@@ -1,0 +1,529 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Api &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Service namespace" href="service_api.html" />
+    <link rel="prev" title="References" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="api">
+<span id="referencies-api"></span><h1>Api<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="ambra_sdk.api.Api">
+<em class="property">class </em><code class="sig-prename descclassname">ambra_sdk.api.</code><code class="sig-name descname">Api</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/api/api.html#Api"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.Api" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ambra API.</p>
+<p>Example:
+&gt;&gt;&gt; from ambra_sdk.api import Api
+&gt;&gt;&gt;
+&gt;&gt;&gt; api = Api.with_creds(
+…     url=’<a class="reference external" href="https://ambrahealth_host/api/v3">https://ambrahealth_host/api/v3</a>’,
+…     username=’username’,
+…     password=’password’,
+…     client_name=’Some name (ex: Hospital-ABC)’,
+… )</p>
+<p>Using some special parameters (In most cases you dont need this!):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.api</span> <span class="kn">import</span> <span class="n">Api</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.api.base_api</span> <span class="kn">import</span> <span class="n">RateLimit</span><span class="p">,</span> <span class="n">RateLimits</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">MY_RLS</span> <span class="o">=</span> <span class="n">RateLimits</span><span class="p">(</span>
+<span class="gp">... </span>       <span class="n">default</span><span class="o">=</span><span class="n">RateLimit</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="n">get_limit</span><span class="o">=</span><span class="n">RateLimit</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="n">special</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;special_url&#39;</span><span class="p">:</span> <span class="n">RateLimit</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">Api</span><span class="o">.</span><span class="n">with_creds</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://ambrahealth_host/api/v3&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">username</span><span class="o">=</span><span class="s1">&#39;username&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">password</span><span class="o">=</span><span class="s1">&#39;password&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">client_name</span><span class="o">=</span><span class="s1">&#39;Some name (ex: Hospital-ABC)&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">special_headers_for_login</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Special-H&#39;</span><span class="p">:</span> <span class="s1">&#39;ABC&#39;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">rate_limits</span><span class="o">=</span><span class="n">MY_RLS</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">autocast_arguments</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="ambra_sdk.api.Api.get_new_sid">
+<code class="sig-name descname">get_new_sid</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/ambra_sdk/api/api.html#Api.get_new_sid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.Api.get_new_sid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get new sid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – Missined credentials</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>sid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.Api.get_sid">
+<code class="sig-name descname">get_sid</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/ambra_sdk/api/api.html#Api.get_sid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.Api.get_sid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or create new sid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>sid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.Api.logout">
+<code class="sig-name descname">logout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/api/api.html#Api.logout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.Api.logout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logout.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.Api.retry_with_new_sid">
+<code class="sig-name descname">retry_with_new_sid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fn</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span><span class="p">…</span><span class="p">]</span><span class="p">, </span>FN_RETURN_TYPE<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; FN_RETURN_TYPE<a class="reference internal" href="../_modules/ambra_sdk/api/api.html#Api.retry_with_new_sid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.Api.retry_with_new_sid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retry with new sid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fn</strong> – callable method</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>fn result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.Api.service_post">
+<code class="sig-name descname">service_post</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">required_sid</span><span class="p">:</span> <span class="n">bool</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="reference internal" href="../_modules/ambra_sdk/api/api.html#Api.service_post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.Api.service_post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Post data to url.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – method url</p></li>
+<li><p><strong>required_sid</strong> – is this method required sid</p></li>
+<li><p><strong>kwargs</strong> – request arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.Api.service_request">
+<code class="sig-name descname">service_request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request_args</span><span class="p">:</span> <span class="n">ambra_sdk.request_args.RequestArgs</span></em>, <em class="sig-param"><span class="n">required_sid</span><span class="p">:</span> <span class="n">bool</span></em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="reference internal" href="../_modules/ambra_sdk/api/api.html#Api.service_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.Api.service_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Post data to url.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request_args</strong> – request args</p></li>
+<li><p><strong>required_sid</strong> – is this method required sid</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.Api.service_session">
+<em class="property">property </em><code class="sig-name descname">service_session</code><a class="headerlink" href="#ambra_sdk.api.Api.service_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Service session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>service session</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.Api.sid">
+<em class="property">property </em><code class="sig-name descname">sid</code><a class="headerlink" href="#ambra_sdk.api.Api.sid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or create new sid property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>sid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.Api.storage_delete">
+<code class="sig-name descname">storage_delete</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">required_sid</span><span class="p">:</span> <span class="n">bool</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="reference internal" href="../_modules/ambra_sdk/api/api.html#Api.storage_delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.Api.storage_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete from storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – url</p></li>
+<li><p><strong>required_sid</strong> – is this method required sid</p></li>
+<li><p><strong>kwargs</strong> – request arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>response obj</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.Api.storage_get">
+<code class="sig-name descname">storage_get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">required_sid</span><span class="p">:</span> <span class="n">bool</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="reference internal" href="../_modules/ambra_sdk/api/api.html#Api.storage_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.Api.storage_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get from storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – url</p></li>
+<li><p><strong>required_sid</strong> – is this method required sid</p></li>
+<li><p><strong>kwargs</strong> – request arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>response obj</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.Api.storage_post">
+<code class="sig-name descname">storage_post</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">required_sid</span><span class="p">:</span> <span class="n">bool</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="reference internal" href="../_modules/ambra_sdk/api/api.html#Api.storage_post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.Api.storage_post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Post to storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – url</p></li>
+<li><p><strong>required_sid</strong> – is this method required sid</p></li>
+<li><p><strong>kwargs</strong> – request arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>response obj</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.Api.storage_session">
+<em class="property">property </em><code class="sig-name descname">storage_session</code><a class="headerlink" href="#ambra_sdk.api.Api.storage_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Storage session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>storage session</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="async-api">
+<h1>Async Api<a class="headerlink" href="#async-api" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="ambra_sdk.api.AsyncApi">
+<em class="property">class </em><code class="sig-prename descclassname">ambra_sdk.api.</code><code class="sig-name descname">AsyncApi</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/api/async_api.html#AsyncApi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.AsyncApi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ambra Async API.</p>
+<p>Example:
+&gt;&gt;&gt; from ambra_sdk.api import AsyncApi
+&gt;&gt;&gt;
+&gt;&gt;&gt; api = AsyncApi.with_creds(
+…     url=’<a class="reference external" href="https://ambrahealth_host/api/v3">https://ambrahealth_host/api/v3</a>’,
+…     username=’username’,
+…     password=’password’,
+…     client_name=’Some name (ex: Hospital-ABC)’,
+… )</p>
+<p>Using some special parameters (In most cases you dont need this!):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.api</span> <span class="kn">import</span> <span class="n">AsyncApi</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ambra_sdk.api.base_api</span> <span class="kn">import</span> <span class="n">RateLimit</span><span class="p">,</span> <span class="n">RateLimits</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">MY_RLS</span> <span class="o">=</span> <span class="n">RateLimits</span><span class="p">(</span>
+<span class="gp">... </span>       <span class="n">default</span><span class="o">=</span><span class="n">RateLimit</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="n">get_limit</span><span class="o">=</span><span class="n">RateLimit</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="n">special</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;special_url&#39;</span><span class="p">:</span> <span class="n">RateLimit</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">AsyncApi</span><span class="o">.</span><span class="n">with_creds</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://ambrahealth_host/api/v3&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">username</span><span class="o">=</span><span class="s1">&#39;username&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">password</span><span class="o">=</span><span class="s1">&#39;password&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">client_name</span><span class="o">=</span><span class="s1">&#39;Some name (ex: Hospital-ABC)&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">special_headers_for_login</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Special-H&#39;</span><span class="p">:</span> <span class="s1">&#39;ABC&#39;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">rate_limits</span><span class="o">=</span><span class="n">MY_RLS</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">autocast_arguments</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="ambra_sdk.api.AsyncApi.get_new_sid">
+<em class="property">async </em><code class="sig-name descname">get_new_sid</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/ambra_sdk/api/async_api.html#AsyncApi.get_new_sid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.AsyncApi.get_new_sid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get new sid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – Missined credentials</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>sid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.AsyncApi.get_sid">
+<em class="property">async </em><code class="sig-name descname">get_sid</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/ambra_sdk/api/async_api.html#AsyncApi.get_sid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.AsyncApi.get_sid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or create new sid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>sid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.AsyncApi.logout">
+<em class="property">async </em><code class="sig-name descname">logout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ambra_sdk/api/async_api.html#AsyncApi.logout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.AsyncApi.logout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logout.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.AsyncApi.retry_with_new_sid">
+<em class="property">async </em><code class="sig-name descname">retry_with_new_sid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fn</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span><span class="p">…</span><span class="p">]</span><span class="p">, </span>Awaitable<span class="p">[</span>FN_RETURN_TYPE<span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; FN_RETURN_TYPE<a class="reference internal" href="../_modules/ambra_sdk/api/async_api.html#AsyncApi.retry_with_new_sid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.AsyncApi.retry_with_new_sid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retry with new sid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fn</strong> – callable method</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>fn result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.AsyncApi.service_post">
+<em class="property">async </em><code class="sig-name descname">service_post</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">required_sid</span><span class="p">:</span> <span class="n">bool</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; aiohttp.client_reqrep.ClientResponse<a class="reference internal" href="../_modules/ambra_sdk/api/async_api.html#AsyncApi.service_post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.AsyncApi.service_post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Post data to url.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – method url</p></li>
+<li><p><strong>required_sid</strong> – is this method required sid</p></li>
+<li><p><strong>kwargs</strong> – request arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.AsyncApi.service_request">
+<em class="property">async </em><code class="sig-name descname">service_request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request_args</span><span class="p">:</span> <span class="n">ambra_sdk.request_args.AioHTTPRequestArgs</span></em>, <em class="sig-param"><span class="n">required_sid</span><span class="p">:</span> <span class="n">bool</span></em><span class="sig-paren">)</span> &#x2192; aiohttp.client_reqrep.ClientResponse<a class="reference internal" href="../_modules/ambra_sdk/api/async_api.html#AsyncApi.service_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.AsyncApi.service_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Post data to url.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request_args</strong> – request args</p></li>
+<li><p><strong>required_sid</strong> – is this method required sid</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.AsyncApi.service_session">
+<em class="property">property </em><code class="sig-name descname">service_session</code><a class="headerlink" href="#ambra_sdk.api.AsyncApi.service_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Service session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>service session</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.AsyncApi.storage_delete">
+<em class="property">async </em><code class="sig-name descname">storage_delete</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">required_sid</span><span class="p">:</span> <span class="n">bool</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; aiohttp.client_reqrep.ClientResponse<a class="reference internal" href="../_modules/ambra_sdk/api/async_api.html#AsyncApi.storage_delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.AsyncApi.storage_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete from storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – url</p></li>
+<li><p><strong>required_sid</strong> – is this method required sid</p></li>
+<li><p><strong>kwargs</strong> – request arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>response obj</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.AsyncApi.storage_get">
+<em class="property">async </em><code class="sig-name descname">storage_get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">required_sid</span><span class="p">:</span> <span class="n">bool</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; aiohttp.client_reqrep.ClientResponse<a class="reference internal" href="../_modules/ambra_sdk/api/async_api.html#AsyncApi.storage_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.AsyncApi.storage_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get from storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – url</p></li>
+<li><p><strong>required_sid</strong> – is this method required sid</p></li>
+<li><p><strong>kwargs</strong> – request arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>response obj</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.AsyncApi.storage_post">
+<em class="property">async </em><code class="sig-name descname">storage_post</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">required_sid</span><span class="p">:</span> <span class="n">bool</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; aiohttp.client_reqrep.ClientResponse<a class="reference internal" href="../_modules/ambra_sdk/api/async_api.html#AsyncApi.storage_post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.api.AsyncApi.storage_post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Post to storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – url</p></li>
+<li><p><strong>required_sid</strong> – is this method required sid</p></li>
+<li><p><strong>kwargs</strong> – request arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>response obj</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.api.AsyncApi.storage_session">
+<em class="property">property </em><code class="sig-name descname">storage_session</code><a class="headerlink" href="#ambra_sdk.api.AsyncApi.storage_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Storage session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>storage session</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Ambra-SDK</a></h1>
+
+
+
+<p class="blurb">version 3.21.6.0-1</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=dicomgrid&repo=sdk-python&type=watch&count=False&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../service_api.html">Service API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage_api.html">Storage API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../async.html">Async</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../addon.html">Addon methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">References</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#async-api">Async Api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_api.html">Service namespace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storage_api.html">Storage namespace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="addon.html">Addon namespace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">References</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">References</a></li>
+      <li>Next: <a href="service_api.html" title="next chapter">Service namespace</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ambrahealth AI team.
+      
+      |
+      <a href="../_sources/referencies/api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

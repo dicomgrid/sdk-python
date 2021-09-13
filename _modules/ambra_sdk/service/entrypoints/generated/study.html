@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.study &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.study &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -166,6 +166,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param accession_number: DICOM tag (0008,0050) (optional)</span>
 <span class="sd">        :param attachment_count: Attachment count (optional)</span>
 <span class="sd">        :param customfield_param: Custom field(s), see notes in /study/add (optional)</span>
@@ -321,6 +322,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
+
 <span class="sd">        :param accession_number: DICOM tag (0008,0050) (optional)</span>
 <span class="sd">        :param attachment_count: Attachment count (optional)</span>
 <span class="sd">        :param customfield_param: Custom field(s), see notes in /study/add (optional)</span>
@@ -441,6 +443,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param node_id: node_id</span>
 <span class="sd">        :param phi_namespace: phi_namespace</span>
 <span class="sd">        :param serial_no: serial_no</span>
@@ -480,6 +483,7 @@
         <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
+
 <span class="sd">        :param customfield_h: Flag to return a customfield hash as detailed in /study/get (optional)</span>
 <span class="sd">        :param extra: Flag to return extra data as detailed in /study/get (optional)</span>
 <span class="sd">        :param fields: A JSON list of the study fields to return (optional)</span>
@@ -518,6 +522,7 @@
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Count.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
         <span class="p">}</span>
@@ -544,6 +549,7 @@
         <span class="n">is_available</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Cfind.</span>
+
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        :param entire_account: Flag to search the entire account rather than just the nodes namespace. (optional)</span>
@@ -589,6 +595,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param customfield_h: Flag to return a customfield hash as detailed below (optional)</span>
 <span class="sd">        :param extra: Flag to return extra data as detailed below (optional)</span>
 <span class="sd">        :param fields: A JSON list of the study fields to return (optional)</span>
@@ -635,6 +642,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Permissions.</span>
+
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -663,6 +671,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Exists.</span>
+
 <span class="sd">        :param account_id: account_id</span>
 <span class="sd">        :param phi_namespace: phi_namespace</span>
 <span class="sd">        :param storage_namespace: storage_namespace</span>
@@ -696,6 +705,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Push.</span>
+
 <span class="sd">        :param batch_no: The batch number if pushing to a CD burner</span>
 <span class="sd">        :param destination_id: The destination to push it to</span>
 <span class="sd">        :param ping: Flag to send the ping job back in this call</span>
@@ -732,6 +742,7 @@
         <span class="n">once</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Push hl7.</span>
+
 <span class="sd">        :param destination_id: The destination to push it to</span>
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        :param hl7_id: HL7 message to use in the template (optional)</span>
@@ -766,6 +777,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Pdf hl7.</span>
+
 <span class="sd">        :param hl7_id: HL7 message to create the PDF report for</span>
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -791,6 +803,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Fax hl7.</span>
+
 <span class="sd">        :param hl7_id: HL7 message to create the PDF report for</span>
 <span class="sd">        :param number: The fax number to send the PDF report to</span>
 <span class="sd">        :param uuid: The study uuid</span>
@@ -825,6 +838,7 @@
         <span class="n">detail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Cmove.</span>
+
 <span class="sd">        :param aetitle: The aetitle to send to</span>
 <span class="sd">        :param ping: Flag to send the ping job back in this call</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
@@ -865,6 +879,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Node can remove.</span>
+
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param study_uid: The study uid</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -894,6 +909,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Share who.</span>
+
 <span class="sd">        :param type: Type of objects you want (account|location|group|user)</span>
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -938,6 +954,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Share.</span>
+
 <span class="sd">        :param account_id: account_id</span>
 <span class="sd">        :param charge_authorized: Flag that the sender authorized charging for this share (optional)</span>
 <span class="sd">        :param charge_modality: Modality of the study the charge was authorized for (optional)</span>
@@ -1019,6 +1036,7 @@
         <span class="n">user_invite_share_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Share stop.</span>
+
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        :param account_id: account_id</span>
 <span class="sd">        :param group_id: group_id</span>
@@ -1055,6 +1073,7 @@
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Share list.</span>
+
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        :param name: Flag to return a hash with both the uuid and name of the object (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1083,6 +1102,7 @@
         <span class="n">must_match</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Approve.</span>
+
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        :param delay: Number of seconds to delay showing the study as approved and running routing and events on it (optional)</span>
 <span class="sd">        :param must_match: A JSON hash of study field names and values that must match before showing the study as approved and running routing and events on it (optional)</span>
@@ -1116,6 +1136,7 @@
         <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reject.</span>
+
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        :param message: Message to send to the person who shared the study (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1147,6 +1168,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Audit.</span>
+
 <span class="sd">        :param action: The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|IMAGE_DELETED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)</span>
 <span class="sd">        :param detail: Additional information</span>
 <span class="sd">        :param phi_namespace: The phi namespace of the study (optional)</span>
@@ -1182,6 +1204,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Star.</span>
+
 <span class="sd">        :param star: Star flag set on or off (1|0)</span>
 <span class="sd">        :param uuid: The id of the study</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1210,6 +1233,7 @@
         <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Report detail.</span>
+
 <span class="sd">        :param account_id: Limit to studies in the passed account</span>
 <span class="sd">        :param limit: Maximum size of the report. The default is 30,000 rows. If the report will be bigger than this an error will be returned (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1243,6 +1267,7 @@
         <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Report series.</span>
+
 <span class="sd">        :param email: Send the report to this email address(es) when it is done</span>
 <span class="sd">        :param hours: Report on studies acquired within the last number of hours</span>
 <span class="sd">        :param namespace_id: Namespace to run the report on</span>
@@ -1275,6 +1300,7 @@
         <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Viewer settings.</span>
+
 <span class="sd">        :param phi_namespace: phi_namespace</span>
 <span class="sd">        :param storage_namespace: storage_namespace</span>
 <span class="sd">        :param study_id: study_id</span>
@@ -1308,6 +1334,7 @@
         <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Viewer3 settings.</span>
+
 <span class="sd">        :param phi_namespace: phi_namespace</span>
 <span class="sd">        :param settings: A JSON list of user settings set via /setting/set to return (optional)</span>
 <span class="sd">        :param storage_namespace: storage_namespace</span>
@@ -1341,6 +1368,7 @@
         <span class="n">study_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Status set.</span>
+
 <span class="sd">        :param new: The new study status value</span>
 <span class="sd">        :param old: The old study status value</span>
 <span class="sd">        :param study_id: Study uuid</span>
@@ -1372,6 +1400,7 @@
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Status locks.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
         <span class="p">}</span>
@@ -1392,6 +1421,7 @@
         <span class="n">study_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Status history.</span>
+
 <span class="sd">        :param study_id: Study uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1417,6 +1447,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Move.</span>
+
 <span class="sd">        :param namespace_id: The namespace id</span>
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1448,6 +1479,7 @@
         <span class="n">study_request_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Duplicate.</span>
+
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        :param include_attachments: Also duplicate attachments (optional)</span>
 <span class="sd">        :param namespace_id: namespace_id</span>
@@ -1487,6 +1519,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Split.</span>
+
 <span class="sd">        :param namespace_id: The namespace id to split it into</span>
 <span class="sd">        :param no_split: Do not split on the series just create a new study with a study UID</span>
 <span class="sd">        :param uuid: The study id</span>
@@ -1519,6 +1552,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Freeze.</span>
+
 <span class="sd">        :param thaw: Flag to thaw a frozen study</span>
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1550,6 +1584,7 @@
         <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Manual route.</span>
+
 <span class="sd">        :param route_id: The routing rule id</span>
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        :param email: The email to share with if the rule has a share_email action with the USER_ENTRY token (optional)</span>
@@ -1585,6 +1620,7 @@
         <span class="n">patientid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Find order.</span>
+
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        :param accession_number: accession_number</span>
 <span class="sd">        :param patient_name: patient_name</span>
@@ -1616,6 +1652,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Archive.</span>
+
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1642,6 +1679,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve.</span>
+
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1670,6 +1708,7 @@
         <span class="n">study_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Comment add.</span>
+
 <span class="sd">        :param body: The comment body</span>
 <span class="sd">        :param study_id: The study id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1696,6 +1735,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Comment delete.</span>
+
 <span class="sd">        :param uuid: The comment id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1720,6 +1760,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Comment get.</span>
+
 <span class="sd">        :param uuid: The comment id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1746,6 +1787,7 @@
         <span class="n">series</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Validate.</span>
+
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        :param validate_id: The validation id</span>
 <span class="sd">        :param series: Only validate the specified series (optional)</span>
@@ -1776,6 +1818,7 @@
         <span class="n">report_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Attach customfields.</span>
+
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        :param report_name: The report name (optional defaults to customfields.txt)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1804,6 +1847,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;External viewer.</span>
+
 <span class="sd">        :param redirect: A flag to return an HTTP redirect to the viewer URL rather than the JSON structure</span>
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1834,6 +1878,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Question.</span>
+
 <span class="sd">        :param detail: Optional detail to pass through to the AI stack</span>
 <span class="sd">        :param question: The question to ask or a JSON array of questions to ask</span>
 <span class="sd">        :param uuid: The study id</span>
@@ -1865,6 +1910,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Dicomdata load.</span>
+
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1896,6 +1942,7 @@
         <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Timing event.</span>
+
 <span class="sd">        :param event: The event</span>
 <span class="sd">        :param storage_namespace: The storage namespace</span>
 <span class="sd">        :param study_uid: The study uid</span>
@@ -1929,6 +1976,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Timing log.</span>
+
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1961,6 +2009,7 @@
         <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sync.</span>
+
 <span class="sd">        :param image_count: Update the study image count and then sync (optional)</span>
 <span class="sd">        :param node_id: node_id</span>
 <span class="sd">        :param phi_namespace: phi_namespace</span>
@@ -1998,6 +2047,7 @@
         <span class="n">namespace_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Take.</span>
+
 <span class="sd">        :param namespace_id: The namespace id to take a study into</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -2035,6 +2085,7 @@
         <span class="n">study_description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Request add.</span>
+
 <span class="sd">        :param account_id: The account id to send the study request to</span>
 <span class="sd">        :param comments: Free form request comments</span>
 <span class="sd">        :param namespace_id: The namespace id requested studies to put (share or duplicate) into</span>
@@ -2081,6 +2132,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Request get.</span>
+
 <span class="sd">        :param uuid: The study request uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -2104,6 +2156,7 @@
         <span class="n">study_request_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Request match.</span>
+
 <span class="sd">        :param study_request_id: The study request uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -2127,6 +2180,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Revive.</span>
+
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -2200,6 +2254,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param accession_number: DICOM tag (0008,0050) (optional)</span>
 <span class="sd">        :param attachment_count: Attachment count (optional)</span>
 <span class="sd">        :param customfield_param: Custom field(s), see notes in /study/add (optional)</span>
@@ -2355,6 +2410,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
+
 <span class="sd">        :param accession_number: DICOM tag (0008,0050) (optional)</span>
 <span class="sd">        :param attachment_count: Attachment count (optional)</span>
 <span class="sd">        :param customfield_param: Custom field(s), see notes in /study/add (optional)</span>
@@ -2475,6 +2531,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param node_id: node_id</span>
 <span class="sd">        :param phi_namespace: phi_namespace</span>
 <span class="sd">        :param serial_no: serial_no</span>
@@ -2514,6 +2571,7 @@
         <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
+
 <span class="sd">        :param customfield_h: Flag to return a customfield hash as detailed in /study/get (optional)</span>
 <span class="sd">        :param extra: Flag to return extra data as detailed in /study/get (optional)</span>
 <span class="sd">        :param fields: A JSON list of the study fields to return (optional)</span>
@@ -2552,6 +2610,7 @@
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Count.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
         <span class="p">}</span>
@@ -2578,6 +2637,7 @@
         <span class="n">is_available</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Cfind.</span>
+
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param uuid: The node id</span>
 <span class="sd">        :param entire_account: Flag to search the entire account rather than just the nodes namespace. (optional)</span>
@@ -2623,6 +2683,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param customfield_h: Flag to return a customfield hash as detailed below (optional)</span>
 <span class="sd">        :param extra: Flag to return extra data as detailed below (optional)</span>
 <span class="sd">        :param fields: A JSON list of the study fields to return (optional)</span>
@@ -2669,6 +2730,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Permissions.</span>
+
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -2697,6 +2759,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Exists.</span>
+
 <span class="sd">        :param account_id: account_id</span>
 <span class="sd">        :param phi_namespace: phi_namespace</span>
 <span class="sd">        :param storage_namespace: storage_namespace</span>
@@ -2730,6 +2793,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Push.</span>
+
 <span class="sd">        :param batch_no: The batch number if pushing to a CD burner</span>
 <span class="sd">        :param destination_id: The destination to push it to</span>
 <span class="sd">        :param ping: Flag to send the ping job back in this call</span>
@@ -2766,6 +2830,7 @@
         <span class="n">once</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Push hl7.</span>
+
 <span class="sd">        :param destination_id: The destination to push it to</span>
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        :param hl7_id: HL7 message to use in the template (optional)</span>
@@ -2800,6 +2865,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Pdf hl7.</span>
+
 <span class="sd">        :param hl7_id: HL7 message to create the PDF report for</span>
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2825,6 +2891,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Fax hl7.</span>
+
 <span class="sd">        :param hl7_id: HL7 message to create the PDF report for</span>
 <span class="sd">        :param number: The fax number to send the PDF report to</span>
 <span class="sd">        :param uuid: The study uuid</span>
@@ -2859,6 +2926,7 @@
         <span class="n">detail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Cmove.</span>
+
 <span class="sd">        :param aetitle: The aetitle to send to</span>
 <span class="sd">        :param ping: Flag to send the ping job back in this call</span>
 <span class="sd">        :param serial_no: The serial number of the node</span>
@@ -2899,6 +2967,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Node can remove.</span>
+
 <span class="sd">        :param serial_no: The serial number of the node</span>
 <span class="sd">        :param study_uid: The study uid</span>
 <span class="sd">        :param uuid: The node id</span>
@@ -2928,6 +2997,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Share who.</span>
+
 <span class="sd">        :param type: Type of objects you want (account|location|group|user)</span>
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2972,6 +3042,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Share.</span>
+
 <span class="sd">        :param account_id: account_id</span>
 <span class="sd">        :param charge_authorized: Flag that the sender authorized charging for this share (optional)</span>
 <span class="sd">        :param charge_modality: Modality of the study the charge was authorized for (optional)</span>
@@ -3053,6 +3124,7 @@
         <span class="n">user_invite_share_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Share stop.</span>
+
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        :param account_id: account_id</span>
 <span class="sd">        :param group_id: group_id</span>
@@ -3089,6 +3161,7 @@
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Share list.</span>
+
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        :param name: Flag to return a hash with both the uuid and name of the object (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3117,6 +3190,7 @@
         <span class="n">must_match</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Approve.</span>
+
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        :param delay: Number of seconds to delay showing the study as approved and running routing and events on it (optional)</span>
 <span class="sd">        :param must_match: A JSON hash of study field names and values that must match before showing the study as approved and running routing and events on it (optional)</span>
@@ -3150,6 +3224,7 @@
         <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reject.</span>
+
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        :param message: Message to send to the person who shared the study (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3181,6 +3256,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Audit.</span>
+
 <span class="sd">        :param action: The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|IMAGE_DELETED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)</span>
 <span class="sd">        :param detail: Additional information</span>
 <span class="sd">        :param phi_namespace: The phi namespace of the study (optional)</span>
@@ -3216,6 +3292,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Star.</span>
+
 <span class="sd">        :param star: Star flag set on or off (1|0)</span>
 <span class="sd">        :param uuid: The id of the study</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3244,6 +3321,7 @@
         <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Report detail.</span>
+
 <span class="sd">        :param account_id: Limit to studies in the passed account</span>
 <span class="sd">        :param limit: Maximum size of the report. The default is 30,000 rows. If the report will be bigger than this an error will be returned (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3277,6 +3355,7 @@
         <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Report series.</span>
+
 <span class="sd">        :param email: Send the report to this email address(es) when it is done</span>
 <span class="sd">        :param hours: Report on studies acquired within the last number of hours</span>
 <span class="sd">        :param namespace_id: Namespace to run the report on</span>
@@ -3309,6 +3388,7 @@
         <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Viewer settings.</span>
+
 <span class="sd">        :param phi_namespace: phi_namespace</span>
 <span class="sd">        :param storage_namespace: storage_namespace</span>
 <span class="sd">        :param study_id: study_id</span>
@@ -3342,6 +3422,7 @@
         <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Viewer3 settings.</span>
+
 <span class="sd">        :param phi_namespace: phi_namespace</span>
 <span class="sd">        :param settings: A JSON list of user settings set via /setting/set to return (optional)</span>
 <span class="sd">        :param storage_namespace: storage_namespace</span>
@@ -3375,6 +3456,7 @@
         <span class="n">study_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Status set.</span>
+
 <span class="sd">        :param new: The new study status value</span>
 <span class="sd">        :param old: The old study status value</span>
 <span class="sd">        :param study_id: Study uuid</span>
@@ -3406,6 +3488,7 @@
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Status locks.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
         <span class="p">}</span>
@@ -3426,6 +3509,7 @@
         <span class="n">study_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Status history.</span>
+
 <span class="sd">        :param study_id: Study uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -3451,6 +3535,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Move.</span>
+
 <span class="sd">        :param namespace_id: The namespace id</span>
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3482,6 +3567,7 @@
         <span class="n">study_request_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Duplicate.</span>
+
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        :param include_attachments: Also duplicate attachments (optional)</span>
 <span class="sd">        :param namespace_id: namespace_id</span>
@@ -3521,6 +3607,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Split.</span>
+
 <span class="sd">        :param namespace_id: The namespace id to split it into</span>
 <span class="sd">        :param no_split: Do not split on the series just create a new study with a study UID</span>
 <span class="sd">        :param uuid: The study id</span>
@@ -3553,6 +3640,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Freeze.</span>
+
 <span class="sd">        :param thaw: Flag to thaw a frozen study</span>
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3584,6 +3672,7 @@
         <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Manual route.</span>
+
 <span class="sd">        :param route_id: The routing rule id</span>
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        :param email: The email to share with if the rule has a share_email action with the USER_ENTRY token (optional)</span>
@@ -3619,6 +3708,7 @@
         <span class="n">patientid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Find order.</span>
+
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        :param accession_number: accession_number</span>
 <span class="sd">        :param patient_name: patient_name</span>
@@ -3650,6 +3740,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Archive.</span>
+
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -3676,6 +3767,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve.</span>
+
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -3704,6 +3796,7 @@
         <span class="n">study_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Comment add.</span>
+
 <span class="sd">        :param body: The comment body</span>
 <span class="sd">        :param study_id: The study id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3730,6 +3823,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Comment delete.</span>
+
 <span class="sd">        :param uuid: The comment id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -3754,6 +3848,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Comment get.</span>
+
 <span class="sd">        :param uuid: The comment id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -3780,6 +3875,7 @@
         <span class="n">series</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Validate.</span>
+
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        :param validate_id: The validation id</span>
 <span class="sd">        :param series: Only validate the specified series (optional)</span>
@@ -3810,6 +3906,7 @@
         <span class="n">report_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Attach customfields.</span>
+
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        :param report_name: The report name (optional defaults to customfields.txt)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3838,6 +3935,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;External viewer.</span>
+
 <span class="sd">        :param redirect: A flag to return an HTTP redirect to the viewer URL rather than the JSON structure</span>
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3868,6 +3966,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Question.</span>
+
 <span class="sd">        :param detail: Optional detail to pass through to the AI stack</span>
 <span class="sd">        :param question: The question to ask or a JSON array of questions to ask</span>
 <span class="sd">        :param uuid: The study id</span>
@@ -3899,6 +3998,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Dicomdata load.</span>
+
 <span class="sd">        :param uuid: The study id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -3930,6 +4030,7 @@
         <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Timing event.</span>
+
 <span class="sd">        :param event: The event</span>
 <span class="sd">        :param storage_namespace: The storage namespace</span>
 <span class="sd">        :param study_uid: The study uid</span>
@@ -3963,6 +4064,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Timing log.</span>
+
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -3995,6 +4097,7 @@
         <span class="n">study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sync.</span>
+
 <span class="sd">        :param image_count: Update the study image count and then sync (optional)</span>
 <span class="sd">        :param node_id: node_id</span>
 <span class="sd">        :param phi_namespace: phi_namespace</span>
@@ -4032,6 +4135,7 @@
         <span class="n">namespace_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Take.</span>
+
 <span class="sd">        :param namespace_id: The namespace id to take a study into</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -4069,6 +4173,7 @@
         <span class="n">study_description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Request add.</span>
+
 <span class="sd">        :param account_id: The account id to send the study request to</span>
 <span class="sd">        :param comments: Free form request comments</span>
 <span class="sd">        :param namespace_id: The namespace id requested studies to put (share or duplicate) into</span>
@@ -4115,6 +4220,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Request get.</span>
+
 <span class="sd">        :param uuid: The study request uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -4138,6 +4244,7 @@
         <span class="n">study_request_id</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Request match.</span>
+
 <span class="sd">        :param study_request_id: The study request uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -4161,6 +4268,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Revive.</span>
+
 <span class="sd">        :param uuid: The study uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -4192,7 +4300,7 @@
 
 
 
-<p class="blurb">version 3.21.5.0-1</p>
+<p class="blurb">version 3.21.6.0-1</p>
 
 
 

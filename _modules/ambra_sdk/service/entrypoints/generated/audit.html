@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.audit &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.audit &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -66,6 +66,7 @@
         <span class="n">reverse</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Object.</span>
+
 <span class="sd">        :param uuid: The uuid of the object to audit</span>
 <span class="sd">        :param customfield_detail: Flag to include the customfield name in the detail (optional)</span>
 <span class="sd">        :param download: Flag to create a zipped CSV file. A report_id will be returned and the file can be accessed via /report/status and /report/zip (optional)</span>
@@ -104,6 +105,7 @@
         <span class="n">study_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;User.</span>
+
 <span class="sd">        :param account_id: The id of the account</span>
 <span class="sd">        :param user_id: The id of the user to audit</span>
 <span class="sd">        :param download: Flag to create a zipped CSV file. A report_id will be returned and the file can be accessed via /report/status and /report/zip (optional)</span>
@@ -142,6 +144,7 @@
         <span class="n">reverse</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Account.</span>
+
 <span class="sd">        :param account_id: The id of the account</span>
 <span class="sd">        :param download: Flag to create a zipped CSV file. A report_id will be returned and the file can be accessed via /report/status and /report/zip (optional)</span>
 <span class="sd">        :param reverse: Flag to reverse the default sort order (optional)</span>
@@ -175,6 +178,7 @@
         <span class="nb">type</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deleted.</span>
+
 <span class="sd">        :param account_id: The id of the account</span>
 <span class="sd">        :param type: The type of the object (Study|User etc.)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -202,6 +206,7 @@
         <span class="n">rest_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Log.</span>
+
 <span class="sd">        :param bucket: Name of the bucket to log to</span>
 <span class="sd">        :param rest_params: Parameters are logged to a message in the bucket</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -230,6 +235,7 @@
         <span class="n">from_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Failedlogins.</span>
+
 <span class="sd">        :param account_id: The id of the account</span>
 <span class="sd">        :param from_time: Only return events after the epoch time (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -265,6 +271,7 @@
         <span class="n">reverse</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Object.</span>
+
 <span class="sd">        :param uuid: The uuid of the object to audit</span>
 <span class="sd">        :param customfield_detail: Flag to include the customfield name in the detail (optional)</span>
 <span class="sd">        :param download: Flag to create a zipped CSV file. A report_id will be returned and the file can be accessed via /report/status and /report/zip (optional)</span>
@@ -303,6 +310,7 @@
         <span class="n">study_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;User.</span>
+
 <span class="sd">        :param account_id: The id of the account</span>
 <span class="sd">        :param user_id: The id of the user to audit</span>
 <span class="sd">        :param download: Flag to create a zipped CSV file. A report_id will be returned and the file can be accessed via /report/status and /report/zip (optional)</span>
@@ -341,6 +349,7 @@
         <span class="n">reverse</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Account.</span>
+
 <span class="sd">        :param account_id: The id of the account</span>
 <span class="sd">        :param download: Flag to create a zipped CSV file. A report_id will be returned and the file can be accessed via /report/status and /report/zip (optional)</span>
 <span class="sd">        :param reverse: Flag to reverse the default sort order (optional)</span>
@@ -374,6 +383,7 @@
         <span class="nb">type</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deleted.</span>
+
 <span class="sd">        :param account_id: The id of the account</span>
 <span class="sd">        :param type: The type of the object (Study|User etc.)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -401,6 +411,7 @@
         <span class="n">rest_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Log.</span>
+
 <span class="sd">        :param bucket: Name of the bucket to log to</span>
 <span class="sd">        :param rest_params: Parameters are logged to a message in the bucket</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -429,6 +440,7 @@
         <span class="n">from_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Failedlogins.</span>
+
 <span class="sd">        :param account_id: The id of the account</span>
 <span class="sd">        :param from_time: Only return events after the epoch time (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -459,7 +471,7 @@
 
 
 
-<p class="blurb">version 3.21.5.0-1</p>
+<p class="blurb">version 3.21.6.0-1</p>
 
 
 

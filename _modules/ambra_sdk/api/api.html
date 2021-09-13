@@ -1,0 +1,602 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ambra_sdk.api.api &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ambra_sdk.api.api</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Ambra storage and service API.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Lock</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">monotonic</span><span class="p">,</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TypeVar</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">requests.adapters</span> <span class="kn">import</span> <span class="n">HTTPAdapter</span>
+<span class="kn">from</span> <span class="nn">requests.packages.urllib3.util</span> <span class="kn">import</span> <span class="n">Retry</span>
+
+<span class="kn">from</span> <span class="nn">ambra_sdk.addon.addon</span> <span class="kn">import</span> <span class="n">Addon</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.api.base_api</span> <span class="kn">import</span> <span class="n">BaseApi</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.clear_params</span> <span class="kn">import</span> <span class="n">clear_params</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">AuthorizationRequired</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.storage</span> <span class="kn">import</span> <span class="n">AccessDenied</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.request_args</span> <span class="kn">import</span> <span class="n">RequestArgs</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.service.entrypoints</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Account</span><span class="p">,</span>
+    <span class="n">Activity</span><span class="p">,</span>
+    <span class="n">Analytics</span><span class="p">,</span>
+    <span class="n">Annotation</span><span class="p">,</span>
+    <span class="n">Anonymization</span><span class="p">,</span>
+    <span class="n">Appointment</span><span class="p">,</span>
+    <span class="n">Audit</span><span class="p">,</span>
+    <span class="n">Case</span><span class="p">,</span>
+    <span class="n">Customcode</span><span class="p">,</span>
+    <span class="n">Customfield</span><span class="p">,</span>
+    <span class="n">Destination</span><span class="p">,</span>
+    <span class="n">Dicomdata</span><span class="p">,</span>
+    <span class="n">Dictionary</span><span class="p">,</span>
+    <span class="n">Filter</span><span class="p">,</span>
+    <span class="n">Group</span><span class="p">,</span>
+    <span class="n">Help</span><span class="p">,</span>
+    <span class="n">Hl7</span><span class="p">,</span>
+    <span class="n">Keyimage</span><span class="p">,</span>
+    <span class="n">Link</span><span class="p">,</span>
+    <span class="n">Location</span><span class="p">,</span>
+    <span class="n">Meeting</span><span class="p">,</span>
+    <span class="n">Message</span><span class="p">,</span>
+    <span class="n">Namespace</span><span class="p">,</span>
+    <span class="n">Node</span><span class="p">,</span>
+    <span class="n">Npi</span><span class="p">,</span>
+    <span class="n">Order</span><span class="p">,</span>
+    <span class="n">Patient</span><span class="p">,</span>
+    <span class="n">Purge</span><span class="p">,</span>
+    <span class="n">Qctask</span><span class="p">,</span>
+    <span class="n">Query</span><span class="p">,</span>
+    <span class="n">Radreport</span><span class="p">,</span>
+    <span class="n">Radreportmacro</span><span class="p">,</span>
+    <span class="n">Report</span><span class="p">,</span>
+    <span class="n">Role</span><span class="p">,</span>
+    <span class="n">Route</span><span class="p">,</span>
+    <span class="n">Rsna</span><span class="p">,</span>
+    <span class="n">Scanner</span><span class="p">,</span>
+    <span class="n">Session</span><span class="p">,</span>
+    <span class="n">Setting</span><span class="p">,</span>
+    <span class="n">Site</span><span class="p">,</span>
+    <span class="n">Study</span><span class="p">,</span>
+    <span class="n">Tag</span><span class="p">,</span>
+    <span class="n">Terminology</span><span class="p">,</span>
+    <span class="n">Training</span><span class="p">,</span>
+    <span class="n">User</span><span class="p">,</span>
+    <span class="n">Validate</span><span class="p">,</span>
+    <span class="n">Webhook</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.storage.storage</span> <span class="kn">import</span> <span class="n">Storage</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Api"><a class="viewcode-back" href="../../../referencies/api.html#ambra_sdk.api.Api">[docs]</a><span class="k">class</span> <span class="nc">Api</span><span class="p">(</span><span class="n">BaseApi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Ambra API.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; from ambra_sdk.api import Api</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; api = Api.with_creds(</span>
+<span class="sd">    ...     url=&#39;https://ambrahealth_host/api/v3&#39;,</span>
+<span class="sd">    ...     username=&#39;username&#39;,</span>
+<span class="sd">    ...     password=&#39;password&#39;,</span>
+<span class="sd">    ...     client_name=&#39;Some name (ex: Hospital-ABC)&#39;,</span>
+<span class="sd">    ... )</span>
+
+<span class="sd">    Using some special parameters (In most cases you dont need this!):</span>
+
+<span class="sd">    &gt;&gt;&gt; from ambra_sdk.api import Api</span>
+<span class="sd">    &gt;&gt;&gt; from ambra_sdk.api.base_api import RateLimit, RateLimits</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; MY_RLS = RateLimits(</span>
+<span class="sd">    ...        default=RateLimit(3, 2),</span>
+<span class="sd">    ...        get_limit=RateLimit(4, 2),</span>
+<span class="sd">    ...        special={&#39;special_url&#39;: RateLimit(5, 2)},</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; api = Api.with_creds(</span>
+<span class="sd">    ...     url=&#39;https://ambrahealth_host/api/v3&#39;,</span>
+<span class="sd">    ...     username=&#39;username&#39;,</span>
+<span class="sd">    ...     password=&#39;password&#39;,</span>
+<span class="sd">    ...     client_name=&#39;Some name (ex: Hospital-ABC)&#39;,</span>
+<span class="sd">    ...     special_headers_for_login={&#39;Special-H&#39;: &#39;ABC&#39;},</span>
+<span class="sd">    ...     rate_limits=MY_RLS,</span>
+<span class="sd">    ...     autocast_arguments=False,</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">backend</span> <span class="o">=</span> <span class="s1">&#39;REQUESTS&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init api.</span>
+
+<span class="sd">        :param args: args</span>
+<span class="sd">        :param kwargs: kwargs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_service_session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_storage_session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_request_params</span><span class="p">()</span>
+
+        <span class="c1"># For rate limits</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rate_limits_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_request_time</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_call_period</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Init services api</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_service_entrypoints</span><span class="p">()</span>
+
+        <span class="c1"># Init storage api namespace</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Storage</span> <span class="o">=</span> <span class="n">Storage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># Init addon namespace</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Addon</span> <span class="o">=</span> <span class="n">Addon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">service_session</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Service session.</span>
+
+<span class="sd">        :return: service session</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_session</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_service_session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+            <span class="n">retries</span> <span class="o">=</span> <span class="n">Retry</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">service_retry_params</span><span class="p">)</span>
+            <span class="n">adapter</span> <span class="o">=</span> <span class="n">HTTPAdapter</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_service_session</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s1">&#39;http://&#39;</span><span class="p">,</span> <span class="n">adapter</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_service_session</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s1">&#39;https://&#39;</span><span class="p">,</span> <span class="n">adapter</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_service_session</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_headers</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_service_session</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_service_default_headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_session</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">storage_session</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Storage session.</span>
+
+<span class="sd">        :return: storage session</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage_session</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_storage_session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+            <span class="n">retries</span> <span class="o">=</span> <span class="n">Retry</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">storage_retry_params</span><span class="p">)</span>
+            <span class="n">adapter</span> <span class="o">=</span> <span class="n">HTTPAdapter</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_storage_session</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s1">&#39;http://&#39;</span><span class="p">,</span> <span class="n">adapter</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_storage_session</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s1">&#39;https://&#39;</span><span class="p">,</span> <span class="n">adapter</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_storage_session</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_headers</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_storage_session</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage_default_headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage_session</span>
+
+<div class="viewcode-block" id="Api.storage_get"><a class="viewcode-back" href="../../../referencies/api.html#ambra_sdk.api.Api.storage_get">[docs]</a>    <span class="k">def</span> <span class="nf">storage_get</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">required_sid</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get from storage.</span>
+
+<span class="sd">        :param url: url</span>
+<span class="sd">        :param required_sid: is this method required sid</span>
+<span class="sd">        :param kwargs: request arguments</span>
+<span class="sd">        :return: response obj</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_storage_request_args</span><span class="p">(</span>
+            <span class="n">required_sid</span><span class="o">=</span><span class="n">required_sid</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s1">&#39;Storage get: </span><span class="si">%s</span><span class="s1">. Params: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">clear_params</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,</span> <span class="p">{}))),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage_session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Api.storage_delete"><a class="viewcode-back" href="../../../referencies/api.html#ambra_sdk.api.Api.storage_delete">[docs]</a>    <span class="k">def</span> <span class="nf">storage_delete</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">required_sid</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Delete from storage.</span>
+
+<span class="sd">        :param url: url</span>
+<span class="sd">        :param required_sid: is this method required sid</span>
+<span class="sd">        :param kwargs: request arguments</span>
+<span class="sd">        :return: response obj</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_storage_request_args</span><span class="p">(</span>
+            <span class="n">required_sid</span><span class="o">=</span><span class="n">required_sid</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s1">&#39;Storage delete: </span><span class="si">%s</span><span class="s1">. Params: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">clear_params</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,</span> <span class="p">{}))),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage_session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Api.storage_post"><a class="viewcode-back" href="../../../referencies/api.html#ambra_sdk.api.Api.storage_post">[docs]</a>    <span class="k">def</span> <span class="nf">storage_post</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">required_sid</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Post to storage.</span>
+
+<span class="sd">        :param url: url</span>
+<span class="sd">        :param required_sid: is this method required sid</span>
+<span class="sd">        :param kwargs: request arguments</span>
+<span class="sd">        :return: response obj</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_storage_request_args</span><span class="p">(</span>
+            <span class="n">required_sid</span><span class="o">=</span><span class="n">required_sid</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s1">&#39;Storage post: </span><span class="si">%s</span><span class="s1">. Params: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">clear_params</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,</span> <span class="p">{}))),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage_session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Api.service_request"><a class="viewcode-back" href="../../../referencies/api.html#ambra_sdk.api.Api.service_request">[docs]</a>    <span class="k">def</span> <span class="nf">service_request</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">request_args</span><span class="p">:</span> <span class="n">RequestArgs</span><span class="p">,</span>
+        <span class="n">required_sid</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Post data to url.</span>
+
+<span class="sd">        :param request_args: request args</span>
+<span class="sd">        :param required_sid: is this method required sid</span>
+<span class="sd">        :return: response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wait_for_service_request</span><span class="p">(</span><span class="n">request_args</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_request_without_rate_limits</span><span class="p">(</span>
+            <span class="n">request_args</span><span class="o">=</span><span class="n">request_args</span><span class="p">,</span>
+            <span class="n">required_sid</span><span class="o">=</span><span class="n">required_sid</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Api.service_post"><a class="viewcode-back" href="../../../referencies/api.html#ambra_sdk.api.Api.service_post">[docs]</a>    <span class="k">def</span> <span class="nf">service_post</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">required_sid</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Post data to url.</span>
+
+<span class="sd">        :param url: method url</span>
+<span class="sd">        :param required_sid: is this method required sid</span>
+<span class="sd">        :param kwargs: request arguments</span>
+<span class="sd">        :return: response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">full_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_full_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">request_args</span> <span class="o">=</span> <span class="n">RequestArgs</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">full_url</span><span class="o">=</span><span class="n">full_url</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_request</span><span class="p">(</span>
+            <span class="n">request_args</span><span class="o">=</span><span class="n">request_args</span><span class="p">,</span>
+            <span class="n">required_sid</span><span class="o">=</span><span class="n">required_sid</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Api.get_sid"><a class="viewcode-back" href="../../../referencies/api.html#ambra_sdk.api.Api.get_sid">[docs]</a>    <span class="k">def</span> <span class="nf">get_sid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get or create new sid.</span>
+
+<span class="sd">        :return: sid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_new_sid</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sid</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get or create new sid property.</span>
+
+<span class="sd">        :return: sid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sid</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Api.logout"><a class="viewcode-back" href="../../../referencies/api.html#ambra_sdk.api.Api.logout">[docs]</a>    <span class="k">def</span> <span class="nf">logout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Logout.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sid</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sid</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage_session</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_storage_session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_session</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_service_session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Api.get_new_sid"><a class="viewcode-back" href="../../../referencies/api.html#ambra_sdk.api.Api.get_new_sid">[docs]</a>    <span class="k">def</span> <span class="nf">get_new_sid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get new sid.</span>
+
+<span class="sd">        :raises RuntimeError: Missined credentials</span>
+<span class="sd">        :return: sid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_creds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Missed credentials&#39;</span><span class="p">)</span>
+        <span class="n">new_sid</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">get_sid</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_creds</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_creds</span><span class="o">.</span><span class="n">password</span><span class="p">,</span>
+            <span class="n">special_headers_for_login</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_special_headers_for_login</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sid</span> <span class="o">=</span> <span class="n">new_sid</span>
+        <span class="k">return</span> <span class="n">new_sid</span></div>
+
+    <span class="n">FN_RETURN_TYPE</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;FN_RETURN_TYPE&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Api.retry_with_new_sid"><a class="viewcode-back" href="../../../referencies/api.html#ambra_sdk.api.Api.retry_with_new_sid">[docs]</a>    <span class="k">def</span> <span class="nf">retry_with_new_sid</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">FN_RETURN_TYPE</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FN_RETURN_TYPE</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Retry with new sid.</span>
+
+<span class="sd">        :param fn: callable method</span>
+<span class="sd">        :return: fn result</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">fn</span><span class="p">()</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">AuthorizationRequired</span><span class="p">,</span> <span class="n">AccessDenied</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_new_sid</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">fn</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_wait_for_service_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rate_limits</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rate_limits_lock</span><span class="p">:</span>
+                <span class="n">call_period</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rate_limits</span><span class="o">.</span><span class="n">call_period</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+                <span class="n">now</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_request_time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># This is a first run</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_last_request_time</span> <span class="o">=</span> <span class="n">now</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_last_call_period</span> <span class="o">=</span> <span class="n">call_period</span>
+                    <span class="k">return</span>
+
+                <span class="n">wait_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_request_time</span> <span class="o">+</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_last_call_period</span> <span class="o">-</span> <span class="n">now</span>
+                <span class="k">if</span> <span class="n">wait_time</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Sleep </span><span class="si">%s</span><span class="s1"> due to rate limits&#39;</span><span class="p">,</span> <span class="n">wait_time</span><span class="p">)</span>
+                    <span class="n">sleep</span><span class="p">(</span><span class="n">wait_time</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_last_request_time</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_last_call_period</span> <span class="o">=</span> <span class="n">call_period</span>
+
+    <span class="k">def</span> <span class="nf">_service_request_without_rate_limits</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">request_args</span><span class="p">:</span> <span class="n">RequestArgs</span><span class="p">,</span>
+        <span class="n">required_sid</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Post data to url.</span>
+
+<span class="sd">        :param request_args: request args</span>
+<span class="sd">        :param required_sid: is this method required sid</span>
+<span class="sd">        :return: response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">required_sid</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">request_data</span> <span class="o">=</span> <span class="n">request_args</span><span class="o">.</span><span class="n">data</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="n">request_data</span><span class="p">[</span><span class="s1">&#39;sid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sid</span>
+            <span class="n">request_args</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">request_data</span>  <span class="c1"># NOQA:WPS110</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s1">&#39;Service post: </span><span class="si">%s</span><span class="s1">. Params: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">request_args</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">clear_params</span><span class="p">(</span><span class="n">request_args</span><span class="o">.</span><span class="n">data</span><span class="p">)),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_session</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">request_args</span><span class="o">.</span><span class="n">method</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">request_args</span><span class="o">.</span><span class="n">full_url</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">request_args</span><span class="o">.</span><span class="n">dict_optional_args</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_autocast_arguments</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_prepare_storage_request_args</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">required_sid</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prepare storage request kwargs args.</span>
+
+<span class="sd">        :param required_sid: required sid</span>
+<span class="sd">        :param kwargs: kwargs</span>
+<span class="sd">        :return: kwargs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">required_sid</span><span class="p">:</span>
+            <span class="c1"># Sid passed always in url params (?sid=...)</span>
+            <span class="n">request_params</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">)</span>
+            <span class="c1"># Get or create new sid</span>
+            <span class="n">request_params</span><span class="p">[</span><span class="s1">&#39;sid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sid</span><span class="p">()</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_params</span>
+        <span class="k">return</span> <span class="n">kwargs</span>
+
+    <span class="k">def</span> <span class="nf">_init_request_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">method_whitelist</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;HEAD&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;TRACE&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;PUT&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;OPTIONS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="c1"># https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html#module-urllib3.util.retry</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">service_retry_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="s1">&#39;connect&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="s1">&#39;read&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="s1">&#39;status_forcelist&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">],</span>
+            <span class="s1">&#39;backoff_factor&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s1">&#39;method_whitelist&#39;</span><span class="p">:</span> <span class="n">method_whitelist</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="c1"># Merge studies</span>
+        <span class="c1"># /study/{namespace}/{studyUid}/merge?sid={sid}&amp;secondary_study_uid={secondary_study_uid}&amp;delete_secondary_study={0,1}</span>
+        <span class="c1"># Can return 500 and its ok .....</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage_retry_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="s1">&#39;connect&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="s1">&#39;read&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="s1">&#39;status_forcelist&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">502</span><span class="p">,</span> <span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">],</span>
+            <span class="s1">&#39;backoff_factor&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s1">&#39;method_whitelist&#39;</span><span class="p">:</span> <span class="n">method_whitelist</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_init_service_entrypoints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init service entrypoint namespaces.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Account</span> <span class="o">=</span> <span class="n">Account</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Activity</span> <span class="o">=</span> <span class="n">Activity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Analytics</span> <span class="o">=</span> <span class="n">Analytics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Annotation</span> <span class="o">=</span> <span class="n">Annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Appointment</span> <span class="o">=</span> <span class="n">Appointment</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Audit</span> <span class="o">=</span> <span class="n">Audit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Case</span> <span class="o">=</span> <span class="n">Case</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Customcode</span> <span class="o">=</span> <span class="n">Customcode</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Customfield</span> <span class="o">=</span> <span class="n">Customfield</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Destination</span> <span class="o">=</span> <span class="n">Destination</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Dicomdata</span> <span class="o">=</span> <span class="n">Dicomdata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Dictionary</span> <span class="o">=</span> <span class="n">Dictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Filter</span> <span class="o">=</span> <span class="n">Filter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Group</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Help</span> <span class="o">=</span> <span class="n">Help</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Hl7</span> <span class="o">=</span> <span class="n">Hl7</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Keyimage</span> <span class="o">=</span> <span class="n">Keyimage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Link</span> <span class="o">=</span> <span class="n">Link</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Location</span> <span class="o">=</span> <span class="n">Location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Meeting</span> <span class="o">=</span> <span class="n">Meeting</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Message</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Namespace</span> <span class="o">=</span> <span class="n">Namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Npi</span> <span class="o">=</span> <span class="n">Npi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Order</span> <span class="o">=</span> <span class="n">Order</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Patient</span> <span class="o">=</span> <span class="n">Patient</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Purge</span> <span class="o">=</span> <span class="n">Purge</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Radreportmacro</span> <span class="o">=</span> <span class="n">Radreportmacro</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Radreport</span> <span class="o">=</span> <span class="n">Radreport</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Report</span> <span class="o">=</span> <span class="n">Report</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Role</span> <span class="o">=</span> <span class="n">Role</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Route</span> <span class="o">=</span> <span class="n">Route</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Rsna</span> <span class="o">=</span> <span class="n">Rsna</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Setting</span> <span class="o">=</span> <span class="n">Setting</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Study</span> <span class="o">=</span> <span class="n">Study</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Tag</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Terminology</span> <span class="o">=</span> <span class="n">Terminology</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Training</span> <span class="o">=</span> <span class="n">Training</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">User</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Validate</span> <span class="o">=</span> <span class="n">Validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Webhook</span> <span class="o">=</span> <span class="n">Webhook</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Scanner</span> <span class="o">=</span> <span class="n">Scanner</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Site</span> <span class="o">=</span> <span class="n">Site</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Anonymization</span> <span class="o">=</span> <span class="n">Anonymization</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Qctask</span> <span class="o">=</span> <span class="n">Qctask</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Ambra-SDK</a></h1>
+
+
+
+<p class="blurb">version 3.21.6.0-1</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=dicomgrid&repo=sdk-python&type=watch&count=False&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../service_api.html">Service API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage_api.html">Storage API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../async.html">Async</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../addon.html">Addon methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../referencies/index.html">References</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ambrahealth AI team.
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

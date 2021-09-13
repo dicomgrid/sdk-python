@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.link &#8212; Ambra-SDK 3.21.5.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.link &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -71,8 +71,10 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotHash</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotList</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotPermitted</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">OnlyOne</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">PinLockout</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">Validate</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">ValidationFailed</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">QueryO</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">AsyncQueryO</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">QueryOPSF</span>
@@ -92,6 +94,7 @@
         <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
+
 <span class="sd">        :param account_id: account_id</span>
 <span class="sd">        :param study_id: study_id</span>
 <span class="sd">        :param user_id: user_id</span>
@@ -152,11 +155,14 @@
         <span class="n">share_on_view</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">skip_email_prompt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">study_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ui_json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">upload_match</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">upload_study_customfields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">use_share_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">workflow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param action: Link action (STUDY_LIST|STUDY_VIEW|STUDY_UPLOAD)</span>
 <span class="sd">        :param prompt_for_anonymize: Flag to prompt if the anonymization rules should be applied on ingress</span>
 <span class="sd">        :param acceptance_required: Flag that acceptance of TOS is required (optional)</span>
@@ -186,9 +192,11 @@
 <span class="sd">        :param share_on_view: Flag to share the study with the email after it is viewed (optional)</span>
 <span class="sd">        :param skip_email_prompt: Skip the prompt for email step (optional)</span>
 <span class="sd">        :param study_id: study_id</span>
+<span class="sd">        :param ui_json: JSON for UI settings (optional)</span>
 <span class="sd">        :param upload_match: A JSON hash of DICOM tags and regular expressions they must match uploaded against this link (optional)</span>
 <span class="sd">        :param upload_study_customfields: A JSON hash of customfields that will be mapped to a study on study upload. A key is a customfield UUID, a value is a value for the field (optional)</span>
 <span class="sd">        :param use_share_code: Flag to use the namespace share code settings for a STUDY_UPLOAD (optional)</span>
+<span class="sd">        :param workflow: The workflow this link is intended for (patient_studies) (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;acceptance_required&#39;</span><span class="p">:</span> <span class="n">acceptance_required</span><span class="p">,</span>
@@ -220,9 +228,11 @@
            <span class="s1">&#39;share_on_view&#39;</span><span class="p">:</span> <span class="n">share_on_view</span><span class="p">,</span>
            <span class="s1">&#39;skip_email_prompt&#39;</span><span class="p">:</span> <span class="n">skip_email_prompt</span><span class="p">,</span>
            <span class="s1">&#39;study_id&#39;</span><span class="p">:</span> <span class="n">study_id</span><span class="p">,</span>
+           <span class="s1">&#39;ui_json&#39;</span><span class="p">:</span> <span class="n">ui_json</span><span class="p">,</span>
            <span class="s1">&#39;upload_match&#39;</span><span class="p">:</span> <span class="n">upload_match</span><span class="p">,</span>
            <span class="s1">&#39;upload_study_customfields&#39;</span><span class="p">:</span> <span class="n">upload_study_customfields</span><span class="p">,</span>
            <span class="s1">&#39;use_share_code&#39;</span><span class="p">:</span> <span class="n">use_share_code</span><span class="p">,</span>
+           <span class="s1">&#39;workflow&#39;</span><span class="p">:</span> <span class="n">workflow</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -241,6 +251,7 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_LIST&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotList</span><span class="p">(</span><span class="s1">&#39;The field is not a JSON array. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to create links&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;VALIDATE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Validate</span><span class="p">(</span><span class="s1">&#39;A validation error. The error_subtype holds the details on the error&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;VALIDATION_FAILED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ValidationFailed</span><span class="p">(</span><span class="s1">&#39;The workflow parameter validation failed&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/link/add&#39;</span><span class="p">,</span>
@@ -282,16 +293,20 @@
         <span class="n">redirect_url</span><span class="p">,</span>
         <span class="n">referer</span><span class="p">,</span>
         <span class="n">share_on_view</span><span class="p">,</span>
+        <span class="n">short_id</span><span class="p">,</span>
         <span class="n">skip_email_prompt</span><span class="p">,</span>
         <span class="n">study_id</span><span class="p">,</span>
+        <span class="n">ui_json</span><span class="p">,</span>
         <span class="n">upload_match</span><span class="p">,</span>
         <span class="n">upload_study_customfields</span><span class="p">,</span>
         <span class="n">url</span><span class="p">,</span>
         <span class="n">use_share_code</span><span class="p">,</span>
         <span class="n">user_id</span><span class="p">,</span>
         <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">workflow</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param acceptance_required: Flag that acceptance of TOS is required</span>
 <span class="sd">        :param account_id: The account id</span>
 <span class="sd">        :param action: Link action</span>
@@ -322,14 +337,17 @@
 <span class="sd">        :param redirect_url: URL for the /link/redirect API which will take you directly to the study viewer or uploader</span>
 <span class="sd">        :param referer: The link can only be accessed from the specified referer</span>
 <span class="sd">        :param share_on_view: Flag to share the study with the email after it is viewed</span>
+<span class="sd">        :param short_id: Short ID of the link for the &#39;patient_studies&#39; workflow</span>
 <span class="sd">        :param skip_email_prompt: Skip the prompt for email step</span>
 <span class="sd">        :param study_id: uuid of the study</span>
+<span class="sd">        :param ui_json: JSON for UI settings</span>
 <span class="sd">        :param upload_match: A JSON hash of DICOM tags and regular expressions they must match uploaded against this link</span>
 <span class="sd">        :param upload_study_customfields: A JSON hash of customfields that will be mapped to a study on study upload</span>
 <span class="sd">        :param url: URL for the link which will take you to the UI entry point for links to enter email, password etc.</span>
 <span class="sd">        :param use_share_code: Flag to use the namespace share code settings for a STUDY_UPLOAD</span>
 <span class="sd">        :param user_id: The user id</span>
 <span class="sd">        :param uuid: Id of the link</span>
+<span class="sd">        :param workflow: The workflow this link is intended for</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;acceptance_required&#39;</span><span class="p">:</span> <span class="n">acceptance_required</span><span class="p">,</span>
@@ -362,14 +380,17 @@
            <span class="s1">&#39;redirect_url&#39;</span><span class="p">:</span> <span class="n">redirect_url</span><span class="p">,</span>
            <span class="s1">&#39;referer&#39;</span><span class="p">:</span> <span class="n">referer</span><span class="p">,</span>
            <span class="s1">&#39;share_on_view&#39;</span><span class="p">:</span> <span class="n">share_on_view</span><span class="p">,</span>
+           <span class="s1">&#39;short_id&#39;</span><span class="p">:</span> <span class="n">short_id</span><span class="p">,</span>
            <span class="s1">&#39;skip_email_prompt&#39;</span><span class="p">:</span> <span class="n">skip_email_prompt</span><span class="p">,</span>
            <span class="s1">&#39;study_id&#39;</span><span class="p">:</span> <span class="n">study_id</span><span class="p">,</span>
+           <span class="s1">&#39;ui_json&#39;</span><span class="p">:</span> <span class="n">ui_json</span><span class="p">,</span>
            <span class="s1">&#39;upload_match&#39;</span><span class="p">:</span> <span class="n">upload_match</span><span class="p">,</span>
            <span class="s1">&#39;upload_study_customfields&#39;</span><span class="p">:</span> <span class="n">upload_study_customfields</span><span class="p">,</span>
            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
            <span class="s1">&#39;use_share_code&#39;</span><span class="p">:</span> <span class="n">use_share_code</span><span class="p">,</span>
            <span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;workflow&#39;</span><span class="p">:</span> <span class="n">workflow</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -390,6 +411,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param uuid: Id of the link</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -416,6 +438,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Status.</span>
+
 <span class="sd">        :param link_charge_id: The uuid of the prior charge against this link (optional)</span>
 <span class="sd">        :param pin: pin</span>
 <span class="sd">        :param uuid: uuid</span>
@@ -448,13 +471,16 @@
         <span class="n">link_charge_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">pin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">short_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Session.</span>
+
 <span class="sd">        :param email_address: The users email (optional)</span>
 <span class="sd">        :param link_charge_id: The uuid of the prior charge against this link (optional)</span>
 <span class="sd">        :param password: Password if needed (optional)</span>
 <span class="sd">        :param pin: pin</span>
+<span class="sd">        :param short_id: short_id</span>
 <span class="sd">        :param uuid: uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -462,6 +488,7 @@
            <span class="s1">&#39;link_charge_id&#39;</span><span class="p">:</span> <span class="n">link_charge_id</span><span class="p">,</span>
            <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
            <span class="s1">&#39;pin&#39;</span><span class="p">:</span> <span class="n">pin</span><span class="p">,</span>
+           <span class="s1">&#39;short_id&#39;</span><span class="p">:</span> <span class="n">short_id</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
 	
@@ -474,6 +501,7 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;IP_BLOCKED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">IpBlocked</span><span class="p">(</span><span class="s1">&#39;An IP whitelist blocked access&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The link was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ONLY_ONE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">OnlyOne</span><span class="p">(</span><span class="s1">&#39;You can pass either uuid or short_id, not both&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;PIN_LOCKOUT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">PinLockout</span><span class="p">(</span><span class="s1">&#39;Too many invalid PIN entries&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
@@ -489,18 +517,22 @@
         <span class="n">link_charge_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">pin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">short_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Redirect.</span>
+
 <span class="sd">        :param link_charge_id: The uuid of the prior charge against this link (optional)</span>
 <span class="sd">        :param password: Password if needed (optional)</span>
 <span class="sd">        :param pin: pin</span>
+<span class="sd">        :param short_id: short_id</span>
 <span class="sd">        :param uuid: uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;link_charge_id&#39;</span><span class="p">:</span> <span class="n">link_charge_id</span><span class="p">,</span>
            <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
            <span class="s1">&#39;pin&#39;</span><span class="p">:</span> <span class="n">pin</span><span class="p">,</span>
+           <span class="s1">&#39;short_id&#39;</span><span class="p">:</span> <span class="n">short_id</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
 	
@@ -513,6 +545,7 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;LINK_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">LinkNotFound</span><span class="p">(</span><span class="s1">&#39;The link was not found&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;The configuration of this link requires the link UI be used instead of direct access&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ONLY_ONE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">OnlyOne</span><span class="p">(</span><span class="s1">&#39;You can pass either uuid or short_id, not both&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;PIN_LOCKOUT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">PinLockout</span><span class="p">(</span><span class="s1">&#39;Too many invalid PIN entries&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
@@ -529,6 +562,7 @@
         <span class="n">v</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;External.</span>
+
 <span class="sd">        :param u: The uuid of the user_account record to create the guest link as</span>
 <span class="sd">        :param v: A JSON hash with the following keys pairs. The JSON must be encrypted and base64 encoded</span>
 
@@ -564,6 +598,7 @@
         <span class="n">v</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sso.</span>
+
 <span class="sd">        :param u: The uuid of the user_account record</span>
 <span class="sd">        :param v: An encrypted JSON hash as per the instructions in the SSO to a PHR account with a study share section of the documentation</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -594,6 +629,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sid.</span>
+
 <span class="sd">        :param email: Email address to associate with this usage</span>
 <span class="sd">        :param uuid: The uuid of the link usage</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -619,6 +655,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Mail.</span>
+
 <span class="sd">        :param email: Email address</span>
 <span class="sd">        :param uuid: The uuid of the link</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -647,6 +684,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Charge.</span>
+
 <span class="sd">        :param charge_token: The stripe charge token</span>
 <span class="sd">        :param uuid: The uuid of the link</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -673,6 +711,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Pin.</span>
+
 <span class="sd">        :param uuid: The uuid of the link</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -707,6 +746,7 @@
         <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
+
 <span class="sd">        :param account_id: account_id</span>
 <span class="sd">        :param study_id: study_id</span>
 <span class="sd">        :param user_id: user_id</span>
@@ -767,11 +807,14 @@
         <span class="n">share_on_view</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">skip_email_prompt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">study_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ui_json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">upload_match</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">upload_study_customfields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">use_share_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">workflow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
+
 <span class="sd">        :param action: Link action (STUDY_LIST|STUDY_VIEW|STUDY_UPLOAD)</span>
 <span class="sd">        :param prompt_for_anonymize: Flag to prompt if the anonymization rules should be applied on ingress</span>
 <span class="sd">        :param acceptance_required: Flag that acceptance of TOS is required (optional)</span>
@@ -801,9 +844,11 @@
 <span class="sd">        :param share_on_view: Flag to share the study with the email after it is viewed (optional)</span>
 <span class="sd">        :param skip_email_prompt: Skip the prompt for email step (optional)</span>
 <span class="sd">        :param study_id: study_id</span>
+<span class="sd">        :param ui_json: JSON for UI settings (optional)</span>
 <span class="sd">        :param upload_match: A JSON hash of DICOM tags and regular expressions they must match uploaded against this link (optional)</span>
 <span class="sd">        :param upload_study_customfields: A JSON hash of customfields that will be mapped to a study on study upload. A key is a customfield UUID, a value is a value for the field (optional)</span>
 <span class="sd">        :param use_share_code: Flag to use the namespace share code settings for a STUDY_UPLOAD (optional)</span>
+<span class="sd">        :param workflow: The workflow this link is intended for (patient_studies) (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;acceptance_required&#39;</span><span class="p">:</span> <span class="n">acceptance_required</span><span class="p">,</span>
@@ -835,9 +880,11 @@
            <span class="s1">&#39;share_on_view&#39;</span><span class="p">:</span> <span class="n">share_on_view</span><span class="p">,</span>
            <span class="s1">&#39;skip_email_prompt&#39;</span><span class="p">:</span> <span class="n">skip_email_prompt</span><span class="p">,</span>
            <span class="s1">&#39;study_id&#39;</span><span class="p">:</span> <span class="n">study_id</span><span class="p">,</span>
+           <span class="s1">&#39;ui_json&#39;</span><span class="p">:</span> <span class="n">ui_json</span><span class="p">,</span>
            <span class="s1">&#39;upload_match&#39;</span><span class="p">:</span> <span class="n">upload_match</span><span class="p">,</span>
            <span class="s1">&#39;upload_study_customfields&#39;</span><span class="p">:</span> <span class="n">upload_study_customfields</span><span class="p">,</span>
            <span class="s1">&#39;use_share_code&#39;</span><span class="p">:</span> <span class="n">use_share_code</span><span class="p">,</span>
+           <span class="s1">&#39;workflow&#39;</span><span class="p">:</span> <span class="n">workflow</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -856,6 +903,7 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_LIST&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotList</span><span class="p">(</span><span class="s1">&#39;The field is not a JSON array. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to create links&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;VALIDATE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Validate</span><span class="p">(</span><span class="s1">&#39;A validation error. The error_subtype holds the details on the error&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;VALIDATION_FAILED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ValidationFailed</span><span class="p">(</span><span class="s1">&#39;The workflow parameter validation failed&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/link/add&#39;</span><span class="p">,</span>
@@ -897,16 +945,20 @@
         <span class="n">redirect_url</span><span class="p">,</span>
         <span class="n">referer</span><span class="p">,</span>
         <span class="n">share_on_view</span><span class="p">,</span>
+        <span class="n">short_id</span><span class="p">,</span>
         <span class="n">skip_email_prompt</span><span class="p">,</span>
         <span class="n">study_id</span><span class="p">,</span>
+        <span class="n">ui_json</span><span class="p">,</span>
         <span class="n">upload_match</span><span class="p">,</span>
         <span class="n">upload_study_customfields</span><span class="p">,</span>
         <span class="n">url</span><span class="p">,</span>
         <span class="n">use_share_code</span><span class="p">,</span>
         <span class="n">user_id</span><span class="p">,</span>
         <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">workflow</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get.</span>
+
 <span class="sd">        :param acceptance_required: Flag that acceptance of TOS is required</span>
 <span class="sd">        :param account_id: The account id</span>
 <span class="sd">        :param action: Link action</span>
@@ -937,14 +989,17 @@
 <span class="sd">        :param redirect_url: URL for the /link/redirect API which will take you directly to the study viewer or uploader</span>
 <span class="sd">        :param referer: The link can only be accessed from the specified referer</span>
 <span class="sd">        :param share_on_view: Flag to share the study with the email after it is viewed</span>
+<span class="sd">        :param short_id: Short ID of the link for the &#39;patient_studies&#39; workflow</span>
 <span class="sd">        :param skip_email_prompt: Skip the prompt for email step</span>
 <span class="sd">        :param study_id: uuid of the study</span>
+<span class="sd">        :param ui_json: JSON for UI settings</span>
 <span class="sd">        :param upload_match: A JSON hash of DICOM tags and regular expressions they must match uploaded against this link</span>
 <span class="sd">        :param upload_study_customfields: A JSON hash of customfields that will be mapped to a study on study upload</span>
 <span class="sd">        :param url: URL for the link which will take you to the UI entry point for links to enter email, password etc.</span>
 <span class="sd">        :param use_share_code: Flag to use the namespace share code settings for a STUDY_UPLOAD</span>
 <span class="sd">        :param user_id: The user id</span>
 <span class="sd">        :param uuid: Id of the link</span>
+<span class="sd">        :param workflow: The workflow this link is intended for</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;acceptance_required&#39;</span><span class="p">:</span> <span class="n">acceptance_required</span><span class="p">,</span>
@@ -977,14 +1032,17 @@
            <span class="s1">&#39;redirect_url&#39;</span><span class="p">:</span> <span class="n">redirect_url</span><span class="p">,</span>
            <span class="s1">&#39;referer&#39;</span><span class="p">:</span> <span class="n">referer</span><span class="p">,</span>
            <span class="s1">&#39;share_on_view&#39;</span><span class="p">:</span> <span class="n">share_on_view</span><span class="p">,</span>
+           <span class="s1">&#39;short_id&#39;</span><span class="p">:</span> <span class="n">short_id</span><span class="p">,</span>
            <span class="s1">&#39;skip_email_prompt&#39;</span><span class="p">:</span> <span class="n">skip_email_prompt</span><span class="p">,</span>
            <span class="s1">&#39;study_id&#39;</span><span class="p">:</span> <span class="n">study_id</span><span class="p">,</span>
+           <span class="s1">&#39;ui_json&#39;</span><span class="p">:</span> <span class="n">ui_json</span><span class="p">,</span>
            <span class="s1">&#39;upload_match&#39;</span><span class="p">:</span> <span class="n">upload_match</span><span class="p">,</span>
            <span class="s1">&#39;upload_study_customfields&#39;</span><span class="p">:</span> <span class="n">upload_study_customfields</span><span class="p">,</span>
            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
            <span class="s1">&#39;use_share_code&#39;</span><span class="p">:</span> <span class="n">use_share_code</span><span class="p">,</span>
            <span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;workflow&#39;</span><span class="p">:</span> <span class="n">workflow</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1005,6 +1063,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete.</span>
+
 <span class="sd">        :param uuid: Id of the link</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1031,6 +1090,7 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Status.</span>
+
 <span class="sd">        :param link_charge_id: The uuid of the prior charge against this link (optional)</span>
 <span class="sd">        :param pin: pin</span>
 <span class="sd">        :param uuid: uuid</span>
@@ -1063,13 +1123,16 @@
         <span class="n">link_charge_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">pin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">short_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Session.</span>
+
 <span class="sd">        :param email_address: The users email (optional)</span>
 <span class="sd">        :param link_charge_id: The uuid of the prior charge against this link (optional)</span>
 <span class="sd">        :param password: Password if needed (optional)</span>
 <span class="sd">        :param pin: pin</span>
+<span class="sd">        :param short_id: short_id</span>
 <span class="sd">        :param uuid: uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1077,6 +1140,7 @@
            <span class="s1">&#39;link_charge_id&#39;</span><span class="p">:</span> <span class="n">link_charge_id</span><span class="p">,</span>
            <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
            <span class="s1">&#39;pin&#39;</span><span class="p">:</span> <span class="n">pin</span><span class="p">,</span>
+           <span class="s1">&#39;short_id&#39;</span><span class="p">:</span> <span class="n">short_id</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
 	
@@ -1089,6 +1153,7 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;IP_BLOCKED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">IpBlocked</span><span class="p">(</span><span class="s1">&#39;An IP whitelist blocked access&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The link was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ONLY_ONE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">OnlyOne</span><span class="p">(</span><span class="s1">&#39;You can pass either uuid or short_id, not both&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;PIN_LOCKOUT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">PinLockout</span><span class="p">(</span><span class="s1">&#39;Too many invalid PIN entries&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
@@ -1104,18 +1169,22 @@
         <span class="n">link_charge_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">pin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">short_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Redirect.</span>
+
 <span class="sd">        :param link_charge_id: The uuid of the prior charge against this link (optional)</span>
 <span class="sd">        :param password: Password if needed (optional)</span>
 <span class="sd">        :param pin: pin</span>
+<span class="sd">        :param short_id: short_id</span>
 <span class="sd">        :param uuid: uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;link_charge_id&#39;</span><span class="p">:</span> <span class="n">link_charge_id</span><span class="p">,</span>
            <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
            <span class="s1">&#39;pin&#39;</span><span class="p">:</span> <span class="n">pin</span><span class="p">,</span>
+           <span class="s1">&#39;short_id&#39;</span><span class="p">:</span> <span class="n">short_id</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
 	
@@ -1128,6 +1197,7 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;LINK_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">LinkNotFound</span><span class="p">(</span><span class="s1">&#39;The link was not found&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;The configuration of this link requires the link UI be used instead of direct access&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ONLY_ONE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">OnlyOne</span><span class="p">(</span><span class="s1">&#39;You can pass either uuid or short_id, not both&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;PIN_LOCKOUT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">PinLockout</span><span class="p">(</span><span class="s1">&#39;Too many invalid PIN entries&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
@@ -1144,6 +1214,7 @@
         <span class="n">v</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;External.</span>
+
 <span class="sd">        :param u: The uuid of the user_account record to create the guest link as</span>
 <span class="sd">        :param v: A JSON hash with the following keys pairs. The JSON must be encrypted and base64 encoded</span>
 
@@ -1179,6 +1250,7 @@
         <span class="n">v</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sso.</span>
+
 <span class="sd">        :param u: The uuid of the user_account record</span>
 <span class="sd">        :param v: An encrypted JSON hash as per the instructions in the SSO to a PHR account with a study share section of the documentation</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1209,6 +1281,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sid.</span>
+
 <span class="sd">        :param email: Email address to associate with this usage</span>
 <span class="sd">        :param uuid: The uuid of the link usage</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1234,6 +1307,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Mail.</span>
+
 <span class="sd">        :param email: Email address</span>
 <span class="sd">        :param uuid: The uuid of the link</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1262,6 +1336,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Charge.</span>
+
 <span class="sd">        :param charge_token: The stripe charge token</span>
 <span class="sd">        :param uuid: The uuid of the link</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1288,6 +1363,7 @@
         <span class="n">uuid</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Pin.</span>
+
 <span class="sd">        :param uuid: The uuid of the link</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1318,7 +1394,7 @@
 
 
 
-<p class="blurb">version 3.21.5.0-1</p>
+<p class="blurb">version 3.21.6.0-1</p>
 
 
 

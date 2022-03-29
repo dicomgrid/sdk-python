@@ -30,6 +30,7 @@ from ambra_sdk.exceptions.service import NotList
 from ambra_sdk.exceptions.service import NotPermitted
 from ambra_sdk.exceptions.service import OnlyAll
 from ambra_sdk.exceptions.service import OnlyOne
+from ambra_sdk.exceptions.service import PendingRestore
 from ambra_sdk.service.query import QueryO
 from ambra_sdk.service.query import AsyncQueryO
 
@@ -96,12 +97,15 @@ class Namespace:
         cloud_storage_config=None,
         disable_duplicate_study_upload=None,
         disable_mobile_dicom_wrapping=None,
+        download_anonymize=None,
         enable_dicom_deidentification=None,
         enable_dicom_wrapping=None,
         enable_epic_patient_lookup=None,
         enable_multipart_uploader=None,
         enable_namespace_ai_questions=None,
+        epic_prompt_for_anonymize=None,
         force_new_study_on_upload=None,
+        ira_namespace=None,
         link_defaults=None,
         must_approve_duplicate_study_uid=None,
         no_dup_share=None,
@@ -114,6 +118,8 @@ class Namespace:
         study_field_flags=None,
         study_size_soft_threshold_per_user=None,
         try_update_original_study=None,
+        try_update_original_study_from_namespaces=None,
+        try_update_original_study_to_namespaces=None,
         ui_json=None,
         upload_settings=None,
     ):
@@ -127,12 +133,15 @@ class Namespace:
         :param cloud_storage_config: Value for the setting (optional)
         :param disable_duplicate_study_upload: Value for the setting (optional)
         :param disable_mobile_dicom_wrapping: Value for the setting (optional)
+        :param download_anonymize: Anonymization rules to apply on study download. The setting format should follow the anonymize_tags parameter format of the Storage /study/{namespace}/{studyUid}/download call (optional)
         :param enable_dicom_deidentification: Value for the setting (optional)
         :param enable_dicom_wrapping: Value for the setting (optional)
         :param enable_epic_patient_lookup: Value for the setting (optional)
         :param enable_multipart_uploader: Value for the setting (optional)
         :param enable_namespace_ai_questions: Value for the setting (optional)
+        :param epic_prompt_for_anonymize: Value for the setting (optional)
         :param force_new_study_on_upload: Value for the setting (optional)
+        :param ira_namespace: Flag to make the namespace viable owner namespace for Queries (optional)
         :param link_defaults: Value for the setting (optional)
         :param must_approve_duplicate_study_uid: Value for the setting (optional)
         :param no_dup_share: Flag to stop duplicate studies (same study_uid and image count) from getting shared into the namespace (optional)
@@ -145,6 +154,8 @@ class Namespace:
         :param study_field_flags: A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)
         :param study_size_soft_threshold_per_user: A threshold for studies size per user. An email (by study_quota_exceeded template) will be sent when this limit is exceeded by a user. A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)
         :param try_update_original_study: Value for the setting (optional)
+        :param try_update_original_study_from_namespaces: Value for the setting (optional)
+        :param try_update_original_study_to_namespaces: Value for the setting (optional)
         :param ui_json: JSON for UI setting (optional) possible options:
 
 pixel_de_id_by_default (boolean) Pixel de-id tool is set by default when uploading study to this namespace
@@ -158,12 +169,15 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
            'cloud_storage_config': cloud_storage_config,
            'disable_duplicate_study_upload': disable_duplicate_study_upload,
            'disable_mobile_dicom_wrapping': disable_mobile_dicom_wrapping,
+           'download_anonymize': download_anonymize,
            'enable_dicom_deidentification': enable_dicom_deidentification,
            'enable_dicom_wrapping': enable_dicom_wrapping,
            'enable_epic_patient_lookup': enable_epic_patient_lookup,
            'enable_multipart_uploader': enable_multipart_uploader,
            'enable_namespace_ai_questions': enable_namespace_ai_questions,
+           'epic_prompt_for_anonymize': epic_prompt_for_anonymize,
            'force_new_study_on_upload': force_new_study_on_upload,
+           'ira_namespace': ira_namespace,
            'link_defaults': link_defaults,
            'must_approve_duplicate_study_uid': must_approve_duplicate_study_uid,
            'no_dup_share': no_dup_share,
@@ -176,6 +190,8 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
            'study_field_flags': study_field_flags,
            'study_size_soft_threshold_per_user': study_size_soft_threshold_per_user,
            'try_update_original_study': try_update_original_study,
+           'try_update_original_study_from_namespaces': try_update_original_study_from_namespaces,
+           'try_update_original_study_to_namespaces': try_update_original_study_to_namespaces,
            'ui_json': ui_json,
            'upload_settings': upload_settings,
            'uuid': uuid,
@@ -299,7 +315,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
         """Share price.
 
         :param uuid: The uuid of the namespace
-        :param customfield_param: Custom field(s) defined for the case (or study) account objects with values entered in the second opinion wizard (or in the image share screen) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) defined for the case (or study) account objects with values entered in the second opinion wizard (or in the image share screen) (optional)
         """
         request_data = {
            'uuid': uuid,
@@ -397,7 +413,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
         """Validate customfields.
 
         :param share_code: The share code
-        :param customfield_param: Custom field(s)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s)
         """
         request_data = {
            'share_code': share_code,
@@ -434,6 +450,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
+        event_site_qualified=None,
         event_status_change=None,
         event_study_comment=None,
         event_thin_study_fail=None,
@@ -458,6 +475,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the namespace (optional)
         :param event_share: Notify the user on a share into the namespace (optional)
+        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)
         :param event_status_change: Notify the user when the status of a study is changed (optional)
         :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
         :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)
@@ -480,6 +498,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
+           'event_site_qualified': event_site_qualified,
            'event_status_change': event_status_change,
            'event_study_comment': event_study_comment,
            'event_thin_study_fail': event_thin_study_fail,
@@ -564,6 +583,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
         errors_mapping = {}
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
+        errors_mapping[('PENDING_RESTORE', None)] = PendingRestore('The study is getting retrieved from the archive. Try this call again after a delay')
         query_data = {
             'api': self._api,
             'url': '/namespace/engine/fqdn',
@@ -733,12 +753,15 @@ class AsyncNamespace:
         cloud_storage_config=None,
         disable_duplicate_study_upload=None,
         disable_mobile_dicom_wrapping=None,
+        download_anonymize=None,
         enable_dicom_deidentification=None,
         enable_dicom_wrapping=None,
         enable_epic_patient_lookup=None,
         enable_multipart_uploader=None,
         enable_namespace_ai_questions=None,
+        epic_prompt_for_anonymize=None,
         force_new_study_on_upload=None,
+        ira_namespace=None,
         link_defaults=None,
         must_approve_duplicate_study_uid=None,
         no_dup_share=None,
@@ -751,6 +774,8 @@ class AsyncNamespace:
         study_field_flags=None,
         study_size_soft_threshold_per_user=None,
         try_update_original_study=None,
+        try_update_original_study_from_namespaces=None,
+        try_update_original_study_to_namespaces=None,
         ui_json=None,
         upload_settings=None,
     ):
@@ -764,12 +789,15 @@ class AsyncNamespace:
         :param cloud_storage_config: Value for the setting (optional)
         :param disable_duplicate_study_upload: Value for the setting (optional)
         :param disable_mobile_dicom_wrapping: Value for the setting (optional)
+        :param download_anonymize: Anonymization rules to apply on study download. The setting format should follow the anonymize_tags parameter format of the Storage /study/{namespace}/{studyUid}/download call (optional)
         :param enable_dicom_deidentification: Value for the setting (optional)
         :param enable_dicom_wrapping: Value for the setting (optional)
         :param enable_epic_patient_lookup: Value for the setting (optional)
         :param enable_multipart_uploader: Value for the setting (optional)
         :param enable_namespace_ai_questions: Value for the setting (optional)
+        :param epic_prompt_for_anonymize: Value for the setting (optional)
         :param force_new_study_on_upload: Value for the setting (optional)
+        :param ira_namespace: Flag to make the namespace viable owner namespace for Queries (optional)
         :param link_defaults: Value for the setting (optional)
         :param must_approve_duplicate_study_uid: Value for the setting (optional)
         :param no_dup_share: Flag to stop duplicate studies (same study_uid and image count) from getting shared into the namespace (optional)
@@ -782,6 +810,8 @@ class AsyncNamespace:
         :param study_field_flags: A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)
         :param study_size_soft_threshold_per_user: A threshold for studies size per user. An email (by study_quota_exceeded template) will be sent when this limit is exceeded by a user. A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)
         :param try_update_original_study: Value for the setting (optional)
+        :param try_update_original_study_from_namespaces: Value for the setting (optional)
+        :param try_update_original_study_to_namespaces: Value for the setting (optional)
         :param ui_json: JSON for UI setting (optional) possible options:
 
 pixel_de_id_by_default (boolean) Pixel de-id tool is set by default when uploading study to this namespace
@@ -795,12 +825,15 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
            'cloud_storage_config': cloud_storage_config,
            'disable_duplicate_study_upload': disable_duplicate_study_upload,
            'disable_mobile_dicom_wrapping': disable_mobile_dicom_wrapping,
+           'download_anonymize': download_anonymize,
            'enable_dicom_deidentification': enable_dicom_deidentification,
            'enable_dicom_wrapping': enable_dicom_wrapping,
            'enable_epic_patient_lookup': enable_epic_patient_lookup,
            'enable_multipart_uploader': enable_multipart_uploader,
            'enable_namespace_ai_questions': enable_namespace_ai_questions,
+           'epic_prompt_for_anonymize': epic_prompt_for_anonymize,
            'force_new_study_on_upload': force_new_study_on_upload,
+           'ira_namespace': ira_namespace,
            'link_defaults': link_defaults,
            'must_approve_duplicate_study_uid': must_approve_duplicate_study_uid,
            'no_dup_share': no_dup_share,
@@ -813,6 +846,8 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
            'study_field_flags': study_field_flags,
            'study_size_soft_threshold_per_user': study_size_soft_threshold_per_user,
            'try_update_original_study': try_update_original_study,
+           'try_update_original_study_from_namespaces': try_update_original_study_from_namespaces,
+           'try_update_original_study_to_namespaces': try_update_original_study_to_namespaces,
            'ui_json': ui_json,
            'upload_settings': upload_settings,
            'uuid': uuid,
@@ -936,7 +971,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
         """Share price.
 
         :param uuid: The uuid of the namespace
-        :param customfield_param: Custom field(s) defined for the case (or study) account objects with values entered in the second opinion wizard (or in the image share screen) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) defined for the case (or study) account objects with values entered in the second opinion wizard (or in the image share screen) (optional)
         """
         request_data = {
            'uuid': uuid,
@@ -1034,7 +1069,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
         """Validate customfields.
 
         :param share_code: The share code
-        :param customfield_param: Custom field(s)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s)
         """
         request_data = {
            'share_code': share_code,
@@ -1071,6 +1106,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
+        event_site_qualified=None,
         event_status_change=None,
         event_study_comment=None,
         event_thin_study_fail=None,
@@ -1095,6 +1131,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the namespace (optional)
         :param event_share: Notify the user on a share into the namespace (optional)
+        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)
         :param event_status_change: Notify the user when the status of a study is changed (optional)
         :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
         :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)
@@ -1117,6 +1154,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
+           'event_site_qualified': event_site_qualified,
            'event_status_change': event_status_change,
            'event_study_comment': event_study_comment,
            'event_thin_study_fail': event_thin_study_fail,
@@ -1201,6 +1239,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
         errors_mapping = {}
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The namespace was not found')
+        errors_mapping[('PENDING_RESTORE', None)] = PendingRestore('The study is getting retrieved from the archive. Try this call again after a delay')
         query_data = {
             'api': self._api,
             'url': '/namespace/engine/fqdn',

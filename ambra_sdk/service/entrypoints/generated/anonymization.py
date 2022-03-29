@@ -30,6 +30,7 @@ class Anonymization:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -62,6 +63,7 @@ class Anonymization:
         rules,
     ):
         """Add.
+
         :param account_id: uuid of the account to add them to
         :param name: Name of the anonymization profile
         :param rules: A JSON hash of anonymization rules to apply to retrieved studies
@@ -93,6 +95,7 @@ class Anonymization:
         rules=None,
     ):
         """Set.
+
         :param uuid: The anonymization profile uuid
         :param name: Name of the anonymization profile (optional)
         :param rules: A JSON hash of anonymization rules to apply to retrieved studies (optional)
@@ -123,6 +126,7 @@ class Anonymization:
         uuid,
     ):
         """Get.
+
         :param uuid: The anonymization profile uuid
         """
         request_data = {
@@ -147,6 +151,7 @@ class Anonymization:
         uuid,
     ):
         """Delete.
+
         :param uuid: The anonymization profile uuid
         """
         request_data = {
@@ -181,6 +186,7 @@ class AsyncAnonymization:
         account_id,
     ):
         """List.
+
         :param account_id: uuid of the account
         """
         request_data = {
@@ -213,6 +219,7 @@ class AsyncAnonymization:
         rules,
     ):
         """Add.
+
         :param account_id: uuid of the account to add them to
         :param name: Name of the anonymization profile
         :param rules: A JSON hash of anonymization rules to apply to retrieved studies
@@ -244,6 +251,7 @@ class AsyncAnonymization:
         rules=None,
     ):
         """Set.
+
         :param uuid: The anonymization profile uuid
         :param name: Name of the anonymization profile (optional)
         :param rules: A JSON hash of anonymization rules to apply to retrieved studies (optional)
@@ -274,6 +282,7 @@ class AsyncAnonymization:
         uuid,
     ):
         """Get.
+
         :param uuid: The anonymization profile uuid
         """
         request_data = {
@@ -298,6 +307,7 @@ class AsyncAnonymization:
         uuid,
     ):
         """Delete.
+
         :param uuid: The anonymization profile uuid
         """
         request_data = {

@@ -37,7 +37,7 @@ class Analytics:
         :param period: The time period (day|week|month|year)
         :param time_zone: The report's time zone. Time zone selection order: current user's time zone, time_zone parameter, UTC by default.
         :param account_id: account_id
-        :param customfield_param: Filter analytics by a subset of study customfields (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Filter analytics by a subset of study customfields (optional)
         :param end_date: The end date, default is today if not passed (optional)
         :param modality: Filter analytics by modality (optional)
         :param namespace_id: namespace_id
@@ -236,7 +236,7 @@ class AsyncAnalytics:
         :param period: The time period (day|week|month|year)
         :param time_zone: The report's time zone. Time zone selection order: current user's time zone, time_zone parameter, UTC by default.
         :param account_id: account_id
-        :param customfield_param: Filter analytics by a subset of study customfields (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Filter analytics by a subset of study customfields (optional)
         :param end_date: The end date, default is today if not passed (optional)
         :param modality: Filter analytics by modality (optional)
         :param namespace_id: namespace_id

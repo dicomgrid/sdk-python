@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [3.22.1.0-1] - 2022-04-12
+### Added
+- Service public api support: LBL0022 v53.0 2021-04-05
+- Storage public api support: LBL0038 v21.0 2022-04-05
+- Files larger than 20 MB are now uploaded using multipart upload
+- On regular upload to storage, the study_uid included as a query parameter
+
 ## [3.21.6.0-1] - 2021-08-11
 ### Added
 - Cast request args to valid parameters

@@ -51,7 +51,7 @@ class Audit:
         errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found')
-        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to access this object')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to audit this object')
         query_data = {
             'api': self._api,
             'url': '/audit/object',
@@ -256,7 +256,7 @@ class AsyncAudit:
         errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found')
-        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to access this object')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to audit this object')
         query_data = {
             'api': self._api,
             'url': '/audit/object',

@@ -53,7 +53,7 @@ class Study:  # NOQA:WPS214
         dicom_paths: Iterator[Path],
         namespace_id: str,
     ) -> Tuple[str, List[UploadedImageParams]]:
-        """Upload study to namespace from dicoms iteartor.
+        """Upload study to namespace from dicoms iterator.
 
         :param dicom_paths: iterator of dicom paths
         :param namespace_id: uploading to namespace
@@ -70,7 +70,7 @@ class Study:  # NOQA:WPS214
         # In pydicom we can pass file path object
         # But in AI we use old version of pydicom.
         # For this version we can pass only fp or str.
-        ds = pydicom.dcmread(fp=str(first_dicom_path))
+        ds = pydicom.dcmread(fp=str(first_dicom_path), stop_before_pixels=True)
         patient_name = ds.PatientName
         study_uid = ds.StudyInstanceUID
         study_time = ds.StudyTime

@@ -80,7 +80,7 @@ class Role:
         :param for_group: A flag that the role can be used in a group, default is on (optional)
         :param for_location: A flag that the role can be used in a location, default is on (optional)
         :param permissions: A hash of the role permissions (optional)
-        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
         :param settings: A hash of the role settings (optional)
         """
         request_data = {
@@ -133,9 +133,9 @@ class Role:
         :param for_group: A flag that the role can be used in a group (optional)
         :param for_location: A flag that the role can be used in a location (optional)
         :param name: Name of the role (optional)
-        :param permission_param: Set an individual permission. This is an alternative to the permissions hash for easier use in the API tester (optional)
+        :param permission_param: Expected values are PERMISSION_NAME. Set an individual permission. This is an alternative to the permissions hash for easier use in the API tester (optional)
         :param permissions: A hash of the role permissions (optional)
-        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
         :param settings: A hash of the role settings (optional)
         """
         request_data = {
@@ -330,7 +330,7 @@ class AsyncRole:
         :param for_group: A flag that the role can be used in a group, default is on (optional)
         :param for_location: A flag that the role can be used in a location, default is on (optional)
         :param permissions: A hash of the role permissions (optional)
-        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
         :param settings: A hash of the role settings (optional)
         """
         request_data = {
@@ -383,9 +383,9 @@ class AsyncRole:
         :param for_group: A flag that the role can be used in a group (optional)
         :param for_location: A flag that the role can be used in a location (optional)
         :param name: Name of the role (optional)
-        :param permission_param: Set an individual permission. This is an alternative to the permissions hash for easier use in the API tester (optional)
+        :param permission_param: Expected values are PERMISSION_NAME. Set an individual permission. This is an alternative to the permissions hash for easier use in the API tester (optional)
         :param permissions: A hash of the role permissions (optional)
-        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
         :param settings: A hash of the role settings (optional)
         """
         request_data = {

@@ -1075,3 +1075,46 @@ class TestStorageStudy:
         )
         assert create_rt.namespace
         assert create_rt.study_uid
+
+    def test_dicomweb(self, api, readonly_study):
+        """Test dicomweb methods."""
+        engine_fqdn = readonly_study.engine_fqdn
+        storage_namespace = readonly_study.storage_namespace
+        study_uid = readonly_study.study_uid
+
+        schema = api.Storage.Study.schema(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            study_uid=study_uid,
+        )
+        assert schema
+
+        series_uid = schema['series'][0]['series_uid']
+        image_uid = schema['series'][0]['images'][0]['id']
+
+        image_dicomweb = api.Storage.Study.image_dicomweb(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            study_uid=study_uid,
+            series_uid=series_uid,
+            image_uid=image_uid,
+        )
+        assert image_dicomweb
+        assert image_dicomweb['00080018']['Value'][0] == image_uid
+
+        series_dicomweb = api.Storage.Study.series_dicomweb(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            study_uid=study_uid,
+            series_uid=series_uid,
+        )
+        assert series_dicomweb
+        assert series_dicomweb[0]['0020000E']['Value'][0] == series_uid
+
+        study_dicomweb = api.Storage.Study.study_dicomweb(
+            engine_fqdn=engine_fqdn,
+            namespace=storage_namespace,
+            study_uid=study_uid,
+        )
+        assert study_dicomweb
+        assert study_dicomweb[0]['0020000D']['Value'][0] == study_uid

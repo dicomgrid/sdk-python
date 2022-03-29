@@ -63,7 +63,10 @@ class Site:
         self,
         account_id,
         name,
+        address1=None,
+        address2=None,
         city=None,
+        country=None,
         site_id=None,
         state=None,
         zip=None,
@@ -72,14 +75,20 @@ class Site:
 
         :param account_id: uuid of the account to add them to
         :param name: The sites name
+        :param address1: Address line 1 of the site (optional)
+        :param address2: Address line 2 of the site (optional)
         :param city: The city the site is located in (optional)
+        :param country: The country of the site (optional)
         :param site_id: The site to attach them to as a satellite site (optional)
         :param state: The state code of the site (optional)
         :param zip: The zip code of the site (optional)
         """
         request_data = {
            'account_id': account_id,
+           'address1': address1,
+           'address2': address2,
            'city': city,
+           'country': country,
            'name': name,
            'site_id': site_id,
            'state': state,
@@ -104,7 +113,10 @@ class Site:
     def set(
         self,
         uuid,
+        address1=None,
+        address2=None,
         city=None,
+        country=None,
         inactive=None,
         name=None,
         site_id=None,
@@ -114,7 +126,10 @@ class Site:
         """Set.
 
         :param uuid: The site uuid
+        :param address1: Address line 1 of the site (optional)
+        :param address2: Address line 2 of the site (optional)
         :param city: The city the site is located in (optional)
+        :param country: The country of the site (optional)
         :param inactive: Flag if the site is actively used. Might be used to filter out inactive sites (optional)
         :param name: The sites name (optional)
         :param site_id: The site to attach them to as a satellite site (optional)
@@ -122,7 +137,10 @@ class Site:
         :param zip: The zip code of the site (optional)
         """
         request_data = {
+           'address1': address1,
+           'address2': address2,
            'city': city,
+           'country': country,
            'inactive': inactive,
            'name': name,
            'site_id': site_id,
@@ -372,7 +390,10 @@ class AsyncSite:
         self,
         account_id,
         name,
+        address1=None,
+        address2=None,
         city=None,
+        country=None,
         site_id=None,
         state=None,
         zip=None,
@@ -381,14 +402,20 @@ class AsyncSite:
 
         :param account_id: uuid of the account to add them to
         :param name: The sites name
+        :param address1: Address line 1 of the site (optional)
+        :param address2: Address line 2 of the site (optional)
         :param city: The city the site is located in (optional)
+        :param country: The country of the site (optional)
         :param site_id: The site to attach them to as a satellite site (optional)
         :param state: The state code of the site (optional)
         :param zip: The zip code of the site (optional)
         """
         request_data = {
            'account_id': account_id,
+           'address1': address1,
+           'address2': address2,
            'city': city,
+           'country': country,
            'name': name,
            'site_id': site_id,
            'state': state,
@@ -413,7 +440,10 @@ class AsyncSite:
     def set(
         self,
         uuid,
+        address1=None,
+        address2=None,
         city=None,
+        country=None,
         inactive=None,
         name=None,
         site_id=None,
@@ -423,7 +453,10 @@ class AsyncSite:
         """Set.
 
         :param uuid: The site uuid
+        :param address1: Address line 1 of the site (optional)
+        :param address2: Address line 2 of the site (optional)
         :param city: The city the site is located in (optional)
+        :param country: The country of the site (optional)
         :param inactive: Flag if the site is actively used. Might be used to filter out inactive sites (optional)
         :param name: The sites name (optional)
         :param site_id: The site to attach them to as a satellite site (optional)
@@ -431,7 +464,10 @@ class AsyncSite:
         :param zip: The zip code of the site (optional)
         """
         request_data = {
+           'address1': address1,
+           'address2': address2,
            'city': city,
+           'country': country,
            'inactive': inactive,
            'name': name,
            'site_id': site_id,

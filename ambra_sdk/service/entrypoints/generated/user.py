@@ -61,7 +61,7 @@ class User:
         :param last: Last name
         :param password: Password
         :param captcha_response: Response from captcha (optional)
-        :param customfield_param: Custom field(s) defined in the vanity_registration_customfields account setting (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) defined in the vanity_registration_customfields account setting (optional)
         :param share_code: Share code they are joining from (optional)
         """
         request_data = {
@@ -259,6 +259,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
 	
         errors_mapping = {}
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/user/delete',
@@ -552,6 +553,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
+        event_site_qualified=None,
         event_status_change=None,
         event_study_comment=None,
         event_thin_study_fail=None,
@@ -576,6 +578,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the namespace (optional)
         :param event_share: Notify the user on a share into the namespace (optional)
+        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)
         :param event_status_change: Notify the user when the status of a study is changed (optional)
         :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
         :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)
@@ -598,6 +601,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
+           'event_site_qualified': event_site_qualified,
            'event_status_change': event_status_change,
            'event_study_comment': event_study_comment,
            'event_thin_study_fail': event_thin_study_fail,
@@ -805,7 +809,7 @@ class AsyncUser:
         :param last: Last name
         :param password: Password
         :param captcha_response: Response from captcha (optional)
-        :param customfield_param: Custom field(s) defined in the vanity_registration_customfields account setting (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) defined in the vanity_registration_customfields account setting (optional)
         :param share_code: Share code they are joining from (optional)
         """
         request_data = {
@@ -1003,6 +1007,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
 	
         errors_mapping = {}
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
             'api': self._api,
             'url': '/user/delete',
@@ -1296,6 +1301,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
+        event_site_qualified=None,
         event_status_change=None,
         event_study_comment=None,
         event_thin_study_fail=None,
@@ -1320,6 +1326,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the namespace (optional)
         :param event_share: Notify the user on a share into the namespace (optional)
+        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)
         :param event_status_change: Notify the user when the status of a study is changed (optional)
         :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
         :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)
@@ -1342,6 +1349,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
+           'event_site_qualified': event_site_qualified,
            'event_status_change': event_status_change,
            'event_study_comment': event_study_comment,
            'event_thin_study_fail': event_thin_study_fail,

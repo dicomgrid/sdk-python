@@ -1,4 +1,6 @@
 import inspect
+import tempfile
+import zipfile
 from pathlib import Path
 
 import pytest
@@ -253,3 +255,32 @@ class TestAsyncAddonStudy:
             new_study.study_uid,
         )
         async_auto_remove(new_study)
+
+    async def test_upload_dir_with_big_file(
+        self,
+        async_api,
+        async_account,
+        async_auto_remove,
+    ):
+        """Test study upload using multipart algorithm."""
+        study_zip = Path(__file__) \
+            .parents[1] \
+            .joinpath('dicoms', 'big_one.zip')
+
+        with tempfile.TemporaryDirectory() as tmp_dir_name:
+            with zipfile.ZipFile(study_zip, 'r') as zip_ref:
+                zip_ref.extractall(tmp_dir_name)
+            namespace_id = async_account.account.namespace_id
+            _, images_params = await async_api.Addon.Study.upload_dir(
+                study_dir=Path(tmp_dir_name),
+                namespace_id=namespace_id,
+            )
+            image_params = images_params[0]
+            new_study = await async_api.Addon.Study.wait(
+                study_uid=image_params.study_uid,
+                namespace_id=namespace_id,
+                timeout=settings.API.upload_study_timeout,
+                ws_timeout=settings.API.upload_study_timeout,
+            )
+            assert new_study
+            async_auto_remove(new_study)

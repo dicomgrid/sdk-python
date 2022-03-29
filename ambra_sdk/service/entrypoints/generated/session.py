@@ -25,6 +25,7 @@ from ambra_sdk.exceptions.service import OnlyOne
 from ambra_sdk.exceptions.service import OtherOauth
 from ambra_sdk.exceptions.service import PasswordReset
 from ambra_sdk.exceptions.service import PinExpired
+from ambra_sdk.exceptions.service import PublicKeyExpired
 from ambra_sdk.exceptions.service import SsoOnly
 from ambra_sdk.exceptions.service import ValidationFailed
 from ambra_sdk.exceptions.service import WhitelistLockout
@@ -87,6 +88,7 @@ class Session:
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('ONLY_ONE', None)] = OnlyOne('You can pass either the password or use_pkey flag, not both')
         errors_mapping[('PASSWORD_RESET', None)] = PasswordReset('The password needs to be changed')
+        errors_mapping[('PUBLIC_KEY_EXPIRED', None)] = PublicKeyExpired('The public key has expired and needs to be changed')
         errors_mapping[('SSO_ONLY', None)] = SsoOnly('The user can only login via SSO')
         errors_mapping[('VALIDATION_FAILED', None)] = ValidationFailed('The session validation failed')
         errors_mapping[('WHITELIST_LOCKOUT', None)] = WhitelistLockout('Login blocked by the account whitelist')
@@ -344,6 +346,7 @@ class Session:
         errors_mapping[('INVALID_SID', None)] = InvalidSid('Invalid sid')
         errors_mapping[('INVALID_SIGNATURE', None)] = InvalidSignature('Invalid signature')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('PUBLIC_KEY_EXPIRED', None)] = PublicKeyExpired('The public key has expired and needs to be changed')
         query_data = {
             'api': self._api,
             'url': '/session/sign',
@@ -432,6 +435,7 @@ class AsyncSession:
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('ONLY_ONE', None)] = OnlyOne('You can pass either the password or use_pkey flag, not both')
         errors_mapping[('PASSWORD_RESET', None)] = PasswordReset('The password needs to be changed')
+        errors_mapping[('PUBLIC_KEY_EXPIRED', None)] = PublicKeyExpired('The public key has expired and needs to be changed')
         errors_mapping[('SSO_ONLY', None)] = SsoOnly('The user can only login via SSO')
         errors_mapping[('VALIDATION_FAILED', None)] = ValidationFailed('The session validation failed')
         errors_mapping[('WHITELIST_LOCKOUT', None)] = WhitelistLockout('Login blocked by the account whitelist')
@@ -689,6 +693,7 @@ class AsyncSession:
         errors_mapping[('INVALID_SID', None)] = InvalidSid('Invalid sid')
         errors_mapping[('INVALID_SIGNATURE', None)] = InvalidSignature('Invalid signature')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('PUBLIC_KEY_EXPIRED', None)] = PublicKeyExpired('The public key has expired and needs to be changed')
         query_data = {
             'api': self._api,
             'url': '/session/sign',

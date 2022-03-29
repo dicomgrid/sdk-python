@@ -68,7 +68,7 @@ class Scanner:
 
         :param name: Name of the scanner
         :param site_id: Id of the site to add them to
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param manufacturer: The manufacturer of the scanner (optional)
         :param modality: Modality (optional)
         :param model: The scanner model (optional)
@@ -112,7 +112,7 @@ class Scanner:
         """Set.
 
         :param uuid: The scanner uuid
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param manufacturer: The manufacturer of the scanner (optional)
         :param modality: Modality (optional)
         :param model: The scanner model (optional)
@@ -248,7 +248,7 @@ class AsyncScanner:
 
         :param name: Name of the scanner
         :param site_id: Id of the site to add them to
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param manufacturer: The manufacturer of the scanner (optional)
         :param modality: Modality (optional)
         :param model: The scanner model (optional)
@@ -292,7 +292,7 @@ class AsyncScanner:
         """Set.
 
         :param uuid: The scanner uuid
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param manufacturer: The manufacturer of the scanner (optional)
         :param modality: Modality (optional)
         :param model: The scanner model (optional)

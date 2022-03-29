@@ -13,10 +13,13 @@ from ambra_sdk.exceptions.service import InvalidEmail
 from ambra_sdk.exceptions.service import InvalidField
 from ambra_sdk.exceptions.service import InvalidPhone
 from ambra_sdk.exceptions.service import InvalidPin
+from ambra_sdk.exceptions.service import InvalidSetting
+from ambra_sdk.exceptions.service import InvalidSettingValue
 from ambra_sdk.exceptions.service import InvalidSortField
 from ambra_sdk.exceptions.service import InvalidSortOrder
 from ambra_sdk.exceptions.service import Lockout
 from ambra_sdk.exceptions.service import MissingFields
+from ambra_sdk.exceptions.service import NoPatientOverride
 from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import NotPermitted
 from ambra_sdk.service.query import QueryO
@@ -57,7 +60,7 @@ class Patient:
         :param alt_email: Alternate email address (optional)
         :param alt_mobile_phone: Alternate mobile phone number (optional)
         :param birth_date: Birth date (optional)
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param email: Email address (optional)
         :param event_new_report: Notify the patient if a report is attached on the patient portal (optional)
         :param event_share: Notify the patient if a new study is available on the patient portal (optional)
@@ -148,6 +151,8 @@ class Patient:
         last=None,
         mobile_phone=None,
         name=None,
+        setting_param=None,
+        settings=None,
     ):
         """Set.
 
@@ -157,7 +162,7 @@ class Patient:
         :param uuid: The patient uuid
         :param alt_email: Alternate email address (optional)
         :param alt_mobile_phone: Alternate mobile phone number (optional)
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param email: Email address (optional)
         :param event_new_report: Notify the patient if a report is attached on the patient portal (optional)
         :param event_share: Notify the patient if a new study is available on the patient portal (optional)
@@ -165,6 +170,8 @@ class Patient:
         :param last: last
         :param mobile_phone: Mobile phone number (optional)
         :param name: name
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param settings: A hash of the patient settings, see Notes. (optional)
         """
         request_data = {
            'alt_email': alt_email,
@@ -178,12 +185,16 @@ class Patient:
            'mobile_phone': mobile_phone,
            'mrn': mrn,
            'name': name,
+           'settings': settings,
            'sex': sex,
            'uuid': uuid,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
             request_data.update(customfield_param_dict)
+        if setting_param is not None:
+            setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
+            request_data.update(setting_param_dict)
 	
         errors_mapping = {}
         errors_mapping[('ALREADY_EXISTS', None)] = AlreadyExists('The MRN is in use by another patient')
@@ -191,8 +202,11 @@ class Patient:
         errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
         errors_mapping[('INVALID_EMAIL', None)] = InvalidEmail('The email is invalid')
         errors_mapping[('INVALID_PHONE', None)] = InvalidPhone('The phone number is invalid')
+        errors_mapping[('INVALID_SETTING', None)] = InvalidSetting('An invalid setting was passed. The error_subtype holds the name of the invalid setting')
+        errors_mapping[('INVALID_SETTING_VALUE', None)] = InvalidSettingValue('An invalid setting value was passed. The error_subtype holds the name of the setting with the invalid value')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The patient can not be found')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the patient')
+        errors_mapping[('NO_PATIENT_OVERRIDE', None)] = NoPatientOverride('The setting does not allow a patient override')
         query_data = {
             'api': self._api,
             'url': '/patient/set',
@@ -443,7 +457,7 @@ class AsyncPatient:
         :param alt_email: Alternate email address (optional)
         :param alt_mobile_phone: Alternate mobile phone number (optional)
         :param birth_date: Birth date (optional)
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param email: Email address (optional)
         :param event_new_report: Notify the patient if a report is attached on the patient portal (optional)
         :param event_share: Notify the patient if a new study is available on the patient portal (optional)
@@ -534,6 +548,8 @@ class AsyncPatient:
         last=None,
         mobile_phone=None,
         name=None,
+        setting_param=None,
+        settings=None,
     ):
         """Set.
 
@@ -543,7 +559,7 @@ class AsyncPatient:
         :param uuid: The patient uuid
         :param alt_email: Alternate email address (optional)
         :param alt_mobile_phone: Alternate mobile phone number (optional)
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param email: Email address (optional)
         :param event_new_report: Notify the patient if a report is attached on the patient portal (optional)
         :param event_share: Notify the patient if a new study is available on the patient portal (optional)
@@ -551,6 +567,8 @@ class AsyncPatient:
         :param last: last
         :param mobile_phone: Mobile phone number (optional)
         :param name: name
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param settings: A hash of the patient settings, see Notes. (optional)
         """
         request_data = {
            'alt_email': alt_email,
@@ -564,12 +582,16 @@ class AsyncPatient:
            'mobile_phone': mobile_phone,
            'mrn': mrn,
            'name': name,
+           'settings': settings,
            'sex': sex,
            'uuid': uuid,
         }
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
             request_data.update(customfield_param_dict)
+        if setting_param is not None:
+            setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
+            request_data.update(setting_param_dict)
 	
         errors_mapping = {}
         errors_mapping[('ALREADY_EXISTS', None)] = AlreadyExists('The MRN is in use by another patient')
@@ -577,8 +599,11 @@ class AsyncPatient:
         errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
         errors_mapping[('INVALID_EMAIL', None)] = InvalidEmail('The email is invalid')
         errors_mapping[('INVALID_PHONE', None)] = InvalidPhone('The phone number is invalid')
+        errors_mapping[('INVALID_SETTING', None)] = InvalidSetting('An invalid setting was passed. The error_subtype holds the name of the invalid setting')
+        errors_mapping[('INVALID_SETTING_VALUE', None)] = InvalidSettingValue('An invalid setting value was passed. The error_subtype holds the name of the setting with the invalid value')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The patient can not be found')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the patient')
+        errors_mapping[('NO_PATIENT_OVERRIDE', None)] = NoPatientOverride('The setting does not allow a patient override')
         query_data = {
             'api': self._api,
             'url': '/patient/set',

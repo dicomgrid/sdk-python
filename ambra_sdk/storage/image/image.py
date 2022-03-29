@@ -179,3 +179,101 @@ class Image(BaseImage):
         if only_prepare is True:
             return prepared_request
         return prepared_request.execute()
+
+    def multipart_initiate(
+        self,
+        engine_fqdn: str,
+        use_box: bool = True,
+        only_prepare: bool = False,
+    ) -> Union[Box, Response, PreparedRequest]:
+        """Initiate the multipart upload.
+
+        URL: /multipart/initiate?sid={sid}
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param use_box: Use box for response.
+        :param only_prepare: Get prepared request.
+
+        :returns: uuid of multipart upload
+        """
+        prepared_request = self._multipart_initiate(
+            engine_fqdn=engine_fqdn,
+        )
+        if only_prepare is True:
+            return prepared_request
+        response = prepared_request.execute()
+        if use_box is True:
+            return Box(response.json())
+        return response
+
+    def multipart_chunk_upload(
+        self,
+        engine_fqdn: str,
+        upload_uuid: str,
+        bytes_part: bytes,
+        chunk_number: int,
+        only_prepare: bool = False,
+    ) -> Union[Response, PreparedRequest]:
+        """Upload a part of image.
+
+        URL: multipart/{upload_uuid}
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param upload_uuid: UUID of the initiated multipart upload (Required).
+        :param bytes_part: part of image (Required).
+        :param chunk_number: sequence number, first part has number 0 (Required).
+        :param only_prepare: Get prepared request.
+
+        :returns: status code
+        """
+        prepared_request = self._multipart_chunk_upload(
+            engine_fqdn=engine_fqdn,
+            upload_uuid=upload_uuid,
+            bytes_part=bytes_part,
+            chunk_number=chunk_number,
+        )
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()
+
+    def multipart_complete(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        upload_uuid: str,
+        file_size: int,
+        endpoint: str = 'image',
+        tags='',
+        study_uid: Optional[str] = None,
+        render_wrapped_pdf='',
+        only_prepare: bool = False,
+    ) -> Union[Box, Response, PreparedRequest]:
+        """Finish the multipart upload process.
+
+        URL: multipart/{upload_uuid}/complete
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param upload_uuid: UUID of the initiated multipart upload (Required).
+        :param file_size: size of whole file (Required).
+        :param endpoint: the endpoint to which the reconstructed file needs to be submitted. Only the image and wrap endpoint are supported at the moment.
+        :param tags: the tags to be used to submit reconstructed file.
+        :param study_uid: study uid.
+        :param render_wrapped_pdf: if the file to be submitted should be treated as wrapped pdf.
+        :param only_prepare: Get prepared request.
+
+        :returns: status code
+        """
+        prepared_request = self._multipart_complete(
+            engine_fqdn=engine_fqdn,
+            namespace=namespace,
+            upload_uuid=upload_uuid,
+            file_size=file_size,
+            endpoint=endpoint,
+            tags=tags,
+            study_uid=study_uid,
+            render_wrapped_pdf=render_wrapped_pdf,
+        )
+        if only_prepare is True:
+            return prepared_request
+        return prepared_request.execute()

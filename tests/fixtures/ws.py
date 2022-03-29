@@ -33,7 +33,7 @@ def ws_channel(api, ws):
 
     :yields: func for create subscribed WSManager
 
-    Dont use ws_channel and account_ws in one test class.
+    Don't use ws_channel and account_ws in one test class.
     """
     channels = []
 
@@ -57,7 +57,7 @@ def account_ws(api, account, ws):
 
     :yields: WSManager subscribed on study channel
 
-    Dont use ws_channel and account_ws in one test class.
+    Don't use ws_channel and account_ws in one test class.
     """
     namespace_id = account.account.namespace_id
     channel_name = 'study.{namespace_id}'.format(namespace_id=namespace_id)

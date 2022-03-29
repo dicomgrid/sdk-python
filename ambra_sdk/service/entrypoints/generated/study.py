@@ -52,6 +52,7 @@ from ambra_sdk.exceptions.service import NothingToTake
 from ambra_sdk.exceptions.service import PdfFailed
 from ambra_sdk.exceptions.service import Pending
 from ambra_sdk.exceptions.service import PendingMustMatch
+from ambra_sdk.exceptions.service import PendingRestore
 from ambra_sdk.exceptions.service import Phantom
 from ambra_sdk.exceptions.service import RecentNamespaceSplit
 from ambra_sdk.exceptions.service import ReportError
@@ -135,7 +136,7 @@ class Study:
 
         :param accession_number: DICOM tag (0008,0050) (optional)
         :param attachment_count: Attachment count (optional)
-        :param customfield_param: Custom field(s), see notes in /study/add (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID|DICOM_TAG. Custom field(s), see notes in /study/add (optional)
         :param destination_ae_title: The destination aetitle (optional)
         :param image_count: Images in the study (optional)
         :param integration_key: Integration key for the study (optional)
@@ -231,6 +232,7 @@ class Study:
         errors_mapping[('NAMESPACE_NOT_FOUND', None)] = NamespaceNotFound('The namespace was not found')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The error_subtype holds the name of the key for the object that can not be found')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('PENDING_RESTORE', None)] = PendingRestore('The study is getting retrieved from the archive. Try this call again after a delay')
         query_data = {
             'api': self._api,
             'url': '/study/add',
@@ -291,7 +293,7 @@ class Study:
 
         :param accession_number: DICOM tag (0008,0050) (optional)
         :param attachment_count: Attachment count (optional)
-        :param customfield_param: Custom field(s), see notes in /study/add (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID|DICOM_TAG. Custom field(s), see notes in /study/add (optional)
         :param destination_ae_title: The destination aetitle (optional)
         :param find_order_uuid: UUID of the search record used to modify the study (optional)
         :param image_count: Images in the study (optional)
@@ -924,7 +926,7 @@ class Study:
         :param account_id: account_id
         :param charge_authorized: Flag that the sender authorized charging for this share (optional)
         :param charge_modality: Modality of the study the charge was authorized for (optional)
-        :param customfield_param: Custom field(s) to apply to the shared study (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) to apply to the shared study (optional)
         :param email: email
         :param group_id: group_id
         :param integration_key: Integration key to tag the share with (optional)
@@ -1135,7 +1137,7 @@ class Study:
     ):
         """Audit.
 
-        :param action: The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|IMAGE_DELETED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)
+        :param action: The audit action (STUDY_VIEW|STUDY_VIEW_REASON|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|IMAGE_DELETED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)
         :param detail: Additional information
         :param phi_namespace: The phi namespace of the study (optional)
         :param storage_namespace: The storage namespace of the study (optional if uuid is passed)
@@ -1327,6 +1329,32 @@ class Study:
         }
         return QueryO(**query_data)
     
+    def status_get(
+        self,
+        study_id,
+    ):
+        """Status get.
+
+        :param study_id: Study uuid
+          * Any other parameters that could be processed by study_status_tags_rules
+        """
+        request_data = {
+           'study_id': study_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the status for this study')
+        query_data = {
+            'api': self._api,
+            'url': '/study/status/get',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
     def status_set(
         self,
         new,
@@ -1439,6 +1467,7 @@ class Study:
     def duplicate(
         self,
         uuid,
+        exclude_phi=None,
         include_attachments=None,
         namespace_id=None,
         overwrite=None,
@@ -1447,12 +1476,14 @@ class Study:
         """Duplicate.
 
         :param uuid: The study id
+        :param exclude_phi: Flag to not duplicate PHI data (optional)
         :param include_attachments: Also duplicate attachments (optional)
         :param namespace_id: namespace_id
         :param overwrite: Flag if you want to overwrite an existing study in the destination namespace (optional)
         :param study_request_id: study_request_id
         """
         request_data = {
+           'exclude_phi': exclude_phi,
            'include_attachments': include_attachments,
            'namespace_id': namespace_id,
            'overwrite': overwrite,
@@ -1472,6 +1503,40 @@ class Study:
         query_data = {
             'api': self._api,
             'url': '/study/duplicate',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
+    def clone(
+        self,
+        uuid,
+        new_image_uids=None,
+        new_series_uids=None,
+    ):
+        """Clone.
+
+        :param uuid: The study id
+        :param new_image_uids: Flag if you want to generate new uids for the study images (optional)
+        :param new_series_uids: Flag if you want to generate new uids for the study series (optional)
+        """
+        request_data = {
+           'new_image_uids': new_image_uids,
+           'new_series_uids': new_series_uids,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('FAILED', None)] = Failed('The storage call failed to run')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_AVAILABLE', None)] = NotAvailable('The study is not available.')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to clone the study')
+        query_data = {
+            'api': self._api,
+            'url': '/study/clone',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,
@@ -1811,15 +1876,21 @@ class Study:
         self,
         redirect,
         uuid,
+        view_reason=None,
+        viewer_tag=None,
     ):
         """External viewer.
 
         :param redirect: A flag to return an HTTP redirect to the viewer URL rather than the JSON structure
         :param uuid: The study id
+        :param view_reason: The view reason to be tracked in the audit trail (optional)
+        :param viewer_tag: An external viewer's tag (optional)
         """
         request_data = {
            'redirect': redirect,
            'uuid': uuid,
+           'view_reason': view_reason,
+           'viewer_tag': viewer_tag,
         }
 	
         errors_mapping = {}
@@ -1969,6 +2040,7 @@ class Study:
         image_count=None,
         node_id=None,
         phi_namespace=None,
+        reload_load_dicom_tag=None,
         serial_no=None,
         storage_namespace=None,
         study_id=None,
@@ -1979,6 +2051,7 @@ class Study:
         :param image_count: Update the study image count and then sync (optional)
         :param node_id: node_id
         :param phi_namespace: phi_namespace
+        :param reload_load_dicom_tag: Flag to force a reload of all load_dicom_tag customfields (optional)
         :param serial_no: serial_no
         :param storage_namespace: storage_namespace
         :param study_id: study_id
@@ -1988,6 +2061,7 @@ class Study:
            'image_count': image_count,
            'node_id': node_id,
            'phi_namespace': phi_namespace,
+           'reload_load_dicom_tag': reload_load_dicom_tag,
            'serial_no': serial_no,
            'storage_namespace': storage_namespace,
            'study_id': study_id,
@@ -2223,7 +2297,7 @@ class AsyncStudy:
 
         :param accession_number: DICOM tag (0008,0050) (optional)
         :param attachment_count: Attachment count (optional)
-        :param customfield_param: Custom field(s), see notes in /study/add (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID|DICOM_TAG. Custom field(s), see notes in /study/add (optional)
         :param destination_ae_title: The destination aetitle (optional)
         :param image_count: Images in the study (optional)
         :param integration_key: Integration key for the study (optional)
@@ -2319,6 +2393,7 @@ class AsyncStudy:
         errors_mapping[('NAMESPACE_NOT_FOUND', None)] = NamespaceNotFound('The namespace was not found')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The error_subtype holds the name of the key for the object that can not be found')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
+        errors_mapping[('PENDING_RESTORE', None)] = PendingRestore('The study is getting retrieved from the archive. Try this call again after a delay')
         query_data = {
             'api': self._api,
             'url': '/study/add',
@@ -2379,7 +2454,7 @@ class AsyncStudy:
 
         :param accession_number: DICOM tag (0008,0050) (optional)
         :param attachment_count: Attachment count (optional)
-        :param customfield_param: Custom field(s), see notes in /study/add (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID|DICOM_TAG. Custom field(s), see notes in /study/add (optional)
         :param destination_ae_title: The destination aetitle (optional)
         :param find_order_uuid: UUID of the search record used to modify the study (optional)
         :param image_count: Images in the study (optional)
@@ -3012,7 +3087,7 @@ class AsyncStudy:
         :param account_id: account_id
         :param charge_authorized: Flag that the sender authorized charging for this share (optional)
         :param charge_modality: Modality of the study the charge was authorized for (optional)
-        :param customfield_param: Custom field(s) to apply to the shared study (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) to apply to the shared study (optional)
         :param email: email
         :param group_id: group_id
         :param integration_key: Integration key to tag the share with (optional)
@@ -3223,7 +3298,7 @@ class AsyncStudy:
     ):
         """Audit.
 
-        :param action: The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|IMAGE_DELETED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)
+        :param action: The audit action (STUDY_VIEW|STUDY_VIEW_REASON|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|IMAGE_DELETED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)
         :param detail: Additional information
         :param phi_namespace: The phi namespace of the study (optional)
         :param storage_namespace: The storage namespace of the study (optional if uuid is passed)
@@ -3415,6 +3490,32 @@ class AsyncStudy:
         }
         return AsyncQueryO(**query_data)
     
+    def status_get(
+        self,
+        study_id,
+    ):
+        """Status get.
+
+        :param study_id: Study uuid
+          * Any other parameters that could be processed by study_status_tags_rules
+        """
+        request_data = {
+           'study_id': study_id,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the status for this study')
+        query_data = {
+            'api': self._api,
+            'url': '/study/status/get',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
     def status_set(
         self,
         new,
@@ -3527,6 +3628,7 @@ class AsyncStudy:
     def duplicate(
         self,
         uuid,
+        exclude_phi=None,
         include_attachments=None,
         namespace_id=None,
         overwrite=None,
@@ -3535,12 +3637,14 @@ class AsyncStudy:
         """Duplicate.
 
         :param uuid: The study id
+        :param exclude_phi: Flag to not duplicate PHI data (optional)
         :param include_attachments: Also duplicate attachments (optional)
         :param namespace_id: namespace_id
         :param overwrite: Flag if you want to overwrite an existing study in the destination namespace (optional)
         :param study_request_id: study_request_id
         """
         request_data = {
+           'exclude_phi': exclude_phi,
            'include_attachments': include_attachments,
            'namespace_id': namespace_id,
            'overwrite': overwrite,
@@ -3560,6 +3664,40 @@ class AsyncStudy:
         query_data = {
             'api': self._api,
             'url': '/study/duplicate',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def clone(
+        self,
+        uuid,
+        new_image_uids=None,
+        new_series_uids=None,
+    ):
+        """Clone.
+
+        :param uuid: The study id
+        :param new_image_uids: Flag if you want to generate new uids for the study images (optional)
+        :param new_series_uids: Flag if you want to generate new uids for the study series (optional)
+        """
+        request_data = {
+           'new_image_uids': new_image_uids,
+           'new_series_uids': new_series_uids,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('FAILED', None)] = Failed('The storage call failed to run')
+        errors_mapping[('INVALID_FLAG', None)] = InvalidFlag('An invalid flag was passed. The error_subtype holds the name of the invalid flag')
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_AVAILABLE', None)] = NotAvailable('The study is not available.')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to clone the study')
+        query_data = {
+            'api': self._api,
+            'url': '/study/clone',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,
@@ -3899,15 +4037,21 @@ class AsyncStudy:
         self,
         redirect,
         uuid,
+        view_reason=None,
+        viewer_tag=None,
     ):
         """External viewer.
 
         :param redirect: A flag to return an HTTP redirect to the viewer URL rather than the JSON structure
         :param uuid: The study id
+        :param view_reason: The view reason to be tracked in the audit trail (optional)
+        :param viewer_tag: An external viewer's tag (optional)
         """
         request_data = {
            'redirect': redirect,
            'uuid': uuid,
+           'view_reason': view_reason,
+           'viewer_tag': viewer_tag,
         }
 	
         errors_mapping = {}
@@ -4057,6 +4201,7 @@ class AsyncStudy:
         image_count=None,
         node_id=None,
         phi_namespace=None,
+        reload_load_dicom_tag=None,
         serial_no=None,
         storage_namespace=None,
         study_id=None,
@@ -4067,6 +4212,7 @@ class AsyncStudy:
         :param image_count: Update the study image count and then sync (optional)
         :param node_id: node_id
         :param phi_namespace: phi_namespace
+        :param reload_load_dicom_tag: Flag to force a reload of all load_dicom_tag customfields (optional)
         :param serial_no: serial_no
         :param storage_namespace: storage_namespace
         :param study_id: study_id
@@ -4076,6 +4222,7 @@ class AsyncStudy:
            'image_count': image_count,
            'node_id': node_id,
            'phi_namespace': phi_namespace,
+           'reload_load_dicom_tag': reload_load_dicom_tag,
            'serial_no': serial_no,
            'storage_namespace': storage_namespace,
            'study_id': study_id,

@@ -42,7 +42,7 @@ class Appointment:
         :param end_time: End date and time of the appointment
         :param patient_id: Id of the patient to create the appointment for
         :param start_time: Start date and time of the appointment
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param description: Description of the appointment (optional)
         :param user_id: Id of the user to create the appointment for (optional defaults to current user)
         """
@@ -225,7 +225,7 @@ class AsyncAppointment:
         :param end_time: End date and time of the appointment
         :param patient_id: Id of the patient to create the appointment for
         :param start_time: Start date and time of the appointment
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param description: Description of the appointment (optional)
         :param user_id: Id of the user to create the appointment for (optional defaults to current user)
         """

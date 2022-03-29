@@ -72,7 +72,7 @@ class Case:
         :param case_status: The case status (optional)
         :param closed: Flag if the case is closed (optional)
         :param completed: Flag if the case is completed (optional)
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param name: case name (optional)
         :param submitted: Flag if the case is submitted (optional)
         """
@@ -274,7 +274,7 @@ class AsyncCase:
         :param case_status: The case status (optional)
         :param closed: Flag if the case is closed (optional)
         :param completed: Flag if the case is completed (optional)
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param name: case name (optional)
         :param submitted: Flag if the case is submitted (optional)
         """

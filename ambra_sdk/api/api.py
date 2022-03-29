@@ -82,7 +82,7 @@ class Api(BaseApi):
     ...     client_name='Some name (ex: Hospital-ABC)',
     ... )
 
-    Using some special parameters (In most cases you dont need this!):
+    Using some special parameters (In most cases you don't need this!):
 
     >>> from ambra_sdk.api import Api
     >>> from ambra_sdk.api.base_api import RateLimit, RateLimits
@@ -308,7 +308,7 @@ class Api(BaseApi):
     def get_new_sid(self) -> str:
         """Get new sid.
 
-        :raises RuntimeError: Missined credentials
+        :raises RuntimeError: Missed credentials
         :return: sid
         """
         if self._creds is None:

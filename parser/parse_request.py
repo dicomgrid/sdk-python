@@ -148,9 +148,19 @@ def param_from_name_and_desc(name, desc):
         b_index = name.index('{')
         assert b_index != 0
         assert name[b_index - 1] != ' '
+        expected_value = name.split('{')[1]
+        expected_value = expected_value.split('}')[0]
+        desc = f'Expected values are {expected_value}. ' + desc
         multi_prefix = name.split('{')[0]
-        field_name = '{pref}param'.format(
+        param_type_name = 'param'
+        if multi_prefix.endswith('\''):
+            # There are special quoted params in the V3 API, for example "customfield-'{CUSTOMFIELD_NAME}'"
+            # We need to change name of such params and remove quote from pythonic name
+            multi_prefix = multi_prefix[:-1]
+            param_type_name = 'quoted_param'
+        field_name = '{pref}{param_type_name}'.format(
             pref=multi_prefix.replace('-', '_'),
+            param_type_name=param_type_name,
         )
         optional = True
         return [

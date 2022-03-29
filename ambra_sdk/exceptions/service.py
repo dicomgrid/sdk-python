@@ -1095,3 +1095,23 @@ class NamespaceNotAccountRelated(PreconditionFailed):
 
 class NotOwningNamespace(PreconditionFailed):
     """NotOwningNamespace."""
+
+
+class NotSiteManagementAccount(PreconditionFailed):
+    """NotSiteManagementAccount."""
+
+
+class DupNamespaceName(PreconditionFailed):
+    """DupNamespaceName."""
+
+
+class PendingRestore(PreconditionFailed):
+    """PendingRestore."""
+
+
+class PublicKeyExpired(PreconditionFailed):
+    """PublicKeyExpired."""
+
+
+class NoPatientOverride(PreconditionFailed):
+    """NoPatientOverride."""

@@ -57,6 +57,25 @@ class Query:
         query_data['paginated_field'] = 'queries'
         return QueryOPSF(**query_data)
     
+    def count(
+        self,
+    ):
+        """Count.
+
+        """
+        request_data = {
+        }
+	
+        errors_mapping = {}
+        query_data = {
+            'api': self._api,
+            'url': '/query/count',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
     def add(
         self,
         group_id,
@@ -75,7 +94,7 @@ class Query:
         :param group_id: Id of the group associated to a trial site to add them to
         :param subject: Subject line of the query
         :param body: The query body (optional)
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param notify: Comma delimited list of the emails to be notified of the query events (optional)
         :param owner_namespace_id: The namespace owning the query. The account default from the default_query_owner_namespace account setting is used if not passed through the parameter (optional)
         :param owner_user_id: The user owning the query (optional)
@@ -130,7 +149,7 @@ class Query:
 
         :param uuid: The query uuid
         :param body: The query body (optional)
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param group_id: Id of the group associated to a trial site to add them to. Group change is not allowed for study-related queries (optional)
         :param notify: Comma delimited list of the emails to be notified of the query events (optional)
         :param owner_user_id: The user owning the query (optional)
@@ -213,6 +232,34 @@ class Query:
         query_data = {
             'api': self._api,
             'url': '/query/delete',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
+    def seen(
+        self,
+        uuid,
+        message_id=None,
+    ):
+        """Seen.
+
+        :param uuid: The query uuid
+        :param message_id: ID of the last seen message (optional)
+        """
+        request_data = {
+           'message_id': message_id,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The query can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the query')
+        query_data = {
+            'api': self._api,
+            'url': '/query/seen',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,
@@ -382,6 +429,25 @@ class AsyncQuery:
         query_data['paginated_field'] = 'queries'
         return AsyncQueryOPSF(**query_data)
     
+    def count(
+        self,
+    ):
+        """Count.
+
+        """
+        request_data = {
+        }
+	
+        errors_mapping = {}
+        query_data = {
+            'api': self._api,
+            'url': '/query/count',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
     def add(
         self,
         group_id,
@@ -400,7 +466,7 @@ class AsyncQuery:
         :param group_id: Id of the group associated to a trial site to add them to
         :param subject: Subject line of the query
         :param body: The query body (optional)
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param notify: Comma delimited list of the emails to be notified of the query events (optional)
         :param owner_namespace_id: The namespace owning the query. The account default from the default_query_owner_namespace account setting is used if not passed through the parameter (optional)
         :param owner_user_id: The user owning the query (optional)
@@ -455,7 +521,7 @@ class AsyncQuery:
 
         :param uuid: The query uuid
         :param body: The query body (optional)
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param group_id: Id of the group associated to a trial site to add them to. Group change is not allowed for study-related queries (optional)
         :param notify: Comma delimited list of the emails to be notified of the query events (optional)
         :param owner_user_id: The user owning the query (optional)
@@ -538,6 +604,34 @@ class AsyncQuery:
         query_data = {
             'api': self._api,
             'url': '/query/delete',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def seen(
+        self,
+        uuid,
+        message_id=None,
+    ):
+        """Seen.
+
+        :param uuid: The query uuid
+        :param message_id: ID of the last seen message (optional)
+        """
+        request_data = {
+           'message_id': message_id,
+           'uuid': uuid,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The query can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to view the query')
+        query_data = {
+            'api': self._api,
+            'url': '/query/seen',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,

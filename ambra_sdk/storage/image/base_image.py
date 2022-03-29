@@ -1,7 +1,8 @@
 """Storage image namespace."""
 
 import os
-from typing import Optional
+import zlib
+from typing import Optional, Set
 
 from aiohttp import FormData
 
@@ -268,4 +269,130 @@ class BaseImage:
             url=url,
             params=request_data,
             stream=True,
+        )
+
+    def _multipart_initiate(
+        self,
+        engine_fqdn: str,
+    ) -> PreparedRequest:
+        """Initiate the multipart upload.
+
+        URL: multipart/initiate?sid={sid}
+
+        :param engine_fqdn: Engine FQDN (Required).
+
+        :returns: uuid of multipart upload
+        """
+        url_template = '/multipart/initiate'
+        url_arg_names = {'engine_fqdn'}
+        request_arg_names: Set[str] = set()
+        url, request_data = self._storage.get_url_and_request(
+            url_template,
+            url_arg_names,
+            request_arg_names,
+            locals(),
+        )
+        return PreparedRequest(
+            storage=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            params=request_data,
+        )
+
+    def _multipart_chunk_upload(
+        self,
+        engine_fqdn: str,
+        upload_uuid: str,
+        bytes_part: bytes,
+        chunk_number: int,
+    ) -> PreparedRequest:
+        """Upload a part of image.
+
+        URL: multipart/{upload_uuid}
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param upload_uuid: UUID of the initiated multipart upload (Required).
+        :param bytes_part: part of image (Required).
+        :param chunk_number: sequence number, first part has number 0 (Required).
+
+        :returns: status code
+        """
+        url_template = '/multipart/{upload_uuid}'
+        url_arg_names = {'engine_fqdn', 'upload_uuid'}
+        request_arg_names: Set[str] = set()
+        url, request_data = self._storage.get_url_and_request(
+            url_template,
+            url_arg_names,
+            request_arg_names,
+            locals(),
+        )
+        headers = {
+            'X-AmbraHealth-part-checksum': str(zlib.crc32(bytes_part)),
+            'X-File-Size': str(len(bytes_part)),
+            'X-File-Name': f'{chunk_number:05d}',
+        }
+        return PreparedRequest(
+            storage=self._storage,
+            method=StorageMethod.post,
+            url=url,
+            params=request_data,
+            headers=headers,
+            data=bytes_part,
+        )
+
+    def _multipart_complete(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        upload_uuid: str,
+        file_size: int,
+        endpoint: str = 'image',
+        tags='',
+        study_uid: Optional[str] = None,
+        render_wrapped_pdf='',
+    ) -> PreparedRequest:
+        """Finish the multipart upload process.
+
+        URL: multipart/{upload_uuid}/complete
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param upload_uuid: UUID of the initiated multipart upload (Required).
+        :param file_size: size of whole file (Required).
+        :param endpoint: the endpoint to which the reconstructed file needs to be submitted. Only the image and wrap endpoint are supported at the moment.
+        :param tags: the tags to be used to submit reconstructed file.
+        :param study_uid: study uid.
+        :param render_wrapped_pdf: if the file to be submitted should be treated as wrapped pdf.
+
+        :returns: status code
+        """
+        url_template = '/multipart/{upload_uuid}/complete'
+        url_arg_names = {
+            'engine_fqdn',
+            'upload_uuid',
+        }
+
+        request_arg_names = {
+            'namespace',
+            'endpoint',
+            'study_uid',
+            'tags',
+            'render_wrapped_pdf',
+        }
+        url, request_data = self._storage.get_url_and_request(
+            url_template,
+            url_arg_names,
+            request_arg_names,
+            locals(),
+        )
+        headers = {
+            'X-File-Size': str(file_size),
+            'X-File-Name': 'name',
+        }
+        return PreparedRequest(
+            storage=self._storage,
+            method=StorageMethod.post,
+            url=url,
+            params=request_data,
+            headers=headers,
         )

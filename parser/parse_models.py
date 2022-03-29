@@ -120,6 +120,9 @@ DEFAULT_FOREIGN_MODELS = MappingProxyType(
 
 FOREIGN_MODELS = MappingProxyType(
     {
+        'Account': {
+            'site_management_account_id': 'Account',
+        },
         'AccountCanShare': {
             'by_account_id': 'Account',
             'by_group_id': 'Group',
@@ -149,6 +152,10 @@ FOREIGN_MODELS = MappingProxyType(
             'archive_cluster_id': 'Archive',
             'backup_cluster_id': 'Archive',
         },
+        'CustomfieldMapping': {
+            'from_customfield_id': 'Customfield',
+            'to_customfield_id': 'Customfield',
+        },
         'DestinationSearch': {
             'copy_to': 'Namespace',
             'push_to': 'Destination',
@@ -161,10 +168,19 @@ FOREIGN_MODELS = MappingProxyType(
         'TagObject': {
             'object_id': 'Unknown',
         },
+        'LinkUsage': {
+            'context_user_id': 'User',
+        },
         'Message': {
             'parent_id': 'Message',
             'study_request_id': 'StudyRequest',
             'study_request_namespace_id': 'Namespace',
+        },
+        'Namespace': {
+            'archive_vault_id': 'Archive',
+        },
+        'QuerySeen': {
+            'message_id': 'Message',
         },
         'DictionaryRun': {
             'dictionary_attach_id': 'DictionaryAttach',

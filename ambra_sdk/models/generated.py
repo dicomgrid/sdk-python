@@ -28,6 +28,7 @@ class Accelerator(BaseModel):
     account = FK(model='Account', description='The associated account')
     address = String(description='The domain name and IP address')
     fqdn = String(description='The domain name and IP address')
+    geo_fqdn = String(description='The domain name and IP address')
     global_field = Boolean(description='Is it a global accelerator')
     name = String(description='Name')
     push_shared_studies = Boolean(description='Push shared studies to the accelerator')
@@ -52,6 +53,7 @@ class Accelerator(BaseModel):
         account=None,
         address=None,
         fqdn=None,
+        geo_fqdn=None,
         global_field=None,
         name=None,
         push_shared_studies=None,
@@ -72,6 +74,7 @@ class Accelerator(BaseModel):
         self.account = account
         self.address = address
         self.fqdn = fqdn
+        self.geo_fqdn = geo_fqdn
         self.global_field = global_field
         self.name = name
         self.push_shared_studies = push_shared_studies
@@ -109,6 +112,8 @@ class Account(BaseModel):
     saml = DictField(description='Native SAML information')
     session_expire = Integer(description='Minutes before an idle session expires')
     settings = DictField(description='Account settings')
+    site_management_account_id = String(description='FK. Site management account id for the trial study account')
+    site_management_account = FK(model='Account', description='Site management account id for the trial study account')
     vanity_h = DictField(description='Vanity URLs')
     vendor = String(description='The vendor field')
     created = DateTime(description='Timestamp when the record was created')
@@ -140,6 +145,8 @@ class Account(BaseModel):
         saml=None,
         session_expire=None,
         settings=None,
+        site_management_account_id=None,
+        site_management_account=None,
         vanity_h=None,
         vendor=None,
         created=None,
@@ -167,6 +174,8 @@ class Account(BaseModel):
         self.saml = saml
         self.session_expire = session_expire
         self.settings = settings
+        self.site_management_account_id = site_management_account_id
+        self.site_management_account = site_management_account
         self.vanity_h = vanity_h
         self.vendor = vendor
         self.created = created
@@ -321,6 +330,7 @@ class AccountSamlRole(BaseModel):
     event_query_reply = Boolean(description='The event flags')
     event_report_remove = Boolean(description='The event flags')
     event_share = Boolean(description='The event flags')
+    event_site_qualified = Boolean(description='The event flags')
     event_status_change = Boolean(description='The event flags')
     event_study_comment = Boolean(description='The event flags')
     event_thin_study_fail = Boolean(description='The event flags')
@@ -363,6 +373,7 @@ class AccountSamlRole(BaseModel):
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
+        event_site_qualified=None,
         event_status_change=None,
         event_study_comment=None,
         event_thin_study_fail=None,
@@ -401,6 +412,7 @@ class AccountSamlRole(BaseModel):
         self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
+        self.event_site_qualified = event_site_qualified
         self.event_status_change = event_status_change
         self.event_study_comment = event_study_comment
         self.event_thin_study_fail = event_thin_study_fail
@@ -806,16 +818,17 @@ class ArchiveStudy(BaseModel):
     uuid = String(description='UUID for external use')
     archive_vault_id = String(description='FK. The vault it is stored in')
     archive_vault = FK(model='Archive', description='The vault it is stored in')
-    datum_signature = String(description='Signature of the current study datum and phi')
+    datum_signature = String(description='Signature of the current study datum')
     delay_until = DateTime(description='Delay the store or delete until this time')
     engine_id = String(description='FK. The storage engine')
     engine = FK(model='Engine', description='The storage engine')
+    expedite = Boolean(description='Should we do an expedited retrieval')
     job_id = String(description='When was the job started and the Last error message')
     last_error = String(description='When was the job started and the Last error message')
+    make_thin = Boolean(description='Do we need to make the study thin after archiving')
     need_delete = Boolean(description='Flag to control the store,restore and delete of the study. Indexed so the count in the control loop is fast')
     need_restore = Boolean(description='Flag to control the store,restore and delete of the study. Indexed so the count in the control loop is fast')
     need_store = Boolean(description='Flag to control the store,restore and delete of the study. Indexed so the count in the control loop is fast')
-    phi_signature = String(description='Signature of the current study datum and phi')
     priority = Integer(description='Job priority. The higher the number the higher the priority of the job. This mirrors the archive flag in namespace')
     started_at = DateTime(description='When was the job started and the Last error message')
     storage_namespace = String(description='FK. The storage namespace')
@@ -840,12 +853,13 @@ class ArchiveStudy(BaseModel):
         delay_until=None,
         engine_id=None,
         engine=None,
+        expedite=None,
         job_id=None,
         last_error=None,
+        make_thin=None,
         need_delete=None,
         need_restore=None,
         need_store=None,
-        phi_signature=None,
         priority=None,
         started_at=None,
         storage_namespace=None,
@@ -866,12 +880,13 @@ class ArchiveStudy(BaseModel):
         self.delay_until = delay_until
         self.engine_id = engine_id
         self.engine = engine
+        self.expedite = expedite
         self.job_id = job_id
         self.last_error = last_error
+        self.make_thin = make_thin
         self.need_delete = need_delete
         self.need_restore = need_restore
         self.need_store = need_store
-        self.phi_signature = phi_signature
         self.priority = priority
         self.started_at = started_at
         self.storage_namespace = storage_namespace
@@ -894,12 +909,9 @@ class ArchiveStudyAws(BaseModel):
     archive_study_id = String(description='FK. The associated study archive')
     archive_study = FK(model='Archive', description='The associated study archive')
     aws_archive = String(description='The id of the AWS archive')
-    aws_checksum = String(description='Checksum from AWS archive')
-    aws_size = Integer(description='Checksum from AWS archive')
-    datum_signature = String(description='Signature of the current study datum and phi')
-    job_id = String(description='Job Id and state, restoring state can be PENDING, RETRIEVING, DONE')
-    phi_signature = String(description='Signature of the current study datum and phi')
-    state = String(description='Job Id and state, restoring state can be PENDING, RETRIEVING, DONE')
+    datum_signature = String(description='Signature of the current study datum')
+    job_id = String(description='Job Id and state, state can be PENDING, RETRIEVING, RETRIEVED, RESTORING, RESTORED, DONE')
+    state = String(description='Job Id and state, state can be PENDING, RETRIEVING, RETRIEVED, RESTORING, RESTORED, DONE')
     type_field = String(description='Type archive either datum or phi')
     created = DateTime(description='Timestamp when the record was created')
     created_by = String(description='FK. ID of the user who created the record')
@@ -917,11 +929,8 @@ class ArchiveStudyAws(BaseModel):
         archive_study_id=None,
         archive_study=None,
         aws_archive=None,
-        aws_checksum=None,
-        aws_size=None,
         datum_signature=None,
         job_id=None,
-        phi_signature=None,
         state=None,
         type_field=None,
         created=None,
@@ -936,11 +945,8 @@ class ArchiveStudyAws(BaseModel):
         self.archive_study_id = archive_study_id
         self.archive_study = archive_study
         self.aws_archive = aws_archive
-        self.aws_checksum = aws_checksum
-        self.aws_size = aws_size
         self.datum_signature = datum_signature
         self.job_id = job_id
-        self.phi_signature = phi_signature
         self.state = state
         self.type_field = type_field
         self.created = created
@@ -957,10 +963,10 @@ class ArchiveVault(BaseModel):
     
     id = Integer(description='Primary key for internal use')
     uuid = String(description='UUID for external use')
-    closed = Boolean(description='Is the archive closed for new records')
     key = String(description='AWS credentials')
     region = String(description='AWS credentials')
     secret = String(description='AWS credentials')
+    storage_class = String(description='AWS credentials')
     vault = String(description='AWS credentials')
     created = DateTime(description='Timestamp when the record was created')
     created_by = String(description='FK. ID of the user who created the record')
@@ -975,10 +981,10 @@ class ArchiveVault(BaseModel):
 	*,
         id=None,
         uuid=None,
-        closed=None,
         key=None,
         region=None,
         secret=None,
+        storage_class=None,
         vault=None,
         created=None,
         created_by=None,
@@ -989,10 +995,10 @@ class ArchiveVault(BaseModel):
     ):
         self.id = id
         self.uuid = uuid
-        self.closed = closed
         self.key = key
         self.region = region
         self.secret = secret
+        self.storage_class = storage_class
         self.vault = vault
         self.created = created
         self.created_by = created_by
@@ -1663,6 +1669,7 @@ class Cluster(BaseModel):
     backup_cluster = FK(model='Archive', description='Id of the backup cluster this should be backed up to')
     copies = Integer(description='Number of copies in the cluster')
     is_default = Boolean(description='This is the default cluster')
+    is_load_balanced = Boolean(description='This is a load balanced cluster')
     max_days = Integer(description='Max days studies should stay in the cluster')
     name = String(description='Name for the cluster')
     rsync = Boolean(description='Is this a rsync cluster')
@@ -1686,6 +1693,7 @@ class Cluster(BaseModel):
         backup_cluster=None,
         copies=None,
         is_default=None,
+        is_load_balanced=None,
         max_days=None,
         name=None,
         rsync=None,
@@ -1705,6 +1713,7 @@ class Cluster(BaseModel):
         self.backup_cluster = backup_cluster
         self.copies = copies
         self.is_default = is_default
+        self.is_load_balanced = is_load_balanced
         self.max_days = max_days
         self.name = name
         self.rsync = rsync
@@ -1958,6 +1967,8 @@ class Customfield(BaseModel):
     options = String(description='Settings')
     other_customfield_id = String(description='FK. Map to other object&#39;s customfield')
     other_customfield = FK(model='Customfield', description='Map to other object&#39;s customfield')
+    other_customfield_no_overwrite_with_blank = Boolean(description='Map to other object&#39;s customfield')
+    other_customfield_no_refresh_on_reshare = Boolean(description='Map to other object&#39;s customfield')
     other_dicom_tags = String(description='An array of other DICOM tags to map to in storage')
     required = Boolean(description='Settings')
     type_field = String(description='Name and type  of the field')
@@ -1998,6 +2009,8 @@ class Customfield(BaseModel):
         options=None,
         other_customfield_id=None,
         other_customfield=None,
+        other_customfield_no_overwrite_with_blank=None,
+        other_customfield_no_refresh_on_reshare=None,
         other_dicom_tags=None,
         required=None,
         type_field=None,
@@ -2034,10 +2047,72 @@ class Customfield(BaseModel):
         self.options = options
         self.other_customfield_id = other_customfield_id
         self.other_customfield = other_customfield
+        self.other_customfield_no_overwrite_with_blank = other_customfield_no_overwrite_with_blank
+        self.other_customfield_no_refresh_on_reshare = other_customfield_no_refresh_on_reshare
         self.other_dicom_tags = other_dicom_tags
         self.required = required
         self.type_field = type_field
         self.wrapped_dicom_only = wrapped_dicom_only
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+        self.updated = updated
+        self.updated_by = updated_by
+        self.updated_by_obj = updated_by_obj
+
+
+
+class CustomfieldMapping(BaseModel):
+    """CustomfieldMapping."""
+    
+    id = Integer(description='Primary key for internal use')
+    uuid = String(description='UUID for external use')
+    from_customfield_id = String(description='FK. The source customfield')
+    from_customfield = FK(model='Customfield', description='The source customfield')
+    overwrite_with_blank = Boolean(description='The mapping options')
+    refresh_on_edit = Boolean(description='The mapping options')
+    refresh_on_reshare = Boolean(description='The mapping options')
+    reverse_refresh_on_edit = Boolean(description='The mapping options')
+    to_customfield_id = String(description='FK. The destination customfield')
+    to_customfield = FK(model='Customfield', description='The destination customfield')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+    updated = DateTime(description='Timestamp when the record was last updated')
+    updated_by = String(description='FK. ID of the user who updated the record')
+    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        uuid=None,
+        from_customfield_id=None,
+        from_customfield=None,
+        overwrite_with_blank=None,
+        refresh_on_edit=None,
+        refresh_on_reshare=None,
+        reverse_refresh_on_edit=None,
+        to_customfield_id=None,
+        to_customfield=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+        updated=None,
+        updated_by=None,
+        updated_by_obj=None,
+    ):
+        self.id = id
+        self.uuid = uuid
+        self.from_customfield_id = from_customfield_id
+        self.from_customfield = from_customfield
+        self.overwrite_with_blank = overwrite_with_blank
+        self.refresh_on_edit = refresh_on_edit
+        self.refresh_on_reshare = refresh_on_reshare
+        self.reverse_refresh_on_edit = reverse_refresh_on_edit
+        self.to_customfield_id = to_customfield_id
+        self.to_customfield = to_customfield
         self.created = created
         self.created_by = created_by
         self.created_by_obj = created_by_obj
@@ -2380,6 +2455,7 @@ class DestinationSearch(BaseModel):
     pickup = DateTime(description='When was this picked up by the node')
     push_to = String(description='FK. Destination to push any retrieved studies to')
     push_to_obj = FK(model='Destination', description='Destination to push any retrieved studies to')
+    refetch_study = Boolean(description='Flag to refetch existing studies with the results')
     results = String(description='The search results')
     share_email = String(description='Email to share retrieved studies with')
     sid = String(description='SID where the search originated from')
@@ -2432,6 +2508,7 @@ class DestinationSearch(BaseModel):
         pickup=None,
         push_to=None,
         push_to_obj=None,
+        refetch_study=None,
         results=None,
         share_email=None,
         sid=None,
@@ -2480,6 +2557,7 @@ class DestinationSearch(BaseModel):
         self.pickup = pickup
         self.push_to = push_to
         self.push_to_obj = push_to_obj
+        self.refetch_study = refetch_study
         self.results = results
         self.share_email = share_email
         self.sid = sid
@@ -2763,11 +2841,11 @@ class DictionaryRun(BaseModel):
     
     id = Integer(description='Primary key for internal use')
     uuid = String(description='UUID for external use')
-    delay = Integer(description='Used to kick stuck jobs')
+    delay = Integer(description='Used to kick stuck jobs. Depreciated, should be removed after 2021-11-03')
     dictionary_attach_id = String(description='FK. Associated dictionary')
     dictionary_attach = FK(model='DictionaryAttach', description='Associated dictionary')
     object_id = Integer(description='The object this dict was applied to')
-    succeeded = Boolean(description='Used to kick stuck jobs')
+    succeeded = Boolean(description='Used to kick stuck jobs. Depreciated, should be removed after 2021-11-03')
     created = DateTime(description='Timestamp when the record was created')
     created_by = String(description='FK. ID of the user who created the record')
     created_by_obj = FK(model='User', description='ID of the user who created the record')
@@ -2862,6 +2940,7 @@ class Engine(BaseModel):
     cluster_id = String(description='FK. The cluster it is in')
     cluster = FK(model='Cluster', description='The cluster it is in')
     fqdn = String(description='The fully qualified domain name of the storage engine')
+    free_disk_space = Integer(description='The free disk space threshold')
     ghc_info = String(description='The Google healthcare information')
     host_map = String(description='The host map JSON')
     idle_storage_host = String(description='The URL services should for archiving activity')
@@ -2870,6 +2949,7 @@ class Engine(BaseModel):
     magic_sid = String(description='The magic sid for the storage engine')
     max_pull_jobs = Integer(description='The max number of pull jobs  to run on the engine at one time')
     max_push_jobs = Integer(description='The max number of push jobs to run on the engine at one time')
+    no_backup = Boolean(description='Turn off backups for this engine')
     no_phi = Boolean(description='No PHI is stored on this engine')
     no_purge = Boolean(description='Exclude studies on this engine from all purges')
     services_url = String(description='The URL services should use to access the storage engine')
@@ -2889,6 +2969,7 @@ class Engine(BaseModel):
         cluster_id=None,
         cluster=None,
         fqdn=None,
+        free_disk_space=None,
         ghc_info=None,
         host_map=None,
         idle_storage_host=None,
@@ -2897,6 +2978,7 @@ class Engine(BaseModel):
         magic_sid=None,
         max_pull_jobs=None,
         max_push_jobs=None,
+        no_backup=None,
         no_phi=None,
         no_purge=None,
         services_url=None,
@@ -2912,6 +2994,7 @@ class Engine(BaseModel):
         self.cluster_id = cluster_id
         self.cluster = cluster
         self.fqdn = fqdn
+        self.free_disk_space = free_disk_space
         self.ghc_info = ghc_info
         self.host_map = host_map
         self.idle_storage_host = idle_storage_host
@@ -2920,6 +3003,7 @@ class Engine(BaseModel):
         self.magic_sid = magic_sid
         self.max_pull_jobs = max_pull_jobs
         self.max_push_jobs = max_push_jobs
+        self.no_backup = no_backup
         self.no_phi = no_phi
         self.no_purge = no_purge
         self.services_url = services_url
@@ -3130,6 +3214,7 @@ class Group(BaseModel):
     role = FK(model='Role', description='Default role id')
     site_id = String(description='FK. Associated trial site')
     site = FK(model='Site', description='Associated trial site')
+    site_inactive = Boolean(description='Inactive flag to deactivate a group in a Trial Account')
     site_qualified = Boolean(description='Associated trial site')
     created = DateTime(description='Timestamp when the record was created')
     created_by = String(description='FK. ID of the user who created the record')
@@ -3154,6 +3239,7 @@ class Group(BaseModel):
         role=None,
         site_id=None,
         site=None,
+        site_inactive=None,
         site_qualified=None,
         created=None,
         created_by=None,
@@ -3174,6 +3260,7 @@ class Group(BaseModel):
         self.role = role
         self.site_id = site_id
         self.site = site
+        self.site_inactive = site_inactive
         self.site_qualified = site_qualified
         self.created = created
         self.created_by = created_by
@@ -3515,6 +3602,7 @@ class Link(BaseModel):
     email = String(description='Email address, any additional message and other notification emails to send the link to')
     filter = String(description='The study the link is for or the filter expression or the namespace for an upload action')
     include_priors = Boolean(description='Include priors')
+    inherit_permissions = Boolean(description='Should the anon session inherit link owner&#39;s permissions')
     max_hits = Integer(description='The maximum number of times the link can be used')
     message = String(description='Mobile phone used to send additional message to')
     mfm_page = Boolean(description='Should they go to the MFM page')
@@ -3566,6 +3654,7 @@ class Link(BaseModel):
         email=None,
         filter=None,
         include_priors=None,
+        inherit_permissions=None,
         max_hits=None,
         message=None,
         mfm_page=None,
@@ -3613,6 +3702,7 @@ class Link(BaseModel):
         self.email = email
         self.filter = filter
         self.include_priors = include_priors
+        self.inherit_permissions = inherit_permissions
         self.max_hits = max_hits
         self.message = message
         self.mfm_page = mfm_page
@@ -3712,6 +3802,8 @@ class LinkUsage(BaseModel):
     account = FK(model='Account', description='Link and account id')
     client_address = String(description='Address that used the link')
     client_email = String(description='Address that used the link')
+    context_user_id = String(description='FK. An account user id used to pull the user&#39;s preferences')
+    context_user = FK(model='User', description='An account user id used to pull the user&#39;s preferences')
     extra = String(description='Any extra analytical data to store with the link')
     link_id = String(description='FK. Link and account id')
     link = FK(model='Link', description='Link and account id')
@@ -3733,6 +3825,8 @@ class LinkUsage(BaseModel):
         account=None,
         client_address=None,
         client_email=None,
+        context_user_id=None,
+        context_user=None,
         extra=None,
         link_id=None,
         link=None,
@@ -3750,6 +3844,8 @@ class LinkUsage(BaseModel):
         self.account = account
         self.client_address = client_address
         self.client_email = client_email
+        self.context_user_id = context_user_id
+        self.context_user = context_user
         self.extra = extra
         self.link_id = link_id
         self.link = link
@@ -4126,7 +4222,8 @@ class Namespace(BaseModel):
     anonymization_id = String(description='FK. Anonymization rules')
     anonymization = FK(model='Anonyimization', description='Anonymization rules')
     anonymize = String(description='Anonymization rules')
-    archive = Integer(description='Archive setting. 0 = no archive or else archive and restore based on the priority value of the setting. e.g. 99 is high priority, -99 is low priority')
+    archive_vault_id = String(description='FK. The vault to archive studies too')
+    archive_vault = FK(model='Archive', description='The vault to archive studies too')
     cache = Boolean(description='Cache new studies image')
     charge_description = String(description='Charging information')
     coverpage = String(description='Cover page template')
@@ -4145,6 +4242,7 @@ class Namespace(BaseModel):
     event_query_reply = Boolean(description='The default event settings flags')
     event_report_remove = Boolean(description='The default event settings flags')
     event_share = Boolean(description='The default event settings flags')
+    event_site_qualified = Boolean(description='The default event settings flags')
     event_status_change = Boolean(description='The default event settings flags')
     event_study_comment = Boolean(description='The default event settings flags')
     event_thin_study_fail = Boolean(description='The default event settings flags')
@@ -4202,7 +4300,8 @@ class Namespace(BaseModel):
         anonymization_id=None,
         anonymization=None,
         anonymize=None,
-        archive=None,
+        archive_vault_id=None,
+        archive_vault=None,
         cache=None,
         charge_description=None,
         coverpage=None,
@@ -4221,6 +4320,7 @@ class Namespace(BaseModel):
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
+        event_site_qualified=None,
         event_status_change=None,
         event_study_comment=None,
         event_thin_study_fail=None,
@@ -4274,7 +4374,8 @@ class Namespace(BaseModel):
         self.anonymization_id = anonymization_id
         self.anonymization = anonymization
         self.anonymize = anonymize
-        self.archive = archive
+        self.archive_vault_id = archive_vault_id
+        self.archive_vault = archive_vault
         self.cache = cache
         self.charge_description = charge_description
         self.coverpage = coverpage
@@ -4293,6 +4394,7 @@ class Namespace(BaseModel):
         self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
+        self.event_site_qualified = event_site_qualified
         self.event_status_change = event_status_change
         self.event_study_comment = event_study_comment
         self.event_thin_study_fail = event_thin_study_fail
@@ -4977,6 +5079,7 @@ class Patient(BaseModel):
     mobile_phone = String(description='Contact info')
     mrn = String(description='Basic information')
     name = String(description='Basic information')
+    settings = DictField(description='Account settings overrides')
     sex = String(description='Basic information')
     user_id = String(description='FK. The associated user')
     user = FK(model='User', description='The associated user')
@@ -5008,6 +5111,7 @@ class Patient(BaseModel):
         mobile_phone=None,
         mrn=None,
         name=None,
+        settings=None,
         sex=None,
         user_id=None,
         user=None,
@@ -5035,6 +5139,7 @@ class Patient(BaseModel):
         self.mobile_phone = mobile_phone
         self.mrn = mrn
         self.name = name
+        self.settings = settings
         self.sex = sex
         self.user_id = user_id
         self.user = user
@@ -5243,8 +5348,9 @@ class Qctask(BaseModel):
     namespace_id = String(description='FK. Id of the namespace the activity is associated with')
     namespace = FK(model='Namespace', description='Id of the namespace the activity is associated with')
     priority = Integer(description='The activity priority')
-    query_id = String(description='FK. Optional Query link')
-    query = FK(model='Query', description='Optional Query link')
+    qctask_status = String(description='QC task status')
+    query_id = String(description='FK. Optional Query link. Depreciated. Should be removed after 2022 February release')
+    query = FK(model='Query', description='Optional Query link. Depreciated. Should be removed after 2022 February release')
     user_id = String(description='FK. Id of the user the activity is specifically for.')
     user = FK(model='User', description='Id of the user the activity is specifically for.')
     created = DateTime(description='Timestamp when the record was created')
@@ -5265,6 +5371,7 @@ class Qctask(BaseModel):
         namespace_id=None,
         namespace=None,
         priority=None,
+        qctask_status=None,
         query_id=None,
         query=None,
         user_id=None,
@@ -5283,10 +5390,59 @@ class Qctask(BaseModel):
         self.namespace_id = namespace_id
         self.namespace = namespace
         self.priority = priority
+        self.qctask_status = qctask_status
         self.query_id = query_id
         self.query = query
         self.user_id = user_id
         self.user = user
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+        self.updated = updated
+        self.updated_by = updated_by
+        self.updated_by_obj = updated_by_obj
+
+
+
+class QctaskQuery(BaseModel):
+    """QctaskQuery."""
+    
+    id = Integer(description='Primary key for internal use')
+    uuid = String(description='UUID for external use')
+    qctask_id = String(description='FK. QC task')
+    qctask = FK(model='Task', description='QC task')
+    query_id = String(description='FK. Query')
+    query = FK(model='Query', description='Query')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+    updated = DateTime(description='Timestamp when the record was last updated')
+    updated_by = String(description='FK. ID of the user who updated the record')
+    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        uuid=None,
+        qctask_id=None,
+        qctask=None,
+        query_id=None,
+        query=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+        updated=None,
+        updated_by=None,
+        updated_by_obj=None,
+    ):
+        self.id = id
+        self.uuid = uuid
+        self.qctask_id = qctask_id
+        self.qctask = qctask
+        self.query_id = query_id
+        self.query = query
         self.created = created
         self.created_by = created_by
         self.created_by_obj = created_by_obj
@@ -5364,7 +5520,7 @@ class Query(BaseModel):
     owner_namespace = FK(model='Namespace', description='The owners')
     owner_user_id = String(description='FK. The owners')
     owner_user = FK(model='User', description='The owners')
-    query_no = Integer(description='The query number (displayed as a 7-digit number)')
+    query_no = Integer(description='The query number (displayed as a 7-digit number). Depreciated in favor of id. Please remove in 2022.')
     query_status = String(description='Query status')
     query_type = String(description='The type of the query')
     reminder_count_since_reply = Integer(description='Communication plan counters')
@@ -5538,6 +5694,60 @@ class QueryRecipient(BaseModel):
     ):
         self.id = id
         self.uuid = uuid
+        self.query_id = query_id
+        self.query = query
+        self.user_id = user_id
+        self.user = user
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+        self.updated = updated
+        self.updated_by = updated_by
+        self.updated_by_obj = updated_by_obj
+
+
+
+class QuerySeen(BaseModel):
+    """QuerySeen."""
+    
+    id = Integer(description='Primary key for internal use')
+    uuid = String(description='UUID for external use')
+    message_id = String(description='FK. The last message seen by the user in the Query')
+    message = FK(model='Message', description='The last message seen by the user in the Query')
+    query_id = String(description='FK. The Query')
+    query = FK(model='Query', description='The Query')
+    user_id = String(description='FK. The User')
+    user = FK(model='User', description='The User')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+    updated = DateTime(description='Timestamp when the record was last updated')
+    updated_by = String(description='FK. ID of the user who updated the record')
+    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        uuid=None,
+        message_id=None,
+        message=None,
+        query_id=None,
+        query=None,
+        user_id=None,
+        user=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+        updated=None,
+        updated_by=None,
+        updated_by_obj=None,
+    ):
+        self.id = id
+        self.uuid = uuid
+        self.message_id = message_id
+        self.message = message
         self.query_id = query_id
         self.query = query
         self.user_id = user_id
@@ -5855,6 +6065,8 @@ class Route(BaseModel):
     actions = String(description='The rule actions')
     conditions = String(description='The rule conditions')
     delay = Integer(description='Number of minutes to delay running this rule after it is triggered')
+    delay_from_study_field = String(description='Field that delay_from_study_seconds will be applied to')
+    delay_from_study_seconds = Integer(description='Number of seconds to delay running this rule after point in time stated in a study&#39;s field')
     delay_seconds = Integer(description='Number of seconds to delay running this rule after it is triggered')
     delay_till_schedule = Boolean(description='Delay running the rule until the schedule time')
     manual_roles = DictField(description='Roles that can manually run this route')
@@ -5867,6 +6079,7 @@ class Route(BaseModel):
     on_share = Boolean(description='Should the rule be run on shared studies')
     on_thin = Boolean(description='Should the rule be run on the creation of thin studies')
     on_upload = Boolean(description='Should the rule be run on uploaded studies')
+    only_re_run = Boolean(description='Should the rule only be run on a re-run of a storage notification')
     options = String(description='The rule options')
     other_namespaces = DictField(description='The other namespaces this rule is associated with')
     schedule = String(description='The rule schedule')
@@ -5889,6 +6102,8 @@ class Route(BaseModel):
         actions=None,
         conditions=None,
         delay=None,
+        delay_from_study_field=None,
+        delay_from_study_seconds=None,
         delay_seconds=None,
         delay_till_schedule=None,
         manual_roles=None,
@@ -5901,6 +6116,7 @@ class Route(BaseModel):
         on_share=None,
         on_thin=None,
         on_upload=None,
+        only_re_run=None,
         options=None,
         other_namespaces=None,
         schedule=None,
@@ -5919,6 +6135,8 @@ class Route(BaseModel):
         self.actions = actions
         self.conditions = conditions
         self.delay = delay
+        self.delay_from_study_field = delay_from_study_field
+        self.delay_from_study_seconds = delay_from_study_seconds
         self.delay_seconds = delay_seconds
         self.delay_till_schedule = delay_till_schedule
         self.manual_roles = manual_roles
@@ -5931,6 +6149,7 @@ class Route(BaseModel):
         self.on_share = on_share
         self.on_thin = on_thin
         self.on_upload = on_upload
+        self.only_re_run = only_re_run
         self.options = options
         self.other_namespaces = other_namespaces
         self.schedule = schedule
@@ -6413,7 +6632,10 @@ class Site(BaseModel):
     uuid = String(description='UUID for external use')
     account_id = String(description='FK. The associated account')
     account = FK(model='Account', description='The associated account')
+    address1 = String(description='Location fields')
+    address2 = String(description='Location fields')
     city = String(description='Location fields')
+    country = String(description='Location fields')
     inactive = Boolean(description='Inactive flag to hide a site from lists')
     name = String(description='Name')
     site_id = String(description='FK. The associated site in case this one is a satellite site')
@@ -6435,7 +6657,10 @@ class Site(BaseModel):
         uuid=None,
         account_id=None,
         account=None,
+        address1=None,
+        address2=None,
         city=None,
+        country=None,
         inactive=None,
         name=None,
         site_id=None,
@@ -6453,7 +6678,10 @@ class Site(BaseModel):
         self.uuid = uuid
         self.account_id = account_id
         self.account = account
+        self.address1 = address1
+        self.address2 = address2
         self.city = city
+        self.country = country
         self.inactive = inactive
         self.name = name
         self.site_id = site_id
@@ -8285,6 +8513,8 @@ class System(BaseModel):
     captcha_sk = String(description='Captcha secret key')
     clickhouse_version = Integer(description='ClickHouse scheme version')
     database_version = Integer(description='Database version')
+    documo_mfax_caller_id = String(description='Documo (mFax) key and caller_id phone number')
+    documo_mfax_key = String(description='Documo (mFax) key and caller_id phone number')
     drchrono_client_id = String(description='Drchrono information')
     drchrono_client_secret = String(description='Drchrono information')
     drchrono_redirect_uri = String(description='Drchrono information')
@@ -8319,9 +8549,10 @@ class System(BaseModel):
     sysadmin_pin_required = Boolean(description='Require 2FA for a support or sysadmin user')
     terms_html = String(description='HTML for the terms of use, privacy policy and indicators of use')
     terms_md5 = String(description='MD5 sums of the terms of use, privacy policy and indicators of use')
-    twilio_from = String(description='Twilio key, secret and from phone number')
-    twilio_pk = String(description='Twilio key, secret and from phone number')
-    twilio_sk = String(description='Twilio key, secret and from phone number')
+    twilio_callback_password = String(description='Twilio key, secret, from phone number and callback password for HTTP basic authentication')
+    twilio_from = String(description='Twilio key, secret, from phone number and callback password for HTTP basic authentication')
+    twilio_pk = String(description='Twilio key, secret, from phone number and callback password for HTTP basic authentication')
+    twilio_sk = String(description='Twilio key, secret, from phone number and callback password for HTTP basic authentication')
     ui_json = String(description='System-wide UI settings')
     updates_html = String(description='Updates text')
     updates_html_version = Integer(description='Updates text')
@@ -8364,6 +8595,8 @@ class System(BaseModel):
         captcha_sk=None,
         clickhouse_version=None,
         database_version=None,
+        documo_mfax_caller_id=None,
+        documo_mfax_key=None,
         drchrono_client_id=None,
         drchrono_client_secret=None,
         drchrono_redirect_uri=None,
@@ -8398,6 +8631,7 @@ class System(BaseModel):
         sysadmin_pin_required=None,
         terms_html=None,
         terms_md5=None,
+        twilio_callback_password=None,
         twilio_from=None,
         twilio_pk=None,
         twilio_sk=None,
@@ -8439,6 +8673,8 @@ class System(BaseModel):
         self.captcha_sk = captcha_sk
         self.clickhouse_version = clickhouse_version
         self.database_version = database_version
+        self.documo_mfax_caller_id = documo_mfax_caller_id
+        self.documo_mfax_key = documo_mfax_key
         self.drchrono_client_id = drchrono_client_id
         self.drchrono_client_secret = drchrono_client_secret
         self.drchrono_redirect_uri = drchrono_redirect_uri
@@ -8473,6 +8709,7 @@ class System(BaseModel):
         self.sysadmin_pin_required = sysadmin_pin_required
         self.terms_html = terms_html
         self.terms_md5 = terms_md5
+        self.twilio_callback_password = twilio_callback_password
         self.twilio_from = twilio_from
         self.twilio_pk = twilio_pk
         self.twilio_sk = twilio_sk
@@ -8856,6 +9093,7 @@ class User(BaseModel):
     event_query_reply = Boolean(description='The event flags for the personal namespace')
     event_report_remove = Boolean(description='The event flags for the personal namespace')
     event_share = Boolean(description='The event flags for the personal namespace')
+    event_site_qualified = Boolean(description='The event flags for the personal namespace')
     event_status_change = Boolean(description='The event flags for the personal namespace')
     event_study_comment = Boolean(description='The event flags for the personal namespace')
     event_thin_study_fail = Boolean(description='The event flags for the personal namespace')
@@ -8865,7 +9103,7 @@ class User(BaseModel):
     first = String(description='Name')
     indicator_md5 = String(description='MD5 sums of the accepted terms of use, privacy policy and indicators of use')
     last = String(description='Name')
-    last_login = DateTime(description='The last login time')
+    last_login = DateTime(description='This is depreciated and stored in redis, this field should be dropped in the future')
     last_reset = DateTime(description='Time the password was last reset')
     mobile_phone = String(description='Mobile phone')
     namespace_id = String(description='FK. Their namespace')
@@ -8874,6 +9112,7 @@ class User(BaseModel):
     oauth = String(description='OAuth id and refresh token')
     password = String(description='Password')
     pin_required = Boolean(description='Is a PIN required for login')
+    pkey_last_reset = DateTime(description='Time the public key was last reset')
     privacy_md5 = String(description='MD5 sums of the accepted terms of use, privacy policy and indicators of use')
     public_key = String(description='Public key for authentication')
     refresh_token = String(description='OAuth id and refresh token')
@@ -8918,6 +9157,7 @@ class User(BaseModel):
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
+        event_site_qualified=None,
         event_status_change=None,
         event_study_comment=None,
         event_thin_study_fail=None,
@@ -8936,6 +9176,7 @@ class User(BaseModel):
         oauth=None,
         password=None,
         pin_required=None,
+        pkey_last_reset=None,
         privacy_md5=None,
         public_key=None,
         refresh_token=None,
@@ -8976,6 +9217,7 @@ class User(BaseModel):
         self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
+        self.event_site_qualified = event_site_qualified
         self.event_status_change = event_status_change
         self.event_study_comment = event_study_comment
         self.event_thin_study_fail = event_thin_study_fail
@@ -8994,6 +9236,7 @@ class User(BaseModel):
         self.oauth = oauth
         self.password = password
         self.pin_required = pin_required
+        self.pkey_last_reset = pkey_last_reset
         self.privacy_md5 = privacy_md5
         self.public_key = public_key
         self.refresh_token = refresh_token
@@ -9042,6 +9285,7 @@ class UserAccount(BaseModel):
     event_query_reply = Boolean(description='The event flags')
     event_report_remove = Boolean(description='The event flags')
     event_share = Boolean(description='The event flags')
+    event_site_qualified = Boolean(description='The event flags')
     event_status_change = Boolean(description='The event flags')
     event_study_comment = Boolean(description='The event flags')
     event_thin_study_fail = Boolean(description='The event flags')
@@ -9098,6 +9342,7 @@ class UserAccount(BaseModel):
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
+        event_site_qualified=None,
         event_status_change=None,
         event_study_comment=None,
         event_thin_study_fail=None,
@@ -9150,6 +9395,7 @@ class UserAccount(BaseModel):
         self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
+        self.event_site_qualified = event_site_qualified
         self.event_status_change = event_status_change
         self.event_study_comment = event_study_comment
         self.event_thin_study_fail = event_thin_study_fail
@@ -9305,6 +9551,7 @@ class UserGroup(BaseModel):
     event_query_reply = Boolean(description='The event flags')
     event_report_remove = Boolean(description='The event flags')
     event_share = Boolean(description='The event flags')
+    event_site_qualified = Boolean(description='The event flags')
     event_status_change = Boolean(description='The event flags')
     event_study_comment = Boolean(description='The event flags')
     event_thin_study_fail = Boolean(description='The event flags')
@@ -9345,6 +9592,7 @@ class UserGroup(BaseModel):
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
+        event_site_qualified=None,
         event_status_change=None,
         event_study_comment=None,
         event_thin_study_fail=None,
@@ -9381,6 +9629,7 @@ class UserGroup(BaseModel):
         self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
+        self.event_site_qualified = event_site_qualified
         self.event_status_change = event_status_change
         self.event_study_comment = event_study_comment
         self.event_thin_study_fail = event_thin_study_fail
@@ -9411,6 +9660,7 @@ class UserInvite(BaseModel):
     account_id = String(description='FK. Account the invitation is for')
     account = FK(model='Account', description='Account the invitation is for')
     email = String(description='Email address to invite')
+    global_field = Boolean(description='This user is automatically added to every group and location in the account')
     groups = String(description='JSON hashes of the groups and locations to add them to with the role as the key value')
     locations = String(description='JSON hashes of the groups and locations to add them to with the role as the key value')
     role_id = String(description='FK. Role the invitation is for')
@@ -9433,6 +9683,7 @@ class UserInvite(BaseModel):
         account_id=None,
         account=None,
         email=None,
+        global_field=None,
         groups=None,
         locations=None,
         role_id=None,
@@ -9451,6 +9702,7 @@ class UserInvite(BaseModel):
         self.account_id = account_id
         self.account = account
         self.email = email
+        self.global_field = global_field
         self.groups = groups
         self.locations = locations
         self.role_id = role_id
@@ -9539,6 +9791,7 @@ class UserLocation(BaseModel):
     event_query_reply = Boolean(description='The event flags')
     event_report_remove = Boolean(description='The event flags')
     event_share = Boolean(description='The event flags')
+    event_site_qualified = Boolean(description='The event flags')
     event_status_change = Boolean(description='The event flags')
     event_study_comment = Boolean(description='The event flags')
     event_thin_study_fail = Boolean(description='The event flags')
@@ -9579,6 +9832,7 @@ class UserLocation(BaseModel):
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
+        event_site_qualified=None,
         event_status_change=None,
         event_study_comment=None,
         event_thin_study_fail=None,
@@ -9615,6 +9869,7 @@ class UserLocation(BaseModel):
         self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
+        self.event_site_qualified = event_site_qualified
         self.event_status_change = event_status_change
         self.event_study_comment = event_study_comment
         self.event_thin_study_fail = event_thin_study_fail
@@ -9752,7 +10007,7 @@ class Webhook(BaseModel):
     event = String(description='The event to trigger the webhook for')
     filter_field = String(description='Filter field and regexp')
     filter_regexp = String(description='Filter field and regexp')
-    last_error = String(description='The last error the webhook had')
+    last_error = String(description='Note this value is now stored in the redis and this field should be depreciated and dropped')
     max_age = Integer(description='Ignore studies that are more than this number of days old')
     method = String(description='Call method')
     name = String(description='Name')

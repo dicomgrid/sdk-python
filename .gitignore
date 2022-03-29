@@ -129,3 +129,5 @@ dmypy.json
 
 .secrets.toml
 docs/build
+
+.idea/

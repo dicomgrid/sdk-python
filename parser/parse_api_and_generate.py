@@ -58,7 +58,7 @@ def generate_user_namespaces(
 
 
 api_html_file = Path(__file__).parent.joinpath('api.html')
-# api_html_file = Path('/home/dyens/dev/v3services/htdocs/api.html')
+
 generated_api_dir = Path(__file__).parents[1].joinpath(
     'ambra_sdk',
     'service',

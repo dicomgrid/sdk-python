@@ -576,6 +576,20 @@
                 <li><a href="#query_attachment_commit">/query/attachment/commit</a>
                 <li><a href="#query_attachment_delete">/query/attachment/delete</a>
             </ul>
+            <li><a href="#qctask" name="qctask-idx">QC task commands</a>
+            <ul>
+                <li><a href="#qctask_add">/qctask/add</a>
+                <li><a href="#qctask_set">/qctask/set</a>
+                <li><a href="#qctask_get">/qctask/get</a>
+            </ul>
+            <li><a href="#anonymization" name="anonymization-idx">Anonymization profile commands</a>
+            <ul>
+                <li><a href="#anonymization_list">/anonymization/list</a>
+                <li><a href="#anonymization_add">/anonymization/add</a>
+                <li><a href="#anonymization_set">/anonymization/set</a>
+                <li><a href="#anonymization_get">/anonymization/get</a>
+                <li><a href="#anonymization_delete">/anonymization/delete</a>
+            </ul>
         </ol>
 
         <a name="intro"><h3>Introduction</h3></a>
@@ -1990,11 +2004,27 @@
             </tr>
             <tr>
                 <td>user_modify_others_notifications</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
                 <td>0</td>
                 <td>Can they modify other user's notifications</td>
+            </tr>
+            <tr>
+                <td>user_modify_others_email</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they modify other user's email address</td>
+            </tr>
+            <tr>
+                <td>user_modify_others_pkey</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they modify other user's public key</td>
             </tr>
             <tr>
                 <td>user_request_access</td>
@@ -2182,7 +2212,7 @@
             </tr>
             <tr>
                 <td>query_add</td>
-                <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2190,7 +2220,7 @@
             </tr>
             <tr>
                 <td>query_edit</td>
-                <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2198,7 +2228,7 @@
             </tr>
             <tr>
                 <td>query_view</td>
-                <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2206,7 +2236,7 @@
             </tr>
             <tr>
                 <td>query_view_meta</td>
-                <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2214,7 +2244,7 @@
             </tr>
             <tr>
                 <td>query_view_only_own</td>
-                <td>0</td>
+                <td>1</td>
                 <td>1</td>
                 <td>1</td>
                 <td>1</td>
@@ -2222,7 +2252,7 @@
             </tr>
             <tr>
                 <td>query_delete</td>
-                <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -2230,11 +2260,51 @@
             </tr>
             <tr>
                 <td>query_reply</td>
-                <td>1</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>Can they reply in queries owned by the namespace</td>
+            </tr>
+            <tr>
+                <td>qctask_add</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add QC tasks assigned to the namespace</td>
+            </tr>
+            <tr>
+                <td>qctask_edit</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they edit QC tasks assigned to the namespace</td>
+            </tr>
+            <tr>
+                <td>qctask_view</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view QC tasks assigned to the namespace</td>
+            </tr>
+            <tr>
+                <td>qctask_delete</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they delete QC tasks assigned to the namespace</td>
+            </tr>
+            <tr>
+                <td>qctask_prioritize</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they change priorities of QC tasks assigned to the namespace</td>
             </tr>
         </table>
 
@@ -2698,7 +2768,7 @@
                                 <li>PatientId</li>
                                 <li>Modality</li>
                                 <li>AccessionNumber</li>
-                                <li>ReferringPhysican</li>
+                                <li>ReferringPhysician</li>
                             </ul>
                             <div>Possible type values:</div>
                             <ul>
@@ -2814,7 +2884,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>A JSON hash of the links to display on the home page</td>
+                <td>A JSON list of hashes of the links to display on the home page</td>
             </tr>
             <tr>
                 <td>enable_dicom_wrapping</td>
@@ -3467,7 +3537,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>When a study is at its final status show current timer value. Othervise -1 will be returned</td>
+                <td>When a study is at its final status show current timer value. Otherwise -1 will be returned</td>
             </tr>
             <tr>
                 <td>study_share_use_account_template</td>
@@ -4729,6 +4799,17 @@
                 <td>Require electronic signing of radreport</td>
             </tr>
             <tr>
+                <td>csrf_cookie_samesite_none</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Enable SameSite=None attribute for CSRF cookies set in /link/redirect</td>
+            </tr>
+            <tr>
                 <td>disable_csrf_on_links</td>
                 <td>Flag</td>
                 <td>0</td>
@@ -4841,7 +4922,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>A JSON hash mapping the value in MSH_3 or MSH_5 to another account uuid. The hash key is an HL7 message field, the value can be an comma separated list of account uuids, a hash with acount_id and node_id(optional) keys or a list of hashes. The HL7 message will be attached to the mapped account and a node will be replaced with the given one. The special hash key <code>_HL7_FIELD_</code> can be used to set a different place to get the value .e.g. <code>MSH_6_1</code>  This can only be set by a sysadmin or support user</td>
+                <td>A JSON hash mapping the value in MSH_3 or MSH_5 to another account uuid. The hash key is an HL7 message field, the value can be an comma separated list of account uuids, a hash with account_id and node_id(optional) keys or a list of hashes. The HL7 message will be attached to the mapped account and a node will be replaced with the given one. The special hash key <code>_HL7_FIELD_</code> can be used to set a different place to get the value .e.g. <code>MSH_6_1</code>  This can only be set by a sysadmin or support user</td>
             </tr>
             <tr>
                 <td>duplicate_account_hl7_map</td>
@@ -5361,6 +5442,15 @@
                         <li> include_priors &bull; Flag to include priors for anonymous user links created by the view_study action
                         <li> link_user &bull; UUID of the user to create the anonymous links with
                         <li> apply_epic_name_format &bull; Flag to apply the epic_name_format value to the result patient names 
+                        <li> inbasket_setup &bull; A JSON hash with the information needed to send <a href="https://apporchard.epic.com/Sandbox/Index?api=384">inbasket messages</a>. The keys and values are as follows:
+                        <ul>
+                            <li> url &bull; The full URL to post the message too e.g. <code>https://apporchard.epic.com/interconnect-aocurprd-username/api/epic/2014/Common/Utility/SENDMESSAGE/Message</code>
+                            <li> SenderID &bull; The value as per the Epic API documents e.g. <code>FAMMD</code>
+                            <li> Recipients &bull; The value as per the Epic API documents e.g. <code>[{"ID":"IPMD","IDType":"External","IsPool":""}]</code>
+                            <li> MessageType &bull; The value as per the Epic API documents
+                            <li> MessagePriority &bull; The value as per the Epic API documents
+                            <li> message_template &bull; A text template to apply against the study for the message. Use a pipe symbol to split the message into multiple lines e.g. <code>A study for {$patientid} was uploaded|Date: {$study_date}|Call us for support</code>
+                        </ul>
                     </ul>
                     This integration also supports the following additional workflows that are triggered by the action parameter value sent to the /epic/oauth2 entry point. The supported actions are
                     <ul>
@@ -6248,6 +6338,50 @@
                         <li> body &bull; The query body
                         <li> key &bull; The query  type tag
                     </ul>
+            </tr>
+            <tr>
+                <td>query_emails_reply_to</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>An email address to be used for the Reply-To email header of the query-related emails sent out by the service</td>
+            </tr>
+            <tr>
+                <td>iocm_delete_thin_studies</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Flag to delete a thin study if storage recieves an IOCM delete request</td>
+            </tr>
+            <tr>
+                <td>remove_private_tags_on_upload</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Flag to anonymize or remove all private tags from a study in storage</td>
+            </tr>
+            <tr>
+                <td>maximum_allowed_download_studies</td>
+                <td>Number</td>
+                <td>10</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A number of studies to be included in a patient zip download</td>
             </tr>
         </table>
 
@@ -21000,6 +21134,14 @@
                             <li><i>study_description</i> &bull; The string a study description should partially match<br>
                             <li><i>message_count</i> &bull; The number of message passed through the study request. Returned if the user has message_view permission<br>
                         </ul>
+                        <li>TRIAL_QC_TASK - A pending clinical trial QC task
+                        <ul>
+                            <li><i>qctask_id</i> &bull; Id of the QC task<br>
+                            <li><i>namespace_id</i> &bull; A namespace the QC task is assigned to<br>
+                            <li><i>user_id</i> &bull; A user the QC task is assigned to<br>
+                            <li><i>query_id</i> &bull; Id of the associated Query object<br>
+                            <li><i>message</i> &bull; An explanatory message for the QC task<br>
+                        </ul>
                     </ul>
                 </td>
             </tr>
@@ -21142,7 +21284,7 @@
         <table class="bordered-table">
             <tr>
                 <th>Description</th>
-                <td>Audit what a user has done in an account</td>
+                <td>Audit a user's public key edits and what a user has done in an account</td>
             </tr>
             <tr>
                 <th>URL</th>
@@ -21504,6 +21646,7 @@
                     <i>study_field_flags</i> &bull; A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)<br>
                     <i>study_size_soft_threshold_per_user</i> &bull; A threshold for studies size per user. An email (by study_quota_exceeded template) will be sent when this limit is exceeded by a user. A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)<br>
                     <i>share_related</i> &bull; Flag to make study shares with this namespace include related studies (same PHI namespace, same MRN) (optional)<br>
+                    <i>remove_private_tags_on_upload</i> &bull; Flag the storage to anonymize or remove all private tags from a study (optional)<br>
                     <div class="comment">-- The following account settings can be over-ridden in the namespace --</div>
                     <i>enable_dicom_wrapping</i> &bull; Value for the setting (optional)<br>
                     <i>auto_enable_dicom_wrapping</i> &bull; Value for the setting (optional)<br>
@@ -21829,6 +21972,7 @@
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The uuid of the namespace<br>
                     <i>rules</i> &bull; Anonymization rules in JSON format. The format is a hash with the keys the names of the fields to anonymize and the values the regular expressions to apply. (optional)<br>
+                    <i>anonymization_id</i> &bull; The uuid of the <a href="#anonymization">anonymization profile</a> to connect to the namespace. (optional)<br>
                     <i>prompt_for_anonymize</i> &bull; Flag to prompt if the anonymization rules should be applied. Only applicable to ingress anonymization. (optional)<br>
                 </td>
             </tr>
@@ -21853,11 +21997,14 @@
                 <td>
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     NOT_PERMITTED &bull; You are not permitted to anonymize this namespace<br>
-                    NOT_FOUND &bull; The namespace was not found<br>
+                    NOT_FOUND &bull; The namespace or anonymization profile was not found. The <i>error_subtype</i> holds the type of the not found item<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
                     NOT_HASH &bull; The rules field is not a hash <br>
                     INVALID_FIELD_NAME &bull; The field name is n the rules hash is invalid. The <i>error_subtype</i> holds the invalid field name<br>
                     INVALID_REGEXP &bull; Invalid regular expression. The <i>error_subtype</i> holds the invalid regexp.<br>
+                    ONLY_ONE &bull; You can pass either the rules parameter with non-empty rule set or non-empty  anonymization_id parameter, but not both<br>
+                    HAS_ANONYMIZATION_PROFILE &bull; The namespace has an anonymization profile connected, the anonymization rules cannot be set<br>
+                    HAS_ANONYMIZATION_RULES &bull; The namespace has anonymization rules set, the namespace cannot be connected to an anonymization profile therefore<br>
                 </td>
             </tr>
             <tr>
@@ -21878,6 +22025,7 @@
                         <li> The special __COUNTER-000010__ value in the right side of the regexp will be replaced with a counter that will be formatted as per the pattern, in this case it will start at 10 and be padded to 6 places. Adjust starting number and padding as desired. Padding is not required i.e. DG-__COUNTER-20__ will start at twenty and not be padded and will start with DG-. Each different pattern will be a unique counter and the counter is scoped to the phi namespace.
                         <li> The special __LCOUNTER-XXX__ value will be replaced with the last counter value
                         <li> If anonymization is performed on the server side the original field values will be saved to any named customfields of the form <code>pre_anon_FIELDNAME</code> if the value is changed
+                        <li> Connecting an anonymization profile and setting anonymization rules are mutually exclusive.
                     </ul>
                 </td>
             </tr>
@@ -22894,7 +23042,7 @@
                 <th>Parameters</th>
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
-                    <i>type</i> &bull; The type of filter to list<br>
+                    <i>type</i> &bull; The type of filter to list (repeat this to get multiple types)<br>
                     <i>account_id</i> &bull; Limit to global filters and filters within the account namespaces<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -22940,6 +23088,7 @@
                     <i>type</i> &bull; The type of the filter<br>
                     <i>configuration</i> &bull; The configuration as a JSON data structure<br>
                     <i>account_id</i> &bull; The account id to link this filter with (optional)<br>
+                    <i>tier_parent_id</i> &bull; The uuid of the filter that this filter should be a child of (optional, for tiered filters)<br>
                 </td>
             </tr>
             <tr>
@@ -22951,8 +23100,8 @@
             </tr>
             <tr>
                 <th>Errors</th>
-                    INVALID_CONFIG &bull; The configuration is invalid
                 <td>
+                    INVALID_CONFIG &bull; The configuration is invalid
                 </td>
             </tr>
             <tr>
@@ -22993,7 +23142,10 @@
                     <i>type</i> &bull; The type of the filter<br>
                     <i>configuration</i> &bull; The configuration as a JSON data structure<br>
                     <i>owner</i> &bull; Flag if the user is the owner of this filter<br>
-                    <i>account_id</i> &bull; The account idthis filter is linked with<br>
+                    <i>account_id</i> &bull; The account id this filter is linked with<br>
+                    <i>namespace_id</i> &bull; The namespace id this filter is linked with<br>
+                    <i>tier_children</i> &bull; The tree of tiered filter descendants (empty list if no tiered descendants)<br>
+                    <i>tier_parent_id</i> &bull; The uuid of immediate tiered ancestor (not present if no tiered ancestor)<br>
                 </td>
             </tr>
             <tr>
@@ -23302,6 +23454,8 @@
                     <i>dicom_tag_ignore_empty</i> &bull; Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified) (optional)<br>
                     <i>load_from_sr</i> &bull; Load the value from the structured reports in the study (only applicable to study fields) .(optional)<br>
                     <i>field_flag</i> &bull; Default customfield flag (optional)<br>
+                    <i>load_order</i> &bull; If this flag is on the value of this field will be loaded from a customfield of the matching Order. The customfield is defined by the other_customfield_id parameter (optional)<br>
+                    <i>other_customfield_id</i> &bull; Id of a customfield to map its value to this customfield's value (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -23321,7 +23475,8 @@
                 <th>Errors</th>
                 <td>
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
-                    NOT_FOUND &bull; The account can not be found<br>
+                    ACCOUNT_NOT_FOUND &bull; The account can not be found<br>
+                    NOT_FOUND &bull; The Customfield can not be found<br>
                     NOT_PERMITTED &bull; You are not permitted to add a customfield to this account<br>
                     INVALID_TYPE &bull; An invalid type was passed.<br>
                     INVALID_OBJECT &bull; An invalid object was passed.<br>
@@ -23386,6 +23541,7 @@
                         <li> DICOM tags must be uppercase e.g. <code>(0020,002D)</code>
                         <li> If a customfield is named _DATA_FIELD_fieldname the value will be loaded from the named database field e.g. <code>_DATA_FIELD_integration_key</code>
                         <li> Customfield default flag is overridable with <i>study_field_customfield_UUID</i> role permissions and <i>study_field_flags</i> namespace setting
+                        <li> Customfield can be mapped from another customfield by the means of <i>other_customfield_id</i>. Order->Study mapping is supported currently. Order customfield does not override current Study customfield. Studies match orders by MRN and accession number.
                     </ul>
                 </td>
             </tr>
@@ -23426,6 +23582,8 @@
                     <i>dicom_tag_ignore_empty</i> &bull; Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified) (optional)<br>
                     <i>load_from_sr</i> &bull; Load the value from the structured reports in the study. (only applicable to study fields) .(optional)<br>
                     <i>field_flag</i> &bull; Default customfield flag (optional)<br>
+                    <i>load_order</i> &bull; If this flag is on the value of this field will be loaded from a customfield of the matching Order. The customfield is defined by the other_customfield_id parameter (optional)<br>
+                    <i>other_customfield_id</i> &bull; Id of a customfield to map its value to this customfield's value (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -23444,7 +23602,7 @@
                 <th>Errors</th>
                 <td>
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
-                    NOT_FOUND &bull; The customfield can not be found<br>
+                    NOT_FOUND &bull; The object was not found. The <i>error_subtype</i> holds the name of the key for the object that can not be found<br>
                     NOT_PERMITTED &bull; You are not permitted to edit the customfield<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
                     INVALID_OPTIONS &bull; An option is invalid. The <i>error_subtype</i> holds the specific error message<br>
@@ -23508,6 +23666,8 @@
                     <i>dicom_tag_ignore_empty</i> &bull; Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified)<br>
                     <i>load_from_sr</i> &bull; Load the value from the structured reports in the study<br>
                     <i>field_flag</i> &bull; Default customfield flag<br>
+                    <i>load_order</i> &bull; If this flag is on the value of this field will be loaded from a customfield of the matching Order. The customfield is defined by the other_customfield_id parameter<br>
+                    <i>other_customfield_id</i> &bull; Id of a customfield to map its value to this customfield's value<br>
                 </td>
             </tr>
             <tr>
@@ -23805,9 +23965,10 @@
                     SFDC_JWT_MISSING_FIELDS &bull; Fields are missing for the SFDC auth hash<br>
                     FDC_JWT_INVALID_PRIVATE_KEY &bull; The private key is invalid
                     CUSTOM_NOT_HASH &bull; The custom auth value is not a JSON hash<br>
+                    INVALID_URL &bull; The url value is invalid<br>
                     INVALID_CRON &bull; The cron value is invalid<br>
                     NOT_WITH_CRON &bull; The delay or retry option can not be used for cron events<br>
-
+                    SID_USER_PRIVILEGE_ESCALATION &bull; The user for sid_user_id has higher privileges that the calling user<br>
                 </td>
             </tr>
             <tr>
@@ -23974,8 +24135,10 @@
                     INVALID_TRANSFORM_CONDITION &bull; The transform condition is invalid<br>
                     SFDC_NOT_HASH &bull; The SFDC auth value is not a JSON hash<br>
                     SFDC_MISSING_FIELDS &bull; Fields are missing for the SFDC auth hash<br>
+                    INVALID_URL &bull; The url value is invalid<br>
                     INVALID_CRON &bull; The cron value is invalid<br>
                     NOT_WITH_CRON &bull; The delay or retry option can not be used for cron events<br>
+                    SID_USER_PRIVILEGE_ESCALATION &bull; The user for sid_user_id has higher privileges that the calling user<br>
                 </td>
             </tr>
             <tr>
@@ -24392,6 +24555,8 @@
                     <i>charge_description</i> &bull; Charge description (optional) <br>
                     <i>upload_match</i> &bull; A JSON hash of DICOM tags and regular expressions they must match uploaded against this link (optional) <br>
                     <i>upload_study_customfields</i> &bull; A JSON hash of customfields that will be mapped to a study on study upload. A key is a customfield UUID, a value is a value for the field (optional) <br>
+                    <i>workflow</i> &bull; The workflow this link is intended for (patient_studies) (optional)<br>
+                    <i>ui_json</i> &bull; JSON for UI settings (optional)<br>
             </tr>
             <tr>
                 <th>Returns</th>
@@ -24426,6 +24591,7 @@
                     VALIDATE &bull; A validation error. The <i>error_subtype</i> holds the details on the error<br>
                     INVALID_CHARGE &bull; The charge is invalid. The <i>error_subtype</i> holds the details on the error<br>
                     INVALID_UPLOAD_MATCH &bull; The upload_match is invalid. The <i>error_subtype</i> holds the details on the error<br>
+                    VALIDATION_FAILED &bull; The workflow parameter validation failed<br>
                 </td>
             </tr>
             <tr>
@@ -24461,6 +24627,7 @@
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; Id of the link<br>
+                    <i>short_id</i> &bull; Short ID of the link for the 'patient_studies' workflow<br>
                     <i>url</i> &bull; URL for the link which will take you to the UI entry point for links to enter email, password etc.<br>
                     <i>redirect_url</i> &bull; URL for the /link/redirect API  which will take you directly to the study viewer or uploader<br>
                     <i>description</i> &bull; Description of the link<br>
@@ -24498,6 +24665,8 @@
                     <i>upload_match</i> &bull; A JSON hash of DICOM tags and regular expressions they must match uploaded against this link<br>
                     <i>upload_study_customfields</i> &bull; A JSON hash of customfields that will be mapped to a study on study upload<br>
                     <i>created</i> &bull; Created datetime stamp of the link<br>
+                    <i>workflow</i> &bull; The workflow this link is intended for<br>
+                    <i>ui_json</i> &bull; JSON for UI settings<br>
                 </td>
             </tr>
             <tr>
@@ -24647,7 +24816,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>(uuid || pin)</i> &bull; Id or PIN of the link<br>
+                    <i>(uuid || pin || short_id)</i> &bull; Id, short Id or PIN of the link<br>
                     <i>password</i> &bull; Password if needed (optional)<br>
                     <i>email_address</i> &bull; The users email (optional)<br>
                     <i>link_charge_id</i> &bull; The uuid of the prior charge against this link (optional)<br>
@@ -24683,6 +24852,7 @@
                     DISABLED &bull; This call is disabled for the account, you must use /link/redirect<br>
                     INVALID_PIN &bull; An invalid PIN was entered<br>
                     PIN_LOCKOUT &bull; Too many invalid PIN entries<br>
+                    ONLY_ONE &bull; You can pass either uuid or short_id, not both<br>
                 </td>
             </tr>
             <tr>
@@ -24706,7 +24876,7 @@
             <tr>
                 <th>Parameters</th>
                 <td>
-                    <i>(uuid || pin)</i> &bull; Id or PIN of the link<br>
+                    <i>(uuid || pin || short_id)</i> &bull; Id, short Id or PIN of the link<br>
                     <i>sid</i> &bull; sid from /link/session (optional)<br>
                     <i>password</i> &bull; Password if needed (optional)<br>
                     <i>link_charge_id</i> &bull; The uuid of the prior charge against this link (optional)<br>
@@ -24735,6 +24905,7 @@
                     NOT_PERMITTED &bull; The configuration of this link requires the link UI be used instead of direct access<br>
                     INVALID_PIN &bull; An invalid PIN was entered<br>
                     PIN_LOCKOUT &bull; Too many invalid PIN entries<br>
+                    ONLY_ONE &bull; You can pass either uuid or short_id, not both<br>
                 </td>
             </tr>
             <tr>
@@ -28123,7 +28294,7 @@
                     <i>study_id</i> &bull; The study the query is related to<br>
                     <i>study_modality</i> &bull; The related study modality<br>
                     <i>group_id</i> &bull; Id of the group associated to a trial site<br>
-                    <i>group_id</i> &bull; Name of the group associated to a trial site<br>
+                    <i>group_name</i> &bull; Name of the group associated to a trial site<br>
                     <i>attachments</i> &bull; An array of the query attachments. Each object has the following fields.<br>
                     * <i>uuid</i> &bull; Attachment Id<br>
                     * <i>created</i> &bull; Date and time the attachment was created<br>
@@ -28147,7 +28318,7 @@
                     <i>patient_name</i> &bull; The patient name<br>
                     <i>patient_arm</i> &bull; The patient arm (defined by the <code>trial_arm</code> named customfield)<br>
                     <i>tags</i> &bull; An array of user tags associated with this object (This is only returned if the object has tags)<br>
-                    <i>customfields</i> &bull; An array of the custom fields associated with this case. Each object has the following <a href="#customfields">fields</a> (This is only returned if the case has custom fields)<br>
+                    <i>customfields</i> &bull; An array of the custom fields associated with this query. Each object has the following <a href="#customfields">fields</a> (This is only returned if the query has custom fields)<br>
                 </td>
             </tr>
             <tr>
@@ -28401,6 +28572,417 @@
         </table>
         <a href="#query-idx">top</a>
 
+        <a name="qctask"><h3>QC Task commands</h3></a>
+
+        <p><a name="qctask_add"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Add a QC Task</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/qctask/add</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>namespace_id</i> &bull; Id of the namespace assigned to the QC Task<br>
+                    <i>user_id</i> &bull; Id of the user to assign the QC Task to (optional)<br>
+                    <i>query_id</i> &bull; Id of the query to associate the QC Task to (optional)<br>
+                    <i>priority</i> &bull; QC Task priority (optional)<br>
+                    <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
+                    <i>message</i> &bull; Explanatory message for the QC Task (optional)<br>
+                    <i>studies</i> &bull; A JSON array of the study uuid(s) (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>uuid</i> &bull; The uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    qctask_add
+                    qctask_prioritize
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The object was not found. The <i>error_subtype</i> holds the type of object not found<br>
+                    NOT_PERMITTED &bull; You are not permitted to assign a QC Task to the namespace<br>
+                    NAMESPACE_NOT_ACCOUNT_RELATED &bull; The assigned namespace is not associated with an Account (it is a PHR account)<br>
+                    NOT_OWNING_NAMESPACE &bull; The assigned namespace is not an owning namespace for the passed Query<br>
+                    INVISIBLE_QUERY &bull; The passed Query is not visible to the user the QC Task is being assigned to<br>
+                    INVALID_INTEGER &bull; An invalid integer was passed. The <i>error_subtype</i> holds the name of the invalid integer<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#qctask-idx">top</a>
+
+        <p><a name="qctask_set"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Edit a QC Task</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/qctask/set</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The QC Task uuid<br>
+                    <i>user_id</i> &bull; Id of the user to assign the QC Task to (optional)<br>
+                    <i>priority</i> &bull; QC Task priority (optional)<br>
+                    <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
+                    <i>message</i> &bull; Explanatory message for the QC Task (optional)<br>
+                    <i>studies</i> &bull; A JSON array of the study uuid(s) (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    qctask_edit
+                    qctask_prioritize
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    NOT_FOUND &bull; The object was not found. The <i>error_subtype</i> holds the type of object not found<br>
+                    NOT_PERMITTED &bull; You are not permitted to edit the QC Task<br>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    INVALID_INTEGER &bull; An invalid integer was passed. The <i>error_subtype</i> holds the name of the invalid integer<br>
+                    INVISIBLE_QUERY &bull; The passed Query is not visible to the user the QC Task is being assigned to<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#qctask-idx">top</a>
+
+        <p><a name="qctask_get"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get a QC Task</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/qctask/get</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The QC Task uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>namespace_id</i> &bull; Id of the namespace assigned to the QC Task<br>
+                    <i>user_id</i> &bull; Id of the user to assign the QC Task to<br>
+                    <i>query_id</i> &bull; Id of the associated query<br>
+                    <i>priority</i> &bull; QC Task priority<br>
+                    <i>customfields</i> &bull; An array of the custom fields associated with this QC Task. Each object has the following <a href="#customfields">fields</a> (This is only returned if the QC Task has custom fields)<br>
+                    <i>message</i> &bull; Explanatory message for the QC Task<br>
+                    <i>created</i> &bull; Date and time the QC Task was created<br>
+                    <i>studies</i> &bull; An array of the study uuid(s)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    qctask_view
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The QC Task can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to view the QC Task<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#qctask-idx">top</a>
+
+        <a name="anonymization"><h3>Anonymization profile commands</h3></a>
+
+        <p><a name="anonymization_list"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get a list of the anonymization profiles in the account</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/anonymization/list</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>account_id</i> &bull; uuid of the account<br>
+                    <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
+                    <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
+                    <i>sort_by</i> &bull; <a href="#sort">Sorting</a> (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>page</i> &bull; The pagination status hash<br>
+                    <i>anonymization_profiles</i> &bull; An array of the anonymization profiles. Each object holds the same fields as the <a href="#anonymization_get">/anonymization/get</a> call<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    account_view
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The account can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to view anonymization profiles in this account<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#anonymization-idx">top</a>
+
+        <p><a name="anonymization_add"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Add an anonymization profile</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/anonymization/add</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>account_id</i> &bull; uuid of the account to add them to<br>
+                    <i>name</i> &bull; Name of the anonymization profile<br>
+                    <i>rules</i> &bull; A JSON hash of <a href="#namespace_anonymize">anonymization rules</a> to apply to retrieved studies<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>uuid</i> &bull; The uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    account_edit
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The account was not found. The <i>error_subtype</i> holds the type of object not found<br>
+                    NOT_HASH &bull; The rules field is not a hash <br>
+                    NOT_PERMITTED &bull; You are not permitted to add an anonymization profile to the account<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#anonymization-idx">top</a>
+
+        <p><a name="anonymization_set"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Edit an anonymization profile</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/anonymization/set</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The anonymization profile uuid<br>
+                    <i>name</i> &bull; Name of the anonymization profile (optional)<br>
+                    <i>rules</i> &bull; A JSON hash of <a href="#namespace_anonymize">anonymization rules</a> to apply to retrieved studies (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    account_edit
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    NOT_FOUND &bull; The anonymization profile can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to edit the anonymization profile<br>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_HASH &bull; The rules field is not a hash <br>
+                    IN_USE &bull; The anonymization profile is connected to an account, its rule set cannot be changed<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ul>
+                        <li>Rules in an anonymization profile becomes read-only when connected to a namespace
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#anonymization-idx">top</a>
+
+        <p><a name="anonymization_get"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get an anonymization profile</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/anonymization/get</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The anonymization profile uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>uuid</i> &bull; The anonymization profile uuid<br>
+                    <i>name</i> &bull; Name of the anonymization profile<br>
+                    <i>rules</i> &bull; A JSON hash of <a href="#namespace_anonymize">anonymization rules</a> to apply to retrieved studies<br>
+                    <i>account_id</i> &bull; account uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    account_view
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The anonymization profile can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to view the anonymization profile<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#anonymization-idx">top</a>
+
+        <p><a name="anonymization_delete"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Delete an anonymization profile</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/anonymization/delete</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The anonymization profile uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    account_edit
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The anonymization profile can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to delete the anonymization profile<br>
+                    IN_USE &bull; The anonymization profile is connected to an account and cannot be removed<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#anonymization-idx">top</a>
 
     <footer>LBL0022 v47.0 2021-06-30</footer>
     </div>

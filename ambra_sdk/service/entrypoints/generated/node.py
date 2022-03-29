@@ -301,7 +301,7 @@ class Node:
         :param name: Description of the node (optional)
         :param reload_configuration: If this flag is set the node will be instructed to reload it's configuration on the next ping (optional)
         :param serial_no: serial_no
-        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
         :param settings: A hash of the account settings that the node can override (optional)
         :param storage_namespace: Namespace uuid to attach the node to. This requires a sysadmin sid and must be within the same account (optional)
         :param warning_email: Email address(es) to send warning notices (optional)
@@ -1340,7 +1340,7 @@ class AsyncNode:
         :param name: Description of the node (optional)
         :param reload_configuration: If this flag is set the node will be instructed to reload it's configuration on the next ping (optional)
         :param serial_no: serial_no
-        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
         :param settings: A hash of the account settings that the node can override (optional)
         :param storage_namespace: Namespace uuid to attach the node to. This requires a sysadmin sid and must be within the same account (optional)
         :param warning_email: Email address(es) to send warning notices (optional)

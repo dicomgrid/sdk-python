@@ -2,7 +2,7 @@
 
 from typing import Any, Dict, Optional, Union
 
-from box import Box
+from box import Box, BoxList
 from requests import Response
 
 from ambra_sdk.storage.request import PreparedRequest
@@ -1480,4 +1480,136 @@ class Study(BaseStudy):
 
         if use_box is True:
             return Box(response.json())
+        return response
+
+    def image_dicomweb(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        study_uid: str,
+        series_uid: str,
+        image_uid: str,
+        phi_namespace: Optional[str] = None,
+        use_box: bool = True,
+        only_prepare: bool = False,
+    ) -> Union[Box, Response, PreparedRequest]:
+        """Returns JSON representation of a single DICOM as defined by the DICOMWeb WADO-RS Metadata standard \
+            http://dicom.nema.org/medical/dicom/current/output/html/part18.html#table_10.4.1-2.
+
+        URL: dicomweb/{namespace}/studies/{studyUid}/series/{seriesUid}/instances/{imageUid}/metadata?sid={sid}&phi_namespace={phi_namespace}
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param study_uid: Study uid (Required).
+        :param series_uid: Series uid (Required).
+        :param image_uid: Image uid (Required).
+        :param phi_namespace: A string, set to the UUID of the
+            namespace where the file was attached if it was
+            attached to a shared instance of the study
+            outside of the original storage namespace
+        :param use_box: Use box for response.
+        :param only_prepare: Get prepared request.
+
+        :returns: A JSON representation of a DICOM according to the DICOMWeb standard,
+            omitting any bulkdata, pixeldata, or other binary fields.
+        """
+        prepared_request = self._image_dicomweb(
+            engine_fqdn=engine_fqdn,
+            namespace=namespace,
+            study_uid=study_uid,
+            series_uid=series_uid,
+            image_uid=image_uid,
+            phi_namespace=phi_namespace,
+        )
+        if only_prepare is True:
+            return prepared_request
+        response = prepared_request.execute()
+
+        if use_box is True:
+            return Box(response.json())
+        return response
+
+    def series_dicomweb(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        study_uid: str,
+        series_uid: str,
+        phi_namespace: Optional[str] = None,
+        use_box: bool = True,
+        only_prepare: bool = False,
+    ) -> Union[BoxList, Response, PreparedRequest]:
+        """Returns JSON representation of a series of DICOM(s) as defined by the DICOMWeb WADO-RS Metadata standard \
+            http://dicom.nema.org/medical/dicom/current/output/html/part18.html#table_10.4.1-2.
+
+        URL: dicomweb/{namespace}/studies/{studyUid}/series/{seriesUid}/metadata?sid={sid}&phi_namespace={phi_namespace}
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param study_uid: Study uid (Required).
+        :param series_uid: Series uid (Required).
+        :param phi_namespace: A string, set to the UUID of the
+            namespace where the file was attached if it was
+            attached to a shared instance of the study
+            outside of the original storage namespace
+        :param use_box: Use box for response.
+        :param only_prepare: Get prepared request.
+
+        :returns: A JSON representation of a series of DICOM(s) according to the DICOMWeb standard,
+            omitting any bulkdata, pixeldata, or other binary fields.
+        """
+        prepared_request = self._series_dicomweb(
+            engine_fqdn=engine_fqdn,
+            namespace=namespace,
+            study_uid=study_uid,
+            series_uid=series_uid,
+            phi_namespace=phi_namespace,
+        )
+        if only_prepare is True:
+            return prepared_request
+        response = prepared_request.execute()
+
+        if use_box is True:
+            return BoxList(response.json())
+        return response
+
+    def study_dicomweb(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        study_uid: str,
+        phi_namespace: Optional[str] = None,
+        use_box: bool = True,
+        only_prepare: bool = False,
+    ) -> Union[BoxList, Response, PreparedRequest]:
+        """Returns JSON representation of an entire study of DICOMs as defined by the DICOMWeb WADO-RS Metadata standard \
+            http://dicom.nema.org/medical/dicom/current/output/html/part18.html#table_10.4.1-2.
+
+        URL: dicomweb/{namespace}/studies/{studyUid}/metadata?sid={sid}&phi_namespace={phi_namespace}
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param study_uid: Study uid (Required).
+        :param phi_namespace: A string, set to the UUID of the
+            namespace where the file was attached if it was
+            attached to a shared instance of the study
+            outside of the original storage namespace
+        :param use_box: Use box for response.
+        :param only_prepare: Get prepared request.
+
+        :returns: A JSON representation of an entire study of DICOM(s) according to the DICOMWeb standard,
+            omitting any bulkdata, pixeldata, or other binary fields.
+        """
+        prepared_request = self._study_dicomweb(
+            engine_fqdn=engine_fqdn,
+            namespace=namespace,
+            study_uid=study_uid,
+            phi_namespace=phi_namespace,
+        )
+        if only_prepare is True:
+            return prepared_request
+        response = prepared_request.execute()
+
+        if use_box is True:
+            return BoxList(response.json())
         return response

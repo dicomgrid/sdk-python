@@ -49,7 +49,7 @@ class Order:
         :param patientid: Patient MRN
         :param referring_physician: Referring physician
         :param sending_facility: Sending facility
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         """
         request_data = {
            'accession_number': accession_number,
@@ -126,7 +126,7 @@ class Order:
         :param referring_physician: Referring physician
         :param sending_facility: Sending facility
         :param uuid: The order uuid
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         """
         request_data = {
            'accession_number': accession_number,
@@ -434,7 +434,7 @@ class AsyncOrder:
         :param patientid: Patient MRN
         :param referring_physician: Referring physician
         :param sending_facility: Sending facility
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         """
         request_data = {
            'accession_number': accession_number,
@@ -511,7 +511,7 @@ class AsyncOrder:
         :param referring_physician: Referring physician
         :param sending_facility: Sending facility
         :param uuid: The order uuid
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         """
         request_data = {
            'accession_number': accession_number,

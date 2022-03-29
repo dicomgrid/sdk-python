@@ -72,6 +72,8 @@ class Route:
         on_share,
         account_id=None,
         delay=None,
+        delay_from_study_field=None,
+        delay_from_study_seconds=None,
         delay_seconds=None,
         delay_till_schedule=None,
         group_id=None,
@@ -82,6 +84,7 @@ class Route:
         on_manual_route=None,
         on_thin=None,
         on_upload=None,
+        only_re_run=None,
         options=None,
         other_namespaces=None,
         schedule=None,
@@ -96,6 +99,8 @@ class Route:
         :param on_share: Apply the rule to studies shared into the namespace
         :param account_id: account_id
         :param delay: Number of minutes to delay running this rule for after it is triggered (optional)
+        :param delay_from_study_field: Delay running this rule, start counting from this study's datetime field (optional)
+        :param delay_from_study_seconds: Number of seconds to delay running this rule for after a timepoint defined by delay_from_study_field (optional)
         :param delay_seconds: Number of seconds to delay running this rule for after it is triggered (optional)
         :param delay_till_schedule: Delay running this rule after it is triggered until the next scheduled time - flag (optional)
         :param group_id: group_id
@@ -106,6 +111,7 @@ class Route:
         :param on_manual_route: Apply this rule for a manually routed study - flag (optional)
         :param on_thin: Apply this rule to thin studies when they are created - flag (optional)
         :param on_upload: Apply the rule to studies uploaded into the namespace - flag (optional)
+        :param only_re_run: Only run this rule on a re-notification from storage - flag (optional)
         :param options: Route options in JSON format (optional)
         :param other_namespaces: A comma separated list of the uuid of other namespaces to apply this rule to (optional)
         :param schedule: Route schedule in JSON format (optional)
@@ -116,6 +122,8 @@ class Route:
            'actions': actions,
            'conditions': conditions,
            'delay': delay,
+           'delay_from_study_field': delay_from_study_field,
+           'delay_from_study_seconds': delay_from_study_seconds,
            'delay_seconds': delay_seconds,
            'delay_till_schedule': delay_till_schedule,
            'group_id': group_id,
@@ -129,6 +137,7 @@ class Route:
            'on_share': on_share,
            'on_thin': on_thin,
            'on_upload': on_upload,
+           'only_re_run': only_re_run,
            'options': options,
            'other_namespaces': other_namespaces,
            'schedule': schedule,
@@ -163,6 +172,8 @@ class Route:
         actions=None,
         conditions=None,
         delay=None,
+        delay_from_study_field=None,
+        delay_from_study_seconds=None,
         delay_seconds=None,
         delay_till_schedule=None,
         manual_roles=None,
@@ -173,6 +184,7 @@ class Route:
         on_share=None,
         on_thin=None,
         on_upload=None,
+        only_re_run=None,
         options=None,
         other_namespaces=None,
         schedule=None,
@@ -184,6 +196,8 @@ class Route:
         :param actions: Route actions in JSON format (optional)
         :param conditions: Route conditions in JSON format (optional)
         :param delay: Number of minutes to delay running this rule for after it is triggered (optional)
+        :param delay_from_study_field: Delay running this rule, start counting from this study's datetime field (optional)
+        :param delay_from_study_seconds: Number of seconds to delay running this rule for after a timepoint defined by delay_from_study_field (optional)
         :param delay_seconds: Number of seconds to delay running this rule for after it is triggered (optional)
         :param delay_till_schedule: Delay running this rule after it is triggered until the next scheduled time - flag (optional)
         :param manual_roles: A comma separated list of the uuid of roles that can run the rule manually (optional)
@@ -194,6 +208,7 @@ class Route:
         :param on_share: Apply the rule to studies shared into the namespace (optional)
         :param on_thin: Apply this rule to thin studies when they are created - flag (optional)
         :param on_upload: Apply the rule to studies uploaded into the namespace - flag (optional)
+        :param only_re_run: Only run this rule on a re-notification from storage - flag (optional)
         :param options: Route options in JSON format (optional)
         :param other_namespaces: A comma separated list of the uuid of other namespaces to apply this rule to (optional)
         :param schedule: Route schedule in JSON format (optional)
@@ -203,6 +218,8 @@ class Route:
            'actions': actions,
            'conditions': conditions,
            'delay': delay,
+           'delay_from_study_field': delay_from_study_field,
+           'delay_from_study_seconds': delay_from_study_seconds,
            'delay_seconds': delay_seconds,
            'delay_till_schedule': delay_till_schedule,
            'manual_roles': manual_roles,
@@ -213,6 +230,7 @@ class Route:
            'on_share': on_share,
            'on_thin': on_thin,
            'on_upload': on_upload,
+           'only_re_run': only_re_run,
            'options': options,
            'other_namespaces': other_namespaces,
            'schedule': schedule,
@@ -368,6 +386,8 @@ class AsyncRoute:
         on_share,
         account_id=None,
         delay=None,
+        delay_from_study_field=None,
+        delay_from_study_seconds=None,
         delay_seconds=None,
         delay_till_schedule=None,
         group_id=None,
@@ -378,6 +398,7 @@ class AsyncRoute:
         on_manual_route=None,
         on_thin=None,
         on_upload=None,
+        only_re_run=None,
         options=None,
         other_namespaces=None,
         schedule=None,
@@ -392,6 +413,8 @@ class AsyncRoute:
         :param on_share: Apply the rule to studies shared into the namespace
         :param account_id: account_id
         :param delay: Number of minutes to delay running this rule for after it is triggered (optional)
+        :param delay_from_study_field: Delay running this rule, start counting from this study's datetime field (optional)
+        :param delay_from_study_seconds: Number of seconds to delay running this rule for after a timepoint defined by delay_from_study_field (optional)
         :param delay_seconds: Number of seconds to delay running this rule for after it is triggered (optional)
         :param delay_till_schedule: Delay running this rule after it is triggered until the next scheduled time - flag (optional)
         :param group_id: group_id
@@ -402,6 +425,7 @@ class AsyncRoute:
         :param on_manual_route: Apply this rule for a manually routed study - flag (optional)
         :param on_thin: Apply this rule to thin studies when they are created - flag (optional)
         :param on_upload: Apply the rule to studies uploaded into the namespace - flag (optional)
+        :param only_re_run: Only run this rule on a re-notification from storage - flag (optional)
         :param options: Route options in JSON format (optional)
         :param other_namespaces: A comma separated list of the uuid of other namespaces to apply this rule to (optional)
         :param schedule: Route schedule in JSON format (optional)
@@ -412,6 +436,8 @@ class AsyncRoute:
            'actions': actions,
            'conditions': conditions,
            'delay': delay,
+           'delay_from_study_field': delay_from_study_field,
+           'delay_from_study_seconds': delay_from_study_seconds,
            'delay_seconds': delay_seconds,
            'delay_till_schedule': delay_till_schedule,
            'group_id': group_id,
@@ -425,6 +451,7 @@ class AsyncRoute:
            'on_share': on_share,
            'on_thin': on_thin,
            'on_upload': on_upload,
+           'only_re_run': only_re_run,
            'options': options,
            'other_namespaces': other_namespaces,
            'schedule': schedule,
@@ -459,6 +486,8 @@ class AsyncRoute:
         actions=None,
         conditions=None,
         delay=None,
+        delay_from_study_field=None,
+        delay_from_study_seconds=None,
         delay_seconds=None,
         delay_till_schedule=None,
         manual_roles=None,
@@ -469,6 +498,7 @@ class AsyncRoute:
         on_share=None,
         on_thin=None,
         on_upload=None,
+        only_re_run=None,
         options=None,
         other_namespaces=None,
         schedule=None,
@@ -480,6 +510,8 @@ class AsyncRoute:
         :param actions: Route actions in JSON format (optional)
         :param conditions: Route conditions in JSON format (optional)
         :param delay: Number of minutes to delay running this rule for after it is triggered (optional)
+        :param delay_from_study_field: Delay running this rule, start counting from this study's datetime field (optional)
+        :param delay_from_study_seconds: Number of seconds to delay running this rule for after a timepoint defined by delay_from_study_field (optional)
         :param delay_seconds: Number of seconds to delay running this rule for after it is triggered (optional)
         :param delay_till_schedule: Delay running this rule after it is triggered until the next scheduled time - flag (optional)
         :param manual_roles: A comma separated list of the uuid of roles that can run the rule manually (optional)
@@ -490,6 +522,7 @@ class AsyncRoute:
         :param on_share: Apply the rule to studies shared into the namespace (optional)
         :param on_thin: Apply this rule to thin studies when they are created - flag (optional)
         :param on_upload: Apply the rule to studies uploaded into the namespace - flag (optional)
+        :param only_re_run: Only run this rule on a re-notification from storage - flag (optional)
         :param options: Route options in JSON format (optional)
         :param other_namespaces: A comma separated list of the uuid of other namespaces to apply this rule to (optional)
         :param schedule: Route schedule in JSON format (optional)
@@ -499,6 +532,8 @@ class AsyncRoute:
            'actions': actions,
            'conditions': conditions,
            'delay': delay,
+           'delay_from_study_field': delay_from_study_field,
+           'delay_from_study_seconds': delay_from_study_seconds,
            'delay_seconds': delay_seconds,
            'delay_till_schedule': delay_till_schedule,
            'manual_roles': manual_roles,
@@ -509,6 +544,7 @@ class AsyncRoute:
            'on_share': on_share,
            'on_thin': on_thin,
            'on_upload': on_upload,
+           'only_re_run': only_re_run,
            'options': options,
            'other_namespaces': other_namespaces,
            'schedule': schedule,

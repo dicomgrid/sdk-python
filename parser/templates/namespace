@@ -47,9 +47,15 @@ class {{ namespace }}:
         }
 
         {%- for req in api.request_multiple_params %}
+        {%- if req.pythonic_name.endswith('quoted_param') %}
+        if {{req.pythonic_name}} is not None:
+            {{ req.pythonic_name }}_dict = {'{prefix}\'{k}\''.format(prefix='{{ req.multiliple_prefix }}', k=k.replace('\\', '\\\\').replace('\'', '\\\'') if isinstance(k, str) else k): v for k,v in {{ req.pythonic_name }}.items()}
+            request_data.update({{ req.pythonic_name }}_dict)
+        {%- else %}
         if {{req.pythonic_name}} is not None:
             {{ req.pythonic_name }}_dict = {'{prefix}{k}'.format(prefix='{{ req.multiliple_prefix }}', k=k): v for k,v in {{ req.pythonic_name }}.items()}
             request_data.update({{ req.pythonic_name }}_dict)
+        {%- endif %}
         {%- endfor %}
 	
         errors_mapping = {}
@@ -108,9 +114,15 @@ class Async{{ namespace }}:
         }
 
         {%- for req in api.request_multiple_params %}
+        {%- if req.pythonic_name.endswith('quoted_param') %}
+        if {{req.pythonic_name}} is not None:
+            {{ req.pythonic_name }}_dict = {'{prefix}\'{k}\''.format(prefix='{{ req.multiliple_prefix }}', k=k.replace('\\', '\\\\').replace('\'', '\\\'') if isinstance(k, str) else k): v for k,v in {{ req.pythonic_name }}.items()}
+            request_data.update({{ req.pythonic_name }}_dict)
+        {%- else %}
         if {{req.pythonic_name}} is not None:
             {{ req.pythonic_name }}_dict = {'{prefix}{k}'.format(prefix='{{ req.multiliple_prefix }}', k=k): v for k,v in {{ req.pythonic_name }}.items()}
             request_data.update({{ req.pythonic_name }}_dict)
+        {%- endif %}
         {%- endfor %}
 	
         errors_mapping = {}

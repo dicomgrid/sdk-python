@@ -38,6 +38,7 @@ All `Service` methods returns `Query` object for preparing data request.
 For example:
 
 .. doctest::
+    :options: +SKIP
 
     >>> query_object = api.Study.list()
     >>> print(type(query_object))
@@ -277,7 +278,7 @@ Headers
 ^^^^^^^
 
 You can setup some default headers for service session
-(using `service_default_headers` property) or for both service and storage sesssions
+(using `service_default_headers` property) or for both service and storage sessions
 (using `default_headers` property)::
 
   api.default_headers['Golbal-header'] = 'value'

@@ -103,6 +103,7 @@ class Link:
         email=None,
         filter=None,
         include_priors=None,
+        inherit_permissions=None,
         max_hits=None,
         meeting_id=None,
         message=None,
@@ -125,6 +126,7 @@ class Link:
         upload_match=None,
         upload_study_customfields=None,
         use_share_code=None,
+        user_id=None,
         workflow=None,
     ):
         """Add.
@@ -140,6 +142,7 @@ class Link:
         :param email: Email the link to these addresses (optional)
         :param filter: filter
         :param include_priors: Include prior studies (optional)
+        :param inherit_permissions: Flag for the link sessions to inherit permissions from the user stored in the user_id link attribute (optional)
         :param max_hits: The maximum number of times the link can be used (optional)
         :param meeting_id: UUID of the meeting to associate the link with (optional)
         :param message: Message to include in the email (optional)
@@ -148,7 +151,7 @@ class Link:
         :param mobile_phone: Send the link to this phone number (optional)
         :param namespace_id: namespace_id
         :param notify: Comma or space separated list of additional emails to notify of link usage (optional)
-        :param parameters: JSON array of parameters to add to the redirect URL or return in /namespace/share_code if an upload (optional)
+        :param parameters: JSON array of parameters to add to the redirect URL or return in /namespace/share_code if an upload e.g. ["integration_key","abc"] Where abc is integration key. (optional)
         :param password: Link password (optional)
         :param password_is_dob: Flag that the password is the patient_birth_date for the study (study_id is required) (optional)
         :param password_max_attempts: The maximum number of failed password attempt (optional)
@@ -162,6 +165,7 @@ class Link:
         :param upload_match: A JSON hash of DICOM tags and regular expressions they must match uploaded against this link (optional)
         :param upload_study_customfields: A JSON hash of customfields that will be mapped to a study on study upload. A key is a customfield UUID, a value is a value for the field (optional)
         :param use_share_code: Flag to use the namespace share code settings for a STUDY_UPLOAD (optional)
+        :param user_id: The link user. Any filter is applied in this users context (optional)
         :param workflow: The workflow this link is intended for (patient_studies) (optional)
         """
         request_data = {
@@ -175,6 +179,7 @@ class Link:
            'email': email,
            'filter': filter,
            'include_priors': include_priors,
+           'inherit_permissions': inherit_permissions,
            'max_hits': max_hits,
            'meeting_id': meeting_id,
            'message': message,
@@ -198,6 +203,7 @@ class Link:
            'upload_match': upload_match,
            'upload_study_customfields': upload_study_customfields,
            'use_share_code': use_share_code,
+           'user_id': user_id,
            'workflow': workflow,
         }
 	
@@ -212,7 +218,7 @@ class Link:
         errors_mapping[('INVALID_REGEXP', None)] = InvalidRegexp('Invalid regular expression. The error_subtype holds the invalid regexp.')
         errors_mapping[('INVALID_UPLOAD_MATCH', None)] = InvalidUploadMatch('The upload_match is invalid. The error_subtype holds the details on the error')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping[('NOT_FOUND', None)] = NotFound('The patient or study could not be found. The error_subtype holds the uuid that can not be found')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The patient or study could not be found. The error_subtype holds the type of object not found')
         errors_mapping[('NOT_HASH', None)] = NotHash('The rules field is not a hash')
         errors_mapping[('NOT_LIST', None)] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to create links')
@@ -242,6 +248,7 @@ class Link:
         filter,
         has_password,
         include_priors,
+        inherit_permissions,
         is_meeting,
         max_hits,
         message,
@@ -286,6 +293,7 @@ class Link:
         :param filter: The filter expression
         :param has_password: Flag if the link has a password or not
         :param include_priors: Include prior studies
+        :param inherit_permissions: Flag for the link sessions to inherit permissions from the user stored in the user_id link attribute
         :param is_meeting: Flag if the link is for a meeting
         :param max_hits: The maximum number of times the link can be used
         :param message: Message to include in the email
@@ -329,6 +337,7 @@ class Link:
            'filter': filter,
            'has_password': has_password,
            'include_priors': include_priors,
+           'inherit_permissions': inherit_permissions,
            'is_meeting': is_meeting,
            'max_hits': max_hits,
            'message': message,
@@ -485,6 +494,7 @@ class Link:
         pin=None,
         short_id=None,
         uuid=None,
+        v=None,
     ):
         """Redirect.
 
@@ -493,6 +503,9 @@ class Link:
         :param pin: pin
         :param short_id: short_id
         :param uuid: uuid
+        :param v: A JSON hash with the following keys pairs. The JSON must be encrypted (optional)
+
+ context_user_id - an account user id for eUnity
         """
         request_data = {
            'link_charge_id': link_charge_id,
@@ -500,6 +513,7 @@ class Link:
            'pin': pin,
            'short_id': short_id,
            'uuid': uuid,
+           'v': v,
         }
 	
         errors_mapping = {}
@@ -755,6 +769,7 @@ class AsyncLink:
         email=None,
         filter=None,
         include_priors=None,
+        inherit_permissions=None,
         max_hits=None,
         meeting_id=None,
         message=None,
@@ -777,6 +792,7 @@ class AsyncLink:
         upload_match=None,
         upload_study_customfields=None,
         use_share_code=None,
+        user_id=None,
         workflow=None,
     ):
         """Add.
@@ -792,6 +808,7 @@ class AsyncLink:
         :param email: Email the link to these addresses (optional)
         :param filter: filter
         :param include_priors: Include prior studies (optional)
+        :param inherit_permissions: Flag for the link sessions to inherit permissions from the user stored in the user_id link attribute (optional)
         :param max_hits: The maximum number of times the link can be used (optional)
         :param meeting_id: UUID of the meeting to associate the link with (optional)
         :param message: Message to include in the email (optional)
@@ -800,7 +817,7 @@ class AsyncLink:
         :param mobile_phone: Send the link to this phone number (optional)
         :param namespace_id: namespace_id
         :param notify: Comma or space separated list of additional emails to notify of link usage (optional)
-        :param parameters: JSON array of parameters to add to the redirect URL or return in /namespace/share_code if an upload (optional)
+        :param parameters: JSON array of parameters to add to the redirect URL or return in /namespace/share_code if an upload e.g. ["integration_key","abc"] Where abc is integration key. (optional)
         :param password: Link password (optional)
         :param password_is_dob: Flag that the password is the patient_birth_date for the study (study_id is required) (optional)
         :param password_max_attempts: The maximum number of failed password attempt (optional)
@@ -814,6 +831,7 @@ class AsyncLink:
         :param upload_match: A JSON hash of DICOM tags and regular expressions they must match uploaded against this link (optional)
         :param upload_study_customfields: A JSON hash of customfields that will be mapped to a study on study upload. A key is a customfield UUID, a value is a value for the field (optional)
         :param use_share_code: Flag to use the namespace share code settings for a STUDY_UPLOAD (optional)
+        :param user_id: The link user. Any filter is applied in this users context (optional)
         :param workflow: The workflow this link is intended for (patient_studies) (optional)
         """
         request_data = {
@@ -827,6 +845,7 @@ class AsyncLink:
            'email': email,
            'filter': filter,
            'include_priors': include_priors,
+           'inherit_permissions': inherit_permissions,
            'max_hits': max_hits,
            'meeting_id': meeting_id,
            'message': message,
@@ -850,6 +869,7 @@ class AsyncLink:
            'upload_match': upload_match,
            'upload_study_customfields': upload_study_customfields,
            'use_share_code': use_share_code,
+           'user_id': user_id,
            'workflow': workflow,
         }
 	
@@ -864,7 +884,7 @@ class AsyncLink:
         errors_mapping[('INVALID_REGEXP', None)] = InvalidRegexp('Invalid regular expression. The error_subtype holds the invalid regexp.')
         errors_mapping[('INVALID_UPLOAD_MATCH', None)] = InvalidUploadMatch('The upload_match is invalid. The error_subtype holds the details on the error')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
-        errors_mapping[('NOT_FOUND', None)] = NotFound('The patient or study could not be found. The error_subtype holds the uuid that can not be found')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The patient or study could not be found. The error_subtype holds the type of object not found')
         errors_mapping[('NOT_HASH', None)] = NotHash('The rules field is not a hash')
         errors_mapping[('NOT_LIST', None)] = NotList('The field is not a JSON array. The error_subtype holds the name of the field')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to create links')
@@ -894,6 +914,7 @@ class AsyncLink:
         filter,
         has_password,
         include_priors,
+        inherit_permissions,
         is_meeting,
         max_hits,
         message,
@@ -938,6 +959,7 @@ class AsyncLink:
         :param filter: The filter expression
         :param has_password: Flag if the link has a password or not
         :param include_priors: Include prior studies
+        :param inherit_permissions: Flag for the link sessions to inherit permissions from the user stored in the user_id link attribute
         :param is_meeting: Flag if the link is for a meeting
         :param max_hits: The maximum number of times the link can be used
         :param message: Message to include in the email
@@ -981,6 +1003,7 @@ class AsyncLink:
            'filter': filter,
            'has_password': has_password,
            'include_priors': include_priors,
+           'inherit_permissions': inherit_permissions,
            'is_meeting': is_meeting,
            'max_hits': max_hits,
            'message': message,
@@ -1137,6 +1160,7 @@ class AsyncLink:
         pin=None,
         short_id=None,
         uuid=None,
+        v=None,
     ):
         """Redirect.
 
@@ -1145,6 +1169,9 @@ class AsyncLink:
         :param pin: pin
         :param short_id: short_id
         :param uuid: uuid
+        :param v: A JSON hash with the following keys pairs. The JSON must be encrypted (optional)
+
+ context_user_id - an account user id for eUnity
         """
         request_data = {
            'link_charge_id': link_charge_id,
@@ -1152,6 +1179,7 @@ class AsyncLink:
            'pin': pin,
            'short_id': short_id,
            'uuid': uuid,
+           'v': v,
         }
 	
         errors_mapping = {}

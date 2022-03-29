@@ -43,14 +43,12 @@ class Destination:
     def list(
         self,
         account_id,
-        uuid,
         node_id=None,
         serial_no=None,
     ):
         """List.
 
         :param account_id: uuid of the account
-        :param uuid: uuid of the destination
         :param node_id: node_id
         :param serial_no: serial_no
         """
@@ -58,7 +56,6 @@ class Destination:
            'account_id': account_id,
            'node_id': node_id,
            'serial_no': serial_no,
-           'uuid': uuid,
         }
 	
         errors_mapping = {}
@@ -405,6 +402,7 @@ class Destination:
         create_study=None,
         create_thin=None,
         customfield_param=None,
+        customfield_quoted_param=None,
         end_datetime=None,
         modality=None,
         node_id=None,
@@ -415,6 +413,7 @@ class Destination:
         push_to=None,
         query_fields=None,
         referring_physician=None,
+        refetch_study=None,
         result_fields=None,
         serial_no=None,
         share_email=None,
@@ -428,12 +427,13 @@ class Destination:
         :param uuid: uuid of the destination
         :param accession_number: Accession number to find (optional)
         :param anonymize: A JSON hash of anonymization rules to apply to retrieved studies (optional)
-        :param anonymize_param: The anonymization rules breakdown. This overrides the anonymize parameter if passed (optional)
+        :param anonymize_param: Expected values are STUDY_FIELD. The anonymization rules breakdown. This overrides the anonymize parameter if passed (optional)
         :param bundle_id: An integral number Used internally to track searches initiated from a single bundle (optional)
         :param copy_to: uuid of a namespace to copy the retrieved or create_thin studies into (optional)
         :param create_study: The maximum number of studies to retrieve from this search instead of creating an activity for the search results (optional)
         :param create_thin: The maximum number of thin studies to create from this search instead of creating an activity for the search results (optional)
-        :param customfield_param: Custom field(s) will be set for the resultant studies after /destination/retrieve call (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) will be set for the resultant studies after /destination/retrieve call (optional)
+        :param customfield_quoted_param: Expected values are CUSTOMFIELD_NAME. Custom field(s) to be set for the resultant studies. (optional)
         :param end_datetime: DICOM end date time stamp to bound the search (optional)
         :param modality: Modality (optional)
         :param node_id: node_id
@@ -444,6 +444,7 @@ class Destination:
         :param push_to: uuid of a destination to push the retrieved studies to (optional)
         :param query_fields: A JSON hash of additional query fields (optional)
         :param referring_physician: Referring physician to find (optional)
+        :param refetch_study: Flag to refetch the search results when studies have been fetched already (optional)
         :param result_fields: A JSON array of DICOM tags that the destination should return (optional)
         :param serial_no: serial_no
         :param share_email: Email to share retrieved studies with on subsequent /destination/retrieve (optional)
@@ -469,6 +470,7 @@ class Destination:
            'push_to': push_to,
            'query_fields': query_fields,
            'referring_physician': referring_physician,
+           'refetch_study': refetch_study,
            'result_fields': result_fields,
            'serial_no': serial_no,
            'share_email': share_email,
@@ -484,6 +486,9 @@ class Destination:
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
             request_data.update(customfield_param_dict)
+        if customfield_quoted_param is not None:
+            customfield_quoted_param_dict = {'{prefix}\'{k}\''.format(prefix='customfield-', k=k.replace('\\', '\\\\').replace('\'', '\\\'') if isinstance(k, str) else k): v for k,v in customfield_quoted_param.items()}
+            request_data.update(customfield_quoted_param_dict)
 	
         errors_mapping = {}
         errors_mapping[('CAN_NOT_TRACK', None)] = CanNotTrack('Tracking only works with the create_study option')
@@ -543,7 +548,7 @@ class Destination:
         :param activity_id: uuid of the DESTINATION_SEARCH activity to retrieve from
         :param send_method: The method to send a study as a study request response (share|duplicate)
         :param study_request_found_id: UUID of a study request search results to retrieve and send as study request response
-        :param customfield_param: Custom field(s) will be set for the study retrieved (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) will be set for the study retrieved (optional)
         """
         request_data = {
            'activity_id': activity_id,
@@ -629,14 +634,12 @@ class AsyncDestination:
     def list(
         self,
         account_id,
-        uuid,
         node_id=None,
         serial_no=None,
     ):
         """List.
 
         :param account_id: uuid of the account
-        :param uuid: uuid of the destination
         :param node_id: node_id
         :param serial_no: serial_no
         """
@@ -644,7 +647,6 @@ class AsyncDestination:
            'account_id': account_id,
            'node_id': node_id,
            'serial_no': serial_no,
-           'uuid': uuid,
         }
 	
         errors_mapping = {}
@@ -991,6 +993,7 @@ class AsyncDestination:
         create_study=None,
         create_thin=None,
         customfield_param=None,
+        customfield_quoted_param=None,
         end_datetime=None,
         modality=None,
         node_id=None,
@@ -1001,6 +1004,7 @@ class AsyncDestination:
         push_to=None,
         query_fields=None,
         referring_physician=None,
+        refetch_study=None,
         result_fields=None,
         serial_no=None,
         share_email=None,
@@ -1014,12 +1018,13 @@ class AsyncDestination:
         :param uuid: uuid of the destination
         :param accession_number: Accession number to find (optional)
         :param anonymize: A JSON hash of anonymization rules to apply to retrieved studies (optional)
-        :param anonymize_param: The anonymization rules breakdown. This overrides the anonymize parameter if passed (optional)
+        :param anonymize_param: Expected values are STUDY_FIELD. The anonymization rules breakdown. This overrides the anonymize parameter if passed (optional)
         :param bundle_id: An integral number Used internally to track searches initiated from a single bundle (optional)
         :param copy_to: uuid of a namespace to copy the retrieved or create_thin studies into (optional)
         :param create_study: The maximum number of studies to retrieve from this search instead of creating an activity for the search results (optional)
         :param create_thin: The maximum number of thin studies to create from this search instead of creating an activity for the search results (optional)
-        :param customfield_param: Custom field(s) will be set for the resultant studies after /destination/retrieve call (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) will be set for the resultant studies after /destination/retrieve call (optional)
+        :param customfield_quoted_param: Expected values are CUSTOMFIELD_NAME. Custom field(s) to be set for the resultant studies. (optional)
         :param end_datetime: DICOM end date time stamp to bound the search (optional)
         :param modality: Modality (optional)
         :param node_id: node_id
@@ -1030,6 +1035,7 @@ class AsyncDestination:
         :param push_to: uuid of a destination to push the retrieved studies to (optional)
         :param query_fields: A JSON hash of additional query fields (optional)
         :param referring_physician: Referring physician to find (optional)
+        :param refetch_study: Flag to refetch the search results when studies have been fetched already (optional)
         :param result_fields: A JSON array of DICOM tags that the destination should return (optional)
         :param serial_no: serial_no
         :param share_email: Email to share retrieved studies with on subsequent /destination/retrieve (optional)
@@ -1055,6 +1061,7 @@ class AsyncDestination:
            'push_to': push_to,
            'query_fields': query_fields,
            'referring_physician': referring_physician,
+           'refetch_study': refetch_study,
            'result_fields': result_fields,
            'serial_no': serial_no,
            'share_email': share_email,
@@ -1070,6 +1077,9 @@ class AsyncDestination:
         if customfield_param is not None:
             customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
             request_data.update(customfield_param_dict)
+        if customfield_quoted_param is not None:
+            customfield_quoted_param_dict = {'{prefix}\'{k}\''.format(prefix='customfield-', k=k.replace('\\', '\\\\').replace('\'', '\\\'') if isinstance(k, str) else k): v for k,v in customfield_quoted_param.items()}
+            request_data.update(customfield_quoted_param_dict)
 	
         errors_mapping = {}
         errors_mapping[('CAN_NOT_TRACK', None)] = CanNotTrack('Tracking only works with the create_study option')
@@ -1129,7 +1139,7 @@ class AsyncDestination:
         :param activity_id: uuid of the DESTINATION_SEARCH activity to retrieve from
         :param send_method: The method to send a study as a study request response (share|duplicate)
         :param study_request_found_id: UUID of a study request search results to retrieve and send as study request response
-        :param customfield_param: Custom field(s) will be set for the study retrieved (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) will be set for the study retrieved (optional)
         """
         request_data = {
            'activity_id': activity_id,

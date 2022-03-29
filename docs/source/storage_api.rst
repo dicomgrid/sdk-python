@@ -170,7 +170,7 @@ Headers
 ^^^^^^^
 
 You can setup some default headers for storage session
-(using `storage_default_headers` property) or for both service and storage sesssions
+(using `storage_default_headers` property) or for both service and storage sessions
 (using `default_headers` property)::
 
   api.default_headers['Golbal-header'] = 'value'

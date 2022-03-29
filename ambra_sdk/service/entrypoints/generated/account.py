@@ -29,6 +29,8 @@ from ambra_sdk.exceptions.service import NoUserOverride
 from ambra_sdk.exceptions.service import NotEnabled
 from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import NotPermitted
+from ambra_sdk.exceptions.service import NotSiteManagementAccount
+from ambra_sdk.exceptions.service import NotSysadminOrSupport
 from ambra_sdk.exceptions.service import RoleNamespaceMismatch
 from ambra_sdk.exceptions.service import RoleNotFound
 from ambra_sdk.exceptions.service import TokenFailed
@@ -97,6 +99,7 @@ class Account:
         share_description=None,
         share_settings=None,
         share_via_gateway=None,
+        site_management_account_id=None,
         vanity=None,
         vendor=None,
     ):
@@ -105,7 +108,7 @@ class Account:
         :param uuid: The account uuid
         :param can_request: Flag if user can request to join the account (optional)
         :param css: Custom CSS for the account (optional)
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param hl7_template: The HL7 reporting template for the account (optional)
         :param must_approve: Flag if shared studies must be approved for the account namespace (optional)
         :param must_approve_harvest: Flag if harvested studies must be approved (optional)
@@ -117,12 +120,13 @@ class Account:
         :param role_id: Id for the default role for the account (optional)
         :param search_threshold: The number of studies record in the namespace to switch the UI from list to search mode (optional)
         :param session_expire: Number of minutes before an idle session expires. (optional)
-        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
         :param settings: A hash of the account settings (optional)
         :param share_code: The share code of the account (optional)
         :param share_description: The share description of the account (optional)
         :param share_settings: Share settings JSON structure of the share display settings (optional)
         :param share_via_gateway: Flag if a gateway share is allowed (optional)
+        :param site_management_account_id: The corresponding site management account (optional)
         :param vanity: Vanity host name for the account. Multiple host names can be specified in a comma separate list (optional)
         :param vendor: Vendor name (optional)
         """
@@ -145,6 +149,7 @@ class Account:
            'share_description': share_description,
            'share_settings': share_settings,
            'share_via_gateway': share_via_gateway,
+           'site_management_account_id': site_management_account_id,
            'uuid': uuid,
            'vanity': vanity,
            'vendor': vendor,
@@ -167,6 +172,8 @@ class Account:
         errors_mapping[('INVALID_VANITY', None)] = InvalidVanity('The vanity host name is invalid. The error_subtype holds the invalid hostname')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found. The error_subtype holds the name of field that triggered the error')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to modify this record')
+        errors_mapping[('NOT_SITE_MANAGEMENT_ACCOUNT', None)] = NotSiteManagementAccount('The account passed in site_management_account_id does not have the enable_site_management setting enabled')
+        errors_mapping[('NOT_SYSADMIN_OR_SUPPORT', None)] = NotSysadminOrSupport('The user is not a sysadmin or support user')
         errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for the account, data contains role_id and namespace_id')
         query_data = {
             'api': self._api,
@@ -231,6 +238,7 @@ class Account:
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
+        event_site_qualified=None,
         event_status_change=None,
         event_study_comment=None,
         event_thin_study_fail=None,
@@ -256,7 +264,7 @@ class Account:
         :param account_email: Users account_email. Only set this if it is different than the users login email (optional).
         :param account_login: Users login name in the account. (optional).
         :param account_password: Password for the account_password. (optional).
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param email: email
         :param epic_user: Epic user used to map Epic users into Ambra's ones to track activity. (optional).
         :param event_approve: Notify the user on a approval needed into the account namespace (optional)
@@ -275,6 +283,7 @@ class Account:
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)
         :param event_share: Notify the user on a share into the account namespace (optional)
+        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)
         :param event_status_change: Notify the user when the status of a study is changed (optional)
         :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
         :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)
@@ -288,7 +297,7 @@ class Account:
         :param role_id: uuid of the users role in the account (optional).
         :param session_expire: Number of minutes before an idle session expires. (optional)
         :param set_default_organization: A flag to set this account as a default one for the user using user_default_organization Setting. (optional)
-        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
         :param settings: A hash of the account settings that the user can override (optional)
         :param sso_only: Flag if the user can only login via SSO. (optional).
         :param user_id: user_id
@@ -316,6 +325,7 @@ class Account:
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
+           'event_site_qualified': event_site_qualified,
            'event_status_change': event_status_change,
            'event_study_comment': event_study_comment,
            'event_thin_study_fail': event_thin_study_fail,
@@ -388,6 +398,7 @@ class Account:
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
+        event_site_qualified=None,
         event_status_change=None,
         event_study_comment=None,
         event_thin_study_fail=None,
@@ -412,7 +423,7 @@ class Account:
         :param account_email: Users account_email. Only set this if it is different than the users login email (optional).
         :param account_login: Users login name in the account. (optional).
         :param account_password: Password for the account_password. (optional).
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param epic_user: Epic user used to map Epic users into Ambra's ones to track activity (optional).
         :param event_approve: Notify the user on a approval needed into the account namespace (optional)
         :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)
@@ -430,6 +441,7 @@ class Account:
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)
         :param event_share: Notify the user on a share into the account namespace (optional)
+        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)
         :param event_status_change: Notify the user when the status of a study is changed (optional)
         :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
         :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)
@@ -442,7 +454,7 @@ class Account:
         :param password_reset: Flag if the password needs to be reset. (optional).
         :param role_id: uuid of the users role in the account (optional).
         :param session_expire: Number of minutes before an idle session expires. (optional)
-        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
         :param settings: A hash of the account settings that the user can override (optional)
         :param sso_only: Flag if the user can only login via SSO. (optional).
         """
@@ -468,6 +480,7 @@ class Account:
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
+           'event_site_qualified': event_site_qualified,
            'event_status_change': event_status_change,
            'event_study_comment': event_study_comment,
            'event_thin_study_fail': event_thin_study_fail,
@@ -805,7 +818,7 @@ class Account:
         """Settings validate.
 
         :param uuid: The account uuid
-        :param setting_param: Validate an individual setting. This is an alternative to the settings hash (optional)
+        :param setting_param: Expected values are SETTING_NAME. Validate an individual setting. This is an alternative to the settings hash (optional)
         :param settings: A hash of the account settings with values to validate (optional)
         """
         request_data = {
@@ -1001,6 +1014,7 @@ class AsyncAccount:
         share_description=None,
         share_settings=None,
         share_via_gateway=None,
+        site_management_account_id=None,
         vanity=None,
         vendor=None,
     ):
@@ -1009,7 +1023,7 @@ class AsyncAccount:
         :param uuid: The account uuid
         :param can_request: Flag if user can request to join the account (optional)
         :param css: Custom CSS for the account (optional)
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param hl7_template: The HL7 reporting template for the account (optional)
         :param must_approve: Flag if shared studies must be approved for the account namespace (optional)
         :param must_approve_harvest: Flag if harvested studies must be approved (optional)
@@ -1021,12 +1035,13 @@ class AsyncAccount:
         :param role_id: Id for the default role for the account (optional)
         :param search_threshold: The number of studies record in the namespace to switch the UI from list to search mode (optional)
         :param session_expire: Number of minutes before an idle session expires. (optional)
-        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
         :param settings: A hash of the account settings (optional)
         :param share_code: The share code of the account (optional)
         :param share_description: The share description of the account (optional)
         :param share_settings: Share settings JSON structure of the share display settings (optional)
         :param share_via_gateway: Flag if a gateway share is allowed (optional)
+        :param site_management_account_id: The corresponding site management account (optional)
         :param vanity: Vanity host name for the account. Multiple host names can be specified in a comma separate list (optional)
         :param vendor: Vendor name (optional)
         """
@@ -1049,6 +1064,7 @@ class AsyncAccount:
            'share_description': share_description,
            'share_settings': share_settings,
            'share_via_gateway': share_via_gateway,
+           'site_management_account_id': site_management_account_id,
            'uuid': uuid,
            'vanity': vanity,
            'vendor': vendor,
@@ -1071,6 +1087,8 @@ class AsyncAccount:
         errors_mapping[('INVALID_VANITY', None)] = InvalidVanity('The vanity host name is invalid. The error_subtype holds the invalid hostname')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The object was not found. The error_subtype holds the name of field that triggered the error')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to modify this record')
+        errors_mapping[('NOT_SITE_MANAGEMENT_ACCOUNT', None)] = NotSiteManagementAccount('The account passed in site_management_account_id does not have the enable_site_management setting enabled')
+        errors_mapping[('NOT_SYSADMIN_OR_SUPPORT', None)] = NotSysadminOrSupport('The user is not a sysadmin or support user')
         errors_mapping[('ROLE_NAMESPACE_MISMATCH', 'INCOMPATIBLE_ROLE')] = RoleNamespaceMismatch('The role cannot be used for the account, data contains role_id and namespace_id')
         query_data = {
             'api': self._api,
@@ -1135,6 +1153,7 @@ class AsyncAccount:
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
+        event_site_qualified=None,
         event_status_change=None,
         event_study_comment=None,
         event_thin_study_fail=None,
@@ -1160,7 +1179,7 @@ class AsyncAccount:
         :param account_email: Users account_email. Only set this if it is different than the users login email (optional).
         :param account_login: Users login name in the account. (optional).
         :param account_password: Password for the account_password. (optional).
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param email: email
         :param epic_user: Epic user used to map Epic users into Ambra's ones to track activity. (optional).
         :param event_approve: Notify the user on a approval needed into the account namespace (optional)
@@ -1179,6 +1198,7 @@ class AsyncAccount:
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)
         :param event_share: Notify the user on a share into the account namespace (optional)
+        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)
         :param event_status_change: Notify the user when the status of a study is changed (optional)
         :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
         :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)
@@ -1192,7 +1212,7 @@ class AsyncAccount:
         :param role_id: uuid of the users role in the account (optional).
         :param session_expire: Number of minutes before an idle session expires. (optional)
         :param set_default_organization: A flag to set this account as a default one for the user using user_default_organization Setting. (optional)
-        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
         :param settings: A hash of the account settings that the user can override (optional)
         :param sso_only: Flag if the user can only login via SSO. (optional).
         :param user_id: user_id
@@ -1220,6 +1240,7 @@ class AsyncAccount:
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
+           'event_site_qualified': event_site_qualified,
            'event_status_change': event_status_change,
            'event_study_comment': event_study_comment,
            'event_thin_study_fail': event_thin_study_fail,
@@ -1292,6 +1313,7 @@ class AsyncAccount:
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
+        event_site_qualified=None,
         event_status_change=None,
         event_study_comment=None,
         event_thin_study_fail=None,
@@ -1316,7 +1338,7 @@ class AsyncAccount:
         :param account_email: Users account_email. Only set this if it is different than the users login email (optional).
         :param account_login: Users login name in the account. (optional).
         :param account_password: Password for the account_password. (optional).
-        :param customfield_param: Custom field(s) (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param epic_user: Epic user used to map Epic users into Ambra's ones to track activity (optional).
         :param event_approve: Notify the user on a approval needed into the account namespace (optional)
         :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)
@@ -1334,6 +1356,7 @@ class AsyncAccount:
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)
         :param event_share: Notify the user on a share into the account namespace (optional)
+        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)
         :param event_status_change: Notify the user when the status of a study is changed (optional)
         :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)
         :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)
@@ -1346,7 +1369,7 @@ class AsyncAccount:
         :param password_reset: Flag if the password needs to be reset. (optional).
         :param role_id: uuid of the users role in the account (optional).
         :param session_expire: Number of minutes before an idle session expires. (optional)
-        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
         :param settings: A hash of the account settings that the user can override (optional)
         :param sso_only: Flag if the user can only login via SSO. (optional).
         """
@@ -1372,6 +1395,7 @@ class AsyncAccount:
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
+           'event_site_qualified': event_site_qualified,
            'event_status_change': event_status_change,
            'event_study_comment': event_study_comment,
            'event_thin_study_fail': event_thin_study_fail,
@@ -1709,7 +1733,7 @@ class AsyncAccount:
         """Settings validate.
 
         :param uuid: The account uuid
-        :param setting_param: Validate an individual setting. This is an alternative to the settings hash (optional)
+        :param setting_param: Expected values are SETTING_NAME. Validate an individual setting. This is an alternative to the settings hash (optional)
         :param settings: A hash of the account settings with values to validate (optional)
         """
         request_data = {

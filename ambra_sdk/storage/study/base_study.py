@@ -1905,3 +1905,147 @@ class BaseStudy:
             data=body,
             headers=headers,
         )
+
+    def _image_dicomweb(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        study_uid: str,
+        series_uid: str,
+        image_uid: str,
+        phi_namespace: Optional[str] = None,
+    ) -> PreparedRequest:
+        """Returns JSON representation of a single DICOM as defined by the DICOMWeb WADO-RS Metadata standard \
+            http://dicom.nema.org/medical/dicom/current/output/html/part18.html#table_10.4.1-2.
+
+        URL: dicomweb/{namespace}/studies/{studyUid}/series/{seriesUid}/instances/{imageUid}/metadata?sid={sid}&phi_namespace={phi_namespace}
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param study_uid: Study uid (Required).
+        :param series_uid: Series uid (Required).
+        :param image_uid: Image uid (Required).
+        :param phi_namespace: A string, set to the UUID of the
+            namespace where the file was attached if it was
+            attached to a shared instance of the study
+            outside of the original storage namespace
+
+        :returns: A JSON representation of a DICOM according to the DICOMWeb standard,
+            omitting any bulkdata, pixeldata, or other binary fields.
+        """
+        url_template = '/dicomweb/{namespace}/studies/{study_uid}/series/{series_uid}/instances/{image_uid}/metadata'
+        url_arg_names = {
+            'engine_fqdn',
+            'namespace',
+            'study_uid',
+            'series_uid',
+            'image_uid',
+        }
+        request_arg_names = {
+            'phi_namespace',
+        }
+        url, request_data = self._storage.get_url_and_request(
+            url_template,
+            url_arg_names,
+            request_arg_names,
+            locals(),
+        )
+        return PreparedRequest(
+            storage=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            params=request_data,
+        )
+
+    def _series_dicomweb(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        study_uid: str,
+        series_uid: str,
+        phi_namespace: Optional[str] = None,
+    ) -> PreparedRequest:
+        """Returns JSON representation of a series of DICOM(s) as defined by the DICOMWeb WADO-RS Metadata standard \
+            http://dicom.nema.org/medical/dicom/current/output/html/part18.html#table_10.4.1-2.
+
+        URL: dicomweb/{namespace}/studies/{studyUid}/series/{seriesUid}/metadata?sid={sid}&phi_namespace={phi_namespace}
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param study_uid: Study uid (Required).
+        :param series_uid: Series uid (Required).
+        :param phi_namespace: A string, set to the UUID of the
+            namespace where the file was attached if it was
+            attached to a shared instance of the study
+            outside of the original storage namespace
+
+        :returns: A JSON representation of a series of DICOM(s) according to the DICOMWeb standard,
+            omitting any bulkdata, pixeldata, or other binary fields.
+        """
+        url_template = '/dicomweb/{namespace}/studies/{study_uid}/series/{series_uid}/metadata'
+        url_arg_names = {
+            'engine_fqdn',
+            'namespace',
+            'study_uid',
+            'series_uid',
+        }
+        request_arg_names = {
+            'phi_namespace',
+        }
+        url, request_data = self._storage.get_url_and_request(
+            url_template,
+            url_arg_names,
+            request_arg_names,
+            locals(),
+        )
+        return PreparedRequest(
+            storage=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            params=request_data,
+        )
+
+    def _study_dicomweb(
+        self,
+        engine_fqdn: str,
+        namespace: str,
+        study_uid: str,
+        phi_namespace: Optional[str] = None,
+    ) -> PreparedRequest:
+        """Returns JSON representation of an entire study of DICOMs as defined by the DICOMWeb WADO-RS Metadata standard \
+            http://dicom.nema.org/medical/dicom/current/output/html/part18.html#table_10.4.1-2.
+
+        URL: dicomweb/{namespace}/studies/{studyUid}/metadata?sid={sid}&phi_namespace={phi_namespace}
+
+        :param engine_fqdn: Engine FQDN (Required).
+        :param namespace: Namespace (Required).
+        :param study_uid: Study uid (Required).
+        :param phi_namespace: A string, set to the UUID of the
+            namespace where the file was attached if it was
+            attached to a shared instance of the study
+            outside of the original storage namespace
+
+        :returns: A JSON representation of an entire study of DICOM(s) according to the DICOMWeb standard,
+            omitting any bulkdata, pixeldata, or other binary fields.
+        """
+        url_template = '/dicomweb/{namespace}/studies/{study_uid}/metadata'
+        url_arg_names = {
+            'engine_fqdn',
+            'namespace',
+            'study_uid',
+        }
+        request_arg_names = {
+            'phi_namespace',
+        }
+        url, request_data = self._storage.get_url_and_request(
+            url_template,
+            url_arg_names,
+            request_arg_names,
+            locals(),
+        )
+        return PreparedRequest(
+            storage=self._storage,
+            method=StorageMethod.get,
+            url=url,
+            params=request_data,
+        )

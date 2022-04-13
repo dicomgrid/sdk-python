@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.patient &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.patient &#8212; Ambra-SDK 3.22.1.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -47,10 +47,13 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidField</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidPhone</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidPin</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidSetting</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidSettingValue</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidSortField</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidSortOrder</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">Lockout</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">MissingFields</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NoPatientOverride</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotPermitted</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">QueryO</span>
@@ -91,7 +94,7 @@
 <span class="sd">        :param alt_email: Alternate email address (optional)</span>
 <span class="sd">        :param alt_mobile_phone: Alternate mobile phone number (optional)</span>
 <span class="sd">        :param birth_date: Birth date (optional)</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param email: Email address (optional)</span>
 <span class="sd">        :param event_new_report: Notify the patient if a report is attached on the patient portal (optional)</span>
 <span class="sd">        :param event_share: Notify the patient if a new study is available on the patient portal (optional)</span>
@@ -182,6 +185,8 @@
         <span class="n">last</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">mobile_phone</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">setting_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
 
@@ -191,7 +196,7 @@
 <span class="sd">        :param uuid: The patient uuid</span>
 <span class="sd">        :param alt_email: Alternate email address (optional)</span>
 <span class="sd">        :param alt_mobile_phone: Alternate mobile phone number (optional)</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param email: Email address (optional)</span>
 <span class="sd">        :param event_new_report: Notify the patient if a report is attached on the patient portal (optional)</span>
 <span class="sd">        :param event_share: Notify the patient if a new study is available on the patient portal (optional)</span>
@@ -199,6 +204,8 @@
 <span class="sd">        :param last: last</span>
 <span class="sd">        :param mobile_phone: Mobile phone number (optional)</span>
 <span class="sd">        :param name: name</span>
+<span class="sd">        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
+<span class="sd">        :param settings: A hash of the patient settings, see Notes. (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;alt_email&#39;</span><span class="p">:</span> <span class="n">alt_email</span><span class="p">,</span>
@@ -212,12 +219,16 @@
            <span class="s1">&#39;mobile_phone&#39;</span><span class="p">:</span> <span class="n">mobile_phone</span><span class="p">,</span>
            <span class="s1">&#39;mrn&#39;</span><span class="p">:</span> <span class="n">mrn</span><span class="p">,</span>
            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;settings&#39;</span><span class="p">:</span> <span class="n">settings</span><span class="p">,</span>
            <span class="s1">&#39;sex&#39;</span><span class="p">:</span> <span class="n">sex</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="n">customfield_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">customfield_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
             <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">customfield_param_dict</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">setting_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">setting_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;setting_&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">setting_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">setting_param_dict</span><span class="p">)</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ALREADY_EXISTS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">AlreadyExists</span><span class="p">(</span><span class="s1">&#39;The MRN is in use by another patient&#39;</span><span class="p">)</span>
@@ -225,8 +236,11 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CUSTOMFIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCustomfield</span><span class="p">(</span><span class="s1">&#39;Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_EMAIL&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidEmail</span><span class="p">(</span><span class="s1">&#39;The email is invalid&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_PHONE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidPhone</span><span class="p">(</span><span class="s1">&#39;The phone number is invalid&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SETTING&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSetting</span><span class="p">(</span><span class="s1">&#39;An invalid setting was passed. The error_subtype holds the name of the invalid setting&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SETTING_VALUE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSettingValue</span><span class="p">(</span><span class="s1">&#39;An invalid setting value was passed. The error_subtype holds the name of the setting with the invalid value&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The patient can not be found&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to edit the patient&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NO_PATIENT_OVERRIDE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NoPatientOverride</span><span class="p">(</span><span class="s1">&#39;The setting does not allow a patient override&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/patient/set&#39;</span><span class="p">,</span>
@@ -477,7 +491,7 @@
 <span class="sd">        :param alt_email: Alternate email address (optional)</span>
 <span class="sd">        :param alt_mobile_phone: Alternate mobile phone number (optional)</span>
 <span class="sd">        :param birth_date: Birth date (optional)</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param email: Email address (optional)</span>
 <span class="sd">        :param event_new_report: Notify the patient if a report is attached on the patient portal (optional)</span>
 <span class="sd">        :param event_share: Notify the patient if a new study is available on the patient portal (optional)</span>
@@ -568,6 +582,8 @@
         <span class="n">last</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">mobile_phone</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">setting_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
 
@@ -577,7 +593,7 @@
 <span class="sd">        :param uuid: The patient uuid</span>
 <span class="sd">        :param alt_email: Alternate email address (optional)</span>
 <span class="sd">        :param alt_mobile_phone: Alternate mobile phone number (optional)</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param email: Email address (optional)</span>
 <span class="sd">        :param event_new_report: Notify the patient if a report is attached on the patient portal (optional)</span>
 <span class="sd">        :param event_share: Notify the patient if a new study is available on the patient portal (optional)</span>
@@ -585,6 +601,8 @@
 <span class="sd">        :param last: last</span>
 <span class="sd">        :param mobile_phone: Mobile phone number (optional)</span>
 <span class="sd">        :param name: name</span>
+<span class="sd">        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
+<span class="sd">        :param settings: A hash of the patient settings, see Notes. (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;alt_email&#39;</span><span class="p">:</span> <span class="n">alt_email</span><span class="p">,</span>
@@ -598,12 +616,16 @@
            <span class="s1">&#39;mobile_phone&#39;</span><span class="p">:</span> <span class="n">mobile_phone</span><span class="p">,</span>
            <span class="s1">&#39;mrn&#39;</span><span class="p">:</span> <span class="n">mrn</span><span class="p">,</span>
            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+           <span class="s1">&#39;settings&#39;</span><span class="p">:</span> <span class="n">settings</span><span class="p">,</span>
            <span class="s1">&#39;sex&#39;</span><span class="p">:</span> <span class="n">sex</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="n">customfield_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">customfield_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
             <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">customfield_param_dict</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">setting_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">setting_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;setting_&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">setting_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">setting_param_dict</span><span class="p">)</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ALREADY_EXISTS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">AlreadyExists</span><span class="p">(</span><span class="s1">&#39;The MRN is in use by another patient&#39;</span><span class="p">)</span>
@@ -611,8 +633,11 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CUSTOMFIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCustomfield</span><span class="p">(</span><span class="s1">&#39;Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_EMAIL&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidEmail</span><span class="p">(</span><span class="s1">&#39;The email is invalid&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_PHONE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidPhone</span><span class="p">(</span><span class="s1">&#39;The phone number is invalid&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SETTING&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSetting</span><span class="p">(</span><span class="s1">&#39;An invalid setting was passed. The error_subtype holds the name of the invalid setting&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SETTING_VALUE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSettingValue</span><span class="p">(</span><span class="s1">&#39;An invalid setting value was passed. The error_subtype holds the name of the setting with the invalid value&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The patient can not be found&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to edit the patient&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NO_PATIENT_OVERRIDE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NoPatientOverride</span><span class="p">(</span><span class="s1">&#39;The setting does not allow a patient override&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/patient/set&#39;</span><span class="p">,</span>
@@ -842,7 +867,7 @@
 
 
 
-<p class="blurb">version 3.21.6.0-1</p>
+<p class="blurb">version 3.22.1.0-1</p>
 
 
 

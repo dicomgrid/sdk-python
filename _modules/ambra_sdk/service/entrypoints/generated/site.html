@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.site &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.site &#8212; Ambra-SDK 3.22.1.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -97,7 +97,10 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">account_id</span><span class="p">,</span>
         <span class="n">name</span><span class="p">,</span>
+        <span class="n">address1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">address2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">city</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">country</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">site_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="nb">zip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -106,14 +109,20 @@
 
 <span class="sd">        :param account_id: uuid of the account to add them to</span>
 <span class="sd">        :param name: The sites name</span>
+<span class="sd">        :param address1: Address line 1 of the site (optional)</span>
+<span class="sd">        :param address2: Address line 2 of the site (optional)</span>
 <span class="sd">        :param city: The city the site is located in (optional)</span>
+<span class="sd">        :param country: The country of the site (optional)</span>
 <span class="sd">        :param site_id: The site to attach them to as a satellite site (optional)</span>
 <span class="sd">        :param state: The state code of the site (optional)</span>
 <span class="sd">        :param zip: The zip code of the site (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;address1&#39;</span><span class="p">:</span> <span class="n">address1</span><span class="p">,</span>
+           <span class="s1">&#39;address2&#39;</span><span class="p">:</span> <span class="n">address2</span><span class="p">,</span>
            <span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="n">city</span><span class="p">,</span>
+           <span class="s1">&#39;country&#39;</span><span class="p">:</span> <span class="n">country</span><span class="p">,</span>
            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
            <span class="s1">&#39;site_id&#39;</span><span class="p">:</span> <span class="n">site_id</span><span class="p">,</span>
            <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="n">state</span><span class="p">,</span>
@@ -138,7 +147,10 @@
 <div class="viewcode-block" id="Site.set"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Site.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">address1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">address2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">city</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">country</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">inactive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">site_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -148,7 +160,10 @@
         <span class="sd">&quot;&quot;&quot;Set.</span>
 
 <span class="sd">        :param uuid: The site uuid</span>
+<span class="sd">        :param address1: Address line 1 of the site (optional)</span>
+<span class="sd">        :param address2: Address line 2 of the site (optional)</span>
 <span class="sd">        :param city: The city the site is located in (optional)</span>
+<span class="sd">        :param country: The country of the site (optional)</span>
 <span class="sd">        :param inactive: Flag if the site is actively used. Might be used to filter out inactive sites (optional)</span>
 <span class="sd">        :param name: The sites name (optional)</span>
 <span class="sd">        :param site_id: The site to attach them to as a satellite site (optional)</span>
@@ -156,7 +171,10 @@
 <span class="sd">        :param zip: The zip code of the site (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;address1&#39;</span><span class="p">:</span> <span class="n">address1</span><span class="p">,</span>
+           <span class="s1">&#39;address2&#39;</span><span class="p">:</span> <span class="n">address2</span><span class="p">,</span>
            <span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="n">city</span><span class="p">,</span>
+           <span class="s1">&#39;country&#39;</span><span class="p">:</span> <span class="n">country</span><span class="p">,</span>
            <span class="s1">&#39;inactive&#39;</span><span class="p">:</span> <span class="n">inactive</span><span class="p">,</span>
            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
            <span class="s1">&#39;site_id&#39;</span><span class="p">:</span> <span class="n">site_id</span><span class="p">,</span>
@@ -406,7 +424,10 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">account_id</span><span class="p">,</span>
         <span class="n">name</span><span class="p">,</span>
+        <span class="n">address1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">address2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">city</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">country</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">site_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="nb">zip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -415,14 +436,20 @@
 
 <span class="sd">        :param account_id: uuid of the account to add them to</span>
 <span class="sd">        :param name: The sites name</span>
+<span class="sd">        :param address1: Address line 1 of the site (optional)</span>
+<span class="sd">        :param address2: Address line 2 of the site (optional)</span>
 <span class="sd">        :param city: The city the site is located in (optional)</span>
+<span class="sd">        :param country: The country of the site (optional)</span>
 <span class="sd">        :param site_id: The site to attach them to as a satellite site (optional)</span>
 <span class="sd">        :param state: The state code of the site (optional)</span>
 <span class="sd">        :param zip: The zip code of the site (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
+           <span class="s1">&#39;address1&#39;</span><span class="p">:</span> <span class="n">address1</span><span class="p">,</span>
+           <span class="s1">&#39;address2&#39;</span><span class="p">:</span> <span class="n">address2</span><span class="p">,</span>
            <span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="n">city</span><span class="p">,</span>
+           <span class="s1">&#39;country&#39;</span><span class="p">:</span> <span class="n">country</span><span class="p">,</span>
            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
            <span class="s1">&#39;site_id&#39;</span><span class="p">:</span> <span class="n">site_id</span><span class="p">,</span>
            <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="n">state</span><span class="p">,</span>
@@ -447,7 +474,10 @@
 <div class="viewcode-block" id="AsyncSite.set"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncSite.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">address1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">address2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">city</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">country</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">inactive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">site_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -457,7 +487,10 @@
         <span class="sd">&quot;&quot;&quot;Set.</span>
 
 <span class="sd">        :param uuid: The site uuid</span>
+<span class="sd">        :param address1: Address line 1 of the site (optional)</span>
+<span class="sd">        :param address2: Address line 2 of the site (optional)</span>
 <span class="sd">        :param city: The city the site is located in (optional)</span>
+<span class="sd">        :param country: The country of the site (optional)</span>
 <span class="sd">        :param inactive: Flag if the site is actively used. Might be used to filter out inactive sites (optional)</span>
 <span class="sd">        :param name: The sites name (optional)</span>
 <span class="sd">        :param site_id: The site to attach them to as a satellite site (optional)</span>
@@ -465,7 +498,10 @@
 <span class="sd">        :param zip: The zip code of the site (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;address1&#39;</span><span class="p">:</span> <span class="n">address1</span><span class="p">,</span>
+           <span class="s1">&#39;address2&#39;</span><span class="p">:</span> <span class="n">address2</span><span class="p">,</span>
            <span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="n">city</span><span class="p">,</span>
+           <span class="s1">&#39;country&#39;</span><span class="p">:</span> <span class="n">country</span><span class="p">,</span>
            <span class="s1">&#39;inactive&#39;</span><span class="p">:</span> <span class="n">inactive</span><span class="p">,</span>
            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
            <span class="s1">&#39;site_id&#39;</span><span class="p">:</span> <span class="n">site_id</span><span class="p">,</span>
@@ -683,7 +719,7 @@
 
 
 
-<p class="blurb">version 3.21.6.0-1</p>
+<p class="blurb">version 3.22.1.0-1</p>
 
 
 

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.namespace &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.namespace &#8212; Ambra-SDK 3.22.1.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -64,6 +64,7 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotPermitted</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">OnlyAll</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">OnlyOne</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">PendingRestore</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">QueryO</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.service.query</span> <span class="kn">import</span> <span class="n">AsyncQueryO</span>
 
@@ -130,12 +131,15 @@
         <span class="n">cloud_storage_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">disable_duplicate_study_upload</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">disable_mobile_dicom_wrapping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">download_anonymize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">enable_dicom_deidentification</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">enable_dicom_wrapping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">enable_epic_patient_lookup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">enable_multipart_uploader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">enable_namespace_ai_questions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">epic_prompt_for_anonymize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">force_new_study_on_upload</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ira_namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">link_defaults</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">must_approve_duplicate_study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">no_dup_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -148,6 +152,8 @@
         <span class="n">study_field_flags</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">study_size_soft_threshold_per_user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">try_update_original_study</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">try_update_original_study_from_namespaces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">try_update_original_study_to_namespaces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">ui_json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">upload_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
@@ -161,12 +167,15 @@
 <span class="sd">        :param cloud_storage_config: Value for the setting (optional)</span>
 <span class="sd">        :param disable_duplicate_study_upload: Value for the setting (optional)</span>
 <span class="sd">        :param disable_mobile_dicom_wrapping: Value for the setting (optional)</span>
+<span class="sd">        :param download_anonymize: Anonymization rules to apply on study download. The setting format should follow the anonymize_tags parameter format of the Storage /study/{namespace}/{studyUid}/download call (optional)</span>
 <span class="sd">        :param enable_dicom_deidentification: Value for the setting (optional)</span>
 <span class="sd">        :param enable_dicom_wrapping: Value for the setting (optional)</span>
 <span class="sd">        :param enable_epic_patient_lookup: Value for the setting (optional)</span>
 <span class="sd">        :param enable_multipart_uploader: Value for the setting (optional)</span>
 <span class="sd">        :param enable_namespace_ai_questions: Value for the setting (optional)</span>
+<span class="sd">        :param epic_prompt_for_anonymize: Value for the setting (optional)</span>
 <span class="sd">        :param force_new_study_on_upload: Value for the setting (optional)</span>
+<span class="sd">        :param ira_namespace: Flag to make the namespace viable owner namespace for Queries (optional)</span>
 <span class="sd">        :param link_defaults: Value for the setting (optional)</span>
 <span class="sd">        :param must_approve_duplicate_study_uid: Value for the setting (optional)</span>
 <span class="sd">        :param no_dup_share: Flag to stop duplicate studies (same study_uid and image count) from getting shared into the namespace (optional)</span>
@@ -179,6 +188,8 @@
 <span class="sd">        :param study_field_flags: A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)</span>
 <span class="sd">        :param study_size_soft_threshold_per_user: A threshold for studies size per user. An email (by study_quota_exceeded template) will be sent when this limit is exceeded by a user. A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)</span>
 <span class="sd">        :param try_update_original_study: Value for the setting (optional)</span>
+<span class="sd">        :param try_update_original_study_from_namespaces: Value for the setting (optional)</span>
+<span class="sd">        :param try_update_original_study_to_namespaces: Value for the setting (optional)</span>
 <span class="sd">        :param ui_json: JSON for UI setting (optional) possible options:</span>
 
 <span class="sd">pixel_de_id_by_default (boolean) Pixel de-id tool is set by default when uploading study to this namespace</span>
@@ -192,12 +203,15 @@
            <span class="s1">&#39;cloud_storage_config&#39;</span><span class="p">:</span> <span class="n">cloud_storage_config</span><span class="p">,</span>
            <span class="s1">&#39;disable_duplicate_study_upload&#39;</span><span class="p">:</span> <span class="n">disable_duplicate_study_upload</span><span class="p">,</span>
            <span class="s1">&#39;disable_mobile_dicom_wrapping&#39;</span><span class="p">:</span> <span class="n">disable_mobile_dicom_wrapping</span><span class="p">,</span>
+           <span class="s1">&#39;download_anonymize&#39;</span><span class="p">:</span> <span class="n">download_anonymize</span><span class="p">,</span>
            <span class="s1">&#39;enable_dicom_deidentification&#39;</span><span class="p">:</span> <span class="n">enable_dicom_deidentification</span><span class="p">,</span>
            <span class="s1">&#39;enable_dicom_wrapping&#39;</span><span class="p">:</span> <span class="n">enable_dicom_wrapping</span><span class="p">,</span>
            <span class="s1">&#39;enable_epic_patient_lookup&#39;</span><span class="p">:</span> <span class="n">enable_epic_patient_lookup</span><span class="p">,</span>
            <span class="s1">&#39;enable_multipart_uploader&#39;</span><span class="p">:</span> <span class="n">enable_multipart_uploader</span><span class="p">,</span>
            <span class="s1">&#39;enable_namespace_ai_questions&#39;</span><span class="p">:</span> <span class="n">enable_namespace_ai_questions</span><span class="p">,</span>
+           <span class="s1">&#39;epic_prompt_for_anonymize&#39;</span><span class="p">:</span> <span class="n">epic_prompt_for_anonymize</span><span class="p">,</span>
            <span class="s1">&#39;force_new_study_on_upload&#39;</span><span class="p">:</span> <span class="n">force_new_study_on_upload</span><span class="p">,</span>
+           <span class="s1">&#39;ira_namespace&#39;</span><span class="p">:</span> <span class="n">ira_namespace</span><span class="p">,</span>
            <span class="s1">&#39;link_defaults&#39;</span><span class="p">:</span> <span class="n">link_defaults</span><span class="p">,</span>
            <span class="s1">&#39;must_approve_duplicate_study_uid&#39;</span><span class="p">:</span> <span class="n">must_approve_duplicate_study_uid</span><span class="p">,</span>
            <span class="s1">&#39;no_dup_share&#39;</span><span class="p">:</span> <span class="n">no_dup_share</span><span class="p">,</span>
@@ -210,6 +224,8 @@
            <span class="s1">&#39;study_field_flags&#39;</span><span class="p">:</span> <span class="n">study_field_flags</span><span class="p">,</span>
            <span class="s1">&#39;study_size_soft_threshold_per_user&#39;</span><span class="p">:</span> <span class="n">study_size_soft_threshold_per_user</span><span class="p">,</span>
            <span class="s1">&#39;try_update_original_study&#39;</span><span class="p">:</span> <span class="n">try_update_original_study</span><span class="p">,</span>
+           <span class="s1">&#39;try_update_original_study_from_namespaces&#39;</span><span class="p">:</span> <span class="n">try_update_original_study_from_namespaces</span><span class="p">,</span>
+           <span class="s1">&#39;try_update_original_study_to_namespaces&#39;</span><span class="p">:</span> <span class="n">try_update_original_study_to_namespaces</span><span class="p">,</span>
            <span class="s1">&#39;ui_json&#39;</span><span class="p">:</span> <span class="n">ui_json</span><span class="p">,</span>
            <span class="s1">&#39;upload_settings&#39;</span><span class="p">:</span> <span class="n">upload_settings</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
@@ -333,7 +349,7 @@
         <span class="sd">&quot;&quot;&quot;Share price.</span>
 
 <span class="sd">        :param uuid: The uuid of the namespace</span>
-<span class="sd">        :param customfield_param: Custom field(s) defined for the case (or study) account objects with values entered in the second opinion wizard (or in the image share screen) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) defined for the case (or study) account objects with values entered in the second opinion wizard (or in the image share screen) (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
@@ -431,7 +447,7 @@
         <span class="sd">&quot;&quot;&quot;Validate customfields.</span>
 
 <span class="sd">        :param share_code: The share code</span>
-<span class="sd">        :param customfield_param: Custom field(s)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;share_code&#39;</span><span class="p">:</span> <span class="n">share_code</span><span class="p">,</span>
@@ -468,6 +484,7 @@
         <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_thin_study_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -492,6 +509,7 @@
 <span class="sd">        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)</span>
 <span class="sd">        :param event_report_remove: Notify the user when a report is removed in the namespace (optional)</span>
 <span class="sd">        :param event_share: Notify the user on a share into the namespace (optional)</span>
+<span class="sd">        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)</span>
 <span class="sd">        :param event_status_change: Notify the user when the status of a study is changed (optional)</span>
 <span class="sd">        :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)</span>
 <span class="sd">        :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)</span>
@@ -514,6 +532,7 @@
            <span class="s1">&#39;event_query_reply&#39;</span><span class="p">:</span> <span class="n">event_query_reply</span><span class="p">,</span>
            <span class="s1">&#39;event_report_remove&#39;</span><span class="p">:</span> <span class="n">event_report_remove</span><span class="p">,</span>
            <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
+           <span class="s1">&#39;event_site_qualified&#39;</span><span class="p">:</span> <span class="n">event_site_qualified</span><span class="p">,</span>
            <span class="s1">&#39;event_status_change&#39;</span><span class="p">:</span> <span class="n">event_status_change</span><span class="p">,</span>
            <span class="s1">&#39;event_study_comment&#39;</span><span class="p">:</span> <span class="n">event_study_comment</span><span class="p">,</span>
            <span class="s1">&#39;event_thin_study_fail&#39;</span><span class="p">:</span> <span class="n">event_thin_study_fail</span><span class="p">,</span>
@@ -598,6 +617,7 @@
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The namespace was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;PENDING_RESTORE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">PendingRestore</span><span class="p">(</span><span class="s1">&#39;The study is getting retrieved from the archive. Try this call again after a delay&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/namespace/engine/fqdn&#39;</span><span class="p">,</span>
@@ -767,12 +787,15 @@
         <span class="n">cloud_storage_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">disable_duplicate_study_upload</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">disable_mobile_dicom_wrapping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">download_anonymize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">enable_dicom_deidentification</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">enable_dicom_wrapping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">enable_epic_patient_lookup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">enable_multipart_uploader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">enable_namespace_ai_questions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">epic_prompt_for_anonymize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">force_new_study_on_upload</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ira_namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">link_defaults</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">must_approve_duplicate_study_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">no_dup_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -785,6 +808,8 @@
         <span class="n">study_field_flags</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">study_size_soft_threshold_per_user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">try_update_original_study</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">try_update_original_study_from_namespaces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">try_update_original_study_to_namespaces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">ui_json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">upload_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
@@ -798,12 +823,15 @@
 <span class="sd">        :param cloud_storage_config: Value for the setting (optional)</span>
 <span class="sd">        :param disable_duplicate_study_upload: Value for the setting (optional)</span>
 <span class="sd">        :param disable_mobile_dicom_wrapping: Value for the setting (optional)</span>
+<span class="sd">        :param download_anonymize: Anonymization rules to apply on study download. The setting format should follow the anonymize_tags parameter format of the Storage /study/{namespace}/{studyUid}/download call (optional)</span>
 <span class="sd">        :param enable_dicom_deidentification: Value for the setting (optional)</span>
 <span class="sd">        :param enable_dicom_wrapping: Value for the setting (optional)</span>
 <span class="sd">        :param enable_epic_patient_lookup: Value for the setting (optional)</span>
 <span class="sd">        :param enable_multipart_uploader: Value for the setting (optional)</span>
 <span class="sd">        :param enable_namespace_ai_questions: Value for the setting (optional)</span>
+<span class="sd">        :param epic_prompt_for_anonymize: Value for the setting (optional)</span>
 <span class="sd">        :param force_new_study_on_upload: Value for the setting (optional)</span>
+<span class="sd">        :param ira_namespace: Flag to make the namespace viable owner namespace for Queries (optional)</span>
 <span class="sd">        :param link_defaults: Value for the setting (optional)</span>
 <span class="sd">        :param must_approve_duplicate_study_uid: Value for the setting (optional)</span>
 <span class="sd">        :param no_dup_share: Flag to stop duplicate studies (same study_uid and image count) from getting shared into the namespace (optional)</span>
@@ -816,6 +844,8 @@
 <span class="sd">        :param study_field_flags: A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)</span>
 <span class="sd">        :param study_size_soft_threshold_per_user: A threshold for studies size per user. An email (by study_quota_exceeded template) will be sent when this limit is exceeded by a user. A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)</span>
 <span class="sd">        :param try_update_original_study: Value for the setting (optional)</span>
+<span class="sd">        :param try_update_original_study_from_namespaces: Value for the setting (optional)</span>
+<span class="sd">        :param try_update_original_study_to_namespaces: Value for the setting (optional)</span>
 <span class="sd">        :param ui_json: JSON for UI setting (optional) possible options:</span>
 
 <span class="sd">pixel_de_id_by_default (boolean) Pixel de-id tool is set by default when uploading study to this namespace</span>
@@ -829,12 +859,15 @@
            <span class="s1">&#39;cloud_storage_config&#39;</span><span class="p">:</span> <span class="n">cloud_storage_config</span><span class="p">,</span>
            <span class="s1">&#39;disable_duplicate_study_upload&#39;</span><span class="p">:</span> <span class="n">disable_duplicate_study_upload</span><span class="p">,</span>
            <span class="s1">&#39;disable_mobile_dicom_wrapping&#39;</span><span class="p">:</span> <span class="n">disable_mobile_dicom_wrapping</span><span class="p">,</span>
+           <span class="s1">&#39;download_anonymize&#39;</span><span class="p">:</span> <span class="n">download_anonymize</span><span class="p">,</span>
            <span class="s1">&#39;enable_dicom_deidentification&#39;</span><span class="p">:</span> <span class="n">enable_dicom_deidentification</span><span class="p">,</span>
            <span class="s1">&#39;enable_dicom_wrapping&#39;</span><span class="p">:</span> <span class="n">enable_dicom_wrapping</span><span class="p">,</span>
            <span class="s1">&#39;enable_epic_patient_lookup&#39;</span><span class="p">:</span> <span class="n">enable_epic_patient_lookup</span><span class="p">,</span>
            <span class="s1">&#39;enable_multipart_uploader&#39;</span><span class="p">:</span> <span class="n">enable_multipart_uploader</span><span class="p">,</span>
            <span class="s1">&#39;enable_namespace_ai_questions&#39;</span><span class="p">:</span> <span class="n">enable_namespace_ai_questions</span><span class="p">,</span>
+           <span class="s1">&#39;epic_prompt_for_anonymize&#39;</span><span class="p">:</span> <span class="n">epic_prompt_for_anonymize</span><span class="p">,</span>
            <span class="s1">&#39;force_new_study_on_upload&#39;</span><span class="p">:</span> <span class="n">force_new_study_on_upload</span><span class="p">,</span>
+           <span class="s1">&#39;ira_namespace&#39;</span><span class="p">:</span> <span class="n">ira_namespace</span><span class="p">,</span>
            <span class="s1">&#39;link_defaults&#39;</span><span class="p">:</span> <span class="n">link_defaults</span><span class="p">,</span>
            <span class="s1">&#39;must_approve_duplicate_study_uid&#39;</span><span class="p">:</span> <span class="n">must_approve_duplicate_study_uid</span><span class="p">,</span>
            <span class="s1">&#39;no_dup_share&#39;</span><span class="p">:</span> <span class="n">no_dup_share</span><span class="p">,</span>
@@ -847,6 +880,8 @@
            <span class="s1">&#39;study_field_flags&#39;</span><span class="p">:</span> <span class="n">study_field_flags</span><span class="p">,</span>
            <span class="s1">&#39;study_size_soft_threshold_per_user&#39;</span><span class="p">:</span> <span class="n">study_size_soft_threshold_per_user</span><span class="p">,</span>
            <span class="s1">&#39;try_update_original_study&#39;</span><span class="p">:</span> <span class="n">try_update_original_study</span><span class="p">,</span>
+           <span class="s1">&#39;try_update_original_study_from_namespaces&#39;</span><span class="p">:</span> <span class="n">try_update_original_study_from_namespaces</span><span class="p">,</span>
+           <span class="s1">&#39;try_update_original_study_to_namespaces&#39;</span><span class="p">:</span> <span class="n">try_update_original_study_to_namespaces</span><span class="p">,</span>
            <span class="s1">&#39;ui_json&#39;</span><span class="p">:</span> <span class="n">ui_json</span><span class="p">,</span>
            <span class="s1">&#39;upload_settings&#39;</span><span class="p">:</span> <span class="n">upload_settings</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
@@ -970,7 +1005,7 @@
         <span class="sd">&quot;&quot;&quot;Share price.</span>
 
 <span class="sd">        :param uuid: The uuid of the namespace</span>
-<span class="sd">        :param customfield_param: Custom field(s) defined for the case (or study) account objects with values entered in the second opinion wizard (or in the image share screen) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) defined for the case (or study) account objects with values entered in the second opinion wizard (or in the image share screen) (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
@@ -1068,7 +1103,7 @@
         <span class="sd">&quot;&quot;&quot;Validate customfields.</span>
 
 <span class="sd">        :param share_code: The share code</span>
-<span class="sd">        :param customfield_param: Custom field(s)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;share_code&#39;</span><span class="p">:</span> <span class="n">share_code</span><span class="p">,</span>
@@ -1105,6 +1140,7 @@
         <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_thin_study_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1129,6 +1165,7 @@
 <span class="sd">        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)</span>
 <span class="sd">        :param event_report_remove: Notify the user when a report is removed in the namespace (optional)</span>
 <span class="sd">        :param event_share: Notify the user on a share into the namespace (optional)</span>
+<span class="sd">        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)</span>
 <span class="sd">        :param event_status_change: Notify the user when the status of a study is changed (optional)</span>
 <span class="sd">        :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)</span>
 <span class="sd">        :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)</span>
@@ -1151,6 +1188,7 @@
            <span class="s1">&#39;event_query_reply&#39;</span><span class="p">:</span> <span class="n">event_query_reply</span><span class="p">,</span>
            <span class="s1">&#39;event_report_remove&#39;</span><span class="p">:</span> <span class="n">event_report_remove</span><span class="p">,</span>
            <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
+           <span class="s1">&#39;event_site_qualified&#39;</span><span class="p">:</span> <span class="n">event_site_qualified</span><span class="p">,</span>
            <span class="s1">&#39;event_status_change&#39;</span><span class="p">:</span> <span class="n">event_status_change</span><span class="p">,</span>
            <span class="s1">&#39;event_study_comment&#39;</span><span class="p">:</span> <span class="n">event_study_comment</span><span class="p">,</span>
            <span class="s1">&#39;event_thin_study_fail&#39;</span><span class="p">:</span> <span class="n">event_thin_study_fail</span><span class="p">,</span>
@@ -1235,6 +1273,7 @@
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The namespace was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;PENDING_RESTORE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">PendingRestore</span><span class="p">(</span><span class="s1">&#39;The study is getting retrieved from the archive. Try this call again after a delay&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/namespace/engine/fqdn&#39;</span><span class="p">,</span>
@@ -1351,7 +1390,7 @@
 
 
 
-<p class="blurb">version 3.21.6.0-1</p>
+<p class="blurb">version 3.22.1.0-1</p>
 
 
 

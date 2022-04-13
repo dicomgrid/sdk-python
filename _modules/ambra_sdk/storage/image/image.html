@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.storage.image.image &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
+    <title>ambra_sdk.storage.image.image &#8212; Ambra-SDK 3.22.1.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -212,6 +212,104 @@
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Image.multipart_initiate"><a class="viewcode-back" href="../../../../referencies/storage_api.html#ambra_sdk.storage.image.Image.multipart_initiate">[docs]</a>    <span class="k">def</span> <span class="nf">multipart_initiate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">engine_fqdn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">use_box</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Initiate the multipart upload.</span>
+
+<span class="sd">        URL: /multipart/initiate?sid={sid}</span>
+
+<span class="sd">        :param engine_fqdn: Engine FQDN (Required).</span>
+<span class="sd">        :param use_box: Use box for response.</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
+
+<span class="sd">        :returns: uuid of multipart upload</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multipart_initiate</span><span class="p">(</span>
+            <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">use_box</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="Image.multipart_chunk_upload"><a class="viewcode-back" href="../../../../referencies/storage_api.html#ambra_sdk.storage.image.Image.multipart_chunk_upload">[docs]</a>    <span class="k">def</span> <span class="nf">multipart_chunk_upload</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">engine_fqdn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">upload_uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">bytes_part</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span>
+        <span class="n">chunk_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Upload a part of image.</span>
+
+<span class="sd">        URL: multipart/{upload_uuid}</span>
+
+<span class="sd">        :param engine_fqdn: Engine FQDN (Required).</span>
+<span class="sd">        :param upload_uuid: UUID of the initiated multipart upload (Required).</span>
+<span class="sd">        :param bytes_part: part of image (Required).</span>
+<span class="sd">        :param chunk_number: sequence number, first part has number 0 (Required).</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
+
+<span class="sd">        :returns: status code</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multipart_chunk_upload</span><span class="p">(</span>
+            <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
+            <span class="n">upload_uuid</span><span class="o">=</span><span class="n">upload_uuid</span><span class="p">,</span>
+            <span class="n">bytes_part</span><span class="o">=</span><span class="n">bytes_part</span><span class="p">,</span>
+            <span class="n">chunk_number</span><span class="o">=</span><span class="n">chunk_number</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
+        <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Image.multipart_complete"><a class="viewcode-back" href="../../../../referencies/storage_api.html#ambra_sdk.storage.image.Image.multipart_complete">[docs]</a>    <span class="k">def</span> <span class="nf">multipart_complete</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">engine_fqdn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">upload_uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">file_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;image&#39;</span><span class="p">,</span>
+        <span class="n">tags</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="n">study_uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">render_wrapped_pdf</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="n">only_prepare</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">PreparedRequest</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Finish the multipart upload process.</span>
+
+<span class="sd">        URL: multipart/{upload_uuid}/complete</span>
+
+<span class="sd">        :param engine_fqdn: Engine FQDN (Required).</span>
+<span class="sd">        :param namespace: Namespace (Required).</span>
+<span class="sd">        :param upload_uuid: UUID of the initiated multipart upload (Required).</span>
+<span class="sd">        :param file_size: size of whole file (Required).</span>
+<span class="sd">        :param endpoint: the endpoint to which the reconstructed file needs to be submitted. Only the image and wrap endpoint are supported at the moment.</span>
+<span class="sd">        :param tags: the tags to be used to submit reconstructed file.</span>
+<span class="sd">        :param study_uid: study uid.</span>
+<span class="sd">        :param render_wrapped_pdf: if the file to be submitted should be treated as wrapped pdf.</span>
+<span class="sd">        :param only_prepare: Get prepared request.</span>
+
+<span class="sd">        :returns: status code</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prepared_request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multipart_complete</span><span class="p">(</span>
+            <span class="n">engine_fqdn</span><span class="o">=</span><span class="n">engine_fqdn</span><span class="p">,</span>
+            <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
+            <span class="n">upload_uuid</span><span class="o">=</span><span class="n">upload_uuid</span><span class="p">,</span>
+            <span class="n">file_size</span><span class="o">=</span><span class="n">file_size</span><span class="p">,</span>
+            <span class="n">endpoint</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
+            <span class="n">tags</span><span class="o">=</span><span class="n">tags</span><span class="p">,</span>
+            <span class="n">study_uid</span><span class="o">=</span><span class="n">study_uid</span><span class="p">,</span>
+            <span class="n">render_wrapped_pdf</span><span class="o">=</span><span class="n">render_wrapped_pdf</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">only_prepare</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prepared_request</span>
         <span class="k">return</span> <span class="n">prepared_request</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div></div>
 </pre></div>
 
@@ -225,7 +323,7 @@
 
 
 
-<p class="blurb">version 3.21.6.0-1</p>
+<p class="blurb">version 3.22.1.0-1</p>
 
 
 

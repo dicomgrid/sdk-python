@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.group &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.group &#8212; Ambra-SDK 3.22.1.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -40,6 +40,8 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">AccountNotFound</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">ActiveQuery</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">Already</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">CanNotPromote</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">DupNamespaceName</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">DupShareCode</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">FilterNotFound</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">InvalidCondition</span>
@@ -123,7 +125,7 @@
 
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        :param name: Name of the group</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param hl7_template: The HL7 reporting template for the group (optional)</span>
 <span class="sd">        :param must_approve: Flag if shared studies must be approved for the group (optional)</span>
 <span class="sd">        :param must_approve_harvest: Flag if harvested studies must be approved (optional)</span>
@@ -161,6 +163,7 @@
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ACCOUNT_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">AccountNotFound</span><span class="p">(</span><span class="s1">&#39;The account was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;DUP_NAMESPACE_NAME&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">DupNamespaceName</span><span class="p">(</span><span class="s1">&#39;namespace_names_globally_unique is enabled and there is another namespace with the same name&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;DUP_SHARE_CODE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">DupShareCode</span><span class="p">(</span><span class="s1">&#39;The share code is already used&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CUSTOMFIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCustomfield</span><span class="p">(</span><span class="s1">&#39;Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FLAG&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidFlag</span><span class="p">(</span><span class="s1">&#39;An invalid flag was passed. The error_subtype holds the name of the invalid flag&#39;</span><span class="p">)</span>
@@ -198,12 +201,13 @@
         <span class="n">share_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">share_via_gateway</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">site_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">site_inactive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
 
 <span class="sd">        :param uuid: The group uuid</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param hl7_template: The HL7 reporting template for the group (optional)</span>
 <span class="sd">        :param must_approve: Flag if shared studies must be approved for the group (optional)</span>
 <span class="sd">        :param must_approve_harvest: Flag if harvested studies must be approved (optional)</span>
@@ -218,6 +222,7 @@
 <span class="sd">        :param share_settings: Share settings JSON structure of the share display settings (optional)</span>
 <span class="sd">        :param share_via_gateway: Flag if a gateway share is allowed (optional)</span>
 <span class="sd">        :param site_id: The associated site id. Required in case require_site_id_for_groups account setting is set (optional)</span>
+<span class="sd">        :param site_inactive: Inactive flag to deactivate the site in a Trial Account (optional)</span>
 <span class="sd">        :param site_qualified: Flag if the site is qualified for the trial (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -235,6 +240,7 @@
            <span class="s1">&#39;share_settings&#39;</span><span class="p">:</span> <span class="n">share_settings</span><span class="p">,</span>
            <span class="s1">&#39;share_via_gateway&#39;</span><span class="p">:</span> <span class="n">share_via_gateway</span><span class="p">,</span>
            <span class="s1">&#39;site_id&#39;</span><span class="p">:</span> <span class="n">site_id</span><span class="p">,</span>
+           <span class="s1">&#39;site_inactive&#39;</span><span class="p">:</span> <span class="n">site_inactive</span><span class="p">,</span>
            <span class="s1">&#39;site_qualified&#39;</span><span class="p">:</span> <span class="n">site_qualified</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
@@ -243,6 +249,7 @@
             <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">customfield_param_dict</span><span class="p">)</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;DUP_NAMESPACE_NAME&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">DupNamespaceName</span><span class="p">(</span><span class="s1">&#39;namespace_names_globally_unique is enabled and there is another namespace with the same name&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;DUP_SHARE_CODE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">DupShareCode</span><span class="p">(</span><span class="s1">&#39;The share code is already used&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CUSTOMFIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCustomfield</span><span class="p">(</span><span class="s1">&#39;Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FLAG&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidFlag</span><span class="p">(</span><span class="s1">&#39;An invalid flag was passed. The error_subtype holds the name of the invalid flag&#39;</span><span class="p">)</span>
@@ -330,6 +337,7 @@
         <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_thin_study_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -357,6 +365,7 @@
 <span class="sd">        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)</span>
 <span class="sd">        :param event_report_remove: Notify the user when a report is removed in the group namespace (optional)</span>
 <span class="sd">        :param event_share: Notify the user on a share into the group namespace (optional)</span>
+<span class="sd">        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)</span>
 <span class="sd">        :param event_status_change: Notify the user when the status of a study is changed (optional)</span>
 <span class="sd">        :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)</span>
 <span class="sd">        :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)</span>
@@ -381,6 +390,7 @@
            <span class="s1">&#39;event_query_reply&#39;</span><span class="p">:</span> <span class="n">event_query_reply</span><span class="p">,</span>
            <span class="s1">&#39;event_report_remove&#39;</span><span class="p">:</span> <span class="n">event_report_remove</span><span class="p">,</span>
            <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
+           <span class="s1">&#39;event_site_qualified&#39;</span><span class="p">:</span> <span class="n">event_site_qualified</span><span class="p">,</span>
            <span class="s1">&#39;event_status_change&#39;</span><span class="p">:</span> <span class="n">event_status_change</span><span class="p">,</span>
            <span class="s1">&#39;event_study_comment&#39;</span><span class="p">:</span> <span class="n">event_study_comment</span><span class="p">,</span>
            <span class="s1">&#39;event_thin_study_fail&#39;</span><span class="p">:</span> <span class="n">event_thin_study_fail</span><span class="p">,</span>
@@ -394,6 +404,7 @@
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;CAN_NOT_PROMOTE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">CanNotPromote</span><span class="p">(</span><span class="s1">&#39;A user can not switch themselves to an admin role if they are currently not in an admin role&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FLAG&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidFlag</span><span class="p">(</span><span class="s1">&#39;An invalid flag was passed. The error_subtype holds the name of the invalid flag&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The group can not be found&#39;</span><span class="p">)</span>
@@ -567,7 +578,7 @@
 
 <span class="sd">        :param account_id: uuid of the account</span>
 <span class="sd">        :param name: Name of the group</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param hl7_template: The HL7 reporting template for the group (optional)</span>
 <span class="sd">        :param must_approve: Flag if shared studies must be approved for the group (optional)</span>
 <span class="sd">        :param must_approve_harvest: Flag if harvested studies must be approved (optional)</span>
@@ -605,6 +616,7 @@
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ACCOUNT_NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">AccountNotFound</span><span class="p">(</span><span class="s1">&#39;The account was not found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;DUP_NAMESPACE_NAME&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">DupNamespaceName</span><span class="p">(</span><span class="s1">&#39;namespace_names_globally_unique is enabled and there is another namespace with the same name&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;DUP_SHARE_CODE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">DupShareCode</span><span class="p">(</span><span class="s1">&#39;The share code is already used&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CUSTOMFIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCustomfield</span><span class="p">(</span><span class="s1">&#39;Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FLAG&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidFlag</span><span class="p">(</span><span class="s1">&#39;An invalid flag was passed. The error_subtype holds the name of the invalid flag&#39;</span><span class="p">)</span>
@@ -642,12 +654,13 @@
         <span class="n">share_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">share_via_gateway</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">site_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">site_inactive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set.</span>
 
 <span class="sd">        :param uuid: The group uuid</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param hl7_template: The HL7 reporting template for the group (optional)</span>
 <span class="sd">        :param must_approve: Flag if shared studies must be approved for the group (optional)</span>
 <span class="sd">        :param must_approve_harvest: Flag if harvested studies must be approved (optional)</span>
@@ -662,6 +675,7 @@
 <span class="sd">        :param share_settings: Share settings JSON structure of the share display settings (optional)</span>
 <span class="sd">        :param share_via_gateway: Flag if a gateway share is allowed (optional)</span>
 <span class="sd">        :param site_id: The associated site id. Required in case require_site_id_for_groups account setting is set (optional)</span>
+<span class="sd">        :param site_inactive: Inactive flag to deactivate the site in a Trial Account (optional)</span>
 <span class="sd">        :param site_qualified: Flag if the site is qualified for the trial (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -679,6 +693,7 @@
            <span class="s1">&#39;share_settings&#39;</span><span class="p">:</span> <span class="n">share_settings</span><span class="p">,</span>
            <span class="s1">&#39;share_via_gateway&#39;</span><span class="p">:</span> <span class="n">share_via_gateway</span><span class="p">,</span>
            <span class="s1">&#39;site_id&#39;</span><span class="p">:</span> <span class="n">site_id</span><span class="p">,</span>
+           <span class="s1">&#39;site_inactive&#39;</span><span class="p">:</span> <span class="n">site_inactive</span><span class="p">,</span>
            <span class="s1">&#39;site_qualified&#39;</span><span class="p">:</span> <span class="n">site_qualified</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
@@ -687,6 +702,7 @@
             <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">customfield_param_dict</span><span class="p">)</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;DUP_NAMESPACE_NAME&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">DupNamespaceName</span><span class="p">(</span><span class="s1">&#39;namespace_names_globally_unique is enabled and there is another namespace with the same name&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;DUP_SHARE_CODE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">DupShareCode</span><span class="p">(</span><span class="s1">&#39;The share code is already used&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_CUSTOMFIELD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidCustomfield</span><span class="p">(</span><span class="s1">&#39;Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FLAG&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidFlag</span><span class="p">(</span><span class="s1">&#39;An invalid flag was passed. The error_subtype holds the name of the invalid flag&#39;</span><span class="p">)</span>
@@ -774,6 +790,7 @@
         <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_thin_study_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -801,6 +818,7 @@
 <span class="sd">        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)</span>
 <span class="sd">        :param event_report_remove: Notify the user when a report is removed in the group namespace (optional)</span>
 <span class="sd">        :param event_share: Notify the user on a share into the group namespace (optional)</span>
+<span class="sd">        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)</span>
 <span class="sd">        :param event_status_change: Notify the user when the status of a study is changed (optional)</span>
 <span class="sd">        :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)</span>
 <span class="sd">        :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)</span>
@@ -825,6 +843,7 @@
            <span class="s1">&#39;event_query_reply&#39;</span><span class="p">:</span> <span class="n">event_query_reply</span><span class="p">,</span>
            <span class="s1">&#39;event_report_remove&#39;</span><span class="p">:</span> <span class="n">event_report_remove</span><span class="p">,</span>
            <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
+           <span class="s1">&#39;event_site_qualified&#39;</span><span class="p">:</span> <span class="n">event_site_qualified</span><span class="p">,</span>
            <span class="s1">&#39;event_status_change&#39;</span><span class="p">:</span> <span class="n">event_status_change</span><span class="p">,</span>
            <span class="s1">&#39;event_study_comment&#39;</span><span class="p">:</span> <span class="n">event_study_comment</span><span class="p">,</span>
            <span class="s1">&#39;event_thin_study_fail&#39;</span><span class="p">:</span> <span class="n">event_thin_study_fail</span><span class="p">,</span>
@@ -838,6 +857,7 @@
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;CAN_NOT_PROMOTE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">CanNotPromote</span><span class="p">(</span><span class="s1">&#39;A user can not switch themselves to an admin role if they are currently not in an admin role&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_FLAG&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidFlag</span><span class="p">(</span><span class="s1">&#39;An invalid flag was passed. The error_subtype holds the name of the invalid flag&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The group can not be found&#39;</span><span class="p">)</span>
@@ -960,7 +980,7 @@
 
 
 
-<p class="blurb">version 3.21.6.0-1</p>
+<p class="blurb">version 3.22.1.0-1</p>
 
 
 

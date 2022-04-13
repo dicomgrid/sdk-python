@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.user &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.user &#8212; Ambra-SDK 3.22.1.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -95,7 +95,7 @@
 <span class="sd">        :param last: Last name</span>
 <span class="sd">        :param password: Password</span>
 <span class="sd">        :param captcha_response: Response from captcha (optional)</span>
-<span class="sd">        :param customfield_param: Custom field(s) defined in the vanity_registration_customfields account setting (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) defined in the vanity_registration_customfields account setting (optional)</span>
 <span class="sd">        :param share_code: Share code they are joining from (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -293,6 +293,7 @@
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to do this&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/user/delete&#39;</span><span class="p">,</span>
@@ -586,6 +587,7 @@
         <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_thin_study_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -610,6 +612,7 @@
 <span class="sd">        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)</span>
 <span class="sd">        :param event_report_remove: Notify the user when a report is removed in the namespace (optional)</span>
 <span class="sd">        :param event_share: Notify the user on a share into the namespace (optional)</span>
+<span class="sd">        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)</span>
 <span class="sd">        :param event_status_change: Notify the user when the status of a study is changed (optional)</span>
 <span class="sd">        :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)</span>
 <span class="sd">        :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)</span>
@@ -632,6 +635,7 @@
            <span class="s1">&#39;event_query_reply&#39;</span><span class="p">:</span> <span class="n">event_query_reply</span><span class="p">,</span>
            <span class="s1">&#39;event_report_remove&#39;</span><span class="p">:</span> <span class="n">event_report_remove</span><span class="p">,</span>
            <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
+           <span class="s1">&#39;event_site_qualified&#39;</span><span class="p">:</span> <span class="n">event_site_qualified</span><span class="p">,</span>
            <span class="s1">&#39;event_status_change&#39;</span><span class="p">:</span> <span class="n">event_status_change</span><span class="p">,</span>
            <span class="s1">&#39;event_study_comment&#39;</span><span class="p">:</span> <span class="n">event_study_comment</span><span class="p">,</span>
            <span class="s1">&#39;event_thin_study_fail&#39;</span><span class="p">:</span> <span class="n">event_thin_study_fail</span><span class="p">,</span>
@@ -839,7 +843,7 @@
 <span class="sd">        :param last: Last name</span>
 <span class="sd">        :param password: Password</span>
 <span class="sd">        :param captcha_response: Response from captcha (optional)</span>
-<span class="sd">        :param customfield_param: Custom field(s) defined in the vanity_registration_customfields account setting (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) defined in the vanity_registration_customfields account setting (optional)</span>
 <span class="sd">        :param share_code: Share code they are joining from (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1037,6 +1041,7 @@
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to do this&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/user/delete&#39;</span><span class="p">,</span>
@@ -1330,6 +1335,7 @@
         <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_thin_study_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1354,6 +1360,7 @@
 <span class="sd">        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)</span>
 <span class="sd">        :param event_report_remove: Notify the user when a report is removed in the namespace (optional)</span>
 <span class="sd">        :param event_share: Notify the user on a share into the namespace (optional)</span>
+<span class="sd">        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)</span>
 <span class="sd">        :param event_status_change: Notify the user when the status of a study is changed (optional)</span>
 <span class="sd">        :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)</span>
 <span class="sd">        :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)</span>
@@ -1376,6 +1383,7 @@
            <span class="s1">&#39;event_query_reply&#39;</span><span class="p">:</span> <span class="n">event_query_reply</span><span class="p">,</span>
            <span class="s1">&#39;event_report_remove&#39;</span><span class="p">:</span> <span class="n">event_report_remove</span><span class="p">,</span>
            <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
+           <span class="s1">&#39;event_site_qualified&#39;</span><span class="p">:</span> <span class="n">event_site_qualified</span><span class="p">,</span>
            <span class="s1">&#39;event_status_change&#39;</span><span class="p">:</span> <span class="n">event_status_change</span><span class="p">,</span>
            <span class="s1">&#39;event_study_comment&#39;</span><span class="p">:</span> <span class="n">event_study_comment</span><span class="p">,</span>
            <span class="s1">&#39;event_thin_study_fail&#39;</span><span class="p">:</span> <span class="n">event_thin_study_fail</span><span class="p">,</span>
@@ -1569,7 +1577,7 @@
 
 
 
-<p class="blurb">version 3.21.6.0-1</p>
+<p class="blurb">version 3.22.1.0-1</p>
 
 
 

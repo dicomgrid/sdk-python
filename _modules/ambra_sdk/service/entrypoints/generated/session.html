@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.session &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.session &#8212; Ambra-SDK 3.22.1.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -59,6 +59,7 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">OtherOauth</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">PasswordReset</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">PinExpired</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">PublicKeyExpired</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">SsoOnly</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">ValidationFailed</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">WhitelistLockout</span>
@@ -121,6 +122,7 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ONLY_ONE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">OnlyOne</span><span class="p">(</span><span class="s1">&#39;You can pass either the password or use_pkey flag, not both&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;PASSWORD_RESET&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">PasswordReset</span><span class="p">(</span><span class="s1">&#39;The password needs to be changed&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;PUBLIC_KEY_EXPIRED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">PublicKeyExpired</span><span class="p">(</span><span class="s1">&#39;The public key has expired and needs to be changed&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;SSO_ONLY&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">SsoOnly</span><span class="p">(</span><span class="s1">&#39;The user can only login via SSO&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;VALIDATION_FAILED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ValidationFailed</span><span class="p">(</span><span class="s1">&#39;The session validation failed&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;WHITELIST_LOCKOUT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">WhitelistLockout</span><span class="p">(</span><span class="s1">&#39;Login blocked by the account whitelist&#39;</span><span class="p">)</span>
@@ -378,6 +380,7 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SID&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSid</span><span class="p">(</span><span class="s1">&#39;Invalid sid&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SIGNATURE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSignature</span><span class="p">(</span><span class="s1">&#39;Invalid signature&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;PUBLIC_KEY_EXPIRED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">PublicKeyExpired</span><span class="p">(</span><span class="s1">&#39;The public key has expired and needs to be changed&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/session/sign&#39;</span><span class="p">,</span>
@@ -466,6 +469,7 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ONLY_ONE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">OnlyOne</span><span class="p">(</span><span class="s1">&#39;You can pass either the password or use_pkey flag, not both&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;PASSWORD_RESET&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">PasswordReset</span><span class="p">(</span><span class="s1">&#39;The password needs to be changed&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;PUBLIC_KEY_EXPIRED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">PublicKeyExpired</span><span class="p">(</span><span class="s1">&#39;The public key has expired and needs to be changed&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;SSO_ONLY&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">SsoOnly</span><span class="p">(</span><span class="s1">&#39;The user can only login via SSO&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;VALIDATION_FAILED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ValidationFailed</span><span class="p">(</span><span class="s1">&#39;The session validation failed&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;WHITELIST_LOCKOUT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">WhitelistLockout</span><span class="p">(</span><span class="s1">&#39;Login blocked by the account whitelist&#39;</span><span class="p">)</span>
@@ -723,6 +727,7 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SID&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSid</span><span class="p">(</span><span class="s1">&#39;Invalid sid&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_SIGNATURE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidSignature</span><span class="p">(</span><span class="s1">&#39;Invalid signature&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;PUBLIC_KEY_EXPIRED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">PublicKeyExpired</span><span class="p">(</span><span class="s1">&#39;The public key has expired and needs to be changed&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/session/sign&#39;</span><span class="p">,</span>
@@ -765,7 +770,7 @@
 
 
 
-<p class="blurb">version 3.21.6.0-1</p>
+<p class="blurb">version 3.22.1.0-1</p>
 
 
 

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.destination &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.destination &#8212; Ambra-SDK 3.22.1.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -77,14 +77,12 @@
 <div class="viewcode-block" id="Destination.list"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Destination.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">account_id</span><span class="p">,</span>
-        <span class="n">uuid</span><span class="p">,</span>
         <span class="n">node_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
 
 <span class="sd">        :param account_id: uuid of the account</span>
-<span class="sd">        :param uuid: uuid of the destination</span>
 <span class="sd">        :param node_id: node_id</span>
 <span class="sd">        :param serial_no: serial_no</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -92,7 +90,6 @@
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
            <span class="s1">&#39;node_id&#39;</span><span class="p">:</span> <span class="n">node_id</span><span class="p">,</span>
            <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
-           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -439,6 +436,7 @@
         <span class="n">create_study</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">create_thin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">customfield_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">customfield_quoted_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">end_datetime</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">modality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">node_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -449,6 +447,7 @@
         <span class="n">push_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">query_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">referring_physician</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">refetch_study</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">result_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">share_email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -462,12 +461,13 @@
 <span class="sd">        :param uuid: uuid of the destination</span>
 <span class="sd">        :param accession_number: Accession number to find (optional)</span>
 <span class="sd">        :param anonymize: A JSON hash of anonymization rules to apply to retrieved studies (optional)</span>
-<span class="sd">        :param anonymize_param: The anonymization rules breakdown. This overrides the anonymize parameter if passed (optional)</span>
+<span class="sd">        :param anonymize_param: Expected values are STUDY_FIELD. The anonymization rules breakdown. This overrides the anonymize parameter if passed (optional)</span>
 <span class="sd">        :param bundle_id: An integral number Used internally to track searches initiated from a single bundle (optional)</span>
 <span class="sd">        :param copy_to: uuid of a namespace to copy the retrieved or create_thin studies into (optional)</span>
 <span class="sd">        :param create_study: The maximum number of studies to retrieve from this search instead of creating an activity for the search results (optional)</span>
 <span class="sd">        :param create_thin: The maximum number of thin studies to create from this search instead of creating an activity for the search results (optional)</span>
-<span class="sd">        :param customfield_param: Custom field(s) will be set for the resultant studies after /destination/retrieve call (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) will be set for the resultant studies after /destination/retrieve call (optional)</span>
+<span class="sd">        :param customfield_quoted_param: Expected values are CUSTOMFIELD_NAME. Custom field(s) to be set for the resultant studies. (optional)</span>
 <span class="sd">        :param end_datetime: DICOM end date time stamp to bound the search (optional)</span>
 <span class="sd">        :param modality: Modality (optional)</span>
 <span class="sd">        :param node_id: node_id</span>
@@ -478,6 +478,7 @@
 <span class="sd">        :param push_to: uuid of a destination to push the retrieved studies to (optional)</span>
 <span class="sd">        :param query_fields: A JSON hash of additional query fields (optional)</span>
 <span class="sd">        :param referring_physician: Referring physician to find (optional)</span>
+<span class="sd">        :param refetch_study: Flag to refetch the search results when studies have been fetched already (optional)</span>
 <span class="sd">        :param result_fields: A JSON array of DICOM tags that the destination should return (optional)</span>
 <span class="sd">        :param serial_no: serial_no</span>
 <span class="sd">        :param share_email: Email to share retrieved studies with on subsequent /destination/retrieve (optional)</span>
@@ -503,6 +504,7 @@
            <span class="s1">&#39;push_to&#39;</span><span class="p">:</span> <span class="n">push_to</span><span class="p">,</span>
            <span class="s1">&#39;query_fields&#39;</span><span class="p">:</span> <span class="n">query_fields</span><span class="p">,</span>
            <span class="s1">&#39;referring_physician&#39;</span><span class="p">:</span> <span class="n">referring_physician</span><span class="p">,</span>
+           <span class="s1">&#39;refetch_study&#39;</span><span class="p">:</span> <span class="n">refetch_study</span><span class="p">,</span>
            <span class="s1">&#39;result_fields&#39;</span><span class="p">:</span> <span class="n">result_fields</span><span class="p">,</span>
            <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
            <span class="s1">&#39;share_email&#39;</span><span class="p">:</span> <span class="n">share_email</span><span class="p">,</span>
@@ -518,6 +520,9 @@
         <span class="k">if</span> <span class="n">customfield_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">customfield_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
             <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">customfield_param_dict</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">customfield_quoted_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">customfield_quoted_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}</span><span class="se">\&#39;</span><span class="si">{k}</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\\\</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\\&#39;</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_quoted_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">customfield_quoted_param_dict</span><span class="p">)</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;CAN_NOT_TRACK&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">CanNotTrack</span><span class="p">(</span><span class="s1">&#39;Tracking only works with the create_study option&#39;</span><span class="p">)</span>
@@ -577,7 +582,7 @@
 <span class="sd">        :param activity_id: uuid of the DESTINATION_SEARCH activity to retrieve from</span>
 <span class="sd">        :param send_method: The method to send a study as a study request response (share|duplicate)</span>
 <span class="sd">        :param study_request_found_id: UUID of a study request search results to retrieve and send as study request response</span>
-<span class="sd">        :param customfield_param: Custom field(s) will be set for the study retrieved (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) will be set for the study retrieved (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;activity_id&#39;</span><span class="p">:</span> <span class="n">activity_id</span><span class="p">,</span>
@@ -663,14 +668,12 @@
 <div class="viewcode-block" id="AsyncDestination.list"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncDestination.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">account_id</span><span class="p">,</span>
-        <span class="n">uuid</span><span class="p">,</span>
         <span class="n">node_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List.</span>
 
 <span class="sd">        :param account_id: uuid of the account</span>
-<span class="sd">        :param uuid: uuid of the destination</span>
 <span class="sd">        :param node_id: node_id</span>
 <span class="sd">        :param serial_no: serial_no</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -678,7 +681,6 @@
            <span class="s1">&#39;account_id&#39;</span><span class="p">:</span> <span class="n">account_id</span><span class="p">,</span>
            <span class="s1">&#39;node_id&#39;</span><span class="p">:</span> <span class="n">node_id</span><span class="p">,</span>
            <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
-           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1025,6 +1027,7 @@
         <span class="n">create_study</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">create_thin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">customfield_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">customfield_quoted_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">end_datetime</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">modality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">node_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1035,6 +1038,7 @@
         <span class="n">push_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">query_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">referring_physician</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">refetch_study</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">result_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">serial_no</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">share_email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1048,12 +1052,13 @@
 <span class="sd">        :param uuid: uuid of the destination</span>
 <span class="sd">        :param accession_number: Accession number to find (optional)</span>
 <span class="sd">        :param anonymize: A JSON hash of anonymization rules to apply to retrieved studies (optional)</span>
-<span class="sd">        :param anonymize_param: The anonymization rules breakdown. This overrides the anonymize parameter if passed (optional)</span>
+<span class="sd">        :param anonymize_param: Expected values are STUDY_FIELD. The anonymization rules breakdown. This overrides the anonymize parameter if passed (optional)</span>
 <span class="sd">        :param bundle_id: An integral number Used internally to track searches initiated from a single bundle (optional)</span>
 <span class="sd">        :param copy_to: uuid of a namespace to copy the retrieved or create_thin studies into (optional)</span>
 <span class="sd">        :param create_study: The maximum number of studies to retrieve from this search instead of creating an activity for the search results (optional)</span>
 <span class="sd">        :param create_thin: The maximum number of thin studies to create from this search instead of creating an activity for the search results (optional)</span>
-<span class="sd">        :param customfield_param: Custom field(s) will be set for the resultant studies after /destination/retrieve call (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) will be set for the resultant studies after /destination/retrieve call (optional)</span>
+<span class="sd">        :param customfield_quoted_param: Expected values are CUSTOMFIELD_NAME. Custom field(s) to be set for the resultant studies. (optional)</span>
 <span class="sd">        :param end_datetime: DICOM end date time stamp to bound the search (optional)</span>
 <span class="sd">        :param modality: Modality (optional)</span>
 <span class="sd">        :param node_id: node_id</span>
@@ -1064,6 +1069,7 @@
 <span class="sd">        :param push_to: uuid of a destination to push the retrieved studies to (optional)</span>
 <span class="sd">        :param query_fields: A JSON hash of additional query fields (optional)</span>
 <span class="sd">        :param referring_physician: Referring physician to find (optional)</span>
+<span class="sd">        :param refetch_study: Flag to refetch the search results when studies have been fetched already (optional)</span>
 <span class="sd">        :param result_fields: A JSON array of DICOM tags that the destination should return (optional)</span>
 <span class="sd">        :param serial_no: serial_no</span>
 <span class="sd">        :param share_email: Email to share retrieved studies with on subsequent /destination/retrieve (optional)</span>
@@ -1089,6 +1095,7 @@
            <span class="s1">&#39;push_to&#39;</span><span class="p">:</span> <span class="n">push_to</span><span class="p">,</span>
            <span class="s1">&#39;query_fields&#39;</span><span class="p">:</span> <span class="n">query_fields</span><span class="p">,</span>
            <span class="s1">&#39;referring_physician&#39;</span><span class="p">:</span> <span class="n">referring_physician</span><span class="p">,</span>
+           <span class="s1">&#39;refetch_study&#39;</span><span class="p">:</span> <span class="n">refetch_study</span><span class="p">,</span>
            <span class="s1">&#39;result_fields&#39;</span><span class="p">:</span> <span class="n">result_fields</span><span class="p">,</span>
            <span class="s1">&#39;serial_no&#39;</span><span class="p">:</span> <span class="n">serial_no</span><span class="p">,</span>
            <span class="s1">&#39;share_email&#39;</span><span class="p">:</span> <span class="n">share_email</span><span class="p">,</span>
@@ -1104,6 +1111,9 @@
         <span class="k">if</span> <span class="n">customfield_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">customfield_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}{k}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
             <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">customfield_param_dict</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">customfield_quoted_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">customfield_quoted_param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">{prefix}</span><span class="se">\&#39;</span><span class="si">{k}</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;customfield-&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\\\</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\\&#39;</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">customfield_quoted_param</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">request_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">customfield_quoted_param_dict</span><span class="p">)</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;CAN_NOT_TRACK&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">CanNotTrack</span><span class="p">(</span><span class="s1">&#39;Tracking only works with the create_study option&#39;</span><span class="p">)</span>
@@ -1163,7 +1173,7 @@
 <span class="sd">        :param activity_id: uuid of the DESTINATION_SEARCH activity to retrieve from</span>
 <span class="sd">        :param send_method: The method to send a study as a study request response (share|duplicate)</span>
 <span class="sd">        :param study_request_found_id: UUID of a study request search results to retrieve and send as study request response</span>
-<span class="sd">        :param customfield_param: Custom field(s) will be set for the study retrieved (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) will be set for the study retrieved (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;activity_id&#39;</span><span class="p">:</span> <span class="n">activity_id</span><span class="p">,</span>
@@ -1249,7 +1259,7 @@
 
 
 
-<p class="blurb">version 3.21.6.0-1</p>
+<p class="blurb">version 3.22.1.0-1</p>
 
 
 

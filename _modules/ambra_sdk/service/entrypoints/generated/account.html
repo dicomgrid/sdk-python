@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.account &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.account &#8212; Ambra-SDK 3.22.1.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -63,6 +63,8 @@
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotEnabled</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotPermitted</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotSiteManagementAccount</span>
+<span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">NotSysadminOrSupport</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">RoleNamespaceMismatch</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">RoleNotFound</span>
 <span class="kn">from</span> <span class="nn">ambra_sdk.exceptions.service</span> <span class="kn">import</span> <span class="n">TokenFailed</span>
@@ -131,6 +133,7 @@
         <span class="n">share_description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">share_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">share_via_gateway</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">site_management_account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">vanity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">vendor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
@@ -139,7 +142,7 @@
 <span class="sd">        :param uuid: The account uuid</span>
 <span class="sd">        :param can_request: Flag if user can request to join the account (optional)</span>
 <span class="sd">        :param css: Custom CSS for the account (optional)</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param hl7_template: The HL7 reporting template for the account (optional)</span>
 <span class="sd">        :param must_approve: Flag if shared studies must be approved for the account namespace (optional)</span>
 <span class="sd">        :param must_approve_harvest: Flag if harvested studies must be approved (optional)</span>
@@ -151,12 +154,13 @@
 <span class="sd">        :param role_id: Id for the default role for the account (optional)</span>
 <span class="sd">        :param search_threshold: The number of studies record in the namespace to switch the UI from list to search mode (optional)</span>
 <span class="sd">        :param session_expire: Number of minutes before an idle session expires. (optional)</span>
-<span class="sd">        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
+<span class="sd">        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
 <span class="sd">        :param settings: A hash of the account settings (optional)</span>
 <span class="sd">        :param share_code: The share code of the account (optional)</span>
 <span class="sd">        :param share_description: The share description of the account (optional)</span>
 <span class="sd">        :param share_settings: Share settings JSON structure of the share display settings (optional)</span>
 <span class="sd">        :param share_via_gateway: Flag if a gateway share is allowed (optional)</span>
+<span class="sd">        :param site_management_account_id: The corresponding site management account (optional)</span>
 <span class="sd">        :param vanity: Vanity host name for the account. Multiple host names can be specified in a comma separate list (optional)</span>
 <span class="sd">        :param vendor: Vendor name (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -179,6 +183,7 @@
            <span class="s1">&#39;share_description&#39;</span><span class="p">:</span> <span class="n">share_description</span><span class="p">,</span>
            <span class="s1">&#39;share_settings&#39;</span><span class="p">:</span> <span class="n">share_settings</span><span class="p">,</span>
            <span class="s1">&#39;share_via_gateway&#39;</span><span class="p">:</span> <span class="n">share_via_gateway</span><span class="p">,</span>
+           <span class="s1">&#39;site_management_account_id&#39;</span><span class="p">:</span> <span class="n">site_management_account_id</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
            <span class="s1">&#39;vanity&#39;</span><span class="p">:</span> <span class="n">vanity</span><span class="p">,</span>
            <span class="s1">&#39;vendor&#39;</span><span class="p">:</span> <span class="n">vendor</span><span class="p">,</span>
@@ -201,6 +206,8 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_VANITY&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidVanity</span><span class="p">(</span><span class="s1">&#39;The vanity host name is invalid. The error_subtype holds the invalid hostname&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The object was not found. The error_subtype holds the name of field that triggered the error&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to modify this record&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_SITE_MANAGEMENT_ACCOUNT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotSiteManagementAccount</span><span class="p">(</span><span class="s1">&#39;The account passed in site_management_account_id does not have the enable_site_management setting enabled&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_SYSADMIN_OR_SUPPORT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotSysadminOrSupport</span><span class="p">(</span><span class="s1">&#39;The user is not a sysadmin or support user&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ROLE_NAMESPACE_MISMATCH&#39;</span><span class="p">,</span> <span class="s1">&#39;INCOMPATIBLE_ROLE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">RoleNamespaceMismatch</span><span class="p">(</span><span class="s1">&#39;The role cannot be used for the account, data contains role_id and namespace_id&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
@@ -265,6 +272,7 @@
         <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_thin_study_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -290,7 +298,7 @@
 <span class="sd">        :param account_email: Users account_email. Only set this if it is different than the users login email (optional).</span>
 <span class="sd">        :param account_login: Users login name in the account. (optional).</span>
 <span class="sd">        :param account_password: Password for the account_password. (optional).</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param email: email</span>
 <span class="sd">        :param epic_user: Epic user used to map Epic users into Ambra&#39;s ones to track activity. (optional).</span>
 <span class="sd">        :param event_approve: Notify the user on a approval needed into the account namespace (optional)</span>
@@ -309,6 +317,7 @@
 <span class="sd">        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)</span>
 <span class="sd">        :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)</span>
 <span class="sd">        :param event_share: Notify the user on a share into the account namespace (optional)</span>
+<span class="sd">        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)</span>
 <span class="sd">        :param event_status_change: Notify the user when the status of a study is changed (optional)</span>
 <span class="sd">        :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)</span>
 <span class="sd">        :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)</span>
@@ -322,7 +331,7 @@
 <span class="sd">        :param role_id: uuid of the users role in the account (optional).</span>
 <span class="sd">        :param session_expire: Number of minutes before an idle session expires. (optional)</span>
 <span class="sd">        :param set_default_organization: A flag to set this account as a default one for the user using user_default_organization Setting. (optional)</span>
-<span class="sd">        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
+<span class="sd">        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
 <span class="sd">        :param settings: A hash of the account settings that the user can override (optional)</span>
 <span class="sd">        :param sso_only: Flag if the user can only login via SSO. (optional).</span>
 <span class="sd">        :param user_id: user_id</span>
@@ -350,6 +359,7 @@
            <span class="s1">&#39;event_query_reply&#39;</span><span class="p">:</span> <span class="n">event_query_reply</span><span class="p">,</span>
            <span class="s1">&#39;event_report_remove&#39;</span><span class="p">:</span> <span class="n">event_report_remove</span><span class="p">,</span>
            <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
+           <span class="s1">&#39;event_site_qualified&#39;</span><span class="p">:</span> <span class="n">event_site_qualified</span><span class="p">,</span>
            <span class="s1">&#39;event_status_change&#39;</span><span class="p">:</span> <span class="n">event_status_change</span><span class="p">,</span>
            <span class="s1">&#39;event_study_comment&#39;</span><span class="p">:</span> <span class="n">event_study_comment</span><span class="p">,</span>
            <span class="s1">&#39;event_thin_study_fail&#39;</span><span class="p">:</span> <span class="n">event_thin_study_fail</span><span class="p">,</span>
@@ -422,6 +432,7 @@
         <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_thin_study_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -446,7 +457,7 @@
 <span class="sd">        :param account_email: Users account_email. Only set this if it is different than the users login email (optional).</span>
 <span class="sd">        :param account_login: Users login name in the account. (optional).</span>
 <span class="sd">        :param account_password: Password for the account_password. (optional).</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param epic_user: Epic user used to map Epic users into Ambra&#39;s ones to track activity (optional).</span>
 <span class="sd">        :param event_approve: Notify the user on a approval needed into the account namespace (optional)</span>
 <span class="sd">        :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)</span>
@@ -464,6 +475,7 @@
 <span class="sd">        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)</span>
 <span class="sd">        :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)</span>
 <span class="sd">        :param event_share: Notify the user on a share into the account namespace (optional)</span>
+<span class="sd">        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)</span>
 <span class="sd">        :param event_status_change: Notify the user when the status of a study is changed (optional)</span>
 <span class="sd">        :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)</span>
 <span class="sd">        :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)</span>
@@ -476,7 +488,7 @@
 <span class="sd">        :param password_reset: Flag if the password needs to be reset. (optional).</span>
 <span class="sd">        :param role_id: uuid of the users role in the account (optional).</span>
 <span class="sd">        :param session_expire: Number of minutes before an idle session expires. (optional)</span>
-<span class="sd">        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
+<span class="sd">        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
 <span class="sd">        :param settings: A hash of the account settings that the user can override (optional)</span>
 <span class="sd">        :param sso_only: Flag if the user can only login via SSO. (optional).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -502,6 +514,7 @@
            <span class="s1">&#39;event_query_reply&#39;</span><span class="p">:</span> <span class="n">event_query_reply</span><span class="p">,</span>
            <span class="s1">&#39;event_report_remove&#39;</span><span class="p">:</span> <span class="n">event_report_remove</span><span class="p">,</span>
            <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
+           <span class="s1">&#39;event_site_qualified&#39;</span><span class="p">:</span> <span class="n">event_site_qualified</span><span class="p">,</span>
            <span class="s1">&#39;event_status_change&#39;</span><span class="p">:</span> <span class="n">event_status_change</span><span class="p">,</span>
            <span class="s1">&#39;event_study_comment&#39;</span><span class="p">:</span> <span class="n">event_study_comment</span><span class="p">,</span>
            <span class="s1">&#39;event_thin_study_fail&#39;</span><span class="p">:</span> <span class="n">event_thin_study_fail</span><span class="p">,</span>
@@ -839,7 +852,7 @@
         <span class="sd">&quot;&quot;&quot;Settings validate.</span>
 
 <span class="sd">        :param uuid: The account uuid</span>
-<span class="sd">        :param setting_param: Validate an individual setting. This is an alternative to the settings hash (optional)</span>
+<span class="sd">        :param setting_param: Expected values are SETTING_NAME. Validate an individual setting. This is an alternative to the settings hash (optional)</span>
 <span class="sd">        :param settings: A hash of the account settings with values to validate (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1035,6 +1048,7 @@
         <span class="n">share_description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">share_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">share_via_gateway</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">site_management_account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">vanity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">vendor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
@@ -1043,7 +1057,7 @@
 <span class="sd">        :param uuid: The account uuid</span>
 <span class="sd">        :param can_request: Flag if user can request to join the account (optional)</span>
 <span class="sd">        :param css: Custom CSS for the account (optional)</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param hl7_template: The HL7 reporting template for the account (optional)</span>
 <span class="sd">        :param must_approve: Flag if shared studies must be approved for the account namespace (optional)</span>
 <span class="sd">        :param must_approve_harvest: Flag if harvested studies must be approved (optional)</span>
@@ -1055,12 +1069,13 @@
 <span class="sd">        :param role_id: Id for the default role for the account (optional)</span>
 <span class="sd">        :param search_threshold: The number of studies record in the namespace to switch the UI from list to search mode (optional)</span>
 <span class="sd">        :param session_expire: Number of minutes before an idle session expires. (optional)</span>
-<span class="sd">        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
+<span class="sd">        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
 <span class="sd">        :param settings: A hash of the account settings (optional)</span>
 <span class="sd">        :param share_code: The share code of the account (optional)</span>
 <span class="sd">        :param share_description: The share description of the account (optional)</span>
 <span class="sd">        :param share_settings: Share settings JSON structure of the share display settings (optional)</span>
 <span class="sd">        :param share_via_gateway: Flag if a gateway share is allowed (optional)</span>
+<span class="sd">        :param site_management_account_id: The corresponding site management account (optional)</span>
 <span class="sd">        :param vanity: Vanity host name for the account. Multiple host names can be specified in a comma separate list (optional)</span>
 <span class="sd">        :param vendor: Vendor name (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1083,6 +1098,7 @@
            <span class="s1">&#39;share_description&#39;</span><span class="p">:</span> <span class="n">share_description</span><span class="p">,</span>
            <span class="s1">&#39;share_settings&#39;</span><span class="p">:</span> <span class="n">share_settings</span><span class="p">,</span>
            <span class="s1">&#39;share_via_gateway&#39;</span><span class="p">:</span> <span class="n">share_via_gateway</span><span class="p">,</span>
+           <span class="s1">&#39;site_management_account_id&#39;</span><span class="p">:</span> <span class="n">site_management_account_id</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
            <span class="s1">&#39;vanity&#39;</span><span class="p">:</span> <span class="n">vanity</span><span class="p">,</span>
            <span class="s1">&#39;vendor&#39;</span><span class="p">:</span> <span class="n">vendor</span><span class="p">,</span>
@@ -1105,6 +1121,8 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_VANITY&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidVanity</span><span class="p">(</span><span class="s1">&#39;The vanity host name is invalid. The error_subtype holds the invalid hostname&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The object was not found. The error_subtype holds the name of field that triggered the error&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to modify this record&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_SITE_MANAGEMENT_ACCOUNT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotSiteManagementAccount</span><span class="p">(</span><span class="s1">&#39;The account passed in site_management_account_id does not have the enable_site_management setting enabled&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_SYSADMIN_OR_SUPPORT&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotSysadminOrSupport</span><span class="p">(</span><span class="s1">&#39;The user is not a sysadmin or support user&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;ROLE_NAMESPACE_MISMATCH&#39;</span><span class="p">,</span> <span class="s1">&#39;INCOMPATIBLE_ROLE&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">RoleNamespaceMismatch</span><span class="p">(</span><span class="s1">&#39;The role cannot be used for the account, data contains role_id and namespace_id&#39;</span><span class="p">)</span>
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
@@ -1169,6 +1187,7 @@
         <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_thin_study_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1194,7 +1213,7 @@
 <span class="sd">        :param account_email: Users account_email. Only set this if it is different than the users login email (optional).</span>
 <span class="sd">        :param account_login: Users login name in the account. (optional).</span>
 <span class="sd">        :param account_password: Password for the account_password. (optional).</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param email: email</span>
 <span class="sd">        :param epic_user: Epic user used to map Epic users into Ambra&#39;s ones to track activity. (optional).</span>
 <span class="sd">        :param event_approve: Notify the user on a approval needed into the account namespace (optional)</span>
@@ -1213,6 +1232,7 @@
 <span class="sd">        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)</span>
 <span class="sd">        :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)</span>
 <span class="sd">        :param event_share: Notify the user on a share into the account namespace (optional)</span>
+<span class="sd">        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)</span>
 <span class="sd">        :param event_status_change: Notify the user when the status of a study is changed (optional)</span>
 <span class="sd">        :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)</span>
 <span class="sd">        :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)</span>
@@ -1226,7 +1246,7 @@
 <span class="sd">        :param role_id: uuid of the users role in the account (optional).</span>
 <span class="sd">        :param session_expire: Number of minutes before an idle session expires. (optional)</span>
 <span class="sd">        :param set_default_organization: A flag to set this account as a default one for the user using user_default_organization Setting. (optional)</span>
-<span class="sd">        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
+<span class="sd">        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
 <span class="sd">        :param settings: A hash of the account settings that the user can override (optional)</span>
 <span class="sd">        :param sso_only: Flag if the user can only login via SSO. (optional).</span>
 <span class="sd">        :param user_id: user_id</span>
@@ -1254,6 +1274,7 @@
            <span class="s1">&#39;event_query_reply&#39;</span><span class="p">:</span> <span class="n">event_query_reply</span><span class="p">,</span>
            <span class="s1">&#39;event_report_remove&#39;</span><span class="p">:</span> <span class="n">event_report_remove</span><span class="p">,</span>
            <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
+           <span class="s1">&#39;event_site_qualified&#39;</span><span class="p">:</span> <span class="n">event_site_qualified</span><span class="p">,</span>
            <span class="s1">&#39;event_status_change&#39;</span><span class="p">:</span> <span class="n">event_status_change</span><span class="p">,</span>
            <span class="s1">&#39;event_study_comment&#39;</span><span class="p">:</span> <span class="n">event_study_comment</span><span class="p">,</span>
            <span class="s1">&#39;event_thin_study_fail&#39;</span><span class="p">:</span> <span class="n">event_thin_study_fail</span><span class="p">,</span>
@@ -1326,6 +1347,7 @@
         <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_thin_study_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1350,7 +1372,7 @@
 <span class="sd">        :param account_email: Users account_email. Only set this if it is different than the users login email (optional).</span>
 <span class="sd">        :param account_login: Users login name in the account. (optional).</span>
 <span class="sd">        :param account_password: Password for the account_password. (optional).</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param epic_user: Epic user used to map Epic users into Ambra&#39;s ones to track activity (optional).</span>
 <span class="sd">        :param event_approve: Notify the user on a approval needed into the account namespace (optional)</span>
 <span class="sd">        :param event_case_assignment: Notify the user when they are assigned a case as a medical or admin user (optional)</span>
@@ -1368,6 +1390,7 @@
 <span class="sd">        :param event_query_reply: Notify the user when they leave a new reply in a query (optional)</span>
 <span class="sd">        :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)</span>
 <span class="sd">        :param event_share: Notify the user on a share into the account namespace (optional)</span>
+<span class="sd">        :param event_site_qualified: Notify the user when a trial site is qualified for the clinical trial account (optional)</span>
 <span class="sd">        :param event_status_change: Notify the user when the status of a study is changed (optional)</span>
 <span class="sd">        :param event_study_comment: Notify the user when a comment is attached to a study in the namespace (optional)</span>
 <span class="sd">        :param event_thin_study_fail: Notify the user when a thin study retrieval they initiated fails (optional)</span>
@@ -1380,7 +1403,7 @@
 <span class="sd">        :param password_reset: Flag if the password needs to be reset. (optional).</span>
 <span class="sd">        :param role_id: uuid of the users role in the account (optional).</span>
 <span class="sd">        :param session_expire: Number of minutes before an idle session expires. (optional)</span>
-<span class="sd">        :param setting_param: Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
+<span class="sd">        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)</span>
 <span class="sd">        :param settings: A hash of the account settings that the user can override (optional)</span>
 <span class="sd">        :param sso_only: Flag if the user can only login via SSO. (optional).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1406,6 +1429,7 @@
            <span class="s1">&#39;event_query_reply&#39;</span><span class="p">:</span> <span class="n">event_query_reply</span><span class="p">,</span>
            <span class="s1">&#39;event_report_remove&#39;</span><span class="p">:</span> <span class="n">event_report_remove</span><span class="p">,</span>
            <span class="s1">&#39;event_share&#39;</span><span class="p">:</span> <span class="n">event_share</span><span class="p">,</span>
+           <span class="s1">&#39;event_site_qualified&#39;</span><span class="p">:</span> <span class="n">event_site_qualified</span><span class="p">,</span>
            <span class="s1">&#39;event_status_change&#39;</span><span class="p">:</span> <span class="n">event_status_change</span><span class="p">,</span>
            <span class="s1">&#39;event_study_comment&#39;</span><span class="p">:</span> <span class="n">event_study_comment</span><span class="p">,</span>
            <span class="s1">&#39;event_thin_study_fail&#39;</span><span class="p">:</span> <span class="n">event_thin_study_fail</span><span class="p">,</span>
@@ -1743,7 +1767,7 @@
         <span class="sd">&quot;&quot;&quot;Settings validate.</span>
 
 <span class="sd">        :param uuid: The account uuid</span>
-<span class="sd">        :param setting_param: Validate an individual setting. This is an alternative to the settings hash (optional)</span>
+<span class="sd">        :param setting_param: Expected values are SETTING_NAME. Validate an individual setting. This is an alternative to the settings hash (optional)</span>
 <span class="sd">        :param settings: A hash of the account settings with values to validate (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1891,7 +1915,7 @@
 
 
 
-<p class="blurb">version 3.21.6.0-1</p>
+<p class="blurb">version 3.22.1.0-1</p>
 
 
 

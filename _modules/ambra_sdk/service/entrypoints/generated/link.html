@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.link &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.link &#8212; Ambra-SDK 3.22.1.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -137,6 +137,7 @@
         <span class="n">email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">include_priors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">inherit_permissions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">max_hits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">meeting_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -159,6 +160,7 @@
         <span class="n">upload_match</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">upload_study_customfields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">use_share_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">workflow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
@@ -174,6 +176,7 @@
 <span class="sd">        :param email: Email the link to these addresses (optional)</span>
 <span class="sd">        :param filter: filter</span>
 <span class="sd">        :param include_priors: Include prior studies (optional)</span>
+<span class="sd">        :param inherit_permissions: Flag for the link sessions to inherit permissions from the user stored in the user_id link attribute (optional)</span>
 <span class="sd">        :param max_hits: The maximum number of times the link can be used (optional)</span>
 <span class="sd">        :param meeting_id: UUID of the meeting to associate the link with (optional)</span>
 <span class="sd">        :param message: Message to include in the email (optional)</span>
@@ -182,7 +185,7 @@
 <span class="sd">        :param mobile_phone: Send the link to this phone number (optional)</span>
 <span class="sd">        :param namespace_id: namespace_id</span>
 <span class="sd">        :param notify: Comma or space separated list of additional emails to notify of link usage (optional)</span>
-<span class="sd">        :param parameters: JSON array of parameters to add to the redirect URL or return in /namespace/share_code if an upload (optional)</span>
+<span class="sd">        :param parameters: JSON array of parameters to add to the redirect URL or return in /namespace/share_code if an upload e.g. [&quot;integration_key&quot;,&quot;abc&quot;] Where abc is integration key. (optional)</span>
 <span class="sd">        :param password: Link password (optional)</span>
 <span class="sd">        :param password_is_dob: Flag that the password is the patient_birth_date for the study (study_id is required) (optional)</span>
 <span class="sd">        :param password_max_attempts: The maximum number of failed password attempt (optional)</span>
@@ -196,6 +199,7 @@
 <span class="sd">        :param upload_match: A JSON hash of DICOM tags and regular expressions they must match uploaded against this link (optional)</span>
 <span class="sd">        :param upload_study_customfields: A JSON hash of customfields that will be mapped to a study on study upload. A key is a customfield UUID, a value is a value for the field (optional)</span>
 <span class="sd">        :param use_share_code: Flag to use the namespace share code settings for a STUDY_UPLOAD (optional)</span>
+<span class="sd">        :param user_id: The link user. Any filter is applied in this users context (optional)</span>
 <span class="sd">        :param workflow: The workflow this link is intended for (patient_studies) (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -209,6 +213,7 @@
            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
            <span class="s1">&#39;filter&#39;</span><span class="p">:</span> <span class="nb">filter</span><span class="p">,</span>
            <span class="s1">&#39;include_priors&#39;</span><span class="p">:</span> <span class="n">include_priors</span><span class="p">,</span>
+           <span class="s1">&#39;inherit_permissions&#39;</span><span class="p">:</span> <span class="n">inherit_permissions</span><span class="p">,</span>
            <span class="s1">&#39;max_hits&#39;</span><span class="p">:</span> <span class="n">max_hits</span><span class="p">,</span>
            <span class="s1">&#39;meeting_id&#39;</span><span class="p">:</span> <span class="n">meeting_id</span><span class="p">,</span>
            <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
@@ -232,6 +237,7 @@
            <span class="s1">&#39;upload_match&#39;</span><span class="p">:</span> <span class="n">upload_match</span><span class="p">,</span>
            <span class="s1">&#39;upload_study_customfields&#39;</span><span class="p">:</span> <span class="n">upload_study_customfields</span><span class="p">,</span>
            <span class="s1">&#39;use_share_code&#39;</span><span class="p">:</span> <span class="n">use_share_code</span><span class="p">,</span>
+           <span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
            <span class="s1">&#39;workflow&#39;</span><span class="p">:</span> <span class="n">workflow</span><span class="p">,</span>
         <span class="p">}</span>
 	
@@ -246,7 +252,7 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_REGEXP&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidRegexp</span><span class="p">(</span><span class="s1">&#39;Invalid regular expression. The error_subtype holds the invalid regexp.&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_UPLOAD_MATCH&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidUploadMatch</span><span class="p">(</span><span class="s1">&#39;The upload_match is invalid. The error_subtype holds the details on the error&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The patient or study could not be found. The error_subtype holds the uuid that can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The patient or study could not be found. The error_subtype holds the type of object not found&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_HASH&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotHash</span><span class="p">(</span><span class="s1">&#39;The rules field is not a hash&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_LIST&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotList</span><span class="p">(</span><span class="s1">&#39;The field is not a JSON array. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to create links&#39;</span><span class="p">)</span>
@@ -276,6 +282,7 @@
         <span class="nb">filter</span><span class="p">,</span>
         <span class="n">has_password</span><span class="p">,</span>
         <span class="n">include_priors</span><span class="p">,</span>
+        <span class="n">inherit_permissions</span><span class="p">,</span>
         <span class="n">is_meeting</span><span class="p">,</span>
         <span class="n">max_hits</span><span class="p">,</span>
         <span class="n">message</span><span class="p">,</span>
@@ -320,6 +327,7 @@
 <span class="sd">        :param filter: The filter expression</span>
 <span class="sd">        :param has_password: Flag if the link has a password or not</span>
 <span class="sd">        :param include_priors: Include prior studies</span>
+<span class="sd">        :param inherit_permissions: Flag for the link sessions to inherit permissions from the user stored in the user_id link attribute</span>
 <span class="sd">        :param is_meeting: Flag if the link is for a meeting</span>
 <span class="sd">        :param max_hits: The maximum number of times the link can be used</span>
 <span class="sd">        :param message: Message to include in the email</span>
@@ -363,6 +371,7 @@
            <span class="s1">&#39;filter&#39;</span><span class="p">:</span> <span class="nb">filter</span><span class="p">,</span>
            <span class="s1">&#39;has_password&#39;</span><span class="p">:</span> <span class="n">has_password</span><span class="p">,</span>
            <span class="s1">&#39;include_priors&#39;</span><span class="p">:</span> <span class="n">include_priors</span><span class="p">,</span>
+           <span class="s1">&#39;inherit_permissions&#39;</span><span class="p">:</span> <span class="n">inherit_permissions</span><span class="p">,</span>
            <span class="s1">&#39;is_meeting&#39;</span><span class="p">:</span> <span class="n">is_meeting</span><span class="p">,</span>
            <span class="s1">&#39;max_hits&#39;</span><span class="p">:</span> <span class="n">max_hits</span><span class="p">,</span>
            <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
@@ -519,6 +528,7 @@
         <span class="n">pin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">short_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Redirect.</span>
 
@@ -527,6 +537,9 @@
 <span class="sd">        :param pin: pin</span>
 <span class="sd">        :param short_id: short_id</span>
 <span class="sd">        :param uuid: uuid</span>
+<span class="sd">        :param v: A JSON hash with the following keys pairs. The JSON must be encrypted (optional)</span>
+
+<span class="sd"> context_user_id - an account user id for eUnity</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;link_charge_id&#39;</span><span class="p">:</span> <span class="n">link_charge_id</span><span class="p">,</span>
@@ -534,6 +547,7 @@
            <span class="s1">&#39;pin&#39;</span><span class="p">:</span> <span class="n">pin</span><span class="p">,</span>
            <span class="s1">&#39;short_id&#39;</span><span class="p">:</span> <span class="n">short_id</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -789,6 +803,7 @@
         <span class="n">email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">include_priors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">inherit_permissions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">max_hits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">meeting_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -811,6 +826,7 @@
         <span class="n">upload_match</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">upload_study_customfields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">use_share_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">workflow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add.</span>
@@ -826,6 +842,7 @@
 <span class="sd">        :param email: Email the link to these addresses (optional)</span>
 <span class="sd">        :param filter: filter</span>
 <span class="sd">        :param include_priors: Include prior studies (optional)</span>
+<span class="sd">        :param inherit_permissions: Flag for the link sessions to inherit permissions from the user stored in the user_id link attribute (optional)</span>
 <span class="sd">        :param max_hits: The maximum number of times the link can be used (optional)</span>
 <span class="sd">        :param meeting_id: UUID of the meeting to associate the link with (optional)</span>
 <span class="sd">        :param message: Message to include in the email (optional)</span>
@@ -834,7 +851,7 @@
 <span class="sd">        :param mobile_phone: Send the link to this phone number (optional)</span>
 <span class="sd">        :param namespace_id: namespace_id</span>
 <span class="sd">        :param notify: Comma or space separated list of additional emails to notify of link usage (optional)</span>
-<span class="sd">        :param parameters: JSON array of parameters to add to the redirect URL or return in /namespace/share_code if an upload (optional)</span>
+<span class="sd">        :param parameters: JSON array of parameters to add to the redirect URL or return in /namespace/share_code if an upload e.g. [&quot;integration_key&quot;,&quot;abc&quot;] Where abc is integration key. (optional)</span>
 <span class="sd">        :param password: Link password (optional)</span>
 <span class="sd">        :param password_is_dob: Flag that the password is the patient_birth_date for the study (study_id is required) (optional)</span>
 <span class="sd">        :param password_max_attempts: The maximum number of failed password attempt (optional)</span>
@@ -848,6 +865,7 @@
 <span class="sd">        :param upload_match: A JSON hash of DICOM tags and regular expressions they must match uploaded against this link (optional)</span>
 <span class="sd">        :param upload_study_customfields: A JSON hash of customfields that will be mapped to a study on study upload. A key is a customfield UUID, a value is a value for the field (optional)</span>
 <span class="sd">        :param use_share_code: Flag to use the namespace share code settings for a STUDY_UPLOAD (optional)</span>
+<span class="sd">        :param user_id: The link user. Any filter is applied in this users context (optional)</span>
 <span class="sd">        :param workflow: The workflow this link is intended for (patient_studies) (optional)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -861,6 +879,7 @@
            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
            <span class="s1">&#39;filter&#39;</span><span class="p">:</span> <span class="nb">filter</span><span class="p">,</span>
            <span class="s1">&#39;include_priors&#39;</span><span class="p">:</span> <span class="n">include_priors</span><span class="p">,</span>
+           <span class="s1">&#39;inherit_permissions&#39;</span><span class="p">:</span> <span class="n">inherit_permissions</span><span class="p">,</span>
            <span class="s1">&#39;max_hits&#39;</span><span class="p">:</span> <span class="n">max_hits</span><span class="p">,</span>
            <span class="s1">&#39;meeting_id&#39;</span><span class="p">:</span> <span class="n">meeting_id</span><span class="p">,</span>
            <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
@@ -884,6 +903,7 @@
            <span class="s1">&#39;upload_match&#39;</span><span class="p">:</span> <span class="n">upload_match</span><span class="p">,</span>
            <span class="s1">&#39;upload_study_customfields&#39;</span><span class="p">:</span> <span class="n">upload_study_customfields</span><span class="p">,</span>
            <span class="s1">&#39;use_share_code&#39;</span><span class="p">:</span> <span class="n">use_share_code</span><span class="p">,</span>
+           <span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
            <span class="s1">&#39;workflow&#39;</span><span class="p">:</span> <span class="n">workflow</span><span class="p">,</span>
         <span class="p">}</span>
 	
@@ -898,7 +918,7 @@
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_REGEXP&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidRegexp</span><span class="p">(</span><span class="s1">&#39;Invalid regular expression. The error_subtype holds the invalid regexp.&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;INVALID_UPLOAD_MATCH&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">InvalidUploadMatch</span><span class="p">(</span><span class="s1">&#39;The upload_match is invalid. The error_subtype holds the details on the error&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
-        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The patient or study could not be found. The error_subtype holds the uuid that can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The patient or study could not be found. The error_subtype holds the type of object not found&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_HASH&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotHash</span><span class="p">(</span><span class="s1">&#39;The rules field is not a hash&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_LIST&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotList</span><span class="p">(</span><span class="s1">&#39;The field is not a JSON array. The error_subtype holds the name of the field&#39;</span><span class="p">)</span>
         <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to create links&#39;</span><span class="p">)</span>
@@ -928,6 +948,7 @@
         <span class="nb">filter</span><span class="p">,</span>
         <span class="n">has_password</span><span class="p">,</span>
         <span class="n">include_priors</span><span class="p">,</span>
+        <span class="n">inherit_permissions</span><span class="p">,</span>
         <span class="n">is_meeting</span><span class="p">,</span>
         <span class="n">max_hits</span><span class="p">,</span>
         <span class="n">message</span><span class="p">,</span>
@@ -972,6 +993,7 @@
 <span class="sd">        :param filter: The filter expression</span>
 <span class="sd">        :param has_password: Flag if the link has a password or not</span>
 <span class="sd">        :param include_priors: Include prior studies</span>
+<span class="sd">        :param inherit_permissions: Flag for the link sessions to inherit permissions from the user stored in the user_id link attribute</span>
 <span class="sd">        :param is_meeting: Flag if the link is for a meeting</span>
 <span class="sd">        :param max_hits: The maximum number of times the link can be used</span>
 <span class="sd">        :param message: Message to include in the email</span>
@@ -1015,6 +1037,7 @@
            <span class="s1">&#39;filter&#39;</span><span class="p">:</span> <span class="nb">filter</span><span class="p">,</span>
            <span class="s1">&#39;has_password&#39;</span><span class="p">:</span> <span class="n">has_password</span><span class="p">,</span>
            <span class="s1">&#39;include_priors&#39;</span><span class="p">:</span> <span class="n">include_priors</span><span class="p">,</span>
+           <span class="s1">&#39;inherit_permissions&#39;</span><span class="p">:</span> <span class="n">inherit_permissions</span><span class="p">,</span>
            <span class="s1">&#39;is_meeting&#39;</span><span class="p">:</span> <span class="n">is_meeting</span><span class="p">,</span>
            <span class="s1">&#39;max_hits&#39;</span><span class="p">:</span> <span class="n">max_hits</span><span class="p">,</span>
            <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
@@ -1171,6 +1194,7 @@
         <span class="n">pin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">short_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Redirect.</span>
 
@@ -1179,6 +1203,9 @@
 <span class="sd">        :param pin: pin</span>
 <span class="sd">        :param short_id: short_id</span>
 <span class="sd">        :param uuid: uuid</span>
+<span class="sd">        :param v: A JSON hash with the following keys pairs. The JSON must be encrypted (optional)</span>
+
+<span class="sd"> context_user_id - an account user id for eUnity</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
            <span class="s1">&#39;link_charge_id&#39;</span><span class="p">:</span> <span class="n">link_charge_id</span><span class="p">,</span>
@@ -1186,6 +1213,7 @@
            <span class="s1">&#39;pin&#39;</span><span class="p">:</span> <span class="n">pin</span><span class="p">,</span>
            <span class="s1">&#39;short_id&#39;</span><span class="p">:</span> <span class="n">short_id</span><span class="p">,</span>
            <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+           <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span>
         <span class="p">}</span>
 	
         <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1394,7 +1422,7 @@
 
 
 
-<p class="blurb">version 3.21.6.0-1</p>
+<p class="blurb">version 3.22.1.0-1</p>
 
 
 

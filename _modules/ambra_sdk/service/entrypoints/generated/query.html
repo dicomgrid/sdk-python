@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.service.entrypoints.generated.query &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
+    <title>ambra_sdk.service.entrypoints.generated.query &#8212; Ambra-SDK 3.22.1.0-1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -91,6 +91,25 @@
         <span class="n">query_data</span><span class="p">[</span><span class="s1">&#39;paginated_field&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;queries&#39;</span>
         <span class="k">return</span> <span class="n">QueryOPSF</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
     
+<div class="viewcode-block" id="Query.count"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Query.count">[docs]</a>    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Count.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/query/count&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">QueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
 <div class="viewcode-block" id="Query.add"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Query.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">group_id</span><span class="p">,</span>
@@ -109,7 +128,7 @@
 <span class="sd">        :param group_id: Id of the group associated to a trial site to add them to</span>
 <span class="sd">        :param subject: Subject line of the query</span>
 <span class="sd">        :param body: The query body (optional)</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param notify: Comma delimited list of the emails to be notified of the query events (optional)</span>
 <span class="sd">        :param owner_namespace_id: The namespace owning the query. The account default from the default_query_owner_namespace account setting is used if not passed through the parameter (optional)</span>
 <span class="sd">        :param owner_user_id: The user owning the query (optional)</span>
@@ -164,7 +183,7 @@
 
 <span class="sd">        :param uuid: The query uuid</span>
 <span class="sd">        :param body: The query body (optional)</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param group_id: Id of the group associated to a trial site to add them to. Group change is not allowed for study-related queries (optional)</span>
 <span class="sd">        :param notify: Comma delimited list of the emails to be notified of the query events (optional)</span>
 <span class="sd">        :param owner_user_id: The user owning the query (optional)</span>
@@ -247,6 +266,34 @@
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/query/delete&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">QueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Query.seen"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.Query.seen">[docs]</a>    <span class="k">def</span> <span class="nf">seen</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">message_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Seen.</span>
+
+<span class="sd">        :param uuid: The query uuid</span>
+<span class="sd">        :param message_id: ID of the last seen message (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;message_id&#39;</span><span class="p">:</span> <span class="n">message_id</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The query can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to view the query&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/query/seen&#39;</span><span class="p">,</span>
             <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
             <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
             <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
@@ -416,6 +463,25 @@
         <span class="n">query_data</span><span class="p">[</span><span class="s1">&#39;paginated_field&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;queries&#39;</span>
         <span class="k">return</span> <span class="n">AsyncQueryOPSF</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
     
+<div class="viewcode-block" id="AsyncQuery.count"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncQuery.count">[docs]</a>    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Count.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/query/count&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
 <div class="viewcode-block" id="AsyncQuery.add"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncQuery.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">group_id</span><span class="p">,</span>
@@ -434,7 +500,7 @@
 <span class="sd">        :param group_id: Id of the group associated to a trial site to add them to</span>
 <span class="sd">        :param subject: Subject line of the query</span>
 <span class="sd">        :param body: The query body (optional)</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param notify: Comma delimited list of the emails to be notified of the query events (optional)</span>
 <span class="sd">        :param owner_namespace_id: The namespace owning the query. The account default from the default_query_owner_namespace account setting is used if not passed through the parameter (optional)</span>
 <span class="sd">        :param owner_user_id: The user owning the query (optional)</span>
@@ -489,7 +555,7 @@
 
 <span class="sd">        :param uuid: The query uuid</span>
 <span class="sd">        :param body: The query body (optional)</span>
-<span class="sd">        :param customfield_param: Custom field(s) (optional)</span>
+<span class="sd">        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)</span>
 <span class="sd">        :param group_id: Id of the group associated to a trial site to add them to. Group change is not allowed for study-related queries (optional)</span>
 <span class="sd">        :param notify: Comma delimited list of the emails to be notified of the query events (optional)</span>
 <span class="sd">        :param owner_user_id: The user owning the query (optional)</span>
@@ -572,6 +638,34 @@
         <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
             <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/query/delete&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
+            <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
+            <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AsyncQueryO</span><span class="p">(</span><span class="o">**</span><span class="n">query_data</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AsyncQuery.seen"><a class="viewcode-back" href="../../../../../referencies/service_api.html#ambra_sdk.service.entrypoints.AsyncQuery.seen">[docs]</a>    <span class="k">def</span> <span class="nf">seen</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">,</span>
+        <span class="n">message_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Seen.</span>
+
+<span class="sd">        :param uuid: The query uuid</span>
+<span class="sd">        :param message_id: ID of the last seen message (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_data</span> <span class="o">=</span> <span class="p">{</span>
+           <span class="s1">&#39;message_id&#39;</span><span class="p">:</span> <span class="n">message_id</span><span class="p">,</span>
+           <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="p">,</span>
+        <span class="p">}</span>
+	
+        <span class="n">errors_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;MISSING_FIELDS&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">MissingFields</span><span class="p">(</span><span class="s1">&#39;A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_FOUND&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;The query can not be found&#39;</span><span class="p">)</span>
+        <span class="n">errors_mapping</span><span class="p">[(</span><span class="s1">&#39;NOT_PERMITTED&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">NotPermitted</span><span class="p">(</span><span class="s1">&#39;You are not permitted to view the query&#39;</span><span class="p">)</span>
+        <span class="n">query_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span>
+            <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;/query/seen&#39;</span><span class="p">,</span>
             <span class="s1">&#39;request_data&#39;</span><span class="p">:</span> <span class="n">request_data</span><span class="p">,</span>
             <span class="s1">&#39;errors_mapping&#39;</span><span class="p">:</span> <span class="n">errors_mapping</span><span class="p">,</span>
             <span class="s1">&#39;required_sid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
@@ -719,7 +813,7 @@
 
 
 
-<p class="blurb">version 3.21.6.0-1</p>
+<p class="blurb">version 3.22.1.0-1</p>
 
 
 

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.models.generated &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
+    <title>ambra_sdk.models.generated &#8212; Ambra-SDK 3.22.1.0-1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -62,6 +62,7 @@
     <span class="n">account</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Account&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated account&#39;</span><span class="p">)</span>
     <span class="n">address</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The domain name and IP address&#39;</span><span class="p">)</span>
     <span class="n">fqdn</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The domain name and IP address&#39;</span><span class="p">)</span>
+    <span class="n">geo_fqdn</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The domain name and IP address&#39;</span><span class="p">)</span>
     <span class="n">global_field</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Is it a global accelerator&#39;</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
     <span class="n">push_shared_studies</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Push shared studies to the accelerator&#39;</span><span class="p">)</span>
@@ -86,6 +87,7 @@
         <span class="n">account</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">fqdn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">geo_fqdn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">global_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">push_shared_studies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -106,6 +108,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">account</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fqdn</span> <span class="o">=</span> <span class="n">fqdn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geo_fqdn</span> <span class="o">=</span> <span class="n">geo_fqdn</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">global_field</span> <span class="o">=</span> <span class="n">global_field</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">push_shared_studies</span> <span class="o">=</span> <span class="n">push_shared_studies</span>
@@ -143,6 +146,8 @@
     <span class="n">saml</span> <span class="o">=</span> <span class="n">DictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Native SAML information&#39;</span><span class="p">)</span>
     <span class="n">session_expire</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Minutes before an idle session expires&#39;</span><span class="p">)</span>
     <span class="n">settings</span> <span class="o">=</span> <span class="n">DictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Account settings&#39;</span><span class="p">)</span>
+    <span class="n">site_management_account_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Site management account id for the trial study account&#39;</span><span class="p">)</span>
+    <span class="n">site_management_account</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Account&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Site management account id for the trial study account&#39;</span><span class="p">)</span>
     <span class="n">vanity_h</span> <span class="o">=</span> <span class="n">DictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Vanity URLs&#39;</span><span class="p">)</span>
     <span class="n">vendor</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The vendor field&#39;</span><span class="p">)</span>
     <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
@@ -174,6 +179,8 @@
         <span class="n">saml</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">session_expire</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">site_management_account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">site_management_account</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">vanity_h</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">vendor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -201,6 +208,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">saml</span> <span class="o">=</span> <span class="n">saml</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session_expire</span> <span class="o">=</span> <span class="n">session_expire</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site_management_account_id</span> <span class="o">=</span> <span class="n">site_management_account_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site_management_account</span> <span class="o">=</span> <span class="n">site_management_account</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vanity_h</span> <span class="o">=</span> <span class="n">vanity_h</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vendor</span> <span class="o">=</span> <span class="n">vendor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
@@ -355,6 +364,7 @@
     <span class="n">event_query_reply</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_report_remove</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_share</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
+    <span class="n">event_site_qualified</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_status_change</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_study_comment</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_thin_study_fail</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
@@ -397,6 +407,7 @@
         <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_thin_study_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -435,6 +446,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">event_query_reply</span> <span class="o">=</span> <span class="n">event_query_reply</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_report_remove</span> <span class="o">=</span> <span class="n">event_report_remove</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_share</span> <span class="o">=</span> <span class="n">event_share</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_site_qualified</span> <span class="o">=</span> <span class="n">event_site_qualified</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_status_change</span> <span class="o">=</span> <span class="n">event_status_change</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_study_comment</span> <span class="o">=</span> <span class="n">event_study_comment</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_thin_study_fail</span> <span class="o">=</span> <span class="n">event_thin_study_fail</span>
@@ -840,16 +852,17 @@
     <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
     <span class="n">archive_vault_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The vault it is stored in&#39;</span><span class="p">)</span>
     <span class="n">archive_vault</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Archive&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The vault it is stored in&#39;</span><span class="p">)</span>
-    <span class="n">datum_signature</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Signature of the current study datum and phi&#39;</span><span class="p">)</span>
+    <span class="n">datum_signature</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Signature of the current study datum&#39;</span><span class="p">)</span>
     <span class="n">delay_until</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Delay the store or delete until this time&#39;</span><span class="p">)</span>
     <span class="n">engine_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The storage engine&#39;</span><span class="p">)</span>
     <span class="n">engine</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Engine&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The storage engine&#39;</span><span class="p">)</span>
+    <span class="n">expedite</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Should we do an expedited retrieval&#39;</span><span class="p">)</span>
     <span class="n">job_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;When was the job started and the Last error message&#39;</span><span class="p">)</span>
     <span class="n">last_error</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;When was the job started and the Last error message&#39;</span><span class="p">)</span>
+    <span class="n">make_thin</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Do we need to make the study thin after archiving&#39;</span><span class="p">)</span>
     <span class="n">need_delete</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Flag to control the store,restore and delete of the study. Indexed so the count in the control loop is fast&#39;</span><span class="p">)</span>
     <span class="n">need_restore</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Flag to control the store,restore and delete of the study. Indexed so the count in the control loop is fast&#39;</span><span class="p">)</span>
     <span class="n">need_store</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Flag to control the store,restore and delete of the study. Indexed so the count in the control loop is fast&#39;</span><span class="p">)</span>
-    <span class="n">phi_signature</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Signature of the current study datum and phi&#39;</span><span class="p">)</span>
     <span class="n">priority</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Job priority. The higher the number the higher the priority of the job. This mirrors the archive flag in namespace&#39;</span><span class="p">)</span>
     <span class="n">started_at</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;When was the job started and the Last error message&#39;</span><span class="p">)</span>
     <span class="n">storage_namespace</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The storage namespace&#39;</span><span class="p">)</span>
@@ -874,12 +887,13 @@
         <span class="n">delay_until</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">engine_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">engine</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">expedite</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">last_error</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">make_thin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">need_delete</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">need_restore</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">need_store</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">phi_signature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">priority</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">started_at</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">storage_namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -900,12 +914,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">delay_until</span> <span class="o">=</span> <span class="n">delay_until</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">engine_id</span> <span class="o">=</span> <span class="n">engine_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">engine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expedite</span> <span class="o">=</span> <span class="n">expedite</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span> <span class="o">=</span> <span class="n">job_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_error</span> <span class="o">=</span> <span class="n">last_error</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">make_thin</span> <span class="o">=</span> <span class="n">make_thin</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">need_delete</span> <span class="o">=</span> <span class="n">need_delete</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">need_restore</span> <span class="o">=</span> <span class="n">need_restore</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">need_store</span> <span class="o">=</span> <span class="n">need_store</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">phi_signature</span> <span class="o">=</span> <span class="n">phi_signature</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">priority</span> <span class="o">=</span> <span class="n">priority</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">started_at</span> <span class="o">=</span> <span class="n">started_at</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">storage_namespace</span> <span class="o">=</span> <span class="n">storage_namespace</span>
@@ -928,12 +943,9 @@
     <span class="n">archive_study_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The associated study archive&#39;</span><span class="p">)</span>
     <span class="n">archive_study</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Archive&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated study archive&#39;</span><span class="p">)</span>
     <span class="n">aws_archive</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The id of the AWS archive&#39;</span><span class="p">)</span>
-    <span class="n">aws_checksum</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Checksum from AWS archive&#39;</span><span class="p">)</span>
-    <span class="n">aws_size</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Checksum from AWS archive&#39;</span><span class="p">)</span>
-    <span class="n">datum_signature</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Signature of the current study datum and phi&#39;</span><span class="p">)</span>
-    <span class="n">job_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Job Id and state, restoring state can be PENDING, RETRIEVING, DONE&#39;</span><span class="p">)</span>
-    <span class="n">phi_signature</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Signature of the current study datum and phi&#39;</span><span class="p">)</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Job Id and state, restoring state can be PENDING, RETRIEVING, DONE&#39;</span><span class="p">)</span>
+    <span class="n">datum_signature</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Signature of the current study datum&#39;</span><span class="p">)</span>
+    <span class="n">job_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Job Id and state, state can be PENDING, RETRIEVING, RETRIEVED, RESTORING, RESTORED, DONE&#39;</span><span class="p">)</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Job Id and state, state can be PENDING, RETRIEVING, RETRIEVED, RESTORING, RESTORED, DONE&#39;</span><span class="p">)</span>
     <span class="n">type_field</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Type archive either datum or phi&#39;</span><span class="p">)</span>
     <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
     <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
@@ -951,11 +963,8 @@
         <span class="n">archive_study_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">archive_study</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">aws_archive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">aws_checksum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">aws_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">datum_signature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">phi_signature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">type_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -970,11 +979,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">archive_study_id</span> <span class="o">=</span> <span class="n">archive_study_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">archive_study</span> <span class="o">=</span> <span class="n">archive_study</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aws_archive</span> <span class="o">=</span> <span class="n">aws_archive</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">aws_checksum</span> <span class="o">=</span> <span class="n">aws_checksum</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">aws_size</span> <span class="o">=</span> <span class="n">aws_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">datum_signature</span> <span class="o">=</span> <span class="n">datum_signature</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span> <span class="o">=</span> <span class="n">job_id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">phi_signature</span> <span class="o">=</span> <span class="n">phi_signature</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">state</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type_field</span> <span class="o">=</span> <span class="n">type_field</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
@@ -991,10 +997,10 @@
     
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
     <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
-    <span class="n">closed</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Is the archive closed for new records&#39;</span><span class="p">)</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;AWS credentials&#39;</span><span class="p">)</span>
     <span class="n">region</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;AWS credentials&#39;</span><span class="p">)</span>
     <span class="n">secret</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;AWS credentials&#39;</span><span class="p">)</span>
+    <span class="n">storage_class</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;AWS credentials&#39;</span><span class="p">)</span>
     <span class="n">vault</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;AWS credentials&#39;</span><span class="p">)</span>
     <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
     <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
@@ -1009,10 +1015,10 @@
 	<span class="o">*</span><span class="p">,</span>
         <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">closed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">secret</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">storage_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">vault</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1023,10 +1029,10 @@
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">closed</span> <span class="o">=</span> <span class="n">closed</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">region</span> <span class="o">=</span> <span class="n">region</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">secret</span> <span class="o">=</span> <span class="n">secret</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage_class</span> <span class="o">=</span> <span class="n">storage_class</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vault</span> <span class="o">=</span> <span class="n">vault</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
@@ -1697,6 +1703,7 @@
     <span class="n">backup_cluster</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Archive&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Id of the backup cluster this should be backed up to&#39;</span><span class="p">)</span>
     <span class="n">copies</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Number of copies in the cluster&#39;</span><span class="p">)</span>
     <span class="n">is_default</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;This is the default cluster&#39;</span><span class="p">)</span>
+    <span class="n">is_load_balanced</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;This is a load balanced cluster&#39;</span><span class="p">)</span>
     <span class="n">max_days</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Max days studies should stay in the cluster&#39;</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Name for the cluster&#39;</span><span class="p">)</span>
     <span class="n">rsync</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Is this a rsync cluster&#39;</span><span class="p">)</span>
@@ -1720,6 +1727,7 @@
         <span class="n">backup_cluster</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">copies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">is_default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_load_balanced</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">max_days</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">rsync</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1739,6 +1747,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">backup_cluster</span> <span class="o">=</span> <span class="n">backup_cluster</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">copies</span> <span class="o">=</span> <span class="n">copies</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_default</span> <span class="o">=</span> <span class="n">is_default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_load_balanced</span> <span class="o">=</span> <span class="n">is_load_balanced</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_days</span> <span class="o">=</span> <span class="n">max_days</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rsync</span> <span class="o">=</span> <span class="n">rsync</span>
@@ -1992,6 +2001,8 @@
     <span class="n">options</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Settings&#39;</span><span class="p">)</span>
     <span class="n">other_customfield_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Map to other object&amp;#39;s customfield&#39;</span><span class="p">)</span>
     <span class="n">other_customfield</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Customfield&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Map to other object&amp;#39;s customfield&#39;</span><span class="p">)</span>
+    <span class="n">other_customfield_no_overwrite_with_blank</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Map to other object&amp;#39;s customfield&#39;</span><span class="p">)</span>
+    <span class="n">other_customfield_no_refresh_on_reshare</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Map to other object&amp;#39;s customfield&#39;</span><span class="p">)</span>
     <span class="n">other_dicom_tags</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;An array of other DICOM tags to map to in storage&#39;</span><span class="p">)</span>
     <span class="n">required</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Settings&#39;</span><span class="p">)</span>
     <span class="n">type_field</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Name and type  of the field&#39;</span><span class="p">)</span>
@@ -2032,6 +2043,8 @@
         <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">other_customfield_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">other_customfield</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">other_customfield_no_overwrite_with_blank</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">other_customfield_no_refresh_on_reshare</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">other_dicom_tags</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">required</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">type_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -2068,10 +2081,72 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">other_customfield_id</span> <span class="o">=</span> <span class="n">other_customfield_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">other_customfield</span> <span class="o">=</span> <span class="n">other_customfield</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">other_customfield_no_overwrite_with_blank</span> <span class="o">=</span> <span class="n">other_customfield_no_overwrite_with_blank</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">other_customfield_no_refresh_on_reshare</span> <span class="o">=</span> <span class="n">other_customfield_no_refresh_on_reshare</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">other_dicom_tags</span> <span class="o">=</span> <span class="n">other_dicom_tags</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">required</span> <span class="o">=</span> <span class="n">required</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type_field</span> <span class="o">=</span> <span class="n">type_field</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_dicom_only</span> <span class="o">=</span> <span class="n">wrapped_dicom_only</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated</span> <span class="o">=</span> <span class="n">updated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">updated_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">updated_by_obj</span></div>
+
+
+
+<div class="viewcode-block" id="CustomfieldMapping"><a class="viewcode-back" href="../../../referencies/models.html#ambra_sdk.models.generated.CustomfieldMapping">[docs]</a><span class="k">class</span> <span class="nc">CustomfieldMapping</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;CustomfieldMapping.&quot;&quot;&quot;</span>
+    
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
+    <span class="n">from_customfield_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The source customfield&#39;</span><span class="p">)</span>
+    <span class="n">from_customfield</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Customfield&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The source customfield&#39;</span><span class="p">)</span>
+    <span class="n">overwrite_with_blank</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The mapping options&#39;</span><span class="p">)</span>
+    <span class="n">refresh_on_edit</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The mapping options&#39;</span><span class="p">)</span>
+    <span class="n">refresh_on_reshare</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The mapping options&#39;</span><span class="p">)</span>
+    <span class="n">reverse_refresh_on_edit</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The mapping options&#39;</span><span class="p">)</span>
+    <span class="n">to_customfield_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The destination customfield&#39;</span><span class="p">)</span>
+    <span class="n">to_customfield</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Customfield&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The destination customfield&#39;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">updated</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was last updated&#39;</span><span class="p">)</span>
+    <span class="n">updated_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who updated the record&#39;</span><span class="p">)</span>
+    <span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who updated the record&#39;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">from_customfield_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">from_customfield</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">overwrite_with_blank</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">refresh_on_edit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">refresh_on_reshare</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">reverse_refresh_on_edit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">to_customfield_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">to_customfield</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">from_customfield_id</span> <span class="o">=</span> <span class="n">from_customfield_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">from_customfield</span> <span class="o">=</span> <span class="n">from_customfield</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overwrite_with_blank</span> <span class="o">=</span> <span class="n">overwrite_with_blank</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh_on_edit</span> <span class="o">=</span> <span class="n">refresh_on_edit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh_on_reshare</span> <span class="o">=</span> <span class="n">refresh_on_reshare</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reverse_refresh_on_edit</span> <span class="o">=</span> <span class="n">reverse_refresh_on_edit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_customfield_id</span> <span class="o">=</span> <span class="n">to_customfield_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_customfield</span> <span class="o">=</span> <span class="n">to_customfield</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
@@ -2414,6 +2489,7 @@
     <span class="n">pickup</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;When was this picked up by the node&#39;</span><span class="p">)</span>
     <span class="n">push_to</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Destination to push any retrieved studies to&#39;</span><span class="p">)</span>
     <span class="n">push_to_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Destination&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Destination to push any retrieved studies to&#39;</span><span class="p">)</span>
+    <span class="n">refetch_study</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Flag to refetch existing studies with the results&#39;</span><span class="p">)</span>
     <span class="n">results</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The search results&#39;</span><span class="p">)</span>
     <span class="n">share_email</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Email to share retrieved studies with&#39;</span><span class="p">)</span>
     <span class="n">sid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;SID where the search originated from&#39;</span><span class="p">)</span>
@@ -2466,6 +2542,7 @@
         <span class="n">pickup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">push_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">push_to_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">refetch_study</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">share_email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">sid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -2514,6 +2591,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pickup</span> <span class="o">=</span> <span class="n">pickup</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">push_to</span> <span class="o">=</span> <span class="n">push_to</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">push_to_obj</span> <span class="o">=</span> <span class="n">push_to_obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refetch_study</span> <span class="o">=</span> <span class="n">refetch_study</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">results</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">share_email</span> <span class="o">=</span> <span class="n">share_email</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sid</span> <span class="o">=</span> <span class="n">sid</span>
@@ -2797,11 +2875,11 @@
     
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
     <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
-    <span class="n">delay</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Used to kick stuck jobs&#39;</span><span class="p">)</span>
+    <span class="n">delay</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Used to kick stuck jobs. Depreciated, should be removed after 2021-11-03&#39;</span><span class="p">)</span>
     <span class="n">dictionary_attach_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Associated dictionary&#39;</span><span class="p">)</span>
     <span class="n">dictionary_attach</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;DictionaryAttach&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Associated dictionary&#39;</span><span class="p">)</span>
     <span class="n">object_id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The object this dict was applied to&#39;</span><span class="p">)</span>
-    <span class="n">succeeded</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Used to kick stuck jobs&#39;</span><span class="p">)</span>
+    <span class="n">succeeded</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Used to kick stuck jobs. Depreciated, should be removed after 2021-11-03&#39;</span><span class="p">)</span>
     <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
     <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
     <span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who created the record&#39;</span><span class="p">)</span>
@@ -2896,6 +2974,7 @@
     <span class="n">cluster_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The cluster it is in&#39;</span><span class="p">)</span>
     <span class="n">cluster</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Cluster&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The cluster it is in&#39;</span><span class="p">)</span>
     <span class="n">fqdn</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The fully qualified domain name of the storage engine&#39;</span><span class="p">)</span>
+    <span class="n">free_disk_space</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The free disk space threshold&#39;</span><span class="p">)</span>
     <span class="n">ghc_info</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The Google healthcare information&#39;</span><span class="p">)</span>
     <span class="n">host_map</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The host map JSON&#39;</span><span class="p">)</span>
     <span class="n">idle_storage_host</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The URL services should for archiving activity&#39;</span><span class="p">)</span>
@@ -2904,6 +2983,7 @@
     <span class="n">magic_sid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The magic sid for the storage engine&#39;</span><span class="p">)</span>
     <span class="n">max_pull_jobs</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The max number of pull jobs  to run on the engine at one time&#39;</span><span class="p">)</span>
     <span class="n">max_push_jobs</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The max number of push jobs to run on the engine at one time&#39;</span><span class="p">)</span>
+    <span class="n">no_backup</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Turn off backups for this engine&#39;</span><span class="p">)</span>
     <span class="n">no_phi</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;No PHI is stored on this engine&#39;</span><span class="p">)</span>
     <span class="n">no_purge</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Exclude studies on this engine from all purges&#39;</span><span class="p">)</span>
     <span class="n">services_url</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The URL services should use to access the storage engine&#39;</span><span class="p">)</span>
@@ -2923,6 +3003,7 @@
         <span class="n">cluster_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">cluster</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">fqdn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">free_disk_space</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">ghc_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">host_map</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">idle_storage_host</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -2931,6 +3012,7 @@
         <span class="n">magic_sid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">max_pull_jobs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">max_push_jobs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">no_backup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">no_phi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">no_purge</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">services_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -2946,6 +3028,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">cluster_id</span> <span class="o">=</span> <span class="n">cluster_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cluster</span> <span class="o">=</span> <span class="n">cluster</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fqdn</span> <span class="o">=</span> <span class="n">fqdn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">free_disk_space</span> <span class="o">=</span> <span class="n">free_disk_space</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ghc_info</span> <span class="o">=</span> <span class="n">ghc_info</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">host_map</span> <span class="o">=</span> <span class="n">host_map</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">idle_storage_host</span> <span class="o">=</span> <span class="n">idle_storage_host</span>
@@ -2954,6 +3037,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">magic_sid</span> <span class="o">=</span> <span class="n">magic_sid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_pull_jobs</span> <span class="o">=</span> <span class="n">max_pull_jobs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_push_jobs</span> <span class="o">=</span> <span class="n">max_push_jobs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">no_backup</span> <span class="o">=</span> <span class="n">no_backup</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">no_phi</span> <span class="o">=</span> <span class="n">no_phi</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">no_purge</span> <span class="o">=</span> <span class="n">no_purge</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">services_url</span> <span class="o">=</span> <span class="n">services_url</span>
@@ -3164,6 +3248,7 @@
     <span class="n">role</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Role&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Default role id&#39;</span><span class="p">)</span>
     <span class="n">site_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Associated trial site&#39;</span><span class="p">)</span>
     <span class="n">site</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Site&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Associated trial site&#39;</span><span class="p">)</span>
+    <span class="n">site_inactive</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Inactive flag to deactivate a group in a Trial Account&#39;</span><span class="p">)</span>
     <span class="n">site_qualified</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Associated trial site&#39;</span><span class="p">)</span>
     <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
     <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
@@ -3188,6 +3273,7 @@
         <span class="n">role</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">site_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">site</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">site_inactive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -3208,6 +3294,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">role</span> <span class="o">=</span> <span class="n">role</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">site_id</span> <span class="o">=</span> <span class="n">site_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">site</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site_inactive</span> <span class="o">=</span> <span class="n">site_inactive</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">site_qualified</span> <span class="o">=</span> <span class="n">site_qualified</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
@@ -3549,6 +3636,7 @@
     <span class="n">email</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Email address, any additional message and other notification emails to send the link to&#39;</span><span class="p">)</span>
     <span class="nb">filter</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The study the link is for or the filter expression or the namespace for an upload action&#39;</span><span class="p">)</span>
     <span class="n">include_priors</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Include priors&#39;</span><span class="p">)</span>
+    <span class="n">inherit_permissions</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Should the anon session inherit link owner&amp;#39;s permissions&#39;</span><span class="p">)</span>
     <span class="n">max_hits</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The maximum number of times the link can be used&#39;</span><span class="p">)</span>
     <span class="n">message</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Mobile phone used to send additional message to&#39;</span><span class="p">)</span>
     <span class="n">mfm_page</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Should they go to the MFM page&#39;</span><span class="p">)</span>
@@ -3600,6 +3688,7 @@
         <span class="n">email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">include_priors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">inherit_permissions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">max_hits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">mfm_page</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -3647,6 +3736,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">email</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filter</span> <span class="o">=</span> <span class="nb">filter</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">include_priors</span> <span class="o">=</span> <span class="n">include_priors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inherit_permissions</span> <span class="o">=</span> <span class="n">inherit_permissions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_hits</span> <span class="o">=</span> <span class="n">max_hits</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mfm_page</span> <span class="o">=</span> <span class="n">mfm_page</span>
@@ -3746,6 +3836,8 @@
     <span class="n">account</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Account&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Link and account id&#39;</span><span class="p">)</span>
     <span class="n">client_address</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Address that used the link&#39;</span><span class="p">)</span>
     <span class="n">client_email</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Address that used the link&#39;</span><span class="p">)</span>
+    <span class="n">context_user_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. An account user id used to pull the user&amp;#39;s preferences&#39;</span><span class="p">)</span>
+    <span class="n">context_user</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;An account user id used to pull the user&amp;#39;s preferences&#39;</span><span class="p">)</span>
     <span class="n">extra</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Any extra analytical data to store with the link&#39;</span><span class="p">)</span>
     <span class="n">link_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Link and account id&#39;</span><span class="p">)</span>
     <span class="n">link</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Link&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Link and account id&#39;</span><span class="p">)</span>
@@ -3767,6 +3859,8 @@
         <span class="n">account</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">client_address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">client_email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">context_user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">context_user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">extra</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">link_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">link</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -3784,6 +3878,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">account</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client_address</span> <span class="o">=</span> <span class="n">client_address</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client_email</span> <span class="o">=</span> <span class="n">client_email</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_user_id</span> <span class="o">=</span> <span class="n">context_user_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_user</span> <span class="o">=</span> <span class="n">context_user</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">extra</span> <span class="o">=</span> <span class="n">extra</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">link_id</span> <span class="o">=</span> <span class="n">link_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">link</span> <span class="o">=</span> <span class="n">link</span>
@@ -4160,7 +4256,8 @@
     <span class="n">anonymization_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Anonymization rules&#39;</span><span class="p">)</span>
     <span class="n">anonymization</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Anonyimization&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Anonymization rules&#39;</span><span class="p">)</span>
     <span class="n">anonymize</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Anonymization rules&#39;</span><span class="p">)</span>
-    <span class="n">archive</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Archive setting. 0 = no archive or else archive and restore based on the priority value of the setting. e.g. 99 is high priority, -99 is low priority&#39;</span><span class="p">)</span>
+    <span class="n">archive_vault_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The vault to archive studies too&#39;</span><span class="p">)</span>
+    <span class="n">archive_vault</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Archive&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The vault to archive studies too&#39;</span><span class="p">)</span>
     <span class="n">cache</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Cache new studies image&#39;</span><span class="p">)</span>
     <span class="n">charge_description</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Charging information&#39;</span><span class="p">)</span>
     <span class="n">coverpage</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Cover page template&#39;</span><span class="p">)</span>
@@ -4179,6 +4276,7 @@
     <span class="n">event_query_reply</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The default event settings flags&#39;</span><span class="p">)</span>
     <span class="n">event_report_remove</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The default event settings flags&#39;</span><span class="p">)</span>
     <span class="n">event_share</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The default event settings flags&#39;</span><span class="p">)</span>
+    <span class="n">event_site_qualified</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The default event settings flags&#39;</span><span class="p">)</span>
     <span class="n">event_status_change</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The default event settings flags&#39;</span><span class="p">)</span>
     <span class="n">event_study_comment</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The default event settings flags&#39;</span><span class="p">)</span>
     <span class="n">event_thin_study_fail</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The default event settings flags&#39;</span><span class="p">)</span>
@@ -4236,7 +4334,8 @@
         <span class="n">anonymization_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">anonymization</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">anonymize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">archive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">archive_vault_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">archive_vault</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">cache</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">charge_description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">coverpage</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -4255,6 +4354,7 @@
         <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_thin_study_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -4308,7 +4408,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">anonymization_id</span> <span class="o">=</span> <span class="n">anonymization_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">anonymization</span> <span class="o">=</span> <span class="n">anonymization</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">anonymize</span> <span class="o">=</span> <span class="n">anonymize</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">archive</span> <span class="o">=</span> <span class="n">archive</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">archive_vault_id</span> <span class="o">=</span> <span class="n">archive_vault_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">archive_vault</span> <span class="o">=</span> <span class="n">archive_vault</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="n">cache</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">charge_description</span> <span class="o">=</span> <span class="n">charge_description</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">coverpage</span> <span class="o">=</span> <span class="n">coverpage</span>
@@ -4327,6 +4428,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">event_query_reply</span> <span class="o">=</span> <span class="n">event_query_reply</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_report_remove</span> <span class="o">=</span> <span class="n">event_report_remove</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_share</span> <span class="o">=</span> <span class="n">event_share</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_site_qualified</span> <span class="o">=</span> <span class="n">event_site_qualified</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_status_change</span> <span class="o">=</span> <span class="n">event_status_change</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_study_comment</span> <span class="o">=</span> <span class="n">event_study_comment</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_thin_study_fail</span> <span class="o">=</span> <span class="n">event_thin_study_fail</span>
@@ -5011,6 +5113,7 @@
     <span class="n">mobile_phone</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Contact info&#39;</span><span class="p">)</span>
     <span class="n">mrn</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Basic information&#39;</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Basic information&#39;</span><span class="p">)</span>
+    <span class="n">settings</span> <span class="o">=</span> <span class="n">DictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Account settings overrides&#39;</span><span class="p">)</span>
     <span class="n">sex</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Basic information&#39;</span><span class="p">)</span>
     <span class="n">user_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The associated user&#39;</span><span class="p">)</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated user&#39;</span><span class="p">)</span>
@@ -5042,6 +5145,7 @@
         <span class="n">mobile_phone</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">mrn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">sex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -5069,6 +5173,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">mobile_phone</span> <span class="o">=</span> <span class="n">mobile_phone</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mrn</span> <span class="o">=</span> <span class="n">mrn</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">settings</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sex</span> <span class="o">=</span> <span class="n">sex</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
@@ -5277,8 +5382,9 @@
     <span class="n">namespace_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Id of the namespace the activity is associated with&#39;</span><span class="p">)</span>
     <span class="n">namespace</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Namespace&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Id of the namespace the activity is associated with&#39;</span><span class="p">)</span>
     <span class="n">priority</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The activity priority&#39;</span><span class="p">)</span>
-    <span class="n">query_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Optional Query link&#39;</span><span class="p">)</span>
-    <span class="n">query</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Query&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Optional Query link&#39;</span><span class="p">)</span>
+    <span class="n">qctask_status</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;QC task status&#39;</span><span class="p">)</span>
+    <span class="n">query_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Optional Query link. Depreciated. Should be removed after 2022 February release&#39;</span><span class="p">)</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Query&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Optional Query link. Depreciated. Should be removed after 2022 February release&#39;</span><span class="p">)</span>
     <span class="n">user_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Id of the user the activity is specifically for.&#39;</span><span class="p">)</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Id of the user the activity is specifically for.&#39;</span><span class="p">)</span>
     <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
@@ -5299,6 +5405,7 @@
         <span class="n">namespace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">priority</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">qctask_status</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">query_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -5317,10 +5424,59 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">namespace_id</span> <span class="o">=</span> <span class="n">namespace_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="n">namespace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">priority</span> <span class="o">=</span> <span class="n">priority</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qctask_status</span> <span class="o">=</span> <span class="n">qctask_status</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query_id</span> <span class="o">=</span> <span class="n">query_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated</span> <span class="o">=</span> <span class="n">updated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">updated_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">updated_by_obj</span></div>
+
+
+
+<div class="viewcode-block" id="QctaskQuery"><a class="viewcode-back" href="../../../referencies/models.html#ambra_sdk.models.generated.QctaskQuery">[docs]</a><span class="k">class</span> <span class="nc">QctaskQuery</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;QctaskQuery.&quot;&quot;&quot;</span>
+    
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
+    <span class="n">qctask_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. QC task&#39;</span><span class="p">)</span>
+    <span class="n">qctask</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Task&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;QC task&#39;</span><span class="p">)</span>
+    <span class="n">query_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Query&#39;</span><span class="p">)</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Query&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Query&#39;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">updated</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was last updated&#39;</span><span class="p">)</span>
+    <span class="n">updated_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who updated the record&#39;</span><span class="p">)</span>
+    <span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who updated the record&#39;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">qctask_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">qctask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">query_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qctask_id</span> <span class="o">=</span> <span class="n">qctask_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qctask</span> <span class="o">=</span> <span class="n">qctask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query_id</span> <span class="o">=</span> <span class="n">query_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
@@ -5398,7 +5554,7 @@
     <span class="n">owner_namespace</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Namespace&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The owners&#39;</span><span class="p">)</span>
     <span class="n">owner_user_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The owners&#39;</span><span class="p">)</span>
     <span class="n">owner_user</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The owners&#39;</span><span class="p">)</span>
-    <span class="n">query_no</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The query number (displayed as a 7-digit number)&#39;</span><span class="p">)</span>
+    <span class="n">query_no</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The query number (displayed as a 7-digit number). Depreciated in favor of id. Please remove in 2022.&#39;</span><span class="p">)</span>
     <span class="n">query_status</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Query status&#39;</span><span class="p">)</span>
     <span class="n">query_type</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The type of the query&#39;</span><span class="p">)</span>
     <span class="n">reminder_count_since_reply</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Communication plan counters&#39;</span><span class="p">)</span>
@@ -5572,6 +5728,60 @@
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query_id</span> <span class="o">=</span> <span class="n">query_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">created</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">created_by_obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated</span> <span class="o">=</span> <span class="n">updated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">updated_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">updated_by_obj</span></div>
+
+
+
+<div class="viewcode-block" id="QuerySeen"><a class="viewcode-back" href="../../../referencies/models.html#ambra_sdk.models.generated.QuerySeen">[docs]</a><span class="k">class</span> <span class="nc">QuerySeen</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;QuerySeen.&quot;&quot;&quot;</span>
+    
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Primary key for internal use&#39;</span><span class="p">)</span>
+    <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
+    <span class="n">message_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The last message seen by the user in the Query&#39;</span><span class="p">)</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Message&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The last message seen by the user in the Query&#39;</span><span class="p">)</span>
+    <span class="n">query_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The Query&#39;</span><span class="p">)</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Query&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The Query&#39;</span><span class="p">)</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The User&#39;</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The User&#39;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was created&#39;</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">created_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who created the record&#39;</span><span class="p">)</span>
+    <span class="n">updated</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp when the record was last updated&#39;</span><span class="p">)</span>
+    <span class="n">updated_by</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. ID of the user who updated the record&#39;</span><span class="p">)</span>
+    <span class="n">updated_by_obj</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of the user who updated the record&#39;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">message_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">query_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">updated_by_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message_id</span> <span class="o">=</span> <span class="n">message_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query_id</span> <span class="o">=</span> <span class="n">query_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
@@ -5889,6 +6099,8 @@
     <span class="n">actions</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The rule actions&#39;</span><span class="p">)</span>
     <span class="n">conditions</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The rule conditions&#39;</span><span class="p">)</span>
     <span class="n">delay</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Number of minutes to delay running this rule after it is triggered&#39;</span><span class="p">)</span>
+    <span class="n">delay_from_study_field</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Field that delay_from_study_seconds will be applied to&#39;</span><span class="p">)</span>
+    <span class="n">delay_from_study_seconds</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Number of seconds to delay running this rule after point in time stated in a study&amp;#39;s field&#39;</span><span class="p">)</span>
     <span class="n">delay_seconds</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Number of seconds to delay running this rule after it is triggered&#39;</span><span class="p">)</span>
     <span class="n">delay_till_schedule</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Delay running the rule until the schedule time&#39;</span><span class="p">)</span>
     <span class="n">manual_roles</span> <span class="o">=</span> <span class="n">DictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Roles that can manually run this route&#39;</span><span class="p">)</span>
@@ -5901,6 +6113,7 @@
     <span class="n">on_share</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Should the rule be run on shared studies&#39;</span><span class="p">)</span>
     <span class="n">on_thin</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Should the rule be run on the creation of thin studies&#39;</span><span class="p">)</span>
     <span class="n">on_upload</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Should the rule be run on uploaded studies&#39;</span><span class="p">)</span>
+    <span class="n">only_re_run</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Should the rule only be run on a re-run of a storage notification&#39;</span><span class="p">)</span>
     <span class="n">options</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The rule options&#39;</span><span class="p">)</span>
     <span class="n">other_namespaces</span> <span class="o">=</span> <span class="n">DictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The other namespaces this rule is associated with&#39;</span><span class="p">)</span>
     <span class="n">schedule</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The rule schedule&#39;</span><span class="p">)</span>
@@ -5923,6 +6136,8 @@
         <span class="n">actions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">conditions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">delay</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">delay_from_study_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">delay_from_study_seconds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">delay_seconds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">delay_till_schedule</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">manual_roles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -5935,6 +6150,7 @@
         <span class="n">on_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">on_thin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">on_upload</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">only_re_run</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">other_namespaces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">schedule</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -5953,6 +6169,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">actions</span> <span class="o">=</span> <span class="n">actions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">conditions</span> <span class="o">=</span> <span class="n">conditions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="n">delay</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delay_from_study_field</span> <span class="o">=</span> <span class="n">delay_from_study_field</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delay_from_study_seconds</span> <span class="o">=</span> <span class="n">delay_from_study_seconds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delay_seconds</span> <span class="o">=</span> <span class="n">delay_seconds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delay_till_schedule</span> <span class="o">=</span> <span class="n">delay_till_schedule</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manual_roles</span> <span class="o">=</span> <span class="n">manual_roles</span>
@@ -5965,6 +6183,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">on_share</span> <span class="o">=</span> <span class="n">on_share</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">on_thin</span> <span class="o">=</span> <span class="n">on_thin</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">on_upload</span> <span class="o">=</span> <span class="n">on_upload</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">only_re_run</span> <span class="o">=</span> <span class="n">only_re_run</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">other_namespaces</span> <span class="o">=</span> <span class="n">other_namespaces</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">schedule</span> <span class="o">=</span> <span class="n">schedule</span>
@@ -6447,7 +6666,10 @@
     <span class="n">uuid</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;UUID for external use&#39;</span><span class="p">)</span>
     <span class="n">account_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The associated account&#39;</span><span class="p">)</span>
     <span class="n">account</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Account&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The associated account&#39;</span><span class="p">)</span>
+    <span class="n">address1</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Location fields&#39;</span><span class="p">)</span>
+    <span class="n">address2</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Location fields&#39;</span><span class="p">)</span>
     <span class="n">city</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Location fields&#39;</span><span class="p">)</span>
+    <span class="n">country</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Location fields&#39;</span><span class="p">)</span>
     <span class="n">inactive</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Inactive flag to hide a site from lists&#39;</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
     <span class="n">site_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. The associated site in case this one is a satellite site&#39;</span><span class="p">)</span>
@@ -6469,7 +6691,10 @@
         <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">account</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">address1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">address2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">city</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">country</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">inactive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">site_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -6487,7 +6712,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">account_id</span> <span class="o">=</span> <span class="n">account_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">account</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">address1</span> <span class="o">=</span> <span class="n">address1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">address2</span> <span class="o">=</span> <span class="n">address2</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="n">city</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">country</span> <span class="o">=</span> <span class="n">country</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inactive</span> <span class="o">=</span> <span class="n">inactive</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">site_id</span> <span class="o">=</span> <span class="n">site_id</span>
@@ -8319,6 +8547,8 @@
     <span class="n">captcha_sk</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Captcha secret key&#39;</span><span class="p">)</span>
     <span class="n">clickhouse_version</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;ClickHouse scheme version&#39;</span><span class="p">)</span>
     <span class="n">database_version</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Database version&#39;</span><span class="p">)</span>
+    <span class="n">documo_mfax_caller_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Documo (mFax) key and caller_id phone number&#39;</span><span class="p">)</span>
+    <span class="n">documo_mfax_key</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Documo (mFax) key and caller_id phone number&#39;</span><span class="p">)</span>
     <span class="n">drchrono_client_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Drchrono information&#39;</span><span class="p">)</span>
     <span class="n">drchrono_client_secret</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Drchrono information&#39;</span><span class="p">)</span>
     <span class="n">drchrono_redirect_uri</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Drchrono information&#39;</span><span class="p">)</span>
@@ -8353,9 +8583,10 @@
     <span class="n">sysadmin_pin_required</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Require 2FA for a support or sysadmin user&#39;</span><span class="p">)</span>
     <span class="n">terms_html</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;HTML for the terms of use, privacy policy and indicators of use&#39;</span><span class="p">)</span>
     <span class="n">terms_md5</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;MD5 sums of the terms of use, privacy policy and indicators of use&#39;</span><span class="p">)</span>
-    <span class="n">twilio_from</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Twilio key, secret and from phone number&#39;</span><span class="p">)</span>
-    <span class="n">twilio_pk</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Twilio key, secret and from phone number&#39;</span><span class="p">)</span>
-    <span class="n">twilio_sk</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Twilio key, secret and from phone number&#39;</span><span class="p">)</span>
+    <span class="n">twilio_callback_password</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Twilio key, secret, from phone number and callback password for HTTP basic authentication&#39;</span><span class="p">)</span>
+    <span class="n">twilio_from</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Twilio key, secret, from phone number and callback password for HTTP basic authentication&#39;</span><span class="p">)</span>
+    <span class="n">twilio_pk</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Twilio key, secret, from phone number and callback password for HTTP basic authentication&#39;</span><span class="p">)</span>
+    <span class="n">twilio_sk</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Twilio key, secret, from phone number and callback password for HTTP basic authentication&#39;</span><span class="p">)</span>
     <span class="n">ui_json</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;System-wide UI settings&#39;</span><span class="p">)</span>
     <span class="n">updates_html</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Updates text&#39;</span><span class="p">)</span>
     <span class="n">updates_html_version</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Updates text&#39;</span><span class="p">)</span>
@@ -8398,6 +8629,8 @@
         <span class="n">captcha_sk</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">clickhouse_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">database_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">documo_mfax_caller_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">documo_mfax_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">drchrono_client_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">drchrono_client_secret</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">drchrono_redirect_uri</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -8432,6 +8665,7 @@
         <span class="n">sysadmin_pin_required</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">terms_html</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">terms_md5</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">twilio_callback_password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">twilio_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">twilio_pk</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">twilio_sk</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -8473,6 +8707,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">captcha_sk</span> <span class="o">=</span> <span class="n">captcha_sk</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clickhouse_version</span> <span class="o">=</span> <span class="n">clickhouse_version</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">database_version</span> <span class="o">=</span> <span class="n">database_version</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">documo_mfax_caller_id</span> <span class="o">=</span> <span class="n">documo_mfax_caller_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">documo_mfax_key</span> <span class="o">=</span> <span class="n">documo_mfax_key</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">drchrono_client_id</span> <span class="o">=</span> <span class="n">drchrono_client_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">drchrono_client_secret</span> <span class="o">=</span> <span class="n">drchrono_client_secret</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">drchrono_redirect_uri</span> <span class="o">=</span> <span class="n">drchrono_redirect_uri</span>
@@ -8507,6 +8743,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sysadmin_pin_required</span> <span class="o">=</span> <span class="n">sysadmin_pin_required</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">terms_html</span> <span class="o">=</span> <span class="n">terms_html</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">terms_md5</span> <span class="o">=</span> <span class="n">terms_md5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">twilio_callback_password</span> <span class="o">=</span> <span class="n">twilio_callback_password</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">twilio_from</span> <span class="o">=</span> <span class="n">twilio_from</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">twilio_pk</span> <span class="o">=</span> <span class="n">twilio_pk</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">twilio_sk</span> <span class="o">=</span> <span class="n">twilio_sk</span>
@@ -8890,6 +9127,7 @@
     <span class="n">event_query_reply</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags for the personal namespace&#39;</span><span class="p">)</span>
     <span class="n">event_report_remove</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags for the personal namespace&#39;</span><span class="p">)</span>
     <span class="n">event_share</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags for the personal namespace&#39;</span><span class="p">)</span>
+    <span class="n">event_site_qualified</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags for the personal namespace&#39;</span><span class="p">)</span>
     <span class="n">event_status_change</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags for the personal namespace&#39;</span><span class="p">)</span>
     <span class="n">event_study_comment</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags for the personal namespace&#39;</span><span class="p">)</span>
     <span class="n">event_thin_study_fail</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags for the personal namespace&#39;</span><span class="p">)</span>
@@ -8899,7 +9137,7 @@
     <span class="n">first</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
     <span class="n">indicator_md5</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;MD5 sums of the accepted terms of use, privacy policy and indicators of use&#39;</span><span class="p">)</span>
     <span class="n">last</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
-    <span class="n">last_login</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The last login time&#39;</span><span class="p">)</span>
+    <span class="n">last_login</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;This is depreciated and stored in redis, this field should be dropped in the future&#39;</span><span class="p">)</span>
     <span class="n">last_reset</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Time the password was last reset&#39;</span><span class="p">)</span>
     <span class="n">mobile_phone</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Mobile phone&#39;</span><span class="p">)</span>
     <span class="n">namespace_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Their namespace&#39;</span><span class="p">)</span>
@@ -8908,6 +9146,7 @@
     <span class="n">oauth</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;OAuth id and refresh token&#39;</span><span class="p">)</span>
     <span class="n">password</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Password&#39;</span><span class="p">)</span>
     <span class="n">pin_required</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Is a PIN required for login&#39;</span><span class="p">)</span>
+    <span class="n">pkey_last_reset</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Time the public key was last reset&#39;</span><span class="p">)</span>
     <span class="n">privacy_md5</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;MD5 sums of the accepted terms of use, privacy policy and indicators of use&#39;</span><span class="p">)</span>
     <span class="n">public_key</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Public key for authentication&#39;</span><span class="p">)</span>
     <span class="n">refresh_token</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;OAuth id and refresh token&#39;</span><span class="p">)</span>
@@ -8952,6 +9191,7 @@
         <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_thin_study_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -8970,6 +9210,7 @@
         <span class="n">oauth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">pin_required</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">pkey_last_reset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">privacy_md5</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">public_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">refresh_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -9010,6 +9251,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">event_query_reply</span> <span class="o">=</span> <span class="n">event_query_reply</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_report_remove</span> <span class="o">=</span> <span class="n">event_report_remove</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_share</span> <span class="o">=</span> <span class="n">event_share</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_site_qualified</span> <span class="o">=</span> <span class="n">event_site_qualified</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_status_change</span> <span class="o">=</span> <span class="n">event_status_change</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_study_comment</span> <span class="o">=</span> <span class="n">event_study_comment</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_thin_study_fail</span> <span class="o">=</span> <span class="n">event_thin_study_fail</span>
@@ -9028,6 +9270,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">oauth</span> <span class="o">=</span> <span class="n">oauth</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pin_required</span> <span class="o">=</span> <span class="n">pin_required</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pkey_last_reset</span> <span class="o">=</span> <span class="n">pkey_last_reset</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">privacy_md5</span> <span class="o">=</span> <span class="n">privacy_md5</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">public_key</span> <span class="o">=</span> <span class="n">public_key</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refresh_token</span> <span class="o">=</span> <span class="n">refresh_token</span>
@@ -9076,6 +9319,7 @@
     <span class="n">event_query_reply</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_report_remove</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_share</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
+    <span class="n">event_site_qualified</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_status_change</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_study_comment</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_thin_study_fail</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
@@ -9132,6 +9376,7 @@
         <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_thin_study_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -9184,6 +9429,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">event_query_reply</span> <span class="o">=</span> <span class="n">event_query_reply</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_report_remove</span> <span class="o">=</span> <span class="n">event_report_remove</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_share</span> <span class="o">=</span> <span class="n">event_share</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_site_qualified</span> <span class="o">=</span> <span class="n">event_site_qualified</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_status_change</span> <span class="o">=</span> <span class="n">event_status_change</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_study_comment</span> <span class="o">=</span> <span class="n">event_study_comment</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_thin_study_fail</span> <span class="o">=</span> <span class="n">event_thin_study_fail</span>
@@ -9339,6 +9585,7 @@
     <span class="n">event_query_reply</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_report_remove</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_share</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
+    <span class="n">event_site_qualified</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_status_change</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_study_comment</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_thin_study_fail</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
@@ -9379,6 +9626,7 @@
         <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_thin_study_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -9415,6 +9663,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">event_query_reply</span> <span class="o">=</span> <span class="n">event_query_reply</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_report_remove</span> <span class="o">=</span> <span class="n">event_report_remove</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_share</span> <span class="o">=</span> <span class="n">event_share</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_site_qualified</span> <span class="o">=</span> <span class="n">event_site_qualified</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_status_change</span> <span class="o">=</span> <span class="n">event_status_change</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_study_comment</span> <span class="o">=</span> <span class="n">event_study_comment</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_thin_study_fail</span> <span class="o">=</span> <span class="n">event_thin_study_fail</span>
@@ -9445,6 +9694,7 @@
     <span class="n">account_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Account the invitation is for&#39;</span><span class="p">)</span>
     <span class="n">account</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Account&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Account the invitation is for&#39;</span><span class="p">)</span>
     <span class="n">email</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Email address to invite&#39;</span><span class="p">)</span>
+    <span class="n">global_field</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;This user is automatically added to every group and location in the account&#39;</span><span class="p">)</span>
     <span class="n">groups</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;JSON hashes of the groups and locations to add them to with the role as the key value&#39;</span><span class="p">)</span>
     <span class="n">locations</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;JSON hashes of the groups and locations to add them to with the role as the key value&#39;</span><span class="p">)</span>
     <span class="n">role_id</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;FK. Role the invitation is for&#39;</span><span class="p">)</span>
@@ -9467,6 +9717,7 @@
         <span class="n">account_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">account</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">global_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">locations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">role_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -9485,6 +9736,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">account_id</span> <span class="o">=</span> <span class="n">account_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="n">account</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">email</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_field</span> <span class="o">=</span> <span class="n">global_field</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="n">groups</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">locations</span> <span class="o">=</span> <span class="n">locations</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">role_id</span> <span class="o">=</span> <span class="n">role_id</span>
@@ -9573,6 +9825,7 @@
     <span class="n">event_query_reply</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_report_remove</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_share</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
+    <span class="n">event_site_qualified</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_status_change</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_study_comment</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
     <span class="n">event_thin_study_fail</span> <span class="o">=</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event flags&#39;</span><span class="p">)</span>
@@ -9613,6 +9866,7 @@
         <span class="n">event_query_reply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_report_remove</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_share</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_site_qualified</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_status_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_study_comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">event_thin_study_fail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -9649,6 +9903,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">event_query_reply</span> <span class="o">=</span> <span class="n">event_query_reply</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_report_remove</span> <span class="o">=</span> <span class="n">event_report_remove</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_share</span> <span class="o">=</span> <span class="n">event_share</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_site_qualified</span> <span class="o">=</span> <span class="n">event_site_qualified</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_status_change</span> <span class="o">=</span> <span class="n">event_status_change</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_study_comment</span> <span class="o">=</span> <span class="n">event_study_comment</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_thin_study_fail</span> <span class="o">=</span> <span class="n">event_thin_study_fail</span>
@@ -9786,7 +10041,7 @@
     <span class="n">event</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The event to trigger the webhook for&#39;</span><span class="p">)</span>
     <span class="n">filter_field</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Filter field and regexp&#39;</span><span class="p">)</span>
     <span class="n">filter_regexp</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Filter field and regexp&#39;</span><span class="p">)</span>
-    <span class="n">last_error</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The last error the webhook had&#39;</span><span class="p">)</span>
+    <span class="n">last_error</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Note this value is now stored in the redis and this field should be depreciated and dropped&#39;</span><span class="p">)</span>
     <span class="n">max_age</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Ignore studies that are more than this number of days old&#39;</span><span class="p">)</span>
     <span class="n">method</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Call method&#39;</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
@@ -10003,7 +10258,7 @@
 
 
 
-<p class="blurb">version 3.21.6.0-1</p>
+<p class="blurb">version 3.22.1.0-1</p>
 
 
 

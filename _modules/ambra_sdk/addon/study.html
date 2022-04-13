@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ambra_sdk.addon.study &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
+    <title>ambra_sdk.addon.study &#8212; Ambra-SDK 3.22.1.0-1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -89,7 +89,7 @@
         <span class="n">dicom_paths</span><span class="p">:</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
         <span class="n">namespace_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">UploadedImageParams</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Upload study to namespace from dicoms iteartor.</span>
+        <span class="sd">&quot;&quot;&quot;Upload study to namespace from dicoms iterator.</span>
 
 <span class="sd">        :param dicom_paths: iterator of dicom paths</span>
 <span class="sd">        :param namespace_id: uploading to namespace</span>
@@ -106,7 +106,7 @@
         <span class="c1"># In pydicom we can pass file path object</span>
         <span class="c1"># But in AI we use old version of pydicom.</span>
         <span class="c1"># For this version we can pass only fp or str.</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">pydicom</span><span class="o">.</span><span class="n">dcmread</span><span class="p">(</span><span class="n">fp</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">first_dicom_path</span><span class="p">))</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">pydicom</span><span class="o">.</span><span class="n">dcmread</span><span class="p">(</span><span class="n">fp</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">first_dicom_path</span><span class="p">),</span> <span class="n">stop_before_pixels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">patient_name</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">PatientName</span>
         <span class="n">study_uid</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">StudyInstanceUID</span>
         <span class="n">study_time</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">StudyTime</span>
@@ -578,7 +578,7 @@
 
 
 
-<p class="blurb">version 3.21.6.0-1</p>
+<p class="blurb">version 3.22.1.0-1</p>
 
 
 

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Storage namespace &#8212; Ambra-SDK 3.21.6.0-1 documentation</title>
+    <title>Storage namespace &#8212; Ambra-SDK 3.22.1.0-1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -90,6 +90,71 @@ Will overlay the values onto the phiSource.</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>dicom.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.storage.image.Image.multipart_chunk_upload">
+<code class="sig-name descname">multipart_chunk_upload</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">upload_uuid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">bytes_part</span><span class="p">:</span> <span class="n">bytes</span></em>, <em class="sig-param"><span class="n">chunk_number</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/image/image.html#Image.multipart_chunk_upload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.image.Image.multipart_chunk_upload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload a part of image.</p>
+<p>URL: multipart/{upload_uuid}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine_fqdn</strong> – Engine FQDN (Required).</p></li>
+<li><p><strong>upload_uuid</strong> – UUID of the initiated multipart upload (Required).</p></li>
+<li><p><strong>bytes_part</strong> – part of image (Required).</p></li>
+<li><p><strong>chunk_number</strong> – sequence number, first part has number 0 (Required).</p></li>
+<li><p><strong>only_prepare</strong> – Get prepared request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>status code</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.storage.image.Image.multipart_complete">
+<code class="sig-name descname">multipart_complete</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">upload_uuid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">file_size</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">endpoint</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'image'</span></em>, <em class="sig-param"><span class="n">tags</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">render_wrapped_pdf</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>box.box.Box<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/image/image.html#Image.multipart_complete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.image.Image.multipart_complete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finish the multipart upload process.</p>
+<p>URL: multipart/{upload_uuid}/complete</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine_fqdn</strong> – Engine FQDN (Required).</p></li>
+<li><p><strong>namespace</strong> – Namespace (Required).</p></li>
+<li><p><strong>upload_uuid</strong> – UUID of the initiated multipart upload (Required).</p></li>
+<li><p><strong>file_size</strong> – size of whole file (Required).</p></li>
+<li><p><strong>endpoint</strong> – the endpoint to which the reconstructed file needs to be submitted. Only the image and wrap endpoint are supported at the moment.</p></li>
+<li><p><strong>tags</strong> – the tags to be used to submit reconstructed file.</p></li>
+<li><p><strong>study_uid</strong> – study uid.</p></li>
+<li><p><strong>render_wrapped_pdf</strong> – if the file to be submitted should be treated as wrapped pdf.</p></li>
+<li><p><strong>only_prepare</strong> – Get prepared request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>status code</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.storage.image.Image.multipart_initiate">
+<code class="sig-name descname">multipart_initiate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">use_box</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>box.box.Box<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/image/image.html#Image.multipart_initiate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.image.Image.multipart_initiate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initiate the multipart upload.</p>
+<p>URL: /multipart/initiate?sid={sid}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine_fqdn</strong> – Engine FQDN (Required).</p></li>
+<li><p><strong>use_box</strong> – Use box for response.</p></li>
+<li><p><strong>only_prepare</strong> – Get prepared request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>uuid of multipart upload</p>
 </dd>
 </dl>
 </dd></dl>
@@ -693,6 +758,34 @@ instance of the study outside of the original storage namespace</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt id="ambra_sdk.storage.study.Study.image_dicomweb">
+<code class="sig-name descname">image_dicomweb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">series_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">use_box</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>box.box.Box<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study/study.html#Study.image_dicomweb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.image_dicomweb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns JSON representation of a single DICOM as defined by the DICOMWeb WADO-RS Metadata standard             <a class="reference external" href="http://dicom.nema.org/medical/dicom/current/output/html/part18.html#table_10.4.1-2">http://dicom.nema.org/medical/dicom/current/output/html/part18.html#table_10.4.1-2</a>.</p>
+<p>URL: dicomweb/{namespace}/studies/{studyUid}/series/{seriesUid}/instances/{imageUid}/metadata?sid={sid}&amp;phi_namespace={phi_namespace}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine_fqdn</strong> – Engine FQDN (Required).</p></li>
+<li><p><strong>namespace</strong> – Namespace (Required).</p></li>
+<li><p><strong>study_uid</strong> – Study uid (Required).</p></li>
+<li><p><strong>series_uid</strong> – Series uid (Required).</p></li>
+<li><p><strong>image_uid</strong> – Image uid (Required).</p></li>
+<li><p><strong>phi_namespace</strong> – A string, set to the UUID of the
+namespace where the file was attached if it was
+attached to a shared instance of the study
+outside of the original storage namespace</p></li>
+<li><p><strong>use_box</strong> – Use box for response.</p></li>
+<li><p><strong>only_prepare</strong> – Get prepared request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A JSON representation of a DICOM according to the DICOMWeb standard,
+omitting any bulkdata, pixeldata, or other binary fields.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.image_json">
 <code class="sig-name descname">image_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">image_version</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exclude_unnamed</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">all_dicom_values</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">groups</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">include_tags</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">use_box</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>ambra_sdk.storage.study.base_study.ImageJsonBox<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study/study.html#Study.image_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.image_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets all DICOM attributes for an individual image.</p>
@@ -988,6 +1081,33 @@ outside of the original storage namespace</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt id="ambra_sdk.storage.study.Study.series_dicomweb">
+<code class="sig-name descname">series_dicomweb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">series_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">use_box</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>box.box_list.BoxList<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study/study.html#Study.series_dicomweb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.series_dicomweb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns JSON representation of a series of DICOM(s) as defined by the DICOMWeb WADO-RS Metadata standard             <a class="reference external" href="http://dicom.nema.org/medical/dicom/current/output/html/part18.html#table_10.4.1-2">http://dicom.nema.org/medical/dicom/current/output/html/part18.html#table_10.4.1-2</a>.</p>
+<p>URL: dicomweb/{namespace}/studies/{studyUid}/series/{seriesUid}/metadata?sid={sid}&amp;phi_namespace={phi_namespace}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine_fqdn</strong> – Engine FQDN (Required).</p></li>
+<li><p><strong>namespace</strong> – Namespace (Required).</p></li>
+<li><p><strong>study_uid</strong> – Study uid (Required).</p></li>
+<li><p><strong>series_uid</strong> – Series uid (Required).</p></li>
+<li><p><strong>phi_namespace</strong> – A string, set to the UUID of the
+namespace where the file was attached if it was
+attached to a shared instance of the study
+outside of the original storage namespace</p></li>
+<li><p><strong>use_box</strong> – Use box for response.</p></li>
+<li><p><strong>only_prepare</strong> – Get prepared request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A JSON representation of a series of DICOM(s) according to the DICOMWeb standard,
+omitting any bulkdata, pixeldata, or other binary fields.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="ambra_sdk.storage.study.Study.split">
 <code class="sig-name descname">split</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">to_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">series_uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">delete_series_from_original</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study/study.html#Study.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.split" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split a study.</p>
@@ -1013,6 +1133,32 @@ be deleted from the original study</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Split study response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ambra_sdk.storage.study.Study.study_dicomweb">
+<code class="sig-name descname">study_dicomweb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine_fqdn</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">study_uid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">phi_namespace</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">use_box</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only_prepare</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>box.box_list.BoxList<span class="p">, </span>requests.models.Response<span class="p">, </span>ambra_sdk.storage.request.PreparedRequest<span class="p">]</span><a class="reference internal" href="../_modules/ambra_sdk/storage/study/study.html#Study.study_dicomweb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ambra_sdk.storage.study.Study.study_dicomweb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns JSON representation of an entire study of DICOMs as defined by the DICOMWeb WADO-RS Metadata standard             <a class="reference external" href="http://dicom.nema.org/medical/dicom/current/output/html/part18.html#table_10.4.1-2">http://dicom.nema.org/medical/dicom/current/output/html/part18.html#table_10.4.1-2</a>.</p>
+<p>URL: dicomweb/{namespace}/studies/{studyUid}/metadata?sid={sid}&amp;phi_namespace={phi_namespace}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine_fqdn</strong> – Engine FQDN (Required).</p></li>
+<li><p><strong>namespace</strong> – Namespace (Required).</p></li>
+<li><p><strong>study_uid</strong> – Study uid (Required).</p></li>
+<li><p><strong>phi_namespace</strong> – A string, set to the UUID of the
+namespace where the file was attached if it was
+attached to a shared instance of the study
+outside of the original storage namespace</p></li>
+<li><p><strong>use_box</strong> – Use box for response.</p></li>
+<li><p><strong>only_prepare</strong> – Get prepared request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A JSON representation of an entire study of DICOM(s) according to the DICOMWeb standard,
+omitting any bulkdata, pixeldata, or other binary fields.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1109,7 +1255,7 @@ outside of the original storage namespace</p></li>
 
 
 
-<p class="blurb">version 3.21.6.0-1</p>
+<p class="blurb">version 3.22.1.0-1</p>
 
 
 

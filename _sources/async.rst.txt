@@ -20,7 +20,7 @@ We support async versions for all methods in the sync version of sdk (include ad
 Async vs Sync difference
 ------------------------
 
-- In the async version for results with pagination we have an async genereator result.
+- In the async version for results with pagination we have an async generator result.
   For example::
 
     async for study in api.Study.list().all():

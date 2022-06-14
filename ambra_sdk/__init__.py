@@ -11,3 +11,4 @@ STORAGE_VERSION = 'LBL0038 v22.0 2022-05-18'
 
 DOCS_URL = 'https://dicomgrid.github.io/sdk-python'
 ADDON_DOCS_URL = '{docs_url}/addon.html'.format(docs_url=DOCS_URL)
+

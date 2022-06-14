@@ -8,7 +8,6 @@ from ambra_sdk.exceptions.storage import (
     AccessDenied,
     AmbraResponseException,
     BadRequest,
-    ImageNotFound,
     NotPdfFile,
     NotVideoInImage,
     StudyNotFound,
@@ -220,14 +219,6 @@ class TestStorageStudy:
             image_uid=image['id'],
         )
         assert delete_image.status_code in {200, 202}
-
-        with pytest.raises(ImageNotFound):
-            delete_image = api.Storage.Study.delete_image(
-                engine_fqdn=engine_fqdn,
-                namespace=storage_namespace,
-                study_uid=study_uid,
-                image_uid=image['id'],
-            )
 
     def test_delete_images(
         self,

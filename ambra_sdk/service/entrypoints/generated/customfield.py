@@ -29,6 +29,8 @@ from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import NotPermitted
 from ambra_sdk.service.query import QueryO
 from ambra_sdk.service.query import AsyncQueryO
+from ambra_sdk.service.query import QueryOF
+from ambra_sdk.service.query import AsyncQueryOF
 from ambra_sdk.service.query import QueryOPSF
 from ambra_sdk.service.query import AsyncQueryOPSF
 
@@ -95,6 +97,7 @@ class Customfield:
         other_dicom_tags=None,
         required=None,
         type=None,
+        ui_json=None,
         wrapped_dicom_only=None,
     ):
         """Add.
@@ -122,6 +125,7 @@ class Customfield:
         :param other_dicom_tags: JSON array of other DICOM tags to map this field to. (only applicable to study fields) (optional)
         :param required: Flag if the field is required (optional)
         :param type: Type of the custom field (text|number|date|memo|select|multiselect|radio|checkbox|search|bool) (optional)
+        :param ui_json: JSON for UI settings (optional)
         :param wrapped_dicom_only: Only capture for wrapped DICOM uploads during a share code exchange (optional)
         """
         request_data = {
@@ -148,6 +152,7 @@ class Customfield:
            'other_dicom_tags': other_dicom_tags,
            'required': required,
            'type': type,
+           'ui_json': ui_json,
            'wrapped_dicom_only': wrapped_dicom_only,
         }
 	
@@ -202,6 +207,7 @@ class Customfield:
         other_customfield_no_refresh_on_reshare=None,
         other_dicom_tags=None,
         required=None,
+        ui_json=None,
         wrapped_dicom_only=None,
     ):
         """Set.
@@ -229,6 +235,7 @@ class Customfield:
         :param other_customfield_no_refresh_on_reshare: Flag if the customfield should be updated on Study reshare (optional)
         :param other_dicom_tags: JSON array of other DICOM tags to map this field to. (only applicable to study fields) (optional)
         :param required: Flag if the field is required (optional)
+        :param ui_json: JSON for UI settings (optional)
         :param wrapped_dicom_only: Only capture for wrapped DICOM uploads during a share code exchange (optional)
         """
         request_data = {
@@ -254,6 +261,7 @@ class Customfield:
            'other_customfield_no_refresh_on_reshare': other_customfield_no_refresh_on_reshare,
            'other_dicom_tags': other_dicom_tags,
            'required': required,
+           'ui_json': ui_json,
            'uuid': uuid,
            'wrapped_dicom_only': wrapped_dicom_only,
         }
@@ -362,19 +370,25 @@ class Customfield:
     def search(
         self,
         uuid,
+        extended=None,
         search=None,
     ):
         """Search.
 
         :param uuid: uuid of the customfield
+        :param extended: If provided then below parameters are used instead of search, see Notes. (optional)
         :param search: The value to search for (optional)
         """
         request_data = {
+           'extended': extended,
            'search': search,
            'uuid': uuid,
         }
 	
         errors_mapping = {}
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_A_SEARCH', None)] = NotASearch('This is not a search type of customfield')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The customfield can not be found')
@@ -386,7 +400,7 @@ class Customfield:
             'errors_mapping': errors_mapping,
             'required_sid': True,
         }
-        return QueryO(**query_data)
+        return QueryOF(**query_data)
     
     def mapping_add(
         self,
@@ -558,6 +572,7 @@ class AsyncCustomfield:
         other_dicom_tags=None,
         required=None,
         type=None,
+        ui_json=None,
         wrapped_dicom_only=None,
     ):
         """Add.
@@ -585,6 +600,7 @@ class AsyncCustomfield:
         :param other_dicom_tags: JSON array of other DICOM tags to map this field to. (only applicable to study fields) (optional)
         :param required: Flag if the field is required (optional)
         :param type: Type of the custom field (text|number|date|memo|select|multiselect|radio|checkbox|search|bool) (optional)
+        :param ui_json: JSON for UI settings (optional)
         :param wrapped_dicom_only: Only capture for wrapped DICOM uploads during a share code exchange (optional)
         """
         request_data = {
@@ -611,6 +627,7 @@ class AsyncCustomfield:
            'other_dicom_tags': other_dicom_tags,
            'required': required,
            'type': type,
+           'ui_json': ui_json,
            'wrapped_dicom_only': wrapped_dicom_only,
         }
 	
@@ -665,6 +682,7 @@ class AsyncCustomfield:
         other_customfield_no_refresh_on_reshare=None,
         other_dicom_tags=None,
         required=None,
+        ui_json=None,
         wrapped_dicom_only=None,
     ):
         """Set.
@@ -692,6 +710,7 @@ class AsyncCustomfield:
         :param other_customfield_no_refresh_on_reshare: Flag if the customfield should be updated on Study reshare (optional)
         :param other_dicom_tags: JSON array of other DICOM tags to map this field to. (only applicable to study fields) (optional)
         :param required: Flag if the field is required (optional)
+        :param ui_json: JSON for UI settings (optional)
         :param wrapped_dicom_only: Only capture for wrapped DICOM uploads during a share code exchange (optional)
         """
         request_data = {
@@ -717,6 +736,7 @@ class AsyncCustomfield:
            'other_customfield_no_refresh_on_reshare': other_customfield_no_refresh_on_reshare,
            'other_dicom_tags': other_dicom_tags,
            'required': required,
+           'ui_json': ui_json,
            'uuid': uuid,
            'wrapped_dicom_only': wrapped_dicom_only,
         }
@@ -825,19 +845,25 @@ class AsyncCustomfield:
     def search(
         self,
         uuid,
+        extended=None,
         search=None,
     ):
         """Search.
 
         :param uuid: uuid of the customfield
+        :param extended: If provided then below parameters are used instead of search, see Notes. (optional)
         :param search: The value to search for (optional)
         """
         request_data = {
+           'extended': extended,
            'search': search,
            'uuid': uuid,
         }
 	
         errors_mapping = {}
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_A_SEARCH', None)] = NotASearch('This is not a search type of customfield')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The customfield can not be found')
@@ -849,7 +875,7 @@ class AsyncCustomfield:
             'errors_mapping': errors_mapping,
             'required_sid': True,
         }
-        return AsyncQueryO(**query_data)
+        return AsyncQueryOF(**query_data)
     
     def mapping_add(
         self,

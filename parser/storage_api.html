@@ -1,0 +1,4593 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>v3 Storage External API</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="../common.css" />
+<link rel="stylesheet" type="text/css" href="../api.css" />
+<link rel="stylesheet" href="../lib/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<script>
+    $(document).ready(function(){
+        $(".toggler").click(function(e){
+            e.preventDefault();
+            $('.cat'+$(this).attr('data-prod-cat')).toggle();
+        });
+    });
+</script>
+<body>
+
+    <div class="topbar">
+        <div class="topbar-inner">
+            <div class="container">
+                <p class="brand"><a href="index.html">DICOM Grid (dba Ambra Health)</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="content" style="padding-top: 80px;">
+        <h2>v3 Storage External API</h2>
+
+        <a name="toc"><h3>Table of contents</h3></a>
+        <ol>
+            <li><a href="#intro">Introduction</a>
+            <li><a href="#global">Global information</a>
+            <li><a href="#permissions">Permissions</a>
+            <li><a href="#study" name="study-idx">Study commands</a>
+            <ul>
+                <li><a href="#study_schema">/study/schema</a>
+                <li><a href="#study_delete">/study/delete</a>
+                <li><a href="#study_delete_image">/study/delete/image/</a>
+                <li><a href="#study_delete_images">/study/delete/images/</a>
+                <li><a href="#study_count">/study/count</a>
+                <li><a href="#study_tag">/study/tag</a>
+                <li><a href="#study_attributes">/study/attribute</a>
+                <li><a href="#study_image_phi">/study/image/phi</a>
+                <li><a href="#study_study_phi">/study/phi</a>
+                <li><a href="#study_thumbnail">/study/thumbnail</a>
+                <li><a href="#study_diagnostic">/study/diagnostic</a>
+                <li><a href="#study_frame">/study/frame</a>
+                <li><a href="#study_frame_tiff">/study/frame/tiff</a>
+                <li><a href="#study_pdf">/study/pdf</a>
+                <li><a href="#study_all_attributes">/study/json</a>
+                <li><a href="#study_image_attributes">/study/image/json</a>
+                <li><a href="#study_attachment">/study/attachment</a>
+                <li><a href="#study_latest_attachment">/study/latest</a>
+                <li><a href="#study_post_attachment">/study/post/attachment</a>
+                <li><a href="#study_render_attachment">/study/attachment/image</a>
+                <li><a href="#study_download">/study/download</a>
+                <li><a href="#study_delete_attachment">/study/delete/attachment</a>
+                <li><a href="#study_encapsulated_video">/study/video</a>
+                <li><a href="#study_split">/study/split</a>
+                <li><a href="#study_merge">/study/merge</a>
+                <li><a href="#study_anon">/study/anonymize</a></li>
+                <li><a href="#study_crop">/study/crop</a></li>
+                <li><a href="#study_cache">/study/cache</a></li>
+                <li><a href="#study_hl7_to_sr">/study/hl7/sr</a></li>
+                <li><a href="#study_clone">/study/clone</a></li>
+                <li><a href="#study_generate_rtstruct">/study/create/rt</a></li>
+                <li><a href="#dicomweb_instance_metadata">/dicomweb/studies/series/instances/metadata</a></li>
+                <li><a href="#dicomweb_series_metadata">/dicomweb/studies/series/metadata</a></li>
+                <li><a href="#dicomweb_study_metadata">/dicomweb/studies/metadata</a></li>
+            </ul>
+            <li><a href="#image" name="image-idx">Image commands</a>
+            <ul>
+                <li><a href="#image_upload">/image</a>
+                <li><a href="#image_wrap">/image/wrap</a>
+                <li><a href="#image_cadsr">/image/cadsr</a>
+            </ul>
+        </ol>
+
+        <a name="intro"><h3>Introduction</h3></a>
+        The API is implemented as a REST like interface. A call is made to a URL using either a POST, a GET or DELETE. The URL will return either a HTTP error code, a JSON data structure or a byte stream. All URLs below need to be prefixed with <b>{engine_fqdn}/api/v3/storage.</b>
+
+        <a name="global"><h3>Global information</h3></a>
+
+        <ul>
+            <li> <i>Italic</i> words represent fields names
+            <li> Fields are required unless noted as optional
+            <li> Flags are numeric fields with a 1 or 0 value for true or false
+        </ul>
+
+        <a name="permissions"><h3>Permissions</h3></a>
+        A role has the following permission flags. The default roles are Admin, User, PHR and Anonymous and have the following settings.
+        <p>
+
+        <table class="bordered-table">
+            <tr>
+                <th>Flag</th>
+                <th>Admin<br>Value</th>
+                <th>User<br>Value</th>
+                <th>PHR<br>Value</th>
+                <th>Anonymous<br>Value</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>account_edit</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add and edit the account</td>
+            </tr>
+            <tr>
+                <td>account_view</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view account information</td>
+            </tr>
+            <tr>
+                <td>account_user_view</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the users in the account</td>
+            </tr>
+            <tr>
+                <td>account_user_edit</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove users from an account</td>
+            </tr>
+            <tr>
+                <td>user_edit</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they create and edit users on the grid</td>
+            </tr>
+            <tr>
+                <td>destination_view</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the destinations in the account</td>
+            </tr>
+            <tr>
+                <td>destination_edit</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove destinations from an account</td>
+            </tr>
+            <tr>
+                <td>destination_search</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they search a destination</td>
+            </tr>
+            <tr>
+                <td>destination_search_mwl</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they run a modality worklist search on a destination</td>
+            </tr>
+            <tr>
+                <td>group_view</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the groups in the account</td>
+            </tr>
+            <tr>
+                <td>group_edit</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove groups from an account</td>
+            </tr>
+            <tr>
+                <td>location_view</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the locations in the account</td>
+            </tr>
+            <tr>
+                <td>location_edit</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove locations from an account</td>
+            </tr>
+            <tr>
+                <td>role_view</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the roles in the account</td>
+            </tr>
+            <tr>
+                <td>role_edit</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove roles from an account</td>
+            </tr>
+            <tr>
+                <td>route_view</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the routes in the account</td>
+            </tr>
+            <tr>
+                <td>route_edit</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove routes from an account</td>
+            </tr>
+            <tr>
+                <td>node_view</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the nodes in the account</td>
+            </tr>
+            <tr>
+                <td>node_edit</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove nodes from an account</td>
+            </tr>
+            <tr>
+                <td>study_approve</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they approve or reject shared studies in the account, group, location</td>
+            </tr>
+            <tr>
+                <td>study_view</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Can they view the studies in the account, group, location</td>
+            </tr>
+            <tr>
+                <td>study_edit</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they edit the PHI of the study</td>
+            </tr>
+            <tr>
+                <td>&#8627; study_edit_approved</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they edit the PHI of an approved study</td>
+            </tr>
+            <tr>
+                <td>&#8627; study_edit_unapproved</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they edit the PHI of an unapproved study</td>
+            </tr>
+            <tr>
+                <td>study_star</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they star studies</td>
+            </tr>
+            <tr>
+                <td>study_tag</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they tag studies</td>
+            </tr>
+            <tr>
+                <td>study_upload</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they upload a study to the account, group, location</td>
+            </tr>
+            <tr>
+                <td>study_upload_validate</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>An upload requires session validation</td>
+            </tr>
+            <tr>
+                <td>study_report_detail</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they get the detail report for studies in the account, group, location</td>
+            </tr>
+            <tr>
+                <td>study_download</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they download the study</td>
+            </tr>
+            <tr>
+                <td>study_download_viewer</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they download the local study viewer</td>
+            </tr>
+            <tr>
+                <td>study_download_iso</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they download the study ISO</td>
+            </tr>
+            <tr>
+                <td>study_browse</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Can they view studies in the web viewer</td>
+            </tr>
+            <tr>
+                <td>study_push</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they push the study to a destination</td>
+            </tr>
+            <tr>
+                <td>study_share</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they share the study</td>
+            </tr>
+            <tr>
+                <td>&#8627; study_share_email</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they share the study via email</td>
+            </tr>
+            <tr>
+                <td>&#8627; study_share_share_code</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they share the study via a share code</td>
+            </tr>
+            <tr>
+                <td>&#8627; study_share_account</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they share the study with  accounts</td>
+            </tr>
+            <tr>
+                <td>&#8627; study_share_location</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they share the study with locations</td>
+            </tr>
+            <tr>
+                <td>&#8627; study_share_group</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they share the study with groups</td>
+            </tr>
+            <tr>
+                <td>&#8627; study_share_user</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they share the study with users</td>
+            </tr>
+            <tr>
+                <td>&#8627; study_share_rsna</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they share the study with the RSNA network</td>
+            </tr>
+            <tr>
+                <td>study_delete</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they delete a study</td>
+            </tr>
+            <tr>
+                <td>study_delete_image</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they delete images and series within a study</td>
+            </tr>
+            <tr>
+                <td>study_thin</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they create a thin study</td>
+            </tr>
+            <tr>
+                <td>study_report_view</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Can they view attached reports for a study</td>
+            </tr>
+            <tr>
+                <td>study_report_view_approved</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Can they view attached reports for an approved study</td>
+            </tr>
+            <tr>
+                <td>study_report_view_unapproved</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view attached reports for an unapproved study</td>
+            </tr>
+            <tr>
+                <td>study_report_hl7_view</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Can they view HL7 reports for a study</td>
+            </tr>
+            <tr>
+                <td>study_report_hl7_view_approved</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Can they view HL7 reports for an approved study</td>
+            </tr>
+            <tr>
+                <td>study_report_hl7_view_unapproved</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view HL7 reports for an unapproved study</td>
+            </tr>
+            <tr>
+                <td>study_report_upload</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they upload a report to a study</td>
+            </tr>
+            <tr>
+                <td>study_report_upload_approved</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they upload a report to an approved study</td>
+            </tr>
+            <tr>
+                <td>study_report_upload_unapproved</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they upload a report to an unapproved study</td>
+            </tr>
+            <tr>
+                <td>study_report_delete</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they delete a report from a study</td>
+            </tr>
+            <tr>
+                <td>study_report_delete_approved</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they delete a report from an approved study</td>
+            </tr>
+            <tr>
+                <td>study_report_delete_unapproved</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they delete a report from an unapproved study</td>
+            </tr>
+            <tr>
+                <td>study_sync</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they force a study to sync against storage and re-run routing rules</td>
+            </tr>
+            <tr>
+                <td>study_status_view</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view the status of the study</td>
+            </tr>
+            <tr>
+                <td>study_status_edit</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they edit the status of the study</td>
+            </tr>
+            <tr>
+                <td>study_comment_view</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view the comments for the study</td>
+            </tr>
+            <tr>
+                <td>study_comment_edit</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they edit comments for the study</td>
+            </tr>
+            <tr>
+                <td>study_audio_record</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they record an audio report for the study</td>
+            </tr>
+            <tr>
+                <td>study_audio_play</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they playback audio reports for the study</td>
+            </tr>
+            <tr>
+                <td>study_move</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they move the study to another PHI namespace</td>
+            </tr>
+            <tr>
+                <td>study_duplicate</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they duplicate studies to another namespace</td>
+            </tr>
+            <tr>
+                <td>study_manual_route</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they manually route a study</td>
+            </tr>
+            <tr>
+                <td>
+                    study_field_patient_name<br>
+                    study_field_patientid<br>
+                    study_field_study_description<br>
+                    study_field_accession_number<br>
+                    study_field_modality<br>
+                    study_field_referring_physician<br>
+                    study_field_patient_sex<br>
+                    study_field_study_date<br>
+                    study_field_patient_birth_date<br>
+                    study_field_customfield_UUID<br>
+                </td>
+                <td>F</td>
+                <td>F</td>
+                <td>F</td>
+                <td>F</td>
+                <td>Permission for study fields. Customfields contain the UUID of the customfield. Valid values are.
+                    <ul>
+                        <li> F = Full permissions
+                        <li> H = Hidden field
+                        <li> O = Read only field
+                        <li> R = Required field
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>audit_view</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they view audit information</td>
+            </tr>
+            <tr>
+                <td>analytics_view</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they view analytics information</td>
+            </tr>
+            <tr>
+                <td>study_search_require_patient_name</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Patient name is required for a study search</td>
+            </tr>
+            <tr>
+                <td>study_search_require_patient_sex</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Patient gender is required for a study search</td>
+            </tr>
+            <tr>
+                <td>study_search_require_accession_number</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Accession number is required for a study search</td>
+            </tr>
+            <tr>
+                <td>study_search_require_patient_birth_date</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Patient birth date is required for a study search</td>
+            </tr>
+            <tr>
+                <td>study_search_require_patientid</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>MRN is required for a study search</td>
+            </tr>
+            <tr>
+                <td>filter_share</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they share filters</td>
+            </tr>
+            <tr>
+                <td>customfield_view</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the customfields in the account</td>
+            </tr>
+            <tr>
+                <td>customfield_edit</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove customfields from an account</td>
+            </tr>
+            <tr>
+                <td>case_view</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the cases in the account</td>
+            </tr>
+            <tr>
+                <td>case_edit</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove cases from an account</td>
+            </tr>
+            <tr>
+                <td>patient_view</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the patients in the account</td>
+            </tr>
+            <tr>
+                <td>patient_edit</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove patients from an account</td>
+            </tr>
+            <tr>
+                <td>order_view</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the orders in the account</td>
+            </tr>
+            <tr>
+                <td>order_edit</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove orders from an account</td>
+            </tr>
+            <tr>
+                <td>webhook_view</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the webhooks in the account</td>
+            </tr>
+            <tr>
+                <td>webhook_edit</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove webhooks from an account</td>
+            </tr>
+            <tr>
+                <td>can_proxy_login</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they proxy login for "owned" users in an account</td>
+            </tr>
+            <tr>
+                <td>radreport_view</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the radreports in the account</td>
+            </tr>
+            <tr>
+                <td>radreport_edit</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove radreports from an account</td>
+            </tr>
+            <tr>
+                <td>radreport_html_format</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they use HTML formating in radreports</td>
+            </tr>
+            <tr>
+                <td>dictionary_view</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the dictionaries in the account</td>
+            </tr>
+            <tr>
+                <td>dictionary_edit</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove dictionaries from an account</td>
+            </tr>
+            <tr>
+                <td>hl7_template_view</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the HL7 templates in the account</td>
+            </tr>
+            <tr>
+                <td>hl7_template_edit</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove HL7 templates from an account</td>
+            </tr>
+            <tr>
+                <td>hl7_transform_view</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the HL7 transformations in the account</td>
+            </tr>
+            <tr>
+                <td>hl7_transform_edit</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove HL7 transformations from an account</td>
+            </tr>
+            <tr>
+                <td>annotation_view</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Can they view annotations on a study</td>
+            </tr>
+            <tr>
+                <td>annotation_view_only_own</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view only their annotations on a study</td>
+            </tr>
+            <tr>
+                <td>annotation_edit</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can edit annotations on a study</td>
+            </tr>
+            <tr>
+                <td>meeting_view</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Can they view meetings for a study</td>
+            </tr>
+            <tr>
+                <td>meeting_edit</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can create and edit meetings for a study</td>
+            </tr>
+            <tr>
+                <td>keyimage_view</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Can they view key images on a study</td>
+            </tr>
+            <tr>
+                <td>keyimage_edit</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can edit key images on a study</td>
+            </tr>
+            <tr>
+                <td>validate_view</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the validation rules in the account</td>
+            </tr>
+            <tr>
+                <td>validate_edit</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove validation rules from an account</td>
+            </tr>
+            <tr>
+                <td>purge_view</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the purge rules in the account</td>
+            </tr>
+            <tr>
+                <td>purge_edit</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove purge rules from an account</td>
+            </tr>
+            <tr>
+                <td>link_direct</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Can they view and copy the direct link to the study</td>
+            </tr>
+            <tr>
+                <td>link_view</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the links in the account</td>
+            </tr>
+            <tr>
+                <td>link_edit</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove links from an account</td>
+            </tr>
+            <tr>
+                <td>link_edit_upload</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add, edit and remove study upload links from an account</td>
+            </tr>
+            <tr>
+                <td>message_view</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they view messages in the namespace</td>
+            </tr>
+            <tr>
+                <td>message_edit</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they send messages to the namespace</td>
+            </tr>
+            <tr>
+                <td>user_modify_sharecode</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they modify their personal share code</td>
+            </tr>
+            <tr>
+                <td>user_modify_defaults</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they modify their personal defaults</td>
+            </tr>
+            <tr>
+                <td>user_modify_notifications</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they modify their notifications</td>
+            </tr>
+            <tr>
+                <td>user_request_access</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they request access to an org</td>
+            </tr>
+            <tr>
+                <td>channel_study</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Can they subscribe to a study channel</td>
+            </tr>
+            <tr>
+                <td>channel_activity</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Can they subscribe to an activity channel</td>
+            </tr>
+            <tr>
+                <td>viewer_config</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>JSON viewer configuration for the role. Optionally pass in the UUID of a user and that users viewer configuration will be copied into the role</td>
+            </tr>
+        </table>
+
+        <a name="study"><h3>Study commands</h3></a>
+
+        <p><a name="study_schema"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Gets the schema of a study.</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/{namespace}/{studyUid}/schema?sid={sid}&phi_namespace={phi_namespace}&extended={1,0}&attachments_only={0,1}</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (Required).<br>
+                    phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                    extended &bull; is an integer, when set to 1 will include the optional phi_version and transfer_attributes name/value pairs in the response.<br>
+                    attachments_only &bull; is an integer, when set to 1 will only include a list of the attachments in the study.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>Study Schema</i> &bull; The study schema in a JSON format representation.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                    Conflict (409) &bull; Returned if an inconsistency is found while recomputing the schema cache. Retry the request after a short delay.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ol>
+                        <li> The call must be GET or HEAD
+                    </ol>
+                </td>
+            </tr>
+            <tr>
+                <th>Python Sample</th>
+                <td><a href="#" class="toggler" data-prod-cat="1">+ Code</a>
+                    <pre class="cat1"style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='somepassword', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Get study schema
+    study = studies[0]
+    r = requests.get(base_url + '/host/{0}/api/v3/storage/study/{1}/{2}/schema?sid={3}&phi_namespace={4}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid, study['phi_namespace']))
+    if r.status_code == 200:
+        print r.json()
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+                    </code></pre>
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_delete"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Deletes a study.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}?sid={sid}&keep_attachments={1,0}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      keep_attachments &bull; An integer value of 1 or 0.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>HTTP CODE</i> &bull; 202 Accepted.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to edit the study.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>DELETE</i></li>
+                          <li> If the optional parameter <i>keep_attachments</i> is set to 1, then:
+                            <ul>all DICOM images will be deleted.</ul>
+                            <ul>reports and attachments related to the study will be kept.</ul>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="2">+ Code</a>
+                <pre class="cat2"style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Delete study
+    study = studies[2]
+    r = requests.delete(base_url + '/host/{0}/api/v3/storage/study/{1}/{2}?sid={3}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid))
+    if r.status_code == 202:
+        print "Study deleted"
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+
+                    </code></pre>
+            </td>
+        </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_delete_image"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Deletes a single image from a study (to delete multiple images, use <a name="/study_delete_images">study/delete/images/</a>).</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/image/{imageUid}?sid={sid}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      imageUid &bull; The image version<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>HTTP CODE</i> &bull; 202 Accepted.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have study_delete_image permission for the study.<br>
+                      Image Not Found (404) &bull; If image doesn't exist<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The HTTP method must be <i>DELETE</i></li>
+                          <li> This method sends a STUDY_DELETE notification to Services after the image is deleted</li>
+                          <li> This method is synchronous - it doesn't return until the image is deleted and Services notification is sent</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="3">+ Code</a>
+                <pre class="cat3"style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Get study schema information
+    study = studies[0]
+    r = requests.get(base_url + '/host/{0}/api/v3/storage/study/{1}/{2}/schema?sid={3}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid))
+    if r.status_code == 200:
+        # Delete study image
+        study_schema = r.json()
+        r2 = requests.delete(base_url + '/host/{0}/api/v3/storage/study/{1}/{2}/image/{3}?sid={4}'.format(study['engine_fqdn'], study_schema['namespace'], study_schema['study_uid'], study_schema['series'][0]['images'][0]['id'], sid))
+        if r2.status_code == 202:
+            print "Study image {0}/{1}/{2} deleted".format(study_schema['namespace'], study_schema['study_uid'], study_schema['series'][0]['images'][0]['id'])
+        else:
+            r2.raise_for_status()
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_delete_images"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Delete multiple images from a study.</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/{namespace}/{studyUid}/images?sid={sid}</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (Required).<br>
+                    request body &bull; Comma-separated list of multiple image UIDs (Required)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>HTTP CODE</i> &bull; 202 Accepted.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have study_delete_image permission for the study.<br>
+                    Unprocessable Entity (422) &bull; If request body is empty<br>
+                    Study Not Found (404) &bull; If study doesn't exist<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ol>
+                        <li> The HTTP method must be <i>DELETE</i></li>
+                        <li> This method sends one STUDY_DELETE notification to Services after the images are deleted</li>
+                        <li> This method is synchronous - it doesn't return until all images are deleted and Services notification is sent</li>
+                    </ol>
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_count"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Gets study file count.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/count?sid={sid}&images_only={1,0}&attachments_only={1,0}&count_files={1,0}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      images_only &bull; an integer, zero or 1, returns the number of images in the study with superseded images by way of study update not counted.<br>
+                      attachments_only &bull; an integer, zero or 1, returns the number of attachments which have been added to this study.<br>
+                      count_files &bull; if present and set to 1 will count files stored on-disk for images and/or attachments, instead of counting from (possibly cached) meta data.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>Study count</i> &bull; A JSON representation of the study count for attachments and images.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>GET</i> or <i>HEAD</i>.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="4">+ Code</a>
+                <pre class="cat4" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Get study count
+    study = studies[0]
+    r = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/count?sid={3}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid))
+    if r.status_code == 200:
+        print r.json()
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_tag"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Gets study tags.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/tag?sid={sid}&phi_namespace={phi_namespace}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>Study PHI tags</i> &bull; A JSON representation of the study PHI tags.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>GET</i> or <i>HEAD</i>.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="4">+ Code</a>
+                <pre class="cat4" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Get study tags
+    study = studies[0]
+    r = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/tag?sid={4}&phi_namespace={3}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], study['phi_namespace'], sid))
+    if r.status_code == 200:
+        print r.json()
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_attributes"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Gets study image attributes.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/attribute?sid={sid}&phi_namespace={phi_namespace}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                      groups &bull; The groups parameter will allow the client to filter tags to only those in a certain set of top-level DICOM groups. Comma-separated list of decimal values, or hex values preceeded with "0x".<br>
+                      include_tags &bull; Comma-separated list of top-level DICOM tags to include. Format: 00080018,00080020 Nested tags (00081111:00080550) only filter at the top level, everything is included within the sequence<br>
+                      exclude_unnamed &bull; A string containing "1" or "0" (default 0). When "1", private tags (with "name": "?") are not included<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>Study image attributes</i> &bull; A JSON representation of the image attributes.<br>
+                      <i>HTTP CODE</i> &bull; 404 (NOT FOUND) if the study does not exist.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>GET</i> or <i>HEAD</i>.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="5">+ Code</a>
+                <pre class="cat5" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Ge study schema
+    study = studies[0]
+    r = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/schema?sid={3}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid))
+    if r.status_code == 200:
+        study_schema = r.json()
+        # Get image attributes
+        r2 = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/image/{3}/version/{4}/attribute?sid={6}&phi_namespace={5}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], study_schema['series'][0]['images'][0]['id'], study_schema['series'][0]['images'][0]['version'], study['phi_namespace'], sid))
+        if r2.status_code == 200:
+            print r2.json()
+        else:
+            r2.raise_for_status()
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_image_phi"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Gets study image PHI.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/phi?sid={sid}&phi_namespace={phi_namespace}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>Study image PHI data</i> &bull; A JSON representation of the image PHI data.<br>
+                      <i>HTTP CODE</i> &bull; 404 (NOT FOUND) if the study does not exist.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>GET</i> or <i>HEAD</i>.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="6">+ Code</a>
+                <pre class="cat6" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Get study schema
+    study = studies[0]
+    r = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/schema?sid={3}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid))
+    if r.status_code == 200:
+        study_schema = r.json()
+        # Get image phi information
+        r2 = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/image/{3}/version/{4}/phi?sid={6}&phi_namespace={5}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], study_schema['series'][0]['images'][0]['id'], study_schema['series'][0]['images'][0]['version'], study['phi_namespace'], sid))
+        if r2.status_code == 200:
+            print r2.json()
+        else:
+            r2.raise_for_status()
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_study_phi"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Gets study PHI data.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/phi?sid={sid}&phi_namespace={phi_namespace}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>Study PHI data</i> &bull; A JSON representation of the study PHI data.<br>
+                      <i>HTTP CODE</i> &bull; 404 (NOT FOUND) if the study does not exist.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>GET</i> or <i>HEAD</i>.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="7">+ Code</a>
+                <pre class="cat7" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Get study phi
+    study = studies[0]
+    r = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/phi?sid={3}&phi_namespace={4}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid, study['phi_namespace']))
+    if r.status_code == 200:
+        print r.json()
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_thumbnail"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Gets study image thumbnail.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber}/thumbnail?sid={sid}&depth={8,16}&phi_namespace={phi_namespace}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                      depth &bull; Set the bit depth of the JPEG output (8 or 16).<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>Study image thumbnail</i> &bull; A JPEG stream.<br>
+                      <i>HTTP CODE</i> &bull; 404 (NOT FOUND) if the study does not exist.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>GET</i> or <i>HEAD</i>.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="8">+ Code</a>
+                <pre class="cat8" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Get study schema
+    study = studies[0]
+    r = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/schema?sid={3}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid))
+    if r.status_code == 200:
+        # Get thumbnail
+        study_schema = r.json()
+        r2 = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/image/{3}/version/{4}/frame/0/thumbnail?sid={6}&phi_namespace={5}&depth=8'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], study_schema['series'][0]['images'][0]['id'], study_schema['series'][0]['images'][0]['version'], study['phi_namespace'], sid))
+        if r2.status_code == 200:
+            thumbnail = open('thumbnail.png', 'wb')
+            thumbnail.write(r2.content)
+            thumbnail.close()
+        else:
+            r2.raise_for_status()
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_diagnostic"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Gets study diagnostic image.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber}/diagnostic?sid={sid}&phi_namespace={phi_namespace}&depth={8,16}&size=[max-edge-length|{width}x{height}]</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                      depth &bull; Set the bit depth of the JPEG output (8 or 16).<br>
+                      size &bull; Specify size of output. Omitted or 0 indicates no change; one number sets the maximum edge length in pixels; <i>w</i>x<i>h</i> sets maximum width and height
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>Study image</i> &bull; Gets the selected DICOM frame as a 16-bit diagnostic PNG image formatted for the browser.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>GET</i> or <i>HEAD</i>.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="9">+ Code</a>
+                <pre class="cat9" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Get study schema
+    study = studies[0]
+    r = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/schema?sid={3}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid))
+    if r.status_code == 200:
+        study_schema = r.json()
+        # Get diagnostic image
+        r2 = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/image/{3}/version/{4}/frame/0/diagnostic?sid={6}&phi_namespace={5}&depth=16'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], study_schema['series'][0]['images'][0]['id'], study_schema['series'][0]['images'][0]['version'], study['phi_namespace'], sid))
+        if r2.status_code == 200:
+            image = open('diagnostic', 'wb')
+            image.write(r2.content)
+            image.close()
+        else:
+            r2.raise_for_status()
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_frame"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Gets study image frame.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber:[0-9][0-9]*\..*|[0-9][0-9]*}?sid={sid}&phi_namespace={phi_namespace}&depth={8,16}&quality={0.0-1.0}&size=[max-edge-length|{width}x{height}]</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                      depth &bull; Set the bit depth of the JPEG output (8 or 16).<br>
+                      quality &bull; Set the JPEG compression quality 0 < <i>q</i> &le; 1.0 (default 0.9)
+                      size &bull; Specify size of output. Omitted or 0 indicates no change; one number sets the maximum edge length in pixels; <i>w</i>x<i>h</i> sets maximum width and height
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>Study image frame</i> &bull; Gets the selected DICOM frame as a JPEG image.  The response body is the actual JPEG byte stream.<br>
+                      <i>HTTP CODE</i> &bull; 404 (NOT FOUND) if the study does not exist.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>GET</i> or <i>HEAD</i>.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="10">+ Code</a>
+                <pre class="cat10" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Get study schema
+    study = studies[0]
+    r = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/schema?sid={3}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid))
+    if r.status_code == 200:
+        study_schema = r.json()
+        # Get image frame
+        r2 = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/image/{3}/version/{4}/frame/0?sid={6}&phi_namespace={5}&depth=16'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], study_schema['series'][0]['images'][0]['id'], study_schema['series'][0]['images'][0]['version'], study['phi_namespace'], sid))
+        if r2.status_code == 200:
+            frame = open('frame', 'wb')
+            frame.write(r2.content)
+            frame.close()
+        else:
+            r2.raise_for_status()
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_frame_tiff"></a>
+            <table class="bordered-table">
+                <tr>
+                    <th>Description</th>
+                    <td>Gets study image frame as a TIFF.</td>
+                </tr>
+                <tr>
+                    <th>URL</th>
+                    <td>/study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/frame/{frameNumber:[0-9]*}/tiff?sid={sid}&phi_namespace={phi_namespace}&depth={8,16}&size=[max-edge-length|{width}x{height}]</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        <i>sid</i> &bull; The session id (Required).<br>
+                        phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                        depth &bull; Set the bit depth of the TIFF output (8 or 16).<br>
+                        size &bull; Specify size of output. Omitted or 0 indicates no change; one number sets the maximum edge length in pixels; <i>w</i>x<i>h</i> sets maximum width and height
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>
+                        <i>Study image frame</i> &bull; Gets the selected DICOM frame as a TIFF image.  The response body is the actual TIFF byte stream.<br>
+                        <i>HTTP CODE</i> &bull; 404 (NOT FOUND) if the study does not exist.<br>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Errors</th>
+                    <td>
+                        Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Notes</th>
+                    <td>
+                        <ol>
+                            <li> The call must be <i>GET</i> or <i>HEAD</i>.</li>
+                        </ol>
+                    </td>
+                </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_pdf"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Gets a study encapsulated pdf file.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/pdf?sid={sid}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>Study encapsulated pdf</i> &bull; Gets the encapsulated PDF from a DICOM file.<br>
+                      <i>HTTP CODE</i> &bull; 415 (Unsupported Media Type) if there is not an encapsulated pdf file.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>GET</i> or <i>HEAD</i>.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="11">+ Code</a>
+                <pre class="cat11" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Get study schema
+    study = studies[0]
+    r = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/schema?sid={3}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid))
+    if r.status_code == 200:
+        image_info = r.json()['series'][0]['images'][0]
+        # Get encapsulated pdf
+        r2 = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/image/{3}/version/{4}/pdf?sid={6}&phi_namespace={5}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], image_info['id'], image_info['version'], study['phi_namespace'], sid))
+        if r2.status_code == 200:
+            pdf = open('encapsulatedPdf', 'wb')
+            pdf.write(r2.content)
+            pdf.close()
+        else:
+            r2.raise_for_status()
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_image_attributes"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Gets all DICOM attributes for an individual image</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/json?sid={sid}&phi_namespace={phi_namespace}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                      <i>exclude_unnamed</i> &bull; A string containing "1" or "0" (default 0). When "1", private tags (with "name": "?") are not included<br>
+                      <i>all_dicom_values</i> &bull; A string containing "1" or "0" (default 0). When "1", all values from a multi-value DICOM tag will be returned, separated by "\". Otherwise, only the first value is returned<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>Study image attributes</i> &bull; Gets all DICOM attributes as a JSON object.<br>
+                      <i>HTTP CODE</i> &bull; 404 (NOT FOUND) if there image/frame does not exist.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>GET</i> or <i>HEAD</i>.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="12">+ Code</a>
+                <pre class="cat12" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Get study schema
+    study = studies[0]
+    r = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/schema?sid={3}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid))
+    if r.status_code == 200:
+        image_info = r.json()['series'][0]['images'][0]
+        # Get image attributes
+        r2 = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/image/{3}/version/{4}/json?sid={6}&phi_namespace={5}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], image_info['id'], image_info['version'], study['phi_namespace'], sid))
+        if r2.status_code == 200:
+            print r.json()
+        else:
+            r2.raise_for_status()
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_all_attributes"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Gets DICOM attributes for all images in a study.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/json?sid={sid}&phi_namespace={phi_namespace}&groups={group ids}&include_tags={tags}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                      groups &bull; The groups parameter will allow the client to filter tags to only those in a certain set of top-level DICOM groups. Comma-separated list of decimal values, or hex values preceeded with "0x".<br>
+                      include_tags &bull; Comma-separated list of top-level DICOM tags to include. Format: 00080018,00080020 Nested tags (00081111:00080550) only filter at the top level, everything is included within the sequence<br>
+                      exclude_unnamed &bull; A string containing "1" or "0" (default 0). When "1", private tags (with "name": "?") are not included<br>
+                      all_dicom_values &bull; A string containing "1" or "0" (default 0). When "1", all values from a multi-value DICOM tag will be returned, separated by "\". Otherwise, only the first value is returned<br>
+                      series_uid &bull; A string containing a Series Instance UID. If specified, the results will only include DICOM tags from images from the specified series<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>Study attributes</i> &bull; Gets all DICOM attributes for all images in a study as a JSON array of objects.<br>
+                      <i>HTTP CODE</i> &bull; 404 (NOT FOUND) if there image/frame does not exist.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>GET</i> or <i>HEAD</i>.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="12">+ Code</a>
+                <pre class="cat12" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Get study schema
+    study = studies[0]
+    # Get study attributes
+    r = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/json?sid={4}&phi_namespace={3}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], study['phi_namespace'], sid))
+    if r.status_code == 200:
+        print r.json()
+    else:
+        r.raise_for_status()
+
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_attachment"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Gets the selected attachment.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/attachment/{attachmentId}/version/{version}?sid={sid}&phi_namespace={phi_namespace}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>Study attachment</i> &bull; Gets the attachment as a byte stream.<br>
+                      <i>HTTP CODE</i> &bull; 404 (NOT FOUND) if there image/frame does not exist.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>GET</i> or <i>HEAD</i>.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="13">+ Code</a>
+                <pre class="cat13" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Get study schema
+    study = studies[1]
+    r = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/schema?sid={3}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid))
+    if r.status_code == 200:
+        attachment_info = r.json()['attachments'][0]
+        # Get attachment
+        r2 = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/attachment/{3}/version/{4}?sid={6}&phi_namespace={5}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], attachment_info['id'], attachment_info['version'], study['phi_namespace'], sid))
+        if r2.status_code == 200:
+            attachment = open('attachment', 'wb')
+            attachment.write(r2.content)
+            attachment.close()
+        else:
+            r2.raise_for_status()
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_latest_attachment"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Gets the latest attachment for a study.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/attachment/{filename:latest\..*|latest}?sid={sid}&phi_namespace={phi_namespace}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>Study latest attachment</i> &bull; Gets the latest attachment as a byte stream.<br>
+                      <i>HTTP CODE</i> &bull; 404 (NOT FOUND) if there image/frame does not exist.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>GET</i> or <i>HEAD</i>.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="14">+ Code</a>
+                <pre class="cat14" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Get study schema
+    study = studies[1]
+    r = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/attachment/latest?sid={4}&phi_namespace={3}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], study['phi_namespace'], sid))
+    if r.status_code == 200:
+        # Save latest attachment
+        attachment = open('attachment', 'wb')
+        attachment.write(r.content)
+        attachment.close()
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_post_attachment"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Posts an attachment to a study.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/attachment?sid={sid}&phi_namespace={phi_namespace}&wrap_images={0,1}&return_html={0,1}&synchronous_wrap={0,1}&static_ids={0,1}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      <i>phi_namespace</i> &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                      <i>wrap_images</i> &bull; An integer of value 1 or 0. If 1, for attachments that are images, or can be rendered to an image, generate a new DICOM image in the study containing (a rendered image of) the attachment (also controlled by namespace setting auto_wrap_images)<br>
+                      <i>wrap_html_as_pdf</i> &bull; An integer of value 1 or 0. If 1, for attachments that are html, generate a new pdf and attach that (instead of the original html)<br>
+                      <i>synchronous_wrap</i> &bull; An integer of value 1 or 0. If 1, do all processing for image wrapping before returning, including Services notifications. Additionally triggers wrap_images functionality<br>
+                      <i>static_ids</i> &bull; An integer of value 1 or 0. If 1, the attachment, series and any images rendered from PDF are assigned (u)uids based on a hash of the attachment, which will be the same if the attachment is re-uploaded. The attachment is also allowed to be re-uploaded when set to 1. <br>
+                      <i>return_html</i> &bull; An integer of value 1 or 0. Return results as Content Type text/html, instead of application/json (required for certain browsers)<br>
+                      <i>data</i> &bull; the request entity must contain a single multipart/form-data element named <i>data</i> containing the content to be attached.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>Study attachment attributes</i> &bull; A JSON representation of the attachment's attributes.<br>
+                      <i>HTTP CODE</i> &bull; 202 (ACCEPTED) if there image/frame does not exist.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to upload a report to the study.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>POST</i>.</li>
+                          <li> If the optional parameter <i>wrap_images</i> or <i>synchronous_wrap</i> is set to 1, or the uploading account has the setting <i>auto_wrap_images</i> set to 1, then:</li>
+                            <ul><li>attachments of type image/jpeg or image/bmp are, asynchronously (unless <i>synchronous_wrap=1</i>) to the Store Attachment request, posted to the Wrap Attachment service, to be stored as a single DICOM image in a new series within the specified study.</li></ul>
+                            <ul><li>attachments of type application/pdf are, asynchronously (unless <i>synchronous_wrap=1</i>) to the Store Attachment request, rendered to DICOM images at a resolution of 200 ppi, one image per page of the original PDF. The resulting are stored in a new series within the specified study. UIDs assigned to the series and images will be random unless <i>static_ids=1</i></li></ul>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="15">+ Code</a>
+                <pre class="cat15" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    sid = getSID(password='some_password', login='some_email')
+    namespace = getNamespace(sid=sid)
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    study = studies[1]
+    fin = open(<some file>, 'rb')
+    payload = {'data':fin}
+    try :
+        url = base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/attachment?sid={3}&phi_namespace={4}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid, study['phi_namespace'])
+        r = requests.post(url, files=payload)
+        if r.status_code == 202:
+            print r.json()
+        else:
+            r.raise_for_status()
+    finally:
+        fin.close()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+
+
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_render_attachment"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Adds a render of an attachment to a study.</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/{namespace}/{studyUid}/attachment/{attachmentUid}/version/{version}/image?sid={sid}&</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (Required).<br>
+                    <i>static_ids</i> &bull; An integer of value 1 or 0. If 1, series and images rendered from PDF are assigned (u)uids based on a hash of the attachment; repeated requests to render the same PDF will not result in more images.<br>
+                    phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>HTTP CODE</i> &bull; 202 Attachment succesfully rendered as an image and added to study.<br>
+                    <i>HTTP CODE</i> &bull; 500 (SERVER ERROR) if server error persisted.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to upload a report to the study.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ol>
+                        <li> The call must be <i>POST</i></li>
+                    </ol>
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_download"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Downloads a study ZIP file.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/download?sid={sid}&phi_namespace={phi_namespace}&bundle={iso,dicom,osx,win}&include_wrapped_dicoms={0,1}&series_uid={series_uid[,series_uid...]}&image_uid={image_uid[,image_uid...]}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      <i>phi_namespace</i> &bull; The shared-to namespace UUID of a shared instance of a study (Optional)<br>
+                      <i>bundle</i> &bull; A string with value "dicom", "image", "iso", "osx" or "win" (Required).<br>
+                      <i>include_wrapped_dicoms</i> &bull; When "1", will also include the DICOM file of a wrapped DICOM. Default is to only include the unwrapped file.<br>
+                      <i>series_uid</i> &bull; One or more Series Instance UIDs, comma-separated. Download will only include images from these series.<br>
+                      <i>image_uid</i> &bull; One or more SOP Instance UIDs, comma-separated. Download will only include these images.<br>
+                      <i>stop_on_failure</i> &bull; If "1", will not include the viewer app if there are any errors generating the download.<br>
+                      <i>exclude_viewer</i> &bull; If "1", viewer app will not be included in the "iso", "osx", and "win" bundle. The viewer app can be retrieved separately via <code>/download/viewer</code><br>
+                      <i>v3</i> &bull; If "1", viewer app will be pro viewer, and format/content will support pro viewer.<br>
+                      <i>roche_directory</i> &bull; If "1", .dcm files will be organized into StudyDate-ClinicalTrialTimePointID/Modality/SeriesTime-SeriesDescription/ folders (instead of SER000X/ folders).<br>
+                      <i>flat_directory</i> &bull; If "1", .dcm files will be flatly named IMG0001-IMG{image count}, and not be organized into SER folder.<br>
+                      <i>anonymize_tags</i> &bull; The list of tag ids with overridden values separated by comma (,) that should be overridden. Example: <code>anonymize_tags={{tag_id_int_1}}={{tag_value_1}},{{tag_id_int_2}}={{tag_value_2}}</code>. To omit tag, provide special keyword that is being used in services overrides as value: <code>__DELETE__</code><br>
+                      <i>video_format</i> &bull; Format to encode video. Either "avi" or "mp4". "avi" by default.<br>
+                      <i>video_series_uids</i> &bull; One or more Series Instance UIDs, comma-separated. For bundles that include video, download will include a transcoded video for each of these series.<br>
+                      <i>batch_encode_cine</i> &bull; Batch encode cine for video.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>Study ZIP file</i> &bull; Downloads a study as a ZIP file.<br>
+                      <i>HTTP CODE</i> &bull; 403 (NOT FOUND) if there image/frame does not exist.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to download a study bundle specified by the namespace and studyUid.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>GET</i> or <i>POST</i>. POST is necessary if URL exceeds maximum supported length (~2,000 chars)</li>
+                          <li> If the optional parameter <i>bundle</i> is set then:</li>
+                            <ul><li>dicom - Include DICOM files and reports only.</li></ul>
+                            <ul><li>image - Include transcoded images and videos.</li></ul>
+                            <ul><li>iso - Include DICOM files, reports, transcoded SD and Diagnostic quality images, the MacOS and the Windows viewer bundle.</li></ul>
+                            <ul><li>osx - Include transcoded SD and Diagnostic quality images, and the MacOS viewer bundle.</li></ul>
+                            <ul><li>win - Include transcoded SD and Diagnostic quality images, and the Windows viewer bundle.</li></ul>
+                          <li> Errors are reported in ERROR.txt file in the ZIP download.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="16">+ Code</a>
+                <pre class="cat16" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+import shutil
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    sid = getSID(password='some_password', login='some_email')
+    namespace = getNamespace(sid=sid)
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    study = studies[1]
+    url = base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/download?sid={3}&phi_namespace={4}&bundle=dicom'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid, study['phi_namespace'])
+    r = requests.get(url, stream=True)
+    print 'Downloading study {}/{}'.format(study['storage_namespace'], study['study_uid'])
+    if r.status_code == 200:
+        with open('studyDownload.zip', 'wb') as f:
+            shutil.copyfileobj(r.raw, f)
+    else:
+        print r.raise_for_status()
+
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_delete_attachment"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Deletes a study attachment.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/attachment/{attachmentId}/version/{hash}?sid={sid}?phi_namespace={phi_namespace}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>HTTP CODE</i> &bull; 202 (ACCEPTED) if the attachment was deleted without errors.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to delete a report from a study specified by the namespace and studyUid.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>DELETE</i>.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="17">+ Code</a>
+                <pre class="cat17" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Get study schema
+    study = studies[1]
+    r = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/schema?sid={3}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid))
+    if r.status_code == 200:
+        attachment_info = r.json()['attachments'][0]
+        # Delete attachment
+        r2 = requests.delete(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/attachment/{3}/version/{4}?sid={6}&phi_namespace={5}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], attachment_info['id'], attachment_info['version'], study['phi_namespace'], sid))
+        if r2.status_code == 202:
+            print 'Attachment {0}/{1}/{2}/{3} deleted'.format(study['storage_namespace'], study['study_uid'], attachment_info['id'], attachment_info['version'])
+        else:
+            r2.raise_for_status()
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_encapsulated_video"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Gets a study encapsulated video.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/video?sid={sid}&reencode_video={0,1}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      reencode_video &bull; An integer of value 1 or 0.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>Study encapsulated video</i> &bull; A stream of the video in an MPEG-4 format.<br>
+                      <i>HTTP CODE</i> &bull; 415 (Unsupported Media Type) if a video was not found encapsulated in the DICOM file.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to delete a report from a study specified by the namespace and studyUid.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>GET</i> or <i>HEAD</i>.</li>
+                          <li> reencode_video - when set the original video will be reencoded to a mp4 format.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="18">+ Code</a>
+                <pre class="cat18" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Get study schema
+    study = studies[0]
+    r = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/schema?sid={3}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid))
+    if r.status_code == 200:
+        image_info = r.json()['series'][0]['images'][0]
+        # Get encapsulated pdf
+        r2 = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/image/{3}/version/{4}/video?sid={5}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], image_info['id'], image_info['version'], sid))
+        if r2.status_code == 200:
+            video = open('encapsulatedVideo', 'wb')
+            video.write(r2.content)
+            video.close()
+        else:
+            r2.raise_for_status()
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_split"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Split a study.</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/{namespace}/{studyUid}/split?sid={sid}&phi_namespace={namespace}&to_namespace={namespace}&series_uid={series_uid,series_uid...series_uid}&delete_series_from_original={0,1}</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (Required).<br>
+                    phi_namespace &bull; An optional namespace UUID to burn-in PHI overrides to split study (defaults to no overrides)<br>
+                    to_namespace &bull; An optional namespace UUID to create the split study (defaults to current namespace)<br>
+                    series_uid &bull; An optional series instance uids list delimited by comas, only specified series will be split (defaults to split all image instances)<br>
+                    delete_series_from_original &bull; An integer value of either 0 or 1. If 1 the series specified in the series_uid list will be deleted from the original study<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>Study UID</i> &bull; The new study UID.<br>
+                    <i>HTTP CODE</i> &bull; 401 (Unauthorized) if the user does not contain the proper permissions.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to split a study.<br>
+                    Study Not Found &bull; If the study to be split cannot be located.
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ol>
+                        <li> The call must be <i>POST</i>.</li>
+                        <li> The system will create a copy of the "old study" and assign a new Study UID.</li>
+                    </ol>
+                </td>
+            </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="19">+ Code</a>
+                <pre class="cat19" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Split study
+    study = studies[2]
+    r = requests.post(base_url + 'host/{0}/api/v3/storage/study/namespace/{1}/{2}/split?sid={3}&phi_namespace={4}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid, study['storage_namespace']))
+    if r.status_code == 202:
+        print 'New study info {}/{}'.format(study['storage_namespace'], r.text)
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+
+                    </code></pre>
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_merge"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Merge studies.</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/{namespace}/{studyUid}/merge?sid={sid}&secondary_study_uid={secondary_study_uid}&delete_secondary_study={0,1}</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (Required).<br>
+                    <i>secondary_study_uid</i> &bull; A list of one or more comma-separated secondary Study UIDs to be merged into the studyUid(Required).<br>
+                    <i>delete_secondary_study</i> &bull; An integer, when set to 1 the process will check that the sid provided has the required permission to delete the secondary study.<br>
+                    <i>series_uids</i> &bull; A list of one or more comma-separated Series Instance UIDs, used to filter images merged from secondary study.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>HTTP CODE</i> &bull; 401 (Unauthorized) if the user does not contain the proper permissions.<br>
+                    <i>HTTP CODE</i> &bull; 202 (Accepted) if the request was accepted.<br>
+                    <i>HTTP CODE</i> &bull; 500 (Internal Server Error) if the SID provided does not have the proper permission to delete the secondary study if the optional parameter  delete_secondary_study is set to 1.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to merge the two studies.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ol>
+                        <li> This endpoint is only intended for AmbraHealth account administrators.</li>
+                        <li> The call must be <i>GET</i>.</li>
+                        <li> The system will take the studyUid as the primary study and will merge the secondary_study_uid into the primary.</li>
+                        <li> If the process is completed successfully the primary study will contain the images from the secondary study at the end of the process. If the optional parameter delete_secondary_study is set to 1, storage will delete the secondary study after the merge has been completed.</li>
+                    </ol>
+                </td>
+            </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="20">+ Code</a>
+                <pre class="cat20" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Merge study
+    study_primary = studies[0]
+    study_secondary = studies[1]
+    r = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/merge?sid={4}&secondary_study_uid={3}'.format(study_primary['engine_fqdn'], study_primary['storage_namespace'], study_primary['study_uid'], study_secondary['study_uid'], sid))
+    if r.status_code == 202:
+        print 'Merge study request accepted.'
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+                    </code></pre>
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_anon"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Produce a new study that is a copy of the old, with specified pixel regions obscured.</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/{namespace}/{studyUid}/anonymize</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (Required).<br>
+                    <i>to_namespace</i> &bull; The storage namespace into which the new study should be placed (default: same as original).<br>
+                    <i>new_study_uid</i> * The Study Instance UID of the new study (default: randomly generated).<br>
+                    <i>keep_image_uids</i> * Should SOP Instance UIDs of modified copies be same as originals? (default: false)<br>
+                    <i>color</i> * HTML-formatted color (#rrggbb) of obscured regions (default: black-and-white checkerboard)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>HTTP CODE</i> &bull; 401 (Unauthorized) if the user does not contain the proper permissions.<br>
+                    <i>HTTP CODE</i> &bull; 202 (Accepted) if the request was accepted.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to read or write the original or new study.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ol>
+                        <li> The call must be <code>POST</code></li>
+                        <li> The request entity is a JSON object specifying the regions to be obscured. Regions may be
+                        specified at study, series, or instance level; but only the highest matching level containing a regions
+                        field will be used. Example:<br>
+                            <code class="language-javascript">
+                            {
+                                "series":{
+                                    "1.2.3.4.5":{"regions":[{"x":10,"y":10, "width":30, "height":40}]},
+                                    "1.3.5.7.9":{
+                                        "instances":{
+                                            "1.3.5.7.9.101":{"regions":[{"x":20,"y":20, "width":30, "height":20}]
+                                        }
+                                    }
+                                }
+                            }
+                            </code>
+                        </li>
+                     </ol>
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_crop"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Produce a new study that is a copy of the old, cropped to specified pixel region.</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/{namespace}/{studyUid}/crop</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (Required).<br>
+                    <i>to_namespace</i> &bull; The storage namespace into which the new study should be placed (default: same as original).<br>
+                    <i>new_study_uid</i> * The Study Instance UID of the new study (default: randomly generated).<br>
+                    <i>keep_image_uids</i> * Should SOP Instance UIDs of modified copies be same as originals? 1/0 (default: 0/false)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                <i>HTTP CODE</i> &bull; 412 (Precondition failed) if phi_namespace or to_namespace is not provided.<br>
+                    <i>HTTP CODE</i> &bull; 401 (Unauthorized) if the user does not contain the proper permissions.<br>
+                    <i>HTTP CODE</i> &bull; 202 (Accepted) if the request was accepted.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to read or write the original or new study.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ol>
+                        <li> The call must be <code>POST</code></li>
+                        <li> The request entity is a JSON object specifying the region to be cropped. Region may be
+                            specified at study, series, or instance level; but only the highest matching level containing a region
+                            field will be used. Example:<br>
+                            <code class="language-javascript">
+                                {
+                                "series":{
+                                "1.2.3.4.5":{"region":{"x":10,"y":10, "width":30, "height":40}},
+                                "1.3.5.7.9":{
+                                "instances":{
+                                "1.3.5.7.9.101":{"region":{"x":20,"y":20, "width":30, "height":20}
+                                }
+                                }
+                                }
+                                }
+                            </code>
+                        </li>
+                    </ol>
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
+      <p><a name="study_cache"></a>
+        <table class="bordered-table">
+            <tr>
+              <th>Description</th>
+                  <td>Clears the image and metadata cache for the indicated study.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/cache</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                    <i>HTTP CODE</i> &bull; 202 (ACCEPTED)<br>
+                    <i>HTTP CODE</i> &bull; 404 (NOT FOUND) if the study does not exist.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid.<br/>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>DELETE</i>.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="5">+ Code</a>
+                <pre class="cat5" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+studies = getStudyList(sid, namespace[0]['uuid'])
+    # Delete the cache for one study
+    study = studies[0]
+    requests.delete(base_url + 'host/{engine_fqdn}/api/v3/storage/study/{storage_namespace}/{study_uid}/cache?sid={sid}'.format(sid=sid, **study)
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#study-idx">top</a>
+
+        <a name="image"><h3>Image commands</h3></a>
+        <p><a name="image_upload"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Upload image to a namespace.</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/namespace/{namespace}/image?sid={sid}</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (Required).<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>Image attributes</i> &bull; A JSON representation of the image's attributes.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to upload an image from a study specified by the namespace.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ol>
+                        <li> The call must be <i>POST</i>.</li>
+                    </ol>
+                </td>
+            </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="21">+ Code</a>
+                <pre class="cat21" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    sid = getSID(password='some_password', login='some_email')
+    namespace = getNamespace(sid=sid)
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    study = studies[1]
+    fin = open(<some dicom file>, 'rb')
+    payload = {'data':fin}
+    try :
+        url = base_url + 'host/{0}/api/v3/storage/namespace/{1}/image?sid={2}'.format(study['engine_fqdn'], namespace[0]['uuid'], sid)
+        r = requests.post(url, data=fin)
+        if r.status_code == 202:
+            print r.json()
+        else:
+            r.raise_for_status()
+    finally:
+        fin.close()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+
+                    </code></pre>
+            </td>
+        </tr>
+        </table>
+        <a href="#image-idx">top</a>
+
+        <p><a name="image_wrap"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Upload a non DICOM image.</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/namespace/{namespace}/wrap?sid={sid}&render_wrapped_pdf={0,1}</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (Required).<br>
+                    <i>tags</i> &bull; Any DICOM tags to be overwrite or added should be provided as a form-data field.<br/>
+                    <i>file</i> &bull; The multipart file to be uploaded should be provided as a form-data field.<br/>
+                    <i>render_wrapped_pdf</i> &bull; An integer value of either 0 or 1. <br>
+                </td>
+            </tr>
+            <tr>
+                <th>Headers</th>
+                <td>
+                    <i>X-File-Size</i> &bull; The size (bytes) of the <i>file</i> to be DICOM-wrapped (required).<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>Image attributes</i> &bull; A JSON representation of the image's attributes.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    Permission Denied (403) &bull; If the <i>sid</i> is not valid or the user does not have permission to upload a non DICOM file from a study specified by the namespace.<br>
+                    Precondition Failed (412) &bull; Returned if <i>X-File-Size</i> header is not provided or has an invalid value.<br>
+                    Request Entity Too Large (413) &bull; Returned if the file to be DICOM-wrapped is larger than 2GiB (2^31 - 1 bytes).<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ol>
+                        <li> The call must be <i>POST</i>.</li>
+                        <li> render_wrapped_pdf - if optional parameter render_wrapped_pdf is set to 1, or if the account setting render_wrapped_pdf is set to 1 for the uploading account, PDF objects are rendered as DICOM images, one Explicit VR LE image per page.</li>
+                    </ol>
+                </td>
+            </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="22">+ Code</a>
+                <pre class="cat22" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+import os
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    sid = getSID(password='some_password', login='some_email')
+    namespace = getNamespace(sid=sid)
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    study = studies[1]
+    fin = open(<some non dicom file>, 'rb')
+    payload = {'file':fin}
+    try :
+        url = base_url + 'host/{0}/api/v3/storage/namespace/{1}/wrap?sid={2}'.format(study['engine_fqdn'], namespace[0]['uuid'], sid)
+        file_size = os.path.getsize(<some non dicom file>)
+        r = requests.post(url, files=payload, headers={'X-File-Size': '{}'.format(file_size)})
+        if r.status_code == 200:
+            print r.json()
+        else:
+            r.raise_for_status()
+    finally:
+        fin.close()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+
+                    </code></pre>
+            </td>
+        </tr>
+        </table>
+      <a href="#image-idx">top</a>
+
+      <p><a name="image_cadsr"></a>
+          <table class="bordered-table">
+              <tr>
+                  <th>Description</th>
+                  <td>Gets graphical annotations according to vendor definitions for CAD SR object.</td>
+              </tr>
+              <tr>
+                  <th>URL</th>
+                  <td>/study/{namespace}/{studyUid}/image/{imageUid}/version/{imageVersion}/cadsr?sid={sid}</td>
+              </tr>
+              <tr>
+                  <th>Parameters</th>
+                  <td>
+                      <i>sid</i> &bull; The session id (Required).<br>
+                      phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Returns</th>
+                  <td>
+                      <i>Graphical annotations</i> &bull; A JSON array representation of the vendor-specified graphical annotations, empty if not implemented for the vendor or generating device.<br>
+                      <i>HTTP CODE</i> &bull; 404 (NOT FOUND) if the study does not exist.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Errors</th>
+                  <td>
+                      Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Notes</th>
+                  <td>
+                      <ol>
+                          <li> The call must be <i>GET</i> or <i>HEAD</i>.</li>
+                      </ol>
+                  </td>
+              </tr>
+        <tr>
+            <th>Python Sample</th>
+            <td><a href="#" class="toggler" data-prod-cat="5">+ Code</a>
+                <pre class="cat5" style="display:none; max-width:1000px"><code class="language-python">
+import requests
+
+base_url = 'https://uat.dicomgrid.com/'
+
+def main():
+    # Get SID for user
+    sid = getSID(password='some_password', login='some_email')
+    # Get a list containing the default account namespace
+    namespace = getNamespace(sid=sid)
+    # Get a list of studies
+    studies = getStudyList(sid, namespace[0]['uuid'])
+    # Ge study schema
+    study = studies[0]
+    r = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/schema?sid={3}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], sid))
+    if r.status_code == 200:
+        study_schema = r.json()
+        # Get image attributes
+        r2 = requests.get(base_url + 'host/{0}/api/v3/storage/study/{1}/{2}/image/{3}/version/{4}/cadsr?sid={5}'.format(study['engine_fqdn'], study['storage_namespace'], study['study_uid'], study_schema['series'][0]['images'][0]['id'], study_schema['series'][0]['images'][0]['version'], sid))
+        if r2.status_code == 200:
+            print r2.json()
+        else:
+            r2.raise_for_status()
+    else:
+        r.raise_for_status()
+
+# Get SID from services
+def getSID(password, login, *args, **kwargs):
+    """ Returns an session ID for the provided username/password combination
+    """
+    payload = {'password': password, 'login': login}
+    r = requests.post(base_url + 'api/v3/session/login', data=payload)
+    if r.status_code == 200:
+        print 'Session id for {0}: {1}'.format(login, r.json()['sid'])
+        return r.json()['sid']
+    else:
+        r.raise_for_status()
+
+def getNamespace(sid, *args, **kwargs):
+    """ Returns a list with the default namespace of the account related to the sid
+    """
+    r = requests.get(base_url + 'api/v3/session/user?sid={0}&settings=[{1}]'.format(sid, "\"user_default_organization\""))
+    if r.status_code == 200:
+        account_id = r.json()['settings']['user_default_organization']
+        if account_id:
+            r = requests.get(base_url + '/api/v3/user/namespace/list?sid={0}&plus_phr=1&account_id={1}'.format(sid, account_id))
+            return [namespaces for namespaces in r.json()['namespaces'] if namespaces['type'] =='account_id']
+        else:
+            raise "Error getting account id {0}".format(r.text())
+    else:
+        r.raise_for_status()
+
+def getStudyList(sid, namespace, *args, **kwargs):
+    """ Returns a list of studies based on the sid and namespace specified
+    """
+    r = requests.get(base_url + 'api/v3/study/list?sid={0}&filter.phi_namespace.equals={1}&filter.must_approve.equals=0'.format(sid, namespace))
+    if r.status_code == 200:
+        return r.json()['studies']
+    else:
+        r.raise_for_status()
+
+if __name__ == '__main__':
+    main()
+                    </code></pre>
+                </td>
+            </tr>
+          </table>
+        <a href="#image-idx">top</a>
+
+        <p><a name="study_hl7_to_sr"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Gets the HL7 report from services, converts to the DICOM SR and uploads to the storage.</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/{namespace}/{studyUid}/hl7/{hl7Uuid}/sr?sid={sid}&phi_namespace={phi_namespace}</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (Required).<br>
+                    phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                    hl7Uuid &bull; hl7 report UUID from services to convert to DICOM SR.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>HTTP CODE</i> &bull; 202 Accecpted for the upload to storage.<br>
+                    <i>HTTP CODE</i> &bull; 500 (SERVER ERROR) if hl7 report data not converted to DICOM.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ol>
+                        <li> The call must be <i>POST</i></li>
+                    </ol>
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_clone"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Clones the specified study into new study with new study uid, and generates new series uid and image uids if it's requested.</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/{namespace}/{studyUid}/clone?sid={sid}&phi_namespace={phi_namespace}&new_image_uids={true/false}&new_series_uids={true/false}</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (Required).<br>
+                    <i>new_image_uids</i> &bull; Values: true/false, whether to generate for study new image uids.<br>
+                    <i>new_series_uids</i> &bull; Values: true/false, whether to generate for study new series uids.<br>
+                    phi_namespace &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>HTTP CODE</i> &bull; 202 Accepted task for cloning the study.<br>
+                    <i>HTTP CODE</i> &bull; 500 (SERVER ERROR) if server error persisted.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the study.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ol>
+                        <li> The call must be <i>POST</i></li>
+                    </ol>
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_generate_rtstruct"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Generates RTSTRUCT DICOM file from the content sent by client</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/{namespace}/{studyUid}/rt?sid={sid}&phi_namespace={phi_namespace}</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (Required).<br>
+                    <i>phi_namespace</i> &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                    <i>body</i> &bull; Body that represents fields of the RTSTRUCT DICOM, the example of json <br>
+                    <i>example</i> &bull;
+                    {
+                    "structureSetLabel": "1",
+                    "structureSetName": "1",
+                    "structureSetDescription": "1",
+                    "instanceNumber": "1",
+                    "structureSetDate": 1625486773319,
+                    "structureSetTime": 1625486773319,
+                    "referencedFrameOfReferenceList": [
+                    {
+                    "frameOfReferenceUID": "1",
+                    "rtReferencedStudies": [
+                    {
+                    "referencedSOPClassUID": "1",
+                    "referencedSOPInstanceUID": "1",
+                    "rtReferencedSeries": [
+                    {
+                    "seriesInstanceUID": "series",
+                    "contourImageSequences": [
+                    {
+                    "referencedFrameNumber": "10",
+                    "referencedSegmentNumber": "3"
+                    }
+                    ]
+                    }
+                    ]
+                    }
+                    ]
+                    }
+                    ],
+                    "structureSetROISequences": [
+                    {
+                    "roiNumber": "1",
+                    "referencedFrameOfReferenceUID": "1",
+                    "roiName": "1",
+                    "roiDescription": "1",
+                    "roiVolume": "1",
+                    "roiGenerationAlgorithm": "MANUAL",
+                    "roiGenerationDescription": "1",
+                    "derivationCodeSequences": [
+                    {
+                    "codeValue": "1",
+                    "codingSchemeDesignator": "1",
+                    "codingSchemeVersion": "1",
+                    "codeMeaning": "1"
+                    }
+                    ]
+                    }
+                    ],
+                    "predecessorStructureSet": [
+                    {
+                    "referencedSOPClassUID": "sop class uid",
+                    "referencedSOPInstanceUID": "instance uid"
+                    }
+                    ],
+                    "roiContours": [
+                    {
+                    "referencedROINumber": "12",
+                    "roiDisplayColor": "333",
+                    "contourSequences": [
+                    {
+                    "contourNumber": "3",
+                    "attachedContours": "3",
+                    "contourGeometricType": "OPEN_PLANAR",
+                    "contourSlabThickness": "3",
+                    "contourOffsetVector": "3",
+                    "numberOfContourPoints": "3",
+                    "contourImageSequence": [
+                    {
+                    "referencedFrameNumber": "21",
+                    "referencedSegmentNumber": "18"
+                    }
+                    ],
+                    "contourData": [
+                    {
+                    "x": 5.6,
+                    "y": 123.9,
+                    "z": 43.2
+                    }
+                    ]
+                    }
+                    ]
+                    }
+                    ],
+                    "rtROIObservations": [
+                    {
+                    "observationNumber": "11",
+                    "referencedROINumber": "11",
+                    "roiObservationLabel": "11",
+                    "roiObservationDescription": "11",
+                    "rtROIInterpretedType": "EXTERNAL",
+                    "roiInterpreter": "11",
+                    "materialId": "11",
+                    "relatedROISequences": [
+                    {
+                    "referencedROINumber": "22",
+                    "rtROIRelationship": "22"
+                    }
+                    ],
+                    "codeSequenceMacroAttributes": [
+                    {
+                    "codeValue": "88",
+                    "codingSchemeDesignator": "88",
+                    "codingSchemeVersion": "88",
+                    "codeMeaning": "88"
+                    }
+                    ],
+                    "relatedRtRoiObservationsSequence": [
+                    "33"
+                    ],
+                    "physicalProperties": [
+                    {
+                    "roiPhysicalProperty": "EFFECTIVE_Z",
+                    "roiElementalCompositeSequences": [
+                    {
+                    "roiAtomicNumber": "5",
+                    "roiAtomicMassFraction": "5",
+                    "physicalPropertyValue": "5"
+                    }
+                    ]
+                    }
+                    ]
+                    }
+                    ]
+                    }
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>Image attributes</i> &bull; A JSON representation of the image's attributes.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to upload the study.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ol>
+                        <li> The call must be <i>POST</i></li>
+                    </ol>
+                </td>
+            </tr>
+        </table>
+        <p><a name="dicomweb_instance_metadata"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Returns JSON representation of a single DICOM as defined by the <a href="http://dicom.nema.org/medical/dicom/current/output/html/part18.html#table_10.4.1-2">DICOMWeb WADO-RS Metadata standard</a></td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>dicomweb/{namespace}/studies/{studyUid}/series/{seriesUid}/instances/{imageUid}/metadata?sid={sid}&phi_namespace={phi_namespace}</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id of a user who has rights to view the associated studyUid (Required).<br>
+                    <i>phi_namespace</i> &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                    <i>body</i> &bull; Empty<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>DICOM tags</i> &bull; A JSON representation of a DICOM according to the DICOMWeb standard, omitting any bulkdata, pixeldata, or other binary fields.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the associated study.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ol>
+                        <li> The call must be <i>GET</i></li>
+                    </ol>
+                </td>
+            </tr>
+        </table>
+        <p><a name="dicomweb_series_metadata"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Returns JSON representation of a series of DICOM(s) as defined by the <a href="http://dicom.nema.org/medical/dicom/current/output/html/part18.html#table_10.4.1-2">DICOMWeb WADO-RS Metadata standard</a></td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>dicomweb/{namespace}/studies/{studyUid}/series/{seriesUid}/instances/{imageUid}/metadata?sid={sid}&phi_namespace={phi_namespace}</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id of a user who has rights to view the associated studyUid (Required).<br>
+                    <i>phi_namespace</i> &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                    <i>body</i> &bull; Empty<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>DICOM tags</i> &bull; A JSON representation of a series of DICOM(s) according to the DICOMWeb standard, omitting any bulkdata, pixeldata, or other binary fields.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the associated study.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ol>
+                        <li> The call must be <i>GET</i></li>
+                    </ol>
+                </td>
+            </tr>
+        </table>
+        <p><a name="dicomweb_study_metadata"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Returns JSON representation of an entire study of DICOMs as defined by the <a href="http://dicom.nema.org/medical/dicom/current/output/html/part18.html#table_10.4.1-2">DICOMWeb WADO-RS Metadata standard</a></td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>dicomweb/{namespace}/studies/{studyUid}/metadata?sid={sid}&phi_namespace={phi_namespace}</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id of a user who has rights to view the associated studyUid (Required).<br>
+                    <i>phi_namespace</i> &bull; A string, set to the UUID of the namespace where the file was attached if it was attached to a shared instance of the study outside of the original storage namespace<br>
+                    <i>body</i> &bull; Empty<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>DICOM tags</i> &bull; A JSON representation of an entire study of DICOM(s) according to the DICOMWeb standard, omitting any bulkdata, pixeldata, or other binary fields.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    Permission Denied &bull; If the <i>sid</i> is not valid or the user does not have permission to view the associated study.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ol>
+                        <li> The call must be <i>GET</i></li>
+                    </ol>
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
+
+      <!-- DO NOT UPDATE - updated automatically --><footer>Version: LBL0038 v22.0 2022-05-18</footer>
+    </div>
+</body>
+</html>

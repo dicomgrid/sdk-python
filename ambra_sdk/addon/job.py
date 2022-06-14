@@ -20,7 +20,7 @@ ERRORS_MAPPING_KEY_TYPE = Union[Tuple[str, Optional[str]], str]
 ERRORS_MAPPING_TYPE = Mapping[ERRORS_MAPPING_KEY_TYPE, PreconditionFailed]
 
 
-class Job:
+class Job:  # NOQA: WPS220
     """Job addon namespace."""
 
     def __init__(self, api):
@@ -114,14 +114,23 @@ class Job:
                     break
                 with suppress(NotFound):
                     job_status = cast(Box, get_job_query.get())
-                    if job_status['state'] != 'DONE':
+                    if job_status['state'] not in (  # NOQA: WPS510
+                        'FINISHED',
+                        'DONE',
+                        'ERROR',
+                        'RUNNING',
+                        'SCHEDULED',
+                    ):
                         raise RuntimeError(  # NOQA:WPS220
                             'Unknown job status {job_status}'.format(
                                 job_status=job_status['state'],
                             ),
                         )
-                    job_is_ready = True
-                    break
+                    if job_status['state'] == 'DONE':
+                        job_is_ready = True
+                        break
+                    elif job_status['state'] == 'ERROR':
+                        raise RuntimeError(f'Job finished with error {job_status}')
                 with suppress(TimeoutError):
                     ws.wait_for_event(
                         channel_name,

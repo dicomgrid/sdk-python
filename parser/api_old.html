@@ -103,11 +103,13 @@
                 <li><a href="#study_report_series">/study/report/series</a>
                 <li><a href="#study_viewer_settings">/study/viewer/settings</a>
                 <li><a href="#study_viewer3_settings">/study/viewer3/settings</a>
+                <li><a href="#study_status_get">/study/status/get</a>
                 <li><a href="#study_status_set">/study/status/set</a>
                 <li><a href="#study_status_locks">/study/status/locks</a>
                 <li><a href="#study_status_history">/study/status/history</a>
                 <li><a href="#study_move">/study/move</a>
                 <li><a href="#study_duplicate">/study/duplicate</a>
+                <li><a href="#study_clone">/study/clone</a>
                 <li><a href="#study_split">/study/split</a>
                 <li><a href="#study_freeze">/study/freeze</a>
                 <li><a href="#study_manual_route">/study/manual/route</a>
@@ -173,6 +175,8 @@
                 <li><a href="#radreport_audit">/radreport/audit</a>
                 <li><a href="#radreport_delete">/radreport/delete</a>
                 <li><a href="#radreport_description">/radreport/description</a>
+                <li><a href="#radreport_lock">/radreport/lock</a>
+                <li><a href="#radreport_unlock">/radreport/unlock</a>
                 <li><a href="#radreport_user_list">/radreport/user/list</a>
                 <li><a href="#radreportmacro_list">/radreportmacro/list</a>
                 <li><a href="#radreportmacro_add">/radreportmacro/add</a>
@@ -445,6 +449,9 @@
                 <li><a href="#customfield_delete">/customfield/delete</a>
                 <li><a href="#customfield_lookup">/customfield/lookup</a>
                 <li><a href="#customfield_search">/customfield/search</a>
+                <li><a href="#customfield_mapping_add">/customfield/mapping/add</a>
+                <li><a href="#customfield_mapping_set">/customfield/mapping/set</a>
+                <li><a href="#customfield_mapping_delete">/customfield/mapping/delete</a>
             </ul>
             <li><a href="#webhook" name="webhook-idx">Webhook commands</a>
             <ul>
@@ -567,10 +574,12 @@
             <li><a href="#query" name="query-idx">Query commands</a>
             <ul>
                 <li><a href="#query_list">/query/list</a>
+                <li><a href="#query_count">/query/count</a>
                 <li><a href="#query_add">/query/add</a>
                 <li><a href="#query_set">/query/set</a>
                 <li><a href="#query_get">/query/get</a>
                 <li><a href="#query_delete">/query/delete</a>
+                <li><a href="#query_seen">/query/seen</a>
                 <li><a href="#query_status_set">/query/status/set</a>
                 <li><a href="#query_attachment_add">/query/attachment/add</a>
                 <li><a href="#query_attachment_commit">/query/attachment/commit</a>
@@ -581,6 +590,7 @@
                 <li><a href="#qctask_add">/qctask/add</a>
                 <li><a href="#qctask_set">/qctask/set</a>
                 <li><a href="#qctask_get">/qctask/get</a>
+                <li><a href="#qctask_status_set">/qctask/status/set</a>
             </ul>
             <li><a href="#anonymization" name="anonymization-idx">Anonymization profile commands</a>
             <ul>
@@ -1322,6 +1332,14 @@
                 <td>Can they manually edit the status of the study if study_status_edit is enabled</td>
             </tr>
             <tr>
+                <td>study_status_tags_ignore_rules</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they ignore behaviour of account.settings.<i>study_status_tags_rules</i></td>
+            </tr>
+            <tr>
                 <td>study_comment_view</td>
                 <td>0</td>
                 <td>0</td>
@@ -1376,6 +1394,14 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Can they duplicate studies to another namespace</td>
+            </tr>
+            <tr>
+                <td>study_clone</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they clone studies to the same namespace with new study, series and image UIDs</td>
             </tr>
             <tr>
                 <td>study_duplicate_request</td>
@@ -1532,6 +1558,14 @@
                 <td>MRN is required for a study search</td>
             </tr>
             <tr>
+                <td>pathology_upload</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they upload pathology report</td>
+            </tr>
+            <tr>
                 <td>filter_share</td>
                 <td>1</td>
                 <td>0</td>
@@ -1540,12 +1574,28 @@
                 <td>Can they share filters</td>
             </tr>
             <tr>
+                <td>filter_edit_only_own</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they only edit their own filters</td>
+            </tr>
+            <tr>
                 <td>customfield_view</td>
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>Can they view or list the customfields in the account</td>
+                <td>Can they view or list the customfields in the account for administration purposes</td>
+            </tr>
+            <tr>
+                <td>customfield_list</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view or list the customfields in the account for account introspection purposes</td>
             </tr>
             <tr>
                 <td>customfield_edit</td>
@@ -2131,6 +2181,14 @@
                 <td>Can they delete sites from the account</td>
             </tr>
             <tr>
+                <td>site_qualify</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they qualify sites for a trial and inactivate sites</td>
+            </tr>
+            <tr>
                 <td>scanner_add</td>
                 <td>0</td>
                 <td>0</td>
@@ -2265,6 +2323,38 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Can they reply in queries owned by the namespace</td>
+            </tr>
+            <tr>
+                <td>query_attachment_add</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they add attachments to queries owned by the namespace</td>
+            </tr>
+            <tr>
+                <td>query_attachment_view</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they view attachments of queries owned by the namespace</td>
+            </tr>
+            <tr>
+                <td>query_attachment_delete</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Can they delete attachments from queries owned by the namespace</td>
+            </tr>
+            <tr>
+                <td>query_attachment_delete_only_own</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Can they only delete query attachments added by them</td>
             </tr>
             <tr>
                 <td>qctask_add</td>
@@ -2817,6 +2907,18 @@
                         <li>
                             split_save_approve_activity (boolean) &bull; Split Save and Approve button into two buttons in activities
                         </li>
+                        <li>
+                            hide_site_information (boolean) &bull; Hide "Site Information" button in the location/group list
+                        </li>
+                        <li>
+                            study_browse_reason_to_view (boolean) &bull; Enable request of study view reason before image browse
+                        </li>
+                        <li>
+                            move_to_after_approval (boolean) &bull; ability to move study to another namespace after approval. 'study_move' permission required.
+                        </li>
+                        <li>
+                            move_to_before_approval (boolean) &bull; ability to move study activity to another namespace. 'study_move' permission required.
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -3068,7 +3170,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>0</td>
+                <td>1</td>
                 <td>0</td>
                 <td>0</td>
                 <td>Should anonymization rules be applied at ingress by the uploader or gateway</td>
@@ -3463,6 +3565,17 @@
                 <td>Comma separated list of study status tags</td>
             </tr>
             <tr>
+                <td>study_status_tags_default</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>The tag from <i>study_tatus_tags</i> to be interpreted as default for <a href="#study_get">/study/get</a></td>
+            </tr>
+            <tr>
                 <td>study_status_mutex_tags</td>
                 <td>Text</td>
                 <td></td>
@@ -3507,6 +3620,90 @@
                 <td>A JSON hash. The keys are study status tags and the values are a list of the attributes attached to the tag</td>
             </tr>
             <tr>
+                <td>study_status_tags_rules</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A JSON hash where keys are current study_status and values are array of hashes like {"condition":condition-hash-or-bool,"values":["next","possible","statuses"]}, where condition-hash-or-bool is a condition in format used by customfield's <i>show_when</i> field for Study object: hash or [01].<br>
+                    Example:<pre>{
+  "first":[{ # simple next
+       "condition":"1", # or {} == true
+       "values":["second"]
+  }],
+  "second":[
+      { # some condition to match
+        "condition":{"-and":[
+           {"-eq":[{"-field":"must_appprove"},"1"]},
+           {"-eq":[{"-field":"modality"},"MG"]}
+        ]},
+        "values":["third"]
+      },
+      { # some http-request parameter value
+        "condition":{"-eq":[{"-param":"some_param"},"13"]},
+        "values":["third","fourth"],
+      },
+      { # user_account.role.name check with sql-like matching
+        "condition":{"-ilike":[{"-role":"name"},"some_rol%"]},
+        "values":["fifth"],
+      },
+      { # user_account.role.uuid check
+        "condition":{"-eq":[{"-role":"id"},"cf443e65-0115-42a3-87e9-6ee2c569da86"]},
+        "values":["fourth"],
+      },
+      { # match by customfield
+        "condition":{"-eq":[{"-field":"customfield-cf443e65-0115-42a3-87e9-6ee2c569da86"},"42"]},
+        "values":["first"],
+      },
+      { # else
+        "condition":{}, # same as 1 == true
+        "values":["third","fourth"]
+      }
+  ],
+  "third":[
+      { # condition
+        "condition":{"-eq":[{"-field":"modality"},"MR"]},
+        "values":["fourth"]
+      },
+      { # unmatched like slashed specsymbols against 'third'
+        "condition":{"-ilike":[{"-field":"study_status"},"t\_i\%d"]},
+         "values":["third"],
+      },
+      { # case-sensitive check fails
+        "condition":{"-like":[{"-field":"study_status"},"_H%d"]},
+        "values":["third"],
+      },
+      {   # ok, with case-insensitive check against 'third'
+        "condition":{"-ilike":[{"-field":"study_status"},"_H%d"]},
+        "values":["first"],
+      },
+      # if not matched anything before, then cant change status
+  ]
+};
+</pre><br>
+                    If value is set to non-empty array and there is no role permission <i>study_status_tags_ignore_rules</i>, then the "values" for the first matched "condition" are applied to:<br>
+                    <ul>
+                        <li>If <i>study_status_tags_ignore_rules_on_set</i> is <b>NOT</b> set, then <a href="#study_status_set">/study/status/set</a> returns error=INVALID_TAG if new status is not in this values list</li>
+                        <li><a href="#study_get">/study/get</a> returns intersection of study_status_tags and this values list</li>
+                        <li><a href="#study_status_get">/study/status/get</a> returns intersection of study_status_tags and this values list</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>study_status_tags_ignore_rules_on_set</td>
+                <td>Flag</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>If it is set, the behaviour of the above setting <i>study_status_tags_rules</i> is ignored <b>only</b> in <a href="#study_status_set">/study/status/set</a></td>
+            </tr>
+            <tr>
                 <td>study_status_timer_suspensive_tags</td>
                 <td>Text</td>
                 <td></td>
@@ -3527,6 +3724,17 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Comma separated list of study status tags that start the study status timer. This setting is of higher priority than <i>study_status_timer_suspensive_tags</i></td>
+            </tr>
+            <tr>
+                <td>study_status_timer_reset_on_status_change</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>JSON array of ["status-from","status-to"] pairs which triggers timer reset. Example: <code>[["first","second"],["second","fifth"]]</code>.</td>
             </tr>
             <tr>
                 <td>study_status_timer_visible_at_last_status</td>
@@ -3886,7 +4094,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>0</td>
+                <td>1</td>
                 <td>0</td>
                 <td>0</td>
                 <td>Auto wrap the images in storage</td>
@@ -4062,7 +4270,7 @@
                 <td></td>
                 <td>0</td>
                 <td>0</td>
-                <td>0</td>
+                <td>1</td>
                 <td>0</td>
                 <td>0</td>
                 <td>A JSON list of DICOM tags to be used for the OTHER_INGRESS_TAGS anonymization metafield</td>
@@ -4073,7 +4281,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>0</td>
+                <td>1</td>
                 <td>0</td>
                 <td>0</td>
                 <td>Use the other ingress tags for server side anonymization as well as client side anonymization</td>
@@ -4116,7 +4324,8 @@
                         <li> search_for_studies - A JSON array of the destination uuid(s) to search using the create_study and copy_to the users namespace parameters
                         <li> accession_number - Specify the name of the assertion attribute to add the accession number to the study search
                         <li> blocked_emails - A JSON array of email addresses to block from this workflow. Use this to block system assigned dummy email addresses that would result in multiple patients accessing others patients PHI
-                        <li> source_namespace - The uuid of the namespace to share the studies from if the user is not a patient. The default is the account namespace.
+                        <li> source_namespace - The uuid of the namespace to share the studies from if the user is not a patient. If the user is a patient the entire account is searched for studies.
+                        <li> skip_patient_search - Flag to force the use of the source_namespace if the user is a patient.
                         <li> force_reshare - Flag to force a reshare of the studies. This is useful for picking up changed study information.
                     </ul>
                 </td>
@@ -4230,6 +4439,17 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Refresh the integration key and customfields on a re-share of a study</td>
+            </tr>
+            <tr>
+                <td>force_reload_load_dicom_tag</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Force a reload of the load_dicom_tag customfields from the DICOM for all downstream versions of a study on a new notify</td>
             </tr>
             <tr>
                 <td>study_status_timer</td>
@@ -4499,6 +4719,27 @@
                 <td>0</td>
                 <td>Include ADT messages when search for orders in /study/find/order</td>
             </tr>
+                 <td>include_only_latest_adt_in_study_find_order</td>
+                 <td>Flag</td>
+                 <td>0</td>
+                 <td>0</td>
+                 <td>0</td>
+                 <td>0</td>
+                 <td>0</td>
+                 <td>0</td>
+                 <td>Include just one ADT message (the most recent) when searching for orders in /study/find/order</td>
+             </tr>
+             <tr>
+                <td>include_only_latest_order_when_searching_by_accession_in_study_find_order</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Include just one order (the most recent) when searching for orders by accession number in /study/find/order</td>
+            </tr>
             <tr>
                 <td>include_manual_orders_in_study_find_order</td>
                 <td>Flag</td>
@@ -4566,6 +4807,17 @@
                 <td>Make a patient portal publicly visible</td>
             </tr>
             <tr>
+                <td>patient_portal_options</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>JSON hash to configure native patient portal options. An optional key called <i>source_namespace</i> contains a namespace UUID (or an array of namespace UUIDs), this namespace will be searched for studies to share with a patient, other account namespaces will be ignored.</td>
+            </tr>
+            <tr>
                 <td>require_mrn_for_patient_portal</td>
                 <td>Flag</td>
                 <td>0</td>
@@ -4575,6 +4827,17 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Require a MRN when searching for patients in the portal</td>
+            </tr>
+            <tr>
+                <td>eshare_on_patient_portal_login</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Unshare all studies and then share patient's studies in the portal on a patient login</td>
             </tr>
             <tr>
                 <td>enable_thin_retrieve_in_patient_portal</td>
@@ -4797,6 +5060,17 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Require electronic signing of radreport</td>
+            </tr>
+            <tr>
+                <td>enable_radreport_lock_reading</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Enables mechanism of <a href="#radreport_lock">/radreport/lock</a>, <a href="#radreport_unlock">/radreport/unlock</a> and rules about "only one report in a study can be edited at the moment"</td>
             </tr>
             <tr>
                 <td>csrf_cookie_samesite_none</td>
@@ -5057,6 +5331,17 @@
                 <td>A JSON hash of regexp to apply to the /destination/search/mwl calls instead of the query_retrieve_require_regexp. The keys are the field names and the values are the regexp e.g. <code>{"patient_name":"/^\\\w{3}/"}</code>
             </tr>
             <tr>
+                <td>query_retrieve_auto_reject_period_in_days</td>
+                <td>Number</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Number of days after which a /destination/search result is automatically removed from the activity list.  Defaults to 0 meaning that search results are not removed automatically.</code>
+            </tr>
+            <tr>
                 <td>query_retrieve_require_criteria_min</td>
                 <td>Number</td>
                 <td></td>
@@ -5129,7 +5414,7 @@
                 <td>1</td>
                 <td>0</td>
                 <td>A string which indicates the field and subfield of the HL7 OBX segment with an attachment that defines the attachment file name; e.g. <code>OBX_3_3</code> would indicated the third field and third subfield. If a file name is not found in the indicated field, if the filename contains disallowed characters or its greater than 64 characters in length we instead use a default naming convention: <code>hl7_report_${id}.pdf</code>. If the setting is undefined or a zero length string we don't look for a filename and just use the default naming template (this is he default for this setting).</td>
-            </tr>          
+            </tr>
             <tr>
                 <td>upload_select_none</td>
                 <td>Flag</td>
@@ -5173,6 +5458,17 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Flag to apply the link_external_whitelist setting to all links</td>
+            </tr>
+            <tr>
+                <td>link_external_study_list_path</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>The URL (the path part of it) to redirect /link/external calls to for links of STUDY_LIST type. E.g. '/worklist' </td>
             </tr>
             <tr>
                 <td>link_sticky_anon_users</td>
@@ -5263,7 +5559,6 @@
                     A JSON hash to configure a SIU push workflow.
                     A SIU^12 message will schedule the patient studies in the destination namespace to be pushed to the destination.
                     A SIU^15 message will cancel the scheduled push.
-                    A maximum of 10 studies will be pushed.
                     The keys and values in the hash are as follows:
                     <ul>
                         <li> transform &bull; A transform condition expression (see /transform/add for format) to match against the HL7 SIU messages. If the message matches the workflow is triggered.
@@ -5273,6 +5568,13 @@
                         <li> destination_field &bull; The HL7 field that holds the destination value e.g. <code>PV1_3_1</code>
                         <li> destination_map &bull; A JSON hash that maps the value from the destination_field to a destination UUID e.g. <code>{"ABC": "DESTINATION_UUID"}</code>
                         <li> cancel_field &bull; The HL7 field that holds the value to link a S15 cancel message with the S12 appointment message e.g. <code>SCH_2</code>
+                        <li> destination_options &bull; A JSON hash that defines options per destination. The keys are destination UUIDs, values are JSON objects with the following keys:
+                        <ul>
+                            <li> number_of_studies &bull; The maximum number of studies to push, 10 by default.
+                            <li> start_datetime &bull; The DICOM date or datetime to limit the studies list by study date. Substitution tokens are supported. Account time zone is considered.
+                            <li> end_datetime &bull; The DICOM date or datetime to limit the studies list by study date. Substitution tokens are supported. Account time zone is considered.
+                            <li> namespaces &bull; A comma separated list of namespace UUIDs to push studies from. Only a destination's namespace is considered by default. Studies from namespaces other than the destination's one are shared to the destination's namespace prior to push.
+                        </ul>
                     </ul>
                 </td>
             </tr>
@@ -5299,6 +5601,7 @@
                         <li> start_datetime &bull; DICOM start date time stamp to bound the search (optional)
                         <li> end_datetime &bull; DICOM end date time stamp to bound the search (optional)
                         <li> squelch &bull; The number of minutes to squelch repeated queries for the patient and destination. (optional)
+                        <li> delay &bull; The number of seconds to delay the fetch for. (optional)
                         <li> siu &bull; A JSON hash if appointment SIU messages should be included in the workflow. The following keys and values are supported:
                         <ul>
                             <li> procedure_date &bull; The HL7 field that holds the scheduled procedure date and time e.g. <code>SCH_11_4</code>
@@ -5360,6 +5663,17 @@
                 <td>Sync up the SAML roles and assignments when the user is provisioned. Do not sync up on subsequent logins and the SAML role attribute is not required</td>
             </tr>
             <tr>
+                <td>saml_sync_across_vendor_accounts</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Sync up the SAML roles and assignments for all accounts with the same vendor tag as this account has</td>
+            </tr>
+            <tr>
                 <td>external_viewer</td>
                 <td>Text</td>
                 <td> </td>
@@ -5369,8 +5683,9 @@
                 <td>0</td>
                 <td>0</td>
                 <td>
-                    A JSON hash to configure an external viewer for the account. The keys and values in the hash are as follows:
+                    A JSON hash or an array of hashes to configure an external viewer or a list of viewers for the account. The keys and values in the hash are as follows:
                     <ul>
+                        <li> tag &bull; The external viewer tag
                         <li> type &bull; The type of external viewer (resmd|eunity|iconnect|traumacad)
                         <li> key &bull; The api key for resmd or the CLO Access Key ID for eunity or the encryption key for iconnect
                         <li> url &bull; The root url for resmd or the base eunity, iconnect or traumacad server url
@@ -5381,7 +5696,7 @@
                         <li> domain &bull; domain for iconnect (defaults to AMBRA)
                         <li> role &bull; role for iconnect (defaults to EMRUSERS)
                         <li> priors &bull; Flag to include priors in eunity (same patientid, patient_birth_date and phi_namespace)
-                        <li> most_recent_prior &bull; Flag to include the most recent prior in eunity 
+                        <li> most_recent_prior &bull; Flag to include the most recent prior in eunity
                         <li> other_params &bull; A JSON array of other parameters to add to the URL
                     </ul>
                 </td>
@@ -5396,6 +5711,17 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Do not use the external viewer for studies viewed via a link by an anonymous user</td>
+            </tr>
+            <tr>
+                <td>default_external_viewer</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>The default external viewer tag corresponding to an external viewer from the <code>external_viewer</code> list</td>
             </tr>
             <tr>
                 <td>limit_oru_by_storage_namespace</td>
@@ -5441,7 +5767,7 @@
                         <li> create_thin_study &bull; Flag to create a thin study for the view_study action if the study does not exist. The account setting accession_number_for_study_uid needs to be on for the study retrieval to work.
                         <li> include_priors &bull; Flag to include priors for anonymous user links created by the view_study action
                         <li> link_user &bull; UUID of the user to create the anonymous links with
-                        <li> apply_epic_name_format &bull; Flag to apply the epic_name_format value to the result patient names 
+                        <li> apply_epic_name_format &bull; Flag to apply the epic_name_format value to the result patient names
                         <li> inbasket_setup &bull; A JSON hash with the information needed to send <a href="https://apporchard.epic.com/Sandbox/Index?api=384">inbasket messages</a>. The keys and values are as follows:
                         <ul>
                             <li> url &bull; The full URL to post the message too e.g. <code>https://apporchard.epic.com/interconnect-aocurprd-username/api/epic/2014/Common/Utility/SENDMESSAGE/Message</code>
@@ -5491,7 +5817,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>0</td>
+                <td>1</td>
                 <td>0</td>
                 <td>0</td>
                 <td>Enable the prompt_for_anonymize feature for uploads via the Epic integration</td>
@@ -5507,6 +5833,29 @@
                 <td>0</td>
                 <td>
                     Enable the upload_match feature on links to restrict studies can that be uploaded. This field should be in the same format as the upload_match link field. The regular expressions can contain the special tags _LAST_,_FIRST_,_DOB_, _MRN_ or _SEX_  which will be replaced with the data from Epic. For example to restrict uploads to studies that match the patients last name and date of birth use the following setting <code>{"(0010,0030)":"/^_DOB_$/","(0010,0010)":"/_LAST_/"}</code>
+                </td>
+            </tr>
+            <tr>
+                <td>cerner_fhir</td>
+                <td>Text</td>
+                <td> </td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>
+                    A JSON hash to with the information needed for the <a href="cerner.html">Cerner SMAR on FHIR</a> integration. The keys and values in the hash are as follows:
+                    <ul>
+                        <li> study_upload_client_id &bull; client_id of the Cerner app created to support STUDY_UPLOAD
+                        <li> view_study_list_client_id &bull; client_id of the Cerner app created to support VIEW_STUDY_LIST
+                        <li> aud &bull; The dstu2 FHIR spec url from the Cerner app
+                        <li> upload_namespace &bull; The uuid of the namespace to upload the studies to
+                        <li> link_user &bull; UUID of the user to create the anonymous links with
+                        <li> mrn_field &bull; Name of the field that holds the MRN, defaults to <code>urn:oid:2.16.840.1.113883.3.787.0.0</code>
+                        <li> prompt_for_anonymize &bull; Flag to prompt if the anonymization rules should be applied (optional)
+                        <li> upload_match &bull; Same format and functionality as the epic_upload_match setting (optional)
+                    </ul>
                 </td>
             </tr>
             <tr>
@@ -5527,6 +5876,17 @@
                         <li> secret &bull; The Cerner OAuth secret, this will be encrypted for storage and future viewing
                     </ul>
                 </td>
+            </tr>
+            <tr>
+                <td>mrn_and_family_from_saml</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Extract the mrn and associated family members mrn from the SAML assertion for image viewing</td>
             </tr>
             <tr>
                 <td>enable_link_charging</td>
@@ -5607,6 +5967,28 @@
             </tr>
             <tr>
                 <td>anonymize_study_images_tensorflow_east</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Settings for the AI question</td>
+            </tr>
+            <tr>
+                <td>anonymize_study_images_atalanta</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Settings for the AI question</td>
+            </tr>
+            <tr>
+                <td>anonymize_photo_docs</td>
                 <td>Text</td>
                 <td></td>
                 <td>0</td>
@@ -6002,6 +6384,39 @@
                 <td>Prioritize notifications on the storage queue for the account or namespace</td>
             </tr>
             <tr>
+                <td>try_update_original_study</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Enable original study updates within the account</td>
+            </tr>
+            <tr>
+                <td>try_update_original_study_from_namespaces</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Enable study updates for studies shared to these namespaces (comma delimited list of namespace UUIDs). Namespaces from another account are allowed to be listed here. <i>try_update_original_study_to_namespaces</i> should also be enabled appropriately</td>
+            </tr>
+            <tr>
+                <td>try_update_original_study_to_namespaces</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Enable study updates for studies shared from these namespaces (comma delimited list of namespace UUIDs). Namespaces from another account are allowed to be listed here. <i>try_update_original_study_to_namespaces</i> should also be enabled appropriately</td>
+            </tr>
+            <tr>
                 <td>disable_user_days</td>
                 <td>Number</td>
                 <td></td>
@@ -6190,6 +6605,39 @@
                 <td>Ordinary study field name or a 'customfield-UUID' used to guarantee study uniqueness in <a href="#study_take">/study/take</a> destination namespace</td>
             </tr>
             <tr>
+                <td>take_study_sort_by</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Prioritize studies to take on <a href="#study_take">/study/take</a> call, for sorting specifications see <a href="#sort">Sorting</a></td>
+            </tr>
+            <tr>
+                <td>take_study_filter</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Filter studies to take on <a href="#study_take">/study/take</a> call. This should be a JSON object where each key is a filter, see <a href="#filter">Filters</a></td>
+            </tr>
+            <tr>
+                <td>take_study_method</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Select if studies should be moved or shared with the destination namespace on <a href="#study_take">/study/take</a> call. Possible values are: "move", "share", "share" by default</td>
+            </tr>
+            <tr>
                 <td>enable_orders_in_worklist</td>
                 <td>Flag</td>
                 <td>0</td>
@@ -6233,6 +6681,17 @@
                 <td>Flag to associate Hl7 messages with a study using an accession number of another study which the study is split from</td>
             </tr>
             <tr>
+                <td>associate_adt_by_mrn_for_push_hl7</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Flag to associate ADT Hl7 messages with a study using an patientid of the study during the /study/push/hl7 call processing</td>
+            </tr>
+            <tr>
                 <td>require_site_id_for_groups</td>
                 <td>Flag</td>
                 <td>0</td>
@@ -6243,19 +6702,6 @@
                 <td>0</td>
                 <td>Flag to require site_id attribute to be set for groups in the account. <i>site_id</i> must be set on group creation and edits when the flag is set</td>
             </tr>
-            <tr>
-                <td>linked_study_accounts</td>
-                <td>Text</td>
-                <td></td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>A comma separated list of account UUIDs allowed to create groups linked to sites from the account this setting belongs to</td>
-            </tr>
-
-
             <tr>
                 <td>default_query_owner_namespace</td>
                 <td>Text</td>
@@ -6305,7 +6751,7 @@
                 <td></td>
                 <td>0</td>
                 <td>0</td>
-                <td>0</td>
+                <td>1</td>
                 <td>0</td>
                 <td>0</td>
                 <td>A JSON list of escalation rules for the account. Every rule is a hash with the <code>condition</code> and <code>action</code> keys. Each of the condition and action is defined by a hash, the keys and values for the <code>condition</code> are as follows:
@@ -6338,6 +6784,7 @@
                         <li> body &bull; The query body
                         <li> key &bull; The query  type tag
                     </ul>
+                </td>
             </tr>
             <tr>
                 <td>query_emails_reply_to</td>
@@ -6382,6 +6829,100 @@
                 <td>0</td>
                 <td>0</td>
                 <td>A number of studies to be included in a patient zip download</td>
+            </tr>
+            <tr>
+                <td>cache_series_level_tags</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Flag to enable series level tags caching in the storage for the dicomweb series metadata call to perform better</td>
+            </tr>
+            <tr>
+                <td>user_pkey_expiration</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>A JSON hash with user public key expiration settings. The keys and values in the hash are as follows:
+                    <ul>
+                        <li> warn &bull; The number of days after which a public key is considered outdated
+                        <li> expire &bull; The number of days after which a public key is considered expired and can no longer be used to log in
+                        <li> notify &bull; A comma separated list of emails to warn about an outdated public key
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>namespace_names_globally_unique</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Flag to require every namespace to have a unique name (even Groups, for example, must have different names than Locations)</td>
+            </tr>
+            <tr>
+                <td>return_matching_manual_routes_for_study</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Flag to return only matching manual routes with studies</td>
+            </tr>
+            <tr>
+                <td>patient_portal_event_new_report_notify_type</td>
+                <td>Text</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Notification type for this event. Either <b>sms</b> or <b>email</b>, default is email. Can be overriden in <a href="#patient_set">/patient/set</a></td>
+            </tr>
+            <tr>
+                <td>patient_portal_event_share_notify_type</td>
+                <td>Text</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Notification type for this event. Either <b>sms</b> or <b>email</b>, default is email. Can be overriden in <a href="#patient_set">/patient/set</a></td>
+            </tr>
+            <tr>
+                <td>study_push_sms_on_in_process_timeout</td>
+                <td>Number</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>If <a href="#study_push">/study/push</a> hangs in <i>study_push_status.status=<b>I|P</b></i> for more than $value minutes, then sms is sent to users in <i>study_push_sms_on_in_process_users</i>. Sms template is <i>study_push_sms_on_in_process_timeout</i>.<br>Cant be set to nonzero if <i>study_push_sms_on_in_process_users</i> is empty.</td>
+            </tr>
+            <tr>
+                <td>study_push_sms_on_in_process_users</td>
+                <td>Text</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>JSON array of uuids of users in that account having mobile phone.<br>Error is thrown on <a href="#account_set">/account/set</a> if these conditions are not fulfilled.<br>On error <i>error_subtype</i>=<code>study_push_sms_on_in_process_users:$type:$uuid</code> where $type is one of USER_NOT_IN_ACCOUNT,USER_NOT_FOUND,USER_NOT_IN_ACCOUNT,MOBILE_NOT_FOUND.</td>
             </tr>
         </table>
 
@@ -6612,6 +7153,7 @@
                     BRAND_NOT_ALLOWED &bull; The user is limited to some brands to login with allowed_login_brands setting<br>
                     SSO_ONLY &bull; The user can only login via SSO<br>
                     ONLY_ONE &bull; You can pass either the password or use_pkey flag, not both<br>
+                    PUBLIC_KEY_EXPIRED &bull; The public key has expired and needs to be changed<br>
                 </td>
             </tr>
             <tr>
@@ -7038,6 +7580,7 @@
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     INVALID_SID &bull; Invalid sid<br>
                     INVALID_SIGNATURE &bull; Invalid signature<br>
+                    PUBLIC_KEY_EXPIRED &bull; The public key has expired and needs to be changed<br>
                 </td>
             </tr>
             <tr>
@@ -7249,6 +7792,7 @@
                     <i>event_query_add</i> &bull; Notify the user when a new query is issued<br>
                     <i>event_query_edit</i> &bull; Notify the user when a query is edites<br>
                     <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query<br>
+                    <i>event_site_qualified</i> &bull; Notify the user when a trial site is qualified for the clinical trial account<br>
                     <i>share_code</i> &bull; The share code of the user<br>
                     <i>share_description</i> &bull; The share description of the user<br>
                     <i>time_zone</i> &bull; The users time zone abbreviation<br>
@@ -7386,6 +7930,7 @@
                 <th>Errors</th>
                 <td>
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_PERMITTED &bull; You are not permitted to do this<br>
                 </td>
             </tr>
             <tr>
@@ -7799,6 +8344,7 @@
                     <i>event_query_add</i> &bull; Notify the user when a new query is issued (optional)<br>
                     <i>event_query_edit</i> &bull; Notify the user when a query is edites (optional)<br>
                     <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query (optional)<br>
+                    <i>event_site_qualified</i> &bull; Notify the user when a trial site is qualified for the clinical trial account (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -7856,6 +8402,7 @@
                     <i>event_query_add</i> &bull; Notify the user when a new query is issued (optional)<br>
                     <i>event_query_edit</i> &bull; Notify the user when a query is edites (optional)<br>
                     <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query (optional)<br>
+                    <i>event_site_qualified</i> &bull; Notify the user when a trial site is qualified for the clinical trial account (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -8209,6 +8756,7 @@
                     NOT_PERMITTED &bull; You are not permitted to do this<br>
                     NAMESPACE_NOT_FOUND &bull; The namespace was not found<br>
                     NOT_FOUND &bull; The <i>error_subtype</i> holds the name of the key for the object that can not be found<br>
+                    PENDING_RESTORE &bull; The study is getting retrieved from the archive. Try this call again after a delay<br>
                 </td>
             </tr>
             <tr>
@@ -8582,8 +9130,9 @@
                     <i>patient_id</i> &bull; If the user has patient_view permissions in the account this field will exist and hold the patient uuid<br>
                     <i>created</i> &bull; Created datetime stamp of the study<br>
                     <i>updated</i> &bull; Updated datetime stamp of the study<br>
-                    <i>study_status</i> &bull; The study status<br>
+                    <i>study_status</i> &bull; The study status. Is null for just created study.<br>
                     <i>study_status_tags</i> &bull; The available study status tags. (This is only returned if they have study_status_edit permissions on the study and the study is not locked by another user)<br>
+                    <i>study_status_tags_default</i> &bull; The "default" value for study_status. It is calculated as <code>(account.settings.<i>study_status_tags_default</i> || account.settings.<i>study_status_tags[0]</i>)</code><br>
                     <i>study_status_timer</i> &bull; The study status timer value in seconds. A value of -1 means the timer has completed and this is only returned if the study_status_timer account flag is on.<br>
                     <i>is_dicom_wrapped</i> &bull; Is the study a wrapped DICOM<br>
                     <i>is_locked</i> &bull; Is the study locked by another user<br>
@@ -8619,6 +9168,7 @@
                     * <i>is_local</i> &bull; The flag indicating if the corresponding push was local<br>
                     --- The following fields are only returned if the extra flag is specified ---<br>
                     <i>created_at</i> &bull; Date and time the record was created<br>
+                    <i>primary_created</i> &bull; Date and time the record for the primary study was created<br>
                     <i>account_name</i> &bull; Name of the account the study is in<br>
                     <i>created_by_name</i> &bull; Name of the user who created the study<br>
                     <i>created_by_email</i> &bull; Email of the user who created the study<br>
@@ -8631,10 +9181,13 @@
                     <i>last_name</i> &bull; Patient last name<br>
                     <i>study_status</i> &bull; Study status value<br>
                     <i>message_count</i> &bull; Number of messages associated with this study<br>
+                    <i>query_count</i> &bull; Number of open queries associated with this study<br>
                     --- The following field is only returned if the customfield_h flag is specified ---<br>
                     <i>customfield_h</i> &bull; A JSON hash of the customfield values keyed by the UUID<br>
                     --- The following field is only returned if the enable_orders_in_worklist account setting is enabled ---<br>
                     <i>order_count</i> &bull; Number of orders linked with this study (having the same accession_number). This field is filterable.<br>
+                    --- The following field is only returned if the enable_radreport_lock_reading account setting is enabled ---<br>
+                    <i>radreport_locked_user_id</i> &bull; Only if there is some locked radreport for this study. Contains uuid of lock owner.<br>
                 </td>
             </tr>
             <tr>
@@ -8700,6 +9253,7 @@
                     <i>study_report_upload</i> &bull; The permission flag setting<br>
                     <i>study_report_delete</i> &bull; The permission flag setting<br>
                     <i>study_sync</i> &bull; The permission flag setting<br>
+                    <i>study_status_tags_ignore_rules</i> &bull; The permission flag setting<br>
                     <i>radreport_edit</i> &bull; The permission flag setting<br>
                     <i>radreport_view</i> &bull; The permission flag setting<br>
                     <i>radreport_view_only_own</i> &bull; The permission flag setting<br>
@@ -9396,7 +9950,7 @@
                     <i>study_uid</i> &bull; The v3 storage uid of the study (optional if uuid is passed)<br>
                     <i>storage_namespace</i> &bull; The storage namespace of the study (optional if uuid is passed)<br>
                     <i>phi_namespace</i> &bull; The phi namespace of the study (optional)<br>
-                    <i>action</i> &bull; The audit action (STUDY_VIEW|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|IMAGE_DELETED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)<br>
+                    <i>action</i> &bull; The audit action (STUDY_VIEW|STUDY_VIEW_REASON|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|IMAGE_DELETED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)<br>
                     <i>detail</i> &bull; Additional information<br>
                 </td>
             </tr>
@@ -9417,6 +9971,9 @@
             <tr>
                 <th>Notes</th>
                 <td>
+                    <ul>
+                        <li>STUDY_VIEW_REASON should be sent prior to the corresponding STUDY_VIEW event for the view reason to be tracked
+                    </ul>
                 </td>
             </tr>
         </table>
@@ -9691,6 +10248,58 @@
         </table>
         <a href="#study-idx">top</a>
 
+        <p><a name="study_status_get"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Gets the status and next available tags for a study according to account settings: <i>study_status_tags</i> + <i>study_status_role_tags</i> + <i>study_status_tags_rules</i> and role permission <i>study_status_tags_ignore_rules</i></td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/status/get</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id<br>
+                    <i>study_id</i> &bull; Study uuid<br>
+                    * &bull; Any other parameters that could be processed by <i>study_status_tags_rules</i><br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>study_status</i> &bull; The study status. Is null for just created study.<br>
+                    <i>study_status_tags</i> &bull; The available study status tags. (This is only returned if they have <i>study_status_edit</i>i> permission on the study and the study is not locked by another user)<br>
+                    <i>study_status_tags_default</i> &bull; The "default" value for study_status. It is calculated as <code>(account.settings.<i>study_status_tags_default</i> || account.settings.<i>study_status_tags[0]</i>)</code><br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    study_status_view
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The study can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to view the status for this study<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>Now study_status_tags is calculated this way:<br>
+                    1. Original list is account.settings.<i>study_status_tags</i>.<br>
+                    2. If account.settings.<i>study_status_role_tags</i> is non-empty, then all tags which are not set there for provided user_account.role are deleted from the list.<br>
+                    3. If permission <i>study_status_tags_ignore_rules</i> is not set and account.settings.<i>study_status_tags_rules</i> is non-empty, then "next values list" is calculated from that rules and the result is intersection of that two lists.<br>
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
         <p><a name="study_status_set"></a>
         <table class="bordered-table">
             <tr>
@@ -9730,7 +10339,7 @@
             </tr>
             <tr>
                 <th>Notes</th>
-                <td>
+                <td>Possible tags against INVALID_VALUE are calculated as in <a href="#study_status_get">/study/status/get</a> with one exception - if account.settings.<i>study_status_tags_ignore_rules_on_set</i> is set, then it is calculated with no regard to account.settings.<i>study_status_tags_rules</i>, so only account.settings.<i>study_status_role_tags</i> is relevant.<br>
                 </td>
             </tr>
         </table>
@@ -9884,6 +10493,7 @@
                     <i>(namespace_id || study_request_id)</i> &bull; The namespace or study request id to duplicate it to<br>
                     <i>include_attachments</i> &bull; Also duplicate attachments (optional)<br>
                     <i>overwrite</i> &bull; Flag if you want to overwrite an existing study in the destination namespace (optional)<br>
+                    <i>exclude_phi</i> &bull; Flag to not duplicate PHI data (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -9915,6 +10525,58 @@
                 <th>Notes</th>
                 <td>
                     This creates a full copy of the study as if it was uploaded into the namespace
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
+        <p><a name="study_clone"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Clone a study optionally changing series/images uids</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/clone</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The study id<br>
+                    <i>new_series_uids</i> &bull; Flag if you want to generate new uids for the study series (optional)<br>
+                    <i>new_image_uids</i> &bull; Flag if you want to generate new uids for the study images (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>study_uid</i> &bull; new study uid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    study_view and study_clone
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
+                    NOT_FOUND &bull; The study was not found.<br>
+                    NOT_PERMITTED &bull; You are not permitted to clone the study<br>
+                    NOT_AVAILABLE &bull; The study is not available.<br>
+                    FAILED &bull; The storage call failed to run<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    This creates a copy of the study with a new UID in the storage namespace.
                 </td>
             </tr>
         </table>
@@ -10131,7 +10793,9 @@
                         <li>If you pass an accession number it is wildcarded as accession_number% search
                         <li>If you pass a patientid it is wildcarded as patientid% search
                         <li>If you pass a patientName it is wildcarded as %patient_name% search
-                        <li>ORM message are searched, if the account setting include_adt_in_study_find_order is enabled ADT messages will also be searched
+                        <li>ORM messages are searched; if the account setting include_adt_in_study_find_order is enabled ADT messages will also be searched
+                        <li>When the account setting include_adt_in_study_find_order is enabled, the setting include_only_latest_adt_in_study_find_order may also be enabled to further limit any ADT messages searched to only the most recent
+                        <li>When the account setting include_adt_in_study_find_order is NOT enabled, the setting include_only_latest_adt_in_study_find_order has no effect even if it is enabled
                     </ul>
                 </td>
             </tr>
@@ -10475,7 +11139,9 @@
                 <td>
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; The study id<br>
+                    <i>viewer_tag</i> &bull; An external viewer's tag (optional)<br>
                     <i>redirect</i> &bull; A flag to return an HTTP redirect to the viewer URL rather than the JSON structure<br>
+                    <i>view_reason</i> &bull; The view reason to be tracked in the audit trail (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -10498,6 +11164,7 @@
             <tr>
                 <th>Notes</th>
                 <td>
+                    The account's default external viewer (the <code>default_external_viewer</code>) is selected in case <code>viewer_tag</code> was not passed. The first external viewer from the configured list is selected in case neither <code>viewer_tag</code> nor <code>default_external_viewer</code> were specified.
                 </td>
             </tr>
         </table>
@@ -10721,6 +11388,7 @@
                     <i>(sid || node_id && serial_no)</i> &bull; Either the sid or the node id and serial number<br>
                     <i>(study_id || study_uid && storage_namespace && phi_namespace)</i> &bull; The study id or the study_uid/storage_namespace/phi_namespace triplet<br>
                     <i>image_count</i> &bull; Update the study image count and then sync (optional)<br>
+                    <i>reload_load_dicom_tag</i> &bull; Flag to force a reload of all load_dicom_tag customfields (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -11001,7 +11669,7 @@
                 <th>Errors</th>
                 <td>
                     NOT_SYSADMIN_OR_SUPPORT &bull; The user is not a sysadmin or support user<br>
-                    NOT_FOUND &bull; The deleted study can not be found 
+                    NOT_FOUND &bull; The deleted study can not be found
                     CAN_NOT_REVIVE &bull; The study can not be revived
                 </td>
             </tr>
@@ -11999,6 +12667,7 @@
                     NOT_FOUND &bull; The study was not found.<br>
                     NOT_PERMITTED &bull; You are not permitted to add a radreport to the study<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
+                    LOCKED &bull; Only if account.settings.<i>enable_radreport_lock_reading</i> is set. There is another locked radreport for the study. <i>error_subtype</i>=RADREPORT_LOCKED. <i>error_data</i>={"locked_radreport_id":<b>radreport_uuid</b>,"locked_user_id":<b>user_uuid</b>}.<br>
                 </td>
             </tr>
             <tr>
@@ -12047,11 +12716,12 @@
                     NOT_FOUND &bull; The study was not found.<br>
                     NOT_PERMITTED &bull; You are not permitted to add a radreport to the study<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
+                    LOCKED &bull; Only if account.settings.<i>enable_radreport_lock_reading</i> is set. This radreport is locked by another sid. <i>error_subtype</i>=RADREPORT_LOCKED. <i>error_data</i>={"locked_radreport_id":<b>radreport_uuid</b>,"locked_user_id":<b>user_uuid</b>}.<br>
                 </td>
             </tr>
             <tr>
                 <th>Notes</th>
-                <td>
+                <td>If account.settings.<i>enable_radreport_lock_reading</i> is set, then <i>/radreport/set</i> implicitly calls the same try-lock mechanism as in <a href="#radreport_lock">/radreport/lock</a>. So there would be error if someone else has already locked it.<br>
                 </td>
             </tr>
         </table>
@@ -12086,6 +12756,8 @@
                     <i>study_id</i> &bull; Associated study<br>
                     <i>created</i> &bull; Date and time the radreport was created<br>
                     <i>updated</i> &bull; Date and time the radreport was updated<br>
+                    --- The following field is only returned if the enable_radreport_lock_reading account setting is enabled AND this radreport is locked ---<br>
+                    <i>locked_user_id</i> &bull; uuid of lock owner<br>
                 </td>
             </tr>
             <tr>
@@ -12192,6 +12864,7 @@
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     NOT_FOUND &bull; The radreport  was not found.<br>
                     NOT_PERMITTED &bull; You are not permitted to delete the radreport<br>
+                    LOCKED &bull; Only if account.settings.<i>enable_radreport_lock_reading</i> is set. This radreport is locked at the moment, should be unlocked before. <i>error_subtype</i>=RADREPORT_LOCKED. <i>error_data</i>={"locked_radreport_id":<b>radreport_uuid</b>,"locked_user_id":<b>user_uuid</b>}.<br>
                 </td>
             </tr>
             <tr>
@@ -12226,7 +12899,9 @@
                     <i>uuid</i> &bull; Id of the radreport<br>
                     <i>description</i> &bull; One line description of the radreport<br>
                     <i>type</i> &bull; Type of radreport<br>
-                    <i>can_edit</i> &bull; Can the user edit the radreport<br>
+                    <i>can_edit</i> &bull; Can the user edit the radreport. See notes below.<br>
+                    --- The following field is only returned if the enable_radreport_lock_reading account setting is enabled AND this radreport is locked ---<br>
+                    <i>locked_user_id</i> &bull; uuid of lock owner<br>
                 </td>
             </tr>
             <tr>
@@ -12245,7 +12920,105 @@
             </tr>
             <tr>
                 <th>Notes</th>
+                <td>Only if account.settings.<i>enable_radreport_lock_reading</i> is set. <i>can_edit</i> is set to 0 if this radreport is locked by another sid.
+                </td>
+            </tr>
+        </table>
+        <a href="#radreport-idx">top</a>
+
+        <p><a name="radreport_lock"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Lock the radreport or prolongate the current lock</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/radreport/lock</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
                 <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; Id of the radreport<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    radreport_edit
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The radreport  was not found.<br>
+                    NOT_PERMITTED &bull; You are not permitted to lock the radreport<br>
+                    LOCKED &bull; This radreport is locked at the moment by another sid. <i>error_subtype</i>=RADREPORT_LOCKED. <i>error_data</i>={"locked_radreport_id":<b>radreport_uuid</b>,"locked_user_id":<b>user_uuid</b>}.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>If account.settings.<i>enable_radreport_lock_reading</i> is NOT set, then always NOT_PERMITTED.<br>
+                    The same user cant lock radreport with other sid.<br>
+                    Lock expires in 1 hour. Each next call prolongates it.<br>
+                    On successful lock (not prolongate) the RADREPORT_LOCKED event is sent to study channel.<br>
+                </td>
+            </tr>
+        </table>
+        <a href="#radreport-idx">top</a>
+
+        <p><a name="radreport_unlock"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Unlock the radreport</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/radreport/unlock</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; Id of the radreport<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    radreport_edit
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The radreport  was not found.<br>
+                    NOT_PERMITTED &bull; You are not permitted to lock the radreport<br>
+                    ALREADY &bull; This report is not locked<br>
+                    LOCKED &bull; This radreport is locked at the moment by another user. <i>error_subtype</i>=RADREPORT_LOCKED. <i>error_data</i>={"locked_radreport_id":<b>radreport_uuid</b>,"locked_user_id":<b>user_uuid</b>}.<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>If account.settings.<i>enable_radreport_lock_reading</i> is NOT set, then always NOT_PERMITTED.<br>
+                    If lock owner is the same user, then radreport CAN be unlocked even if sid differs.<br>
+                    On successful unlock the RADREPORT_UNLOCKED event is sent to study channel.<br>
                 </td>
             </tr>
         </table>
@@ -14024,6 +14797,8 @@
                     <i>event_share</i> &bull; Notify the patient if a new study is available on the patient portal (optional)<br>
                     <i>event_new_report</i> &bull; Notify the patient if a report is attached on the patient portal (optional)<br>
                     <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
+                    <i>settings</i> &bull; A hash of the patient settings, see Notes. (optional)<br>
+                    <i>setting_{SETTING_NAME}</i> &bull; Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -14048,11 +14823,14 @@
                     ALREADY_EXISTS &bull; The MRN is in use by another patient<br>
                     ALREADY_USED &bull; The email or phone number is already used by another patient. The <i>error_subtype</i> holds the field that is already used<br>
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
+                    NO_PATIENT_OVERRIDE &bull; The setting does not allow a patient override<br>
+                    INVALID_SETTING &bull; An invalid setting was passed. The <i>error_subtype</i> holds the name of the invalid setting<br>
+                    INVALID_SETTING_VALUE &bull; An invalid setting value was passed. The <i>error_subtype</i> holds the name of the setting with the invalid value<br>
                 </td>
             </tr>
             <tr>
                 <th>Notes</th>
-                <td>
+                <td>Current allowed settings are <i>patient_portal_event_new_report_notify_type</i> and <i>patient_portal_event_new_report_notify_type</i>
                 </td>
             </tr>
         </table>
@@ -15320,7 +16098,8 @@
                         <li> The __REDIRECT_LINK-UUID__ value will be replaced by a /link/redirect link that is a duplicate of the link with the UUID. This must not be in a Text::Template expression.
                         <li> The __DIRECT_LINK-UUID__ value will be replaced by a link with the HTML user UI that is a duplicate of the link with the UUID. This must not be in a Text::Template expression.
                         <li> The duplicate link is updated with the current study data. If the link used a filter the filter values will be parsed as a Text::Template expressions for the current study.
-                        <li> If a study has an associated radreport the fields in the radreport can be included via the radreport_fields hash i.e. <code>{$radreport_fields{'text-input-2'}}</code>
+                        <li> If a study has an associated radreport the fields in the radreport can be included via the radreport_fields hash i.e. <code>{$radreport_fields{'text-input-2'}}</code>.
+                        <li> If a study has an associated radreport the specific lines in the radreport fields can be extracted via the __RADREPORT_LINE-N-FIELDNAME__ macro. N is the line number (one based) and FIELDNAME is the radreport field name i.e. <code>__RADREPORT_LINE-3-text-input-2__</code>. This must not be in a Text::Template expression.
                         <li> If a study has an attachment the corresponding PDF can be included via the latest_attachment_pdf variable i.e. <code>{$latest_attachment_pdf}</code>. The value is base64 encoded.
                         <li> If a study has an associated HL7 message specified in /study/push/hl7 the full HL7 message can be included e.g. <code>{$hl7_message}</code>
                         <li> If a study has an associated HL7 message specified in /study/push/hl7 the HL7 segments can be included from the hl7_segments array, first segment is index 0, second segment is index 1 etc. e.g. <code>{$hl7_segments[2]}</code>
@@ -17451,7 +18230,6 @@
                 <th>Parameters</th>
                 <td>
                     <i>(sid || node_id && serial_no)</i> &bull; Either the sid or the node uuid and serial number<br>
-                    <i>uuid</i> &bull; uuid of the destination<br>
                     <i>account_id</i> &bull; uuid of the account<br>
                     <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
                     <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
@@ -17819,12 +18597,14 @@
                     <i>push_to</i> &bull; uuid of a destination to push the retrieved studies to (optional)<br>
                     <i>create_thin</i> &bull; The maximum number of thin studies to create from this search instead of creating an activity for the search results (optional)<br>
                     <i>create_study</i> &bull; The maximum number of studies to retrieve from this search instead of creating an activity for the search results (optional)<br>
+                    <i>refetch_study</i> &bull; Flag to refetch the search results when studies have been fetched already (optional)<br>
                     <i>share_email</i> &bull; Email to share retrieved studies with on subsequent <a href="#destination_retrieve">/destination/retrieve</a> (optional)<br>
                     <i>bundle_id</i> &bull; An integral number Used internally to track searches initiated from a single bundle (optional)<br>
                     <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) will be set for the resultant studies after <a href="#destination_retrieve">/destination/retrieve</a> call (optional)<br>
+                    <i>customfield-'{CUSTOMFIELD_NAME}'</i> &bull; Custom field(s) to be set for the resultant studies. (optional)<br>
                     <i>anonymize</i> &bull; A JSON hash of <a href="#namespace_anonymize">anonymization rules</a> to apply to retrieved studies (optional)<br>
                     <i>anonymize_{STUDY_FIELD}</i> &bull; The anonymization rules breakdown. This overrides the anonymize parameter if passed (optional)<br>
-                    <i>tracking_number</i> &bull; A UUID tracking number that can be used to pull a report against this search (optional)<br> 
+                    <i>tracking_number</i> &bull; A UUID tracking number that can be used to pull a report against this search (optional)<br>
                     <div class="comment">-- The rest of the fields are used for the search --</div>
                     <i>study_uid</i> &bull; Study uid to find (optional)<br>
                     <i>patient_name</i> &bull; Patient name to find (optional)<br>
@@ -17838,7 +18618,6 @@
                     <i>patient_birth_date</i> &bull; Birth date to find (optional)<br>
                     <i>query_fields</i> &bull; A JSON hash of additional query fields (optional)<br>
                     <i>result_fields</i> &bull; A JSON array of DICOM tags that the destination should return (optional)<br>
-
                 </td>
             </tr>
             <tr>
@@ -17873,6 +18652,7 @@
                     <ul>
                         <li> start_datetime and end_datetime support underscore token substitutions. Tokens available: __TODAY__, __YESTERDAY__, __N_DAYS_AGO__. Both take users' time zone into account.
                         <li> study_request_id parameter is used to trigger study request worflow search, all other optional parameters are ignored in this case. The search is executed using study request criteria. Results are available through <a href="#study_request_get">/study/request/get</a> call
+                        <li> for the <i>customfield-'{CUSTOMFIELD_NAME}'</i> parameters a fields name should be quoted with a single quote character. All single quotes and backslashes inside the name should be escaped with a backslash character.
                     </ul>
                 </td>
             </tr>
@@ -18113,12 +18893,15 @@
                     <i>on_manual_route</i> &bull; Apply this rule for a manually routed study - flag (optional)<br>
                     <i>on_thin</i> &bull; Apply this rule to thin studies when they are created - flag (optional)<br>
                     <i>no_re_run</i> &bull; Do not run this rule on a re-notification from storage - flag (optional)<br>
+                    <i>only_re_run</i> &bull; Only run this rule on a re-notification from storage - flag (optional)<br>
                     <i>suspended</i> &bull; This rule is suspended and not applied - flag (optional)<br>
                     <i>delay</i> &bull; Number of minutes to delay running this rule for after it is triggered (optional)<br>
                     <i>delay_seconds</i> &bull; Number of seconds to delay running this rule for after it is triggered (optional)<br>
                     <i>delay_till_schedule</i> &bull; Delay running this rule after it is triggered until the next scheduled time - flag (optional)<br>
                     <i>other_namespaces</i> &bull; A comma separated list of the uuid of other namespaces to apply this rule to (optional)<br>
                     <i>manual_roles</i> &bull; A comma separated list of the uuid of roles that can run the rule manually (optional)<br>
+                    <i>delay_from_study_field</i> &bull; Delay running this rule, start counting from this study's datetime field (optional)<br>
+                    <i>delay_from_study_seconds</i> &bull; Number of seconds to delay running this rule for after a timepoint defined by <i>delay_from_study_field</i> (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -18168,18 +18951,16 @@
                                     <li> patientid
                                     <li> study_date
                                     <li> study_description
+                                    <li> study_status
                                     <li> patient_age
                                     <li> patient_birth_date
                                     <li> accession_number
+                                    <li> created
                                     <li> customfield-CUSTOMFIELD_UUID
                                     <li> HL7 field to match in the format hl7_SEGMENT_FIELD e.g. hl7_PID_3 or in the format hl7_SEGMENT_FIELD_COMPONENT e.g. hl7_OBR_5_2
                                     <li> validate-VALIDATE_UUID - The lv will be the score value for the study as per <a href="#study_validate">/study/validate</a>
                                 </ul>
-                                <li> lv_transform - Perform a transformation to the left value before comparing. The available transformations are
-                                <ul>
-                                    <li> days_old - How many days between the lv and now
-                                    <li> years_old - How many years between the lv and now
-                                </ul>
+                                <li> lv_transform - Perform a transformation to the left value before comparing. The available transformations are <i>years_old</i>, <i>days_old</i>, <i>hours_old</i>, <i>minutes_old</i> - how many years, days, hours or minutes between the lv and now, respectively.
                                 <li> op - operator value. The available operators are
                                 <ul>
                                     <li> equals
@@ -18260,12 +19041,15 @@
                     <i>on_manual_route</i> &bull; Apply this rule for a manually routed study- flag (optional)<br>
                     <i>on_thin</i> &bull; Apply this rule to thin studies when they are created - flag (optional)<br>
                     <i>no_re_run</i> &bull; Do not run this rule on a re-notification from storage - flag (optional)<br>
+                    <i>only_re_run</i> &bull; Only run this rule on a re-notification from storage - flag (optional)<br>
                     <i>suspended</i> &bull; This rule is suspended and not applied - flag (optional)<br>
                     <i>delay</i> &bull; Number of minutes to delay running this rule for after it is triggered (optional)<br>
                     <i>delay_seconds</i> &bull; Number of seconds to delay running this rule for after it is triggered (optional)<br>
                     <i>delay_till_schedule</i> &bull; Delay running this rule after it is triggered until the next scheduled time - flag (optional)<br>
                     <i>other_namespaces</i> &bull; A comma separated list of the uuid of other namespaces to apply this rule to (optional)<br>
                     <i>manual_roles</i> &bull; A comma separated list of the uuid of roles that can run the rule manually (optional)<br>
+                    <i>delay_from_study_field</i> &bull; Delay running this rule, start counting from this study's datetime field (optional)<br>
+                    <i>delay_from_study_seconds</i> &bull; Number of seconds to delay running this rule for after a timepoint defined by <i>delay_from_study_field</i> (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -18339,6 +19123,7 @@
                     <i>on_manual_route</i> &bull; Apply this rule for a manually routed study- flag<br>
                     <i>on_thin</i> &bull; Apply this rule to thin studies when they are created - flag<br>
                     <i>no_re_run</i> &bull; Do not run this rule on a re-notification from storage - flag<br>
+                    <i>only_re_run</i> &bull; Only run this rule on a re-notification from storage - flag<br>
                     <i>suspended</i> &bull; This rule is suspended and not applied - flag<br>
                     <i>delay</i> &bull; Number of minutes to delay running this rule for after it is triggered<br>
                     <i>delay_seconds</i> &bull; Number of seconds to delay running this rule for after it is triggered<br>
@@ -18346,6 +19131,8 @@
                     <i>capture_email</i> &bull; Does an email need to be captured to run this rule - flag<br>
                     <i>other_namespaces</i> &bull; A comma separated list of the uuid of other namespaces to apply this rule to<br>
                     <i>manual_roles</i> &bull; A comma separated list of the uuid of roles that can run the rule manually<br>
+                    <i>delay_from_study_field</i> &bull; Delay running this rule, start counting from this study's datetime field <br>
+                    <i>delay_from_study_seconds</i> &bull; Number of seconds to delay running this rule for after a timepoint defined by <i>delay_from_study_field</i><br>
                 </td>
             </tr>
             <tr>
@@ -18549,6 +19336,7 @@
                     <i>vendor</i> &bull; Vendor name (optional)<br>
                     <i>role_id</i> &bull; Id for the default role for the account (optional)<br>
                     <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
+                    <i>site_management_account_id</i> &bull; The corresponding site management account (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -18560,7 +19348,7 @@
             <tr>
                 <th>Permission</th>
                 <td>
-                    account_edit
+                    account_edit, sysadmin or support is required to set <i>site_management_account_id</i>
                 </td>
             </tr>
             <tr>
@@ -18577,6 +19365,8 @@
                     INVALID_INTEGER &bull; An invalid integer was passed. The <i>error_subtype</i> holds the name of the invalid integer<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
                     ROLE_NAMESPACE_MISMATCH (INCOMPATIBLE_ROLE) &bull; The role cannot be used for the account, data contains role_id and namespace_id<br>
+                    NOT_SITE_MANAGEMENT_ACCOUNT &bull; The account passed in <i>site_management_account_id</i> does not have the <i>enable_site_management</i> setting enabled<br>
+                    NOT_SYSADMIN_OR_SUPPORT &bull; The user is not a sysadmin or support user<br>
                 </td>
             </tr>
             <tr>
@@ -18640,6 +19430,7 @@
                     <i>connected</i> &bull; Flag if they are connected to a payment processor</a><br>
                     <i>tags</i> &bull; An array of user tags associated with this object (This is only returned if the object has tags)<br>
                     <i>customfields</i> &bull; An array of the custom fields associated with this account. Each object has the following <a href="#customfields">fields</a> (This is only returned if the group has custom fields)<br>
+                    <i>site_management_account_id</i> &bull; The corresponding site management account<br>
                     --- The following field fields are returned if the permissions flag is specified ---<br>
                     * <i>permissions</i> &bull; The users permissions in the account<br>
                     * <i>role_id</i> &bull; uuid of the users account role <br>
@@ -18715,6 +19506,7 @@
                     <i>event_query_add</i> &bull; Notify the user when a new query is issued (optional)<br>
                     <i>event_query_edit</i> &bull; Notify the user when a query is edites (optional)<br>
                     <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query (optional)<br>
+                    <i>event_site_qualified</i> &bull; Notify the user when a trial site is qualified for the clinical trial account (optional)<br>
                     <i>settings</i> &bull; A hash of the <a href="#account-settings">account settings</a> that the user can override (optional)<br>
                     <i>setting_{SETTING_NAME}</i> &bull; Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)<br>
                     <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
@@ -18810,6 +19602,7 @@
                     <i>event_query_add</i> &bull; Notify the user when a new query is issued (optional)<br>
                     <i>event_query_edit</i> &bull; Notify the user when a query is edites (optional)<br>
                     <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query (optional)<br>
+                    <i>event_site_qualified</i> &bull; Notify the user when a trial site is qualified for the clinical trial account (optional)<br>
                     <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
                     <i>settings</i> &bull; A hash of the <a href="#account-settings">account settings</a> that the user can override (optional)<br>
                     <i>setting_{SETTING_NAME}</i> &bull; Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)<br>
@@ -18919,6 +19712,7 @@
                     <i>event_query_add</i> &bull; Notify the user when a new query is issued (optional)<br>
                     <i>event_query_edit</i> &bull; Notify the user when a query is edites (optional)<br>
                     <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query (optional)<br>
+                    <i>event_site_qualified</i> &bull; Notify the user when a trial site is qualified for the clinical trial account (optional)<br>
                     <i>groups</i> &bull; An array of the accounts groups the user is a member of<br>
                     <i>locations</i> &bull; An array of the accounts locations the user is a member of. Both of these contain the following fields.<br>
                     * <i>uuid</i> &bull; uuid of the group/location<br>
@@ -19664,6 +20458,7 @@
                     NOT_PERMITTED &bull; You are not permitted to add a location to the account<br>
                     INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
                     DUP_SHARE_CODE &bull; The share code is already used<br>
+                    DUP_NAMESPACE_NAME &bull; namespace_names_globally_unique is enabled and there is another namespace with the same name<br>
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
                     ROLE_NAMESPACE_MISMATCH (INCOMPATIBLE_ROLE) &bull; The role cannot be used for a location, data contains role_id and namespace_id<br>
@@ -19728,6 +20523,7 @@
                     NOT_PERMITTED &bull; You are not permitted to edit the location<br>
                     INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
                     DUP_SHARE_CODE &bull; The share code is already used<br>
+                    DUP_NAMESPACE_NAME &bull; namespace_names_globally_unique is enabled and there is another namespace with the same name<br>
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
                     ROLE_NAMESPACE_MISMATCH (INCOMPATIBLE_ROLE) &bull; The role cannot be used for locations, data contains role_id and namespace_id<br>
@@ -19887,6 +20683,7 @@
                     <i>event_query_add</i> &bull; Notify the user when a new query is issued (optional)<br>
                     <i>event_query_edit</i> &bull; Notify the user when a query is edites (optional)<br>
                     <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query (optional)<br>
+                    <i>event_site_qualified</i> &bull; Notify the user when a trial site is qualified for the clinical trial account (optional)<br>
                     <i>no_physician_alias_share</i> &bull; Flag to exclude this location from a physician alias share (optional)<br>
                 </td>
             </tr>
@@ -19912,6 +20709,7 @@
                     USER_NOT_FOUND &bull; The user was not found or is not in the account<br>
                     ROLE_NOT_FOUND &bull; The role was not found or is not in the account<br>
                     INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
+                    CAN_NOT_PROMOTE &bull; A user can not switch themselves to an admin role if they are currently not in an admin role<br>
                 </td>
             </tr>
             <tr>
@@ -20018,6 +20816,7 @@
                     * <i>event_query_add</i> &bull; Notify the user when a new query is issued<br>
                     * <i>event_query_edit</i> &bull; Notify the user when a query is edites<br>
                     * <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query<br>
+                    * <i>event_site_qualified</i> &bull; Notify the user when a trial site is qualified for the clinical trial account<br>
                     * <i>no_physician_alias_share</i> &bull; Flag to exclude this location from a physician alias share<br>
                 </td>
             </tr>
@@ -20150,6 +20949,7 @@
                     NOT_PERMITTED &bull; You are not permitted to add a group to that account<br>
                     INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
                     DUP_SHARE_CODE &bull; The share code is already used<br>
+                    DUP_NAMESPACE_NAME &bull; namespace_names_globally_unique is enabled and there is another namespace with the same name<br>
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
                     ROLE_NAMESPACE_MISMATCH (INCOMPATIBLE_ROLE) &bull; The role cannot be used for a group, data contains role_id and namespace_id<br>
@@ -20196,6 +20996,7 @@
                     <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
                     <i>site_id</i> &bull; The associated site id. Required in case require_site_id_for_groups account setting is set (optional)<br>
                     <i>site_qualified</i> &bull; Flag if the site is qualified for the trial (optional)<br>
+                    <i>site_inactive</i> &bull; Inactive flag to deactivate the site in a Trial Account (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -20217,6 +21018,7 @@
                     NOT_PERMITTED &bull; You are not permitted to edit the location<br>
                     INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
                     DUP_SHARE_CODE &bull; The share code is already used<br>
+                    DUP_NAMESPACE_NAME &bull; namespace_names_globally_unique is enabled and there is another namespace with the same name<br>
                     INVALID_CUSTOMFIELD &bull; Invalid custom field(s) name or value were passed. The <i>error_subtype</i> holds an array of the error details<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
                     ROLE_NAMESPACE_MISMATCH (INCOMPATIBLE_ROLE) &bull; The role cannot be used for groups, data contains role_id and namespace_id<br>
@@ -20274,6 +21076,7 @@
                     <i>site_id</i> &bull; The associated site id<br>
                     <i>site_name</i> &bull; The associated site name<br>
                     <i>site_qualified</i> &bull; Flag if the site is qualified for the trial<br>
+                    <i>site_inactive</i> &bull; Inactive flag to deactivate the site in a Trial Account<br>
                     <i>scanners_validated</i> &bull; An array of the scanners validated for the group. Each object has the following fields.<br>
                     * <i>uuid</i> &bull; Scanner Id<br>
                     * <i>name</i> &bull; Scanner name<br>
@@ -20386,6 +21189,7 @@
                     <i>event_query_add</i> &bull; Notify the user when a new query is issued (optional)<br>
                     <i>event_query_edit</i> &bull; Notify the user when a query is edites (optional)<br>
                     <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query (optional)<br>
+                    <i>event_site_qualified</i> &bull; Notify the user when a trial site is qualified for the clinical trial account (optional)<br>
                     <i>no_physician_alias_share</i> &bull; Flag to exclude this group from a physician alias share (optional)<br>
                 </td>
             </tr>
@@ -20411,6 +21215,7 @@
                     USER_NOT_FOUND &bull; The user was not found or is not in the account<br>
                     ROLE_NOT_FOUND &bull; The role was not found or is not in the account<br>
                     INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
+                    CAN_NOT_PROMOTE &bull; A user can not switch themselves to an admin role if they are currently not in an admin role<br>
                 </td>
             </tr>
             <tr>
@@ -20517,6 +21322,7 @@
                     * <i>event_query_add</i> &bull; Notify the user when a new query is issued<br>
                     * <i>event_query_edit</i> &bull; Notify the user when a query is edites<br>
                     * <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query<br>
+                    * <i>event_site_qualified</i> &bull; Notify the user when a trial site is qualified for the clinical trial account<br>
                     * <i>no_physician_alias_share</i> &bull; Flag to exclude this group from a physician alias share<br>
                 </td>
             </tr>
@@ -21055,6 +21861,7 @@
                     <i>created</i> &bull; The date and time the activity was created.<br>
                     <i>created_by</i> &bull; The name of the user who created the activity.<br>
                     <i>type</i> &bull; Type of activities. Based on the type different fields are returned as follows
+                    <i>priority</i> &bull; Activity priority<br>
                     <ul>
                         <li>STUDY_APPROVE - Notification to approve a study
                         <ul>
@@ -21138,9 +21945,11 @@
                         <ul>
                             <li><i>qctask_id</i> &bull; Id of the QC task<br>
                             <li><i>namespace_id</i> &bull; A namespace the QC task is assigned to<br>
+                            <li><i>namespace_name</i> &bull; Name of the namespace the QC task is assigned to<br>
                             <li><i>user_id</i> &bull; A user the QC task is assigned to<br>
-                            <li><i>query_id</i> &bull; Id of the associated Query object<br>
                             <li><i>message</i> &bull; An explanatory message for the QC task<br>
+                            <li><i>studies</i> &bull; An array of the study uuid(s)<br>
+                            <li><i>qctask_status</i> &bull; Status of the QC task<br>
                         </ul>
                     </ul>
                 </td>
@@ -21247,6 +22056,7 @@
                     * <i>track</i> &bull; A JSON hash of tracking keys and values if tracking is applied to this event (optional)<br>
                     * <i>client_address</i> &bull; IP address that performed the action<br>
                     * <i>sid</i> &bull; sid that performed the action<br>
+                    * <i>webhook_id</i> &bull; webhook that triggered the action. NOTE: This field exists only if action was triggered by webhook.<br>
                 </td>
             </tr>
             <tr>
@@ -21259,7 +22069,7 @@
                 <th>Errors</th>
                 <td>
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
-                    NOT_PERMITTED &bull; You are not permitted to access this object<br>
+                    NOT_PERMITTED &bull; You are not permitted to audit this object<br>
                     NOT_FOUND &bull; The object was not found<br>
                 </td>
             </tr>
@@ -21323,6 +22133,7 @@
                     * <i>client_address</i> &bull; IP address that performed the action<br>
                     * <i>sid</i> &bull; sid that performed the action<br>
                     * <i>study</i> &bull; A JSON hash of study fields for study events. Returned only if study_fields are provided in the parameters<br>
+                    * <i>webhook_id</i> &bull; webhook that triggered the action. NOTE: This field exists only if action was triggered by webhook.<br>
                 </td>
             </tr>
             <tr>
@@ -21390,6 +22201,7 @@
                     * <i>track</i> &bull; A JSON hash of tracking keys and values if tracking is applied to this event (optional)<br>
                     * <i>client_address</i> &bull; IP address that performed the action<br>
                     * <i>sid</i> &bull; sid that performed the action<br>
+                    * <i>webhook_id</i> &bull; webhook that triggered the action. NOTE: This field exists only if action was triggered by webhook.<br>
                 </td>
             </tr>
             <tr>
@@ -21646,8 +22458,10 @@
                     <i>study_field_flags</i> &bull; A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)<br>
                     <i>study_size_soft_threshold_per_user</i> &bull; A threshold for studies size per user. An email (by study_quota_exceeded template) will be sent when this limit is exceeded by a user. A JSON hash of study_field_* role values to override the role values for studies in the namespace (optional)<br>
                     <i>share_related</i> &bull; Flag to make study shares with this namespace include related studies (same PHI namespace, same MRN) (optional)<br>
-                    <i>remove_private_tags_on_upload</i> &bull; Flag the storage to anonymize or remove all private tags from a study (optional)<br>
+                    <i>ira_namespace</i> &bull; Flag to make the namespace viable owner namespace for Queries (optional)<br>
+                    <i>download_anonymize</i> &bull; Anonymization rules to apply on study download. The setting format should follow the <code>anonymize_tags</code> parameter format of the Storage <code>/study/{namespace}/{studyUid}/download</code> call (optional)<br>
                     <div class="comment">-- The following account settings can be over-ridden in the namespace --</div>
+                    <i>remove_private_tags_on_upload</i> &bull; Flag the storage to anonymize or remove all private tags from a study (optional)<br>
                     <i>enable_dicom_wrapping</i> &bull; Value for the setting (optional)<br>
                     <i>auto_enable_dicom_wrapping</i> &bull; Value for the setting (optional)<br>
                     <i>single_file_dicom_wrapping</i> &bull; Value for the setting (optional)<br>
@@ -21671,8 +22485,11 @@
                     <i>disable_mobile_dicom_wrapping</i> &bull; Value for the setting (optional)<br>
                     <i>enable_dicom_deidentification</i> &bull; Value for the setting (optional)<br>
                     <i>try_update_original_study</i> &bull; Value for the setting (optional)<br>
+                    <i>try_update_original_study_from_namespaces</i> &bull; Value for the setting (optional)<br>
+                    <i>try_update_original_study_to_namespaces</i> &bull; Value for the setting (optional)<br>
                     <i>must_approve_duplicate_study_uid</i> &bull; Value for the setting (optional)<br>
                     <i>reverse_patient_name</i> &bull; Value for the setting (optional)<br>
+                    <i>epic_prompt_for_anonymize</i> &bull; Value for the setting (optional)<br>
                     <i>ai_settings**</i> &bull; Other AI settings<br>
                 </td>
             </tr>
@@ -22168,6 +22985,7 @@
                     <i>event_query_add</i> &bull; Notify the user when a new query is issued (optional)<br>
                     <i>event_query_edit</i> &bull; Notify the user when a query is edites (optional)<br>
                     <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query (optional)<br>
+                    <i>event_site_qualified</i> &bull; Notify the user when a trial site is qualified for the clinical trial account (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -22194,6 +23012,7 @@
                     <i>event_query_add</i> &bull; Notify the user when a new query is issued<br>
                     <i>event_query_edit</i> &bull; Notify the user when a query is edites<br>
                     <i>event_query_reply</i> &bull; Notify the user when they leave a new reply in a query<br>
+                    <i>event_site_qualified</i> &bull; Notify the user when a trial site is qualified for the clinical trial account<br>
                 </td>
             </tr>
             <tr>
@@ -22305,6 +23124,7 @@
                 <td>
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     NOT_FOUND &bull; The namespace was not found<br>
+                    PENDING_RESTORE &bull; The study is getting retrieved from the archive. Try this call again after a delay<br>
                 </td>
             </tr>
             <tr>
@@ -23478,6 +24298,8 @@
                     ACCOUNT_NOT_FOUND &bull; The account can not be found<br>
                     NOT_FOUND &bull; The Customfield can not be found<br>
                     NOT_PERMITTED &bull; You are not permitted to add a customfield to this account<br>
+                    INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
+                    INVALID_INTEGER &bull; Invalid integer. The <i>error_subtype</i> holds the invalid integer.<br>
                     INVALID_TYPE &bull; An invalid type was passed.<br>
                     INVALID_OBJECT &bull; An invalid object was passed.<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
@@ -23541,7 +24363,8 @@
                         <li> DICOM tags must be uppercase e.g. <code>(0020,002D)</code>
                         <li> If a customfield is named _DATA_FIELD_fieldname the value will be loaded from the named database field e.g. <code>_DATA_FIELD_integration_key</code>
                         <li> Customfield default flag is overridable with <i>study_field_customfield_UUID</i> role permissions and <i>study_field_flags</i> namespace setting
-                        <li> Customfield can be mapped from another customfield by the means of <i>other_customfield_id</i>. Order->Study mapping is supported currently. Order customfield does not override current Study customfield. Studies match orders by MRN and accession number.
+                        <li> Customfield can be mapped from another customfield by the means of <i>other_customfield_id</i>. Sysadmin and support users are allowed to map customfields between accounts. Order->Study and Study->Study mappings are supported currently. Order customfield does not override current Study customfield. Studies match orders by MRN and accession number.
+                        <li> other_customfield_id parameter is DEPRECATED, use <a href="#customfield_mapping_add">/customfield/mapping/add</a> instead
                     </ul>
                 </td>
             </tr>
@@ -23584,6 +24407,8 @@
                     <i>field_flag</i> &bull; Default customfield flag (optional)<br>
                     <i>load_order</i> &bull; If this flag is on the value of this field will be loaded from a customfield of the matching Order. The customfield is defined by the other_customfield_id parameter (optional)<br>
                     <i>other_customfield_id</i> &bull; Id of a customfield to map its value to this customfield's value (optional)<br>
+                    <i>other_customfield_no_overwrite_with_blank</i> &bull; Flag if the customfield should be updated with a blank value (optional)<br>
+                    <i>other_customfield_no_refresh_on_reshare</i> &bull; Flag if the customfield should be updated on Study reshare (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -23604,6 +24429,8 @@
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     NOT_FOUND &bull; The object was not found. The <i>error_subtype</i> holds the name of the key for the object that can not be found<br>
                     NOT_PERMITTED &bull; You are not permitted to edit the customfield<br>
+                    INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
+                    INVALID_INTEGER &bull; Invalid integer. The <i>error_subtype</i> holds the invalid integer.<br>
                     INVALID_JSON &bull; The field is not in valid JSON format. The <i>error_subtype</i> holds the name of the field<br>
                     INVALID_OPTIONS &bull; An option is invalid. The <i>error_subtype</i> holds the specific error message<br>
                     INVALID_HL7_OBJECT &bull; HL7 fields can only be applied to study fields<br>
@@ -23617,7 +24444,10 @@
             <tr>
                 <th>Notes</th>
                 <td>
-                    See the <a href="#customfield_add">/customfield/add</a> command notes for the format of the options field
+                    <ul>
+                        <li> See the <a href="#customfield_add">/customfield/add</a> command notes for the format of the options field
+                        <li> other_customfield_id, other_customfield_no_overwrite_with_blank and other_customfield_no_refresh_on_reshare parameters are DEPRECATED, use <a href="#customfield_mapping_add">/customfield/mapping/add</a> instead
+                    </ul>
                 </td>
             </tr>
         </table>
@@ -23668,6 +24498,15 @@
                     <i>field_flag</i> &bull; Default customfield flag<br>
                     <i>load_order</i> &bull; If this flag is on the value of this field will be loaded from a customfield of the matching Order. The customfield is defined by the other_customfield_id parameter<br>
                     <i>other_customfield_id</i> &bull; Id of a customfield to map its value to this customfield's value<br>
+                    <i>other_customfield_no_overwrite_with_blank</i> &bull; Flag if the customfield should be updated with a blank value<br>
+                    <i>other_customfield_no_refresh_on_reshare</i> &bull; Flag if the customfield should be updated on Study reshare<br>
+                    <i>customfield_mapping</i> &bull; An array of the customfield mapping rules, each object in the array will have the following fields<br>
+                    * <i>uuid</i> &bull; uuid if the mapping rule<br>
+                    * <i>to_customfield_id</i> &bull; uuid of the destination customfield<br>
+                    * <i>overwrite_with_blank</i> &bull; Flag if the destination customfield should be updated with a blank value<br>
+                    * <i>refresh_on_reshare</i> &bull; Flag if the destination customfield should be updated on Study reshare<br>
+                    * <i>refresh_on_edit</i> &bull; Flag if the destination customfield should be updated on the source customfield edit<br>
+                    * <i>reverse_refresh_on_edit</i> &bull; Flag if the mapping should apply in reverse, i.e. to the customfield of the original study when a shared version of the study is edited<br>
                 </td>
             </tr>
             <tr>
@@ -23688,14 +24527,17 @@
             <tr>
                 <th>Notes</th>
                 <td>
-                    When customfields are returned as part of an object the following fields are returned<br>
                     <ul>
-                        <li> <i>uuid</i> &bull; Id of the custom field
-                        <li> <i>name</i> &bull; Name of the custom field
-                        <li> <i>type</i> &bull; Type of the custom field
-                        <li> <i>value</i> &bull; Value of the custom field
-                        <li> <i>required</i> &bull; Is the field required
-                        <li> <i>options</i> &bull; Field options
+                        <li>Customfields mapped from orders (the <i>load_order</i> flag) do not overwrite existing Study cutomfield values
+                        <li>When customfields are returned as part of an object the following fields are returned<br>
+                            <ul>
+                                <li> <i>uuid</i> &bull; Id of the custom field
+                                <li> <i>name</i> &bull; Name of the custom field
+                                <li> <i>type</i> &bull; Type of the custom field
+                                <li> <i>value</i> &bull; Value of the custom field
+                                <li> <i>required</i> &bull; Is the field required
+                                <li> <i>options</i> &bull; Field options
+                            </ul>
                     </ul>
                 </td>
             </tr>
@@ -23834,6 +24676,155 @@
                     NOT_FOUND &bull; The customfield can not be found<br>
                     NOT_PERMITTED &bull; You are not permitted to do this<br>
                     NOT_A_SEARCH &bull; This is not a search type of customfield<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#customfield-idx">top</a>
+
+        <p><a name="customfield_mapping_add"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Add a mapping rule to the customfield</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/customfield/mapping/add</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>from_customfield_id</i> &bull; The source custom field id<br>
+                    <i>to_customfield_id</i> &bull; The destination custom field id<br>
+                    <i>overwrite_with_blank</i> &bull; Flag if the destination customfield should be updated with a blank value, 1 by default (optional)<br>
+                    <i>refresh_on_reshare</i> &bull; Flag if the destination customfield should be updated on Study reshare, 1 by default (optional)<br>
+                    <i>refresh_on_edit</i> &bull; Flag if the destination customfield should be updated on the source customfield edit, 1 by default (optional)<br>
+                    <i>reverse_refresh_on_edit</i> &bull; Flag if the mapping should apply in reverse, ie to the customfield designated as a <i>from_customfield_id</i> of the original study when a shared version of the study is edited, 0 by default (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>uuid</i> &bull; uuid of the mapping rule<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    customfield_edit in the account of the source customfield
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_PERMITTED &bull; You are not permitted to do this<br>
+                    NOT_FOUND &bull; The customfield can not be found, The <i>error_subtype</i> refers to a customfield by the following values: FROM_CUSTOMFIELD or TO_CUSTOMFIELD<br>
+                    ALREADY_EXISTS &bull; The mapping rule already exists<br>
+                    INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    The calling user should be a support or sysadmin user to add a mapping rule to map custom fields between accounts.
+                </td>
+            </tr>
+        </table>
+        <a href="#customfield-idx">top</a>
+
+        <p><a name="customfield_mapping_set"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Edit a customfield mapping rule</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/customfield/mapping/set</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; uuid of the customfield mapping rule<br>
+                    <i>overwrite_with_blank</i> &bull; Flag if the destination customfield should be updated with a blank value, 1 by default (optional)<br>
+                    <i>refresh_on_reshare</i> &bull; Flag if the destination customfield should be updated on Study reshare, 1 by default (optional)<br>
+                    <i>refresh_on_edit</i> &bull; Flag if the destination customfield should be updated on the source customfield edit, 1 by default (optional)<br>
+                    <i>reverse_refresh_on_edit</i> &bull; Flag if the mapping should apply in reverse, ie to the customfield designated as a <i>from_customfield_id</i> of the original study when a shared version of the study is edited, 0 by default (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    customfield_edit in the account of the source customfield
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_PERMITTED &bull; You are not permitted to do this<br>
+                    NOT_FOUND &bull; The customfield mapping rule can not be found<br>
+                    INVALID_FLAG &bull; An invalid flag was passed. The <i>error_subtype</i> holds the name of the invalid flag<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#customfield-idx">top</a>
+
+        <p><a name="customfield_mapping_delete"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Delete a customfield mapping rule</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/customfield/mapping/delete</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; uuid of the customfield mapping rule<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    customfield_edit in the account of the source customfield
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_PERMITTED &bull; You are not permitted to do this<br>
+                    NOT_FOUND &bull; The customfield mapping rule can not be found<br>
                 </td>
             </tr>
             <tr>
@@ -24030,6 +25021,11 @@
                             <li>STUDY_COPY - Called when an study is successfully copied into a namespace
                             <li>QUERY_ADD - Called when a new Query is issued
                             <li>QUERY_STATUS - Called when the Query status changes
+                            <li>SITE_QUALIFIED - Called when the Site is qualified for a trial
+                            <li>QCTASK_COMPLETED - Called when the QC task is deleted
+                            <li>QUERY_STATUS - Called when the QC task status changes
+                            <li>ACCOUNT_USER_ADD - Called when a user is added to the account
+                            <li>ACCOUNT_USER_EDIT - Called when a user in the account is edited
                         </ul>
                         <li> For the STUDY_PUSH_STATUS event the destination fields are available as destination.field and the push status as study_push.status for the letter status or study_push.success for a 1/0 flag where 0 is success and 1 is failed
                         <li> For the STUDY_UPLOAD_FAIL event the reason the upload failed is available in the study.failed_upload_reason field
@@ -24053,6 +25049,7 @@
                         <li> For the NAMESPACE_AI_* event the namespace data is available as <code>namespace.*</code> parameters, the question data is available as <code>ai_question.*</code> parameters
                         <li> For the DESTINATION_SEARCH_RESULTS event the returned study list is in the <code>destination_search.results</code> field and the count is in the <code>destination_search.count</code> field, customfields passed to <a href="#destination_search">/destination/search</a> are in the <code>destination_search.customfield-*</code> fields.
                         <li> For the DESTINATION_FETCH_FAIL and DESTINATION_FETCH_SUCCESS events the details are available in the following fields <code>study_fetch.(accession_number|study_uid|patientid|destination_name|destination_uuid|customfield-*)</code> and study.* fields for the DESTINATION_FETCH_SUCCESS event
+                        <li> For the ACCOUNT_USER_ADD and ACCOUNT_USER_EDIT events the account user data is available as <code>user_account.*</code> parameters
                         <li> The auth fields is a JSON hash with a single key that describes the type of auth and the value for the key is a hash with the auth details. The following types of auth are supported.
                             <ul>
                                 <li> sfdc - <a href="https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_understanding_username_password_oauth_flow.htm">Salesforce Username-Password OAuth Authentication</a>. The following keys must be in the details hash, client_id, client_secret, username, and password. e.g. <nobr><code>{"sfdc":{"client_id":"3MVG9lK","client_secret":"1955279","username":"testuser@salesforce.com","password":"mypassword1234"}}</code></nobr>. /webhook/get will return the md5 of the password.
@@ -24062,6 +25059,8 @@
                                 <li> custom - a hash of keys and values that will be passed in the HTTP header of the webhook e.g. <nobr><code>{"custom":{"name":"test"}}</code></nobr>
                             </ul>
                         <li> For the QUERY_ADD and QUERY_STATUS events the query data is available as <code>query.*</code> parameters
+                        <li> For the SITE_QUALIFIED event the site and group data is available as <code>site.*</code> and <code>group.*</code> parameters respectively. The webhook can be defined in both site management and trial accounts.
+                        <li> For the QCTASK_COMPLETED and QCTASK_STATUS events the QC task data is available as <code>qctask.*</code> parameters.
                     </ul>
                 </td>
             </tr>
@@ -24352,7 +25351,7 @@
                 <th>Notes</th>
                 <td>
                     <ul>
-                        <li> Additional parameters can be passed and will be inserted into the webhook if the webhook parameters value has fields named "parameters.PARAMETER_NAME" 
+                        <li> Additional parameters can be passed and will be inserted into the webhook if the webhook parameters value has fields named "parameters.PARAMETER_NAME"
                     </ul>
                 </td>
             </tr>
@@ -24543,7 +25542,7 @@
                     <i>notify</i> &bull; Comma or space separated list of additional emails to notify of link usage (optional)<br>
                     <i>use_share_code</i> &bull; Flag to use the namespace share code settings for a STUDY_UPLOAD (optional)<br>
                     <i>share_code</i> &bull;  share code for a STUDY_UPLOAD (optional)<br>
-                    <i>parameters</i> &bull; JSON array of parameters to add to the redirect URL or return in /namespace/share_code if an upload (optional)<br>
+                    <i>parameters</i> &bull; JSON array of parameters to add to the redirect URL or return in /namespace/share_code if an upload e.g. <code>["integration_key","abc"]</code> Where <code>abc</code> is integration key. (optional) <br>
                     <i>meeting_id</i> &bull; UUID of the meeting to associate the link with (optional)<br>
                     <i>anonymize</i> &bull; Anonymization rules to the applied to any STUDY_UPLOAD done with this link. Rules are formatted as per the rules parameter in <a href="#namespace_anonymize">/namespace/anonymize</a>  (optional)<br>
                     <i>prompt_for_anonymize</i> &bull; Flag to prompt if the anonymization rules should be applied on ingress<br>
@@ -24557,6 +25556,8 @@
                     <i>upload_study_customfields</i> &bull; A JSON hash of customfields that will be mapped to a study on study upload. A key is a customfield UUID, a value is a value for the field (optional) <br>
                     <i>workflow</i> &bull; The workflow this link is intended for (patient_studies) (optional)<br>
                     <i>ui_json</i> &bull; JSON for UI settings (optional)<br>
+                    <i>user_id</i> &bull; The link user. Any filter is applied in this users context (optional)<br>
+                    <i>inherit_permissions</i> &bull; Flag for the link sessions to inherit permissions from the user stored in the <i>user_id</i> link attribute (optional)<br>
             </tr>
             <tr>
                 <th>Returns</th>
@@ -24570,14 +25571,15 @@
             <tr>
                 <th>Permission</th>
                 <td>
-                    link_edit for STUDY_(VIEW|LIST) and link_edit_upload for STUDY_UPLOAD
+                    link_edit for STUDY_(VIEW|LIST) and link_edit_upload for STUDY_UPLOAD<br>
+                    can_proxy_login is required to pass the <i>user_id</i> parameter
                 </td>
             </tr>
             <tr>
                 <th>Errors</th>
                 <td>
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
-                    NOT_FOUND &bull; The patient or study could not be found. The <i>error_subtype</i> holds the uuid that can not be found<br>
+                    NOT_FOUND &bull; The patient or study could not be found. The <i>error_subtype</i> holds the type of object not found<br>
                     NOT_PERMITTED &bull; You are not permitted to create links<br>
                     INVALID_ACTION &bull; An invalid action was passed<br>
                     INVALID_EMAIL &bull; An invalid email address was passed<br>
@@ -24606,6 +25608,7 @@
                         <li> If the password_is_dob feature is used the password can be in any date format and it will be parsed and compared against the study date
                         <li> A sample upload_match field to restrict the study to a specific birth date would look like this <code>{"(0010,0030)":"/^19800401$/"}</code>
                         <li> The email parameter can contain comma separated list of emails. Only the first one will be saved as link's email attribute.
+                        <li> The user_id will be recorded as a proxy user for the link events in the audit trail.
                     </ul>
                 </td>
             </tr>
@@ -24667,6 +25670,7 @@
                     <i>created</i> &bull; Created datetime stamp of the link<br>
                     <i>workflow</i> &bull; The workflow this link is intended for<br>
                     <i>ui_json</i> &bull; JSON for UI settings<br>
+                    <i>inherit_permissions</i> &bull; Flag for the link sessions to inherit permissions from the user stored in the <i>user_id</i> link attribute<br>
                 </td>
             </tr>
             <tr>
@@ -24880,6 +25884,10 @@
                     <i>sid</i> &bull; sid from /link/session (optional)<br>
                     <i>password</i> &bull; Password if needed (optional)<br>
                     <i>link_charge_id</i> &bull; The uuid of the prior charge against this link (optional)<br>
+                    <i>v</i> &bull; A JSON hash with the following keys pairs. The JSON must be encrypted (optional)<br>
+                    <ul>
+                        <li> <i>context_user_id</i> - an account user id for eUnity
+                    </ul>
                 </td>
             </tr>
             <tr>
@@ -26170,7 +27178,7 @@
                         <li> Regular expressions are evaluated in order from low to high regexp number and evaluation stops at the first match
                         <li> To wildcard match any lookup value use this regular expression <code>/.*/</code>
                         <li> To apply a entry only if the record is new or the field is empty use this regular expression <code>/^\s*$/</code>
-                        <li> The __COUNTER-XXX__ and __LCOUNTER-XXX__ values as documented in /namespace/anonymize is supported as a replacement value. This does not need to be in a Text::Template expression and if it is it should be quoted as a literal string.
+                        <li> The __COUNTER-XXX__ , __LCOUNTER-XXX__ , __MD5_HASH__ and __MD5_COUNTER__ values as documented in /namespace/anonymize are supported as a replacement value. This does not need to be in a Text::Template expression and if it is it should be quoted as a literal string.
                     </ul>
                 </td>
             </tr>
@@ -27017,6 +28025,8 @@
                     <i>uuid</i> &bull; The appointment uuid<br>
                     <i>patient_id</i> &bull; Id of the patient<br>
                     <i>patient_name</i> &bull; Name of the patient<br>
+                    <i>first</i> &bull; First name of the patient<br>
+                    <i>last</i> &bull; Last name of the patient<br>
                     <i>patient_mrn</i> &bull; MRN of the patient<br>
                     <i>user_id</i> &bull; Id of the user<br>
                     <i>user_name</i> &bull; Name of the user<br>
@@ -27450,9 +28460,12 @@
                     <i>account_id</i> &bull; uuid of the account to add them to<br>
                     <i>name</i> &bull; The sites name<br>
                     <i>site_id</i> &bull; The site to attach them to as a satellite site (optional)<br>
+                    <i>country</i> &bull; The country of the site (optional)<br>
                     <i>state</i> &bull; The state code of the site (optional)<br>
                     <i>zip</i> &bull; The zip code of the site (optional)<br>
                     <i>city</i> &bull; The city the site is located in (optional)<br>
+                    <i>address1</i> &bull; Address line 1 of the site (optional)<br>
+                    <i>address2</i> &bull; Address line 2 of the site (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -27503,10 +28516,13 @@
                     <i>uuid</i> &bull; The site uuid<br>
                     <i>name</i> &bull; The sites name (optional)<br>
                     <i>site_id</i> &bull; The site to attach them to as a satellite site (optional)<br>
+                    <i>country</i> &bull; The country of the site (optional)<br>
                     <i>state</i> &bull; The state code of the site (optional)<br>
                     <i>zip</i> &bull; The zip code of the site (optional)<br>
                     <i>city</i> &bull; The city the site is located in (optional)<br>
                     <i>inactive</i> &bull; Flag if the site is actively used. Might be used to filter out inactive sites (optional)<br>
+                    <i>address1</i> &bull; Address line 1 of the site (optional)<br>
+                    <i>address2</i> &bull; Address line 2 of the site (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -27564,13 +28580,21 @@
                     <i>uuid</i> &bull; The site uuid<br>
                     <i>name</i> &bull; The sites name<br>
                     <i>site_id</i> &bull; The site to attach them to as a satellite site<br>
+                    <i>address2</i> &bull; The country of the site<br>
                     <i>state</i> &bull; The state code of the site<br>
                     <i>zip</i> &bull; The zip code of the site<br>
                     <i>city</i> &bull; The city the site is located in<br>
+                    <i>address1</i> &bull; Address line 1 of the site<br>
+                    <i>address2</i> &bull; Address line 2 of the site<br>
                     <i>account_id</i> &bull; UUID of the account<br>
                     <i>satellite_sites</i> &bull; An array of the satellite sites. Each object has the following fields.<br>
                     * <i>uuid</i> &bull; Site Id<br>
                     * <i>name</i> &bull; Site name<br>
+                    <i>trials</i> &bull; An array of the associated trials (groups). Each object has the following fields.<br>
+                    * <i>uuid</i> &bull; Group Id<br>
+                    * <i>name</i> &bull; Group name<br>
+                    * <i>inactive</i> &bull; Flag if the trial is inactive (corresponds to the group's <i>site_inactive</i> flag)<br>
+                    * <i>qualified</i> &bull; Flag if the trial is qualified (corresponds to the group's <i>site_qualified</i> flag)<br>
                     <i>inactive</i> &bull; Flag if the site is actively used. Might be used to filter out inactive sites<br>
                 </td>
             </tr>
@@ -28143,6 +29167,49 @@
         </table>
         <a href="#query-idx">top</a>
 
+        <p><a name="query_count"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Count the user queries needing attention</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/query/count</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>count_assigned</i> &bull; The number of queries assigned to the current user, but not seen yet<br>
+                    <i>count_unassigned</i> &bull; The number of Queries not assigned to a specific user<br>
+                    <i>count_unread</i> &bull; The number of Queries having new messages<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#query-idx">top</a>
+
         <p><a name="query_add"></a>
         <table class="bordered-table">
             <tr>
@@ -28285,9 +29352,10 @@
                     <i>query_status</i> &bull; The query status tag<br>
                     <i>subject</i> &bull; Subject line of the query<br>
                     <i>body</i> &bull; The query body<br>
-                    <i>query_no</i> &bull; The query number in the account<br>
+                    <i>query_no</i> &bull; The query number<br>
                     <i>created</i> &bull; Date and time the query was created<br>
                     <i>owner_namespace_id</i> &bull; The namespace UUID owning the query<br>
+                    <i>owner_namespace_name</i> &bull; The owning namespace's name<br>
                     <i>owner_user_id</i> &bull; The user owning user's UUID<br>
                     <i>owner_user_name</i> &bull; The user owning user's name<br>
                     <i>owner_user_email</i> &bull; The user owning user's email<br>
@@ -28295,9 +29363,12 @@
                     <i>study_modality</i> &bull; The related study modality<br>
                     <i>group_id</i> &bull; Id of the group associated to a trial site<br>
                     <i>group_name</i> &bull; Name of the group associated to a trial site<br>
+                    <i>visit_name</i> &bull; The visit name defined by a study named custom field called <code>trial_visit_name</code><br>
+                    <i>subject_number</i> &bull; The subject number<br>
                     <i>attachments</i> &bull; An array of the query attachments. Each object has the following fields.<br>
                     * <i>uuid</i> &bull; Attachment Id<br>
                     * <i>created</i> &bull; Date and time the attachment was created<br>
+                    * <i>created_by_id</i> &bull; UUID of the user who added the attachment<br>
                     * <i>length</i> &bull; The attachment size in bytes<br>
                     * <i>type</i> &bull; The attachment MIME-type<br>
                     * <i>name</i> &bull; The attachment display name<br>
@@ -28319,6 +29390,10 @@
                     <i>patient_arm</i> &bull; The patient arm (defined by the <code>trial_arm</code> named customfield)<br>
                     <i>tags</i> &bull; An array of user tags associated with this object (This is only returned if the object has tags)<br>
                     <i>customfields</i> &bull; An array of the custom fields associated with this query. Each object has the following <a href="#customfields">fields</a> (This is only returned if the query has custom fields)<br>
+                    <i>unread_message_count</i> &bull; Number of unread messages in the Query<br>
+                    <i>created_by_name</i> &bull; Name of the user who created the query<br>
+                    <i>created_by_email</i> &bull; Email of the user who created the query<br>
+                    <i>created_by_type</i> &bull; Type of user who created the query<br>
                 </td>
             </tr>
             <tr>
@@ -28388,6 +29463,53 @@
             </tr>
         </table>
         <a href="#query-idx">top</a>
+
+        <p><a name="query_seen"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Mark query messages seen</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/query/seen</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The query uuid<br>
+                    <i>message_id</i> &bull; ID of the last seen message (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    query_view
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The query can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to view the query<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#query-idx">top</a>
+
 
         <p><a name="query_status_set"></a>
         <table class="bordered-table">
@@ -28591,10 +29713,12 @@
                     <i>namespace_id</i> &bull; Id of the namespace assigned to the QC Task<br>
                     <i>user_id</i> &bull; Id of the user to assign the QC Task to (optional)<br>
                     <i>query_id</i> &bull; Id of the query to associate the QC Task to (optional)<br>
-                    <i>priority</i> &bull; QC Task priority (optional)<br>
+                    <i>priority</i> &bull; QC Task priority<br>
                     <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
                     <i>message</i> &bull; Explanatory message for the QC Task (optional)<br>
                     <i>studies</i> &bull; A JSON array of the study uuid(s) (optional)<br>
+                    <i>queries</i> &bull; A JSON array of the query uuid(s) associate the QC Task to (optional)<br>
+                    <i>qctask_status</i> &bull; Status of the QC task, <i>Open</i> by default (Open|InProgress|Closed) (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -28608,7 +29732,6 @@
                 <th>Permission</th>
                 <td>
                     qctask_add
-                    qctask_prioritize
                 </td>
             </tr>
             <tr>
@@ -28651,6 +29774,7 @@
                     <i>customfield-{CUSTOMFIELD_UUID}</i> &bull; Custom field(s) (optional)<br>
                     <i>message</i> &bull; Explanatory message for the QC Task (optional)<br>
                     <i>studies</i> &bull; A JSON array of the study uuid(s) (optional)<br>
+                    <i>queries</i> &bull; A JSON array of the query uuid(s) associate the QC Task to (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -28706,12 +29830,13 @@
                 <td>
                     <i>namespace_id</i> &bull; Id of the namespace assigned to the QC Task<br>
                     <i>user_id</i> &bull; Id of the user to assign the QC Task to<br>
-                    <i>query_id</i> &bull; Id of the associated query<br>
                     <i>priority</i> &bull; QC Task priority<br>
                     <i>customfields</i> &bull; An array of the custom fields associated with this QC Task. Each object has the following <a href="#customfields">fields</a> (This is only returned if the QC Task has custom fields)<br>
                     <i>message</i> &bull; Explanatory message for the QC Task<br>
                     <i>created</i> &bull; Date and time the QC Task was created<br>
                     <i>studies</i> &bull; An array of the study uuid(s)<br>
+                    <i>queries</i> &bull; An array of the associated query uuid(s)<br>
+                    <i>qctask_status</i> &bull; Status of the QC task<br>
                 </td>
             </tr>
             <tr>
@@ -28726,6 +29851,49 @@
                     MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
                     NOT_FOUND &bull; The QC Task can not be found<br>
                     NOT_PERMITTED &bull; You are not permitted to view the QC Task<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#qctask-idx">top</a>
+
+        <p><a name="qctask_status_set"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Set the status of a QC task</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/qctask/status/set</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; QC task uuid<br>
+                    <i>old</i> &bull; The old QC task status value<br>
+                    <i>new</i> &bull; The new QC task status value (Open|InProgress|Closed)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The QC task can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to set the status for this QC task<br>
+                    STALE &bull; The QC task status you have is stale<br>
+                    INVALID_TAG &bull; The QC task status new value is not a valid value<br>
                 </td>
             </tr>
             <tr>
@@ -28914,6 +30082,9 @@
                     <i>name</i> &bull; Name of the anonymization profile<br>
                     <i>rules</i> &bull; A JSON hash of <a href="#namespace_anonymize">anonymization rules</a> to apply to retrieved studies<br>
                     <i>account_id</i> &bull; account uuid<br>
+                    <i>namespaces</i> &bull; An array of the namespaces the anonymization profile applies to. Each namespace holds the following fields.<br>
+                    * <i>uuid</i> &bull; Id of the namespace<br>
+                    * <i>name</i> &bull; Description of the namespace<br>
                 </td>
             </tr>
             <tr>
@@ -28984,7 +30155,7 @@
         </table>
         <a href="#anonymization-idx">top</a>
 
-    <footer>LBL0022 v47.0 2021-06-30</footer>
+    <footer>LBL0022 v53.0 2021-04-05</footer>
     </div>
 </body>
 </html>

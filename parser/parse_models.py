@@ -115,6 +115,7 @@ DEFAULT_FOREIGN_MODELS = MappingProxyType(
         'ancestor_id': 'Ancestor',
         'descendant_id': 'Descendant',
         'anonymization_id': 'Anonyimization',
+        'rule_set_id': 'TimerRule',
     }
 )
 

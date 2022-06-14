@@ -1017,6 +1017,7 @@ class Audit(BaseModel):
     account_id = String(description='FK. Account id of the association account')
     account = FK(model='Account', description='Account id of the association account')
     action = String(description='The audit action')
+    causality = String(description='Traceability metadata')
     data = String(description='The audit data')
     parent_id = String(description='FK. Id of the parent object')
     parent = FK(model='SelfField', description='Id of the parent object')
@@ -1037,6 +1038,7 @@ class Audit(BaseModel):
         account_id=None,
         account=None,
         action=None,
+        causality=None,
         data=None,
         parent_id=None,
         parent=None,
@@ -1053,6 +1055,7 @@ class Audit(BaseModel):
         self.account_id = account_id
         self.account = account
         self.action = action
+        self.causality = causality
         self.data = data
         self.parent_id = parent_id
         self.parent = parent
@@ -1973,6 +1976,7 @@ class Customfield(BaseModel):
     required = Boolean(description='Settings')
     type_field = String(description='Name and type  of the field')
     wrapped_dicom_only = Boolean(description='Settings')
+    ui_json = String(description='JSON for UI settings')
     created = DateTime(description='Timestamp when the record was created')
     created_by = String(description='FK. ID of the user who created the record')
     created_by_obj = FK(model='User', description='ID of the user who created the record')
@@ -2015,6 +2019,7 @@ class Customfield(BaseModel):
         required=None,
         type_field=None,
         wrapped_dicom_only=None,
+        ui_json=None,
         created=None,
         created_by=None,
         created_by_obj=None,
@@ -2053,6 +2058,7 @@ class Customfield(BaseModel):
         self.required = required
         self.type_field = type_field
         self.wrapped_dicom_only = wrapped_dicom_only
+        self.ui_json = ui_json
         self.created = created
         self.created_by = created_by
         self.created_by_obj = created_by_obj
@@ -6460,6 +6466,51 @@ class Rsync(BaseModel):
 
 
 
+class RuleSet(BaseModel):
+    """RuleSet."""
+    
+    id = Integer(description='Primary key for internal use')
+    uuid = String(description='UUID for external use')
+    account_id = String(description='FK. The associated account')
+    account = FK(model='Account', description='The associated account')
+    name = String(description='Name')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+    updated = DateTime(description='Timestamp when the record was last updated')
+    updated_by = String(description='FK. ID of the user who updated the record')
+    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        uuid=None,
+        account_id=None,
+        account=None,
+        name=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+        updated=None,
+        updated_by=None,
+        updated_by_obj=None,
+    ):
+        self.id = id
+        self.uuid = uuid
+        self.account_id = account_id
+        self.account = account
+        self.name = name
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+        self.updated = updated
+        self.updated_by = updated_by
+        self.updated_by_obj = updated_by_obj
+
+
+
 class Scanner(BaseModel):
     """Scanner."""
     
@@ -6781,7 +6832,7 @@ class Study(BaseModel):
     engine = FK(model='Engine', description='The storage engine the study is stored on')
     image_count = Integer(description='This is the MRN')
     integration_key = String(description='Key for integration with third party systems')
-    last_status_change = DateTime(description='Timestamp to calculate how long a study spent in current status. This removes the need for searching through audit records.')
+    last_status_change = DateTime(description='This should have been named &#39;last_status_timer_adjustment&#39;. Current status timer is calculated based on this timestamp. This removes the need for searching through audit records.')
     medical_record_locator = String(description='This is the MRN')
     modality = String(description='This is the MRN')
     must_approve = Boolean(description='Flag if study approval is needed')
@@ -6819,6 +6870,7 @@ class Study(BaseModel):
     source = String(description='The original source of the study')
     source_ae_title = String(description='The aetitle the study was harvested against')
     status_timer = Integer(description='The timer value at status enter. Real timer value must be calculated at read time')
+    status_timer_counting = Integer(description='Is the timer counting?')
     storage_namespace = String(description='FK. The storage namespace')
     storage_namespace_obj = FK(model='Namespace', description='The storage namespace')
     storage_state = String(description='Storage state. Empty or null is available or else &#39;U&#39; if unavailable or &#39;R&#39; if getting restored from the archive')
@@ -6892,6 +6944,7 @@ class Study(BaseModel):
         source=None,
         source_ae_title=None,
         status_timer=None,
+        status_timer_counting=None,
         storage_namespace=None,
         storage_namespace_obj=None,
         storage_state=None,
@@ -6961,6 +7014,7 @@ class Study(BaseModel):
         self.source = source
         self.source_ae_title = source_ae_title
         self.status_timer = status_timer
+        self.status_timer_counting = status_timer_counting
         self.storage_namespace = storage_namespace
         self.storage_namespace_obj = storage_namespace_obj
         self.storage_state = storage_state
@@ -7320,6 +7374,7 @@ class StudyDeleted(BaseModel):
     source = String(description='')
     source_ae_title = String(description='')
     status_timer = Integer(description='')
+    status_timer_counting = Integer(description='')
     storage_namespace = String(description='FK. ')
     storage_namespace_obj = FK(model='Namespace', description='')
     storage_state = String(description='')
@@ -7396,6 +7451,7 @@ class StudyDeleted(BaseModel):
         source=None,
         source_ae_title=None,
         status_timer=None,
+        status_timer_counting=None,
         storage_namespace=None,
         storage_namespace_obj=None,
         storage_state=None,
@@ -7468,6 +7524,7 @@ class StudyDeleted(BaseModel):
         self.source = source
         self.source_ae_title = source_ae_title
         self.status_timer = status_timer
+        self.status_timer_counting = status_timer_counting
         self.storage_namespace = storage_namespace
         self.storage_namespace_obj = storage_namespace_obj
         self.storage_state = storage_state
@@ -8923,6 +8980,69 @@ class Terminology(BaseModel):
         self.tag = tag
         self.value = value
         self.vanity = vanity
+        self.created = created
+        self.created_by = created_by
+        self.created_by_obj = created_by_obj
+        self.updated = updated
+        self.updated_by = updated_by
+        self.updated_by_obj = updated_by_obj
+
+
+
+class TimerRule(BaseModel):
+    """TimerRule."""
+    
+    id = Integer(description='Primary key for internal use')
+    uuid = String(description='UUID for external use')
+    account_id = String(description='FK. The account this rule is tied to')
+    account = FK(model='Account', description='The account this rule is tied to')
+    action = String(description='Action to perform on condition match')
+    name = String(description='Name')
+    new_values = String(description='New study fields to match')
+    old_values = String(description='Old study fields to match')
+    rule_set_id = String(description='FK. Rule set')
+    rule_set = FK(model='TimerRule', description='Rule set')
+    sequence = Integer(description='The sequence to order by')
+    created = DateTime(description='Timestamp when the record was created')
+    created_by = String(description='FK. ID of the user who created the record')
+    created_by_obj = FK(model='User', description='ID of the user who created the record')
+    updated = DateTime(description='Timestamp when the record was last updated')
+    updated_by = String(description='FK. ID of the user who updated the record')
+    updated_by_obj = FK(model='User', description='ID of the user who updated the record')
+
+
+    def __init__(
+        self,
+	*,
+        id=None,
+        uuid=None,
+        account_id=None,
+        account=None,
+        action=None,
+        name=None,
+        new_values=None,
+        old_values=None,
+        rule_set_id=None,
+        rule_set=None,
+        sequence=None,
+        created=None,
+        created_by=None,
+        created_by_obj=None,
+        updated=None,
+        updated_by=None,
+        updated_by_obj=None,
+    ):
+        self.id = id
+        self.uuid = uuid
+        self.account_id = account_id
+        self.account = account
+        self.action = action
+        self.name = name
+        self.new_values = new_values
+        self.old_values = old_values
+        self.rule_set_id = rule_set_id
+        self.rule_set = rule_set
+        self.sequence = sequence
         self.created = created
         self.created_by = created_by
         self.created_by_obj = created_by_obj

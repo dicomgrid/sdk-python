@@ -509,6 +509,31 @@ class Study:
         }
         return QueryOF(**query_data)
     
+    def count_by_filter(
+        self,
+        filter_uuids=None,
+    ):
+        """Count_by_filter.
+
+        :param filter_uuids: JSON array of filter.uuid (optional)
+        """
+        request_data = {
+           'filter_uuids': filter_uuids,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        query_data = {
+            'api': self._api,
+            'url': '/study/count_by_filter',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryOF(**query_data)
+    
     def cfind(
         self,
         serial_no,
@@ -2664,6 +2689,31 @@ class AsyncStudy:
         query_data = {
             'api': self._api,
             'url': '/study/count',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryOF(**query_data)
+    
+    def count_by_filter(
+        self,
+        filter_uuids=None,
+    ):
+        """Count_by_filter.
+
+        :param filter_uuids: JSON array of filter.uuid (optional)
+        """
+        request_data = {
+           'filter_uuids': filter_uuids,
+        }
+	
+        errors_mapping = {}
+        errors_mapping[('FILTER_NOT_FOUND', None)] = FilterNotFound('The filter can not be found. The error_subtype will hold the filter UUID')
+        errors_mapping[('INVALID_CONDITION', None)] = InvalidCondition('The condition is not support. The error_subtype will hold the filter expression this applies to')
+        errors_mapping[('INVALID_FIELD', None)] = InvalidField('The field is not valid for this object. The error_subtype will hold the filter expression this applies to')
+        query_data = {
+            'api': self._api,
+            'url': '/study/count_by_filter',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,

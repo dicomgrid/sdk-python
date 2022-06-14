@@ -7,7 +7,6 @@ from dynaconf import settings
 from ambra_sdk.exceptions.storage import (
     AccessDenied,
     AmbraResponseException,
-    ImageNotFound,
     StudyNotFound,
 )
 from ambra_sdk.service.ws import AsyncWSManager
@@ -223,14 +222,6 @@ class TestAsyncStorageStudy:
             image_uid=image['id'],
         )
         assert delete_image.status in {200, 202}
-
-        with pytest.raises(ImageNotFound):
-            delete_image = await async_api.Storage.Study.delete_image(
-                engine_fqdn=engine_fqdn,
-                namespace=storage_namespace,
-                study_uid=study_uid,
-                image_uid=image['id'],
-            )
 
     async def test_delete_images(
         self,

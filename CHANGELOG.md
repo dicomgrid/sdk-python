@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+
+## [3.22.4.0-1] - 2022-08-03
+### Added
+- Service public api support: LBL0022 v55.0 2022-08-03
+- Storage public api support: LBL0038 v23.0 2022-08-03
+
 ## [3.22.3.0-1] - 2022-05-25
 ### Added
 - Service public api support: LBL0022 v53.0 2021-04-05

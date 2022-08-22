@@ -300,6 +300,7 @@ class Group:
         event_node=None,
         event_query_add=None,
         event_query_edit=None,
+        event_query_new_recipient=None,
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
@@ -327,7 +328,8 @@ class Group:
         :param event_new_report: Notify the user when a report is attached in the group namespace (optional)
         :param event_node: Notify the user when a group node sends an event (optional)
         :param event_query_add: Notify the user when a new query is issued (optional)
-        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_edit: Notify the user when a query is edited (optional)
+        :param event_query_new_recipient: Notify the user when they are added to a query as a new recipient (optional)
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the group namespace (optional)
         :param event_share: Notify the user on a share into the group namespace (optional)
@@ -353,6 +355,7 @@ class Group:
            'event_node': event_node,
            'event_query_add': event_query_add,
            'event_query_edit': event_query_edit,
+           'event_query_new_recipient': event_query_new_recipient,
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
@@ -753,6 +756,7 @@ class AsyncGroup:
         event_node=None,
         event_query_add=None,
         event_query_edit=None,
+        event_query_new_recipient=None,
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
@@ -780,7 +784,8 @@ class AsyncGroup:
         :param event_new_report: Notify the user when a report is attached in the group namespace (optional)
         :param event_node: Notify the user when a group node sends an event (optional)
         :param event_query_add: Notify the user when a new query is issued (optional)
-        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_edit: Notify the user when a query is edited (optional)
+        :param event_query_new_recipient: Notify the user when they are added to a query as a new recipient (optional)
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the group namespace (optional)
         :param event_share: Notify the user on a share into the group namespace (optional)
@@ -806,6 +811,7 @@ class AsyncGroup:
            'event_node': event_node,
            'event_query_add': event_query_add,
            'event_query_edit': event_query_edit,
+           'event_query_new_recipient': event_query_new_recipient,
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,

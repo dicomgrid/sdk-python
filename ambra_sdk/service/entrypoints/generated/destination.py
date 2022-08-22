@@ -92,11 +92,11 @@ class Destination:
         port,
         c_echo_interval=None,
         c_echo_schedule=None,
-        can_mwl_search=None,
         can_push_hl7=None,
         can_query_retrieve=None,
         can_retrieve_thin=None,
         can_search=None,
+        can_search_mwl=None,
         cd_burn_info=None,
         cd_burn_name=None,
         cd_burn_priority=None,
@@ -129,11 +129,11 @@ class Destination:
         :param port: Port of the destination (required if DICOM type)
         :param c_echo_interval: Interval in seconds to C echo the destination (optional)
         :param c_echo_schedule: C echo schedule (optional)
-        :param can_mwl_search: Can this destination support searching a modality work list (optional)
         :param can_push_hl7: Can this destination support pushong Hl7 messages (optional)
         :param can_query_retrieve: Can this destination support query retrieve from HL7 messages (optional)
         :param can_retrieve_thin: Can this destination support retrieving thin studies (optional)
         :param can_search: Can this destination support searching (optional)
+        :param can_search_mwl: Can this destination support searching a modality work list (optional)
         :param cd_burn_info: A JSON hash with the CD burning information (optional)
         :param cd_burn_name: Name for the CD burner software (optional)
         :param cd_burn_priority: Integer value for the burner priority (optional)
@@ -157,11 +157,11 @@ class Destination:
            'aetitle': aetitle,
            'c_echo_interval': c_echo_interval,
            'c_echo_schedule': c_echo_schedule,
-           'can_mwl_search': can_mwl_search,
            'can_push_hl7': can_push_hl7,
            'can_query_retrieve': can_query_retrieve,
            'can_retrieve_thin': can_retrieve_thin,
            'can_search': can_search,
+           'can_search_mwl': can_search_mwl,
            'cd_burn_info': cd_burn_info,
            'cd_burn_name': cd_burn_name,
            'cd_burn_priority': cd_burn_priority,
@@ -224,11 +224,11 @@ class Destination:
         aetitle=None,
         c_echo_interval=None,
         c_echo_schedule=None,
-        can_mwl_search=None,
         can_push_hl7=None,
         can_query_retrieve=None,
         can_retrieve_thin=None,
         can_search=None,
+        can_search_mwl=None,
         cd_burn_info=None,
         cd_burn_name=None,
         cd_burn_priority=None,
@@ -259,11 +259,11 @@ class Destination:
         :param aetitle: Aetitle of the destination (optional)
         :param c_echo_interval: Interval in seconds to C echo the destination (optional)
         :param c_echo_schedule: C echo schedule (optional)
-        :param can_mwl_search: Can this destination support searching a modality work list (optional)
         :param can_push_hl7: Can this destination support pushong Hl7 messages (optional)
         :param can_query_retrieve: Can this destination support query retrieve from HL7 messages (optional)
         :param can_retrieve_thin: Can this destination support retrieving thin studies (optional)
         :param can_search: Can this destination support searching (optional)
+        :param can_search_mwl: Can this destination support searching a modality work list (optional)
         :param cd_burn_info: A JSON hash with the CD burning information (optional)
         :param cd_burn_name: Name for the CD burner software (optional)
         :param cd_burn_priority: Integer value for the burner priority (optional)
@@ -289,11 +289,11 @@ class Destination:
            'aetitle': aetitle,
            'c_echo_interval': c_echo_interval,
            'c_echo_schedule': c_echo_schedule,
-           'can_mwl_search': can_mwl_search,
            'can_push_hl7': can_push_hl7,
            'can_query_retrieve': can_query_retrieve,
            'can_retrieve_thin': can_retrieve_thin,
            'can_search': can_search,
+           'can_search_mwl': can_search_mwl,
            'cd_burn_info': cd_burn_info,
            'cd_burn_name': cd_burn_name,
            'cd_burn_priority': cd_burn_priority,
@@ -683,11 +683,11 @@ class AsyncDestination:
         port,
         c_echo_interval=None,
         c_echo_schedule=None,
-        can_mwl_search=None,
         can_push_hl7=None,
         can_query_retrieve=None,
         can_retrieve_thin=None,
         can_search=None,
+        can_search_mwl=None,
         cd_burn_info=None,
         cd_burn_name=None,
         cd_burn_priority=None,
@@ -720,11 +720,11 @@ class AsyncDestination:
         :param port: Port of the destination (required if DICOM type)
         :param c_echo_interval: Interval in seconds to C echo the destination (optional)
         :param c_echo_schedule: C echo schedule (optional)
-        :param can_mwl_search: Can this destination support searching a modality work list (optional)
         :param can_push_hl7: Can this destination support pushong Hl7 messages (optional)
         :param can_query_retrieve: Can this destination support query retrieve from HL7 messages (optional)
         :param can_retrieve_thin: Can this destination support retrieving thin studies (optional)
         :param can_search: Can this destination support searching (optional)
+        :param can_search_mwl: Can this destination support searching a modality work list (optional)
         :param cd_burn_info: A JSON hash with the CD burning information (optional)
         :param cd_burn_name: Name for the CD burner software (optional)
         :param cd_burn_priority: Integer value for the burner priority (optional)
@@ -748,11 +748,11 @@ class AsyncDestination:
            'aetitle': aetitle,
            'c_echo_interval': c_echo_interval,
            'c_echo_schedule': c_echo_schedule,
-           'can_mwl_search': can_mwl_search,
            'can_push_hl7': can_push_hl7,
            'can_query_retrieve': can_query_retrieve,
            'can_retrieve_thin': can_retrieve_thin,
            'can_search': can_search,
+           'can_search_mwl': can_search_mwl,
            'cd_burn_info': cd_burn_info,
            'cd_burn_name': cd_burn_name,
            'cd_burn_priority': cd_burn_priority,
@@ -815,11 +815,11 @@ class AsyncDestination:
         aetitle=None,
         c_echo_interval=None,
         c_echo_schedule=None,
-        can_mwl_search=None,
         can_push_hl7=None,
         can_query_retrieve=None,
         can_retrieve_thin=None,
         can_search=None,
+        can_search_mwl=None,
         cd_burn_info=None,
         cd_burn_name=None,
         cd_burn_priority=None,
@@ -850,11 +850,11 @@ class AsyncDestination:
         :param aetitle: Aetitle of the destination (optional)
         :param c_echo_interval: Interval in seconds to C echo the destination (optional)
         :param c_echo_schedule: C echo schedule (optional)
-        :param can_mwl_search: Can this destination support searching a modality work list (optional)
         :param can_push_hl7: Can this destination support pushong Hl7 messages (optional)
         :param can_query_retrieve: Can this destination support query retrieve from HL7 messages (optional)
         :param can_retrieve_thin: Can this destination support retrieving thin studies (optional)
         :param can_search: Can this destination support searching (optional)
+        :param can_search_mwl: Can this destination support searching a modality work list (optional)
         :param cd_burn_info: A JSON hash with the CD burning information (optional)
         :param cd_burn_name: Name for the CD burner software (optional)
         :param cd_burn_priority: Integer value for the burner priority (optional)
@@ -880,11 +880,11 @@ class AsyncDestination:
            'aetitle': aetitle,
            'c_echo_interval': c_echo_interval,
            'c_echo_schedule': c_echo_schedule,
-           'can_mwl_search': can_mwl_search,
            'can_push_hl7': can_push_hl7,
            'can_query_retrieve': can_query_retrieve,
            'can_retrieve_thin': can_retrieve_thin,
            'can_search': can_search,
+           'can_search_mwl': can_search_mwl,
            'cd_burn_info': cd_burn_info,
            'cd_burn_name': cd_burn_name,
            'cd_burn_priority': cd_burn_priority,

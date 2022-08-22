@@ -1115,3 +1115,27 @@ class PublicKeyExpired(PreconditionFailed):
 
 class NoPatientOverride(PreconditionFailed):
     """NoPatientOverride."""
+
+
+class MultipleAccounts(PreconditionFailed):
+    """MultipleAccounts."""
+
+
+class PhrNamespace(PreconditionFailed):
+    """PhrNamespace."""
+
+
+class InsecureParameters(PreconditionFailed):
+    """InsecureParameters."""
+
+
+class PatientNameDobMismatch(PreconditionFailed):
+    """PatientNameDobMismatch."""
+
+
+class NoRoleOverride(PreconditionFailed):
+    """NoRoleOverride."""
+
+
+class NotPermittedSetting(PreconditionFailed):
+    """NotPermittedSetting."""

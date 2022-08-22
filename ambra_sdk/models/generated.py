@@ -327,6 +327,7 @@ class AccountSamlRole(BaseModel):
     event_node = Boolean(description='The event flags')
     event_query_add = Boolean(description='The event flags')
     event_query_edit = Boolean(description='The event flags')
+    event_query_new_recipient = Boolean(description='The event flags')
     event_query_reply = Boolean(description='The event flags')
     event_report_remove = Boolean(description='The event flags')
     event_share = Boolean(description='The event flags')
@@ -370,6 +371,7 @@ class AccountSamlRole(BaseModel):
         event_node=None,
         event_query_add=None,
         event_query_edit=None,
+        event_query_new_recipient=None,
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
@@ -409,6 +411,7 @@ class AccountSamlRole(BaseModel):
         self.event_node = event_node
         self.event_query_add = event_query_add
         self.event_query_edit = event_query_edit
+        self.event_query_new_recipient = event_query_new_recipient
         self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
@@ -1975,8 +1978,8 @@ class Customfield(BaseModel):
     other_dicom_tags = String(description='An array of other DICOM tags to map to in storage')
     required = Boolean(description='Settings')
     type_field = String(description='Name and type  of the field')
-    wrapped_dicom_only = Boolean(description='Settings')
     ui_json = String(description='JSON for UI settings')
+    wrapped_dicom_only = Boolean(description='Settings')
     created = DateTime(description='Timestamp when the record was created')
     created_by = String(description='FK. ID of the user who created the record')
     created_by_obj = FK(model='User', description='ID of the user who created the record')
@@ -2018,8 +2021,8 @@ class Customfield(BaseModel):
         other_dicom_tags=None,
         required=None,
         type_field=None,
-        wrapped_dicom_only=None,
         ui_json=None,
+        wrapped_dicom_only=None,
         created=None,
         created_by=None,
         created_by_obj=None,
@@ -2057,8 +2060,8 @@ class Customfield(BaseModel):
         self.other_dicom_tags = other_dicom_tags
         self.required = required
         self.type_field = type_field
-        self.wrapped_dicom_only = wrapped_dicom_only
         self.ui_json = ui_json
+        self.wrapped_dicom_only = wrapped_dicom_only
         self.created = created
         self.created_by = created_by
         self.created_by_obj = created_by_obj
@@ -4228,8 +4231,10 @@ class Namespace(BaseModel):
     anonymization_id = String(description='FK. Anonymization rules')
     anonymization = FK(model='Anonyimization', description='Anonymization rules')
     anonymize = String(description='Anonymization rules')
-    archive_vault_id = String(description='FK. The vault to archive studies too')
-    archive_vault = FK(model='Archive', description='The vault to archive studies too')
+    archive_delay = Integer(description='The archive settings')
+    archive_to_thin = Boolean(description='The archive settings')
+    archive_vault_id = String(description='FK. The archive settings')
+    archive_vault = FK(model='Archive', description='The archive settings')
     cache = Boolean(description='Cache new studies image')
     charge_description = String(description='Charging information')
     coverpage = String(description='Cover page template')
@@ -4245,6 +4250,7 @@ class Namespace(BaseModel):
     event_node = Boolean(description='The default event settings flags')
     event_query_add = Boolean(description='The default event settings flags')
     event_query_edit = Boolean(description='The default event settings flags')
+    event_query_new_recipient = Boolean(description='The default event settings flags')
     event_query_reply = Boolean(description='The default event settings flags')
     event_report_remove = Boolean(description='The default event settings flags')
     event_share = Boolean(description='The default event settings flags')
@@ -4306,6 +4312,8 @@ class Namespace(BaseModel):
         anonymization_id=None,
         anonymization=None,
         anonymize=None,
+        archive_delay=None,
+        archive_to_thin=None,
         archive_vault_id=None,
         archive_vault=None,
         cache=None,
@@ -4323,6 +4331,7 @@ class Namespace(BaseModel):
         event_node=None,
         event_query_add=None,
         event_query_edit=None,
+        event_query_new_recipient=None,
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
@@ -4380,6 +4389,8 @@ class Namespace(BaseModel):
         self.anonymization_id = anonymization_id
         self.anonymization = anonymization
         self.anonymize = anonymize
+        self.archive_delay = archive_delay
+        self.archive_to_thin = archive_to_thin
         self.archive_vault_id = archive_vault_id
         self.archive_vault = archive_vault
         self.cache = cache
@@ -4397,6 +4408,7 @@ class Namespace(BaseModel):
         self.event_node = event_node
         self.event_query_add = event_query_add
         self.event_query_edit = event_query_edit
+        self.event_query_new_recipient = event_query_new_recipient
         self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
@@ -5514,6 +5526,8 @@ class Query(BaseModel):
     account_id = String(description='FK. Query links')
     account = FK(model='Account', description='Query links')
     body = String(description='Query description')
+    created_study_id = String(description='FK. The study used during creation of the query')
+    created_study = FK(model='Study', description='The study used during creation of the query')
     customfields = DictField(description='Custom fields')
     escalation_count_since_status_change = Integer(description='Communication plan counters')
     group_id = String(description='FK. Query links')
@@ -5530,8 +5544,9 @@ class Query(BaseModel):
     query_status = String(description='Query status')
     query_type = String(description='The type of the query')
     reminder_count_since_reply = Integer(description='Communication plan counters')
-    study_id = String(description='FK. Query links')
-    study = FK(model='Study', description='Query links')
+    study_storage_namespace = String(description='FK. Trial study storage namespace')
+    study_storage_namespace_obj = FK(model='Namespace', description='Trial study storage namespace')
+    study_uid = String(description='Trial study instance id')
     subject = String(description='Subject line')
     created = DateTime(description='Timestamp when the record was created')
     created_by = String(description='FK. ID of the user who created the record')
@@ -5549,6 +5564,8 @@ class Query(BaseModel):
         account_id=None,
         account=None,
         body=None,
+        created_study_id=None,
+        created_study=None,
         customfields=None,
         escalation_count_since_status_change=None,
         group_id=None,
@@ -5565,8 +5582,9 @@ class Query(BaseModel):
         query_status=None,
         query_type=None,
         reminder_count_since_reply=None,
-        study_id=None,
-        study=None,
+        study_storage_namespace=None,
+        study_storage_namespace_obj=None,
+        study_uid=None,
         subject=None,
         created=None,
         created_by=None,
@@ -5580,6 +5598,8 @@ class Query(BaseModel):
         self.account_id = account_id
         self.account = account
         self.body = body
+        self.created_study_id = created_study_id
+        self.created_study = created_study
         self.customfields = customfields
         self.escalation_count_since_status_change = escalation_count_since_status_change
         self.group_id = group_id
@@ -5596,8 +5616,9 @@ class Query(BaseModel):
         self.query_status = query_status
         self.query_type = query_type
         self.reminder_count_since_reply = reminder_count_since_reply
-        self.study_id = study_id
-        self.study = study
+        self.study_storage_namespace = study_storage_namespace
+        self.study_storage_namespace_obj = study_storage_namespace_obj
+        self.study_uid = study_uid
         self.subject = subject
         self.created = created
         self.created_by = created_by
@@ -6757,6 +6778,7 @@ class StorageStudy(BaseModel):
     engine_id = String(description='FK. The storage engine')
     engine = FK(model='Engine', description='The storage engine')
     is_frozen = Boolean(description='Flag if the study is frozen')
+    last_access = DateTime(description='Time of the last storage access of the study')
     last_update = DateTime(description='Time of the last update of the study')
     rsync_id = String(description='FK. The rysnc account')
     rsync = FK(model='Rsync', description='The rysnc account')
@@ -6780,6 +6802,7 @@ class StorageStudy(BaseModel):
         engine_id=None,
         engine=None,
         is_frozen=None,
+        last_access=None,
         last_update=None,
         rsync_id=None,
         rsync=None,
@@ -6799,6 +6822,7 @@ class StorageStudy(BaseModel):
         self.engine_id = engine_id
         self.engine = engine
         self.is_frozen = is_frozen
+        self.last_access = last_access
         self.last_update = last_update
         self.rsync_id = rsync_id
         self.rsync = rsync
@@ -8598,6 +8622,7 @@ class System(BaseModel):
     privacy_html = String(description='HTML for the terms of use, privacy policy and indicators of use')
     privacy_md5 = String(description='MD5 sums of the terms of use, privacy policy and indicators of use')
     prometheus_password = String(description='Prometheus password for scraping')
+    queue_run_threshold = Integer(description='Performance threshold to stop running the queue at')
     rsna_xds = String(description='RSNA XDS server')
     stripe_ca = String(description='Stripe connect client id')
     stripe_pk = String(description='Stripe public key')
@@ -8680,6 +8705,7 @@ class System(BaseModel):
         privacy_html=None,
         privacy_md5=None,
         prometheus_password=None,
+        queue_run_threshold=None,
         rsna_xds=None,
         stripe_ca=None,
         stripe_pk=None,
@@ -8758,6 +8784,7 @@ class System(BaseModel):
         self.privacy_html = privacy_html
         self.privacy_md5 = privacy_md5
         self.prometheus_password = prometheus_password
+        self.queue_run_threshold = queue_run_threshold
         self.rsna_xds = rsna_xds
         self.stripe_ca = stripe_ca
         self.stripe_pk = stripe_pk
@@ -9210,6 +9237,7 @@ class User(BaseModel):
     event_new_report = Boolean(description='The event flags for the personal namespace')
     event_query_add = Boolean(description='The event flags for the personal namespace')
     event_query_edit = Boolean(description='The event flags for the personal namespace')
+    event_query_new_recipient = Boolean(description='The event flags for the personal namespace')
     event_query_reply = Boolean(description='The event flags for the personal namespace')
     event_report_remove = Boolean(description='The event flags for the personal namespace')
     event_share = Boolean(description='The event flags for the personal namespace')
@@ -9274,6 +9302,7 @@ class User(BaseModel):
         event_new_report=None,
         event_query_add=None,
         event_query_edit=None,
+        event_query_new_recipient=None,
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
@@ -9334,6 +9363,7 @@ class User(BaseModel):
         self.event_new_report = event_new_report
         self.event_query_add = event_query_add
         self.event_query_edit = event_query_edit
+        self.event_query_new_recipient = event_query_new_recipient
         self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
@@ -9402,6 +9432,7 @@ class UserAccount(BaseModel):
     event_purge = Boolean(description='The event flags')
     event_query_add = Boolean(description='The event flags')
     event_query_edit = Boolean(description='The event flags')
+    event_query_new_recipient = Boolean(description='The event flags')
     event_query_reply = Boolean(description='The event flags')
     event_report_remove = Boolean(description='The event flags')
     event_share = Boolean(description='The event flags')
@@ -9459,6 +9490,7 @@ class UserAccount(BaseModel):
         event_purge=None,
         event_query_add=None,
         event_query_edit=None,
+        event_query_new_recipient=None,
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
@@ -9512,6 +9544,7 @@ class UserAccount(BaseModel):
         self.event_purge = event_purge
         self.event_query_add = event_query_add
         self.event_query_edit = event_query_edit
+        self.event_query_new_recipient = event_query_new_recipient
         self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
@@ -9668,6 +9701,7 @@ class UserGroup(BaseModel):
     event_node = Boolean(description='The event flags')
     event_query_add = Boolean(description='The event flags')
     event_query_edit = Boolean(description='The event flags')
+    event_query_new_recipient = Boolean(description='The event flags')
     event_query_reply = Boolean(description='The event flags')
     event_report_remove = Boolean(description='The event flags')
     event_share = Boolean(description='The event flags')
@@ -9709,6 +9743,7 @@ class UserGroup(BaseModel):
         event_node=None,
         event_query_add=None,
         event_query_edit=None,
+        event_query_new_recipient=None,
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
@@ -9746,6 +9781,7 @@ class UserGroup(BaseModel):
         self.event_node = event_node
         self.event_query_add = event_query_add
         self.event_query_edit = event_query_edit
+        self.event_query_new_recipient = event_query_new_recipient
         self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
@@ -9908,6 +9944,7 @@ class UserLocation(BaseModel):
     event_node = Boolean(description='The event flags')
     event_query_add = Boolean(description='The event flags')
     event_query_edit = Boolean(description='The event flags')
+    event_query_new_recipient = Boolean(description='The event flags')
     event_query_reply = Boolean(description='The event flags')
     event_report_remove = Boolean(description='The event flags')
     event_share = Boolean(description='The event flags')
@@ -9949,6 +9986,7 @@ class UserLocation(BaseModel):
         event_node=None,
         event_query_add=None,
         event_query_edit=None,
+        event_query_new_recipient=None,
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
@@ -9986,6 +10024,7 @@ class UserLocation(BaseModel):
         self.event_node = event_node
         self.event_query_add = event_query_add
         self.event_query_edit = event_query_edit
+        self.event_query_new_recipient = event_query_new_recipient
         self.event_query_reply = event_query_reply
         self.event_report_remove = event_report_remove
         self.event_share = event_share
@@ -10018,6 +10057,7 @@ class UserSite(BaseModel):
     id = Integer(description='Primary key for internal use')
     uuid = String(description='UUID for external use')
     role_name = String(description='Role will be mapped to a study account role by name')
+    site_email = String(description='Email address')
     site_id = String(description='FK. Mapping between the user and site')
     site = FK(model='Site', description='Mapping between the user and site')
     user_id = String(description='FK. Mapping between the user and site')
@@ -10036,6 +10076,7 @@ class UserSite(BaseModel):
         id=None,
         uuid=None,
         role_name=None,
+        site_email=None,
         site_id=None,
         site=None,
         user_id=None,
@@ -10050,6 +10091,7 @@ class UserSite(BaseModel):
         self.id = id
         self.uuid = uuid
         self.role_name = role_name
+        self.site_email = site_email
         self.site_id = site_id
         self.site = site
         self.user_id = user_id

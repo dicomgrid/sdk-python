@@ -11,12 +11,16 @@ from ambra_sdk.exceptions.service import InvalidField
 from ambra_sdk.exceptions.service import InvalidJson
 from ambra_sdk.exceptions.service import InvalidPermission
 from ambra_sdk.exceptions.service import InvalidPermissionValue
+from ambra_sdk.exceptions.service import InvalidSetting
+from ambra_sdk.exceptions.service import InvalidSettingValue
 from ambra_sdk.exceptions.service import InvalidSortField
 from ambra_sdk.exceptions.service import InvalidSortOrder
 from ambra_sdk.exceptions.service import MissingFields
 from ambra_sdk.exceptions.service import NoOtherRoleEdit
+from ambra_sdk.exceptions.service import NoRoleOverride
 from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import NotPermitted
+from ambra_sdk.exceptions.service import NotPermittedSetting
 from ambra_sdk.exceptions.service import ReportError
 from ambra_sdk.service.query import QueryO
 from ambra_sdk.service.query import AsyncQueryO
@@ -165,6 +169,42 @@ class Role:
         query_data = {
             'api': self._api,
             'url': '/role/set',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
+    def settings(
+        self,
+        uuid,
+        setting_param=None,
+        settings=None,
+    ):
+        """Settings.
+
+        :param uuid: The role uuid
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param settings: A hash of the role settings (optional)
+        """
+        request_data = {
+           'settings': settings,
+           'uuid': uuid,
+        }
+        if setting_param is not None:
+            setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
+            request_data.update(setting_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_SETTING', None)] = InvalidSetting('An invalid setting was passed. The error_subtype holds the name of the invalid setting')
+        errors_mapping[('INVALID_SETTING_VALUE', None)] = InvalidSettingValue('An invalid setting value was passed. The error_subtype holds the name of the setting with the invalid value')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The role can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the role settings or user is not in the same account')
+        errors_mapping[('NOT_PERMITTED_SETTING', None)] = NotPermittedSetting('You are not permitted to edit this settings field. The error_subtype holds the name of the invalid setting')
+        errors_mapping[('NO_ROLE_OVERRIDE', None)] = NoRoleOverride('The setting does not allow a role override')
+        query_data = {
+            'api': self._api,
+            'url': '/role/settings',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,
@@ -415,6 +455,42 @@ class AsyncRole:
         query_data = {
             'api': self._api,
             'url': '/role/set',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def settings(
+        self,
+        uuid,
+        setting_param=None,
+        settings=None,
+    ):
+        """Settings.
+
+        :param uuid: The role uuid
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param settings: A hash of the role settings (optional)
+        """
+        request_data = {
+           'settings': settings,
+           'uuid': uuid,
+        }
+        if setting_param is not None:
+            setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
+            request_data.update(setting_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('INVALID_SETTING', None)] = InvalidSetting('An invalid setting was passed. The error_subtype holds the name of the invalid setting')
+        errors_mapping[('INVALID_SETTING_VALUE', None)] = InvalidSettingValue('An invalid setting value was passed. The error_subtype holds the name of the setting with the invalid value')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The role can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to edit the role settings or user is not in the same account')
+        errors_mapping[('NOT_PERMITTED_SETTING', None)] = NotPermittedSetting('You are not permitted to edit this settings field. The error_subtype holds the name of the invalid setting')
+        errors_mapping[('NO_ROLE_OVERRIDE', None)] = NoRoleOverride('The setting does not allow a role override')
+        query_data = {
+            'api': self._api,
+            'url': '/role/settings',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,

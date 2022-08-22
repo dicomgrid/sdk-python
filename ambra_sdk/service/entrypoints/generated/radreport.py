@@ -37,15 +37,18 @@ class Radreport:
         self,
         study_id,
         type,
+        do_unlock=None,
         fields=None,
     ):
         """Add.
 
         :param study_id: Id of the study to add the radreport to
         :param type: The type of the radreport
+        :param do_unlock: A flag indicating to unlock study radreport lock (optional)
         :param fields: A JSON hash of the fields in the report (optional)
         """
         request_data = {
+           'do_unlock': do_unlock,
            'fields': fields,
            'study_id': study_id,
            'type': type,
@@ -53,7 +56,7 @@ class Radreport:
 	
         errors_mapping = {}
         errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping[('LOCKED', None)] = Locked('Only if account.settings.enable_radreport_lock_reading is set. There is another locked radreport for the study. error_subtype=RADREPORT_LOCKED. error_data={&#34;locked_radreport_id&#34;:radreport_uuid,&#34;locked_user_id&#34;:user_uuid}.')
+        errors_mapping[('LOCKED', None)] = Locked('There is radreport-lock for the corresponding study by different SID.')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add a radreport to the study')
@@ -70,23 +73,26 @@ class Radreport:
         self,
         uuid,
         attachment=None,
+        do_unlock=None,
         fields=None,
     ):
         """Set.
 
         :param uuid: Id of the radreport
         :param attachment: A JSON hash of the storage attachment information (optional)
+        :param do_unlock: A flag indicating to unlock study radreport lock (optional)
         :param fields: A JSON hash of the fields in the report (optional)
         """
         request_data = {
            'attachment': attachment,
+           'do_unlock': do_unlock,
            'fields': fields,
            'uuid': uuid,
         }
 	
         errors_mapping = {}
         errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping[('LOCKED', None)] = Locked('Only if account.settings.enable_radreport_lock_reading is set. This radreport is locked by another sid. error_subtype=RADREPORT_LOCKED. error_data={&#34;locked_radreport_id&#34;:radreport_uuid,&#34;locked_user_id&#34;:user_uuid}.')
+        errors_mapping[('LOCKED', None)] = Locked('There is radreport-lock for the corresponding study by different SID.')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add a radreport to the study')
@@ -168,7 +174,7 @@ class Radreport:
         }
 	
         errors_mapping = {}
-        errors_mapping[('LOCKED', None)] = Locked('Only if account.settings.enable_radreport_lock_reading is set. This radreport is locked at the moment, should be unlocked before. error_subtype=RADREPORT_LOCKED. error_data={&#34;locked_radreport_id&#34;:radreport_uuid,&#34;locked_user_id&#34;:user_uuid}.')
+        errors_mapping[('LOCKED', None)] = Locked('There is radreport-lock for the corresponding study by different USER.')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The radreport  was not found.')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete the radreport')
@@ -604,15 +610,18 @@ class AsyncRadreport:
         self,
         study_id,
         type,
+        do_unlock=None,
         fields=None,
     ):
         """Add.
 
         :param study_id: Id of the study to add the radreport to
         :param type: The type of the radreport
+        :param do_unlock: A flag indicating to unlock study radreport lock (optional)
         :param fields: A JSON hash of the fields in the report (optional)
         """
         request_data = {
+           'do_unlock': do_unlock,
            'fields': fields,
            'study_id': study_id,
            'type': type,
@@ -620,7 +629,7 @@ class AsyncRadreport:
 	
         errors_mapping = {}
         errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping[('LOCKED', None)] = Locked('Only if account.settings.enable_radreport_lock_reading is set. There is another locked radreport for the study. error_subtype=RADREPORT_LOCKED. error_data={&#34;locked_radreport_id&#34;:radreport_uuid,&#34;locked_user_id&#34;:user_uuid}.')
+        errors_mapping[('LOCKED', None)] = Locked('There is radreport-lock for the corresponding study by different SID.')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add a radreport to the study')
@@ -637,23 +646,26 @@ class AsyncRadreport:
         self,
         uuid,
         attachment=None,
+        do_unlock=None,
         fields=None,
     ):
         """Set.
 
         :param uuid: Id of the radreport
         :param attachment: A JSON hash of the storage attachment information (optional)
+        :param do_unlock: A flag indicating to unlock study radreport lock (optional)
         :param fields: A JSON hash of the fields in the report (optional)
         """
         request_data = {
            'attachment': attachment,
+           'do_unlock': do_unlock,
            'fields': fields,
            'uuid': uuid,
         }
 	
         errors_mapping = {}
         errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
-        errors_mapping[('LOCKED', None)] = Locked('Only if account.settings.enable_radreport_lock_reading is set. This radreport is locked by another sid. error_subtype=RADREPORT_LOCKED. error_data={&#34;locked_radreport_id&#34;:radreport_uuid,&#34;locked_user_id&#34;:user_uuid}.')
+        errors_mapping[('LOCKED', None)] = Locked('There is radreport-lock for the corresponding study by different SID.')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The study was not found.')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to add a radreport to the study')
@@ -735,7 +747,7 @@ class AsyncRadreport:
         }
 	
         errors_mapping = {}
-        errors_mapping[('LOCKED', None)] = Locked('Only if account.settings.enable_radreport_lock_reading is set. This radreport is locked at the moment, should be unlocked before. error_subtype=RADREPORT_LOCKED. error_data={&#34;locked_radreport_id&#34;:radreport_uuid,&#34;locked_user_id&#34;:user_uuid}.')
+        errors_mapping[('LOCKED', None)] = Locked('There is radreport-lock for the corresponding study by different USER.')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The radreport  was not found.')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete the radreport')

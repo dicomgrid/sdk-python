@@ -11,6 +11,7 @@ from ambra_sdk.exceptions.service import BadPassword
 from ambra_sdk.exceptions.service import CaptchaFailed
 from ambra_sdk.exceptions.service import DuplicateEmail
 from ambra_sdk.exceptions.service import FilterNotFound
+from ambra_sdk.exceptions.service import InUse
 from ambra_sdk.exceptions.service import InvalidCondition
 from ambra_sdk.exceptions.service import InvalidEmail
 from ambra_sdk.exceptions.service import InvalidField
@@ -135,15 +136,18 @@ class User:
     def get(
         self,
         account_id=None,
+        public_key_format=None,
         uuid=None,
     ):
         """Get.
 
         :param account_id: Account id if you are trying to get a user other than yourself (optional)
+        :param public_key_format: The desired public key format to be returned rfc4716, by default (rfc4716|openssh|asis) (optional)
         :param uuid: The users uuid (optional). Uses the session user if not passed
         """
         request_data = {
            'account_id': account_id,
+           'public_key_format': public_key_format,
            'uuid': uuid,
         }
 	
@@ -258,6 +262,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         }
 	
         errors_mapping = {}
+        errors_mapping[('IN_USE', None)] = InUse('The user is a sid user for a webhook')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
@@ -550,6 +555,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         event_new_report=None,
         event_query_add=None,
         event_query_edit=None,
+        event_query_new_recipient=None,
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
@@ -574,7 +580,8 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         :param event_message: Notify the user when a message is sent to the namespace (optional)
         :param event_new_report: Notify the user when a report is attached in the namespace (optional)
         :param event_query_add: Notify the user when a new query is issued (optional)
-        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_edit: Notify the user when a query is edited (optional)
+        :param event_query_new_recipient: Notify the user when they are added to a query as a new recipient (optional)
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the namespace (optional)
         :param event_share: Notify the user on a share into the namespace (optional)
@@ -598,6 +605,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
            'event_new_report': event_new_report,
            'event_query_add': event_query_add,
            'event_query_edit': event_query_edit,
+           'event_query_new_recipient': event_query_new_recipient,
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
@@ -726,13 +734,16 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         self,
         serial_no,
         uuid,
+        public_key_format=None,
     ):
         """Pubkey list.
 
         :param serial_no: The serial number of the node
         :param uuid: The node id
+        :param public_key_format: The desired public key format to be returned, rfc4716 by default (rfc4716|openssh|asis) (optional)
         """
         request_data = {
+           'public_key_format': public_key_format,
            'serial_no': serial_no,
            'uuid': uuid,
         }
@@ -883,15 +894,18 @@ class AsyncUser:
     def get(
         self,
         account_id=None,
+        public_key_format=None,
         uuid=None,
     ):
         """Get.
 
         :param account_id: Account id if you are trying to get a user other than yourself (optional)
+        :param public_key_format: The desired public key format to be returned rfc4716, by default (rfc4716|openssh|asis) (optional)
         :param uuid: The users uuid (optional). Uses the session user if not passed
         """
         request_data = {
            'account_id': account_id,
+           'public_key_format': public_key_format,
            'uuid': uuid,
         }
 	
@@ -1006,6 +1020,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         }
 	
         errors_mapping = {}
+        errors_mapping[('IN_USE', None)] = InUse('The user is a sid user for a webhook')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to do this')
         query_data = {
@@ -1298,6 +1313,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         event_new_report=None,
         event_query_add=None,
         event_query_edit=None,
+        event_query_new_recipient=None,
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
@@ -1322,7 +1338,8 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         :param event_message: Notify the user when a message is sent to the namespace (optional)
         :param event_new_report: Notify the user when a report is attached in the namespace (optional)
         :param event_query_add: Notify the user when a new query is issued (optional)
-        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_edit: Notify the user when a query is edited (optional)
+        :param event_query_new_recipient: Notify the user when they are added to a query as a new recipient (optional)
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the namespace (optional)
         :param event_share: Notify the user on a share into the namespace (optional)
@@ -1346,6 +1363,7 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
            'event_new_report': event_new_report,
            'event_query_add': event_query_add,
            'event_query_edit': event_query_edit,
+           'event_query_new_recipient': event_query_new_recipient,
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
@@ -1474,13 +1492,16 @@ enable_v3_viewer (boolean) If set, enables ProViewer for PHR account
         self,
         serial_no,
         uuid,
+        public_key_format=None,
     ):
         """Pubkey list.
 
         :param serial_no: The serial number of the node
         :param uuid: The node id
+        :param public_key_format: The desired public key format to be returned, rfc4716 by default (rfc4716|openssh|asis) (optional)
         """
         request_data = {
+           'public_key_format': public_key_format,
            'serial_no': serial_no,
            'uuid': uuid,
         }

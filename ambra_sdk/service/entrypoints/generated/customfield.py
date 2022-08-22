@@ -124,7 +124,7 @@ class Customfield:
         :param other_customfield_id: Id of a customfield to map its value to this customfield's value (optional)
         :param other_dicom_tags: JSON array of other DICOM tags to map this field to. (only applicable to study fields) (optional)
         :param required: Flag if the field is required (optional)
-        :param type: Type of the custom field (text|number|date|memo|select|multiselect|radio|checkbox|search|bool) (optional)
+        :param type: Type of the custom field (text|number|date|memo|select|multiselect|radio|checkbox|search|bool|picker) (optional)
         :param ui_json: JSON for UI settings (optional)
         :param wrapped_dicom_only: Only capture for wrapped DICOM uploads during a share code exchange (optional)
         """
@@ -599,7 +599,7 @@ class AsyncCustomfield:
         :param other_customfield_id: Id of a customfield to map its value to this customfield's value (optional)
         :param other_dicom_tags: JSON array of other DICOM tags to map this field to. (only applicable to study fields) (optional)
         :param required: Flag if the field is required (optional)
-        :param type: Type of the custom field (text|number|date|memo|select|multiselect|radio|checkbox|search|bool) (optional)
+        :param type: Type of the custom field (text|number|date|memo|select|multiselect|radio|checkbox|search|bool|picker) (optional)
         :param ui_json: JSON for UI settings (optional)
         :param wrapped_dicom_only: Only capture for wrapped DICOM uploads during a share code exchange (optional)
         """

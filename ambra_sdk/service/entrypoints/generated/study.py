@@ -254,6 +254,7 @@ class Study:
         medical_record_locator=None,
         modality=None,
         node_id=None,
+        parital_save=None,
         patient_additional_history=None,
         patient_address=None,
         patient_age=None,
@@ -301,6 +302,7 @@ class Study:
         :param medical_record_locator: DICOM tag (0010,1090) (optional)
         :param modality: DICOM tag (0008,0060) (optional)
         :param node_id: If this is a thin study the gateway UUID to retrieve it from can be specified (optional)
+        :param parital_save: Flag to bypass unset required customfields. Works only if account setting study_set_unapproved_allow_bypass_required_fields is set (optional)
         :param patient_additional_history: DICOM tag (0010,21B0) (optional)
         :param patient_address: DICOM tag (0010,1040) (optional)
         :param patient_age: DICOM tag (0010,1010) (optional)
@@ -346,6 +348,7 @@ class Study:
            'medical_record_locator': medical_record_locator,
            'modality': modality,
            'node_id': node_id,
+           'parital_save': parital_save,
            'patient_additional_history': patient_additional_history,
            'patient_address': patient_address,
            'patient_age': patient_age,
@@ -1108,6 +1111,7 @@ class Study:
 	
         errors_mapping = {}
         errors_mapping[('DELAY_OR_MATCH', None)] = DelayOrMatch('You can either delay or match, not both')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Some custom fields are required and not set. The error_subtype holds an array of the error details')
         errors_mapping[('INVALID_DELAY', None)] = InvalidDelay('A delay must be between 0 and 600 seconds')
         errors_mapping[('INVALID_FIELD', None)] = InvalidField('An invalid must match field was passed. The error_subtype holds the name of the field')
         errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
@@ -1162,7 +1166,7 @@ class Study:
     ):
         """Audit.
 
-        :param action: The audit action (STUDY_VIEW|STUDY_VIEW_REASON|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|IMAGE_DELETED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)
+        :param action: The audit action (STUDY_VIEW|STUDY_VIEW_REASON|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|IMAGE_DELETED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION|SIGNED_REPORT_ADDENDUM)
         :param detail: Additional information
         :param phi_namespace: The phi namespace of the study (optional)
         :param storage_namespace: The storage namespace of the study (optional if uuid is passed)
@@ -2440,6 +2444,7 @@ class AsyncStudy:
         medical_record_locator=None,
         modality=None,
         node_id=None,
+        parital_save=None,
         patient_additional_history=None,
         patient_address=None,
         patient_age=None,
@@ -2487,6 +2492,7 @@ class AsyncStudy:
         :param medical_record_locator: DICOM tag (0010,1090) (optional)
         :param modality: DICOM tag (0008,0060) (optional)
         :param node_id: If this is a thin study the gateway UUID to retrieve it from can be specified (optional)
+        :param parital_save: Flag to bypass unset required customfields. Works only if account setting study_set_unapproved_allow_bypass_required_fields is set (optional)
         :param patient_additional_history: DICOM tag (0010,21B0) (optional)
         :param patient_address: DICOM tag (0010,1040) (optional)
         :param patient_age: DICOM tag (0010,1010) (optional)
@@ -2532,6 +2538,7 @@ class AsyncStudy:
            'medical_record_locator': medical_record_locator,
            'modality': modality,
            'node_id': node_id,
+           'parital_save': parital_save,
            'patient_additional_history': patient_additional_history,
            'patient_address': patient_address,
            'patient_age': patient_age,
@@ -3294,6 +3301,7 @@ class AsyncStudy:
 	
         errors_mapping = {}
         errors_mapping[('DELAY_OR_MATCH', None)] = DelayOrMatch('You can either delay or match, not both')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Some custom fields are required and not set. The error_subtype holds an array of the error details')
         errors_mapping[('INVALID_DELAY', None)] = InvalidDelay('A delay must be between 0 and 600 seconds')
         errors_mapping[('INVALID_FIELD', None)] = InvalidField('An invalid must match field was passed. The error_subtype holds the name of the field')
         errors_mapping[('INVALID_JSON', None)] = InvalidJson('The field is not in valid JSON format. The error_subtype holds the name of the field')
@@ -3348,7 +3356,7 @@ class AsyncStudy:
     ):
         """Audit.
 
-        :param action: The audit action (STUDY_VIEW|STUDY_VIEW_REASON|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|IMAGE_DELETED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION)
+        :param action: The audit action (STUDY_VIEW|STUDY_VIEW_REASON|STUDY_EDIT|STUDY_ANONYMIZE|REPORT_UPLOAD|REPORT_REMOVE|REPORT_VIEW|IMAGE_ADDED|IMAGE_UPDATED|IMAGE_DELETED|STUDY_DOWNLOAD|ACCEPTED_NOT_DIAGNOSTIC|CANCELED_NOT_DIAGNOSTIC|AI_ACTION|VIEWER_ACTION|SIGNED_REPORT_ADDENDUM)
         :param detail: Additional information
         :param phi_namespace: The phi namespace of the study (optional)
         :param storage_namespace: The storage namespace of the study (optional if uuid is passed)

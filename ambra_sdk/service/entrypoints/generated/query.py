@@ -79,38 +79,38 @@ class Query:
     def add(
         self,
         group_id,
-        subject,
         body=None,
+        created_study_id=None,
         customfield_param=None,
         notify=None,
         owner_namespace_id=None,
         owner_user_id=None,
         query_type=None,
         recipients=None,
-        study_id=None,
+        subject=None,
     ):
         """Add.
 
         :param group_id: Id of the group associated to a trial site to add them to
-        :param subject: Subject line of the query
         :param body: The query body (optional)
+        :param created_study_id: The study the query is related to (optional)
         :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param notify: Comma delimited list of the emails to be notified of the query events (optional)
         :param owner_namespace_id: The namespace owning the query. The account default from the default_query_owner_namespace account setting is used if not passed through the parameter (optional)
         :param owner_user_id: The user owning the query (optional)
         :param query_type: The query type (optional)
         :param recipients: JSON array of the user UUIDs to add to the query as recipients (optional)
-        :param study_id: The study the query is related to (optional)
+        :param subject: Subject line of the query (optional)
         """
         request_data = {
            'body': body,
+           'created_study_id': created_study_id,
            'group_id': group_id,
            'notify': notify,
            'owner_namespace_id': owner_namespace_id,
            'owner_user_id': owner_user_id,
            'query_type': query_type,
            'recipients': recipients,
-           'study_id': study_id,
            'subject': subject,
         }
         if customfield_param is not None:
@@ -451,38 +451,38 @@ class AsyncQuery:
     def add(
         self,
         group_id,
-        subject,
         body=None,
+        created_study_id=None,
         customfield_param=None,
         notify=None,
         owner_namespace_id=None,
         owner_user_id=None,
         query_type=None,
         recipients=None,
-        study_id=None,
+        subject=None,
     ):
         """Add.
 
         :param group_id: Id of the group associated to a trial site to add them to
-        :param subject: Subject line of the query
         :param body: The query body (optional)
+        :param created_study_id: The study the query is related to (optional)
         :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
         :param notify: Comma delimited list of the emails to be notified of the query events (optional)
         :param owner_namespace_id: The namespace owning the query. The account default from the default_query_owner_namespace account setting is used if not passed through the parameter (optional)
         :param owner_user_id: The user owning the query (optional)
         :param query_type: The query type (optional)
         :param recipients: JSON array of the user UUIDs to add to the query as recipients (optional)
-        :param study_id: The study the query is related to (optional)
+        :param subject: Subject line of the query (optional)
         """
         request_data = {
            'body': body,
+           'created_study_id': created_study_id,
            'group_id': group_id,
            'notify': notify,
            'owner_namespace_id': owner_namespace_id,
            'owner_user_id': owner_user_id,
            'query_type': query_type,
            'recipients': recipients,
-           'study_id': study_id,
            'subject': subject,
         }
         if customfield_param is not None:

@@ -11,6 +11,7 @@ from ambra_sdk.exceptions.service import DecryptFailed
 from ambra_sdk.exceptions.service import Disabled
 from ambra_sdk.exceptions.service import Expired
 from ambra_sdk.exceptions.service import FilterNotFound
+from ambra_sdk.exceptions.service import InsecureParameters
 from ambra_sdk.exceptions.service import InvalidAction
 from ambra_sdk.exceptions.service import InvalidCharge
 from ambra_sdk.exceptions.service import InvalidCondition
@@ -131,7 +132,7 @@ class Link:
     ):
         """Add.
 
-        :param action: Link action (STUDY_LIST|STUDY_VIEW|STUDY_UPLOAD)
+        :param action: Link action (STUDY_LIST|STUDY_VIEW|STUDY_UPLOAD|LOGIN)
         :param prompt_for_anonymize: Flag to prompt if the anonymization rules should be applied on ingress
         :param acceptance_required: Flag that acceptance of TOS is required (optional)
         :param account_id: account_id
@@ -165,7 +166,7 @@ class Link:
         :param upload_match: A JSON hash of DICOM tags and regular expressions they must match uploaded against this link (optional)
         :param upload_study_customfields: A JSON hash of customfields that will be mapped to a study on study upload. A key is a customfield UUID, a value is a value for the field (optional)
         :param use_share_code: Flag to use the namespace share code settings for a STUDY_UPLOAD (optional)
-        :param user_id: The link user. Any filter is applied in this users context (optional)
+        :param user_id: user_id
         :param workflow: The workflow this link is intended for (patient_studies) (optional)
         """
         request_data = {
@@ -208,6 +209,7 @@ class Link:
         }
 	
         errors_mapping = {}
+        errors_mapping[('INSECURE_PARAMETERS', None)] = InsecureParameters('The LOGIN link is not a one-time link and not secured by a password')
         errors_mapping[('INVALID_ACTION', None)] = InvalidAction('An invalid action was passed')
         errors_mapping[('INVALID_CHARGE', None)] = InvalidCharge('The charge is invalid. The error_subtype holds the details on the error')
         errors_mapping[('INVALID_EMAIL', None)] = InvalidEmail('An invalid email address was passed')
@@ -548,7 +550,7 @@ class Link:
 
  filter.*=>Filter field(s) as per the /study/list to specify the study(s) to construct the link for
              The include_priors link option value can be passed as a key
-             Any additional fields will the saved in the study audit trail and the following fields email_address, redirect_url, integration_key and skip_email_prompt will be available in /namespace/share_code if this is an upload link
+             Any additional fields will be saved in the study audit trail and the following fields email_address, redirect_url, integration_key and skip_email_prompt will be available in /namespace/share_code if this is an upload link
         """
         request_data = {
            'u': u,
@@ -797,7 +799,7 @@ class AsyncLink:
     ):
         """Add.
 
-        :param action: Link action (STUDY_LIST|STUDY_VIEW|STUDY_UPLOAD)
+        :param action: Link action (STUDY_LIST|STUDY_VIEW|STUDY_UPLOAD|LOGIN)
         :param prompt_for_anonymize: Flag to prompt if the anonymization rules should be applied on ingress
         :param acceptance_required: Flag that acceptance of TOS is required (optional)
         :param account_id: account_id
@@ -831,7 +833,7 @@ class AsyncLink:
         :param upload_match: A JSON hash of DICOM tags and regular expressions they must match uploaded against this link (optional)
         :param upload_study_customfields: A JSON hash of customfields that will be mapped to a study on study upload. A key is a customfield UUID, a value is a value for the field (optional)
         :param use_share_code: Flag to use the namespace share code settings for a STUDY_UPLOAD (optional)
-        :param user_id: The link user. Any filter is applied in this users context (optional)
+        :param user_id: user_id
         :param workflow: The workflow this link is intended for (patient_studies) (optional)
         """
         request_data = {
@@ -874,6 +876,7 @@ class AsyncLink:
         }
 	
         errors_mapping = {}
+        errors_mapping[('INSECURE_PARAMETERS', None)] = InsecureParameters('The LOGIN link is not a one-time link and not secured by a password')
         errors_mapping[('INVALID_ACTION', None)] = InvalidAction('An invalid action was passed')
         errors_mapping[('INVALID_CHARGE', None)] = InvalidCharge('The charge is invalid. The error_subtype holds the details on the error')
         errors_mapping[('INVALID_EMAIL', None)] = InvalidEmail('An invalid email address was passed')
@@ -1214,7 +1217,7 @@ class AsyncLink:
 
  filter.*=>Filter field(s) as per the /study/list to specify the study(s) to construct the link for
              The include_priors link option value can be passed as a key
-             Any additional fields will the saved in the study audit trail and the following fields email_address, redirect_url, integration_key and skip_email_prompt will be available in /namespace/share_code if this is an upload link
+             Any additional fields will be saved in the study audit trail and the following fields email_address, redirect_url, integration_key and skip_email_prompt will be available in /namespace/share_code if this is an upload link
         """
         request_data = {
            'u': u,

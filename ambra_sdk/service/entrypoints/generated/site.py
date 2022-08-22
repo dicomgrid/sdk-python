@@ -220,18 +220,21 @@ class Site:
         role_name,
         uuid,
         email=None,
+        site_email=None,
         user_id=None,
     ):
         """User add.
 
         :param role_name: The role name that should be used for the user in groups
-        :param uuid: The group id
+        :param uuid: The site id
         :param email: email
+        :param site_email: Users contact email for the site. Only set this if it is different than the users login email (optional).
         :param user_id: user_id
         """
         request_data = {
            'email': email,
            'role_name': role_name,
+           'site_email': site_email,
            'user_id': user_id,
            'uuid': uuid,
         }
@@ -253,21 +256,21 @@ class Site:
     
     def user_set(
         self,
+        user_id,
         uuid,
-        email=None,
         role_name=None,
-        user_id=None,
+        site_email=None,
     ):
         """User set.
 
+        :param user_id: Id of the user
         :param uuid: The site id
-        :param email: email
         :param role_name: The role name that should be used for the user in groups (optional)
-        :param user_id: user_id
+        :param site_email: Users contact email for the site. Only set this if it is different than the users login email (optional).
         """
         request_data = {
-           'email': email,
            'role_name': role_name,
+           'site_email': site_email,
            'user_id': user_id,
            'uuid': uuid,
         }
@@ -547,18 +550,21 @@ class AsyncSite:
         role_name,
         uuid,
         email=None,
+        site_email=None,
         user_id=None,
     ):
         """User add.
 
         :param role_name: The role name that should be used for the user in groups
-        :param uuid: The group id
+        :param uuid: The site id
         :param email: email
+        :param site_email: Users contact email for the site. Only set this if it is different than the users login email (optional).
         :param user_id: user_id
         """
         request_data = {
            'email': email,
            'role_name': role_name,
+           'site_email': site_email,
            'user_id': user_id,
            'uuid': uuid,
         }
@@ -580,21 +586,21 @@ class AsyncSite:
     
     def user_set(
         self,
+        user_id,
         uuid,
-        email=None,
         role_name=None,
-        user_id=None,
+        site_email=None,
     ):
         """User set.
 
+        :param user_id: Id of the user
         :param uuid: The site id
-        :param email: email
         :param role_name: The role name that should be used for the user in groups (optional)
-        :param user_id: user_id
+        :param site_email: Users contact email for the site. Only set this if it is different than the users login email (optional).
         """
         request_data = {
-           'email': email,
            'role_name': role_name,
+           'site_email': site_email,
            'user_id': user_id,
            'uuid': uuid,
         }

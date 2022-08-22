@@ -19,9 +19,11 @@ from ambra_sdk.exceptions.service import InvalidSortField
 from ambra_sdk.exceptions.service import InvalidSortOrder
 from ambra_sdk.exceptions.service import Lockout
 from ambra_sdk.exceptions.service import MissingFields
+from ambra_sdk.exceptions.service import MultipleAccounts
 from ambra_sdk.exceptions.service import NoPatientOverride
 from ambra_sdk.exceptions.service import NotFound
 from ambra_sdk.exceptions.service import NotPermitted
+from ambra_sdk.exceptions.service import PatientNameDobMismatch
 from ambra_sdk.service.query import QueryO
 from ambra_sdk.service.query import AsyncQueryO
 from ambra_sdk.service.query import QueryOPS
@@ -210,6 +212,82 @@ class Patient:
         query_data = {
             'api': self._api,
             'url': '/patient/set',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return QueryO(**query_data)
+    
+    def merge(
+        self,
+        src,
+        uuid,
+        alt_email=None,
+        alt_mobile_phone=None,
+        customfield_param=None,
+        do_delete=None,
+        do_update_patient_studies=None,
+        email=None,
+        event_new_report=None,
+        event_share=None,
+        mobile_phone=None,
+        setting_param=None,
+        settings=None,
+        sex=None,
+    ):
+        """Merge.
+
+        :param src: The JSON array of patient uuids to merge into destionation
+        :param uuid: The destination patient uuid
+        :param alt_email: Alternate email address (optional)
+        :param alt_mobile_phone: Alternate mobile phone number (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
+        :param do_delete: Delete src patients after merge (optional)
+        :param do_update_patient_studies: Update patient studies' sex an phone if those are modified (optional)
+        :param email: Email address (optional)
+        :param event_new_report: Notify the patient if a report is attached on the patient portal (optional)
+        :param event_share: Notify the patient if a new study is available on the patient portal (optional)
+        :param mobile_phone: Mobile phone number (optional)
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param settings: A hash of the patient settings, see Notes. (optional)
+        :param sex: Gender (optional)
+        """
+        request_data = {
+           'alt_email': alt_email,
+           'alt_mobile_phone': alt_mobile_phone,
+           'do_delete': do_delete,
+           'do_update_patient_studies': do_update_patient_studies,
+           'email': email,
+           'event_new_report': event_new_report,
+           'event_share': event_share,
+           'mobile_phone': mobile_phone,
+           'settings': settings,
+           'sex': sex,
+           'src': src,
+           'uuid': uuid,
+        }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
+        if setting_param is not None:
+            setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
+            request_data.update(setting_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('ALREADY_USED', None)] = AlreadyUsed('The email or phone number is already used by another patient. The error_subtype holds the field that is already used')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('INVALID_EMAIL', None)] = InvalidEmail('The email is invalid')
+        errors_mapping[('INVALID_PHONE', None)] = InvalidPhone('The phone number is invalid')
+        errors_mapping[('INVALID_SETTING', None)] = InvalidSetting('An invalid setting was passed. The error_subtype holds the name of the invalid setting')
+        errors_mapping[('INVALID_SETTING_VALUE', None)] = InvalidSettingValue('An invalid setting value was passed. The error_subtype holds the name of the setting with the invalid value')
+        errors_mapping[('MULTIPLE_ACCOUNTS', None)] = MultipleAccounts('Patients from different accounts provided')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The patient can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to merge the patients')
+        errors_mapping[('NO_PATIENT_OVERRIDE', None)] = NoPatientOverride('The setting does not allow a patient override')
+        errors_mapping[('PATIENT_NAME_DOB_MISMATCH', None)] = PatientNameDobMismatch('Patients should contain the same name and date of birth')
+        query_data = {
+            'api': self._api,
+            'url': '/patient/merge',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,
@@ -607,6 +685,82 @@ class AsyncPatient:
         query_data = {
             'api': self._api,
             'url': '/patient/set',
+            'request_data': request_data,
+            'errors_mapping': errors_mapping,
+            'required_sid': True,
+        }
+        return AsyncQueryO(**query_data)
+    
+    def merge(
+        self,
+        src,
+        uuid,
+        alt_email=None,
+        alt_mobile_phone=None,
+        customfield_param=None,
+        do_delete=None,
+        do_update_patient_studies=None,
+        email=None,
+        event_new_report=None,
+        event_share=None,
+        mobile_phone=None,
+        setting_param=None,
+        settings=None,
+        sex=None,
+    ):
+        """Merge.
+
+        :param src: The JSON array of patient uuids to merge into destionation
+        :param uuid: The destination patient uuid
+        :param alt_email: Alternate email address (optional)
+        :param alt_mobile_phone: Alternate mobile phone number (optional)
+        :param customfield_param: Expected values are CUSTOMFIELD_UUID. Custom field(s) (optional)
+        :param do_delete: Delete src patients after merge (optional)
+        :param do_update_patient_studies: Update patient studies' sex an phone if those are modified (optional)
+        :param email: Email address (optional)
+        :param event_new_report: Notify the patient if a report is attached on the patient portal (optional)
+        :param event_share: Notify the patient if a new study is available on the patient portal (optional)
+        :param mobile_phone: Mobile phone number (optional)
+        :param setting_param: Expected values are SETTING_NAME. Set an individual setting. This is an alternative to the settings hash for easier use in the API tester (optional)
+        :param settings: A hash of the patient settings, see Notes. (optional)
+        :param sex: Gender (optional)
+        """
+        request_data = {
+           'alt_email': alt_email,
+           'alt_mobile_phone': alt_mobile_phone,
+           'do_delete': do_delete,
+           'do_update_patient_studies': do_update_patient_studies,
+           'email': email,
+           'event_new_report': event_new_report,
+           'event_share': event_share,
+           'mobile_phone': mobile_phone,
+           'settings': settings,
+           'sex': sex,
+           'src': src,
+           'uuid': uuid,
+        }
+        if customfield_param is not None:
+            customfield_param_dict = {'{prefix}{k}'.format(prefix='customfield-', k=k): v for k,v in customfield_param.items()}
+            request_data.update(customfield_param_dict)
+        if setting_param is not None:
+            setting_param_dict = {'{prefix}{k}'.format(prefix='setting_', k=k): v for k,v in setting_param.items()}
+            request_data.update(setting_param_dict)
+	
+        errors_mapping = {}
+        errors_mapping[('ALREADY_USED', None)] = AlreadyUsed('The email or phone number is already used by another patient. The error_subtype holds the field that is already used')
+        errors_mapping[('INVALID_CUSTOMFIELD', None)] = InvalidCustomfield('Invalid custom field(s) name or value were passed. The error_subtype holds an array of the error details')
+        errors_mapping[('INVALID_EMAIL', None)] = InvalidEmail('The email is invalid')
+        errors_mapping[('INVALID_PHONE', None)] = InvalidPhone('The phone number is invalid')
+        errors_mapping[('INVALID_SETTING', None)] = InvalidSetting('An invalid setting was passed. The error_subtype holds the name of the invalid setting')
+        errors_mapping[('INVALID_SETTING_VALUE', None)] = InvalidSettingValue('An invalid setting value was passed. The error_subtype holds the name of the setting with the invalid value')
+        errors_mapping[('MULTIPLE_ACCOUNTS', None)] = MultipleAccounts('Patients from different accounts provided')
+        errors_mapping[('NOT_FOUND', None)] = NotFound('The patient can not be found')
+        errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to merge the patients')
+        errors_mapping[('NO_PATIENT_OVERRIDE', None)] = NoPatientOverride('The setting does not allow a patient override')
+        errors_mapping[('PATIENT_NAME_DOB_MISMATCH', None)] = PatientNameDobMismatch('Patients should contain the same name and date of birth')
+        query_data = {
+            'api': self._api,
+            'url': '/patient/merge',
             'request_data': request_data,
             'errors_mapping': errors_mapping,
             'required_sid': True,

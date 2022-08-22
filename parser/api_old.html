@@ -81,6 +81,7 @@
                 <li><a href="#study_delete">/study/delete</a>
                 <li><a href="#study_list">/study/list</a>
                 <li><a href="#study_count">/study/count</a>
+                <li><a href="#study_count_by_filter">/study/count_by_filter</a>
                 <li><a href="#study_cfind">/study/cfind</a>
                 <li><a href="#study_get">/study/get</a>
                 <li><a href="#study_permissions">/study/permissions</a>
@@ -600,6 +601,22 @@
                 <li><a href="#anonymization_get">/anonymization/get</a>
                 <li><a href="#anonymization_delete">/anonymization/delete</a>
             </ul>
+            <li><a href="#rule_set" name="rule_set-idx">Rule set commands</a>
+            <ul>
+                <li><a href="#rule_set_list">/rule_set/list</a>
+                <li><a href="#rule_set_add">/rule_set/add</a>
+                <li><a href="#rule_set_set">/rule_set/set</a>
+                <li><a href="#rule_set_get">/rule_set/get</a>
+                <li><a href="#rule_set_delete">/rule_set/delete</a>
+            </ul>
+            <li><a href="#timer_rule" name="timer_rule-idx">Study timer rule commands</a>
+            <ul>
+                <li><a href="#timer_rule_list">/timer_rule/list</a>
+                <li><a href="#timer_rule_add">/timer_rule/add</a>
+                <li><a href="#timer_rule_set">/timer_rule/set</a>
+                <li><a href="#timer_rule_get">/timer_rule/get</a>
+                <li><a href="#timer_rule_delete">/timer_rule/delete</a>
+            </ul>
         </ol>
 
         <a name="intro"><h3>Introduction</h3></a>
@@ -682,8 +699,6 @@
             <li> rows - The maximum number of rows in the page
             <li> number - The page number
         </ul>
-        <p>
-
         <a name="sort"><h3>Sorting</h3></a>
         If a  list can be sorted it will support the sort_by parameter in the call. The value of the sort_by parameter is a comma delimited list of fields with the direction of ordering (ascending or descending) appended to the field(s).
         For example
@@ -4719,6 +4734,7 @@
                 <td>0</td>
                 <td>Include ADT messages when search for orders in /study/find/order</td>
             </tr>
+            <tr>
                  <td>include_only_latest_adt_in_study_find_order</td>
                  <td>Flag</td>
                  <td>0</td>
@@ -4739,6 +4755,17 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Include just one order (the most recent) when searching for orders by accession number in /study/find/order</td>
+            </tr>
+             <tr>
+                <td>study_find_order_latest_in_progress</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Include only orders with status=IN_PROGRESS(IP,SC) for ORM/ADT in /study/find/order. This filter is applied before <i>include_only_latest*</i></td>
             </tr>
             <tr>
                 <td>include_manual_orders_in_study_find_order</td>
@@ -5016,6 +5043,17 @@
                 <td>0</td>
                 <td>0</td>
                 <td>Use a cfind instead of a MWL query for the MWL searching workflow</td>
+            </tr>
+            <tr>
+                <td>mwl_search_is_cfind_all_rows</td>
+                <td>Flag</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>Return all rows instead of 1 if <i>mwl_search_is_cfind</i> is set</td>
             </tr>
             <tr>
                 <td>mwl_filter_if_matching_study</td>
@@ -5339,7 +5377,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>Number of days after which a /destination/search result is automatically removed from the activity list.  Defaults to 0 meaning that search results are not removed automatically.</code>
+                <td>Number of days after which a /destination/search result is automatically removed from the activity list.  Defaults to 0 meaning that search results are not removed automatically.</td>
             </tr>
             <tr>
                 <td>query_retrieve_require_criteria_min</td>
@@ -5350,7 +5388,7 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>Minimal number of search criteria for /destination/search Default is 1</code>
+                <td>Minimal number of search criteria for /destination/search Default is 1</td>
             </tr>
             <tr>
                 <td>enable_drchrono</td>
@@ -6754,17 +6792,18 @@
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
-                <td>A JSON list of escalation rules for the account. Every rule is a hash with the <code>condition</code> and <code>action</code> keys. Each of the condition and action is defined by a hash, the keys and values for the <code>condition</code> are as follows:
+                <td>A JSON list of escalation rules for the account. Every rule is a hash with the <code>condition</code> and <code>action</code> keys. Each of the condition and action is defined by a hash, <code>condition</code> should follow the condition format used by customfield's <i>show_when</i> field.
+                The topmost HASH condition is interpreted with AND logic. Condition parameters (the fields to be referred in the condition) are as follows:
                     <ul>
                         <li> elapsed_from_reply &bull; The number of seconds passed from the last reply
                         <li> elapsed_from_status_change &bull; The number of seconds passed from the last query status change
                         <li> elapsed_from_reminder &bull; The number of seconds passed from the last reminder sent out for the query
-                        <li> any query field &bull; Any query field that should match for the rule to be aplpied to the query. Values are scalars to match the field or an array of values to match
+                        <li> any query field &bull; Any query field can be referred here
                     </ul>
                     The keys and values for the <code>action</code> are as follows:
                     <ul>
                         <li> do &bull; The action to perform on condition match (remind|add_recipient)
-                        <li> user_id &bull; The user ID to add as a recipient to the query. Applies for the add_recipient action only (optional)
+                        <li> user_id &bull; The user ID (or an array of user IDs) to add as a recipient to the query. Applies for the add_recipient action only (optional)
                     </ul>
 
                 </td>
@@ -6903,26 +6942,21 @@
                 <td>Notification type for this event. Either <b>sms</b> or <b>email</b>, default is email. Can be overriden in <a href="#patient_set">/patient/set</a></td>
             </tr>
             <tr>
-                <td>study_push_sms_on_in_process_timeout</td>
-                <td>Number</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>If <a href="#study_push">/study/push</a> hangs in <i>study_push_status.status=<b>I|P</b></i> for more than $value minutes, then sms is sent to users in <i>study_push_sms_on_in_process_users</i>. Sms template is <i>study_push_sms_on_in_process_timeout</i>.<br>Cant be set to nonzero if <i>study_push_sms_on_in_process_users</i> is empty.</td>
-            </tr>
-            <tr>
-                <td>study_push_sms_on_in_process_users</td>
+                <td>study_push_sms_on_in_process_options</td>
                 <td>Text</td>
                 <td></td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>1</td>
                 <td>0</td>
-                <td>0</td>
-                <td>JSON array of uuids of users in that account having mobile phone.<br>Error is thrown on <a href="#account_set">/account/set</a> if these conditions are not fulfilled.<br>On error <i>error_subtype</i>=<code>study_push_sms_on_in_process_users:$type:$uuid</code> where $type is one of USER_NOT_IN_ACCOUNT,USER_NOT_FOUND,USER_NOT_IN_ACCOUNT,MOBILE_NOT_FOUND.</td>
+                <td>It is JSON Hash like <code>{"timeout":<b>0</b>,"interval":<b>60</b>,"limit":<b>3</b>,"users":["uuid1","uuid2",...]}</code>. Bold digit is default value for each key.<br>
+                <i>users</i> is array of uuids of users in that account having mobile phone. Error is returned on <a href="#account_set">/account/set</a> if these conditions are not fulfilled, with setting <i>error_subtype</i>=<code>study_push_sms_on_in_process_options:$type:$uuid</code> where $type is one of <code>USER_NOT_IN_ACCOUNT,USER_NOT_FOUND,USER_NOT_IN_ACCOUNT,MOBILE_NOT_FOUND</code>.<br>
+                If <i>timeout</i>==0, then this feature is disabled.<br>
+                If enabled and for some <i>node</i> there is any <i>study_push_status.status</i>=~<code>I|P</code> hanging for more than <i>timeout</i> minutes, then each <i>interval</i> minutes sms is sent to <i>users</i> defined in options for this node account. Sending stops when no <i>study_push_status.status</i>=~<code>I|P</code> for that <i>destionation</i> or <i>limit</i> sms messages were sent.<br>
+                Sms template is <i>study_push_sms_on_in_process_timeout</i>.<br>
+                Note: <i>timeout</i> cant be set to nonzero if <i>users</i> is empty. The counter is reset after <code>2*(timeout + interval*limit)</code> minutes since last added study_push. Then it could be reactivated on next hanging <a href="#study_push">/study/push</a>.<br>
+                It is triggered on node::monitor, so if interval&lt;15 minutes, it will be triggered later on next node::monitor check.</td>
             </tr>
         </table>
 
@@ -9006,6 +9040,50 @@
         </table>
         <a href="#study-idx">top</a>
 
+        <p><a name="study_count_by_filter"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>PACS mode. Get a count of the studies the user can see per each filter set</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/study/count_by_filter</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>filter.*</i> &bull; <a href="#filter">Filters</a> (optional)<br>
+                    <i>filter_uuids</i> &bull; JSON array of <a href="#filter_add">filter</a>.uuid (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>count_by_filter</i> &bull; JSON hash of pairs {<a href="#filter_add">filter</a>.uuid =&gt; $count}</code><br>
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    INVALID_FIELD &bull; Invalid <i>filter_uuids</i> JSON array of uuids<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ul>
+                        <li> All filters from the /study/list call apply here.<br>
+                            If <i>filter_uuids</i> is not empty, then only for that uuids list counters are returned.
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#study-idx">top</a>
+
         <p><a name="study_cfind"></a>
         <table class="bordered-table">
             <tr>
@@ -10794,6 +10872,7 @@
                         <li>If you pass a patientid it is wildcarded as patientid% search
                         <li>If you pass a patientName it is wildcarded as %patient_name% search
                         <li>ORM messages are searched; if the account setting include_adt_in_study_find_order is enabled ADT messages will also be searched
+                        <li>For ORM/ADT search setting study_find_order_latest_in_progress can be enabled to filter only IN_PROGRESS orders.
                         <li>When the account setting include_adt_in_study_find_order is enabled, the setting include_only_latest_adt_in_study_find_order may also be enabled to further limit any ADT messages searched to only the most recent
                         <li>When the account setting include_adt_in_study_find_order is NOT enabled, the setting include_only_latest_adt_in_study_find_order has no effect even if it is enabled
                     </ul>
@@ -14830,7 +14909,7 @@
             </tr>
             <tr>
                 <th>Notes</th>
-                <td>Current allowed settings are <i>patient_portal_event_new_report_notify_type</i> and <i>patient_portal_event_new_report_notify_type</i>
+                <td>Current allowed settings are <i>patient_portal_event_new_report_notify_type</i> and <i>patient_portal_event_share_notify_type</i>
                 </td>
             </tr>
         </table>
@@ -16105,6 +16184,11 @@
                         <li> If a study has an associated HL7 message specified in /study/push/hl7 the HL7 segments can be included from the hl7_segments array, first segment is index 0, second segment is index 1 etc. e.g. <code>{$hl7_segments[2]}</code>
                         <li> If a study has an associated HL7 message specified in /study/push/hl7 the HL7 fields can be included from the hl7_fields hash using the notation specified in <a href="#hl7_transform_add">/hl7/transform/add</a> e.g. <code>{$hl7_fields{'PID_2'}}</code>
                         <li> If a study has image data loaded via the /study/dicomdata/load call the __EPIC_LUMENS__ value will be replaced by the data needed to view the images in Lumens and the __EPIC_UUID__ value will be replaced by a UUID for each image. If the Dicomdata object has the named customfield <code>lumens_link_uuid</code> the send of the image will be tracked in this customfield and the image will only be sent once.
+                        <li> The following helper functions are supported in the teplate:
+                            <ol>
+                                <li> translate_time_zone($timestamp, $timezone) - translate the timestamp with a time zone (e.g. <code>2022-03-25 17:40:12.419715+04:30</code>) to a time zone (e.g. <code>MST</code>). Returns the corresponding timestamp in the time zone without fractional seconds and the offset part(e.g. <code>2022-03-25 06:10:12</code>)
+                                <li> datetime_to_dicom($timestamp) - format the timestamp as a DICOM Date Time without fractional seconds and an optional suffix for time zone offset. The timestamp should not contain fractional seconds and a time zone offset (e.g. <code>2022-03-25 06:10:12</code>).
+                            </ol>
                     </ul>
                 </td>
             </tr>
@@ -19007,6 +19091,7 @@
                                 <li> first_working_ping - The number of seconds since the last gateway ping to use for the first_working_destination action. Default value is 15 seconds.
                                 <li> hl7_report_physician_alias_regexp - A capturing regular expression (i.e. /To: (.*)$/) to capture text from the associated hl7 report. The text will be appended to the PHYSICIAN_ALIAS value for matching. The visibility of this field in the UI is controlled by the show_hl7_report_physician_alias_regexp flag in <a href="#account-settings">account settings</a>.
                             </ul>
+                        </ul>
                         <li> If a rule doesn't have any conditions it is an open rule and will match all studies in the namespace
                         <li> If a route has a schedule it will only be applied during the scheduled times unless the delay_till_schedule flag is set, it that case the triggered route will be delayed until the next scheduled time.
                     </ul>
@@ -21888,6 +21973,7 @@
                             <li><i>namespace_name</i> &bull; Name of the namespace<br>
                             <li><i>destination_name</i> &bull; Name of the destination that was searched<br>
                             <li><i>study</i> &bull; The study object. The fields are the same as the study fields in the  <a href="#node_found">/node/found</a> command<br>
+                            <li><i>copy_to</i> &bull; If <a href="#destination_search">/destination/search</a> had <i>copy_to</i> parameter, then it is showed here.<br>
                         </ul>
                         <li>USER_INVITE- An invitation to join the account to user has being sent to a user
                         <ul>
@@ -22057,6 +22143,9 @@
                     * <i>client_address</i> &bull; IP address that performed the action<br>
                     * <i>sid</i> &bull; sid that performed the action<br>
                     * <i>webhook_id</i> &bull; webhook that triggered the action. NOTE: This field exists only if action was triggered by webhook.<br>
+                    * <i>causality</i> &bull; A hash that give a clue of what triggered the change. All the hash keys are optional:<br>
+                    ** <i>timer_rule_id</i> &bull; <a href="#timer_rule_add">Timer rule</a> that applied on the event<br>
+                    ** <i>webhook_id</i> &bull; Webhook that triggered the action<br>
                 </td>
             </tr>
             <tr>
@@ -22224,6 +22313,7 @@
                     <ul>
                         <li> To filter by a time range use the created field with either a date or date time value. e.g. filter.created.ge=>'2014-01-08 05:38:30'
                         <li> The default sort order is most recent first
+                    </ul>
                 </td>
             </tr>
         </table>
@@ -22460,6 +22550,7 @@
                     <i>share_related</i> &bull; Flag to make study shares with this namespace include related studies (same PHI namespace, same MRN) (optional)<br>
                     <i>ira_namespace</i> &bull; Flag to make the namespace viable owner namespace for Queries (optional)<br>
                     <i>download_anonymize</i> &bull; Anonymization rules to apply on study download. The setting format should follow the <code>anonymize_tags</code> parameter format of the Storage <code>/study/{namespace}/{studyUid}/download</code> call (optional)<br>
+                    <i>storage_always_dicom_tags</i> &bull; A JSON list of DICOM tags that should always be loaded from storage. This is useful for mapped custom fields which should always show the latest value in storage.  (optional)<br>
                     <div class="comment">-- The following account settings can be over-ridden in the namespace --</div>
                     <i>remove_private_tags_on_upload</i> &bull; Flag the storage to anonymize or remove all private tags from a study (optional)<br>
                     <i>enable_dicom_wrapping</i> &bull; Value for the setting (optional)<br>
@@ -24274,6 +24365,7 @@
                     <i>dicom_tag_ignore_empty</i> &bull; Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified) (optional)<br>
                     <i>load_from_sr</i> &bull; Load the value from the structured reports in the study (only applicable to study fields) .(optional)<br>
                     <i>field_flag</i> &bull; Default customfield flag (optional)<br>
+                    <i>ui_json</i> &bull; JSON for UI settings (optional)<br>
                     <i>load_order</i> &bull; If this flag is on the value of this field will be loaded from a customfield of the matching Order. The customfield is defined by the other_customfield_id parameter (optional)<br>
                     <i>other_customfield_id</i> &bull; Id of a customfield to map its value to this customfield's value (optional)<br>
                 </td>
@@ -24324,6 +24416,7 @@
                         <ul>
                             <li> values - array of values for a select, multiselect, radio or search field. Macro values can be used to dynamically generate values as documented below.
                             <li> suggested_values - array of values for a search field, shown as default options when the user clicks into the field, before they enter a search string. Macro values can be used as documented below.
+                            <li> inactive_options - array of disabled values. Already set values from this list are left intact. This list of values is hidden for further user selection.
                             <li> values_FIELD_NAME - hash of arrays of values for a select, multiselect or radio field. FIELD_NAME should be name of the field to lookup and the field value is the key to the hash.<br> e.g. <code>"values_modality":{"CT":["A","B"],"MR":["C","D"]}</code>. Only one values_FIELD_NAME key can exist.
                             <li> labels - hash of labels for a select or multiselect field (optional)
                             <li> validate - a regular expression the field must validate against
@@ -24405,6 +24498,7 @@
                     <i>dicom_tag_ignore_empty</i> &bull; Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified) (optional)<br>
                     <i>load_from_sr</i> &bull; Load the value from the structured reports in the study. (only applicable to study fields) .(optional)<br>
                     <i>field_flag</i> &bull; Default customfield flag (optional)<br>
+                    <i>ui_json</i> &bull; JSON for UI settings (optional)<br>
                     <i>load_order</i> &bull; If this flag is on the value of this field will be loaded from a customfield of the matching Order. The customfield is defined by the other_customfield_id parameter (optional)<br>
                     <i>other_customfield_id</i> &bull; Id of a customfield to map its value to this customfield's value (optional)<br>
                     <i>other_customfield_no_overwrite_with_blank</i> &bull; Flag if the customfield should be updated with a blank value (optional)<br>
@@ -24496,6 +24590,7 @@
                     <i>dicom_tag_ignore_empty</i> &bull; Flag to not map an empty custom field to the DICOM tag. (only applicable if a dicom_tag is specified)<br>
                     <i>load_from_sr</i> &bull; Load the value from the structured reports in the study<br>
                     <i>field_flag</i> &bull; Default customfield flag<br>
+                    <i>ui_json</i> &bull; JSON for UI settings.<br>
                     <i>load_order</i> &bull; If this flag is on the value of this field will be loaded from a customfield of the matching Order. The customfield is defined by the other_customfield_id parameter<br>
                     <i>other_customfield_id</i> &bull; Id of a customfield to map its value to this customfield's value<br>
                     <i>other_customfield_no_overwrite_with_blank</i> &bull; Flag if the customfield should be updated with a blank value<br>
@@ -24537,6 +24632,7 @@
                                 <li> <i>value</i> &bull; Value of the custom field
                                 <li> <i>required</i> &bull; Is the field required
                                 <li> <i>options</i> &bull; Field options
+                                <li> <i>ui_json</i> &bull; JSON for UI settings.
                             </ul>
                     </ul>
                 </td>
@@ -24654,6 +24750,10 @@
                     <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
                     <i>uuid</i> &bull; uuid of the customfield<br>
                     <i>search</i> &bull; The value to search for (optional)<br>
+                    <i>extended</i> &bull; If provided then below parameters are used instead of <i>search</i>, see Notes. (optional)<br>
+                    <i>filter.*</i> &bull; <a href="#filter">Filters</a>, used for <i>search_source</i>=<code>account_users only (optional)<br>
+                    <i>page.*</i> &bull; <a href="#pagination">Pagination</a>, used for <i>search_source</i>=<code>account_users only (optional)<br>
+                    <i>sort_by</i> &bull; <a href="#sort">Sorting</a>, used for <i>search_source</i>=<code>account_users only (optional)<br>
                 </td>
             </tr>
             <tr>
@@ -24666,7 +24766,8 @@
             <tr>
                 <th>Permission</th>
                 <td>
-                    You need to be a member of the account
+                    You need to be a member of the account<br>
+                    For <i>search_source</i>=<code>account_users</code> and <i>extended=1</i> account_user_view or case_edit is required.
                 </td>
             </tr>
             <tr>
@@ -24680,7 +24781,7 @@
             </tr>
             <tr>
                 <th>Notes</th>
-                <td>
+                <td>If <i>extended=1</i> provided, then for <i>search_source</i>=<code>account_users</code> not <i>search</i> but <i>filter.*</i> are applied and data returned is the same way as in <a href="#account_user_list">/account/user/list</a>. Plus extended <i>filter.user_first_last.like=%part</i> matches "first last" like "%part".
                 </td>
             </tr>
         </table>
@@ -28580,7 +28681,7 @@
                     <i>uuid</i> &bull; The site uuid<br>
                     <i>name</i> &bull; The sites name<br>
                     <i>site_id</i> &bull; The site to attach them to as a satellite site<br>
-                    <i>address2</i> &bull; The country of the site<br>
+                    <i>country</i> &bull; The country of the site<br>
                     <i>state</i> &bull; The state code of the site<br>
                     <i>zip</i> &bull; The zip code of the site<br>
                     <i>city</i> &bull; The city the site is located in<br>
@@ -28792,6 +28893,10 @@
                     * <i>user_name</i> &bull; The user name<br>
                     * <i>user_email</i> &bull; The user email<br>
                     * <i>role_name</i> &bull; The users role name<br>
+                    * <i>groups</i> &bull; An array of trials the user is a member of. Each object in the array will have the following fields<br>
+                    ** <i>group_name</i> &bull; The trial site name<br>
+                    ** <i>group_account_name</i> &bull; The trial account name<br>
+                    ** <i>group_role_name</i> &bull; The role name of the user in the trial site<br>
                 </td>
             </tr>
             <tr>
@@ -30155,7 +30260,515 @@
         </table>
         <a href="#anonymization-idx">top</a>
 
-    <footer>LBL0022 v53.0 2021-04-05</footer>
+        <a name="rule_set"><h3>Rule set commands</h3></a>
+
+        <p><a name="rule_set_list"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get a list of the rule sets in the account</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/rule_set/list</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>account_id</i> &bull; uuid of the account<br>
+                    <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
+                    <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
+                    <i>sort_by</i> &bull; <a href="#sort">Sorting</a> (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>page</i> &bull; The pagination status hash<br>
+                    <i>rule_sets</i> &bull; An array of the account rule sets. Each object holds the same fields as the <a href="#rule_set_get">/rule_set/get</a> call<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    account_view
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The account can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to view rule sets in this account<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#rule_set-idx">top</a>
+
+        <p><a name="rule_set_add"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Add a rule set</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/rule_set/add</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>account_id</i> &bull; uuid of the account to add them to<br>
+                    <i>name</i> &bull; Name of the rule set<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>uuid</i> &bull; The uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    account_edit
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The account was not found. The <i>error_subtype</i> holds the type of object not found<br>
+                    NOT_PERMITTED &bull; You are not permitted to add a rule set to the account<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#rule_set-idx">top</a>
+
+        <p><a name="rule_set_set"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Edit a rule set</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/rule_set/set</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The rule set uuid<br>
+                    <i>name</i> &bull; Name of the rule set (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    account_edit
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    NOT_FOUND &bull; The rule set can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to edit the rule set<br>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#rule_set-idx">top</a>
+
+        <p><a name="rule_set_get"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get a rule set</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/rule_set/get</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The rule set uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>uuid</i> &bull; The rule set uuid<br>
+                    <i>name</i> &bull; Name of the rule set<br>
+                    <i>account_id</i> &bull; account uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    account_view
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The rule set can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to view the rule set<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#rule_set-idx">top</a>
+
+        <p><a name="rule_set_delete"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Delete a rule set</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/rule_set/delete</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The rule set uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    account_edit
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The rule set can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to delete the rule set<br>
+                    IN_USE &bull; The rule set contains study status timet rules and cannot be removed<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#rule_set-idx">top</a>
+
+        <a name="timer_rule"><h3>Study timer rule commands</h3></a>
+
+        <p><a name="timer_rule_list"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get a list of the study timer rules in the account</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/timer_rule/list</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>account_id</i> &bull; uuid of the account<br>
+                    <i>filter.*</i> <a href="#filter">Filters</a> (optional)<br>
+                    <i>page.*</i> <a href="#pagination">Pagination</a> (optional)<br>
+                    <i>sort_by</i> &bull; <a href="#sort">Sorting</a> (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>page</i> &bull; The pagination status hash<br>
+                    <i>timer_rules</i> &bull; An array of the account timer rules. Each object holds the same fields as the <a href="#timer_rule_get">/timer_rule/get</a> call<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    account_view
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The account can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to view timer rules in this account<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#timer_rule-idx">top</a>
+
+        <p><a name="timer_rule_add"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Add a timer rule</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/timer_rule/add</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>rule_set_id</i> &bull; uuid of the rule set to add them to<br>
+                    <i>action</i> &bull; The action to perform on rule match (reset|reset_and_stop|reset_and_resume|resume|stop|do_nothing)<br>
+                    <i>sequence</i> &bull; An integer value. Rules are processed from low number to high number (optional)<br>
+                    <i>old_values</i> &bull; JSON hash of the values to compare with the previous study state. Keys correspond to study fields, each hash element is an ARRAY of actual values to use in comparison (optional)<br>
+                    <i>new_values</i> &bull; JSON hash of the values to compare with the next study state. Keys correspond to study fields, each hash element is an ARRAY of actual values to use in comparison (optional)<br>
+                    <i>name</i> &bull; Name of the timer rule<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>uuid</i> &bull; The uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    account_edit
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The rule set can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to add a rule set to the account<br>
+                    INVALID_INTEGER &bull; An invalid integer was passed. The <i>error_subtype</i> holds the name of the invalid integer<br>
+                    VALIDATION_FAILED &bull; A field failed validation. The <i>error_subtype</i> holds the name of the invalid field<br>
+                    NOT_HASH &bull; The field is not a JSON hash. The <i>error_subtype</i> holds the name of the field<br>
+                    UNSUPPORTED_STUDY_FIELD &bull; The referred study field is not supported<br>
+                    NAMESPACE_NOT_FOUND &bull; The namespace referred by the rule was not found<br>
+                    INVALID_VALUE &bull; The rule condition value is not an array<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    <ul>
+                        <li>Each study change initiates timer rules processing. The account timer rules are processed from low sequence number to high sequence number.
+                            For each rule <i>old_values</i> and <i>new_values</i> are compared (if set) with the old study state (prior to the study change) and the new study state.
+                            Each of the <i>old_values</i> and <i>new_values</i> keys are compared with the corresponding study attribute in turn, any key array value for every key must be equal to the study attribute to trigger the rule action for the study.
+                            Rules processing stops on the first match. If none of the rules match then no action is taken. Timer is stopped for new studies by default. If neither of <i>old_values</i> and <i>new_values</i> are set, then the rule matches unconditionally.
+                        <li>The following study attributes are supported in condition definitions: <i>study_status</i>, <i>phi_namespace</i>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <a href="#timer_rule-idx">top</a>
+
+        <p><a name="timer_rule_set"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Edit a timer rule</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/timer_rule/set</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The timer rule uuid<br>
+                    <i>action</i> &bull; The action to perform on rule match (reset|reset_and_stop|reset_and_resume|resume|stop|do_nothing) (optional)<br>
+                    <i>sequence</i> &bull; An integer value. Rules are processed from low number to high number (optional)<br>
+                    <i>old_values</i> &bull; JSON hash of the values to compare with the previous study state. Keys correspond to study fields, each hash element is an ARRAY of actual values to use in comparison (optional)<br>
+                    <i>new_values</i> &bull; JSON hash of the values to compare with the next study state. Keys correspond to study fields, each hash element is an ARRAY of actual values to use in comparison (optional)<br>
+                    <i>name</i> &bull; Name of the timer rule (optional)<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    account_edit
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The timer rule was not found<br>
+                    NOT_PERMITTED &bull; You are not permitted to edit the timer rule<br>
+                    INVALID_INTEGER &bull; An invalid integer was passed. The <i>error_subtype</i> holds the name of the invalid integer<br>
+                    VALIDATION_FAILED &bull; A field failed validation. The <i>error_subtype</i> holds the name of the invalid field<br>
+                    NOT_HASH &bull; The field is not a JSON hash. The <i>error_subtype</i> holds the name of the field<br>
+                    UNSUPPORTED_STUDY_FIELD &bull; The referred study field is not supported<br>
+                    NAMESPACE_NOT_FOUND &bull; The namespace referred by the rule was not found<br>
+                    INVALID_VALUE &bull; The rule condition value is not an array<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#timer_rule-idx">top</a>
+
+        <p><a name="timer_rule_get"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Get a timer rule</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/timer_rule/get</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The timer rule uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                    <i>uuid</i> &bull; The timer rule uuid<br>
+                    <i>name</i> &bull; Name of the timer rule<br>
+                    <i>rule_set_id</i> &bull; uuid of the rule set<br>
+                    <i>action</i> &bull; The action to perform on rule match<br>
+                    <i>sequence</i> &bull; An integer value. Rules are processed from low number to high number<br>
+                    <i>old_values</i> &bull; JSON hash of the values to compare with the previous study state<br>
+                    <i>new_values</i> &bull; JSON hash of the values to compare with the next study state<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    account_view
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The timer rule can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to view the timer rule<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#timer_rule-idx">top</a>
+
+        <p><a name="timer_rule_delete"></a>
+        <table class="bordered-table">
+            <tr>
+                <th>Description</th>
+                <td>Delete a timer rule</td>
+            </tr>
+            <tr>
+                <th>URL</th>
+                <td>/timer_rule/delete</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>
+                    <i>sid</i> &bull; The session id (optional if basic authentication or an OAuth token is used)<br>
+                    <i>uuid</i> &bull; The timer rule uuid<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Returns</th>
+                <td>
+                    <i>status</i> &bull; OK<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>
+                    account_edit
+                </td>
+            </tr>
+            <tr>
+                <th>Errors</th>
+                <td>
+                    MISSING_FIELDS &bull; A required field is missing or does not have data in it. The <i>error_subtype</i> holds a array of all the missing fields<br>
+                    NOT_FOUND &bull; The timer rule can not be found<br>
+                    NOT_PERMITTED &bull; You are not permitted to delete the timer rule<br>
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <a href="#timer_rule-idx">top</a>
+
+    <footer>LBL0022 v54.0 2022-05-25</footer>
     </div>
 </body>
 </html>

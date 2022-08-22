@@ -12,6 +12,7 @@ from ambra_sdk.exceptions.service import DupShareCode
 from ambra_sdk.exceptions.service import DuplicateName
 from ambra_sdk.exceptions.service import DuplicateVanity
 from ambra_sdk.exceptions.service import FilterNotFound
+from ambra_sdk.exceptions.service import InUse
 from ambra_sdk.exceptions.service import InvalidCondition
 from ambra_sdk.exceptions.service import InvalidCustomfield
 from ambra_sdk.exceptions.service import InvalidField
@@ -235,6 +236,7 @@ class Account:
         event_purge=None,
         event_query_add=None,
         event_query_edit=None,
+        event_query_new_recipient=None,
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
@@ -279,7 +281,8 @@ class Account:
         :param event_node: Notify the user when an account node sends an event (optional)
         :param event_purge: Notify the user the results of a purge job for the account (optional)
         :param event_query_add: Notify the user when a new query is issued (optional)
-        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_edit: Notify the user when a query is edited (optional)
+        :param event_query_new_recipient: Notify the user when they are added to a query as a new recipient (optional)
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)
         :param event_share: Notify the user on a share into the account namespace (optional)
@@ -322,6 +325,7 @@ class Account:
            'event_purge': event_purge,
            'event_query_add': event_query_add,
            'event_query_edit': event_query_edit,
+           'event_query_new_recipient': event_query_new_recipient,
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
@@ -395,6 +399,7 @@ class Account:
         event_purge=None,
         event_query_add=None,
         event_query_edit=None,
+        event_query_new_recipient=None,
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
@@ -437,7 +442,8 @@ class Account:
         :param event_node: Notify the user when an account node sends an event (optional)
         :param event_purge: Notify the user the results of a purge job for the account (optional)
         :param event_query_add: Notify the user when a new query is issued (optional)
-        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_edit: Notify the user when a query is edited (optional)
+        :param event_query_new_recipient: Notify the user when they are added to a query as a new recipient (optional)
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)
         :param event_share: Notify the user on a share into the account namespace (optional)
@@ -477,6 +483,7 @@ class Account:
            'event_purge': event_purge,
            'event_query_add': event_query_add,
            'event_query_edit': event_query_edit,
+           'event_query_new_recipient': event_query_new_recipient,
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
@@ -572,6 +579,7 @@ class Account:
         }
 	
         errors_mapping = {}
+        errors_mapping[('IN_USE', None)] = InUse('The user is a sid user for an account webhook')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete this user')
@@ -1150,6 +1158,7 @@ class AsyncAccount:
         event_purge=None,
         event_query_add=None,
         event_query_edit=None,
+        event_query_new_recipient=None,
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
@@ -1194,7 +1203,8 @@ class AsyncAccount:
         :param event_node: Notify the user when an account node sends an event (optional)
         :param event_purge: Notify the user the results of a purge job for the account (optional)
         :param event_query_add: Notify the user when a new query is issued (optional)
-        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_edit: Notify the user when a query is edited (optional)
+        :param event_query_new_recipient: Notify the user when they are added to a query as a new recipient (optional)
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)
         :param event_share: Notify the user on a share into the account namespace (optional)
@@ -1237,6 +1247,7 @@ class AsyncAccount:
            'event_purge': event_purge,
            'event_query_add': event_query_add,
            'event_query_edit': event_query_edit,
+           'event_query_new_recipient': event_query_new_recipient,
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
@@ -1310,6 +1321,7 @@ class AsyncAccount:
         event_purge=None,
         event_query_add=None,
         event_query_edit=None,
+        event_query_new_recipient=None,
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
@@ -1352,7 +1364,8 @@ class AsyncAccount:
         :param event_node: Notify the user when an account node sends an event (optional)
         :param event_purge: Notify the user the results of a purge job for the account (optional)
         :param event_query_add: Notify the user when a new query is issued (optional)
-        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_edit: Notify the user when a query is edited (optional)
+        :param event_query_new_recipient: Notify the user when they are added to a query as a new recipient (optional)
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the account namespace (optional)
         :param event_share: Notify the user on a share into the account namespace (optional)
@@ -1392,6 +1405,7 @@ class AsyncAccount:
            'event_purge': event_purge,
            'event_query_add': event_query_add,
            'event_query_edit': event_query_edit,
+           'event_query_new_recipient': event_query_new_recipient,
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
@@ -1487,6 +1501,7 @@ class AsyncAccount:
         }
 	
         errors_mapping = {}
+        errors_mapping[('IN_USE', None)] = InUse('The user is a sid user for an account webhook')
         errors_mapping[('MISSING_FIELDS', None)] = MissingFields('A required field is missing or does not have data in it. The error_subtype holds a array of all the missing fields')
         errors_mapping[('NOT_FOUND', None)] = NotFound('The account can not be found')
         errors_mapping[('NOT_PERMITTED', None)] = NotPermitted('You are not permitted to delete this user')

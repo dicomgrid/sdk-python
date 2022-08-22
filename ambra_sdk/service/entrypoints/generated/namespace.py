@@ -123,6 +123,7 @@ class Namespace:
         try_update_original_study_to_namespaces=None,
         ui_json=None,
         upload_settings=None,
+        viewer_study_enable_cpp_transcoding=None,
     ):
         """Settings.
 
@@ -163,6 +164,7 @@ class Namespace:
 pixel_de_id_by_default (boolean) Pixel de-id tool is set by default when uploading study to this namespace
 show_image_on_upload_page (boolean)  Show computer image with CD on upload page when image is uploading to this namespace
         :param upload_settings: Value for the setting (optional)
+        :param viewer_study_enable_cpp_transcoding: Value for the setting (optional). Can be set only by sysdamin.
         """
         request_data = {
            'allow_drag_and_drop_in_study_uploader': allow_drag_and_drop_in_study_uploader,
@@ -198,6 +200,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
            'ui_json': ui_json,
            'upload_settings': upload_settings,
            'uuid': uuid,
+           'viewer_study_enable_cpp_transcoding': viewer_study_enable_cpp_transcoding,
         }
         if ai_settings is not None:
             ai_settings_dict = {'{prefix}{k}'.format(prefix='', k=k): v for k,v in ai_settings.items()}
@@ -450,6 +453,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
         event_node=None,
         event_query_add=None,
         event_query_edit=None,
+        event_query_new_recipient=None,
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
@@ -474,7 +478,8 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
         :param event_new_report: Notify the user when a report is attached in the namespace (optional)
         :param event_node: Notify the user when a namespace node sends an event (optional)
         :param event_query_add: Notify the user when a new query is issued (optional)
-        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_edit: Notify the user when a query is edited (optional)
+        :param event_query_new_recipient: Notify the user when they are added to a query as a new recipient (optional)
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the namespace (optional)
         :param event_share: Notify the user on a share into the namespace (optional)
@@ -498,6 +503,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
            'event_node': event_node,
            'event_query_add': event_query_add,
            'event_query_edit': event_query_edit,
+           'event_query_new_recipient': event_query_new_recipient,
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
@@ -782,6 +788,7 @@ class AsyncNamespace:
         try_update_original_study_to_namespaces=None,
         ui_json=None,
         upload_settings=None,
+        viewer_study_enable_cpp_transcoding=None,
     ):
         """Settings.
 
@@ -822,6 +829,7 @@ class AsyncNamespace:
 pixel_de_id_by_default (boolean) Pixel de-id tool is set by default when uploading study to this namespace
 show_image_on_upload_page (boolean)  Show computer image with CD on upload page when image is uploading to this namespace
         :param upload_settings: Value for the setting (optional)
+        :param viewer_study_enable_cpp_transcoding: Value for the setting (optional). Can be set only by sysdamin.
         """
         request_data = {
            'allow_drag_and_drop_in_study_uploader': allow_drag_and_drop_in_study_uploader,
@@ -857,6 +865,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
            'ui_json': ui_json,
            'upload_settings': upload_settings,
            'uuid': uuid,
+           'viewer_study_enable_cpp_transcoding': viewer_study_enable_cpp_transcoding,
         }
         if ai_settings is not None:
             ai_settings_dict = {'{prefix}{k}'.format(prefix='', k=k): v for k,v in ai_settings.items()}
@@ -1109,6 +1118,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
         event_node=None,
         event_query_add=None,
         event_query_edit=None,
+        event_query_new_recipient=None,
         event_query_reply=None,
         event_report_remove=None,
         event_share=None,
@@ -1133,7 +1143,8 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
         :param event_new_report: Notify the user when a report is attached in the namespace (optional)
         :param event_node: Notify the user when a namespace node sends an event (optional)
         :param event_query_add: Notify the user when a new query is issued (optional)
-        :param event_query_edit: Notify the user when a query is edites (optional)
+        :param event_query_edit: Notify the user when a query is edited (optional)
+        :param event_query_new_recipient: Notify the user when they are added to a query as a new recipient (optional)
         :param event_query_reply: Notify the user when they leave a new reply in a query (optional)
         :param event_report_remove: Notify the user when a report is removed in the namespace (optional)
         :param event_share: Notify the user on a share into the namespace (optional)
@@ -1157,6 +1168,7 @@ show_image_on_upload_page (boolean)  Show computer image with CD on upload page 
            'event_node': event_node,
            'event_query_add': event_query_add,
            'event_query_edit': event_query_edit,
+           'event_query_new_recipient': event_query_new_recipient,
            'event_query_reply': event_query_reply,
            'event_report_remove': event_report_remove,
            'event_share': event_share,
